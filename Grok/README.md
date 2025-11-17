@@ -55,13 +55,12 @@ Context Synthesis
 
 File	Purpose
 
-interpretation.md	Semantic interpretation layer (raw → meaning)
-pattern-detect.md	Pattern mapping, cycle detect, behavior signals
-anomaly-checklist.md	Structural anomaly detection checklist
-knowledge-expansion.md	Knowledge updates + heuristic rules
-templates/story-template.md	Insight narrative template
-mapping/knowledge-map.md	Knowledge graph & module relationships
-
+interpretation.md        → Semantic interpretation layer (raw ➝ meaning)
+pattern-detect.md        → Pattern mapping, cycle detect, behavior signals
+anomaly-checklist.md     → Structural anomaly detection checklist
+knowledge-expansion.md   → Knowledge updates + heuristic rules
+templates/story-template.md  → Insight narrative template
+mapping/knowledge-map.md → Knowledge graph & module relationships
 
 
 ---
