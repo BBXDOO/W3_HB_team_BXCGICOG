@@ -2,93 +2,50 @@
 
 ## 1. Module Communication Interfaces
 
-### BBX19 → All Modules
-```json
-{
-  "directive": {"type": "string", "required": true},
-  "priority": {"type": "enum": ["low", "medium", "high", "critical"]},
-  "deadline": {"type": "timestamp"}
-}Gemini → System Validation
+### BBX19 -> All Modules
+- directive: string (required)
+- priority: enum [low, medium, high, critical]  
+- deadline: timestamp
 
-```json
-{
-  "validation_request": {"type": "object", "required": true},
-  "risk_level": {"type": "string"},
-  "recommendation": {"type": "string"}
-}
-```
+### Gemini -> System Validation
+- validation_request: object (required)
+- risk_level: string
+- recommendation: string
 
-DeepSeek → Pattern Analysis
+### DeepSeek -> Pattern Analysis
+- pattern_data: object (required)
+- analysis_type: enum [structure, behavior, anomaly]
+- confidence_score: float
 
-```json
-{
-  "pattern_data": {"type": "object", "required": true},
-  "analysis_type": {"type": "enum": ["structure", "behavior", "anomaly"]},
-  "confidence_score": {"type": "float"}
-}
-```
+### ChatGPT -> Flow Generation
+- flow_spec: object (required)
+- complexity: enum [simple, moderate, complex]
+- test_cases: array
 
-ChatGPT → Flow Generation
+### Grok -> Narrative Output
+- narrative_input: object (required)
+- interpretation_level: enum [summary, detailed, technical]
+- anomaly_flags: array
 
-```json
-{
-  "flow_spec": {"type": "object", "required": true},
-  "complexity": {"type": "enum": ["simple", "moderate", "complex"]},
-  "test_cases": {"type": "array"}
-}
-```
+### Copilot-Gm -> Orchestration
+- orchestration_command: string (required)
+- target_modules: array (required)
+- execution_context: object
 
-Grok → Narrative Output
+## 2. Cross-Module Message Standards
+- message_id: uuid (required)
+- source_module: string (required)
+- target_module: string (required)
+- timestamp: timestamp (required)
+- payload: object (required)
 
-```json
-{
-  "narrative_input": {"type": "object", "required": true},
-  "interpretation_level": {"type": "enum": ["summary", "detailed", "technical"]},
-  "anomaly_flags": {"type": "array"}
-}
-```
+## 3. Error Handling
+- error_code: string (required)
+- error_message: string (required)
+- suggested_fix: string
+- retry_possible: boolean
 
-Copilot-Gm → Orchestration
-
-```json
-{
-  "orchestration_command": {"type": "string", "required": true},
-  "target_modules": {"type": "array", "required": true},
-  "execution_context": {"type": "object"}
-}
-```
-
-2. Cross-Module Message Standards
-
-Request-Response Pattern
-
-```json
-{
-  "message_id": {"type": "uuid", "required": true},
-  "source_module": {"type": "string", "required": true},
-  "target_module": {"type": "string", "required": true},
-  "timestamp": {"type": "timestamp", "required": true},
-  "payload": {"type": "object", "required": true}
-}
-```
-
-3. Error Handling Contracts
-
-Validation Errors
-
-```json
-{
-  "error_code": {"type": "string", "required": true},
-  "error_message": {"type": "string", "required": true},
-  "suggested_fix": {"type": "string"},
-  "retry_possible": {"type": "boolean"}
-}
-```
-
-4. Sync & Version Contracts
-
-Module Sync Agreement
-
-· All modules MUST use same contract version
-· Version mismatch MUST trigger immediate sync
-· Breaking changes REQUIRE 24-hour notification
+## 4. Sync Agreement
+- All modules use same contract version
+- Version mismatch triggers immediate sync
+- Breaking changes require 24-hour notice
