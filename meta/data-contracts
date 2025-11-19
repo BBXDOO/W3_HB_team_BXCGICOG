@@ -4,7 +4,7 @@
 
 ### BBX19 -> All Modules
 - directive: string (required)
-- priority: enum [low, medium, high, critical]  
+- priority: enum [low, medium, high, critical]
 - deadline: timestamp
 
 ### Gemini -> System Validation
