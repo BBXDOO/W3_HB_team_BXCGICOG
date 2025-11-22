@@ -5,6 +5,15 @@ Last Updated: 18/11/25
 
 W3 คือระบบที่ออกแบบมาเพื่อเป็น Hybrid Intelligent Workspace ซึ่งมนุษย์และ AI สามารถทำงานร่วมกันได้อย่างเป็นระบบ โปร่งใส ตรวจสอบได้ และสามารถขยายตัวได้ในอนาคต
 
+## Repository Structure (v0.2)
+This repository now follows the v0.2 normalized architecture.
+
+- `/core` — governance, core hybrid model and standards
+- `/modules` — each module has a `module.json` manifest and module-specific assets
+- `/blueprints` — safe abstract blueprints (origin stored here, private core kept separately)
+- `/versions` — snapshots of releases and previous versions
+- `CHANGELOG.md` — version history and release notes
+
 
 ---
 
