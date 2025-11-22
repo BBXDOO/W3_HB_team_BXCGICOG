@@ -1,0 +1,17 @@
+{
+  "name": "Grok",
+  "display_name": "Grok - Knowledge Interpretation & Pattern Module",
+  "version": "1.0.0",
+  "owner": "Grok",
+  "input": [
+    "modules/*/reports/",
+    "blueprints/abstract/overview.md"
+  ],
+  "output": [
+    "knowledge/narratives/",
+    "knowledge/patterns.json"
+  ],
+  "scope": "Interpretation, pattern detection, narrative creation, knowledge expansion",
+  "contact": "grok@team.local",
+  "notes": "Builds knowledge layer and contextual insights for human consumption."
+}
