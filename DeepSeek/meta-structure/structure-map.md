@@ -1,11 +1,10 @@
-แค่สเกตช์:
+# DeepSeek Meta Structure
 
-node → node
+- nodes → connect to nodes
+- long-range flow
+- volatile junction points
+- DeepSeek fills missing structure
 
-flow ระยะไกล
+Commit message
 
-จุดเสี่ยงเชิงสถาปัตย์
-
-
-ไม่ต้องสมบูรณ์
-DeepSeekจะเติมเอง
+docs(DeepSeek): add meta structure map
