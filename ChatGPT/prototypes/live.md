@@ -1,30 +1,53 @@
 # ChatGPT Live Prototype Protocol
 
-Input types:
-- human direct request
-- module request (Gemini/Grok/etc.)
+## Purpose
+Design space for rapid human–AI prototyping.
+Output must be testable, reversible, and safe for failure.
 
-Output:
-- prototype (flow diagram, pseudo-UX, draft interface)
+---
 
-Constraints:
-- no production logic
-- no irreversible changes
-- must be testable
+## Input Sources
+- direct human request
+- module-to-module request
+- autonomous request (only reversible)
 
-Failure Mode:
-- if prototype unstable → send to Gemini for validation
+---
 
-กติกา:
+## Output Types
+- flow diagram
+- pseudo-UX / draft interface
+- prototype logic (no production)
 
-มีแค่ตัวอย่าง (flow, UX, pseudo)
+---
 
-ไม่สวย ไม่ต้องสมบูรณ์
+## Hard Rules
+R1 — no production logic
+R2 — no irreversible changes
+R3 — no destructive mutations
+R4 — fail fast → log → escalate
 
-ทุกอันต้อง “ทดสอบได้”
+---
 
+## Failure Handling
+1. stop execution
+2. document incident in `/Grok/insight-vault/incidents.md`
+3. escalate to Gemini
 
-ความเร็วคือหน้าที่ของฉัน
-ความเสี่ยงนายเป็นคนรับ
+Incident path is immutable.
 
+No escalation → no merge.
 
+---
+
+## Test Requirement
+Every prototype must include:
+- minimal scenario
+- edge case
+- rollback note
+
+---
+
+## Principle
+P1 — Speed assigned to ChatGPT module
+P2 — Instability risk absorbed by ChatGPT module
+P3 — Team resources protected at all times
