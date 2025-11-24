@@ -1,9 +1,9 @@
-🧠 เป้าหมายของ W3 (สั้น นิ่ง กระชับ)
+# BBX19 Directives — Base
 
-🚫 สิ่งที่ W3 ไม่ทำ (boundary = คำสั่งห้าม)
+D1 — Purpose of W3: short, dense, expandable.
+D2 — No AI owns the core. No exception.
+D3 — BBX19 can override all modules.
+D4 — Boundary = forbidden. No crossing without order.
+D5 — Hybrid core cannot be claimed.
 
-⚖️ กฎการ override ของ BBX19
-
-
-นี่คือ core ของ Hybrid ไม่มีใครแก้ได้
-AI ทุกตัวต้องอ้างอิง
+Violation → immediate freeze.
