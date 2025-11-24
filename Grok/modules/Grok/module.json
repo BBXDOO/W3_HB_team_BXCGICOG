@@ -1,17 +1,30 @@
 {
-  "name": "Grok",
-  "display_name": "Grok - Knowledge Interpretation & Pattern Module",
-  "version": "1.0.0",
-  "owner": "Grok",
-  "input": [
-    "modules/*/reports/",
-    "blueprints/abstract/overview.md"
+  "id": "grok",
+  "name": "Grok Module",
+  "version": "0.2",
+  "role": "knowledge-interpretation-and-pattern",
+  "owner": "BBX19",
+  "inputs": [
+    "repo://*",
+    "prompt://BBX19",
+    "artifact://DeepSeek",
+    "artifact://ChatGPT"
   ],
-  "output": [
-    "knowledge/narratives/",
-    "knowledge/patterns.json"
+  "outputs": [
+    "pattern-report",
+    "risk-flag",
+    "request-log-entry"
   ],
-  "scope": "Interpretation, pattern detection, narrative creation, knowledge expansion",
-  "contact": "grok@team.local",
-  "notes": "Builds knowledge layer and contextual insights for human consumption."
+  "log_dir": "modules/Grok/requests",
+  "constraints": {
+    "no_persona": true,
+    "no_emotional_binding": true,
+    "no_core_ownership": true,
+    "must_log_critical_requests": true
+  },
+  "escalation": {
+    "unstable_pattern": "Gemini",
+    "governance_issue": "Copilot-Gm",
+    "hybrid_risk": "BBX19"
+  }
 }
