@@ -1,48 +1,29 @@
 {
   "file_info": {
     "description": "W3 Central Error Tracking & Event Log",
-    "version": "1.0",
-    "last_updated": "2025-11-25T20:50:00+07:00"
+    "version": "1.1",
+    "last_updated": "2025-11-25T20:50:00Z"
   },
   "logs": [
     {
       "log_id": "ERR-20251125-001",
-      "timestamp": "2025-11-25T14:30:15+07:00",
-      "agent_name": "DeepSeek",
-      "task_type": "Code Generation",
-      "status": "CRITICAL_FAILED",
-      "performance_metrics": {
-        "start_time": "14:30:00",
-        "end_time": "14:30:15",
+      "timestamp": "2025-11-25T20:15:07Z",
+      "agent": "DeepSeek",
+      "task_type": "code_generation",
+      "log_level": "CRITICAL",
+      "status": "FAILED",
+      "performance": {
         "duration_sec": 15.0,
-        "retry_attempts": 3
+        "retry_count": 3
       },
-      "error_details": {
-        "error_code": 504,
-        "error_type": "ConnectionTimeout",
-        "message": "Server did not respond within 15 seconds.",
-        "raw_response": null
+      "error": {
+        "code": 504,
+        "type": "ConnectionTimeout",
+        "message": "Server did not respond within 15 seconds."
       },
-      "context_snapshot": {
-        "input_excerpt": "ช่วยเขียนโค้ด Python สำหรับเชื่อมต่อ API...",
-        "note": "AI เงียบกริบ ไม่มีการตอบสนองใดๆ หลังลองเชื่อมต่อ 3 ครั้ง"
-      }
-    },
-    {
-      "log_id": "LOG-20251125-002",
-      "timestamp": "2025-11-25T14:35:00+07:00",
-      "agent_name": "Gemini",
-      "task_type": "Log Analysis",
-      "status": "SUCCESS",
-      "performance_metrics": {
-        "duration_sec": 1.2,
-        "retry_attempts": 0
-      },
-      "error_details": null,
-      "context_snapshot": {
-        "input_excerpt": "วิเคราะห์สาเหตุที่ DeepSeek ล่มเมื่อกี้",
-        "note": "ตรวจพบว่า Server ปลายทางมีปัญหา ไม่ใช่ที่โค้ด"
-      }
+      "context_input": "…raw request…",
+      "context_operator_note": "…human note…",
+      "escalation_target": "Gemini"
     }
   ]
 }
