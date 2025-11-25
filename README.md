@@ -18,8 +18,8 @@ This repository now follows the v0.2 normalized architecture.
 ## Repository Notice — Copilot Deprecation
 The legacy directory Copilot is deprecated.
 All current and future operations must use Copilot-Gm.
-Do not add files or update content under Copilot.
-Migration progress: active.
+Do not add, modify, or reference any content under Copilot.
+Migration: completed.
 
 ----
 
