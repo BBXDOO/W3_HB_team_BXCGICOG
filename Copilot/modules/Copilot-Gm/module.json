@@ -3,6 +3,12 @@
   "display_name": "Copilot-Gm - Repo Governance & Orchestration",
   "version": "1.0.0",
   "owner": "Copilot-Gm",
+    "lifecycle": {
+    "stage": "alpha",
+    "reviewer": "BBX19",
+    "deprecation": "manual"
+  },
+
   "input": [
     "modules/*/module.json",
     "core/governance/README.md"
