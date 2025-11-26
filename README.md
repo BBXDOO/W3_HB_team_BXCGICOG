@@ -261,9 +261,12 @@ W3 ถูกสร้างขึ้นเพื่อเป็นต้นแ�
 - 🔍 Gemini — Deep Analysis & QA Engine  
   https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/Gemini
 
+- 🌀 Grok — Base Pattern & Cognitive Layer  
+  https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/Grok
+
 - 🎭 ChatGPT — Creative Flow & Prototype Module  
   https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/ChatGPT
-
+  
 ----
 
 เอกสารชุดนี้เป็นระดับ High-Level สำหรับใช้ภายในทีม  
