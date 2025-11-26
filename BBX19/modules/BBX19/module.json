@@ -8,6 +8,11 @@
     "reviewer": "BBX19",
     "deprecation": "manual"
   },
+  "energy_budget": {
+  "max_sessions": 6,
+  "cooldown_min": 25,
+  "override": "manual"
+  },
 
   "input": [
     "blueprints/abstract/overview.md"
