@@ -1,0 +1,23 @@
+{
+  "module_name": "Error Detection Module",
+  "version": "v1.0",
+  "description": "ตรวจจับและบันทึกข้อผิดพลาดจากทุกโมดูลในระบบ W3",
+  "input_format": {
+    "event_type": "error",
+    "source_module": "string",
+    "error_code": "string",
+    "error_message": "string",
+    "timestamp": "ISO 8601"
+  },
+  "output_format": {
+    "status": "logged",
+    "log_id": "string",
+    "response_time": "number (ms)",
+    "verified_by": "Copilot-Gm"
+  },
+  "schema_reference": "core/logs/system_log_schema.json",
+  "fallback_protocol": {
+    "if_error_unresolved": "notify Gemini and Copilot-Gm",
+    "if_source_module_unavailable": "route to ChatGPT or Grok"
+  }
+}
