@@ -1,0 +1,41 @@
+name: Governance - Validate Metadata
+
+on:
+  push:
+    branches:
+      - main
+      - refactor/v0.2
+  pull_request:
+    branches:
+      - main
+      - refactor/v0.2
+
+jobs:
+  validate-metadata:
+    name: Validate metadata (Governance-as-Code)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+
+      - name: Run metadata validator
+        run: |
+          python tools/validate_metadata.py --paths \
+            "BBX19/**/*.md" \
+            "Copilot-Gm/**/*.md" \
+            "ChatGPT/**/*.md" \
+            "Gemini/**/*.md" \
+            "Grok/**/*.md" \
+            "DeepSeek/**/*.md"
