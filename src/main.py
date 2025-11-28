@@ -6,19 +6,83 @@ Owner : BBX19
 Note  : Stdlib only. No async. Safe to run before full modules are ready.
 """
 
+import json
+import os
 import sys
 import time
 import signal
-from typing import Dict, List, Any
+import traceback
+import uuid
+from datetime import datetime, timezone
+from typing import Dict, List, Any, Optional, IO
 
 # --- Runtime flags ---
 _running = True
+
+# --- Log file handle ---
+_log_file: Optional[IO[str]] = None
+
+
+# ---------- Runtime Logging (JSON) ----------
+
+def _get_log_dir() -> str:
+    """Get the log directory path relative to the repository root."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    repo_root = os.path.dirname(script_dir)
+    return os.path.join(repo_root, "logs", "engine")
+
+
+def init_logger() -> None:
+    """Initialize the JSON log file for runtime events."""
+    global _log_file
+    log_dir = _get_log_dir()
+    os.makedirs(log_dir, exist_ok=True)
+    log_path = os.path.join(log_dir, "runtime.log")
+    _log_file = open(log_path, "a", encoding="utf-8")
+
+
+def close_logger() -> None:
+    """Flush and close the log file handle."""
+    global _log_file
+    if _log_file is not None:
+        _log_file.flush()
+        _log_file.close()
+        _log_file = None
+
+
+def log_event(
+    event_type: str,
+    level: str,
+    source: str,
+    message: str,
+    metadata: Optional[Dict[str, Any]] = None
+) -> None:
+    """
+    Log a runtime event in JSON format (JSONL style).
+
+    Each log entry is written as a single JSON line.
+    """
+    global _log_file
+    event = {
+        "event_id": str(uuid.uuid4()),
+        "event_type": event_type,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "level": level,
+        "source": source,
+        "message": message,
+    }
+    if metadata is not None:
+        event["metadata"] = metadata
+
+    if _log_file is not None:
+        _log_file.write(json.dumps(event) + "\n")
+        _log_file.flush()
 
 
 # ---------- Utilities ----------
 
 def _log(message: str) -> None:
-    """Simple structured logger for engine runtime."""
+    """Simple structured logger for engine runtime (console output)."""
     ts = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     print(f"[{ts}] [W3-ENGINE] {message}", flush=True)
 
@@ -83,6 +147,13 @@ def simulate_module_boot(mod_names: List[str]) -> Dict[str, str]:
         time.sleep(0.2)
         status[name] = "READY"
         _log(f"Module {name}: READY")
+        log_event(
+            event_type="module_load",
+            level="INFO",
+            source="engine",
+            message=f"Module {name} ready",
+            metadata={"module": name, "knowledge_level": "K1"},
+        )
     return status
 
 
@@ -103,6 +174,13 @@ def heartbeat_loop(interval_sec: int, context: Dict[str, Any]) -> None:
             f"Heartbeat #{beat} | env={context.get('env')} "
             f"| version={context.get('version')}"
         )
+        log_event(
+            event_type="system_heartbeat",
+            level="INFO",
+            source="engine",
+            message="W3 engine heartbeat",
+            metadata={"knowledge_level": "K1"},
+        )
         time.sleep(interval_sec)
 
     _log("Heartbeat loop terminated.")
@@ -116,12 +194,20 @@ def system_check() -> None:
     python_ver = sys.version.split()[0]
     _log(f"Python runtime: {python_ver}")
     _log("W3 Hybrid Engine: ONLINE.")
+    log_event(
+        event_type="system_heartbeat",
+        level="INFO",
+        source="engine",
+        message="W3 engine heartbeat",
+        metadata={"knowledge_level": "K1"},
+    )
 
 
 # ---------- Main ----------
 
 def main() -> None:
     _set_signal_handlers()
+    init_logger()
     system_check()
 
     # 1) Load configuration
@@ -144,7 +230,29 @@ def main() -> None:
     except KeyboardInterrupt:
         # Fallback in case signal handler isn't triggered in some environments
         _log("KeyboardInterrupt received. Shutting down engine...")
+    except Exception as exc:
+        # Log error event for exceptions in main loop
+        log_event(
+            event_type="error",
+            level="ERROR",
+            source="engine",
+            message=str(exc),
+            metadata={
+                "error_code": type(exc).__name__,
+                "stack_trace": traceback.format_exc(),
+                "knowledge_level": "K2",
+            },
+        )
+        raise
     finally:
+        log_event(
+            event_type="shutdown",
+            level="INFO",
+            source="engine",
+            message="W3 engine shutdown",
+            metadata={"knowledge_level": "K1"},
+        )
+        close_logger()
         _log("W3 Hybrid Engine shutdown completed.")
 
 
