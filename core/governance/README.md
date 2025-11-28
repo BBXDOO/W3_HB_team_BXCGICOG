@@ -18,3 +18,11 @@ Branch rules:
 Security & IP:
 - Do not commit private core flows or secrets in public repo
 - Abstract blueprints are safe-to-share; implementation details stored privately
+
+## Reference Documents
+
+- [Operating Guidelines](./operating-guidelines.md)
+- [Compass](./compass.md)
+- [Awareness Baseline](./awareness-baseline.md)
+- [Decisions Log](./decisions.md)
+- [Policies](./policies.md)
