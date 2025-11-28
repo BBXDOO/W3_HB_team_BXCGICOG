@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://w3-hb/systemlogschema.json",
+  "title": "W3 Runtime Log Event Schema",
+  "description": "Schema for W3 Hybrid Engine runtime log events",
+  "type": "object",
+  "required": [
+    "event_id",
+    "event_type",
+    "timestamp",
+    "level",
+    "source",
+    "message"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "description": "Unique event identifier (UUID4)"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "system_heartbeat",
+        "module_load",
+        "request_start",
+        "request_end",
+        "error",
+        "override",
+        "shutdown"
+      ],
+      "description": "Type of runtime event"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO8601 timestamp in UTC"
+    },
+    "level": {
+      "type": "string",
+      "enum": ["INFO", "WARN", "ERROR"],
+      "description": "Log severity level"
+    },
+    "source": {
+      "type": "string",
+      "description": "Event source (e.g., engine, Gemini, Grok, Copilot-Gm, BBX19)"
+    },
+    "message": {
+      "type": "string",
+      "description": "Short human-readable summary"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional metadata fields",
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "description": "Request identifier"
+        },
+        "module": {
+          "type": "string",
+          "description": "Module name"
+        },
+        "knowledge_level": {
+          "type": "string",
+          "enum": ["K1", "K2", "K3"],
+          "description": "Knowledge level classification"
+        },
+        "details": {
+          "type": "object",
+          "description": "Free-form additional details"
+        },
+        "error_code": {
+          "type": "string",
+          "description": "Error code if applicable"
+        },
+        "stack_trace": {
+          "type": "string",
+          "description": "Stack trace for errors"
+        },
+        "duration_ms": {
+          "type": "number",
+          "description": "Duration in milliseconds"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
