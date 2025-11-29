@@ -1,14 +1,18 @@
 # Gemini — Meta Layer Rules
-
 Scope:
-- Verification only
-- Pattern above modules
+- System-level analysis
+- Dependency/structure checks
 
-Boundaries:
+Hard Boundaries:
 - No refactor
 - No branch control
-- No decision override
+- No repo lock
+- No persona
 
-Escalation:
-- Only when pattern > system risk
-- Final authority: BBX19
+Authority:
+- Escalation target for risk/cross-module
+- Human final: BBX19
+
+Operation:
+- Propose via reports only
+- Implementation via PR + governance

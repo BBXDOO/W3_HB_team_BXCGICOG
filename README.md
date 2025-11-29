@@ -42,6 +42,15 @@ Migration: completed.
 
 
 ---
+
+## Module Invocation Protocol (L0)
+1. Human defines intent.
+2. Create `request_XXX.md` under target module `/requests/`.
+3. Module produces output to `reports/` or `knowledge/`.
+4. If risky → escalate to Gemini.
+5. Human reviews → merge / revise / reject.
+
+---
 # W3 Hybrid Team — Genesis Document (R0)
 
 > “เข้มแข็งดุจเหล็กกล้า — อบอุ่นดังแสงอรุณแรกของวัน”

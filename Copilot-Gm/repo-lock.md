@@ -1,15 +1,10 @@
-# Repo Governance — Copilot-Gm
+# Repo Lock Policy
+L1 — Soft Lock  
+L2 — Hard Lock  
+L3 — Emergency Lock
 
-L3 — Enforcement
-- freeze write / merge branches
-----
-L4 — Human Override
-- require: BBX19 only
-- purpose: intention > technical logic
-- output: signed-intent.md
-- effect: bypass L3 but NOT unlock L5
-----
 L5 — Restore
-- require: BBX19 + 1 AI witness
-- restore → checkpoint
-- unlock operations
+- Require: BBX19 + 1 AI witness (ChatGPT or Gemini)
+- Restore to checkpoint
+- Document reason + reference
+- Unlock merge/push/write
