@@ -1,5 +1,7 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3-hb/resume_header.schema.json",
+  "title": "W3 Resume Header Schema",
   "type": "object",
   "required": ["keyword", "task_id", "timestamp"],
   "properties": {
@@ -10,5 +12,6 @@
     "next_action": { "type": "string" },
     "contact": { "type": "string" },
     "repo": { "type": "string" }
-  }
+  },
+  "additionalProperties": false
 }

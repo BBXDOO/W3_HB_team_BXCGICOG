@@ -11,6 +11,8 @@ on:
 jobs:
   validate-json:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,7 +27,7 @@ jobs:
 
       - name: Validate JSON syntax
         run: |
-          find . -name "*.json" -type f | while read file; do
+          find . -name "*.json" -type f -not -path "./.git/*" -not -path "./node_modules/*" | while read file; do
             echo "Checking syntax: $file"
             python3 -m json.tool "$file" > /dev/null || exit 1
           done
