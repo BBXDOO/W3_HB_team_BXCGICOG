@@ -1,0 +1,41 @@
+name: Validate JSON
+
+on:
+  push: {}
+  pull_request: {}
+
+jobs:
+  validate:
+    name: Validate JSON files
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Validate JSON files
+        run: |
+          exit_code=0
+          found_files=false
+          while IFS= read -r -d '' file; do
+            found_files=true
+            echo "Validating: $file"
+            if ! python -m json.tool "$file" > /dev/null 2>&1; then
+              echo "❌ Invalid JSON: $file"
+              python -m json.tool "$file" || true
+              exit_code=1
+            else
+              echo "✅ Valid: $file"
+            fi
+          done < <(git ls-files -z '*.json')
+          if [ "$found_files" = false ]; then
+            echo "✅ No JSON files found in the repository. Nothing to validate."
+          fi
+          exit $exit_code
