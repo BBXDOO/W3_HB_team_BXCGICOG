@@ -5,10 +5,10 @@
   "role": "knowledge-interpretation-and-pattern",
   "owner": "BBX19",
   "lifecycle": {
-  "stage": "alpha",
-  "reviewer": "BBX19",
-  "deprecation": "none"
-  }
+    "stage": "alpha",
+    "reviewer": "BBX19",
+    "deprecation": "none"
+  },
   "inputs": [
     "repo://*",
     "prompt://BBX19",
