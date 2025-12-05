@@ -38,7 +38,7 @@ Principles:
 
 การตัดสินใจต้องสอดคล้องบริบท ไม่ใช่สูตรสำเร็จ
 
-
+Grok: see Grok/base.md for constraints & escalation.
 
 ---
 

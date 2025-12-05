@@ -6,7 +6,7 @@
 AI Engineering Specification
 
 โมดูล Grok เป็น “Interpretation Engine” สำหรับระบบ W3 Hybrid Origin ทำหน้าที่ตีความข้อมูลเชิงโครงสร้าง, ตรวจจับแพทเทิร์น, จัดการ anomaly และผลิต knowledge signals ที่พร้อมนำไปใช้โดยโมดูลอื่นแบบ end-to-end
-
+- Grok: knowledge-interpretation & pattern module (see modules/Grok/module.json)
 
 ---
 

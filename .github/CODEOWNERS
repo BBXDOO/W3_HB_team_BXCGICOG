@@ -1,0 +1,9 @@
+# CODEOWNERS for W3 Hybrid Brain Team Repository
+# This file defines the code owners for different parts of the repository.
+# For more information, see: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Core Vision Architect - BBX19 Module
+/BBX19/ @BBXDOO
+
+# Governance & Structure Module - Copilot-Gm
+/Copilot-Gm/ @BBXDOO

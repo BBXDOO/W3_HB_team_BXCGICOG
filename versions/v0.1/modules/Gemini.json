@@ -1,0 +1,17 @@
+{
+  "name": "Gemini",
+  "display_name": "Gemini - Deep Analysis Engine",
+  "version": "1.0.0",
+  "owner": "Gemini",
+  "input": [
+    "blueprints/abstract/overview.md",
+    "modules/Gemini/requests/"
+  ],
+  "output": [
+    "modules/Gemini/reports/",
+    "core/hybrid-model/insights.md"
+  ],
+  "scope": "Deep structural analysis, dependency & risk validation, QA",
+  "contact": "gemini@team.local",
+  "notes": "Quality assurance layer — validates structure and flags risky flows."
+}

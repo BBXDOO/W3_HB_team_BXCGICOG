@@ -110,6 +110,7 @@
 - \n : newline
 - \t : tab
 - \\\\ : backslash
+- \\ : backslash
 - \" : double quote ภายใน string
 - \uFFFF : unicode codepoint
 ตัวอย่าง:

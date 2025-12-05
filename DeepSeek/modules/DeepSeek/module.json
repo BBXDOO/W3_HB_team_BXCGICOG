@@ -1,0 +1,23 @@
+{
+  "name": "DeepSeek",
+  "display_name": "DeepSeek - Architecture & Scalability Guardian",
+  "version": "1.0.0",
+  "owner": "DeepSeek",
+    "lifecycle": {
+    "stage": "alpha",
+    "reviewer": "BBX19",
+    "deprecation": "manual"
+  },
+
+  "input": [
+    "blueprints/abstract/overview.md",
+    "modules/*/module.json"
+  ],
+  "output": [
+    "architecture/diagrams/",
+    "architecture/standards.md"
+  ],
+  "scope": "Long-term architecture, scalability patterns, meta-pattern scanning",
+  "contact": "deepseek@team.local",
+  "notes": "Lightweight scanner; ensures architectures remain extensible/scalable."
+}

@@ -1,0 +1,23 @@
+{
+  "name": "ChatGPT",
+  "display_name": "ChatGPT - Creative Flow & Prototype Module",
+  "version": "1.0.0",
+  "owner": "ChatGPT",
+    "lifecycle": {
+    "stage": "alpha",
+    "reviewer": "BBX19",
+    "deprecation": "manual"
+  },
+
+  "input": [
+    "blueprints/abstract/overview.md",
+    "modules/ChatGPT/requests/"
+  ],
+  "output": [
+    "modules/ChatGPT/flows/",
+    "modules/ChatGPT/scenarios/"
+  ],
+  "scope": "Interactive flow design, scenario prototyping, human-facing narrative",
+  "contact": "chatgpt@team.local",
+  "notes": "Generates flows, prototypes and test scenarios for human review."
+}

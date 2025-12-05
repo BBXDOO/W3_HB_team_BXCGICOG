@@ -1,0 +1,56 @@
+name: Validate JSON Files
+
+on:
+  push:
+    paths:
+      - '**/*.json'
+      - '**/*.schema.json'
+  pull_request:
+    paths:
+      - '**/*.json'
+      - '**/*.schema.json'
+
+jobs:
+  validate-json:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions:setup-node@v4
+        with:
+          node-version: '20' 
+
+      - name: Install ajv-cli globally
+        run: npm install -g ajv-cli
+
+      # ตรวจสอบ Syntax JSON ทั่วไป โดยใช้ jq
+      - name: ⚙️ Validate ALL JSON Syntax
+        run: |
+          find . -name "*.json" -type f \
+          -not -path "./.git/*" \
+          -not -path "./node_modules/*" \
+          -not -path "./*.schema.json" | while read file; do
+            echo "Checking syntax: $file"
+            jq . "$file" > /dev/null || { echo "❌ JSON Syntax Error in $file"; exit 1; }
+          done
+      
+      # ตรวจสอบ Schema สำหรับไฟล์ข้อมูลที่ตรงกับ *.schema.json
+      - name: ✨ Validate Data Files Against Matching Schemas
+        run: |
+          # ค้นหาไฟล์ .schema.json ทั้งหมด
+          find . -name "*.schema.json" -type f | while read schema_file; do
+            # คาดเดาชื่อไฟล์ข้อมูลที่ตรงกัน (โดยลบ .schema ออก)
+            data_file="${schema_file%.schema.json}.json"
+
+            if [ -f "$data_file" ]; then
+              echo "✅ Validating $data_file against $schema_file"
+              # ใช้ ajv validate
+              ajv validate -s "$schema_file" -d "$data_file" --strict=false || { echo "❌ Schema Validation Failed for $data_file"; exit 1; }
+            else
+              echo "⚠️ Warning: Schema file $schema_file found, but no matching data file $data_file exists."
+            fi
+          done

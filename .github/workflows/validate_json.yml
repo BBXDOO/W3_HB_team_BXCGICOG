@@ -1,0 +1,41 @@
+name: W3 JSON Validator (Veritas)
+
+on:
+  push:
+    branches: [ refactor/v0.2 ]
+  pull_request:
+    branches: [ refactor/v0.2 ]
+    types: [ opened, synchronize, reopened ]
+    paths:
+      - 'modules/identity/specs/w3_genesis_identity.json'
+      - 'modules/treasury/specs/w3_multisig_config.json'
+
+permissions:
+  contents: read
+
+jobs:
+  validate_specs:
+    name: Validate JSON Specs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install JSON Tool
+        run: pip install simplejson
+
+      - name: Validate all JSON files
+        run: |
+          find . -name "*.json" -type f ! -path "./.git/*" | while read file; do
+            echo "Checking syntax: $file"
+            python3 -m json.tool "$file" > /dev/null || exit 1
+          done
+
+      - name: 🛡️ Report Integrity Check Passed
+        if: success()
+        run: echo "Veritas: JSON Syntax Checks completed successfully."

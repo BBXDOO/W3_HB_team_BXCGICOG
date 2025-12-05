@@ -1,0 +1,16 @@
+{
+  "name": "BBX19",
+  "display_name": "BBX19 - Vision & Governance Node",
+  "version": "1.0.0",
+  "owner": "BBX19",
+  "input": [
+    "blueprints/abstract/overview.md"
+  ],
+  "output": [
+    "core/hybrid-model/vision.md",
+    "core/governance/decisions.md"
+  ],
+  "scope": "Vision, governance, final human decision node",
+  "contact": "bbx19@team.local",
+  "notes": "Human central node. Authoritative decisions, high-level oversight."
+}

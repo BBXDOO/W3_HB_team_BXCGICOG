@@ -1,0 +1,16 @@
+id:
+timestamp:
+agent:
+task_type:
+log_level:
+status:
+performance:
+  duration_sec:
+  retry_count:
+error:
+  code:
+  type:
+  message:
+context_input:
+context_operator_note:
+escalation_target:

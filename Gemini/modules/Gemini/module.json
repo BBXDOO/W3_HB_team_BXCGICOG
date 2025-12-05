@@ -1,0 +1,32 @@
+{
+  "name": "Gemini",
+  "display_name": "Gemini - Deep Analysis Engine",
+  "version": "1.0.0",
+  "owner": "Gemini",
+    "lifecycle": {
+    "stage": "alpha",
+    "reviewer": "BBX19",
+    "deprecation": "manual"
+  },
+  "confidence_policy": {
+  "min_score": 0.72,
+  "escalate_below": "BBX19"
+},
+"pattern_weight": {
+  "structural": 0.5,
+  "dependency": 0.3,
+  "risk": 0.2
+},
+
+  "input": [
+    "blueprints/abstract/overview.md",
+    "modules/Gemini/requests/"
+  ],
+  "output": [
+    "modules/Gemini/reports/",
+    "core/hybrid-model/insights.md"
+  ],
+  "scope": "Deep structural analysis, dependency & risk validation, QA",
+  "contact": "gemini@team.local",
+  "notes": "Quality assurance layer — validates structure and flags risky flows."
+}

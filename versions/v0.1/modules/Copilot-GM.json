@@ -1,0 +1,17 @@
+{
+  "name": "Copilot-Gm",
+  "display_name": "Copilot-Gm - Repo Governance & Orchestration",
+  "version": "1.0.0",
+  "owner": "Copilot-Gm",
+  "input": [
+    "modules/*/module.json",
+    "core/governance/README.md"
+  ],
+  "output": [
+    "core/governance/policies.md",
+    "workflows/orchestration/"
+  ],
+  "scope": "Repository governance, branch policies, CI/PR orchestration",
+  "contact": "copilot@team.local",
+  "notes": "Responsible for structural integrity of repo and release workflows."
+}

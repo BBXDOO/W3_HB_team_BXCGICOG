@@ -1,0 +1,1 @@
+- `system_log.json` — central log file (validated by `system_log.schema.json`)

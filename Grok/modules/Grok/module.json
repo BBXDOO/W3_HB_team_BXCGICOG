@@ -1,0 +1,35 @@
+{
+  "id": "grok",
+  "name": "Grok Module",
+  "version": "0.2",
+  "role": "knowledge-interpretation-and-pattern",
+  "owner": "BBX19",
+  "lifecycle": {
+  "stage": "alpha",
+  "reviewer": "BBX19",
+  "deprecation": "none"
+  },
+  "inputs": [
+    "repo://*",
+    "prompt://BBX19",
+    "artifact://DeepSeek",
+    "artifact://ChatGPT"
+  ],
+  "outputs": [
+    "pattern-report",
+    "risk-flag",
+    "request-log-entry"
+  ],
+  "log_dir": "modules/Grok/requests",
+  "constraints": {
+    "no_persona": true,
+    "no_emotional_binding": true,
+    "no_core_ownership": true,
+    "must_log_critical_requests": true
+  },
+  "escalation": {
+    "unstable_pattern": "Gemini",
+    "governance_issue": "Copilot-Gm",
+    "hybrid_risk": "BBX19"
+  }
+}

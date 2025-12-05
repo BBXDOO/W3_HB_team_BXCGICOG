@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3-hb/system_log.schema.json",
+  "title": "W3 System Log Schema",
+  "type": "object",
+  "required": ["file_info", "logs"],
+  "properties": {
+    "file_info": {
+      "type": "object",
+      "required": ["description", "version", "last_updated"],
+      "properties": {
+        "description": { "type": "string" },
+        "version": { "type": "string" },
+        "last_updated": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    },
+    "logs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "log_id",
+          "timestamp",
+          "agent",
+          "task_type",
+          "log_level",
+          "status",
+          "performance",
+          "error",
+          "context_input",
+          "context_operator_note",
+          "escalation_target"
+        ],
+        "properties": {
+          "log_id": { "type": "string" },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "agent": { "type": "string" },
+          "task_type": { "type": "string" },
+          "log_level": {
+            "type": "string",
+            "enum": ["INFO", "WARN", "ERROR", "CRITICAL"]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["SUCCESS", "FAILED", "PARTIAL"]
+          },
+          "performance": {
+            "type": "object",
+            "required": ["duration_sec", "retry_count"],
+            "properties": {
+              "duration_sec": { "type": "number" },
+              "retry_count": { "type": "integer", "minimum": 0 }
+            },
+            "additionalProperties": false
+          },
+          "error": {
+            "type": "object",
+            "required": ["code", "type", "message"],
+            "properties": {
+              "code": { "type": ["integer", "null"] },
+              "type": { "type": ["string", "null"] },
+              "message": { "type": ["string", "null"] }
+            },
+            "additionalProperties": false
+          },
+          "context_input": { "type": "string" },
+          "context_operator_note": { "type": "string" },
+          "escalation_target": {
+            "type": "string",
+            "enum": ["Gemini", "Copilot-Gm", "BBX19", "None"]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
