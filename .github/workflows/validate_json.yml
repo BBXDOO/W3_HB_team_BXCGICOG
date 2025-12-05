@@ -2,21 +2,17 @@ name: W3 JSON Validator (Veritas)
 
 on:
   push:
-    branches:
-      - refactor/v0.2
+    branches: [ refactor/v0.2 ]
   pull_request:
-    branches:
-      - refactor/v0.2
-    types: [opened, synchronize, reopened]
+    branches: [ refactor/v0.2 ]
+    types: [ opened, synchronize, reopened ]
     paths:
-      # ตรวจสอบเฉพาะไฟล์ JSON ที่สำคัญที่สุด
       - 'modules/identity/specs/w3_genesis_identity.json'
       - 'modules/treasury/specs/w3_multisig_config.json'
-      - '.github/workflows/validate_json.yml'
 
 jobs:
   validate_specs:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # <--- FIX: Corrected runs-on placement
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,18 +22,16 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install JSON Parser (simplejson)
+      - name: Install JSON Tool
         run: pip install simplejson
 
-      - name: 🛡️ Validate Critical JSON Syntax
+      - name: Validate all JSON files
         run: |
-          echo "Veritas: Starting syntax check for Genesis Specs..."
-          # ตรวจสอบ Identity Spec
-          python -c "import simplejson as json; json.load(open('modules/identity/specs/w3_genesis_identity.json'))"
-          echo "✅ Identity Genesis JSON: Syntax OK"
-          # ตรวจสอบ Treasury Spec
-          python -c "import simplejson as json; json.load(open('modules/treasury/specs/w3_multisig_config.json'))"
-          echo "✅ Treasury Config JSON: Syntax OK"
-        
-      - name: ✅ Report Success
-       run: echo "Veritas: Critical JSON files passed validation. Data Integrity is maintained."
+          find . -name "*.json" -type f ! -path "./.git/*" | while read file; do
+            echo "Checking syntax: $file"
+            # Python tool will exit 1 if syntax is invalid
+            python3 -m json.tool "$file" > /dev/null || exit 1
+          done
+          
+      - name: 🛡️ Report Integrity Check Passed
+        run: 'echo "Veritas: JSON Syntax Checks completed successfully."'
