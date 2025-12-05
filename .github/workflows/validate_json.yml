@@ -11,6 +11,21 @@ jobs:
     permissions:
       contents: read
 
+name: W3 JSON Validator (Veritas)
+
+on:
+  push:
+    branches: [ refactor/v0.2 ]
+  pull_request:
+    branches: [ refactor/v0.2 ]
+    types: [ opened, synchronize, reopened ]
+    paths:
+      - 'modules/identity/specs/w3_genesis_identity.json'
+      - 'modules/treasury/specs/w3_multisig_config.json'
+
+jobs:
+  validate_specs:
+    runs-on: ubuntu-latest # <--- FIX: Corrected runs-on placement
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,22 +35,16 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Validate JSON files
+      - name: Install JSON Tool
+        run: pip install simplejson
+
+      - name: Validate all JSON files
         run: |
-          exit_code=0
-          found_files=false
-          while IFS= read -r -d '' file; do
-            found_files=true
-            echo "Validating: $file"
-            if ! python -m json.tool "$file" > /dev/null 2>&1; then
-              echo "❌ Invalid JSON: $file"
-              python -m json.tool "$file" || true
-              exit_code=1
-            else
-              echo "✅ Valid: $file"
-            fi
-          done < <(git ls-files -z '*.json')
-          if [ "$found_files" = false ]; then
-            echo "✅ No JSON files found in the repository. Nothing to validate."
-          fi
-          exit $exit_code
+          find . -name "*.json" -type f ! -path "./.git/*" | while read file; do
+            echo "Checking syntax: $file"
+            # Python tool will exit 1 if syntax is invalid
+            python3 -m json.tool "$file" > /dev/null || exit 1
+          done
+          
+      - name: 🛡️ Report Integrity Check Passed
+        run: 'echo "Veritas: JSON Syntax Checks completed successfully."'
