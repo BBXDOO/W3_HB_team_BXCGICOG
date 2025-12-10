@@ -22,7 +22,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' 
+          node-version: '20'
 
       - name: Install ajv-cli globally
         run: npm install -g ajv-cli
@@ -37,7 +37,7 @@ jobs:
             echo "Checking syntax: $file"
             jq . "$file" > /dev/null || { echo "❌ JSON Syntax Error in $file"; exit 1; }
           done
-      
+
       # ตรวจสอบ Schema สำหรับไฟล์ข้อมูลที่ตรงกับ *.schema.json
       - name: ✨ Validate Data Files Against Matching Schemas
         run: |
