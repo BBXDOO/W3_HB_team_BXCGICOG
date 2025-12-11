@@ -26,8 +26,16 @@ Last Updated: 26/11/25
 - [Manifesto No.3 — Vision & Identity](docs/manifesto-3.md)
 - [System Update: Operational Changes](docs/announcement/announcement-3.md)
 
+---
 
-----
+## 🗂️ W3 Identity Pack (IDP)
+นี่คือศูนย์รวมบัตรประจำตัวของทุกโมดูลในระบบ W3  
+ประกอบไปด้วย IDP ของ BBX19, ChatGPT, Gemini, Grok, DeepSeek และ Copilot-Gm
+
+- 📘 [W3 IDP Index](BBX19/modules/BBX19/idp/INDEX.md)
+- 📁 [เปิดโฟลเดอร์ IDP ทั้งหมด](BBX19/modules/BBX19/idp/)
+
+---
 
 ### 🛠️ File Integrity Check Tools Available
 Automated tools for checking repository file integrity are now available:
