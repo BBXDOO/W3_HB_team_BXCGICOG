@@ -21,6 +21,14 @@ Last Updated: 26/11/25
 ========================
 ## ​📢 ANNOUNCEMENT:
 
+    
+## 📢 Official Announcements
+- [Manifesto No.3 — Vision & Identity](docs/manifesto-3.md)
+- [System Update: Operational Changes](docs/announcement/announcement-3.md
+
+
+----
+
 ### 🛠️ File Integrity Check Tools Available
 Automated tools for checking repository file integrity are now available:
 - **Quick Start:** See [QUICK_START.md](QUICK_START.md)
