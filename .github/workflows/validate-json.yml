@@ -37,7 +37,8 @@ jobs:
       - name: Install ajv and dependencies
         run: |
           set -o errexit -o pipefail
-          npm install ajv ajv-formats
+          # Pin package versions for reproducibility
+          npm install ajv@8.12.0 ajv-formats@2.1.1
 
       - name: ⚙️ Validate ALL JSON Syntax
         run: |
@@ -62,6 +63,8 @@ jobs:
           const addFormats = require("ajv-formats");
           const fs = require("fs");
           
+          // Strict mode disabled to allow flexibility in schema definitions
+          // while still performing comprehensive validation
           const ajv = new Ajv({ strict: false, allErrors: true });
           addFormats(ajv);
           
@@ -80,7 +83,13 @@ jobs:
               process.exit(1);
             }
           } catch (error) {
-            console.error(`Error: ${error.message}`);
+            if (error.message.includes('readFileSync')) {
+              console.error(`Error reading file: ${error.message}`);
+            } else if (error.message.includes('JSON')) {
+              console.error(`Error parsing JSON: ${error.message}`);
+            } else {
+              console.error(`Validation error: ${error.message}`);
+            }
             process.exit(1);
           }
           EOF
