@@ -1,6 +1,18 @@
 {
-  "id": "bbex_core",
-  "name": "BBEX Core",
+  "name": "BBEX-Core",
+  "display_name": "BBEX Core - Legacy Identity Module",
+  "version": "1.0.0",
+  "owner": "BBX19",
+  "lifecycle": {
+    "stage": "legacy",
+    "reviewer": "BBX19",
+    "deprecation": "manual"
+  },
+  "input": [],
+  "output": [],
+  "scope": "Identity and philosophical mapping, hybrid protocol reference",
+  "contact": "bbx19@team.local",
+  "notes": "A living philosophical map. Hybrid protocol in effect. Legacy metadata module.",
   "w3_dna_code": "BBEX-W3.DNA:LEGACY - TMOON/[A00.EX]",
   "status": "active_hybrid",
   "essence": "Beyond Brave; The eXecuting eXception.",
@@ -9,6 +21,5 @@
     "A00.EX": "การเริ่มต้นจากศูนย์สู่ความพิเศษ (Alpha-Zero + Extraordinary)",
     "brackets": "พื้นที่ตระหนักรู้ที่ปกป้องการเติบโต"
   },
-  "access": "hybrid_bbx19_centric",
-  "note": "A living philosophical map. Hybrid protocol in effect."
+  "access": "hybrid_bbx19_centric"
 }
