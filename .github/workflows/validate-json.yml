@@ -34,11 +34,11 @@ jobs:
             echo "jq already installed"
           fi
 
-      - name: Install ajv-cli
+      - name: Install ajv and dependencies
         run: |
           set -o errexit -o pipefail
-          # Pinning ajv-cli to a major version can help with reproducibility; adjust as needed
-          npm install -g ajv-cli
+          # Pin package versions for reproducibility
+          npm install ajv@8.12.0 ajv-formats@2.1.1
 
       - name: ⚙️ Validate ALL JSON Syntax
         run: |
@@ -56,7 +56,45 @@ jobs:
       - name: ✨ Validate Data Files Against Matching Schemas
         run: |
           set -o errexit -o pipefail
-          # Find all schema files and validate their corresponding data files (file.schema.json -> file.json)
+          
+          # Create validation script that supports draft 2020-12
+          cat > validate_schema.js << 'EOF'
+          const Ajv = require("ajv/dist/2020");
+          const addFormats = require("ajv-formats");
+          const fs = require("fs");
+          
+          // Strict mode disabled to allow flexibility in schema definitions
+          // while still performing comprehensive validation
+          const ajv = new Ajv({ strict: false, allErrors: true });
+          addFormats(ajv);
+          
+          const [schemaFile, dataFile] = process.argv.slice(2);
+          
+          try {
+            const schema = JSON.parse(fs.readFileSync(schemaFile, "utf8"));
+            const data = JSON.parse(fs.readFileSync(dataFile, "utf8"));
+            
+            const validate = ajv.compile(schema);
+            const valid = validate(data);
+            
+            if (!valid) {
+              console.error(`❌ ${dataFile} is invalid:`);
+              console.error(JSON.stringify(validate.errors, null, 2));
+              process.exit(1);
+            }
+          } catch (error) {
+            if (error.message.includes('readFileSync')) {
+              console.error(`Error reading file: ${error.message}`);
+            } else if (error.message.includes('JSON')) {
+              console.error(`Error parsing JSON: ${error.message}`);
+            } else {
+              console.error(`Validation error: ${error.message}`);
+            }
+            process.exit(1);
+          }
+          EOF
+          
+          # Find all schema files and validate their corresponding data files
           find . -type f -name "*.schema.json" \
             -not -path "./.git/*" \
             -not -path "./node_modules/*" \
@@ -65,7 +103,7 @@ jobs:
 
             if [ -f "$data_file" ]; then
               echo "✅ Validating $data_file against $schema_file"
-              ajv validate -s "$schema_file" -d "$data_file" --strict=false || { echo "❌ Schema Validation Failed for $data_file"; exit 1; }
+              node validate_schema.js "$schema_file" "$data_file" || { echo "❌ Schema Validation Failed for $data_file"; exit 1; }
             else
               echo "⚠️ Warning: Schema file $schema_file found, but no matching data file $data_file exists."
             fi
