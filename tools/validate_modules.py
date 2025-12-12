@@ -55,13 +55,22 @@ class ModuleValidator:
         if "output" in data and not isinstance(data["output"], list):
             errors.append("Field 'output' must be an array")
         
-        # Check version format
+        # Check version format (basic semver validation)
         if "version" in data:
             version = data["version"]
-            if not isinstance(version, str) or not all(part.isdigit() for part in version.split('.')):
-                errors.append(f"Invalid version format: {version}. Expected semver format (e.g., 1.0.0)")
+            if not isinstance(version, str):
+                errors.append(f"Invalid version format: {version}. Expected string.")
+            elif not self._is_valid_semver(version):
+                errors.append(f"Invalid version format: {version}. Expected semver format (e.g., 1.0.0, 1.0.0-alpha, 2.1.0-beta.1)")
         
         return len(errors) == 0, errors
+    
+    def _is_valid_semver(self, version: str) -> bool:
+        """Basic semver validation (supports X.Y.Z and X.Y.Z-prerelease)"""
+        import re
+        # Simplified semver pattern: major.minor.patch with optional prerelease
+        pattern = r'^\d+\.\d+\.\d+(-[a-zA-Z0-9.-]+)?$'
+        return re.match(pattern, version) is not None
     
     def run_validation(self):
         """Run validation on all module files"""

@@ -8,8 +8,14 @@ import json
 import sys
 from pathlib import Path
 from typing import List, Tuple
-import jsonschema
-from jsonschema import validate, ValidationError, SchemaError
+
+try:
+    import jsonschema
+    from jsonschema import validate, ValidationError, SchemaError
+except ImportError:
+    print("Error: jsonschema library is not installed.")
+    print("Please install it using: pip install jsonschema")
+    sys.exit(1)
 
 class JSONSchemaValidator:
     def __init__(self, repo_root):

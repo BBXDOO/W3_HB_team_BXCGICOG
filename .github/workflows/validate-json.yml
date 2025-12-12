@@ -19,26 +19,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          node-version: '20'
+          python-version: '3.x'
 
-      - name: Install jq (if missing)
+      - name: Install Python dependencies
         run: |
-          set -o errexit -o pipefail
-          if ! command -v jq >/dev/null 2>&1; then
-            sudo apt-get update
-            sudo apt-get install -y jq
-          else
-            echo "jq already installed"
-          fi
-
-      - name: Install ajv-cli
-        run: |
-          set -o errexit -o pipefail
-          # Pinning ajv-cli to a major version can help with reproducibility; adjust as needed
-          npm install -g ajv-cli
+          pip install jsonschema
 
       - name: ⚙️ Validate ALL JSON Syntax
         run: |
@@ -50,23 +38,13 @@ jobs:
             -not -path "./node_modules/*" \
             -not -path "./.github/*" | while read -r file; do
               echo "Checking syntax: $file"
-              jq . "$file" > /dev/null || { echo "❌ JSON Syntax Error in $file"; exit 1; }
+              python3 -m json.tool "$file" > /dev/null || { echo "❌ JSON Syntax Error in $file"; exit 1; }
             done
+          echo "✅ All JSON files have valid syntax"
 
       - name: ✨ Validate Data Files Against Matching Schemas
         run: |
           set -o errexit -o pipefail
-          # Find all schema files and validate their corresponding data files (file.schema.json -> file.json)
-          find . -type f -name "*.schema.json" \
-            -not -path "./.git/*" \
-            -not -path "./node_modules/*" \
-            -not -path "./.github/*" | while read -r schema_file; do
-            data_file="${schema_file%.schema.json}.json"
+          python3 tools/validate_json_schemas.py || { echo "❌ Schema Validation Failed"; exit 1; }
+          echo "✅ All JSON schema validations passed"
 
-            if [ -f "$data_file" ]; then
-              echo "✅ Validating $data_file against $schema_file"
-              ajv validate -s "$schema_file" -d "$data_file" --strict=false || { echo "❌ Schema Validation Failed for $data_file"; exit 1; }
-            else
-              echo "⚠️ Warning: Schema file $schema_file found, but no matching data file $data_file exists."
-            fi
-          done
