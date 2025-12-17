@@ -40,7 +40,7 @@ Medium — Without proper review gates, gradual drift is probable in hybrid deve
 
 ### Review Checklist
 This review must confirm alignment with:
-- W3 Hybrid governance principles (see `/governance`)
+- W3 Hybrid governance principles (see `core/governance/`)
 - Module responsibility boundaries
 - Audit checklist standards (see `docs/audit-checklist.md`)
 - System integrity requirements
