@@ -1,0 +1,41 @@
+{
+  "name": "W3: Hybrid Intelligent Origin System",
+  "short_name": "W3 System",
+  "description": "ระบบ Hybrid Intelligent Workspace สำหรับการทำงานร่วมกันระหว่างมนุษย์และ AI",
+  "start_url": "/W3_HB_team_BXCGICOG/",
+  "scope": "/W3_HB_team_BXCGICOG/",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#16f2b3",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "development", "business"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "ดูพื้นที่เก็บข้อมูล",
+      "short_name": "Repository",
+      "description": "ไปยังหน้า GitHub Repository",
+      "url": "/W3_HB_team_BXCGICOG/",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
