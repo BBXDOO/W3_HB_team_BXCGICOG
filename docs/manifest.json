@@ -1,0 +1,20 @@
+{
+  "name": "W3_HB_team_BXCGICOG",
+  "short_name": "W3_HB",
+  "start_url": "/W3_HB_team_BXCGICOG/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0d6efd",
+  "icons": [
+    {
+      "src": "/W3_HB_team_BXCGICOG/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/W3_HB_team_BXCGICOG/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
