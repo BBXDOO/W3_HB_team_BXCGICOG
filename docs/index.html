@@ -525,7 +525,7 @@
       if (!deferredPrompt) {
         return;
       }
-      deferredPrompt.prompt();
+      await deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       console.log(`User response to the install prompt: ${outcome}`);
       deferredPrompt = null;

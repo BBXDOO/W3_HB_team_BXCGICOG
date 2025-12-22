@@ -23,19 +23,5 @@
     }
   ],
   "categories": ["productivity", "development", "business"],
-  "screenshots": [],
-  "shortcuts": [
-    {
-      "name": "ดูพื้นที่เก็บข้อมูล",
-      "short_name": "Repository",
-      "description": "ไปยังหน้า GitHub Repository",
-      "url": "/W3_HB_team_BXCGICOG/",
-      "icons": [
-        {
-          "src": "icons/icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    }
-  ]
+  "screenshots": []
 }

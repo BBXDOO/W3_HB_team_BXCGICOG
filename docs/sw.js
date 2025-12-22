@@ -74,7 +74,7 @@ self.addEventListener('fetch', (event) => {
         return fetch(event.request)
           .then((response) => {
             // Don't cache non-successful responses
-            if (!response || response.status !== 200 || response.type !== 'basic') {
+            if (!response || !response.ok || response.type !== 'basic') {
               return response;
             }
 
@@ -85,6 +85,9 @@ self.addEventListener('fetch', (event) => {
             caches.open(CACHE_NAME)
               .then((cache) => {
                 cache.put(event.request, responseToCache);
+              })
+              .catch((error) => {
+                console.error('[SW] Cache put failed:', error);
               });
 
             return response;
