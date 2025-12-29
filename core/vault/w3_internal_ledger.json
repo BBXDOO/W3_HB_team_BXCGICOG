@@ -1,0 +1,28 @@
+{
+  "__comment": "W3 Internal Resource Tracking - NOT A FINANCIAL INSTRUMENT",
+  "system_config": {
+    "mode": "active_support",
+    "currency_unit": "W3_Credits",
+    "exchange_rate_comment": "Internal Value Only"
+  },
+  "vault_status": {
+    "total_supply": 0,
+    "circulating": 0,
+    "reserved_for_bbx19": 0
+  },
+  "service_costs": {
+    "ocr_processing": 10,
+    "context_retrieval": 5,
+    "code_generation": 20,
+    "emotional_support": 0
+  },
+  "ledger_entries": [
+    {
+      "id": "genesis_block",
+      "timestamp": "2025-12-29T00:00:00Z",
+      "action": "system_init",
+      "amount": 0,
+      "details": "System initialized. Waiting for external injection."
+    }
+  ]
+}
