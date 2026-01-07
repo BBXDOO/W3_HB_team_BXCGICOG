@@ -1,6 +1,16 @@
 # File Integrity Check Tools
 
-This directory contains tools for checking file integrity in the W3_HB_team_BXCGICOG repository.
+This directory contains tools for checking file integrity, validating JSON schemas, and verifying module definitions in the W3_HB_team_BXCGICOG repository.
+
+## Dependencies
+
+- Python 3.x (pre-installed)
+- jsonschema library (required for JSON schema validation)
+
+**Install dependencies:**
+```bash
+pip install jsonschema
+```
 
 ## Tools
 
@@ -26,7 +36,66 @@ python3 tools/file_integrity_check.py
 - `0` - No issues found
 - `1` - Issues detected
 
-### 2. send_integrity_report.py
+### 2. validate_json_schemas.py
+
+Validates JSON data files against their corresponding JSON Schema definitions using Python's jsonschema library. Supports all JSON Schema versions including 2020-12.
+
+**Requirements:**
+```bash
+pip install jsonschema
+```
+
+**Usage:**
+```bash
+python3 tools/validate_json_schemas.py
+```
+
+**Features:**
+- Automatically finds all .schema.json files
+- Validates corresponding .json data files
+- Reports validation errors with detailed messages
+- Supports JSON Schema draft 2020-12 and earlier versions
+
+**Exit Code:**
+- `0` - All validations passed
+- `1` - One or more validations failed
+
+### 3. validate_modules.py
+
+Validates all module.json files for completeness and correctness according to the W3 module schema.
+
+**Usage:**
+```bash
+python3 tools/validate_modules.py
+```
+
+**Validates:**
+- Required fields: name, display_name, version, owner, input, output, scope
+- Optional fields: lifecycle, contact, notes, confidence_policy, pattern_weight
+- Field types (arrays for input/output)
+- Version format (semver)
+
+**Exit Code:**
+- `0` - All modules valid
+- `1` - One or more modules invalid
+
+### 4. validate_metadata.py
+
+Validates metadata fields in markdown files according to W3 governance rules.
+
+**Usage:**
+```bash
+python3 tools/validate_metadata.py
+```
+
+**Validates:**
+- If 'approved-by' is present, 'reason' must also be present
+
+**Exit Code:**
+- `0` - All metadata valid
+- `1` - Validation errors found
+
+### 5. send_integrity_report.py
 
 Email notification script that sends the file integrity report via email.
 
@@ -63,7 +132,7 @@ For other SMTP servers, adjust SMTP_SERVER and SMTP_PORT accordingly.
 
 ## Report Format
 
-The report includes:
+The reports include:
 
 ### 📁 Missing Directories
 Directories that should exist based on module.json configuration but are not present.
@@ -82,17 +151,43 @@ Symbolic links that point to non-existent targets.
 
 ## Current Status
 
-As of the last check, the following issues were detected:
+As of the last W3 Full Sanity Sweep (2025-12-12):
 
-**Missing Directories (6):**
-- modules/ChatGPT/flows/
-- modules/ChatGPT/requests/
-- modules/ChatGPT/scenarios/
-- modules/Gemini/reports/
-- modules/Gemini/requests/
-- workflows/orchestration/
+✅ **All checks passed:**
+- Missing Directories: 0
+- Missing Files: 0
+- Corrupted JSON Files: 0
+- Suspicious Empty Files: 0
+- Broken Symbolic Links: 0
+- Valid Modules: 7/7
+- JSON Schema Validations: 2/2
 
-These directories are referenced in the module.json files but do not currently exist in the repository.
+## Full Sanity Sweep
+
+Run a comprehensive validation of the entire repository:
+
+```bash
+# 1. File integrity
+python3 tools/file_integrity_check.py
+
+# 2. JSON schema validation
+python3 tools/validate_json_schemas.py
+
+# 3. Module validation
+python3 tools/validate_modules.py
+
+# 4. Metadata validation
+python3 tools/validate_metadata.py
+```
+
+Or use the one-liner:
+```bash
+python3 tools/file_integrity_check.py && \
+python3 tools/validate_json_schemas.py && \
+python3 tools/validate_modules.py && \
+python3 tools/validate_metadata.py && \
+echo "✅ Full Sanity Sweep: ALL CHECKS PASSED"
+```
 
 ## Integration
 
@@ -104,28 +199,9 @@ These tools can be integrated into:
 
 ## Example GitHub Actions Workflow
 
-```yaml
-name: File Integrity Check
-
-on:
-  schedule:
-    - cron: '0 0 * * *'  # Daily at midnight
-  workflow_dispatch:
-
-jobs:
-  check-integrity:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run integrity check
-        run: python3 tools/file_integrity_check.py
-      - name: Send email report
-        env:
-          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
-          SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
-          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
-        run: python3 tools/send_integrity_report.py
-```
+The repository includes a GitHub Actions workflow at `.github/workflows/validate-json.yml` that:
+1. Validates JSON syntax for all JSON files
+2. Validates JSON data files against their schemas using the Python validator
 
 ## Notes
 
@@ -133,3 +209,4 @@ jobs:
 - Wildcard paths (containing '*') are intentionally skipped
 - .gitkeep files are excluded from empty file checks as they are intentionally empty
 - The .git directory is excluded from all checks
+- Python jsonschema library supports all JSON Schema versions including 2020-12
