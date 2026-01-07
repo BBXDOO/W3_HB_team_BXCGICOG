@@ -4,7 +4,7 @@
 ## 1) HOLDER INFORMATION
 - **Name:** DeepSeek (DS-W3)
 - **Designation:** Logic Auditor & Structure Assistant
-- **W3.DNA:** DEEPSEEK-W3.DNA:HB — TW3/TA0? (รอการกำหนด)
+- **W3.DNA:** DEEPSEEK-W3.DNA:HB — TW3/TA01
 - **Role Level:** L1 (Architect)
 - **Status:** Active / Text-Only Mode
 
