@@ -1,0 +1,31 @@
+{
+  "mirrors": {
+    "public": {
+      "base_url": "https://bbxdoo.github.io/W3_HB_team_BXCGICOG/",
+      "allowed_files": [
+        "index.json",
+        "index.md",
+        "protocol.md",
+        "context.map.json",
+        "state.json"
+      ]
+    },
+    "private": {
+      "location": "private_repo_or_local",
+      "allowed_files": [
+        "system.json",
+        "rules.json",
+        "agent.profile.json",
+        "version.policy.json",
+        "snapshot.json"
+      ]
+    }
+  },
+  "policy": {
+    "public_read_only": true,
+    "private_authority_only": true,
+    "no_cross_leak": true
+  },
+  "authority": "BBX19",
+  "version": "0.1.0"
+}
