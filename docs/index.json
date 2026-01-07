@@ -1,0 +1,16 @@
+{
+  "context_root": "W3",
+  "context_type": "external_static_context",
+  "owner": "BBX19",
+  "authority": "human_override",
+  "load_policy": "reference_only",
+  "priority": "always",
+  "language": "th",
+  "files": {
+    "system": "system.json",
+    "rules": "rules.json",
+    "modules": "modules.json"
+  },
+  "version": "0.1.0",
+  "note": "This file is the single entry point. Do not embed full context in chat."
+}
