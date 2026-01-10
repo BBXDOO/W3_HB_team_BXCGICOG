@@ -23,6 +23,18 @@
 - [System Update: Operational Changes](docs/announcement/announcement-3.md)
 
 ---
+## ⚠️ ACTIVE WORKING BRANCH
+
+Current development is happening here:
+
+- 🔧 Branch: refactor/v0.2  
+  https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2
+
+- 📄 README (start here):  
+  https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/refactor/v0.2/README.md
+  
+---
+
 ## 🗂️ W3 Identity Pack (IDP)
 นี่คือศูนย์รวมบัตรประจำตัวของทุกโมดูลในระบบ W3  
 ประกอบไปด้วย IDP ของ BBX19, ChatGPT, Gemini, Grok, DeepSeek และ Copilot-Gm
