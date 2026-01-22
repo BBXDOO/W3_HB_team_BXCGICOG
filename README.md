@@ -1,5 +1,17 @@
 # W3_HB_team_BXCGICOG
 
+## ⚠️ ACTIVE WORKING BRANCH
+
+🚫 DO NOT TOUCH: main  
+✅ WORK ONLY HERE:
+
+- 🔧 refactor/v0.2
+  https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2
+
+- 📄 START HERE (README)
+  https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/refactor/v0.2/README.md
+  ---
+
 "เข้มแข็งดุจเหล็กกล้า — อบอุ่นดังแสงอรุณแรกของวัน"
 ----------------------------------------
 "ขอบคุณ ทุกๆความสำคัญที่มอบให้ผมครับ BBX19 จดจำและจะเก็บใว้ในที่แห่งนี้ครับ"
@@ -37,17 +49,7 @@ https://game-novelist--xizzix19.replit.app
 - [System Update: Operational Changes](docs/announcement/announcement-3.md)
 
 ---
-## ⚠️ ACTIVE WORKING BRANCH
 
-Current development is happening here:
-
-- 🔧 Branch: refactor/v0.2  
-  https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2
-
-- 📄 README (start here):  
-  https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/refactor/v0.2/README.md
-  
----
 
 ## 🗂️ W3 Identity Pack (IDP)
 นี่คือศูนย์รวมบัตรประจำตัวของทุกโมดูลในระบบ W3  
