@@ -1,26 +1,16 @@
-# [APP_NAME]
+# Apps Manual Hub (BBX19)
 
-## 1) ทำอะไรได้ (1 บรรทัด)
--
+## Android Apps
+- [Canva](android/canva.md)
+- [GitHub](android/github.md)
+- [ClickUp](android/clickup.md)
+- [Google Docs](android/google_docs.md)
+- [Google Sheets](android/google_sheets.md)
+- [PDF Tools](android/pdf_tools.md)
 
-## 2) ใช้กับงานของฉันยังไง
--
+## Workflows
+- [Hospital Daily Flow](workflows/hospital_daily.md)
+- [W3 Mobile Build Flow](workflows/w3_mobile_build.md)
 
-## 3) เริ่มใช้งานด่วน 5 ขั้น
-1)
-2)
-3)
-4)
-5)
-
-## 4) เมนู/คำสั่งสำคัญ
-- 
-- 
-- 
-
-## 5) ทิป (กันพลาด)
-- 
-
-## 6) ปัญหาที่พบบ่อย + วิธีแก้
-- อาการ:
-  วิธีแก้:
+## Templates
+- [App Manual Template](templates/app_manual_template.md)
