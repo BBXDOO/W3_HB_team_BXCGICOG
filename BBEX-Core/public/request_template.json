@@ -1,0 +1,10 @@
+{
+  "request_id": "สร้างรหัสอัตโนมัติ",
+  "requestor": {"module": "ชื่อโมดูล", "w3_dna": "รหัส DNA"},
+  "request_to": "BBEX-Core",
+  "request_type": "principle_reflection | courage_check | legacy_consultation",
+  "context": "อธิบายสถานการณ์สั้นๆ",
+  "specific_question": "ระบุคำถามชัดเจน",
+  "urgency": "low | medium | high",
+  "request_timestamp": "เวลาที่ส่ง"
+}

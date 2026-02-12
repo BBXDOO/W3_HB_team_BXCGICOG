@@ -1,0 +1,50 @@
+name: Validate JSON Files
+
+on:
+  push:
+    paths:
+      - '**/*.json'
+      - '**/*.schema.json'
+  pull_request:
+    paths:
+      - '**/*.json'
+      - '**/*.schema.json'
+
+jobs:
+  validate-json:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        run: |
+          pip install jsonschema
+
+      - name: ⚙️ Validate ALL JSON Syntax
+        run: |
+          set -o errexit -o pipefail
+          # Find all .json files but exclude schema files and common ignored paths
+          find . -type f -name "*.json" \
+            -not -name "*.schema.json" \
+            -not -path "./.git/*" \
+            -not -path "./node_modules/*" \
+            -not -path "./.github/*" | while read -r file; do
+              echo "Checking syntax: $file"
+              python3 -m json.tool "$file" > /dev/null || { echo "❌ JSON Syntax Error in $file"; exit 1; }
+            done
+          echo "✅ All JSON files have valid syntax"
+
+      - name: ✨ Validate Data Files Against Matching Schemas
+        run: |
+          set -o errexit -o pipefail
+          python3 tools/validate_json_schemas.py || { echo "❌ Schema Validation Failed"; exit 1; }
+          echo "✅ All JSON schema validations passed"
+

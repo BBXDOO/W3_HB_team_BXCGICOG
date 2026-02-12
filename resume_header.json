@@ -1,0 +1,9 @@
+{
+  "keyword": "REBOOT_WORK",
+  "task_id": "W3-PR-30",
+  "repo": "W3_HB_team_BXCGICOG",
+  "state": "in_progress",
+  "next_action": "run identity_backup_sync.sh --resume --task W3-PR-30",
+  "contact": "BBXDOO",
+  "timestamp": "2025-12-01T14:30:00Z"
+}

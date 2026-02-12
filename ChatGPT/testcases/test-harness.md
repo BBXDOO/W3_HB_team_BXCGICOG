@@ -1,26 +1,30 @@
-# ChatGPT — Test Harness & Scenario Stack (W3-HB)
+# ChatGPT – Test Harness & Scenario Stack (W3-HB)
 
-> Path: `ChatGPT/testcases/test-harness.md`  
-> Layer: Validation & Safety
+Path: `ChatGPT/testcases/test-harness.md`  
+Layer: Validation & Safety
 
 ---
 
 ## 0. Identity
 
-- **Layer:** Validation & Safety
-- **Role:** ออกแบบ test case / test flow สำหรับ W3 Hybrid Engine  
-- **Mode:** deterministic, repeatable, no narrative
-- **Consumers:** Gemini, Copilot-Gm, Engine (`src/main.py`), Grok, DeepSeek
+- Layer: Validation & Safety  
+- Role: ออกแบบ test case / test flow สำหรับ W3 Hybrid Engine  
+- Mode: deterministic, repeatable (no narrative)  
+- Consumers: Gemini, Copilot-Gm, Engine (`src/main.py`)
 
 ---
 
-## 1. Test Taxonomy (ชนิดของเทส)
+## 1. Test Taxonomy
 
-### 1.1 T0 — Sanity
+### 1.1 T0 – Sanity
+Goal: “ระบบบูทภาพใจอยู่ไหม”
 
-เช็คว่า “ระบบยังหายใจอยู่ไหม”
+Expected:
+- run main → stdout contains `"W3 Hybrid Engine online"`
+- process not crash ภายใน N วินาที
 
-ตัวอย่าง:
+### 1.2 T1 – Module Test
+Target: subsystem
 
 - run main → expect banner `W3 Hybrid Engine: ONLINE`
 - process ไม่ crash ภายใน ≥ 3s
@@ -33,31 +37,27 @@
 
 - `config loader`
 - `logger`
-- `module loader` (Gemini, Copilot-Gm, Grok, DeepSeek, ChatGPT)
+- `module_loader` (Gemini, Copilot-Gm, Grok, DeepSeek, ChatGPT)
 
-### 1.3 T2 — Integration Test
+### 1.3 T2 – Integration Test
+Target: เส้นเชื่อมระหว่าง modules
 
-ตรวจ “เส้นเชื่อม” ระหว่าง module
+Expected:
+- boot → load-config → load-modules → write log  
+- error case: config แตก → logger ยังบันทึก footprint ได้
 
-ตัวอย่าง:
+### 1.4 T3 – Regression / Guardrail
+Purpose: “ความพิถีพิถัน” เมื่อต้อง refactor
 
-- boot → load-config → load-modules → write log
-- error case: config แหก แต่ logger ยังบันทึก footprint ได้
-
-### 1.4 T3 — Regression / Guardrail
-
-ใช้กัน “ความพังซ้ำ” เมื่อมีการ refactor
-
-ตัวอย่าง:
-
-- เทส error footprint format ยังเหมือนเดิม
-- เทส log schema ยังตรงกับ `core/logs/systemlogschema.json`
+Expected:
+- เหตุการณ์เดิมยัง log ด้วย format เดิม  
+- log schema ผูกตรงกับ `core/logs/systemlogschema.json`
 
 ---
 
-## 2. Input Contract สำหรับ ChatGPT
+## 2. Input Contract (สำหรับ ChatGPT)
 
-รูปแบบ input ที่ให้ ChatGPT ออกแบบ test
+### 2.1 Input Spec (Mini JSON)
 
 ```json
 {
@@ -65,7 +65,7 @@
   "level": "T0|T1|T2|T3",
   "goal": "...",
   "risk": "L1-L5",
-  "constraints": ["no network", "local only", "..."]
+  "constraints": ["no_network", "local_only", "..."]
 }
 ```
 
@@ -80,7 +80,7 @@
 
 ## 3. Standard Test Output (สิ่งที่ ChatGPT ต้องสร้าง)
 
-รูปแบบ output หนึ่ง test case (human-readable + machine-mappable):
+3.2 YAML Format (canonical)
 
 ```yaml
 id: T1-logger-basic-001
@@ -119,7 +119,7 @@ log:
 
 ## 4. Scenario Design Workflow
 
-ChatGPT ใช้ flow นี้ตอนออกแบบ test:
+1. รับ input JSON (ตามข้อ 2)
 
 1. รับ input spec (JSON ด้านบน)
 2. ระบุ level + target ให้ชัด
@@ -141,6 +141,8 @@ level: T0
 target: engine_boot
 title: "Engine prints online banner"
 
+precondition: []
+
 steps:
   - "run: python src/main.py"
 
@@ -150,10 +152,11 @@ expected:
 
 failure_path:
   - "no output"
-  - "process exits with non-zero code"
+  - "non-zero exit"
 
 log:
   risk: L1
+  owner: ChatGPT
   route_next: Copilot-Gm
 ```
 
@@ -168,7 +171,7 @@ target: config_loader
 title: "Invalid JSON config is handled gracefully"
 
 precondition:
-  - "prepare malformed config file at config/settings.json"
+  - "prepare malformed config at config/settings.json"
 
 steps:
   - "run: python src/main.py"
@@ -184,6 +187,7 @@ failure_path:
 
 log:
   risk: L3
+  owner: ChatGPT
   route_next: Gemini
 ```
 
@@ -205,15 +209,16 @@ steps:
   - "wait 500ms"
 
 expected:
-  - "log has one module_load event per module"
-  - "no unknown module appears"
+  - "one module_load event per module"
+  - "no unknown module"
 
 failure_path:
-  - "missing module_load for any declared module"
+  - "missing module_load"
   - "extra module not in config"
 
 log:
   risk: L2
+  owner: ChatGPT
   route_next: Gemini
 ```
 
