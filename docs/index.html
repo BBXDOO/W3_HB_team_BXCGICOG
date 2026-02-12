@@ -504,9 +504,22 @@
             console.log('SW registered:', registration);
           })
           .catch((error) => {
-            console.log('SW registration failed:', error);
+            console.error('SW registration failed:', error);
+            // Show a non-intrusive notification that offline functionality is unavailable
+            const notification = document.createElement('div');
+            notification.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#ff6b6b;color:white;padding:12px 24px;border-radius:8px;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3);font-size:14px;max-width:90%;text-align:center;';
+            notification.textContent = 'ไม่สามารถเปิดใช้งานโหมดออฟไลน์ได้ กรุณาใช้งานผ่าน HTTPS';
+            document.body.appendChild(notification);
+            setTimeout(() => {
+              notification.style.transition = 'opacity 0.5s';
+              notification.style.opacity = '0';
+              setTimeout(() => notification.remove(), 500);
+            }, 5000);
           });
       });
+    } else {
+      // Service Worker not supported
+      console.warn('Service Worker not supported in this browser');
     }
 
     // Install prompt
@@ -533,6 +546,7 @@
         installPrompt.classList.remove('show');
       } catch (error) {
         console.error('Error during PWA installation:', error);
+        alert('ไม่สามารถติดตั้งแอปได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตหรือการตั้งค่าเบราว์เซอร์ แล้วลองใหม่อีกครั้ง');
       }
     });
 

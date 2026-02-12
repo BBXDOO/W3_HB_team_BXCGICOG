@@ -76,8 +76,8 @@ self.addEventListener('fetch', (event) => {
         // Network first strategy for everything else
         return fetch(event.request)
           .then((response) => {
-            // Don't cache non-successful responses
-            if (!response || !response.ok || response.type !== 'basic') {
+            // Don't cache non-successful or opaque responses
+            if (!response || !response.ok || response.type === 'opaque') {
               return response;
             }
 
@@ -101,7 +101,16 @@ self.addEventListener('fetch', (event) => {
             
             // Return offline page for navigation requests
             if (event.request.mode === 'navigate') {
-              return caches.match(OFFLINE_URL);
+              return caches.match(OFFLINE_URL).then((cachedOffline) => {
+                if (cachedOffline) {
+                  return cachedOffline;
+                }
+                // Fallback if offline page is not in cache
+                return new Response('คุณกำลังออฟไลน์และไม่สามารถโหลดหน้านี้ได้ในขณะนี้', {
+                  status: 503,
+                  headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+                });
+              });
             }
 
             // For other requests, just fail

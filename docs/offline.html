@@ -87,9 +87,49 @@
   </div>
 
   <script>
-    // Auto-retry when back online
-    window.addEventListener('online', () => {
+    const OFFLINE_RELOAD_STORAGE_KEY = 'offlineReloadInfo';
+    const OFFLINE_MAX_RELOAD_ATTEMPTS = 3;
+    const OFFLINE_RELOAD_RESET_MS = 5 * 60 * 1000; // 5 minutes
+
+    function safeReloadAfterOffline() {
+      let info;
+      try {
+        info = JSON.parse(localStorage.getItem(OFFLINE_RELOAD_STORAGE_KEY));
+      } catch (e) {
+        info = null;
+      }
+
+      const now = Date.now();
+
+      if (!info || typeof info.attempts !== 'number' || typeof info.lastAttempt !== 'number') {
+        info = { attempts: 0, lastAttempt: 0 };
+      }
+
+      // Reset attempts if last attempt was long ago
+      if (now - info.lastAttempt > OFFLINE_RELOAD_RESET_MS) {
+        info.attempts = 0;
+      }
+
+      if (info.attempts >= OFFLINE_MAX_RELOAD_ATTEMPTS) {
+        // Do not reload more to avoid potential loops
+        console.log('Max reload attempts reached, not reloading automatically');
+        return;
+      }
+
+      info.attempts += 1;
+      info.lastAttempt = now;
+      try {
+        localStorage.setItem(OFFLINE_RELOAD_STORAGE_KEY, JSON.stringify(info));
+      } catch (e) {
+        // If localStorage fails, still attempt a single reload
+      }
+
       window.location.reload();
+    }
+
+    // Auto-retry when back online, with a small delay and retry limit
+    window.addEventListener('online', () => {
+      setTimeout(safeReloadAfterOffline, 1000);
     });
   </script>
 </body>
