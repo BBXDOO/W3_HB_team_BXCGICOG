@@ -84,14 +84,18 @@ self.addEventListener('fetch', (event) => {
             // Clone the response
             const responseToCache = response.clone();
 
-            // Cache successful responses asynchronously
-            // We don't await this to avoid blocking the response
+            // Cache successful responses asynchronously (fire-and-forget pattern)
+            // We intentionally don't await this to avoid blocking the response delivery.
+            // If caching fails, the user still gets their response, but the resource 
+            // won't be available offline. This is acceptable as the next successful
+            // request will cache it.
             caches.open(CACHE_NAME)
               .then((cache) => {
                 return cache.put(event.request, responseToCache);
               })
               .catch((error) => {
                 console.error('[SW] Cache put failed:', error);
+                // Caching failure is logged but doesn't block the response
               });
 
             return response;
