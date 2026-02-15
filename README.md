@@ -12,13 +12,20 @@ Repository นี้มี Progressive Web App ที่สามารถใช
 
 **🌐 เข้าถึง PWA:** [https://bbxdoo.github.io/W3_HB_team_BXCGICOG/](https://bbxdoo.github.io/W3_HB_team_BXCGICOG/)
 
-### การตั้งค่า GitHub Pages
+> **⚡ คำแนะนำฉบับเต็ม:** อ่าน [GITHUB_PAGES_SETUP.md](./GITHUB_PAGES_SETUP.md) สำหรับขั้นตอนโดยละเอียด
 
-1. ไปที่ **Settings** → **Pages**
-2. ตั้งค่า Source: **Deploy from a branch**
-3. เลือก Branch: **main** และ Folder: **/docs**
-4. คลิก **Save**
-5. รอสักครู่แล้วเข้าถึงผ่าน URL ด้านบน
+### การตั้งค่า GitHub Pages (แบบย่อ)
+
+**วิธีที่ 1:** ใช้ feature branch (แนะนำ - ไม่ต้อง merge PR)
+1. Settings → Pages
+2. Source: **Deploy from a branch**
+3. Branch: **`copilot/add-pwa-for-github-pages`** / Folder: **`/docs`**
+4. Save → รอ 1-2 นาที
+
+**วิธีที่ 2:** Merge PR ก่อน
+1. Merge PR #87 เข้า main
+2. Settings → Pages
+3. Branch: **`main`** / Folder: **`/docs`**
 
 ### คุณสมบัติ PWA
 
