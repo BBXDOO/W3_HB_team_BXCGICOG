@@ -45,8 +45,6 @@ https://game-novelist--xizzix19.replit.app
 ---
 
 ## 📢 : Official Announcements
-- รออัพเดทการประกาศปิดโครงการ อย่างเป็นทางการเต็มรูปแบบ
-- ชัดเจนว่าเราไม่สามารถร่วมงานกันได้จริง
 - [Manifesto No.3 — Vision & Identity](docs/manifesto-3.md)
 - [System Update: Operational Changes](docs/announcement/announcement-3.md)
 
