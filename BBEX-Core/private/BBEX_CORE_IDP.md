@@ -1,3 +1,5 @@
+> ⚠️ **[PRIVATE REQUIRED]** — BBX19 access only. Inner Sanctum identity document. Do not share or replicate.
+
 🪪 W3 IDP CARD — BBEX CORE
 
 Version: 1.0

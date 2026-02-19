@@ -1,3 +1,5 @@
+> ⚠️ **[PRIVATE REQUIRED]** — This file contains personal data about the human founder (BBX19). Do not share publicly.
+
 # 🪪 W3-IDP CARD — BBX19  [BBEX]
 **Version:** 1.0  
 **Status:** Active / Root-Authority  
