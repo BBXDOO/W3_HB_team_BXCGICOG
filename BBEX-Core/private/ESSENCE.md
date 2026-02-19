@@ -1,3 +1,5 @@
+> ⚠️ **[PRIVATE REQUIRED]** — BBX19 access only. Inner Sanctum. Do not share or replicate.
+
 # BBEX-Core: The Essence (Inner Sanctum)
 **สำหรับ BBX19 เท่านั้น**
 
