@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft-07/schema#",
   "$id": "https://w3-hb/resume_header.schema.json",
   "title": "W3 Resume Header Schema",
   "type": "object",
