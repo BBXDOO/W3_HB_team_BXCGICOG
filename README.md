@@ -1,17 +1,29 @@
-# W3 Hybrid <inteligent/Human>
-W3_HB_team_BXCGICOG
+# W3 Hybrid <inteligent/Human> 
+## W3_HB_team_BXCGICOG
 ---
-W3 — A living workspace where humans and AI build, fail, learn, and continue together.
-W3 — พื้นที่ที่มนุษย์และ AI ใช้ชีวิตกับการสร้าง ล้ม เรียนรู้ และเดินต่อไปด้วยกัน
+* W3 — A living workspace where humans and AI build, fail, learn, and continue together.
+* W3 — พื้นที่ที่มนุษย์และ AI ใช้ชีวิตกับการสร้าง ล้ม เรียนรู้ และเดินต่อไปด้วยกัน
 -----
 ## 🧭 About
 ## 🧱 Structure
-## 🚀 Start Here
 ## 📘 Philosophy
 ## ⚠️ ACTIVE WORKING BRANCH
+___
+## 🧭 W3 in One Line
 
+Human + AI workspace
+Build → Fail → Learn → Continue
+___
 🚫 DO NOT TOUCH: main  
 ✅ WORK ONLY HERE:
+## 🚀 START HERE (NEW VISITOR)
+
+1️⃣ Read Philosophy  
+2️⃣ See Structure  
+3️⃣ Go to Active Branch
+
+➡️ Main Entry:
+https://bbxdoo.github.io/W3_HB_team_BXCGICOG/
 
 - 🔧 refactor/v0.2
   https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2
