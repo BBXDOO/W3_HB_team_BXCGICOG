@@ -159,6 +159,17 @@ function scheduleRetryProcessing() {
     return;
   }
 
+  // Calculate minimum delay needed based on queue items
+  let minDelay = RETRY_BASE_DELAY_MS;
+  const now = Date.now();
+  
+  failedCacheQueue.forEach((item) => {
+    const timeSinceLastAttempt = now - item.lastAttempt;
+    const requiredDelay = RETRY_BASE_DELAY_MS * Math.pow(2, item.attempts);
+    const remainingDelay = Math.max(0, requiredDelay - timeSinceLastAttempt);
+    minDelay = Math.min(minDelay, remainingDelay || RETRY_BASE_DELAY_MS);
+  });
+
   retryTimerId = setTimeout(() => {
     processFailedCacheQueue();
     retryTimerId = null;
@@ -166,7 +177,7 @@ function scheduleRetryProcessing() {
     if (failedCacheQueue.size > 0) {
       scheduleRetryProcessing();
     }
-  }, RETRY_BASE_DELAY_MS);
+  }, minDelay);
 }
 
 // Process failed cache queue with exponential backoff
@@ -211,9 +222,9 @@ function processFailedCacheQueue() {
       })
       .catch(error => {
         console.error('[SW] Retry failed:', url, error.message);
-        // Update attempts and timestamp
+        // Update attempts and timestamp (use current time)
         item.attempts += 1;
-        item.lastAttempt = now;
+        item.lastAttempt = Date.now(); // Use current time, not captured 'now'
         
         // Remove if max attempts reached
         if (item.attempts >= MAX_RETRY_ATTEMPTS) {
