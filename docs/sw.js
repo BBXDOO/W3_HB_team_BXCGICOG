@@ -5,6 +5,11 @@ const CACHE_VERSION = 'v1';
 const CACHE_NAME = `w3-pwa-${CACHE_VERSION}`;
 const OFFLINE_URL = 'offline.html';
 
+// Failed cache tracking for retry
+const failedCacheQueue = [];
+const MAX_RETRY_ATTEMPTS = 3;
+const RETRY_DELAY_MS = 5000; // 5 seconds
+
 // Assets to cache on install
 const ASSETS_TO_CACHE = [
   './',
@@ -84,18 +89,27 @@ self.addEventListener('fetch', (event) => {
             // Clone the response
             const responseToCache = response.clone();
 
-            // Cache successful responses asynchronously (fire-and-forget pattern)
-            // We intentionally don't await this to avoid blocking the response delivery.
-            // If caching fails, the user still gets their response, but the resource 
-            // won't be available offline. This is acceptable as the next successful
-            // request will cache it.
+            // Cache successful responses with retry on failure
             caches.open(CACHE_NAME)
               .then((cache) => {
                 return cache.put(event.request, responseToCache);
               })
+              .then(() => {
+                console.log('[SW] Cached successfully:', event.request.url);
+              })
               .catch((error) => {
                 console.error('[SW] Cache put failed:', error);
-                // Caching failure is logged but doesn't block the response
+                // Add to failed queue for retry
+                const failedItem = {
+                  url: event.request.url,
+                  attempts: 0,
+                  timestamp: Date.now()
+                };
+                failedCacheQueue.push(failedItem);
+                console.log('[SW] Added to retry queue:', event.request.url);
+                
+                // Attempt immediate retry
+                retryCacheOperation(event.request, responseToCache, 0);
               });
 
             return response;
@@ -133,3 +147,71 @@ self.addEventListener('message', (event) => {
     self.skipWaiting();
   }
 });
+
+// Retry mechanism for failed cache operations
+function retryCacheOperation(request, response, attempts = 0) {
+  if (attempts >= MAX_RETRY_ATTEMPTS) {
+    console.warn('[SW] Max retry attempts reached for:', request.url);
+    return;
+  }
+
+  setTimeout(() => {
+    caches.open(CACHE_NAME)
+      .then((cache) => {
+        return cache.put(request, response.clone());
+      })
+      .then(() => {
+        console.log('[SW] Retry cache successful for:', request.url);
+        // Remove from failed queue if exists
+        const index = failedCacheQueue.findIndex(item => item.url === request.url);
+        if (index > -1) {
+          failedCacheQueue.splice(index, 1);
+        }
+      })
+      .catch((error) => {
+        console.error('[SW] Retry cache failed (attempt ' + (attempts + 1) + '):', error);
+        // Retry again with incremented attempts
+        retryCacheOperation(request, response, attempts + 1);
+      });
+  }, RETRY_DELAY_MS * (attempts + 1)); // Exponential backoff
+}
+
+// Process failed cache queue periodically
+function processFailedCacheQueue() {
+  if (failedCacheQueue.length === 0) return;
+
+  console.log('[SW] Processing failed cache queue:', failedCacheQueue.length, 'items');
+  
+  const queueCopy = [...failedCacheQueue];
+  failedCacheQueue.length = 0; // Clear queue
+  
+  queueCopy.forEach(item => {
+    if (item.attempts < MAX_RETRY_ATTEMPTS) {
+      fetch(item.url)
+        .then(response => {
+          if (response && response.ok) {
+            return caches.open(CACHE_NAME)
+              .then(cache => cache.put(item.url, response))
+              .then(() => {
+                console.log('[SW] Queue retry successful for:', item.url);
+              });
+          }
+        })
+        .catch(error => {
+          console.error('[SW] Queue retry failed for:', item.url, error);
+          // Re-add to queue with incremented attempts
+          if (item.attempts + 1 < MAX_RETRY_ATTEMPTS) {
+            failedCacheQueue.push({
+              url: item.url,
+              attempts: item.attempts + 1,
+              timestamp: Date.now()
+            });
+          }
+        });
+    }
+  });
+}
+
+// Run queue processor every 30 seconds
+setInterval(processFailedCacheQueue, 30000);
+
