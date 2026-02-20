@@ -186,52 +186,54 @@ function processFailedCacheQueue() {
 
   console.log('[SW] Processing retry queue:', failedCacheQueue.size, 'items');
   const now = Date.now();
+// Process failed cache queue with exponential backoff
+async function processFailedCacheQueue() {
+  if (failedCacheQueue.size === 0) return;
+
+  console.log('[SW] Processing retry queue:', failedCacheQueue.size, 'items');
+  const now = Date.now();
   
-  // Process each item in queue
-  failedCacheQueue.forEach((item, url) => {
+  // Convert to array to avoid iterator issues during async operations
+  const entries = Array.from(failedCacheQueue.entries());
+  
+  // Process each item sequentially or use Promise.all for parallel processing
+  for (const [url, item] of entries) {
     const timeSinceLastAttempt = now - item.lastAttempt;
-    const requiredDelay = RETRY_BASE_DELAY_MS * Math.pow(2, item.attempts); // Exponential backoff
+    const requiredDelay = RETRY_BASE_DELAY_MS * Math.pow(2, item.attempts);
     
-    // Check if enough time has passed for retry
     if (timeSinceLastAttempt < requiredDelay) {
-      return; // Skip this item for now
+      continue;
     }
     
-    // Check max attempts
     if (item.attempts >= MAX_RETRY_ATTEMPTS) {
       console.warn('[SW] Max retry attempts reached, removing:', url);
       failedCacheQueue.delete(url);
-      return;
+      continue;
     }
     
-    // Attempt to cache by re-fetching
     console.log('[SW] Retrying cache (attempt ' + (item.attempts + 1) + '):', url);
     
-    fetch(item.request.clone())
-      .then(response => {
-        if (response && response.ok) {
-          return caches.open(CACHE_NAME)
-            .then(cache => cache.put(item.request.clone(), response))
-            .then(() => {
-              console.log('[SW] Retry cache successful:', url);
-              failedCacheQueue.delete(url);
-            });
-        } else {
-          throw new Error('Response not OK: ' + response.status);
-        }
-      })
-      .catch(error => {
-        console.error('[SW] Retry failed:', url, error.message);
-        // Update attempts and timestamp (use current time)
-        item.attempts += 1;
-        item.lastAttempt = Date.now(); // Use current time, not captured 'now'
-        
-        // Remove if max attempts reached
-        if (item.attempts >= MAX_RETRY_ATTEMPTS) {
-          console.warn('[SW] Max attempts reached, removing:', url);
-          failedCacheQueue.delete(url);
-        }
-      });
-  });
+    try {
+      const response = await fetch(item.request.clone());
+      if (response && response.ok) {
+        const cache = await caches.open(CACHE_NAME);
+        await cache.put(item.request.clone(), response);
+        console.log('[SW] Retry cache successful:', url);
+        failedCacheQueue.delete(url);
+      } else {
+        throw new Error('Response not OK: ' + response.status);
+      }
+    } catch (error) {
+      console.error('[SW] Retry failed:', url, error.message);
+      item.attempts += 1;
+      item.lastAttempt = Date.now();
+      
+      if (item.attempts >= MAX_RETRY_ATTEMPTS) {
+        console.warn('[SW] Max attempts reached, removing:', url);
+        failedCacheQueue.delete(url);
+      }
+    }
+  }
+}
 }
 
