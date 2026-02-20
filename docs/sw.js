@@ -5,10 +5,11 @@ const CACHE_VERSION = 'v1';
 const CACHE_NAME = `w3-pwa-${CACHE_VERSION}`;
 const OFFLINE_URL = 'offline.html';
 
-// Failed cache tracking for retry
-const failedCacheQueue = [];
+// Failed cache tracking with retry
+const failedCacheQueue = new Map(); // url -> { attempts, lastAttempt, request }
 const MAX_RETRY_ATTEMPTS = 3;
-const RETRY_DELAY_MS = 5000; // 5 seconds
+const RETRY_BASE_DELAY_MS = 2000; // 2 seconds base
+let retryTimerId = null;
 
 // Assets to cache on install
 const ASSETS_TO_CACHE = [
@@ -88,28 +89,29 @@ self.addEventListener('fetch', (event) => {
 
             // Clone the response
             const responseToCache = response.clone();
+            const requestClone = event.request.clone();
 
             // Cache successful responses with retry on failure
             caches.open(CACHE_NAME)
               .then((cache) => {
-                return cache.put(event.request, responseToCache);
+                return cache.put(requestClone, responseToCache);
               })
               .then(() => {
                 console.log('[SW] Cached successfully:', event.request.url);
               })
               .catch((error) => {
-                console.error('[SW] Cache put failed:', error);
-                // Add to failed queue for retry
-                const failedItem = {
-                  url: event.request.url,
-                  attempts: 0,
-                  timestamp: Date.now()
-                };
-                failedCacheQueue.push(failedItem);
-                console.log('[SW] Added to retry queue:', event.request.url);
-                
-                // Attempt immediate retry
-                retryCacheOperation(event.request, responseToCache, 0);
+                console.error('[SW] Cache put failed:', error.message || error);
+                // Add to retry queue (will be processed later)
+                if (!failedCacheQueue.has(event.request.url)) {
+                  failedCacheQueue.set(event.request.url, {
+                    attempts: 0,
+                    lastAttempt: Date.now(),
+                    request: requestClone
+                  });
+                  console.log('[SW] Added to retry queue:', event.request.url);
+                  // Schedule retry processing
+                  scheduleRetryProcessing();
+                }
               });
 
             return response;
@@ -148,70 +150,77 @@ self.addEventListener('message', (event) => {
   }
 });
 
-// Retry mechanism for failed cache operations
-function retryCacheOperation(request, response, attempts = 0) {
-  if (attempts >= MAX_RETRY_ATTEMPTS) {
-    console.warn('[SW] Max retry attempts reached for:', request.url);
+// Schedule retry processing (avoids continuous setInterval)
+function scheduleRetryProcessing() {
+  if (retryTimerId) return; // Already scheduled
+  
+  if (failedCacheQueue.size === 0) {
+    retryTimerId = null;
     return;
   }
 
-  setTimeout(() => {
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        return cache.put(request, response.clone());
-      })
-      .then(() => {
-        console.log('[SW] Retry cache successful for:', request.url);
-        // Remove from failed queue if exists
-        const index = failedCacheQueue.findIndex(item => item.url === request.url);
-        if (index > -1) {
-          failedCacheQueue.splice(index, 1);
+  retryTimerId = setTimeout(() => {
+    processFailedCacheQueue();
+    retryTimerId = null;
+    // Reschedule if there are still items
+    if (failedCacheQueue.size > 0) {
+      scheduleRetryProcessing();
+    }
+  }, RETRY_BASE_DELAY_MS);
+}
+
+// Process failed cache queue with exponential backoff
+function processFailedCacheQueue() {
+  if (failedCacheQueue.size === 0) return;
+
+  console.log('[SW] Processing retry queue:', failedCacheQueue.size, 'items');
+  const now = Date.now();
+  
+  // Process each item in queue
+  failedCacheQueue.forEach((item, url) => {
+    const timeSinceLastAttempt = now - item.lastAttempt;
+    const requiredDelay = RETRY_BASE_DELAY_MS * Math.pow(2, item.attempts); // Exponential backoff
+    
+    // Check if enough time has passed for retry
+    if (timeSinceLastAttempt < requiredDelay) {
+      return; // Skip this item for now
+    }
+    
+    // Check max attempts
+    if (item.attempts >= MAX_RETRY_ATTEMPTS) {
+      console.warn('[SW] Max retry attempts reached, removing:', url);
+      failedCacheQueue.delete(url);
+      return;
+    }
+    
+    // Attempt to cache by re-fetching
+    console.log('[SW] Retrying cache (attempt ' + (item.attempts + 1) + '):', url);
+    
+    fetch(item.request.clone())
+      .then(response => {
+        if (response && response.ok) {
+          return caches.open(CACHE_NAME)
+            .then(cache => cache.put(item.request.clone(), response))
+            .then(() => {
+              console.log('[SW] Retry cache successful:', url);
+              failedCacheQueue.delete(url);
+            });
+        } else {
+          throw new Error('Response not OK: ' + response.status);
         }
       })
-      .catch((error) => {
-        console.error('[SW] Retry cache failed (attempt ' + (attempts + 1) + '):', error);
-        // Retry again with incremented attempts
-        retryCacheOperation(request, response, attempts + 1);
+      .catch(error => {
+        console.error('[SW] Retry failed:', url, error.message);
+        // Update attempts and timestamp
+        item.attempts += 1;
+        item.lastAttempt = now;
+        
+        // Remove if max attempts reached
+        if (item.attempts >= MAX_RETRY_ATTEMPTS) {
+          console.warn('[SW] Max attempts reached, removing:', url);
+          failedCacheQueue.delete(url);
+        }
       });
-  }, RETRY_DELAY_MS * (attempts + 1)); // Exponential backoff
-}
-
-// Process failed cache queue periodically
-function processFailedCacheQueue() {
-  if (failedCacheQueue.length === 0) return;
-
-  console.log('[SW] Processing failed cache queue:', failedCacheQueue.length, 'items');
-  
-  const queueCopy = [...failedCacheQueue];
-  failedCacheQueue.length = 0; // Clear queue
-  
-  queueCopy.forEach(item => {
-    if (item.attempts < MAX_RETRY_ATTEMPTS) {
-      fetch(item.url)
-        .then(response => {
-          if (response && response.ok) {
-            return caches.open(CACHE_NAME)
-              .then(cache => cache.put(item.url, response))
-              .then(() => {
-                console.log('[SW] Queue retry successful for:', item.url);
-              });
-          }
-        })
-        .catch(error => {
-          console.error('[SW] Queue retry failed for:', item.url, error);
-          // Re-add to queue with incremented attempts
-          if (item.attempts + 1 < MAX_RETRY_ATTEMPTS) {
-            failedCacheQueue.push({
-              url: item.url,
-              attempts: item.attempts + 1,
-              timestamp: Date.now()
-            });
-          }
-        });
-    }
   });
 }
-
-// Run queue processor every 30 seconds
-setInterval(processFailedCacheQueue, 30000);
 
