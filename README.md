@@ -1,4 +1,4 @@
-# W3 Hybrid <AI inteligent/Human> 
+# W3 Hybrid <Ai Inteligent/Human> 
 ## W3_HB_team_BXCGICOG
 ---
 * W3 — A living workspace where humans and AI build, fail, learn, and continue together.
