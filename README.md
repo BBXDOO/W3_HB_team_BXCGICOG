@@ -25,7 +25,7 @@ Repository นี้มี Progressive Web App ที่สามารถใช
 **วิธีที่ 1:** ใช้ feature branch (แนะนำ - ไม่ต้อง merge PR)
 1. Settings → Pages
 2. Source: **Deploy from a branch**
-3. Branch: **`copilot/add-pwa-for-github-pages`** / Folder: **`/docs`**
+3. Branch: **`main`** / Folder: **`/docs`**
 4. Save → รอ 1-2 นาที
 
 **วิธีที่ 2:** Merge PR ก่อน
