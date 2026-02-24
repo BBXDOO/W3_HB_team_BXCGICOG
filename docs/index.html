@@ -115,7 +115,9 @@
   <script>
     if('serviceWorker' in navigator){
       window.addEventListener('load',()=>{
-        navigator.serviceWorker.register('/W3_HB_team_BXCGICOG/sw.js').catch(()=>{});
+        navigator.serviceWorker.register('/W3_HB_team_BXCGICOG/sw.js').catch((error)=>{
+          console.error('Service worker registration failed:', error);
+        });
       });
     }
     document.getElementById('contactBtn').addEventListener('click',(e)=>{
