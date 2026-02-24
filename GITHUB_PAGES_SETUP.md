@@ -29,7 +29,7 @@
 
 2. **Branch** section:
    - คลิกที่ dropdown branch แรก
-   - เลือก **`copilot/add-pwa-for-github-pages`**
+   - เลือก **`main`**
    
 3. **Folder** section (dropdown ที่สอง):
    - เลือก **`/docs`**
