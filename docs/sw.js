@@ -181,12 +181,6 @@ function scheduleRetryProcessing() {
 }
 
 // Process failed cache queue with exponential backoff
-function processFailedCacheQueue() {
-  if (failedCacheQueue.size === 0) return;
-
-  console.log('[SW] Processing retry queue:', failedCacheQueue.size, 'items');
-  const now = Date.now();
-// Process failed cache queue with exponential backoff
 async function processFailedCacheQueue() {
   if (failedCacheQueue.size === 0) return;
 
@@ -234,6 +228,5 @@ async function processFailedCacheQueue() {
       }
     }
   }
-}
 }
 
