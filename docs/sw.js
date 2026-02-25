@@ -71,75 +71,135 @@ self.addEventListener('fetch', (event) => {
   if (!event.request.url.startsWith('http')) return;
 
   event.respondWith(
-    caches.match(event.request)
-      .then((cachedResponse) => {
-        // Cache first strategy for app assets
-        if (cachedResponse) {
-          console.log('[SW] Serving from cache:', event.request.url);
-          return cachedResponse;
+    (async () => {
+      const requestUrl = new URL(event.request.url);
+      const acceptHeader = event.request.headers.get('accept') || '';
+      const isApiRequest =
+        requestUrl.pathname.startsWith('/api/') ||
+        acceptHeader.includes('application/json');
+
+      // Network-first strategy for API/JSON requests
+      if (isApiRequest) {
+        try {
+          const response = await fetch(event.request);
+
+          // Don't cache non-successful or opaque responses
+          if (!response || !response.ok || response.type === 'opaque') {
+            return response;
+          }
+
+          // Clone the response
+          const responseToCache = response.clone();
+          const requestClone = event.request.clone();
+
+          // Cache successful responses with retry on failure
+          caches.open(CACHE_NAME)
+            .then((cache) => {
+              return cache.put(requestClone, responseToCache);
+            })
+            .then(() => {
+              console.log('[SW] Cached (API) successfully:', event.request.url);
+            })
+            .catch((error) => {
+              console.error('[SW] Cache put (API) failed:', error.message || error);
+              // Add to retry queue (will be processed later)
+              if (!failedCacheQueue.has(event.request.url)) {
+                failedCacheQueue.set(event.request.url, {
+                  attempts: 0,
+                  lastAttempt: Date.now(),
+                  request: requestClone
+                });
+                console.log('[SW] Added API request to retry queue:', event.request.url);
+                // Schedule retry processing
+                scheduleRetryProcessing();
+              }
+            });
+
+          return response;
+        } catch (error) {
+          console.error('[SW] Fetch (API) failed:', error);
+
+          // For API requests, fall back to any cached response if available
+          const cachedResponse = await caches.match(event.request);
+          if (cachedResponse) {
+            console.log('[SW] Serving stale API response from cache after network failure:', event.request.url);
+            return cachedResponse;
+          }
+
+          // If no cached API response, return network error
+          return new Response('Network error', {
+            status: 408,
+            headers: { 'Content-Type': 'text/plain' }
+          });
+        }
+      }
+
+      // Cache-first strategy for app assets and non-API requests
+      const cachedResponse = await caches.match(event.request);
+      if (cachedResponse) {
+        console.log('[SW] Serving from cache:', event.request.url);
+        return cachedResponse;
+      }
+
+      try {
+        const response = await fetch(event.request);
+
+        // Don't cache non-successful or opaque responses
+        if (!response || !response.ok || response.type === 'opaque') {
+          return response;
         }
 
-        // Network first strategy for everything else
-        return fetch(event.request)
-          .then((response) => {
-            // Don't cache non-successful or opaque responses
-            if (!response || !response.ok || response.type === 'opaque') {
-              return response;
-            }
+        // Clone the response
+        const responseToCache = response.clone();
+        const requestClone = event.request.clone();
 
-            // Clone the response
-            const responseToCache = response.clone();
-            const requestClone = event.request.clone();
-
-            // Cache successful responses with retry on failure
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                return cache.put(requestClone, responseToCache);
-              })
-              .then(() => {
-                console.log('[SW] Cached successfully:', event.request.url);
-              })
-              .catch((error) => {
-                console.error('[SW] Cache put failed:', error.message || error);
-                // Add to retry queue (will be processed later)
-                if (!failedCacheQueue.has(event.request.url)) {
-                  failedCacheQueue.set(event.request.url, {
-                    attempts: 0,
-                    lastAttempt: Date.now(),
-                    request: requestClone
-                  });
-                  console.log('[SW] Added to retry queue:', event.request.url);
-                  // Schedule retry processing
-                  scheduleRetryProcessing();
-                }
-              });
-
-            return response;
+        // Cache successful responses with retry on failure
+        caches.open(CACHE_NAME)
+          .then((cache) => {
+            return cache.put(requestClone, responseToCache);
+          })
+          .then(() => {
+            console.log('[SW] Cached successfully:', event.request.url);
           })
           .catch((error) => {
-            console.error('[SW] Fetch failed:', error);
-            
-            // Return offline page for navigation requests
-            if (event.request.mode === 'navigate') {
-              return caches.match(OFFLINE_URL).then((cachedOffline) => {
-                if (cachedOffline) {
-                  return cachedOffline;
-                }
-                // Fallback if offline page is not in cache
-                return new Response('คุณกำลังออฟไลน์และไม่สามารถโหลดหน้านี้ได้ในขณะนี้', {
-                  status: 503,
-                  headers: { 'Content-Type': 'text/plain; charset=utf-8' }
-                });
+            console.error('[SW] Cache put failed:', error.message || error);
+            // Add to retry queue (will be processed later)
+            if (!failedCacheQueue.has(event.request.url)) {
+              failedCacheQueue.set(event.request.url, {
+                attempts: 0,
+                lastAttempt: Date.now(),
+                request: requestClone
               });
+              console.log('[SW] Added to retry queue:', event.request.url);
+              // Schedule retry processing
+              scheduleRetryProcessing();
             }
-
-            // For other requests, just fail
-            return new Response('Network error', {
-              status: 408,
-              headers: { 'Content-Type': 'text/plain' }
-            });
           });
-      })
+
+        return response;
+      } catch (error) {
+        console.error('[SW] Fetch failed:', error);
+
+        // Return offline page for navigation requests
+        if (event.request.mode === 'navigate') {
+          const cachedOffline = await caches.match(OFFLINE_URL);
+          if (cachedOffline) {
+            return cachedOffline;
+          }
+          // Fallback if offline page is not in cache
+          return new Response('คุณกำลังออฟไลน์และไม่สามารถโหลดหน้านี้ได้ในขณะนี้', {
+            status: 503,
+            headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+          });
+        }
+
+        // For other requests, just fail
+        return new Response('Network error', {
+          status: 408,
+          headers: { 'Content-Type': 'text/plain' }
+        });
+      }
+    })()
   );
 });
 
