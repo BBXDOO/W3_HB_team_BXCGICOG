@@ -36,6 +36,7 @@ self.addEventListener('install', (event) => {
       })
       .catch((error) => {
         console.error('[SW] Cache failed:', error);
+        throw error;
       })
   );
 });
