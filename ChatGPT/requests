@@ -1,0 +1,80 @@
+# Request: Coverage-first dispatch to all modules + changes-only bilingual report (docs/log/review)
+date: 2026-03-03
+request_id: REQ-20260303-DISPATCH-005
+owner: BBX19
+target_module: ChatGPT
+priority: high
+risk: low
+
+## Objective (Coverage-first)
+ทดสอบ “ความเข้าใจ + การสื่อสารแบบครอบคลุม (coverage)”:
+1) ChatGPT ต้องกระจายสารไปครบทุกโมดูลตามรายชื่อ
+2) ต้องได้รับการตอบกลับจากทุกโมดูล (อย่างน้อย acknowledgement + ระบุว่ามี/ไม่มีการแก้ไข)
+3) สรุปผลแบบ changes-only พร้อม coverage checklist
+
+## Modules to contact (MUST be all)
+- BBX19 (read-only / no edits)
+- ChatGPT (self)
+- Gemini
+- Grok
+- DeepSeek
+- Copilot-Gm
+
+## Minimal allowed scope (only if needed)
+- Create missing standard dirs per module: `requests/`, `reports/`
+- Add/fix module README if missing (keep short)
+- If needed for discovery/audit: add `module.json` ONLY in allowed policy locations:
+  - `<AgentName>/module.json`
+  - `<AgentName>/modules/<AgentName>/module.json`
+- Do NOT touch legacy `Copilot/` directory (deprecated)
+- Do NOT store personal reflections in repo
+
+## Final output location
+Write ONE file only:
+- `docs/log/review/report_2026-03-03_changes-only.md`
+
+## Reporting rules (A: no evidence)
+- Do NOT include evidence links, commit SHAs, screenshots, or long explanations.
+- Report ONLY what changed (changes-only).
+- Keep each reason/summary to one line.
+
+## Bilingual requirement (EN/TH)
+- `coverage.response_summary` must be bilingual in one line: `EN: ... | TH: ...`
+- `changes.items.reason` must be bilingual in one line: `EN: ... | TH: ...`
+- `notes` (if used) must also be bilingual in one line.
+
+### Output schema (MUST follow exactly)
+```yaml
+coverage:
+  - module: BBX19
+    contacted: false
+    response_received: false
+    response_summary: ""
+  - module: ChatGPT
+    contacted: false
+    response_received: false
+    response_summary: ""
+  - module: Gemini
+    contacted: false
+    response_received: false
+    response_summary: ""
+  - module: Grok
+    contacted: false
+    response_received: false
+    response_summary: ""
+  - module: DeepSeek
+    contacted: false
+    response_received: false
+    response_summary: ""
+  - module: Copilot-Gm
+    contacted: false
+    response_received: false
+    response_summary: ""
+
+changes:
+  - module: <ModuleName>
+    items:
+      - action: <created|updated|moved|deleted>
+        path: <file-or-dir-path>
+        reason: <one-line bilingual reason>
+        notes: <optional, one line bilingual, max 1 line>
