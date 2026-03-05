@@ -49,7 +49,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         cacheNames
           .filter((cacheName) => {
-            return cacheName !== CACHE_NAME;
+            return cacheName.startsWith('w3-pwa-') && cacheName !== CACHE_NAME;
           })
           .map((cacheName) => {
             console.log('[SW] Deleting old cache:', cacheName);
