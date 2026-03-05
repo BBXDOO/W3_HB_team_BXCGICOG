@@ -121,10 +121,10 @@
       try {
         localStorage.setItem(OFFLINE_RELOAD_STORAGE_KEY, JSON.stringify(info));
       } catch (e) {
-        // If localStorage fails, still attempt a single reload
+        // If localStorage fails, don't reload to prevent potential infinite loop
+        console.warn('localStorage unavailable, skipping auto-reload');
+        return;
       }
-
-      window.location.reload();
     }
 
     // Auto-retry when back online, with a small delay and retry limit
