@@ -89,6 +89,17 @@ self.addEventListener('fetch', (event) => {
             return response;
           }
 
+          // Skip caching if the request carries credentials or the response
+          // signals it must not be stored (e.g. Cache-Control: no-store/private)
+          const cacheControl = (response.headers.get('Cache-Control') || '').toLowerCase();
+          const hasAuth = event.request.headers.has('Authorization');
+          const noCacheDirective =
+            cacheControl.includes('no-store') || cacheControl.includes('private');
+
+          if (hasAuth || noCacheDirective) {
+            return response;
+          }
+
           // Clone the response
           const responseToCache = response.clone();
           const requestClone = event.request.clone();
