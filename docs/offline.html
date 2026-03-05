@@ -120,6 +120,8 @@
       info.lastAttempt = now;
       try {
         localStorage.setItem(OFFLINE_RELOAD_STORAGE_KEY, JSON.stringify(info));
+        // After successfully recording the attempt, reload the page
+        location.reload();
       } catch (e) {
         // If localStorage fails, don't reload to prevent potential infinite loop
         console.warn('localStorage unavailable, skipping auto-reload');
