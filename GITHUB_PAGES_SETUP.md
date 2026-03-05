@@ -137,7 +137,7 @@ docs/
 ### ปัญหา: หน้าเว็บไม่แสดง (404)
 
 **วิธีแก้:**
-1. ตรวจสอบว่า branch ถูกต้อง: `copilot/add-pwa-for-github-pages`
+1. ตรวจสอบว่า branch ถูกต้อง: `main`
 2. ตรวจสอบว่า folder คือ `/docs`
 3. รอ 2-3 นาที แล้วลอง refresh อีกครั้ง
 4. ตรวจสอบ Actions tab ว่า deployment สำเร็จหรือไม่
