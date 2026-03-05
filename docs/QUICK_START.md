@@ -7,7 +7,7 @@
 
 ```
 Source:  Deploy from a branch  [dropdown ↓]
-Branch:  copilot/add-pwa-for-github-pages  [dropdown ↓]
+Branch:  <your-branch> (เช่น main)  [dropdown ↓]
 Folder:  /docs  [dropdown ↓]
 ```
 
