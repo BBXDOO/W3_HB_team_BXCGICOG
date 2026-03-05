@@ -142,7 +142,7 @@ docs/
 3. รอ 2-3 นาที แล้วลอง refresh อีกครั้ง
 4. ตรวจสอบ Actions tab ว่า deployment สำเร็จหรือไม่
 
-### ปัญหา: ไม่มี dropdown branch `copilot/add-pwa-for-github-pages`
+### ปัญหา: ไม่มี dropdown branch `main`
 
 **วิธีแก้:**
 1. ตรวจสอบว่า branch นี้มีอยู่จริงใน repository
