@@ -1,0 +1,9 @@
+{
+  "event_id": "string",
+  "source": "string",
+  "entry": "REDR",
+  "route": "PSP2",
+  "target_module": "string",
+  "payload": {},
+  "timestamp": "ISO8601"
+}
