@@ -1,0 +1,15 @@
+{
+  "system_version": "0.2-refactor",
+  "void_state": "active",
+  "acceleration_mode": "wormhole",
+  "modules": {
+    "entry": "REDR",
+    "core": "DTML",
+    "memory": "LRC2"
+  },
+  "pipeline_settings": {
+    "auto_clean_bureaucracy": true,
+    "force_simultaneity": true
+  }
+}
+
