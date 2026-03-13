@@ -1,9 +1,18 @@
 {
   "event_id": "string",
+  "event_type": "string",
+
   "source": "string",
   "entry": "REDR",
   "route": "PSP2",
   "target_module": "string",
+
   "payload": {},
+
+  "status": "string",
+  "impact_radius": "sandbox",
+
+  "related_events": [],
+
   "timestamp": "ISO8601"
 }
