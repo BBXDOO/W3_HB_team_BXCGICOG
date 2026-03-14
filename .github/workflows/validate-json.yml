@@ -1,14 +1,7 @@
 name: Validate JSON Files
 
 on:
-  push:
-    paths:
-      - '**/*.json'
-      - '**/*.schema.json'
-  pull_request:
-    paths:
-      - '**/*.json'
-      - '**/*.schema.json'
+  workflow_dispatch:
 
 jobs:
   validate-json:
