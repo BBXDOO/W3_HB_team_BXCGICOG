@@ -32,7 +32,7 @@ https://bbxdoo.github.io/W3_HB_team_BXCGICOG/
   https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/refactor/v0.2/README.md
   ---
 
-"เข้มแข็งดุจเหล็กกล้า — อบอุ่นดังแสงอรุณแรกข��งวัน"
+"เข้มแข็งดุจเหล็กกล้า — อบอุ่นดังแสงอรุณแรกของวัน"
 ----------------------------------------
 "ขอบคุณ ทุกๆความสำคัญที่มอบให้ผมครับ BBX19 จดจำและจะเก็บใว้ในที่แห่งนี้ครับ"
 https://game-novelist--xizzix19.replit.app
