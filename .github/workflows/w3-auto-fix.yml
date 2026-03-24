@@ -1,0 +1,61 @@
+name: W3 Auto Deprecation Guard
+
+on:
+  schedule:
+    - cron: "0 3 * * *"   # รันทุกวัน
+  workflow_dispatch:
+
+jobs:
+  auto-fix:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2️⃣ Scan workflows (REDR behavior)
+      - name: Scan for deprecated Node usage
+        id: scan
+        run: |
+          echo "Scanning workflows..."
+          grep -r "actions/" .github/workflows > scan.txt || true
+
+          if grep -q "@v4" scan.txt; then
+            echo "deprecated=true" >> $GITHUB_OUTPUT
+          else
+            echo "deprecated=false" >> $GITHUB_OUTPUT
+          fi
+
+      # 3️⃣ Apply fix (PSP2 decision)
+      - name: Inject Node24 flag
+        if: steps.scan.outputs.deprecated == 'true'
+        run: |
+          echo "Applying Node 24 fix..."
+
+          for file in .github/workflows/*.yml; do
+            if ! grep -q "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24" "$file"; then
+              sed -i '1ienv:\n  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true\n' "$file"
+            fi
+          done
+
+      # 4️⃣ Commit (LRC2 record)
+      - name: Commit changes
+        if: steps.scan.outputs.deprecated == 'true'
+        run: |
+          git config user.name "w3-agent"
+          git config user.email "w3@local"
+
+          git add .
+          git commit -m "W3 AUTO FIX: Enable Node 24 for GitHub Actions" || echo "No changes"
+
+          git push
+
+      # 5️⃣ Log result
+      - name: Result
+        run: |
+          if [ "${{ steps.scan.outputs.deprecated }}" = "true" ]; then
+            echo "Fix applied"
+          else
+            echo "System already aligned"
+          fi
