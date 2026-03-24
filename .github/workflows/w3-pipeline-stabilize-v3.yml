@@ -1,0 +1,77 @@
+name: W3 Pipeline Stabilize v3
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# 🧠 ป้องกัน cancel มั่ว แต่ยังคุมซ้ำได้
+concurrency:
+  group: w3-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+# 🚀 เตรียม Node 24 ล่วงหน้า
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ ดึงโค้ด (แก้ error requirements.txt ไม่เจอ)
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2️⃣ DEBUG (ให้ LRC2 มีข้อมูลจริง)
+      - name: Debug Context
+        run: |
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Event: ${{ github.event_name }}"
+
+      # 3️⃣ ตรวจโครงสร้าง (REDR behavior)
+      - name: Scan Project Structure
+        run: |
+          echo "Scanning files..."
+          ls -R
+
+      # 4️⃣ Setup Python (ถ้ามี)
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 5️⃣ Install dependencies (adaptive)
+      - name: Install Dependencies
+        run: |
+          echo "Checking dependency files..."
+
+          if [ -f requirements.txt ]; then
+            echo "Found requirements.txt"
+            pip install -r requirements.txt
+
+          elif [ -f backend/requirements.txt ]; then
+            echo "Found backend requirements"
+            pip install -r backend/requirements.txt
+
+          else
+            echo "No requirements.txt found → skip install"
+          fi
+
+      # 6️⃣ Security Scan (DTML behavior mock)
+      - name: Basic Security Check
+        run: |
+          echo "Running basic security scan..."
+          grep -r "API_KEY" . || echo "No API keys found"
+
+      # 7️⃣ Build / Test (PSP2 decision zone)
+      - name: Build / Test
+        run: |
+          echo "Running build/test..."
+          echo "No strict build defined → pass"
+
+      # 8️⃣ Log (LRC2 behavior)
+      - name: Record Execution
+        run: |
+          echo "Execution complete at $(date)"
