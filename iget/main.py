@@ -16,7 +16,7 @@ class PRFlow:
     # DETERMINISTIC DECISION
     # ----------------------
     def decision_auto(self, node_id):
-        # ปรับ logic ตรงนี้ได้ในอนาคต (ต่อ real PR)
+        # logic พื้นฐาน (พร้อมต่อ real PR)
         if node_id == "C":
             return "yellow"
         if node_id == "E":
@@ -24,18 +24,22 @@ class PRFlow:
         return "green"
 
     # ----------------------
-    # IMPACT
+    # VISUAL HELPERS
     # ----------------------
-    def impact_text(self, state):
+    def emoji(self, state):
         return {
-            "green": "🟢 ไม่มีผลกระทบ",
-            "yellow": "🟡 มีผลกระทบบางส่วน",
-            "red": "🔴 เสี่ยงต่อระบบ"
+            "green": "🟢",
+            "yellow": "🟡",
+            "red": "🔴"
         }[state]
 
-    # ----------------------
-    # FLOW VISUAL (F)
-    # ----------------------
+    def impact_text(self, state):
+        return {
+            "green": "ไม่มีผลกระทบ",
+            "yellow": "มีผลกระทบบางส่วน",
+            "red": "เสี่ยงต่อระบบ"
+        }[state]
+
     def render_flow(self):
         bar = ""
         for h in self.history:
@@ -47,9 +51,6 @@ class PRFlow:
                 bar += "🟥"
         return bar if bar else "⬜"
 
-    # ----------------------
-    # PROGRESS (B + C)
-    # ----------------------
     def render_progress(self):
         percent = int((len(self.history) / len(self.nodes)) * 100) if self.nodes else 0
         total = 10
@@ -61,13 +62,13 @@ class PRFlow:
     # RUN
     # ----------------------
     def run(self):
-        pr_number = os.getenv("PR_NUMBER", "#UNKNOWN")
+        pr_number = os.getenv("PR_NUMBER", "UNKNOWN")
 
         output = []
 
         # ===== A =====
         output.append("# 🚀 IGET PR ANALYZER")
-        output.append(f"## 🧾 PR: #{pr_number}\n")
+        output.append(f"## 🧾 PR: {pr_number}\n")
 
         # ===== PROCESS =====
         for node in self.nodes:
@@ -102,9 +103,9 @@ class PRFlow:
         output.append("\n## 📋 Issues")
         if self.log:
             for l in self.log:
-                output.append(f"- {l['node']} → {l['state']}")
+                output.append(f"- {l['node']} → {self.emoji(l['state'])} {l['state']}")
         else:
-            output.append("ไม่มีปัญหา")
+            output.append("🟢 ไม่มีปัญหา")
 
         # ===== G =====
         output.append("\n## 🎯 Impact")
