@@ -62,13 +62,15 @@ class PRFlow:
     # RUN
     # ----------------------
     def run(self):
-        pr_number = os.getenv("PR_NUMBER", "UNKNOWN")
+        pr_number = os.getenv("PR_NUMBER") or os.getenv("GITHUB_REF_NAME", "UNKNOWN")
 
         output = []
 
         # ===== A =====
         output.append("# 🚀 IGET PR ANALYZER")
-        output.append(f"## 🧾 PR: {pr_number}\n")
+        output.append(f"## 🧾 PR: {pr_number}\n") 
+        commit = os.getenv("GITHUB_SHA", "")[:7]
+output.append(f"🧬 Commit: `{commit}`\n")
 
         # ===== PROCESS =====
         for node in self.nodes:
