@@ -19,7 +19,7 @@ jobs:
 
       - name: Run IGET
         run: |
-          python main.py > result.txt
+          python iget/main.py > result.txt
 
       - name: Comment PR
         uses: marocchino/sticky-pull-request-comment@v2
