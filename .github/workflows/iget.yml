@@ -23,7 +23,7 @@ jobs:
 
       - name: Run IGET
         run: |
-          python iget/main.py > result.txt
+          python iget/main.py > result.txt || echo "IGET ERROR" > result.txt
 
       - name: Comment PR
         uses: marocchino/sticky-pull-request-comment@v2
