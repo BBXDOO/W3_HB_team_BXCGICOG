@@ -1,27 +1,14 @@
 import os
-import sys
 import random
 
 class PRFlow:
     def __init__(self):
         self.nodes = []
-        self.progress = 0
         self.log = []
         self.history = []
 
     def add_node(self, node_id, name):
         self.nodes.append({"id": node_id, "name": name})
-
-    def get_choice(self, node_id):
-        # priority: ENV > ARG > default
-        env_key = f"IGET_{node_id}"
-        if env_key in os.environ:
-            return os.environ[env_key]
-
-        if len(sys.argv) > 1:
-            return sys.argv[1]
-
-        return "1"  # default = fix
 
     def simulate(self):
         return {
@@ -30,99 +17,76 @@ class PRFlow:
             "red": random.randint(10, 30)
         }
 
-    def impact(self, state):
-        impact_map = {
+    def impact_text(self, state):
+        return {
             "green": "🟢 ไม่มีผลกระทบ",
             "yellow": "🟡 มีผลกระทบบางส่วน",
             "red": "🔴 เสี่ยงต่อระบบ"
-        }
-        return impact_map[state]
+        }[state]
 
-    def decision(self, node):
-        sim = self.simulate()
+    def bar(self, percent):
+        total = 10
+        filled = int(percent / 10)
+        return "█" * filled + "░" * (total - filled)
 
-        print("\n🔮 SIMULATION:")
-        print(f"GREEN  → success ~{sim['green']}%")
-        print(f"YELLOW → success ~{sim['yellow']}%")
-        print(f"RED    → success ~{sim['red']}%")
-
-        print("\n🧠 RECOMMEND:")
-        print("→ suggest: GREEN")
-        print("เหตุผล: ปลอดภัยที่สุด")
-
-        choice = self.get_choice(node["id"])
-
-        mapping = {
-            "1": "green",
-            "2": "yellow",
-            "3": "red"
-        }
-
-        state = mapping.get(choice, "green")
-
-        print(f"\nImpact: {self.impact(state)}")
-
-        self.log.append({
-            "node": node["id"],
-            "state": state
-        })
-
-        self.history.append(state)
-
-    def render_flow(self):
-        bar = ""
-        for h in self.history:
-            if h == "green":
-                bar += "🟩"
-            elif h == "yellow":
-                bar += "🟨"
-            else:
-                bar += "🟥"
-        return bar
+    def decision_auto(self):
+        # CI mode → random (no input)
+        return random.choice(["green", "yellow", "red"])
 
     def run(self):
-        print("🚀 START FLOW\n")
+        pr_number = os.getenv("PR_NUMBER", "#UNKNOWN")
+
+        output = []
+
+        output.append(f"# 🚀 IGET PR ANALYZER")
+        output.append(f"## 🧾 PR: {pr_number}\n")
 
         for i, node in enumerate(self.nodes):
-            self.progress = ((i + 1) / len(self.nodes)) * 100
-
-            print(f"→ {node['id']} ({node['name']})")
-            print(f"Flow: {self.render_flow()}")
-            print(f"Progress: {self.progress:.2f}%")
+            progress = int(((i + 1) / len(self.nodes)) * 100)
 
             if node["id"] in ["C", "E"]:
-                print(f"\n⚠️ Node {node['id']}")
-                print("1 = 🟢 fix")
-                print("2 = 🟡 workaround")
-                print("3 = 🔴 skip")
+                state = self.decision_auto()
 
-                self.decision(node)
+                self.log.append({
+                    "node": node["id"],
+                    "state": state
+                })
 
-        print("\n✅ FLOW END")
-        print(f"LOG: {self.log}")
+                self.history.append(state)
 
-        self.summary()
+        # ===== A + B + C =====
+        output.append("## 📊 Progress")
+        output.append(f"[{self.bar(progress)}] {progress}%\n")
 
-    def summary(self):
-        print("\n📊 SUMMARY\n")
+        # ===== D + E =====
+        output.append("## 📋 SUMMARY")
+        output.append("Flow:")
+        output.append("A → B → C → D → E → F\n")
 
-        flow = " → ".join([n["id"] for n in self.nodes])
-        print(f"Flow:\n{flow}\n")
-
-        print("Issues:")
+        output.append("Issues:")
         for l in self.log:
-            print(f"- {l['node']} → {l['state']}")
+            output.append(f"- {l['node']} → {l['state']}")
 
-        print("\nImpact:")
+        # ===== F =====
+        output.append("\nImpact:")
         for l in self.log:
-            print(f"- {l['node']} → {self.impact(l['state'])}")
+            output.append(f"- {l['node']} → {self.impact_text(l['state'])}")
 
+        # ===== G =====
         result = "✅ สำเร็จ"
         for l in self.log:
             if l["state"] == "red":
                 result = "❌ มีความเสี่ยง"
 
-        print(f"\nResult:\n{result}")
+        output.append(f"\n## 🎯 Result")
+        output.append(result)
+
+        # ===== FINAL FORMAT =====
+        final = "\n".join(output)
+
+        print("```")
+        print(final)
+        print("```")
 
 def run():
     flow = PRFlow()
