@@ -1,153 +1,178 @@
 import os
-
-class PRFlow:
-    def __init__(self):
-        self.nodes = []
-        self.log = []
-        self.history = []
-
-    # ----------------------
-    # SETUP
-    # ----------------------
-    def add_node(self, node_id, name):
-        self.nodes.append({"id": node_id, "name": name})
-
-    # ----------------------
-    # DETERMINISTIC DECISION
-    # ----------------------
-    def decision_auto(self, node_id):
-        # logic พื้นฐาน (พร้อมต่อ real PR)
-        if node_id == "C":
-            return "yellow"
-        if node_id == "E":
-            return "red"
-        return "green"
-
-    # ----------------------
-    # VISUAL HELPERS
-    # ----------------------
-    def emoji(self, state):
-        return {
-            "green": "🟢",
-            "yellow": "🟡",
-            "red": "🔴"
-        }[state]
-
-    def impact_text(self, state):
-        return {
-            "green": "ไม่มีผลกระทบ",
-            "yellow": "มีผลกระทบบางส่วน",
-            "red": "เสี่ยงต่อระบบ"
-        }[state]
-
-    def render_flow(self):
-        bar = ""
-        for h in self.history:
-            if h == "green":
-                bar += "🟩"
-            elif h == "yellow":
-                bar += "🟨"
-            else:
-                bar += "🟥"
-        return bar if bar else "⬜"
-
-    def render_progress(self):
-        percent = int((len(self.history) / len(self.nodes)) * 100) if self.nodes else 0
-        total = 10
-        filled = int(percent / 10)
-        bar = "█" * filled + "░" * (total - filled)
-        return bar, percent
-
-    # ----------------------
-    # RUN
-    # ----------------------
-    def run(self):
-        pr_number = os.getenv("PR_NUMBER") or os.getenv("GITHUB_REF_NAME", "UNKNOWN")
-
-        output = []
-
-        # ===== A =====
-        output.append("# 🚀 IGET PR ANALYZER")
-        output.append(f"## 🧾 PR: {pr_number}\n") 
-        commit = os.getenv("GITHUB_SHA", "")[:7]
-output.append(f"🧬 Commit: `{commit}`\n")
-
-        # ===== PROCESS =====
-        for node in self.nodes:
-            if node["id"] in ["C", "E"]:
-                state = self.decision_auto(node["id"])
-            else:
-                state = "green"
-
-            self.history.append(state)
-
-            if state != "green":
-                self.log.append({
-                    "node": node["id"],
-                    "state": state
-                })
-
-        # ===== B + C =====
-        bar, percent = self.render_progress()
-        output.append("## 📊 Progress")
-        output.append(f"[{bar}] {percent}%\n")
-
-        # ===== D =====
-        output.append("## 🔗 Flow")
-        flow_ids = " → ".join([n["id"] for n in self.nodes])
-        output.append(flow_ids)
-
-        # ===== F =====
-        output.append("\n## 🧩 Flow State")
-        output.append(self.render_flow())
-
-        # ===== E =====
-        output.append("\n## 📋 Issues")
-        if self.log:
-            for l in self.log:
-                output.append(f"- {l['node']} → {self.emoji(l['state'])} {l['state']}")
-        else:
-            output.append("🟢 ไม่มีปัญหา")
-
-        # ===== G =====
-        output.append("\n## 🎯 Impact")
-        if self.log:
-            for l in self.log:
-                output.append(f"- {l['node']} → {self.impact_text(l['state'])}")
-        else:
-            output.append("🟢 ไม่มีผลกระทบ")
-
-        # ===== RESULT =====
-        result = "✅ สำเร็จ"
-        if any(l["state"] == "red" for l in self.log):
-            result = "❌ มีความเสี่ยง"
-
-        output.append("\n## 🏁 Result")
-        output.append(result)
-
-        # ===== FINAL OUTPUT =====
-        final = "\n".join(output)
-
-        print("```")
-        print(final)
-        print("```")
-
+import requests
 
 # ----------------------
-# ENTRY
+# FETCH PR FILES
+# ----------------------
+def get_pr_files(repo, pr_number, token):
+    url = f"https://api.github.com/repos/{repo}/pulls/{pr_number}/files"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github+json"
+    }
+
+    res = requests.get(url, headers=headers)
+    if res.status_code != 200:
+        return []
+
+    return res.json()
+
+# ----------------------
+# METRICS
+# ----------------------
+def extract_metrics(files):
+    total_files = len(files)
+    total_changes = 0
+    python_files = 0
+    test_files = 0
+
+    for f in files:
+        changes = f.get("changes", 0)
+        name = f.get("filename", "")
+
+        total_changes += changes
+
+        if name.endswith(".py"):
+            python_files += 1
+
+        if "test" in name.lower():
+            test_files += 1
+
+    return {
+        "total_files": total_files,
+        "total_changes": total_changes,
+        "python_files": python_files,
+        "test_files": test_files
+    }
+
+# ----------------------
+# RULE ENGINE
+# ----------------------
+def evaluate_risk(files, metrics):
+    score = 100
+    reasons = []
+
+    # rule 1: many files
+    if metrics["total_files"] > 5:
+        score -= 20
+        reasons.append("เปลี่ยนหลายไฟล์")
+
+    # rule 2: large change
+    if metrics["total_changes"] > 300:
+        score -= 30
+        reasons.append("แก้ไขจำนวนบรรทัดมาก")
+
+    # rule 3: python heavy
+    if metrics["python_files"] > 3:
+        score -= 20
+        reasons.append("เกี่ยวข้องกับ logic (.py หลายไฟล์)")
+
+    # rule 4: no test
+    if metrics["test_files"] == 0:
+        score -= 30
+        reasons.append("ไม่มี test รองรับ")
+
+    # rule 5: config/db
+    for f in files:
+        name = f.get("filename", "").lower()
+        if "config" in name:
+            score -= 25
+            reasons.append("แก้ไขไฟล์ config")
+            break
+
+        if "db" in name:
+            score -= 25
+            reasons.append("เกี่ยวข้องกับฐานข้อมูล")
+            break
+
+    # rule 6: heavy file
+    if any(f.get("changes", 0) > 300 for f in files):
+        score -= 25
+        reasons.append("มีไฟล์ที่ถูกแก้หนักมาก")
+
+    # state
+    if score >= 70:
+        state = "green"
+    elif score >= 40:
+        state = "yellow"
+    else:
+        state = "red"
+
+    return state, score, reasons
+
+# ----------------------
+# MAIN
 # ----------------------
 def run():
-    flow = PRFlow()
+    repo = os.getenv("GITHUB_REPOSITORY")
+    pr_number = os.getenv("PR_NUMBER")
+    token = os.getenv("GITHUB_TOKEN")
 
-    flow.add_node("A", "commit")
-    flow.add_node("B", "PR opened")
-    flow.add_node("C", "check")
-    flow.add_node("D", "review")
-    flow.add_node("E", "decision")
-    flow.add_node("F", "merge")
+    commit = os.getenv("GITHUB_SHA", "")[:7]
 
-    flow.run()
+    files = get_pr_files(repo, pr_number, token)
+    metrics = extract_metrics(files)
+    state, score, reasons = evaluate_risk(files, metrics)
 
+    # progress mock (full flow done)
+    progress_bar = "██████████"
+    percent = 100
+
+    emoji = {
+        "green": "🟢",
+        "yellow": "🟡",
+        "red": "🔴"
+    }
+
+    flow_state = "🟩🟩"
+    flow_state += "🟨" if state == "yellow" else "🟥" if state == "red" else "🟩"
+    flow_state += "🟩"
+    flow_state += "🟨" if state == "yellow" else "🟥" if state == "red" else "🟩"
+    flow_state += "🟩"
+
+    output = []
+
+    output.append("# 🔍 IGET PR Analysis")
+    output.append(f"## 🧾 PR: {pr_number}")
+    output.append(f"🧬 Commit: `{commit}`\n")
+
+    output.append("## 📊 Progress")
+    output.append(f"[{progress_bar}] {percent}%\n")
+
+    output.append("## 🔗 Flow")
+    output.append("A → B → C → D → E → F\n")
+
+    output.append("## 🧩 Flow State")
+    output.append(flow_state + "\n")
+
+    output.append("## 📋 Issues")
+    output.append(f"- C → {emoji[state]} {state}")
+    output.append(f"- E → {emoji[state]} {state}\n")
+
+    output.append("## 🎯 Impact")
+    if reasons:
+        for r in reasons:
+            output.append(f"- {r}")
+    else:
+        output.append("ไม่มีผลกระทบ")
+
+    output.append("\n## 🧠 Analysis")
+    output.append(f"Score: {score}/100")
+
+    output.append("\n## 📂 PR Data")
+    output.append(f"- files: {metrics['total_files']}")
+    output.append(f"- changes: {metrics['total_changes']}")
+    output.append(f"- python: {metrics['python_files']}")
+    output.append(f"- tests: {metrics['test_files']}")
+
+    result = "✅ สำเร็จ" if state != "red" else "❌ มีความเสี่ยง"
+
+    output.append("\n## 🏁 Result")
+    output.append(result)
+
+    print("```")
+    print("\n".join(output))
+    print("```")
 
 if __name__ == "__main__":
     run()
