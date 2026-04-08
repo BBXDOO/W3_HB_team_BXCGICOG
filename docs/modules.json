@@ -1,0 +1,27 @@
+{
+  "modules": [
+    {
+      "name": "IDP",
+      "status": "active",
+      "role": "identity and permission layer",
+      "hot_swappable": true
+    },
+    {
+      "name": "HB",
+      "status": "active",
+      "role": "human-ai bridge",
+      "hot_swappable": true
+    },
+    {
+      "name": "SOCKET",
+      "status": "planned",
+      "role": "external input-output channel",
+      "hot_swappable": true
+    }
+  ],
+  "policy": {
+    "load_on_demand": true,
+    "no_implicit_dependency": true
+  },
+  "version": "0.1.0"
+}

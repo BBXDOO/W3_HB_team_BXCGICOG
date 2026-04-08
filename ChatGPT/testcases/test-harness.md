@@ -26,8 +26,16 @@ Expected:
 ### 1.2 T1 – Module Test
 Target: subsystem
 
-Modules:
-- `config_loader`
+- run main → expect banner `W3 Hybrid Engine: ONLINE`
+- process ไม่ crash ภายใน ≥ 3s
+
+### 1.2 T1 — Module Test
+
+ตรวจทีละ subsystem
+
+ตัวอย่าง:
+
+- `config loader`
 - `logger`
 - `module_loader` (Gemini, Copilot-Gm, Grok, DeepSeek, ChatGPT)
 
@@ -59,48 +67,22 @@ Expected:
   "risk": "L1-L5",
   "constraints": ["no_network", "local_only", "..."]
 }
+```
 
-Meaning:
+**Glossary:**
 
-target = จุดที่อยากทดสอบ (เช่น engine_boot, logger, config_loader)
-
-goal = พฤติกรรมที่ต้องพิสูจน์
-
-risk = ระดับความเสี่ยง
-
-constraints = เงื่อนไขสภาพแวดล้อม
-
-
+- `target` = จุดที่อยากทดสอบ (เช่น engine_boot, logger, config_loader)
+- `goal` = พฤติกรรมที่ต้องพิสูจน์
+- `risk` = ช่วย Gemini เลือกความเข้มข้นการตรวจ
+- `constraints` = เงื่อนไขสภาพแวดล้อม
 
 ---
 
-3. Standard Test Output
-
-3.1 Skeleton fields
-
-Required fields forทุก test case:
-
-id
-
-level
-
-target
-
-title
-
-precondition
-
-steps
-
-expected
-
-failure_path
-
-log (risk, owner, route_next)
-
+## 3. Standard Test Output (สิ่งที่ ChatGPT ต้องสร้าง)
 
 3.2 YAML Format (canonical)
 
+```yaml
 id: T1-logger-basic-001
 level: T1
 target: logger
@@ -126,48 +108,34 @@ log:
   risk: L2
   owner: ChatGPT
   route_next: Gemini
+```
 
-Rule:
+**ข้อบังคับ:**
 
-ทุก test case ต้องมี failure_path
-
-ทุก test case ต้องมี route_next
-
-
+- ทุกเคส ต้องมี `failure_path`
+- ทุกเคส ต้องระบุ `route_next` (ใครตรวจต่อ)
 
 ---
 
-4. Scenario Design Workflow
+## 4. Scenario Design Workflow
 
 1. รับ input JSON (ตามข้อ 2)
 
-
-2. ระบุ level และ target
-
-
+1. รับ input spec (JSON ด้านบน)
+2. ระบุ level + target ให้ชัด
 3. แตกเป็น precondition / steps / expected / failure_path
-
-
-4. ผูกกับ log schema / module name จริงของ W3
-
-
-5. ใส่ route_next → Gemini / Copilot-Gm
-
-
+4. ผูกกับ log schema / module name จริงใน W3
+5. ใส่ route_next (ส่วนใหญ่ → Gemini / Copilot-Gm)
 6. ตรวจ self-consistency (steps สัมพันธ์กับ expected)
-
-
-7. ส่งออก YAML พร้อมใช้งาน
-
-
-
+7. ส่งออกเป็น YAML/JSON พร้อมใช้งาน (แต่ในไฟล์นี้ใช้เป็น text spec เพื่ออ่านง่าย)
 
 ---
 
-5. Example Scenarios
+## 5. Example Scenarios
 
-5.1 T0 – Engine Online
+### 5.1 T0 — Engine Online
 
+```yaml
 id: T0-engine-online-001
 level: T0
 target: engine_boot
@@ -179,8 +147,8 @@ steps:
   - "run: python src/main.py"
 
 expected:
-  - "stdout contains 'W3 Hybrid Engine online'"
-  - "process alive >= 3s"
+  - "stdout contains 'W3 Hybrid Engine: ONLINE'"
+  - "process remains alive at least 3s"
 
 failure_path:
   - "no output"
@@ -190,9 +158,13 @@ log:
   risk: L1
   owner: ChatGPT
   route_next: Copilot-Gm
+```
 
-5.2 T1 – Config Loader Error
+---
 
+### 5.2 T1 — Config Loader Error Handling
+
+```yaml
 id: T1-config-invalid-001
 level: T1
 target: config_loader
@@ -217,9 +189,13 @@ log:
   risk: L3
   owner: ChatGPT
   route_next: Gemini
+```
 
-5.3 T2 – Module Load Log
+---
 
+### 5.3 T2 — Module Load Log
+
+```yaml
 id: T2-modules-load-001
 level: T2
 target: module_loader
@@ -244,89 +220,72 @@ log:
   risk: L2
   owner: ChatGPT
   route_next: Gemini
-
-
----
-
-6. Integration with W3
-
-Location: ChatGPT/testcases/
-
-Copilot-Gm:
-
-อ่าน spec → generate pytest/custom runner
-
-
-Gemini:
-
-ตรวจความครอบคลุม / risk coverage
-
-validate essential engine use-cases
-
-
-Grok:
-
-pattern mining จาก failure_path
-
-
-DeepSeek:
-
-optimization / scaling
-
-
+```
 
 ---
 
-7. Anti-patterns (FAIL)
+## 6. Integration with W3
 
-กรณี test case “ใช้ไม่ได้”:
+**ตำแหน่งไฟล์ test spec:** `ChatGPT/testcases/`
 
-reason = “ผ่านได้” แต่ไม่มี anchor จริง
+### Copilot-Gm
 
-expected คลุมเครือ
+- อ่าน test spec → สร้าง test script จริง (pytest / custom runner)
+- รันใน CI / local
+- แจ้งผลกลับ engine + BBX19
 
-ไม่มี failure_path
+### Gemini
 
-ไม่มี log trace
+- ตรวจความครบถ้วน / risk coverage
+- เช็คว่า test ครอบ use-case สำคัญของ engine
+- review ว่า expected behavior align กับ system spec
 
-narrative เยอะ แต่ไม่ actionable
+### Grok
 
-route_next ว่าง หรือไม่ชัดเจนว่าใครเป็นเจ้าของ
+- จับ pattern ของ bug ที่เคยเจอจาก failure_path
+- สร้าง knowledge base ของ failure signature
+- ช่วยชี้ pattern anti-design
 
+### DeepSeek
 
-ถ้า test case ขาดอย่างใดอย่างหนึ่งในนี้:
-
-actionable
-
-reproducible
-
-traceable ไปยัง module จริง
-
-
-⇒ ถือว่า FAIL
-
+- ใช้ test spec วางแผน scaling / optimization
+- วัด performance path ที่ critical
+- เสนอ refactor ที่ไม่ทำลาย coverage เดิม
 
 ---
 
-8. Definition of Done (DOD)
+## 7. Anti-patterns (ถือว่า FAIL)
 
-ชุด testcases จาก ChatGPT = “พร้อมส่งไป engine” เมื่อ:
+กรณีต่อไปนี้ เทสถือว่า "ใช้ไม่ได้":
 
-1. ครอบคลุม T0–T2 อย่างน้อยอย่างละ 1 เคส
+- เคสที่เขียนแค่ "ผ่านได้" โดยไม่ทำอะไร
+- expected กว้างแบบตีความได้หลายแบบ
+- ไม่มี failure_path
+- ไม่มีการผูกกับ log หรือ behavior จริงในระบบ
+- narrative ยาว แต่ไม่ actionable
+- route_next ไม่ชัด (ไม่รู้ใครดูต่อ)
 
+> ถ้า test case ไม่:
+> - actionable
+> - reproducible
+> - traceable ไปยัง module จริง
+>
+> ⇒ ให้ mark ว่า FAIL
 
-2. ทุกเคสมี id, level, target, title, precondition, steps, expected, failure_path, log
+---
 
+## 8. Definition of Done (DOD)
 
-3. route_next ชัดเจนสำหรับแต่ละเคส
+ชุด testcases จาก ChatGPT ถือว่า "พร้อมส่งให้เอเจนท์" เมื่อ:
 
+1. ครอบคลุม T0–T2 อย่างน้อยอย่างละ 1 เคสสำคัญ
+2. ทุกเคสมี id, level, target, steps, expected, failure_path ครบ
+3. มี route_next ชัดเจนสำหรับแต่ละเคส
+4. สามารถแปลงเป็น test script ได้โดยไม่ต้องเดาเพิ่ม (human หรือ agent เขียน runner ได้ตรงๆ)
 
-4. spec แปลงเป็น test script ได้ทันที
+**เกณฑ์สุดท้าย:**
 
-
-
-Final rule:
-If a human can run it,
-the engine can log it,
-and Gemini can judge it,
-→ Test Harness = PASS
+> If human can run it,
+> and engine can log it,
+> and Gemini can judge it,
+> ⇒ Test Harness = PASS

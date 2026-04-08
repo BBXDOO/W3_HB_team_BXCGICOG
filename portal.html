@@ -1,0 +1,113 @@
+cat > portal.html <<'EOF'
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>W3 – Portal</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --fg:#111827;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --card:#f9fafb;
+      --link:#2563eb;
+    }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Thai", sans-serif;
+      background:var(--bg);
+      color:var(--fg);
+    }
+    .wrap{max-width:920px;margin:0 auto;padding:28px 18px 60px;}
+    h1{margin:0 0 6px;font-size:28px;letter-spacing:.2px}
+    p{margin:0 0 18px;color:var(--muted)}
+    .bar{border-top:1px solid var(--line); margin:18px 0 22px;}
+    .grid{display:grid;gap:12px}
+    @media (min-width: 760px){ .grid{grid-template-columns:1fr 1fr;} }
+    .card{
+      border:1px solid var(--line);
+      background:var(--card);
+      border-radius:14px;
+      padding:14px 14px 12px;
+    }
+    .card h2{margin:0 0 10px;font-size:16px}
+    ul{margin:0;padding-left:18px}
+    li{margin:7px 0}
+    a{color:var(--link); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .mini{font-size:12px;color:var(--muted);margin-top:10px}
+    code{background:#eef2ff;padding:2px 6px;border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>W3 – Portal</h1>
+    <p>สารบัญรวมทางเข้า / จุดเริ่มต้นของคลัง W3 (ใช้สำหรับนำทาง ไม่ใช่เอกสารหลัก)</p>
+    <div class="bar"></div>
+
+    <div class="grid">
+      <section class="card">
+        <h2>🧭 Start Here</h2>
+        <ul>
+          <li><a href="README.md">README.md</a> <span class="mini">(ภาพรวมระบบ)</span></li>
+          <li><a href="index.md">index.md</a> <span class="mini">(system beacon)</span></li>
+          <li><a href="QUICK_START.md">QUICK_START.md</a> <span class="mini">(เริ่มแบบเร็ว)</span></li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>🏛️ Governance / Integrity</h2>
+        <ul>
+          <li><a href="governance/">governance/</a></li>
+          <li><a href="INTEGRITY_REPORT.md">INTEGRITY_REPORT.md</a></li>
+          <li><a href="AUDIT_SYSTEM_README.md">AUDIT_SYSTEM_README.md</a></li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>🧩 Modules / Agents</h2>
+        <ul>
+          <li><a href="modules/">modules/</a></li>
+          <li><a href="AGENT_TASKS.md">AGENT_TASKS.md</a></li>
+          <li><a href="executions_log.json">executions_log.json</a></li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>📦 Versions / Changelog</h2>
+        <ul>
+          <li><a href="versions/">versions/</a></li>
+          <li><a href="CHANGELOG.md">CHANGELOG.md</a></li>
+          <li><a href="decision_trace.md">decision_trace.md</a></li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>🗂️ Blueprints / Architecture</h2>
+        <ul>
+          <li><a href="architecture/">architecture/</a></li>
+          <li><a href="blueprints/">blueprints/</a></li>
+          <li><a href="REDR_Structure_Map.md">REDR_Structure_Map.md</a></li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>🧠 Knowledge / Logs</h2>
+        <ul>
+          <li><a href="knowledge/">knowledge/</a></li>
+          <li><a href="logs/">logs/</a></li>
+          <li><a href="core/">core/</a></li>
+        </ul>
+      </section>
+    </div>
+
+    <p class="mini">
+      หมายเหตุ: ถ้าเปิดผ่าน GitHub Pages แล้วบางไฟล์ <code>.md</code> ไม่เรนเดอร์เป็นหน้าเว็บ
+      ให้กดดูผ่าน GitHub หรือทำหน้า HTML ครอบในอนาคต
+    </p>
+  </div>
+</body>
+</html>
+EOF

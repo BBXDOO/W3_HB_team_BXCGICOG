@@ -1,0 +1,4 @@
+# artifacts placeholder
+# Store binary or generated evidence files here that are referenced by ledger records.
+# Name files to match the ledger entry they support, e.g.:
+#   2026-02-25_outcomes-system-bootstrap_output.txt

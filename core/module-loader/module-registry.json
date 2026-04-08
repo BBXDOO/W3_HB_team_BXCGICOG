@@ -1,0 +1,11 @@
+{
+  "modules": [
+    "BBX19",
+    "ChatGPT",
+    "Gemini",
+    "DeepSeek",
+    "Grok",
+    "Copilot-Gm",
+    "BBEX-Core"
+  ]
+}

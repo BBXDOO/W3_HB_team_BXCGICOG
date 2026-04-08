@@ -1,0 +1,19 @@
+{
+  "snapshot_id": "W3-2026-01-07-01",
+  "includes": [
+    "index.json",
+    "system.json",
+    "rules.json",
+    "modules.json",
+    "state.json",
+    "context.map.json",
+    "agent.profile.json"
+  ],
+  "state_ref": {
+    "operation_mode": "NORMAL",
+    "alert_level": "GREEN"
+  },
+  "note": "Baseline snapshot before expansion",
+  "authority": "BBX19",
+  "version": "0.1.0"
+}

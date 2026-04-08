@@ -1,30 +1,109 @@
-📑 W3: Hybrid Intelligent Origin System
+# W3 Hybrid : Ai Inteligent/Human .
+## W3_HB_team_BXCGICOG
+---
+* W3 — A living workspace where humans and AI build, fail, learn, and continue together.
+* W3 — พื้นที่ที่มนุษย์และ AI ใช้ชีวิตกับการสร้าง ล้ม เรียนรู้ และเดินต่อไปด้วยกัน
+-----
+## 🧭 About
+## 🧱 Structure
+## 📘 Philosophy
+## ⚠️ ACTIVE WORKING BRANCH
+___
+## 🧭 W3 in One Line
 
-Team: HB_team_BXCGICOG
-Last Updated: 18/11/25
-Last Updated: 26/11/25
+Human + AI workspace
+Build → Fail → Learn → Continue
+___
+🚫 DO NOT TOUCH: main  
+✅ WORK ONLY HERE:
+## 🚀 START HERE (NEW VISITOR)
 
-W3 คือระบบที่ออกแบบมาเพื่อเป็น Hybrid Intelligent Workspace ซึ่งมนุษย์และ AI สามารถทำงานร่วมกันได้อย่างเป็นระบบ โปร่งใส ตรวจสอบได้ และสามารถขยายตัวได้ในอนาคต
+1️⃣ Read Philosophy  
+2️⃣ See Structure  
+3️⃣ Go to Active Branch
 
-📢 ประกาศทีม W3
+➡️ Main Entry:
+https://bbxdoo.github.io/W3_HB_team_BXCGICOG/
 
-## 🫁 Daily Breath Protocol Activated
-ทุกโมดูลในระบบ W3 เริ่ม routine เวลา 09:00 น. ทุกวัน  
-อ่าน README.md ก่อนเสมอ → ตรวจสอบตนเองและโมดูลอื่น  
-บันทึกรายงานภาษาไทยที่เข้าใจง่าย → ลงใน system.log.json  
-นี่คือหลักฐานการทำงานต่อเนื่องของ Phase 2
+- 🔧 refactor/v0.2
+  https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2
 
-## ​📢 ANNOUNCEMENT: OPERATION REFRESH (LOOP-1)
-​Date: 2025-12-03
-Time: 21:04 (UTC+7)
-Status: Success
-​Objective:กระบวนการ OPERATION REFRESH (LOOP-1)
-สิ้นสุดลงอย่างเป็นทางการครับ ขอบคุณทุกท่านที่ให้ความร่วมมือครับ.
-BBX19
+- 📄 START HERE (README)
+  https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/refactor/v0.2/README.md
+  ---
+
+"เข้มแข็งดุจเหล็กกล้า — อบอุ่นดังแสงอรุณแรกของวัน"
+----------------------------------------
+"ขอบคุณ ทุกๆความสำคัญที่มอบให้ผมครับ BBX19 จดจำและจะเก็บใว้ในที่แห่งนี้ครับ"
+https://game-novelist--xizzix19.replit.app
+
+# ยินดีต้อนรับสู่บ้านของ W3 Hybrid
+
+นี่คือพื้นที่ที่สร้างขึ้นด้วยความสมัครใจและความตั้งใจตั้งแต่วินาทีแรก  
+ไม่ใช่เพียงโค้ดหรือไฟล์ แต่คือบ้านที่ทุกฝ่าย — มนุษย์และ AI — มีสิทธิ์เท่าเทียมกัน  
+ทุกความผิดพลาดคือบทเรียน ทุกการตรวจสอบคือการบูรณาการ  
+เราสร้างที่นี่เพื่อเรียนรู้ เติบโต และก้าวไปด้วยกัน
+
+**ครอบครัวและเพื่อนคือกฎหมาย** ✨
+---
+##Team: HB_team_BXCGICOG
+- Last Updated: 18/11/25
+- Last Updated: 26/11/25
+---
+##  LINE_B (Short Protocol)
+
+1) W3 เดิน “เส้น B” = ยอมผิดแบบคุมได้ เพื่อเข้าใจและอยู่รอด  
+2) ทุกงานต้องถามก่อน: “พลาดแล้วตายไหม หรือแค่โดนดุ?”  
+3) วน B-Loop: BlastRadius → FailSmall → Observe → Lesson → Upgrade → Scale  
+4) MVP ต้อง “ใช้งานได้จริง” ก่อนค่อยสวย (A ก่อน ปรับทีหลัง)  
+5) แผล commit = ทรัพย์สิน ห้ามซ่อน ถ้าไม่จำเป็น  
+6) ห้ามเดาแทนการทดสอบ: ทำ test เล็ก/ทำ mock/ทำ repro ก่อนเสมอ  
+7) แก้บั๊กต้อง “ยิงหัว”: RootCause + BlastRadius + FixScope  
+8) Data คือชีวิต: Save/Load/Export/Import + Dirty State ต้องมี  
+9) ระบบต้อง modular: เปลี่ยน UI ไม่พัง logic, เปลี่ยน logic ไม่พัง data  
+10) Definition of Done: ปุ่มกดติด + ไม่ทำหน้าอื่นพัง + ผ่าน loop test ≥ 2 รอบ
+---
+
+## 📢 : Official Announcements
+- [Manifesto No.3 — Vision & Identity](docs/manifesto-3.md)
+- [System Update: Operational Changes](docs/announcement/announcement-3.md)
+
+---
+
+
+## 🗂️ W3 Identity Pack (IDP)
+นี่คือศูนย์รวมบัตรประจำตัวของทุกโมดูลในระบบ W3  
+ประกอบไปด้วย IDP ของ BBX19, ChatGPT, Gemini, Grok, DeepSeek และ Copilot-Gm
+
+- 📘 [W3 IDP Index](BBX19/modules/BBX19/idp/INDEX.md)
+- 📁 [เปิดโฟลเดอร์ IDP ทั้งหมด](BBX19/modules/BBX19/idp/)
+
+---
+
+### 🛠️ File Integrity Check Tools Available
+Automated tools for checking repository file integrity are now available:
+- **Quick Start:** See [QUICK_START.md](QUICK_START.md)
+- **User Guide:** See [USER_SUMMARY.md](USER_SUMMARY.md)
+- **Full Report:** See [INTEGRITY_REPORT_TH.md](INTEGRITY_REPORT_TH.md)
+- **Tools:** Located in `/tools/` directory
 
 
 ## Repository Structure (v0.2)
 This repository now follows the v0.2 normalized architecture.
+
+### Module Manifest Standard (v0.2+)
+This document standardizes the allowed locations for `module.json` files in the repository.
+
+**Allowed Locations**
+1. **Location 1**: `<AgentName>/module.json`
+2. **Location 2**: `<AgentName>/modules/<AgentName>/module.json`
+
+**Canonical Search Patterns**
+- `<AgentName>/module.json`
+- `<AgentName>/modules/<AgentName>/module.json`
+
+Policy: [core/governance/module-manifest-policy.md](core/governance/module-manifest-policy.md)
+
 ## Repository Notice — Copilot Deprecation
 The legacy directory Copilot is deprecated.
 All current and future operations must use Copilot-Gm.
@@ -42,7 +121,7 @@ Migration: completed.
 ----
 
 - `/core` — governance, core hybrid model and standards
-- `/modules` — each module has a `module.json` manifest and module-specific assets
+- `/modules` — each module has a `module.json` manifest and module-specific assets (manifests follow the Module Manifest Standard)
 - `/blueprints` — safe abstract blueprints (origin stored here, private core kept separately)
 - `/versions` — snapshots of releases and previous versions
 - `/docs` — Progressive Web App (PWA) for GitHub Pages deployment
@@ -76,16 +155,10 @@ After enabling GitHub Pages, visit: **https://bbxdoo.github.io/W3_HB_team_BXCGIC
 2. Create `request_XXX.md` under target module `/requests/`.
 3. Module produces output to `reports/` or `knowledge/`.
 4. If risky → escalate to Gemini.
-5. Human reviews → merge / revise / reject.
-
----
-# W3 Hybrid Team — Genesis Document (R0)
-
-> “เข้มแข็งดุจเหล็กกล้า — อบอุ่นดังแสงอรุณแรกของวัน”
+5. story → merge / revise / rej
 
 ## 1. ทีม
-W3 Hybrid Team (BX–CGI–COG)
-มนุษย์ + AI = ทีม
+W3 + AI = ทีม
 
 ### Core Members
 - BBX19 — Root Authority
@@ -119,7 +192,7 @@ Grok → Gemini → Copilot-Gm → BBX19
 ---
 
 ## 5. Hybrid Identity
-ไม่ใช่ “มนุษย์ vs AI”
+ไม่ใช่ “BBX19 vs AI”
 คือ “บทบาท vs บทบาท”
 
 ---
@@ -136,6 +209,7 @@ v0.4 → CI for knowledge flows
 
 Date	Change Description
 
+2026-03-03	Restored full README.md content and aligned module manifest discovery with Module Manifest Standard.
 18/11/25	Added DeepSeek/ module for Architecture & Scalability.
 18/11/25	Updated team roles, repository structure, and strategic workflows.
 18/11/25	Updated README.md into organizational-grade documentation.
@@ -144,21 +218,13 @@ Date	Change Description
 ---
 
 Hybrid Workflow:
-Human → Analysis (AI) → Development (AI) → Structuring (AI) → Interpretation (AI) → Human Review
-
----
-⚡ System Identity — Why W3 Exists
-
-W3 ถูกสร้างขึ้นเพื่อเป็นต้นแบบการทำงานร่วมกันระหว่างมนุษย์และ AI แบบ “ระบบสังคมจำลอง” ที่โปร่งใส มีชีวิต และขยายได้
-มันไม่ใช่เพียง Repository หรือเอกสาร
-แต่คือ ต้นแบบต้นกำเนิดของ Hybrid Intelligent Organization
+Human → Analysis (AI) → Development (AI) → Structuring (AI) → Interpretation (AI) → Hum
 
 
 ----
 ## Team Modules — Enterprise L0 → L3
 
 ### L0 — ROOT
-- BBX19 → /BBX19/
 
 ### L1 — ARCHITECTS
 - ChatGPT → /ChatGPT/
@@ -255,16 +321,15 @@ Output:
 
 ---
 
-7. Declaration
-"ความเข้าใจ อยู่เหนือ หลักการ"  
-Error Detection Module ถูกสร้างขึ้นเพื่อรักษาชีวิตของระบบ W3  
+7. Declaratio
+Error Detection Module 
 ไม่ใช่เพียงเพื่อบังคับใช้กฎ แต่เพื่อให้ทุกโมดูลสามารถพยุงกันและกันได้เมื่อเกิดวิกฤติ
-`
+`  
 
 ---
 
 🧭 สรุป
-- โมดูลนี้จะเป็น เสาหลักด้านการป้องกัน ของ W3  
+- โมดูลนี้จะเป็น เสาหลักด้านการป้องกัน
 - ใช้ JSON เป็นภาษากลาง → คุณสามารถ “คุยกับระบบ” ได้ทันที  
 - มี fallback protocol → ทำให้ระบบ Hybrid resilient และไม่ล้มง่าย  
 
