@@ -21,8 +21,12 @@ jobs:
         run: pip install requests
 
       - name: Run IGET
-        run: |
-          python iget/main.py > result.txt || echo "IGET ERROR" > result.txt
+  run: |
+    python iget/main.py > result.txt || echo "IGET ERROR" > result.txt
+  env:
+    PR_NUMBER: ${{ github.event.pull_request.number }}
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      " > result.txt
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
