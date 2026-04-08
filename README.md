@@ -124,8 +124,29 @@ Migration: completed.
 - `/modules` — each module has a `module.json` manifest and module-specific assets (manifests follow the Module Manifest Standard)
 - `/blueprints` — safe abstract blueprints (origin stored here, private core kept separately)
 - `/versions` — snapshots of releases and previous versions
+- `/docs` — Progressive Web App (PWA) for GitHub Pages deployment
 - `CHANGELOG.md` — version history and release notes
 
+## 🌐 Progressive Web App (PWA)
+
+This repository now provides a Progressive Web App accessible through GitHub Pages. The PWA is deployed from the `/docs` folder and provides a mobile-first, responsive interface for accessing repository information.
+
+**Features:**
+- 📱 Mobile-first responsive design
+- 💾 Offline support with service worker caching
+- 🏠 Installable on home screen (iOS/Android)
+- ⚡ Fast loading with caching strategy
+
+**Setup GitHub Pages:**
+1. Go to repository **Settings** → **Pages**
+2. Under "Build and deployment":
+   - Source: **Deploy from a branch**
+   - Branch: Select **main** (or your default branch)
+   - Folder: Select **/docs**
+3. Click **Save**
+
+**Access the PWA:**
+After enabling GitHub Pages, visit: **https://bbxdoo.github.io/W3_HB_team_BXCGICOG/**
 
 ---
 
