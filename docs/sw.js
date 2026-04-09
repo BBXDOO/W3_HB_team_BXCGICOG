@@ -239,7 +239,7 @@ function scheduleRetryProcessing() {
     const timeSinceLastAttempt = now - item.lastAttempt;
     const requiredDelay = RETRY_BASE_DELAY_MS * Math.pow(2, item.attempts);
     const remainingDelay = Math.max(0, requiredDelay - timeSinceLastAttempt);
-    minDelay = Math.min(minDelay, remainingDelay || RETRY_BASE_DELAY_MS);
+    minDelay = Math.min(minDelay, remainingDelay);
   });
 
   retryTimerId = setTimeout(() => {
