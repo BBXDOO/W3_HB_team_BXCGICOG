@@ -29,7 +29,7 @@ Repository นี้มี Progressive Web App ที่สามารถใช
 4. Save → รอ 1-2 นาที
 
 **วิธีที่ 2:** หากยังไม่ merge PR ให้ merge PR ก่อน แล้วใช้การตั้งค่าเดียวกับวิธีที่ 1
-1. Merge PR #87 เข้า main
+1. Merge PR นี้เข้า main
 2. Settings → Pages
 3. Branch: **`main`** / Folder: **`/docs`**
 
