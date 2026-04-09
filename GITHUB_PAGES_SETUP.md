@@ -29,7 +29,8 @@
 
 2. **Branch** section:
    - คลิกที่ dropdown branch แรก
-   - เลือก **`main`**
+   - เลือก branch ที่มีไฟล์ PWA อยู่จริง (เช่น branch ของ PR/feature branch หากยังไม่ได้ merge)
+   - หากต้องการเลือก **`main`** ไฟล์ในโฟลเดอร์ **`/docs`** ต้องถูก merge เข้า `main` แล้วก่อน
    
 3. **Folder** section (dropdown ที่สอง):
    - เลือก **`/docs`**
