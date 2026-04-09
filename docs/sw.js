@@ -166,27 +166,29 @@ self.addEventListener('fetch', (event) => {
         const requestClone = event.request.clone();
 
         // Cache successful responses with retry on failure
-        caches.open(CACHE_NAME)
-          .then((cache) => {
-            return cache.put(requestClone, responseToCache);
-          })
-          .then(() => {
-            console.log('[SW] Cached successfully:', event.request.url);
-          })
-          .catch((error) => {
-            console.error('[SW] Cache put failed:', error.message || error);
-            // Add to retry queue (will be processed later)
-            if (!failedCacheQueue.has(event.request.url)) {
-              failedCacheQueue.set(event.request.url, {
-                attempts: 0,
-                lastAttempt: Date.now(),
-                request: requestClone
-              });
-              console.log('[SW] Added to retry queue:', event.request.url);
-              // Schedule retry processing
-              scheduleRetryProcessing();
-            }
-          });
+        event.waitUntil(
+          caches.open(CACHE_NAME)
+            .then((cache) => {
+              return cache.put(requestClone, responseToCache);
+            })
+            .then(() => {
+              console.log('[SW] Cached successfully:', event.request.url);
+            })
+            .catch((error) => {
+              console.error('[SW] Cache put failed:', error.message || error);
+              // Add to retry queue (will be processed later)
+              if (!failedCacheQueue.has(event.request.url)) {
+                failedCacheQueue.set(event.request.url, {
+                  attempts: 0,
+                  lastAttempt: Date.now(),
+                  request: requestClone
+                });
+                console.log('[SW] Added to retry queue:', event.request.url);
+                // Schedule retry processing
+                scheduleRetryProcessing();
+              }
+            })
+        );
 
         return response;
       } catch (error) {
