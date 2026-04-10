@@ -1,31 +1,37 @@
-# IGET v1 Spec
+# IGET (v1) — W3 0.5 PR Flow Assistant
 
-- **Normal Run vs Soft Run**: 
-  - Normal Run: runs with all checks.
-  - Soft Run: runs with reduced checks.
+IGET คือปลั๊กอิน/บอตสำหรับ Pull Request ที่ “แปล” ขั้นตอน GitHub ที่ซับซ้อนให้เป็น **Flow + สี + ความเสี่ยง + เงื่อนไขขั้นต่ำ** เพื่อให้เข้าใจได้ทันทีโดยไม่ต้องอ่านคู่มือยาว
 
-- **W3 0.5 Color Semantics**:
-  - Define usage of colors in different contexts.
+## W3 0.5 + Color Trigger
+IGET ใช้แนวคิด “ความคลุมเครือที่ควบคุมได้ (W3 0.5)” เพื่ออธิบายสถานการณ์เป็นระดับ:
 
-- **Nodes A-F**:
-  - A: Input handling
-  - B: Processing
-  - C: Output generation
-  - D: Error handling
-  - E: Configuration
-  - F: Logging
+- 🟩 **Green** = พร้อม/ปลอดภัย/ความเสี่ยงต่ำ
+- 🟨 **Yellow** = ยังไม่พัง แต่มีความเสี่ยง/ควรระวัง/ควรแก้ก่อน merge
+- 🟥 **Red** = ความเสี่ยงสูง/ควรหยุดและแก้/ไม่ผ่านขั้นต่ำ
 
-- **Outputs**:
-  - Expected outputs from each node in various runs.
+สีเป็นภาษาสากล ช่วยให้เกิด “ภาพจำ” ของวิธีใช้งานโดยไม่ต้องจำศัพท์ GitHub จำนวนมาก
 
-- **Config-Driven Behavior**: 
-  - Behavior determined by configuration files.
-  - **Lint Check**: Must pass lint check if specified in config.
+## 2 Modes
+### 1) Normal Run (สรุปสิ่งที่เกิดขึ้นจริง)
+PR เดินตามกระบวนการจริง (lint/review/merge) แล้ว IGET สรุปออกมาเป็นภาษามนุษย์:
+- เกิดอะไรขึ้นบ้าง
+- เรียก check/action อะไร
+- จุดเสี่ยง/จุดพังอยู่ตรงไหน
+- สรุปผลท้ายทาง
 
-## Example YAML
+### 2) Soft Run (ช่วยตัดสินใจก่อน/ระหว่างทาง)
+Soft Run แสดง 3 ส่วน:
+- **A) Choice** — ทางเลือกที่เป็นไปได้ตอนนี้
+- **B) Pre-test** — จำลอง/คาดการณ์ว่าจะเกิดอะไรขึ้นจากสัญญาณจริง
+- **C) Recommend** — เงื่อนไขขั้นต่ำที่เป็นไปได้เพื่อให้ผ่าน
 
-```yaml
-mode: soft
-check:
-  name: lint
-```
+## Primary Check (v1)
+- `lint` คือ check หลักที่ใช้ตัดสิน state
+- ค่าเริ่มต้นของระบบ: `soft mode`
+
+## Where this lives
+เอกสารทั้งหมดของ IGET v1 อยู่ในโฟลเดอร์ `iget/`:
+- `README.md` ภาพรวมแนวคิด
+- `SPEC_V1.md` สเปกโหนด/สถานะ/การ render
+- `CONFIG_SCHEMA.md` โครงสร้าง `.iget.yml`
+- `OUTPUT_FORMAT.md` รูปแบบข้อความคอมเมนต์ PR
