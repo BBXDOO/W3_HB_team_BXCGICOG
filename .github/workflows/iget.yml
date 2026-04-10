@@ -1,34 +1,50 @@
 name: IGET PR Analyzer
 
 on:
-  pull_request:
-    types: [opened, synchronize]
+pull_request:
+types: [opened, synchronize]
 
 jobs:
-  iget:
-    runs-on: ubuntu-latest
+iget:
+runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+steps:
+  - name: Checkout
+    uses: actions/checkout@v3
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+  - name: Setup Python
+    uses: actions/setup-python@v4
+    with:
+      python-version: '3.10'
 
-      - name: Install deps
-        run: pip install requests
+  - name: Install deps
+    run: pip install requests
 
-      - name: Run IGET
-        run: python iget/main.py
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_SHA: ${{ github.sha }}
+  - name: Run IGET
+    run: |
+      python iget/main.py > result.json
+    env:
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REPO: ${{ github.repository }}
 
-      - name: Comment PR
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          path: result.txt
+  - name: Inline Review (D Node)
+    uses: actions/github-script@v7
+    with:
+      script: |
+        const fs = require('fs');
+        const data = JSON.parse(fs.readFileSync('result.json', 'utf8'));
+
+        const comments = data.comments.map(c => ({
+          path: c.path,
+          line: c.line,
+          body: c.body
+        }));
+
+        await github.rest.pulls.createReview({
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          pull_number: context.issue.number,
+          event: "COMMENT",
+          comments: comments
+        });
