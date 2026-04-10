@@ -1,5 +1,3 @@
-import json
-
 IMPACT_MAP = {
     "green": "ไม่มีผลกระทบ",
     "yellow": "มีผลกระทบบางส่วน",
@@ -35,41 +33,19 @@ class PRFlow:
         return SUCCESS_RATE
 
     def recommend(self, sim):
-        best = max(sim, key=sim.get)
-        return best
+        return max(sim, key=sim.get)
 
-    def apply_decision(self, node, choice):
-        mapping = {"1": "green", "2": "yellow", "3": "red"}
-        state = mapping.get(choice, "red")
-
-        node["state"] = state
-        node["done"] = True
-
-        self.log.append({
-            "node": node["id"],
-            "state": state,
-            "impact": IMPACT_MAP[state]
-        })
-
-        self.update_progress()
-
-        return state
-
-    def auto_run(self):
+    def auto_run(self, risk_state="green"):
         for node in self.nodes:
             if node["id"] in ["C", "E"]:
-                sim = self.simulate()
-                rec = self.recommend(sim)
-
-                # ใช้ recommendation อัตโนมัติ
-                node["state"] = rec
+                state = risk_state
+                node["state"] = state
                 node["done"] = True
 
                 self.log.append({
                     "node": node["id"],
-                    "state": rec,
-                    "impact": IMPACT_MAP[rec],
-                    "recommend": True
+                    "state": state,
+                    "impact": IMPACT_MAP[state]
                 })
             else:
                 node["state"] = "green"
@@ -77,11 +53,56 @@ class PRFlow:
 
             self.update_progress()
 
-    def export(self):
-        return {
-            "pr": self.pr_id,
-            "progress": self.progress,
-            "flow": [n["id"] for n in self.nodes],
-            "states": [n["state"] for n in self.nodes],
-            "issues": self.log
+    def build_markdown(self, metrics, score):
+        emoji = {
+            "green": "🟢",
+            "yellow": "🟡",
+            "red": "🔴"
         }
+
+        states = [n["state"] for n in self.nodes]
+
+        flow_visual = ""
+        for s in states:
+            if s == "green":
+                flow_visual += "🟩"
+            elif s == "yellow":
+                flow_visual += "🟨"
+            else:
+                flow_visual += "🟥"
+
+        output = []
+
+        output.append("# 🔍 IGET PR Analysis")
+        output.append(f"## 🧾 PR: {self.pr_id}")
+        output.append(f"\n## 📊 Progress\n[{ '█'*10 }] {int(self.progress)}%")
+
+        output.append("\n## 🔗 Flow")
+        output.append("A → B → C → D → E → F")
+
+        output.append("\n## 🧩 Flow State")
+        output.append(flow_visual)
+
+        output.append("\n## 📋 Issues")
+        for log in self.log:
+            output.append(f"- {log['node']} → {emoji[log['state']]} {log['state']}")
+
+        output.append("\n## 🎯 Impact")
+        for log in self.log:
+            output.append(f"- {log['impact']}")
+
+        output.append("\n## 🧠 Analysis")
+        output.append(f"Score: {score}/100")
+
+        output.append("\n## 📂 PR Data")
+        output.append(f"- files: {metrics['total_files']}")
+        output.append(f"- changes: {metrics['total_changes']}")
+        output.append(f"- python: {metrics['python_files']}")
+        output.append(f"- tests: {metrics['test_files']}")
+
+        result = "✅ สำเร็จ" if "red" not in states else "❌ มีความเสี่ยง"
+
+        output.append("\n## 🏁 Result")
+        output.append(result)
+
+        return "\n".join(output)
