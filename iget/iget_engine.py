@@ -1,108 +1,83 @@
+import requests
+
 IMPACT_MAP = {
     "green": "ไม่มีผลกระทบ",
     "yellow": "มีผลกระทบบางส่วน",
     "red": "เสี่ยงต่อระบบ"
 }
 
-SUCCESS_RATE = {
-    "green": 0.87,
-    "yellow": 0.65,
-    "red": 0.25
-}
+def get_pr_files(repo, pr_number, token):
+    url = f"https://api.github.com/repos/{repo}/pulls/{pr_number}/files"
+    headers = {"Authorization": f"Bearer {token}"}
+    return requests.get(url, headers=headers).json()
 
-class PRFlow:
-    def __init__(self, pr_id="local"):
-        self.pr_id = pr_id
-        self.nodes = []
-        self.log = []
-        self.progress = 0
+def get_pr_patch(repo, pr_number, token):
+    url = f"https://api.github.com/repos/{repo}/pulls/{pr_number}"
+    headers = {"Authorization": f"Bearer {token}",
+               "Accept": "application/vnd.github.v3.patch"}
+    return requests.get(url, headers=headers).text
 
-    def add_node(self, node_id, node_type):
-        self.nodes.append({
-            "id": node_id,
-            "type": node_type,
-            "state": None,
-            "done": False
-        })
+def extract_metrics(files):
+    total_files = len(files)
+    total_changes = sum(f.get("changes", 0) for f in files)
+    test_files = sum(1 for f in files if "test" in f.get("filename", "").lower())
 
-    def update_progress(self):
-        done = len([n for n in self.nodes if n["done"]])
-        self.progress = (done / len(self.nodes)) * 100 if self.nodes else 0
+    return {
+        "files": total_files,
+        "changes": total_changes,
+        "tests": test_files
+    }
 
-    def simulate(self):
-        return SUCCESS_RATE
+def evaluate(metrics):
+    score = 100
+    reasons = []
 
-    def recommend(self, sim):
-        return max(sim, key=sim.get)
+    if metrics["files"] > 5:
+        score -= 20
+        reasons.append("เปลี่ยนหลายไฟล์")
 
-    def auto_run(self, risk_state="green"):
-        for node in self.nodes:
-            if node["id"] in ["C", "E"]:
-                state = risk_state
-                node["state"] = state
-                node["done"] = True
+    if metrics["changes"] > 300:
+        score -= 30
+        reasons.append("diff ขนาดใหญ่")
 
-                self.log.append({
-                    "node": node["id"],
-                    "state": state,
-                    "impact": IMPACT_MAP[state]
-                })
-            else:
-                node["state"] = "green"
-                node["done"] = True
+    if metrics["tests"] == 0:
+        score -= 30
+        reasons.append("ไม่มี test")
 
-            self.update_progress()
+    if score >= 70:
+        state = "green"
+    elif score >= 40:
+        state = "yellow"
+    else:
+        state = "red"
 
-    def build_markdown(self, metrics, score):
-        emoji = {
-            "green": "🟢",
-            "yellow": "🟡",
-            "red": "🔴"
-        }
+    return state, score, reasons
 
-        states = [n["state"] for n in self.nodes]
+def recommend(metrics, state):
+    rec = []
 
-        flow_visual = ""
-        for s in states:
-            if s == "green":
-                flow_visual += "🟩"
-            elif s == "yellow":
-                flow_visual += "🟨"
-            else:
-                flow_visual += "🟥"
+    if metrics["tests"] == 0:
+        rec.append("เพิ่ม test เพื่อรองรับ logic")
 
-        output = []
+    if metrics["files"] > 5:
+        rec.append("แยก PR ให้เล็กลง")
 
-        output.append("# 🔍 IGET PR Analysis")
-        output.append(f"## 🧾 PR: {self.pr_id}")
-        output.append(f"\n## 📊 Progress\n[{ '█'*10 }] {int(self.progress)}%")
+    if metrics["changes"] > 300:
+        rec.append("ลดขนาด diff หรือแบ่ง commit")
 
-        output.append("\n## 🔗 Flow")
-        output.append("A → B → C → D → E → F")
+    if not rec:
+        rec.append("โครงสร้างเหมาะสม สามารถ merge ได้")
 
-        output.append("\n## 🧩 Flow State")
-        output.append(flow_visual)
+    return rec
 
-        output.append("\n## 📋 Issues")
-        for log in self.log:
-            output.append(f"- {log['node']} → {emoji[log['state']]} {log['state']}")
+def build_inline_comments(files, state):
+    comments = []
 
-        output.append("\n## 🎯 Impact")
-        for log in self.log:
-            output.append(f"- {log['impact']}")
+    for f in files:
+        if f.get("changes", 0) > 200:
+            comments.append({
+                "path": f["filename"],
+                "body": f"🔴 ไฟล์นี้มีการแก้ไขหนัก ({f['changes']} lines) ควรแยกหรือ review เพิ่ม"
+            })
 
-        output.append("\n## 🧠 Analysis")
-        output.append(f"Score: {score}/100")
-
-        output.append("\n## 📂 PR Data")
-        output.append(f"- files: {metrics['total_files']}")
-        output.append(f"- changes: {metrics['total_changes']}")
-        output.append(f"- python: {metrics['python_files']}")
-        output.append(f"- tests: {metrics['test_files']}")
-
-        result = "✅ สำเร็จ" if "red" not in states else "❌ มีความเสี่ยง"
-
-        output.append("\n## 🏁 Result")
-        output.append(result)
-
-        return "\n".join(output)
+    return comments
