@@ -2,18 +2,12 @@ import os
 import json
 import requests
 
-# ----------------------
-# FETCH PR FILES
-# ----------------------
 def get_pr_files(repo, pr_number, token):
     url = f"https://api.github.com/repos/{repo}/pulls/{pr_number}/files"
     headers = {"Authorization": f"Bearer {token}"}
-    res = requests.get(url, headers=headers)
-    return res.json() if res.status_code == 200 else []
+    r = requests.get(url, headers=headers)
+    return r.json() if r.status_code == 200 else []
 
-# ----------------------
-# METRICS
-# ----------------------
 def extract_metrics(files):
     return {
         "files": len(files),
@@ -21,62 +15,39 @@ def extract_metrics(files):
         "tests": sum(1 for f in files if "test" in f.get("filename", "").lower())
     }
 
-# ----------------------
-# RISK
-# ----------------------
-def evaluate(metrics):
+def evaluate(m):
     score = 100
     reasons = []
 
-    if metrics["files"] > 5:
+    if m["files"] > 5:
         score -= 20
         reasons.append("เปลี่ยนหลายไฟล์")
 
-    if metrics["changes"] > 300:
+    if m["changes"] > 300:
         score -= 30
         reasons.append("แก้ไขจำนวนมาก")
 
-    if metrics["tests"] == 0:
+    if m["tests"] == 0:
         score -= 30
         reasons.append("ไม่มี test")
 
-    if score >= 70:
-        state = "green"
-    elif score >= 40:
-        state = "yellow"
-    else:
-        state = "red"
-
+    state = "green" if score >= 70 else "yellow" if score >= 40 else "red"
     return state, score, reasons
 
-# ----------------------
-# RECOMMEND
-# ----------------------
-def recommend(metrics):
+def recommend(m):
     rec = []
+    if m["tests"] == 0:
+        rec.append("เพิ่ม test")
+    if m["files"] > 5:
+        rec.append("แยก PR")
+    if m["changes"] > 300:
+        rec.append("ลดขนาด PR")
+    return rec if rec else ["พร้อม merge"]
 
-    if metrics["tests"] == 0:
-        rec.append("เพิ่ม test เพื่อความปลอดภัย")
-
-    if metrics["files"] > 5:
-        rec.append("แยก PR ให้เล็กลง")
-
-    if metrics["changes"] > 300:
-        rec.append("ลดขนาดการแก้ไข")
-
-    if not rec:
-        rec.append("โครงสร้างดี สามารถ merge ได้")
-
-    return rec
-
-# ----------------------
-# INLINE COMMENTS (D NODE)
-# ----------------------
 def build_comments(files):
-    comments = []
-
+    out = []
     for f in files:
-        filename = f.get("filename")
+        name = f.get("filename")
         patch = f.get("patch", "")
 
         line = 1
@@ -85,50 +56,34 @@ def build_comments(files):
                 try:
                     line = int(p.split("+")[1].split(",")[0])
                 except:
-                    line = 1
+                    pass
                 break
 
         if f.get("changes", 0) > 200:
-            comments.append({
-                "path": filename,
-                "line": line,
-                "body": "🔴 แก้ไขจำนวนมาก อาจเสี่ยงต่อระบบ"
-            })
+            out.append({"path": name, "line": line, "body": "🔴 แก้เยอะ"})
 
-        if "test" not in filename.lower():
-            comments.append({
-                "path": filename,
-                "line": line,
-                "body": "🟡 ยังไม่มี test รองรับ"
-            })
+        if "test" not in name.lower():
+            out.append({"path": name, "line": line, "body": "🟡 ไม่มี test"})
 
-    return comments
+    return out
 
-# ----------------------
-# MAIN
-# ----------------------
 def run():
     repo = os.getenv("GITHUB_REPOSITORY")
     pr = os.getenv("PR_NUMBER")
     token = os.getenv("GITHUB_TOKEN")
 
     files = get_pr_files(repo, pr, token)
-    metrics = extract_metrics(files)
-    state, score, reasons = evaluate(metrics)
-    rec = recommend(metrics)
-    comments = build_comments(files)
+    m = extract_metrics(files)
+    state, score, reasons = evaluate(m)
 
-    output = {
-        "summary": {
-            "level": state,
-            "reasons": reasons
-        },
+    result = {
+        "summary": {"level": state, "reasons": reasons},
         "score": score,
-        "recommend": rec,
-        "comments": comments
+        "recommend": recommend(m),
+        "comments": build_comments(files)
     }
 
-    print(json.dumps(output))
+    print(json.dumps(result))
 
 if __name__ == "__main__":
     run()
