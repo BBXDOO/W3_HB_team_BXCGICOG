@@ -1,9 +1,21 @@
 import os
+import json
 import requests
 
-# ----------------------
+# ======================
+# CONFIG
+# ======================
+IMPACT_MAP = {
+    "green": "ไม่มีผลกระทบ",
+    "yellow": "มีผลกระทบบางส่วน",
+    "red": "เสี่ยงต่อระบบ"
+}
+
+MEMORY_FILE = "iget_memory.json"
+
+# ======================
 # FETCH PR FILES
-# ----------------------
+# ======================
 def get_pr_files(repo, pr_number, token):
     url = f"https://api.github.com/repos/{repo}/pulls/{pr_number}/files"
     headers = {
@@ -12,16 +24,14 @@ def get_pr_files(repo, pr_number, token):
     }
 
     res = requests.get(url, headers=headers)
-
     if res.status_code != 200:
-        raise Exception(f"GitHub API error: {res.status_code}")
+        return []
 
     return res.json()
 
-
-# ----------------------
+# ======================
 # METRICS
-# ----------------------
+# ======================
 def extract_metrics(files):
     total_files = len(files)
     total_changes = 0
@@ -47,10 +57,9 @@ def extract_metrics(files):
         "test_files": test_files
     }
 
-
-# ----------------------
+# ======================
 # RULE ENGINE
-# ----------------------
+# ======================
 def evaluate_risk(files, metrics):
     score = 100
     reasons = []
@@ -65,7 +74,7 @@ def evaluate_risk(files, metrics):
 
     if metrics["python_files"] > 3:
         score -= 20
-        reasons.append("เกี่ยวข้องกับ logic (.py หลายไฟล์)")
+        reasons.append("เกี่ยวข้องกับ logic หลายไฟล์")
 
     if metrics["test_files"] == 0:
         score -= 30
@@ -76,7 +85,7 @@ def evaluate_risk(files, metrics):
 
         if "config" in name:
             score -= 25
-            reasons.append("แก้ไขไฟล์ config")
+            reasons.append("แก้ไข config")
             break
 
         if "db" in name:
@@ -86,7 +95,7 @@ def evaluate_risk(files, metrics):
 
     if any(f.get("changes", 0) > 300 for f in files):
         score -= 25
-        reasons.append("มีไฟล์ที่ถูกแก้หนักมาก")
+        reasons.append("มีไฟล์แก้ไขหนัก")
 
     if score >= 70:
         state = "green"
@@ -97,88 +106,152 @@ def evaluate_risk(files, metrics):
 
     return state, score, reasons
 
+# ======================
+# SUMMARY (E + G)
+# ======================
+def build_summary(state, reasons):
+    level = state
+    impact = IMPACT_MAP[state]
 
-# ----------------------
-# BUILD OUTPUT
-# ----------------------
-def build_output(pr_number, commit, state, score, reasons, metrics):
+    summary = []
+    if reasons:
+        for r in reasons:
+            summary.append(r)
+    else:
+        summary.append("ไม่มีปัญหาที่ตรวจพบ")
+
+    return summary, level, impact
+
+# ======================
+# RECOMMEND (R)
+# ======================
+def build_recommendation(metrics):
+    rec = []
+
+    if metrics["total_files"] > 5:
+        rec.append("แนะนำให้แยก PR เป็นส่วนย่อย")
+
+    if metrics["test_files"] == 0:
+        rec.append("ควรเพิ่ม test")
+
+    if metrics["total_changes"] > 300:
+        rec.append("ลดขนาด PR")
+
+    if not rec:
+        rec.append("โครงสร้างดีแล้ว สามารถ merge ได้")
+
+    return rec
+
+# ======================
+# MEMORY
+# ======================
+def load_memory():
+    if not os.path.exists(MEMORY_FILE):
+        return []
+    with open(MEMORY_FILE, "r") as f:
+        return json.load(f)
+
+def save_memory(data):
+    mem = load_memory()
+    mem.append(data)
+
+    with open(MEMORY_FILE, "w") as f:
+        json.dump(mem, f, indent=2)
+
+# ======================
+# RENDER (Markdown)
+# ======================
+def render(pr, state, score, metrics, summary, level, impact, rec):
     emoji = {
         "green": "🟢",
         "yellow": "🟡",
         "red": "🔴"
     }
 
-    flow_state = "🟩🟩"
-    flow_state += "🟨" if state == "yellow" else "🟥" if state == "red" else "🟩"
-    flow_state += "🟩"
-    flow_state += "🟨" if state == "yellow" else "🟥" if state == "red" else "🟩"
-    flow_state += "🟩"
+    flow = "🟩🟩"
+    flow += "🟨" if state == "yellow" else "🟥" if state == "red" else "🟩"
+    flow += "🟩"
+    flow += "🟨" if state == "yellow" else "🟥" if state == "red" else "🟩"
+    flow += "🟩"
 
     output = []
 
     output.append("# 🔍 IGET PR Analysis")
-    output.append(f"## 🧾 PR: {pr_number}")
-    output.append(f"🧬 Commit: `{commit}`")
+    output.append(f"## 🧾 PR: {pr}\n")
 
-    output.append("\n## 📊 Progress")
-    output.append("[██████████] 100%")
+    # B + C
+    output.append("## 📊 Progress")
+    output.append("[██████████] 100%\n")
 
-    output.append("\n## 🔗 Flow")
-    output.append("A → B → C → D → E → F")
+    # Flow
+    output.append("## 🔗 Flow")
+    output.append("A → B → C → D → E → F\n")
 
-    output.append("\n## 🧩 Flow State")
-    output.append(flow_state)
+    output.append("## 🧩 Flow State")
+    output.append(flow + "\n")
 
-    output.append("\n## 📋 Issues")
-    output.append(f"- C → {emoji[state]} {state}")
-    output.append(f"- E → {emoji[state]} {state}")
+    # SUMMARY
+    output.append("## 📋 SUMMARY")
+    for s in summary:
+        output.append(f"- {s}")
 
-    output.append("\n## 🎯 Impact")
-    if reasons:
-        for r in reasons:
-            output.append(f"- {r}")
-    else:
-        output.append("- ไม่มีผลกระทบ")
+    # LEVEL
+    output.append("\n## 🎚 LEVEL")
+    output.append(f"{emoji[level]} {level}")
 
-    output.append("\n## 🧠 Analysis")
-    output.append(f"Score: {score}/100")
+    # IMPACT
+    output.append("\n## 🎯 IMPACT")
+    output.append(impact)
 
-    output.append("\n## 📂 PR Data")
+    # METRICS
+    output.append("\n## 📂 DATA")
     output.append(f"- files: {metrics['total_files']}")
     output.append(f"- changes: {metrics['total_changes']}")
     output.append(f"- python: {metrics['python_files']}")
     output.append(f"- tests: {metrics['test_files']}")
 
-    result = "✅ สำเร็จ" if state != "red" else "❌ มีความเสี่ยง"
+    # SCORE
+    output.append(f"\n## 🧠 SCORE: {score}/100")
 
-    output.append("\n## 🏁 Result")
+    # RECOMMEND
+    output.append("\n## 🧠 RECOMMEND")
+    for r in rec:
+        output.append(f"- {r}")
+
+    # RESULT
+    result = "✅ ผ่าน" if state != "red" else "❌ เสี่ยง"
+    output.append("\n## 🏁 RESULT")
     output.append(result)
 
-    return "\n".join(output)
+    print("```")
+    print("\n".join(output))
+    print("```")
 
-
-# ----------------------
+# ======================
 # MAIN
-# ----------------------
+# ======================
 def run():
     repo = os.getenv("GITHUB_REPOSITORY")
     pr_number = os.getenv("PR_NUMBER")
     token = os.getenv("GITHUB_TOKEN")
-    commit = os.getenv("GITHUB_SHA", "")[:7]
 
     files = get_pr_files(repo, pr_number, token)
     metrics = extract_metrics(files)
     state, score, reasons = evaluate_risk(files, metrics)
 
-    result_text = build_output(pr_number, commit, state, score, reasons, metrics)
+    summary, level, impact = build_summary(state, reasons)
+    rec = build_recommendation(metrics)
 
-    # ✅ IMPORTANT: write file for GitHub Action
-    with open("result.txt", "w") as f:
-        f.write(result_text)
+    # save memory
+    save_memory({
+        "pr": pr_number,
+        "state": state,
+        "score": score,
+        "metrics": metrics,
+        "reasons": reasons
+    })
 
-    # ✅ print for debug log
-    print(result_text)
-
+    render(pr_number, state, score, metrics, summary, level, impact, rec)
 
 if __name__ == "__main__":
     run()
