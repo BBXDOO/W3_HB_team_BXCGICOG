@@ -1,54 +1,43 @@
-def render(data):
-    emoji = {
-        "green": "🟢",
-        "yellow": "🟡",
-        "red": "🔴"
-    }
+def render_markdown(pr, state, score, reasons, metrics, recs):
+    emoji = {"green": "🟢", "yellow": "🟡", "red": "🔴"}
 
-    # ----------------------
-    # PROGRESS BAR
-    # ----------------------
-    bar = "".join([
-        "🟩" if s == "green"
-        else "🟨" if s == "yellow"
-        else "🟥"
-        for s in data["states"]
-    ])
+    bar = "🟩🟩"
+    bar += "🟨" if state == "yellow" else "🟥" if state == "red" else "🟩"
+    bar += "🟩"
+    bar += "🟨" if state == "yellow" else "🟥" if state == "red" else "🟩"
+    bar += "🟩"
 
-    percent = f"{data['progress']:.2f}"
+    md = []
+    md.append("## 🔍 IGET PR Analysis")
+    md.append(f"### PR #{pr}\n")
 
-    # ----------------------
-    # BUILD MARKDOWN
-    # ----------------------
-    output = []
+    md.append("### 📊 Progress")
+    md.append("[██████████] 100%\n")
 
-    output.append("# 🔍 IGET PR Analysis")
-    output.append(f"## 🧾 PR: {data['pr']}")
+    md.append("### 🔗 Flow")
+    md.append("A → B → C → D → E → F\n")
 
-    # B + C
-    output.append("\n## 📊 Progress")
-    output.append(f"{bar} {percent}%")
+    md.append("### 🧩 State")
+    md.append(bar + "\n")
 
-    # Flow
-    output.append("\n## 🔗 Flow")
-    output.append(" → ".join(data["flow"]))
+    md.append("### 📋 Summary")
+    for r in reasons:
+        md.append(f"- {r}")
 
-    # Summary (D/E)
-    output.append("\n## 📋 SUMMARY")
-    for i in data["issues"]:
-        output.append(f"- {i['node']} → {emoji[i['state']]} {i['state']}")
+    md.append("\n### 🎯 Impact")
+    md.append(f"{emoji[state]} {state} (score: {score})")
 
-    # Impact (F + G)
-    output.append("\n## 🎯 IMPACT")
-    for i in data["issues"]:
-        output.append(f"- {i['node']} → {i['impact']}")
+    md.append("\n### 🧠 Recommend")
+    for r in recs:
+        md.append(f"- {r}")
 
-    # Result
-    if any(i["state"] == "red" for i in data["issues"]):
-        output.append("\n## 🏁 RESULT")
-        output.append("❌ มีความเสี่ยง")
-    else:
-        output.append("\n## 🏁 RESULT")
-        output.append("✅ สำเร็จ")
+    md.append("\n### 📂 Data")
+    md.append(f"- files: {metrics['files']}")
+    md.append(f"- changes: {metrics['changes']}")
+    md.append(f"- tests: {metrics['tests']}")
 
-    return "\n".join(output)
+    result = "✅ ผ่าน" if state != "red" else "❌ มีความเสี่ยง"
+    md.append("\n### 🏁 Result")
+    md.append(result)
+
+    return "\n".join(md)
