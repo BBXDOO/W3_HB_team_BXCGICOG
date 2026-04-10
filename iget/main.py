@@ -1,185 +1,145 @@
 import os
-import json
 import requests
 
-# ======================
+repo = os.getenv("REPO")
+pr = os.getenv("PR")
+token = os.getenv("GITHUB_TOKEN")
+
+headers = {
+    "Authorization": f"Bearer {token}",
+    "Accept": "application/vnd.github+json"
+}
+
+# =====================
 # FETCH PR FILES
-# ======================
-def get_pr_files(repo, pr, token):
-    url = f"https://api.github.com/repos/{repo}/pulls/{pr}/files"
-    headers = {"Authorization": f"Bearer {token}"}
-    r = requests.get(url, headers=headers)
-    return r.json() if r.status_code == 200 else []
+# =====================
+url = f"https://api.github.com/repos/{repo}/pulls/{pr}/files"
+files = requests.get(url, headers=headers).json()
 
-# ======================
+# =====================
 # METRICS
-# ======================
-def extract(files):
-    return {
-        "files": len(files),
-        "changes": sum(f.get("changes", 0) for f in files),
-        "tests": sum(1 for f in files if "test" in f["filename"].lower())
-    }
+# =====================
+total_files = len(files)
+total_changes = sum(f.get("changes", 0) for f in files)
+tests = sum(1 for f in files if "test" in f["filename"].lower())
 
-# ======================
-# NODE SYSTEM (A–F)
-# ======================
-def build_nodes(state):
-    return [
-        {"id": "A", "state": "green"},
-        {"id": "B", "state": "green"},
-        {"id": "C", "state": state},     # system check
-        {"id": "D", "state": "yellow"},  # decision (uncertain)
-        {"id": "E", "state": state},     # decision result
-        {"id": "F", "state": "green"}    # merge
-    ]
+# =====================
+# LOGIC (D)
+# =====================
+score = 100
+issues = []
 
-# ======================
-# DECISION ENGINE (D)
-# ======================
-def evaluate(m):
-    score = 100
-    issues = []
+if total_files > 5:
+    score -= 20
+    issues.append("🔴 เปลี่ยนหลายไฟล์")
 
-    if m["files"] > 5:
-        score -= 20
-        issues.append("เปลี่ยนหลายไฟล์")
+if total_changes > 300:
+    score -= 30
+    issues.append("🔴 แก้ไขหนัก")
 
-    if m["changes"] > 300:
-        score -= 30
-        issues.append("แก้ไขหนัก")
+if tests == 0:
+    score -= 30
+    issues.append("🟡 ไม่มี test")
 
-    if m["tests"] == 0:
-        score -= 30
-        issues.append("ไม่มี test")
+if score >= 70:
+    state = "green"
+elif score >= 40:
+    state = "yellow"
+else:
+    state = "red"
 
-    if score >= 70:
-        state = "green"
-    elif score >= 40:
-        state = "yellow"
-    else:
-        state = "red"
+# =====================
+# FLOW (A–F)
+# =====================
+flow_map = {
+    "green": "🟩",
+    "yellow": "🟨",
+    "red": "🟥"
+}
 
-    return state, score, issues
+flow = ["🟩","🟩",flow_map[state],"🟩",flow_map[state],"🟩"]
 
-# ======================
-# IMPACT ENGINE (G)
-# ======================
-def impact(state):
-    if state == "green":
-        return "🟢 ไม่มีผลกระทบ"
-    if state == "yellow":
-        return "🟡 มีความเสี่ยงบางส่วน"
-    return "🔴 กระทบโครงสร้าง"
+# =====================
+# IMPACT (G)
+# =====================
+impact = {
+    "green": "🟢 ไม่มีผลกระทบ",
+    "yellow": "🟡 มีความเสี่ยงบางส่วน",
+    "red": "🔴 กระทบระบบ"
+}[state]
 
-# ======================
+# =====================
 # RECOMMEND (R)
-# ======================
-def recommend(m):
-    rec = []
+# =====================
+recommend = []
 
-    if m["tests"] == 0:
-        rec.append("เพิ่ม test")
+if tests == 0:
+    recommend.append("เพิ่ม test")
 
-    if m["files"] > 5:
-        rec.append("แยก PR")
+if total_files > 5:
+    recommend.append("แยก PR")
 
-    if m["changes"] > 300:
-        rec.append("ลดขนาด PR")
+if total_changes > 300:
+    recommend.append("ลดขนาด PR")
 
-    if not rec:
-        rec.append("สามารถ merge ได้")
+if not recommend:
+    recommend.append("สามารถ merge ได้")
 
-    return rec
+# =====================
+# INLINE COMMENTS (D จริง)
+# =====================
+comments = []
 
-# ======================
-# MEMORY (pattern)
-# ======================
-def save(pr, state, score):
-    try:
-        with open("iget_memory.json", "r") as f:
-            mem = json.load(f)
-    except:
-        mem = []
+for f in files:
+    filename = f["filename"]
+    if f.get("changes", 0) > 200:
+        comments.append({
+            "path": filename,
+            "line": 1,
+            "body": "🔴 แก้ไขหนัก"
+        })
 
-    mem.append({
-        "pr": pr,
-        "state": state,
-        "score": score
-    })
+    if "test" not in filename.lower():
+        comments.append({
+            "path": filename,
+            "line": 1,
+            "body": "🟡 ไม่มี test"
+        })
 
-    with open("iget_memory.json", "w") as f:
-        json.dump(mem, f, indent=2)
+# =====================
+# POST INLINE COMMENTS
+# =====================
+for c in comments:
+    requests.post(
+        f"https://api.github.com/repos/{repo}/pulls/{pr}/comments",
+        headers=headers,
+        json=c
+    )
 
-# ======================
-# FLOW UI
-# ======================
-def render_nodes(nodes):
-    m = {"green":"🟩","yellow":"🟨","red":"🟥"}
-    return "".join([m[n["state"]] for n in nodes])
+# =====================
+# BUILD UI (COMMENT)
+# =====================
+body = "## 🔍 IGET\n\n"
 
-# ======================
-# INLINE INSIGHT (D)
-# ======================
-def insight(files):
-    out = []
-    for f in files:
-        name = f["filename"]
-        if f.get("changes", 0) > 200:
-            out.append(f"🔴 {name} แก้ไขหนัก")
-        if "test" not in name.lower():
-            out.append(f"🟡 {name} ไม่มี test")
-    return out
+body += "### FLOW\n"
+body += "".join(flow) + f" ({score}%)\n\n"
 
-# ======================
-# MAIN
-# ======================
-def run():
-    repo = os.getenv("GITHUB_REPOSITORY")
-    pr = os.getenv("PR_NUMBER")
-    token = os.getenv("GITHUB_TOKEN")
+body += "### SUMMARY\n"
+for i in issues:
+    body += f"- {i}\n"
 
-    files = get_pr_files(repo, pr, token)
-    m = extract(files)
+body += "\n### IMPACT\n"
+body += impact + "\n"
 
-    state, score, issues = evaluate(m)
-    nodes = build_nodes(state)
+body += "\n### RECOMMEND\n"
+for r in recommend:
+    body += f"- {r}\n"
 
-    flow = render_nodes(nodes)
-    imp = impact(state)
-    rec = recommend(m)
-    ins = insight(files)
-
-    save(pr, state, score)
-
-    print("```")
-    print(f"IGET PR #{pr}\n")
-
-    print("FLOW")
-    print(flow, f"{score}%")
-
-    print("\nSTATE")
-    print("A → B → C → D → E → F")
-
-    print("\nSUMMARY")
-    for i in issues:
-        print("-", i)
-
-    print("\nINSIGHT (D)")
-    for i in ins:
-        print("-", i)
-
-    print("\nIMPACT (G)")
-    print(imp)
-
-    print("\nRECOMMEND (R)")
-    for r in rec:
-        print("-", r)
-
-    print("\nRESULT")
-    print("PASS" if state != "red" else "RISK")
-
-    print("```")
-
-if __name__ == "__main__":
-    run()
+# =====================
+# POST COMMENT
+# =====================
+requests.post(
+    f"https://api.github.com/repos/{repo}/issues/{pr}/comments",
+    headers=headers,
+    json={"body": body}
+)
