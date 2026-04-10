@@ -21,11 +21,12 @@ jobs:
         run: pip install requests
 
       - name: Run IGET
-        run: |
-          python iget/main.py > result.txt || echo "IGET ERROR" > result.txt
+        run: python iget/main.py
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.sha }}
 
       - name: Comment PR
         uses: marocchino/sticky-pull-request-comment@v2
