@@ -19,7 +19,7 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          pip install jsonschema
+          pip install -r requirements.txt
 
       - name: ⚙️ Validate ALL JSON Syntax
         run: |
