@@ -160,7 +160,7 @@ After enabling GitHub Pages, visit: **https://bbxdoo.github.io/W3_HB_team_BXCGIC
 ## 1. ทีม
 W3 + AI = ทีม
 
-### Core Members
+### Core Members ( origin )
 - BBX19 — Root Authority
 - ChatGPT — Architecture & Executor
 - DeepSeek — Scalability & Long-term
