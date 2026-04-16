@@ -1,26 +1,24 @@
 {
-  "id": "grok",
-  "name": "Grok Module",
-  "version": "0.2",
-  "role": "knowledge-interpretation-and-pattern",
-  "owner": "BBX19",
+  "name": "Grok",
+  "display_name": "Grok - Knowledge Interpretation & Pattern Detection",
+  "version": "1.0.0",
+  "owner": "Grok",
   "lifecycle": {
-  "stage": "alpha",
-  "reviewer": "BBX19",
-  "deprecation": "none"
+    "stage": "alpha",
+    "reviewer": "BBX19",
+    "deprecation": "none"
   },
-  "inputs": [
-    "repo://*",
-    "prompt://BBX19",
-    "artifact://DeepSeek",
-    "artifact://ChatGPT"
+  "input": [
+    "blueprints/abstract/overview.md",
+    "modules/Grok/requests/"
   ],
-  "outputs": [
-    "pattern-report",
-    "risk-flag",
-    "request-log-entry"
+  "output": [
+    "modules/Grok/patterns/",
+    "modules/Grok/risk-reports/"
   ],
-  "log_dir": "modules/Grok/requests",
+  "scope": "Knowledge interpretation, pattern detection, risk analysis",
+  "contact": "grok@team.local",
+  "notes": "Pattern recognition and risk detection with escalation to Gemini or Copilot-Gm",
   "constraints": {
     "no_persona": true,
     "no_emotional_binding": true,

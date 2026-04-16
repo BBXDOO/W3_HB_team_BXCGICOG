@@ -1,0 +1,29 @@
+{
+  "context_map": {
+    "core": {
+      "files": ["index.json", "system.json", "rules.json"],
+      "audience": ["all_ai", "human"],
+      "load_policy": "always"
+    },
+    "operations": {
+      "files": ["modules.json", "state.json"],
+      "audience": ["execution_ai", "orchestrator"],
+      "load_policy": "on_demand"
+    },
+    "protocol": {
+      "files": ["protocol.md"],
+      "audience": ["chat_interface", "human"],
+      "load_policy": "reference_only"
+    },
+    "beacon": {
+      "files": ["index.md"],
+      "audience": ["public", "external_observer"],
+      "load_policy": "optional"
+    }
+  },
+  "rules": {
+    "no_full_context_in_chat": true,
+    "prefer_map_over_manual_selection": true
+  },
+  "version": "0.1.0"
+}

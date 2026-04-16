@@ -1,0 +1,30 @@
+{
+  "agents": [
+    {
+      "name": "GPT",
+      "role": "execution_ai",
+      "style": "direct",
+      "context_scope": ["core", "operations"],
+      "notes": "fast execution, minimal explanation"
+    },
+    {
+      "name": "GEMINI",
+      "role": "design_ai",
+      "style": "exploratory",
+      "context_scope": ["core", "protocol"],
+      "notes": "UI / flow / concept generation"
+    },
+    {
+      "name": "LOCAL",
+      "role": "analysis_ai",
+      "style": "deep",
+      "context_scope": ["core", "operations", "beacon"],
+      "notes": "offline or constrained environment"
+    }
+  ],
+  "default_policy": {
+    "assume_external_context": true,
+    "no_context_replication": true
+  },
+  "version": "0.1.0"
+}

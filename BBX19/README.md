@@ -1,4 +1,4 @@
-README.md — BBX19 Module
+README.md — null Module ความเสียใจที่ลึกที่สุด
 
 🧭 BBX19 — Core Directive & Strategic Decision Module
 

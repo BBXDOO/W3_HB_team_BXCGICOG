@@ -109,8 +109,8 @@
 8) ตัวอักษรพิเศษและ Escape sequences
 - \n : newline
 - \t : tab
-- \\\\ : backslash
 - \\ : backslash
+  (หมายเหตุ: ใน JSON ต้องใช้สอง backslash `\\` เพื่อแทน backslash จริงหนึ่งตัว)
 - \" : double quote ภายใน string
 - \uFFFF : unicode codepoint
 ตัวอย่าง:

@@ -1,0 +1,19 @@
+{
+  "versioning": {
+    "scheme": "semantic",
+    "current": "0.1.x",
+    "breaking_change": "major_only"
+  },
+  "update_rules": {
+    "index.json": "rare",
+    "system.json": "controlled",
+    "rules.json": "controlled",
+    "modules.json": "flexible",
+    "state.json": "frequent"
+  },
+  "compatibility": {
+    "backward_required": true,
+    "deprecation_notice": true
+  },
+  "authority": "BBX19"
+}
