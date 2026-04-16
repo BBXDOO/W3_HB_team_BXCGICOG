@@ -12,6 +12,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -31,7 +36,7 @@ jobs:
             -not -path "./node_modules/*" \
             -not -path "./.github/*" | while read -r file; do
               echo "Checking syntax: $file"
-              python3 -m json.tool "$file" > /dev/null || { echo "❌ JSON Syntax Error in $file"; exit 1; }
+              node -e "try{JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'))}catch(e){console.error(e.message);process.exit(1)}" -- "$file" || { echo "❌ JSON Syntax Error in $file"; exit 1; }
             done
           echo "✅ All JSON files have valid syntax"
 
