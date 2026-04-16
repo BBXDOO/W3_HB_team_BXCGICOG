@@ -67,7 +67,7 @@ https://game-novelist--xizzix19.replit.app
 ## 📢 : Official Announcements
 - [Manifesto No.3 — Vision & Identity](docs/manifesto-3.md)
 - [System Update: Operational Changes](docs/announcement/announcement-3.md)
-
+- จะมีการประกาศ สำคัญในวาทกรรม ครั้งที่4 เร็วๆนี้ครับ
 ---
 
 
