@@ -40,7 +40,7 @@ header b{color:#00ffd0;}
 
 .main{
   display:grid;
-  grid-template-columns: 220px 1fr 260px;
+  grid-template-columns:220px 1fr 260px;
   border:1px solid #111;
   border-radius:14px;
   overflow:hidden;
@@ -59,7 +59,10 @@ header b{color:#00ffd0;}
   color:#7c8591;
 }
 .item:hover{color:#00ffd0;background:#0a0f1c;}
-.item.active{color:#00ffd0;}
+.item.active{
+  color:#00ffd0;
+  border-left:3px solid #00ffd0;
+}
 
 /* CENTER */
 #center{
@@ -82,26 +85,37 @@ header b{color:#00ffd0;}
 
 .lock{border-color:#00ffd0;}
 
-/* GRAPH */
-canvas{
-  margin-top:25px;
-  background:#050811;
-  border-radius:12px;
-}
-
 /* TEXT */
 h2{color:#00ffd0;margin-top:0;}
 .key{color:#00ffd0;}
-.value{color:#7ee787;}
 .muted{color:#7c8591;}
+
+button{
+  margin-right:6px;
+  background:#0a0f1c;
+  border:1px solid #111;
+  color:#00ffd0;
+  padding:6px 10px;
+  border-radius:6px;
+}
+
+/* LOADING */
+#loading{
+  position:fixed;
+  top:10px;
+  right:10px;
+  background:#00ffd0;
+  color:#000;
+  padding:6px 12px;
+  border-radius:8px;
+  display:none;
+}
 </style>
 </head>
 
 <body>
 
-<header>
-  <b>W3 Dev Platform</b>
-</header>
+<header><b>W3 Dev Platform</b></header>
 
 <div class="wrapper">
 
@@ -115,20 +129,19 @@ h2{color:#00ffd0;margin-top:0;}
 
 <canvas id="graph" height="280"></canvas>
 
-<pre id="out"></pre>
-
 </div>
+
+<div id="loading">loading...</div>
 
 <script>
 const REPO="BBXDOO/W3_HB_team_BXCGICOG";
 const BRANCH="refactor/v0.2";
-const API=`https://api.github.com/repos/${REPO}/contents/?ref=${BRANCH}`;
 
-let FILES=[];
 let state={
-  current:null,
+  path:[],
   stack:[],
-  locked:[]
+  locked:[],
+  loading:false
 };
 
 const nav=document.getElementById("nav");
@@ -136,58 +149,122 @@ const center=document.getElementById("center");
 const right=document.getElementById("right");
 
 /* LOAD */
-fetch(API).then(r=>r.json()).then(d=>{
-  FILES=d.filter(x=>x.type==="dir");
-  build();
-  draw(FILES);
-});
+async function load(path=""){
+  state.loading=true;
+  showLoading(true);
 
-/* BUILD NAV */
-function build(){
+  try{
+    const url=`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`;
+    const res=await fetch(url);
+    const data=await res.json();
+    buildNav(data,path);
+  }catch(e){
+    center.innerHTML="โหลดไม่สำเร็จ";
+  }
+
+  state.loading=false;
+  showLoading(false);
+}
+
+/* NAV */
+function buildNav(data,path){
   nav.innerHTML="";
-  FILES.forEach((x,i)=>{
+
+  data.forEach((x,i)=>{
     let el=document.createElement("div");
     el.className="item";
     el.innerText=(i+1)+". "+x.name;
 
-    el.onclick=()=>{
-      state.current=x.name;
-      if(!state.stack.includes(x.name)){
-        state.stack.push(x.name);
-      }
-      render();
-    };
-
-    el.ondblclick=()=>{
-      if(!state.locked.includes(x.name)){
-        state.locked.push(x.name);
-      }
-      render();
-    };
-
+    el.onclick=(e)=>handleClick(e,x,path);
     nav.appendChild(el);
   });
+
   render();
+}
+
+/* CLICK */
+async function handleClick(e,item,currentPath){
+
+  if(state.loading) return;
+
+  document.querySelectorAll(".item").forEach(el=>el.classList.remove("active"));
+  e.target.classList.add("active");
+
+  const fullPath = currentPath ? currentPath+"/"+item.name : item.name;
+
+  state.stack.push(fullPath);
+  state.path.push(item.name);
+
+  if(item.type==="dir"){
+    await load(fullPath);
+  }else{
+    await showFile(item);
+  }
+
+  render();
+}
+
+/* FILE */
+async function showFile(file){
+  showLoading(true);
+  const res=await fetch(file.download_url);
+  const text=await res.text();
+
+  center.innerHTML = `
+    <h2>${file.name}</h2>
+    <pre style="font-size:12px;white-space:pre-wrap;">
+${escapeHtml(text.slice(0,3000))}
+    </pre>
+  `;
+  showLoading(false);
 }
 
 /* RENDER */
 function render(){
-  /* CENTER */
-  center.innerHTML="<h2>STACK</h2>";
+  center.innerHTML = `
+    <div style="margin-bottom:10px;">
+      <button onclick="back()">⬅</button>
+      <button onclick="reset()">Reset</button>
+      <button onclick="edit()">Edit</button>
+    </div>
+
+    <div class="muted">/${state.path.join("/")}</div>
+    <h2>STACK</h2>
+  `;
+
   state.stack.forEach((x,i)=>{
     center.innerHTML+=`<p><span class="key">${i+1}.</span> ${x}</p>`;
   });
 
-  /* RIGHT */
   right.innerHTML="<h2>NODE</h2>";
 
-  state.stack.slice(-1).forEach(x=>{
-    right.innerHTML+=`<div class="node">${x}</div>`;
-  });
+  if(state.stack.length){
+    right.innerHTML+=`<div class="node">${state.stack.at(-1)}</div>`;
+  }
 
   state.locked.forEach(x=>{
     right.innerHTML+=`<div class="node lock">🔒 ${x}</div>`;
   });
+}
+
+/* BACK */
+function back(){
+  state.path.pop();
+  state.stack.pop();
+  load(state.path.join("/"));
+}
+
+/* RESET */
+function reset(){
+  state.path=[];
+  state.stack=[];
+  load("");
+}
+
+/* EDIT */
+function edit(){
+  const p=state.stack.at(-1)||"";
+  window.open(`https://github.com/${REPO}/blob/${BRANCH}/${p}`);
 }
 
 /* SEARCH */
@@ -198,24 +275,28 @@ document.getElementById("search").oninput=e=>{
   });
 };
 
-/* GRAPH */
+/* GRAPH (จัดใหม่ ไม่กระจุก) */
 const c=document.getElementById("graph");
 const ctx=c.getContext("2d");
 
-function draw(d){
+function draw(names){
   const w=c.clientWidth;
   const h=280;
-
   c.width=w;
   c.height=h;
 
   ctx.clearRect(0,0,w,h);
 
-  let gap=360/d.length;
+  let cols=Math.ceil(Math.sqrt(names.length));
+  let gapX=w/(cols+1);
+  let gapY=h/(cols+1);
 
-  d.forEach((x,i)=>{
-    let x1=40+i*gap;
-    let y1=140+Math.sin(i)*40;
+  names.forEach((x,i)=>{
+    let row=Math.floor(i/cols);
+    let col=i%cols;
+
+    let x1=(col+1)*gapX;
+    let y1=(row+1)*gapY;
 
     ctx.fillStyle="#00ffd0";
     ctx.fillRect(x1,y1,4,4);
@@ -224,6 +305,21 @@ function draw(d){
     ctx.fillText(x.name,x1+6,y1);
   });
 }
+
+/* LOADING */
+function showLoading(v){
+  document.getElementById("loading").style.display = v ? "block" : "none";
+}
+
+/* UTIL */
+function escapeHtml(str){
+  return str.replace(/[&<>"']/g, m=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+}
+
+/* INIT */
+load();
 </script>
 
 </body>
