@@ -21,6 +21,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          node-version: '20'
           # ไม่ต้องติดตั้ง ajv-cli แบบ global เพื่อลดเวลา setup
 
       - name: ⚙️ Validate JSON Syntax (All Files)

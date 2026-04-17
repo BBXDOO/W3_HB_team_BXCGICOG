@@ -1,4 +1,4 @@
-name: IGET PR Analyzer
+name: IGET
 
 on:
   pull_request:
@@ -8,26 +8,24 @@ jobs:
   iget:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      pull-requests: write
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
-      - name: Install deps
+      - name: Install
         run: pip install requests
 
       - name: Run IGET
-        run: |
-          python iget/main.py > result.txt || echo "IGET ERROR" > result.txt
         env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Comment PR
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          path: result.txt
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+        run: python iget/main.py
