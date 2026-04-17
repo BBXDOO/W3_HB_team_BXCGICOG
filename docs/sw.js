@@ -6,7 +6,146 @@ const CACHE_NAME = `w3-pwa-${CACHE_VERSION}`;
 const OFFLINE_URL = 'offline.html';
 
 // Failed cache tracking with retry
-const failedCacheQueue = new Map(); // url -> { attempts, lastAttempt, request }
+// Persist retry state because service workers can be terminated and restarted at any time.
+const RETRY_QUEUE_DB_NAME = 'w3-pwa-retry-queue';
+const RETRY_QUEUE_STORE_NAME = 'failedCacheQueue';
+
+class PersistentFailedCacheQueue {
+  constructor() {
+    this.map = new Map(); // url -> { attempts, lastAttempt, request }
+    this.dbPromise = this.openDb();
+    this.ready = this.loadFromDb();
+  }
+
+  openDb() {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open(RETRY_QUEUE_DB_NAME, 1);
+      request.onupgradeneeded = () => {
+        const db = request.result;
+        if (!db.objectStoreNames.contains(RETRY_QUEUE_STORE_NAME)) {
+          db.createObjectStore(RETRY_QUEUE_STORE_NAME, { keyPath: 'url' });
+        }
+      };
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async loadFromDb() {
+    try {
+      const db = await this.dbPromise;
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(RETRY_QUEUE_STORE_NAME, 'readonly');
+        const store = tx.objectStore(RETRY_QUEUE_STORE_NAME);
+        const request = store.getAll();
+        request.onsuccess = () => {
+          for (const entry of request.result) {
+            this.map.set(entry.url, entry.value);
+          }
+          resolve();
+        };
+        request.onerror = () => reject(request.error);
+      });
+    } catch (error) {
+      console.error('[SW] Failed to restore retry queue from IndexedDB:', error);
+    }
+  }
+
+  async persistEntry(url, value) {
+    try {
+      const db = await this.dbPromise;
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(RETRY_QUEUE_STORE_NAME, 'readwrite');
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+        tx.objectStore(RETRY_QUEUE_STORE_NAME).put({ url, value });
+      });
+    } catch (error) {
+      console.error('[SW] Failed to persist retry queue entry:', error);
+    }
+  }
+
+  async deleteEntry(url) {
+    try {
+      const db = await this.dbPromise;
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(RETRY_QUEUE_STORE_NAME, 'readwrite');
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+        tx.objectStore(RETRY_QUEUE_STORE_NAME).delete(url);
+      });
+    } catch (error) {
+      console.error('[SW] Failed to delete retry queue entry:', error);
+    }
+  }
+
+  async clearPersisted() {
+    try {
+      const db = await this.dbPromise;
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(RETRY_QUEUE_STORE_NAME, 'readwrite');
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+        tx.objectStore(RETRY_QUEUE_STORE_NAME).clear();
+      });
+    } catch (error) {
+      console.error('[SW] Failed to clear retry queue:', error);
+    }
+  }
+
+  get size() {
+    return this.map.size;
+  }
+
+  has(key) {
+    return this.map.has(key);
+  }
+
+  get(key) {
+    return this.map.get(key);
+  }
+
+  set(key, value) {
+    this.map.set(key, value);
+    this.persistEntry(key, value);
+    return this;
+  }
+
+  delete(key) {
+    const existed = this.map.delete(key);
+    if (existed) {
+      this.deleteEntry(key);
+    }
+    return existed;
+  }
+
+  clear() {
+    this.map.clear();
+    this.clearPersisted();
+  }
+
+  entries() {
+    return this.map.entries();
+  }
+
+  keys() {
+    return this.map.keys();
+  }
+
+  values() {
+    return this.map.values();
+  }
+
+  forEach(callback, thisArg) {
+    return this.map.forEach(callback, thisArg);
+  }
+
+  [Symbol.iterator]() {
+    return this.map[Symbol.iterator]();
+  }
+}
+
+const failedCacheQueue = new PersistentFailedCacheQueue();
 const MAX_RETRY_ATTEMPTS = 3;
 const RETRY_BASE_DELAY_MS = 2000; // 2 seconds base
 let retryTimerId = null;
