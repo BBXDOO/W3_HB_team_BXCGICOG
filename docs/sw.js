@@ -1,7 +1,7 @@
 // Service Worker for W3 PWA
 // NOTE: Update CACHE_VERSION whenever you change cached assets (ASSETS_TO_CACHE)
 // or make changes that should force clients to refresh their cached content.
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const CACHE_NAME = `w3-pwa-${CACHE_VERSION}`;
 const OFFLINE_URL = 'offline.html';
 
