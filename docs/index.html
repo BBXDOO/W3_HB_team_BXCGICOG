@@ -1,13 +1,167 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>W3 Dev Platform</title>
 </head>
-<body>
-    <h1>Welcome to the Documentation</h1>
-    <p>This is the main index of our project documentation.</p>
-    <p>For more information, check out the <a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/refactor%2Fv0.2/ACKNOWLEDGMENTS.md">ACKNOWLEDGMENTS</a>.</p>
+
+<body style="margin:0;background:#0b0f1a;color:#e6edf3;font-family:system-ui;">
+
+<header style="padding:14px 20px;background:#050811;border-bottom:1px solid #111;">
+  <b style="color:#00ffd0;">W3 Dev Platform</b>
+</header>
+
+<section style="max-width:1200px;margin:auto;padding:20px;">
+
+<input id="search" placeholder="🔍 Search system..."
+style="width:100%;padding:12px;border-radius:8px;background:#050811;border:none;color:#00ffd0;margin-bottom:15px;">
+
+<div style="display:flex;border-radius:14px;overflow:hidden;border:1px solid #111;">
+
+  <!-- SIDEBAR -->
+  <div id="nav" style="width:240px;background:#050811;"></div>
+
+  <!-- CONTENT -->
+  <div id="content" style="flex:1;padding:20px;"></div>
+
+</div>
+
+<canvas id="graph" style="width:100%;margin-top:25px;background:#050811;border-radius:12px;"></canvas>
+
+<!-- ANALYZER -->
+<div style="margin-top:30px;">
+  <button onclick="analyze()">Analyze</button>
+  <button onclick="audit()">Audit</button>
+  <button onclick="aiExplain()">AI Explain</button>
+  <button onclick="genReadme()">Generate README</button>
+</div>
+
+<pre id="out" style="background:#0a0f1c;padding:15px;margin-top:10px;border-radius:10px;white-space:pre-wrap;"></pre>
+
+</section>
+
+<script>
+const REPO="BBXDOO/W3_HB_team_BXCGICOG";
+const BRANCH="refactor/v0.2";
+const API=`https://api.github.com/repos/${REPO}/contents/?ref=${BRANCH}`;
+
+let DATA={}, FILES=[];
+
+/* LOAD */
+fetch(API).then(r=>r.json()).then(d=>{
+  FILES=d;
+  d.forEach(x=>{
+    if(x.type==="dir"){
+      DATA[x.name]={title:x.name,items:[[x.name+"/"]]};
+    }
+  });
+  build();
+  draw(d);
+}).catch(err=>{
+  document.getElementById("out").textContent = "Failed to load repo contents: " + err;
+});
+
+/* NAV */
+const nav=document.getElementById("nav");
+const content=document.getElementById("content");
+const out=document.getElementById("out");
+
+function build(){
+  nav.innerHTML = "";
+  Object.keys(DATA).forEach((k,i)=>{
+    let el=document.createElement("div");
+    el.innerText=k;
+    el.style.padding="10px";
+    el.style.cursor="pointer";
+    el.style.borderBottom="1px solid #0f172a";
+    el.onclick=()=>show(k);
+    nav.appendChild(el);
+    if(i===0) show(k);
+  });
+}
+
+function show(k){
+  let d=DATA[k];
+  let html=`<h2 style="color:#00ffd0;margin-top:0;">${k}</h2>`;
+  d.items.forEach(([p])=>{
+    html+=`<p style="margin:8px 0;">
+      <a style="color:#58a6ff;text-decoration:none;"
+         href="https://github.com/${REPO}/tree/${BRANCH}/${p}"
+         target="_blank" rel="noopener">${p}</a>
+    </p>`;
+  });
+  content.innerHTML=html;
+}
+
+/* SEARCH */
+document.getElementById("search").oninput=e=>{
+  let v=e.target.value.toLowerCase();
+  document.querySelectorAll("#content p").forEach(p=>{
+    p.style.display=p.innerText.toLowerCase().includes(v)?"":"none";
+  });
+};
+
+/* GRAPH */
+const c=document.getElementById("graph");
+const ctx=c.getContext("2d");
+
+function draw(d){
+  const rect = c.getBoundingClientRect();
+  const h = 300;
+
+  // retina-friendly
+  c.width = Math.floor(rect.width * devicePixelRatio);
+  c.height = Math.floor(h * devicePixelRatio);
+  ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+
+  ctx.clearRect(0,0,rect.width,h);
+
+  let cx=rect.width/2,cy=h/2;
+  ctx.font="12px system-ui";
+  ctx.strokeStyle="#00ffd0";
+  ctx.fillStyle="#9ff";
+
+  const r = Math.min(110, rect.width * 0.22);
+
+  d.forEach((x,i)=>{
+    let a=(i/d.length)*Math.PI*2;
+    let x1=cx+Math.cos(a)*r;
+    let y1=cy+Math.sin(a)*r;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.lineTo(x1,y1);
+    ctx.stroke();
+    ctx.fillRect(x1,y1,3,3);
+    ctx.fillText(x.name,x1+6,y1);
+  });
+}
+
+/* ANALYZE */
+function analyze(){
+  let dirs=FILES.filter(x=>x.type==="dir").length;
+  let files=FILES.filter(x=>x.type==="file").length;
+  out.textContent=`dirs:${dirs} files:${files}`;
+}
+
+/* AUDIT */
+function audit(){
+  let names=FILES.map(x=>x.name);
+  let ok=names.includes("docs")&&names.includes("core");
+  out.textContent= ok?"✔ structure ok":"❌ missing core/docs";
+}
+
+/* AI */
+function aiExplain(){
+  let names=FILES.map(x=>x.name).join(", ");
+  out.textContent=`System contains:\n${names}\n\nModular architecture detected`;
+}
+
+function genReadme(){
+  let dirs=FILES.filter(x=>x.type==="dir").map(x=>x.name);
+  out.textContent=`# W3 System\n\n## Structure\n${dirs.map(d=>"- "+d).join("\n")}`;
+}
+</script>
+
 </body>
 </html>
