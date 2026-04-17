@@ -1,104 +1,200 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>W3 Dev Platform</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>W3 Dev Platform</title>
+
+<style>
+body{
+  margin:0;
+  background:#050811;
+  color:#e6edf3;
+  font-family:ui-monospace, monospace;
+}
+
+/* HEADER */
+header{
+  padding:14px 20px;
+  border-bottom:1px solid #0f172a;
+}
+header b{color:#00ffd0;}
+
+/* SEARCH */
+#search{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  background:#0a0f1c;
+  border:1px solid #111;
+  color:#00ffd0;
+  margin-bottom:15px;
+}
+
+/* LAYOUT */
+.wrapper{
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
+}
+
+.main{
+  display:grid;
+  grid-template-columns: 220px 1fr 260px;
+  border:1px solid #111;
+  border-radius:14px;
+  overflow:hidden;
+}
+
+/* LEFT */
+#nav{
+  background:#050811;
+  border-right:1px solid #111;
+}
+
+.item{
+  padding:10px 14px;
+  border-bottom:1px solid #0f172a;
+  cursor:pointer;
+  color:#7c8591;
+}
+.item:hover{color:#00ffd0;background:#0a0f1c;}
+.item.active{color:#00ffd0;}
+
+/* CENTER */
+#center{
+  padding:20px;
+}
+
+/* RIGHT */
+#right{
+  background:#050811;
+  border-left:1px solid #111;
+  padding:15px;
+}
+
+.node{
+  border:1px solid #00ffd033;
+  padding:10px;
+  margin-bottom:10px;
+  border-radius:8px;
+}
+
+.lock{border-color:#00ffd0;}
+
+/* GRAPH */
+canvas{
+  margin-top:25px;
+  background:#050811;
+  border-radius:12px;
+}
+
+/* TEXT */
+h2{color:#00ffd0;margin-top:0;}
+.key{color:#00ffd0;}
+.value{color:#7ee787;}
+.muted{color:#7c8591;}
+</style>
 </head>
 
-<body style="margin:0;background:#0b0f1a;color:#e6edf3;font-family:system-ui;">
+<body>
 
-<header style="padding:14px 20px;background:#050811;border-bottom:1px solid #111;">
-  <b style="color:#00ffd0;">W3 Dev Platform</b>
+<header>
+  <b>W3 Dev Platform</b>
 </header>
 
-<section style="max-width:1200px;margin:auto;padding:20px;">
+<div class="wrapper">
 
-<input id="search" placeholder="🔍 Search system..."
-style="width:100%;padding:12px;border-radius:8px;background:#050811;border:none;color:#00ffd0;margin-bottom:15px;">
+<input id="search" placeholder="🔍 Search...">
 
-<div style="display:flex;border-radius:14px;overflow:hidden;border:1px solid #111;">
-
-  <!-- SIDEBAR -->
-  <div id="nav" style="width:240px;background:#050811;"></div>
-
-  <!-- CONTENT -->
-  <div id="content" style="flex:1;padding:20px;"></div>
-
+<div class="main">
+  <div id="nav"></div>
+  <div id="center"></div>
+  <div id="right"></div>
 </div>
 
-<canvas id="graph" style="width:100%;margin-top:25px;background:#050811;border-radius:12px;"></canvas>
+<canvas id="graph" height="280"></canvas>
 
-<!-- ANALYZER -->
-<div style="margin-top:30px;">
-  <button onclick="analyze()">Analyze</button>
-  <button onclick="audit()">Audit</button>
-  <button onclick="aiExplain()">AI Explain</button>
-  <button onclick="genReadme()">Generate README</button>
+<pre id="out"></pre>
+
 </div>
-
-<pre id="out" style="background:#0a0f1c;padding:15px;margin-top:10px;border-radius:10px;white-space:pre-wrap;"></pre>
-
-</section>
 
 <script>
 const REPO="BBXDOO/W3_HB_team_BXCGICOG";
 const BRANCH="refactor/v0.2";
 const API=`https://api.github.com/repos/${REPO}/contents/?ref=${BRANCH}`;
 
-let DATA={}, FILES=[];
+let FILES=[];
+let state={
+  current:null,
+  stack:[],
+  locked:[]
+};
+
+const nav=document.getElementById("nav");
+const center=document.getElementById("center");
+const right=document.getElementById("right");
 
 /* LOAD */
 fetch(API).then(r=>r.json()).then(d=>{
-  FILES=d;
-  d.forEach(x=>{
-    if(x.type==="dir"){
-      DATA[x.name]={title:x.name,items:[[x.name+"/"]]};
-    }
-  });
+  FILES=d.filter(x=>x.type==="dir");
   build();
-  draw(d);
-}).catch(err=>{
-  document.getElementById("out").textContent = "Failed to load repo contents: " + err;
+  draw(FILES);
 });
 
-/* NAV */
-const nav=document.getElementById("nav");
-const content=document.getElementById("content");
-const out=document.getElementById("out");
-
+/* BUILD NAV */
 function build(){
-  nav.innerHTML = "";
-  Object.keys(DATA).forEach((k,i)=>{
+  nav.innerHTML="";
+  FILES.forEach((x,i)=>{
     let el=document.createElement("div");
-    el.innerText=k;
-    el.style.padding="10px";
-    el.style.cursor="pointer";
-    el.style.borderBottom="1px solid #0f172a";
-    el.onclick=()=>show(k);
+    el.className="item";
+    el.innerText=(i+1)+". "+x.name;
+
+    el.onclick=()=>{
+      state.current=x.name;
+      if(!state.stack.includes(x.name)){
+        state.stack.push(x.name);
+      }
+      render();
+    };
+
+    el.ondblclick=()=>{
+      if(!state.locked.includes(x.name)){
+        state.locked.push(x.name);
+      }
+      render();
+    };
+
     nav.appendChild(el);
-    if(i===0) show(k);
   });
+  render();
 }
 
-function show(k){
-  let d=DATA[k];
-  let html=`<h2 style="color:#00ffd0;margin-top:0;">${k}</h2>`;
-  d.items.forEach(([p])=>{
-    html+=`<p style="margin:8px 0;">
-      <a style="color:#58a6ff;text-decoration:none;"
-         href="https://github.com/${REPO}/tree/${BRANCH}/${p}"
-         target="_blank" rel="noopener">${p}</a>
-    </p>`;
+/* RENDER */
+function render(){
+  /* CENTER */
+  center.innerHTML="<h2>STACK</h2>";
+  state.stack.forEach((x,i)=>{
+    center.innerHTML+=`<p><span class="key">${i+1}.</span> ${x}</p>`;
   });
-  content.innerHTML=html;
+
+  /* RIGHT */
+  right.innerHTML="<h2>NODE</h2>";
+
+  state.stack.slice(-1).forEach(x=>{
+    right.innerHTML+=`<div class="node">${x}</div>`;
+  });
+
+  state.locked.forEach(x=>{
+    right.innerHTML+=`<div class="node lock">🔒 ${x}</div>`;
+  });
 }
 
 /* SEARCH */
 document.getElementById("search").oninput=e=>{
   let v=e.target.value.toLowerCase();
-  document.querySelectorAll("#content p").forEach(p=>{
-    p.style.display=p.innerText.toLowerCase().includes(v)?"":"none";
+  document.querySelectorAll(".item").forEach(el=>{
+    el.style.display=el.innerText.toLowerCase().includes(v)?"":"none";
   });
 };
 
@@ -107,59 +203,26 @@ const c=document.getElementById("graph");
 const ctx=c.getContext("2d");
 
 function draw(d){
-  const rect = c.getBoundingClientRect();
-  const h = 300;
+  const w=c.clientWidth;
+  const h=280;
 
-  // retina-friendly
-  c.width = Math.floor(rect.width * devicePixelRatio);
-  c.height = Math.floor(h * devicePixelRatio);
-  ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+  c.width=w;
+  c.height=h;
 
-  ctx.clearRect(0,0,rect.width,h);
+  ctx.clearRect(0,0,w,h);
 
-  let cx=rect.width/2,cy=h/2;
-  ctx.font="12px system-ui";
-  ctx.strokeStyle="#00ffd0";
-  ctx.fillStyle="#9ff";
-
-  const r = Math.min(110, rect.width * 0.22);
+  let gap=360/d.length;
 
   d.forEach((x,i)=>{
-    let a=(i/d.length)*Math.PI*2;
-    let x1=cx+Math.cos(a)*r;
-    let y1=cy+Math.sin(a)*r;
-    ctx.beginPath();
-    ctx.moveTo(cx,cy);
-    ctx.lineTo(x1,y1);
-    ctx.stroke();
-    ctx.fillRect(x1,y1,3,3);
+    let x1=40+i*gap;
+    let y1=140+Math.sin(i)*40;
+
+    ctx.fillStyle="#00ffd0";
+    ctx.fillRect(x1,y1,4,4);
+
+    ctx.fillStyle="#9ff";
     ctx.fillText(x.name,x1+6,y1);
   });
-}
-
-/* ANALYZE */
-function analyze(){
-  let dirs=FILES.filter(x=>x.type==="dir").length;
-  let files=FILES.filter(x=>x.type==="file").length;
-  out.textContent=`dirs:${dirs} files:${files}`;
-}
-
-/* AUDIT */
-function audit(){
-  let names=FILES.map(x=>x.name);
-  let ok=names.includes("docs")&&names.includes("core");
-  out.textContent= ok?"✔ structure ok":"❌ missing core/docs";
-}
-
-/* AI */
-function aiExplain(){
-  let names=FILES.map(x=>x.name).join(", ");
-  out.textContent=`System contains:\n${names}\n\nModular architecture detected`;
-}
-
-function genReadme(){
-  let dirs=FILES.filter(x=>x.type==="dir").map(x=>x.name);
-  out.textContent=`# W3 System\n\n## Structure\n${dirs.map(d=>"- "+d).join("\n")}`;
 }
 </script>
 
