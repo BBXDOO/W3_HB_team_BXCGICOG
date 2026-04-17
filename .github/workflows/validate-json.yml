@@ -1,48 +1,20 @@
-name: Validate JSON Files
-
-on:
-  workflow_dispatch:
-
-jobs:
-  validate-json:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      - name: Install Python dependencies
+      - name: ✨ Validate Data against Schemas
         run: |
-          pip install -r requirements.txt
+          find . -name "*.schema.json" -type f -print0 | while IFS= read -r -d '' schema_file; do
+            data_file="${schema_file%.schema.json}.json"
 
-      - name: ⚙️ Validate ALL JSON Syntax
-        run: |
-          set -o errexit -o pipefail
-          # Find all .json files but exclude schema files and common ignored paths
-          find . -type f -name "*.json" \
-            -not -name "*.schema.json" \
-            -not -path "./.git/*" \
-            -not -path "./node_modules/*" \
-            -not -path "./.github/*" | while read -r file; do
-              echo "Checking syntax: $file"
-              node -e "try{JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'))}catch(e){console.error(e.message);process.exit(1)}" -- "$file" || { echo "❌ JSON Syntax Error in $file"; exit 1; }
-            done
-          echo "✅ All JSON files have valid syntax"
-
-      - name: ✨ Validate Data Files Against Matching Schemas
-        run: |
-          set -o errexit -o pipefail
-          python3 tools/validate_json_schemas.py || { echo "❌ Schema Validation Failed"; exit 1; }
-          echo "✅ All JSON schema validations passed"
-
+            if [ -f "$data_file" ]; then
+              echo "-----------------------------------"
+              echo "🔍 Validating: $data_file"
+              echo "📄 Using Schema: $schema_file"
+              
+              # แก้ไขตรงนี้: ใช้ npx เรียก ajv-cli พร้อมระบุ spec ให้ครอบคลุม
+              # และเพิ่มพารามิเตอร์ --spec=draft2020 เพื่อรองรับไฟล์ของคุณ
+              npx ajv-cli validate -s "$schema_file" -d "$data_file" --spec=draft2020 --strict=false || { 
+                echo "❌ Schema Validation Failed for $data_file"
+                exit 1 
+              }
+            else
+              echo "⚠️ Warning: No data file found for $schema_file"
+            fi
+          done

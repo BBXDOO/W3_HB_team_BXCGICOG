@@ -3,18 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0d6efd">
-  <title>ออฟไลน์ - W3 HB Team</title>
+  <meta name="theme-color" content="#16f2b3">
+  <title>ออฟไลน์ - W3 System</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #fff;
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -22,59 +23,119 @@
       padding: 20px;
       text-align: center;
     }
+
     .container {
       max-width: 500px;
+      width: 100%;
     }
+
     .icon {
       font-size: 80px;
       margin-bottom: 20px;
-      opacity: 0.9;
+      animation: pulse 2s ease-in-out infinite;
     }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
     h1 {
       font-size: 2rem;
-      margin-bottom: 15px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      margin-bottom: 1rem;
+      color: #16f2b3;
     }
+
     p {
       font-size: 1.1rem;
-      margin-bottom: 30px;
-      opacity: 0.95;
       line-height: 1.6;
+      margin-bottom: 2rem;
+      color: #ddd;
     }
+
     .btn {
       display: inline-block;
-      background: white;
-      color: #0d6efd;
+      padding: 12px 30px;
+      background: linear-gradient(135deg, #16f2b3 0%, #00b894 100%);
+      color: #1a1a2e;
       text-decoration: none;
-      padding: 14px 32px;
-      border-radius: 8px;
+      border-radius: 25px;
       font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 15px rgba(22, 242, 179, 0.3);
     }
+
     .btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 6px 20px rgba(22, 242, 179, 0.4);
     }
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-      p {
-        font-size: 1rem;
-      }
-      .icon {
-        font-size: 60px;
-      }
+
+    .btn:active {
+      transform: translateY(0);
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="icon">📡</div>
-    <h1>น่าเสียดาย</h1>
-    <p>ขณะนี้คุณออฟไลน์<br>กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตของคุณ</p>
-    <a class="btn" href="/W3_HB_team_BXCGICOG/">กลับหน้าหลัก</a>
+    <h1>คุณกำลังออฟไลน์</h1>
+    <p>
+      น่าเสียดาย ตอนนี้คุณไม่ได้เชื่อมต่ออินเทอร์เน็ต<br>
+      กรุณาตรวจสอบการเชื่อมต่อของคุณและลองอีกครั้ง
+    </p>
+    <a href="./" class="btn">กลับไปหน้าแรก</a>
   </div>
+
+  <script>
+    const OFFLINE_RELOAD_STORAGE_KEY = 'offlineReloadInfo';
+    const OFFLINE_MAX_RELOAD_ATTEMPTS = 3;
+    const OFFLINE_RELOAD_RESET_MS = 5 * 60 * 1000; // 5 minutes
+
+    function safeReloadAfterOffline() {
+      let info;
+      try {
+        info = JSON.parse(localStorage.getItem(OFFLINE_RELOAD_STORAGE_KEY));
+      } catch (e) {
+        info = null;
+      }
+
+      const now = Date.now();
+
+      if (!info || typeof info.attempts !== 'number' || typeof info.lastAttempt !== 'number') {
+        info = { attempts: 0, lastAttempt: 0 };
+      }
+
+      // Reset attempts if last attempt was long ago
+      if (now - info.lastAttempt > OFFLINE_RELOAD_RESET_MS) {
+        info.attempts = 0;
+      }
+
+      if (info.attempts >= OFFLINE_MAX_RELOAD_ATTEMPTS) {
+        // Do not reload more to avoid potential loops
+        console.log('Max reload attempts reached, not reloading automatically');
+        return;
+      }
+
+      info.attempts += 1;
+      info.lastAttempt = now;
+      try {
+        localStorage.setItem(OFFLINE_RELOAD_STORAGE_KEY, JSON.stringify(info));
+        // After successfully recording the attempt, reload the page
+        location.reload();
+      } catch (e) {
+        // If localStorage fails, don't reload to prevent potential infinite loop
+        console.warn('localStorage unavailable, skipping auto-reload');
+        return;
+      }
+
+      // After successfully recording the attempt, reload the page
+      location.reload();
+    }
+
+    // Auto-retry when back online, with a small delay and retry limit
+    window.addEventListener('online', () => {
+      setTimeout(safeReloadAfterOffline, 1000);
+    });
+  </script>
 </body>
 </html>
