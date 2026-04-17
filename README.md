@@ -91,7 +91,7 @@ https://game-novelist--xizzix19.replit.app
 **ครอบครัวและเพื่อนคือกฎหมาย** ✨
 
 ---
-##Team: HB_team_BXCGICOG
+## Team: HB_team_BXCGICOG
 - Last Updated: 18/11/25
 - Last Updated: 26/11/25
 ---
