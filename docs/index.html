@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>W3 System</title>
+<title>W3</title>
 
 <style>
 body{
@@ -13,77 +13,56 @@ body{
   font-family:system-ui;
 }
 
-/* CONTAINER */
+/* CENTER */
 .wrap{
-  max-width:1000px;
+  max-width:700px;
   margin:auto;
-  padding:20px;
+  padding:60px 20px;
 }
 
-/* HERO */
-.hero{
-  padding:40px 20px;
-  text-align:center;
-  border-bottom:1px solid #111;
-}
-.hero h1{
+/* TITLE */
+h1{
   color:#00ffd0;
   font-size:28px;
+  margin-bottom:10px;
 }
-.hero p{
+
+/* TEXT */
+p{
   color:#7c8591;
+  line-height:1.7;
 }
 
-/* SECTION */
-.section{
-  padding:30px 0;
-  border-bottom:1px solid #111;
-}
-
-.title{
-  color:#00ffd0;
-  margin-bottom:10px;
-}
-
-/* CARD */
-.card{
+/* QUOTE */
+.quote{
+  margin:30px 0;
+  padding:18px;
+  border-left:3px solid #00ffd0;
   background:#0a0f1c;
-  padding:15px;
-  border-radius:10px;
-  margin-bottom:10px;
-  border:1px solid #111;
+  font-style:italic;
 }
 
-/* GRID */
-.grid{
-  display:grid;
-  gap:12px;
-}
-.grid-3{
-  grid-template-columns:1fr 1fr 1fr;
-}
-
-/* LINK */
-a{
-  color:#58a6ff;
-  text-decoration:none;
+/* BLOCK */
+.block{
+  margin-top:30px;
 }
 
 /* BUTTON */
-.btn{
+a{
   display:inline-block;
-  padding:10px 14px;
+  margin-top:25px;
+  padding:10px 16px;
   border-radius:8px;
   background:#00ffd0;
   color:#000;
-  margin-top:10px;
+  text-decoration:none;
 }
 
-/* FOOTER */
+/* FOOT */
 .footer{
-  text-align:center;
-  padding:20px;
-  color:#666;
+  margin-top:60px;
+  color:#555;
+  font-size:13px;
 }
 </style>
 
@@ -93,98 +72,55 @@ a{
 
 <div class="wrap">
 
-<!-- HERO -->
-<div class="hero">
-  <h1>W3 System</h1>
-  <p>Hybrid Intelligent Origin System</p>
-  <p style="margin-top:10px;">
-    ระบบสำหรับจัดการโครงสร้างความรู้ + workflow + AI integration
+  <!-- TITLE -->
+  <h1>W3</h1>
+
+  <!-- DIRECTION -->
+  <p>
+    Hybrid Intelligent Workspace<br>
+    สำหรับการทำงานร่วมกันระหว่างมนุษย์และระบบ
   </p>
-</div>
 
-<!-- OVERVIEW -->
-<div class="section">
-  <div class="title">Overview</div>
-  <div class="card">
-    W3 คือระบบที่รวม Human + AI เพื่อจัดการข้อมูล การวิเคราะห์ และการทำงานแบบ modular
-  </div>
-</div>
-
-<!-- MODULES -->
-<div class="section">
-  <div class="title">Core Modules</div>
-
-  <div class="grid grid-3">
-    <div class="card">
-      <b>Input</b><br>
-      Patient Info / Data / Request
-    </div>
-
-    <div class="card">
-      <b>Logic</b><br>
-      Processing / Decision Engine
-    </div>
-
-    <div class="card">
-      <b>Output</b><br>
-      Result / Delivery / Execution
-    </div>
-  </div>
-</div>
-
-<!-- KNOWLEDGE -->
-<div class="section">
-  <div class="title">Knowledge</div>
-
-  <div class="card">
-    <a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/docs">
-      📄 Documentation
-    </a>
+  <!-- PHILOSOPHY -->
+  <div class="quote">
+    "เราไม่ได้สร้างเพื่อให้ทุกคนเข้าใจ<br>
+    แต่สร้างเพื่อให้คนที่เข้าใจ ใช้งานได้จริง"
   </div>
 
-  <div class="card">
-    <a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/knowledge">
-      🧠 Knowledge Base
-    </a>
+  <!-- HUMAN -->
+  <div class="block">
+    <p>
+      ระบบนี้เกิดจากการทำงานร่วมกัน<br>
+      ระหว่างมนุษย์และ AI<br><br>
+
+      ไม่มีคำอธิบายทั้งหมด<br>
+      ไม่มีคำตอบเดียว<br><br>
+
+      สิ่งที่มี คือกระบวนการ<br>
+      และความตั้งใจที่จะทำให้ดีขึ้นเรื่อย ๆ
+    </p>
   </div>
 
-  <div class="card">
-    <a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/core">
-      ⚙️ Core System
-    </a>
-  </div>
-</div>
+  <!-- NOTE -->
+  <div class="block">
+    <p>
+      หากคุณกำลังมองหาเครื่องมือทั่วไป<br>
+      ที่นี่อาจไม่ใช่สิ่งนั้น<br><br>
 
-<!-- README -->
-<div class="section">
-  <div class="title">README Highlight</div>
-
-  <div class="card">
-    <b>เป้าหมาย</b><br><br>
-    สร้างระบบ Hybrid ที่สามารถเชื่อม Human + AI ให้ทำงานร่วมกันอย่างมีประสิทธิภาพ
+      แต่ถ้าคุณกำลังมองหาโครงสร้างบางอย่าง<br>
+      คุณอาจจะเข้าใจมันได้ด้วยตัวเอง
+    </p>
   </div>
 
-  <div class="card">
-    <b>แนวคิดหลัก</b><br><br>
-    - Modular Architecture<br>
-    - Knowledge Driven System<br>
-    - AI Assisted Workflow
-  </div>
-</div>
-
-<!-- CTA -->
-<div class="section" style="text-align:center;">
-  <a class="btn"
-     href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG"
-     target="_blank">
-    ดู Repository
+  <!-- ENTRY -->
+  <a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG" target="_blank">
+    เปิดดูเพิ่มเติม
   </a>
-</div>
 
-<!-- FOOTER -->
-<div class="footer">
-  © 2025 W3 System
-</div>
+  <!-- FOOT -->
+  <div class="footer">
+    © 2025 W3
+  </div>
 
 </div>
 
