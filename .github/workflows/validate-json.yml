@@ -50,7 +50,7 @@ jobs:
               
               # --spec=draft7 หรือปรับตาม schema version ที่ใช้
               # --all-errors เพื่อแสดงผลความผิดพลาดทั้งหมดในรอบเดียว
-              npx ajv-cli validate -s "$schema_file" -d "$data_file" --spec=draft7 --strict=false || { 
+              npx ajv-cli@5.0.0 validate -s "$schema_file" -d "$data_file" --spec=draft7 --strict=false || { 
                 echo "❌ Schema Validation Failed for $data_file"
                 exit 1 
               }
