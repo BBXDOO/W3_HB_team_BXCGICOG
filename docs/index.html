@@ -3,324 +3,190 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>W3 Dev Platform</title>
+<title>W3 System</title>
 
 <style>
 body{
   margin:0;
   background:#050811;
   color:#e6edf3;
-  font-family:ui-monospace, monospace;
+  font-family:system-ui;
 }
 
-/* HEADER */
-header{
-  padding:14px 20px;
-  border-bottom:1px solid #0f172a;
-}
-header b{color:#00ffd0;}
-
-/* SEARCH */
-#search{
-  width:100%;
-  padding:12px;
-  border-radius:10px;
-  background:#0a0f1c;
-  border:1px solid #111;
-  color:#00ffd0;
-  margin-bottom:15px;
-}
-
-/* LAYOUT */
-.wrapper{
-  max-width:1200px;
+/* CONTAINER */
+.wrap{
+  max-width:1000px;
   margin:auto;
   padding:20px;
 }
 
-.main{
-  display:grid;
-  grid-template-columns:220px 1fr 260px;
-  border:1px solid #111;
-  border-radius:14px;
-  overflow:hidden;
+/* HERO */
+.hero{
+  padding:40px 20px;
+  text-align:center;
+  border-bottom:1px solid #111;
 }
-
-/* LEFT */
-#nav{
-  background:#050811;
-  border-right:1px solid #111;
+.hero h1{
+  color:#00ffd0;
+  font-size:28px;
 }
-
-.item{
-  padding:10px 14px;
-  border-bottom:1px solid #0f172a;
-  cursor:pointer;
+.hero p{
   color:#7c8591;
 }
-.item:hover{color:#00ffd0;background:#0a0f1c;}
-.item.active{
+
+/* SECTION */
+.section{
+  padding:30px 0;
+  border-bottom:1px solid #111;
+}
+
+.title{
   color:#00ffd0;
-  border-left:3px solid #00ffd0;
-}
-
-/* CENTER */
-#center{
-  padding:20px;
-}
-
-/* RIGHT */
-#right{
-  background:#050811;
-  border-left:1px solid #111;
-  padding:15px;
-}
-
-.node{
-  border:1px solid #00ffd033;
-  padding:10px;
   margin-bottom:10px;
-  border-radius:8px;
 }
 
-.lock{border-color:#00ffd0;}
-
-/* TEXT */
-h2{color:#00ffd0;margin-top:0;}
-.key{color:#00ffd0;}
-.muted{color:#7c8591;}
-
-button{
-  margin-right:6px;
+/* CARD */
+.card{
   background:#0a0f1c;
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:10px;
   border:1px solid #111;
-  color:#00ffd0;
-  padding:6px 10px;
-  border-radius:6px;
 }
 
-/* LOADING */
-#loading{
-  position:fixed;
-  top:10px;
-  right:10px;
+/* GRID */
+.grid{
+  display:grid;
+  gap:12px;
+}
+.grid-3{
+  grid-template-columns:1fr 1fr 1fr;
+}
+
+/* LINK */
+a{
+  color:#58a6ff;
+  text-decoration:none;
+}
+
+/* BUTTON */
+.btn{
+  display:inline-block;
+  padding:10px 14px;
+  border-radius:8px;
   background:#00ffd0;
   color:#000;
-  padding:6px 12px;
-  border-radius:8px;
-  display:none;
+  margin-top:10px;
+}
+
+/* FOOTER */
+.footer{
+  text-align:center;
+  padding:20px;
+  color:#666;
 }
 </style>
+
 </head>
 
 <body>
 
-<header><b>W3 Dev Platform</b></header>
+<div class="wrap">
 
-<div class="wrapper">
-
-<input id="search" placeholder="🔍 Search...">
-
-<div class="main">
-  <div id="nav"></div>
-  <div id="center"></div>
-  <div id="right"></div>
+<!-- HERO -->
+<div class="hero">
+  <h1>W3 System</h1>
+  <p>Hybrid Intelligent Origin System</p>
+  <p style="margin-top:10px;">
+    ระบบสำหรับจัดการโครงสร้างความรู้ + workflow + AI integration
+  </p>
 </div>
 
-<canvas id="graph" height="280"></canvas>
-
+<!-- OVERVIEW -->
+<div class="section">
+  <div class="title">Overview</div>
+  <div class="card">
+    W3 คือระบบที่รวม Human + AI เพื่อจัดการข้อมูล การวิเคราะห์ และการทำงานแบบ modular
+  </div>
 </div>
 
-<div id="loading">loading...</div>
+<!-- MODULES -->
+<div class="section">
+  <div class="title">Core Modules</div>
 
-<script>
-const REPO="BBXDOO/W3_HB_team_BXCGICOG";
-const BRANCH="refactor/v0.2";
-
-let state={
-  path:[],
-  stack:[],
-  locked:[],
-  loading:false
-};
-
-const nav=document.getElementById("nav");
-const center=document.getElementById("center");
-const right=document.getElementById("right");
-
-/* LOAD */
-async function load(path=""){
-  state.loading=true;
-  showLoading(true);
-
-  try{
-    const url=`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`;
-    const res=await fetch(url);
-    const data=await res.json();
-    buildNav(data,path);
-  }catch(e){
-    center.innerHTML="โหลดไม่สำเร็จ";
-  }
-
-  state.loading=false;
-  showLoading(false);
-}
-
-/* NAV */
-function buildNav(data,path){
-  nav.innerHTML="";
-
-  data.forEach((x,i)=>{
-    let el=document.createElement("div");
-    el.className="item";
-    el.innerText=(i+1)+". "+x.name;
-
-    el.onclick=(e)=>handleClick(e,x,path);
-    nav.appendChild(el);
-  });
-
-  render();
-}
-
-/* CLICK */
-async function handleClick(e,item,currentPath){
-
-  if(state.loading) return;
-
-  document.querySelectorAll(".item").forEach(el=>el.classList.remove("active"));
-  e.target.classList.add("active");
-
-  const fullPath = currentPath ? currentPath+"/"+item.name : item.name;
-
-  state.stack.push(fullPath);
-  state.path.push(item.name);
-
-  if(item.type==="dir"){
-    await load(fullPath);
-  }else{
-    await showFile(item);
-  }
-
-  render();
-}
-
-/* FILE */
-async function showFile(file){
-  showLoading(true);
-  const res=await fetch(file.download_url);
-  const text=await res.text();
-
-  center.innerHTML = `
-    <h2>${file.name}</h2>
-    <pre style="font-size:12px;white-space:pre-wrap;">
-${escapeHtml(text.slice(0,3000))}
-    </pre>
-  `;
-  showLoading(false);
-}
-
-/* RENDER */
-function render(){
-  center.innerHTML = `
-    <div style="margin-bottom:10px;">
-      <button onclick="back()">⬅</button>
-      <button onclick="reset()">Reset</button>
-      <button onclick="edit()">Edit</button>
+  <div class="grid grid-3">
+    <div class="card">
+      <b>Input</b><br>
+      Patient Info / Data / Request
     </div>
 
-    <div class="muted">/${state.path.join("/")}</div>
-    <h2>STACK</h2>
-  `;
+    <div class="card">
+      <b>Logic</b><br>
+      Processing / Decision Engine
+    </div>
 
-  state.stack.forEach((x,i)=>{
-    center.innerHTML+=`<p><span class="key">${i+1}.</span> ${x}</p>`;
-  });
+    <div class="card">
+      <b>Output</b><br>
+      Result / Delivery / Execution
+    </div>
+  </div>
+</div>
 
-  right.innerHTML="<h2>NODE</h2>";
+<!-- KNOWLEDGE -->
+<div class="section">
+  <div class="title">Knowledge</div>
 
-  if(state.stack.length){
-    right.innerHTML+=`<div class="node">${state.stack.at(-1)}</div>`;
-  }
+  <div class="card">
+    <a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/docs">
+      📄 Documentation
+    </a>
+  </div>
 
-  state.locked.forEach(x=>{
-    right.innerHTML+=`<div class="node lock">🔒 ${x}</div>`;
-  });
-}
+  <div class="card">
+    <a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/knowledge">
+      🧠 Knowledge Base
+    </a>
+  </div>
 
-/* BACK */
-function back(){
-  state.path.pop();
-  state.stack.pop();
-  load(state.path.join("/"));
-}
+  <div class="card">
+    <a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/core">
+      ⚙️ Core System
+    </a>
+  </div>
+</div>
 
-/* RESET */
-function reset(){
-  state.path=[];
-  state.stack=[];
-  load("");
-}
+<!-- README -->
+<div class="section">
+  <div class="title">README Highlight</div>
 
-/* EDIT */
-function edit(){
-  const p=state.stack.at(-1)||"";
-  window.open(`https://github.com/${REPO}/blob/${BRANCH}/${p}`);
-}
+  <div class="card">
+    <b>เป้าหมาย</b><br><br>
+    สร้างระบบ Hybrid ที่สามารถเชื่อม Human + AI ให้ทำงานร่วมกันอย่างมีประสิทธิภาพ
+  </div>
 
-/* SEARCH */
-document.getElementById("search").oninput=e=>{
-  let v=e.target.value.toLowerCase();
-  document.querySelectorAll(".item").forEach(el=>{
-    el.style.display=el.innerText.toLowerCase().includes(v)?"":"none";
-  });
-};
+  <div class="card">
+    <b>แนวคิดหลัก</b><br><br>
+    - Modular Architecture<br>
+    - Knowledge Driven System<br>
+    - AI Assisted Workflow
+  </div>
+</div>
 
-/* GRAPH (จัดใหม่ ไม่กระจุก) */
-const c=document.getElementById("graph");
-const ctx=c.getContext("2d");
+<!-- CTA -->
+<div class="section" style="text-align:center;">
+  <a class="btn"
+     href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG"
+     target="_blank">
+    ดู Repository
+  </a>
+</div>
 
-function draw(names){
-  const w=c.clientWidth;
-  const h=280;
-  c.width=w;
-  c.height=h;
+<!-- FOOTER -->
+<div class="footer">
+  © 2025 W3 System
+</div>
 
-  ctx.clearRect(0,0,w,h);
-
-  let cols=Math.ceil(Math.sqrt(names.length));
-  let gapX=w/(cols+1);
-  let gapY=h/(cols+1);
-
-  names.forEach((x,i)=>{
-    let row=Math.floor(i/cols);
-    let col=i%cols;
-
-    let x1=(col+1)*gapX;
-    let y1=(row+1)*gapY;
-
-    ctx.fillStyle="#00ffd0";
-    ctx.fillRect(x1,y1,4,4);
-
-    ctx.fillStyle="#9ff";
-    ctx.fillText(x.name,x1+6,y1);
-  });
-}
-
-/* LOADING */
-function showLoading(v){
-  document.getElementById("loading").style.display = v ? "block" : "none";
-}
-
-/* UTIL */
-function escapeHtml(str){
-  return str.replace(/[&<>"']/g, m=>({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  }[m]));
-}
-
-/* INIT */
-load();
-</script>
+</div>
 
 </body>
 </html>
