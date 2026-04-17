@@ -1,18 +1,32 @@
+name: JSON Validation Workflow
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validate-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Checkout Code
+        uses: actions/checkout@v4
+
       - name: ✨ Validate Data against Schemas
         run: |
           find . -name "*.schema.json" -type f -print0 | while IFS= read -r -d '' schema_file; do
             data_file="${schema_file%.schema.json}.json"
-
+            
             if [ -f "$data_file" ]; then
-              echo "-----------------------------------"
+              echo "--------------------------------------"
               echo "🔍 Validating: $data_file"
               echo "📄 Using Schema: $schema_file"
               
-              # แก้ไขตรงนี้: ใช้ npx เรียก ajv-cli พร้อมระบุ spec ให้ครอบคลุม
-              # และเพิ่มพารามิเตอร์ --spec=draft2020 เพื่อรองรับไฟล์ของคุณ
-              npx ajv-cli validate -s "$schema_file" -d "$data_file" --spec=draft2020 --strict=false || { 
+              # เรียกใช้ npx ajv-cli พร้อมระบุ draft2020 ตามที่ต้องการ
+              npx ajv-cli validate -s "$schema_file" -d "$data_file" --spec=draft2020 --strict=false || {
                 echo "❌ Schema Validation Failed for $data_file"
-                exit 1 
+                exit 1
               }
             else
               echo "⚠️ Warning: No data file found for $schema_file"
