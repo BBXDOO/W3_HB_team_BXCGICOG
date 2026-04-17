@@ -140,7 +140,7 @@ self.addEventListener('fetch', (event) => {
 
           // If no cached API response, return network error
           return new Response('Network error', {
-            status: 408,
+            status: 503,
             headers: { 'Content-Type': 'text/plain' }
           });
         }
