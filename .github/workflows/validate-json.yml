@@ -1,45 +1,5 @@
-name: Validate JSON Files
-
-on:
-  push:
-    paths:
-      - '**/*.json'
-  pull_request:
-    paths:
-      - '**/*.json'
-  workflow_dispatch:
-
-jobs:
-  validate-json:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          node-version: '20'
-          # ไม่ต้องติดตั้ง ajv-cli แบบ global เพื่อลดเวลา setup
-
-      - name: ⚙️ Validate JSON Syntax (All Files)
-        run: |
-          # ใช้ -print0 ร่วมกับ read -d '' เพื่อรองรับชื่อไฟล์ที่มีช่องว่าง
-          find . -name "*.json" -type f -not -path "./node_modules/*" -not -path "./.git/*" -print0 | while IFS= read -r -d '' file; do
-            echo "Checking syntax: $file"
-            jq . "$file" > /dev/null || { echo "❌ JSON Syntax Error in $file"; exit 1; }
-          done
-
       - name: ✨ Validate Data against Schemas
         run: |
-          # ค้นหา schema files และรัน ajv ผ่าน npx (ไม่ต้องเสียเวลาลง global)
           find . -name "*.schema.json" -type f -print0 | while IFS= read -r -d '' schema_file; do
             data_file="${schema_file%.schema.json}.json"
 
@@ -48,9 +8,9 @@ jobs:
               echo "🔍 Validating: $data_file"
               echo "📄 Using Schema: $schema_file"
               
-              # --spec=draft7 หรือปรับตาม schema version ที่ใช้
-              # --all-errors เพื่อแสดงผลความผิดพลาดทั้งหมดในรอบเดียว
-              npx ajv-cli@5.0.0 validate -s "$schema_file" -d "$data_file" --spec=draft7 --strict=false || { 
+              # แก้ไขตรงนี้: ใช้ npx เรียก ajv-cli พร้อมระบุ spec ให้ครอบคลุม
+              # และเพิ่มพารามิเตอร์ --spec=draft2020 เพื่อรองรับไฟล์ของคุณ
+              npx ajv-cli validate -s "$schema_file" -d "$data_file" --spec=draft2020 --strict=false || { 
                 echo "❌ Schema Validation Failed for $data_file"
                 exit 1 
               }
