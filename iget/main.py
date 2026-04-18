@@ -14,129 +14,166 @@ headers = {
 # FETCH PR FILES
 # =====================
 url = f"https://api.github.com/repos/{repo}/pulls/{pr}/files"
-files = requests.get(url, headers=headers).json()
+res = requests.get(url, headers=headers)
+
+if res.status_code != 200:
+    exit()
+
+files = res.json()
 
 # =====================
 # METRICS
 # =====================
 total_files = len(files)
 total_changes = sum(f.get("changes", 0) for f in files)
-tests = sum(1 for f in files if "test" in f["filename"].lower())
+
+code_files = [f for f in files if f["filename"].endswith(
+    (".py", ".js", ".ts", ".tsx", ".jsx", ".java", ".go", ".rs", ".cpp")
+)]
+
+test_files = [f for f in files if "test" in f["filename"].lower()]
 
 # =====================
-# LOGIC (D)
+# SCORE SYSTEM
 # =====================
 score = 100
 issues = []
 
 if total_files > 5:
-    score -= 20
-    issues.append("🔴 เปลี่ยนหลายไฟล์")
+    score -= 15
+    issues.append("🟡 เปลี่ยนหลายไฟล์ เสี่ยงกระทบหลายจุด")
+
+if total_files > 10:
+    score -= 10
+    issues.append("🔴 PR ใหญ่เกินควร")
 
 if total_changes > 300:
-    score -= 30
-    issues.append("🔴 แก้ไขหนัก")
+    score -= 25
+    issues.append("🔴 แก้ไขจำนวนมาก ตรวจสอบยาก")
 
-if tests == 0:
-    score -= 30
-    issues.append("🟡 ไม่มี test")
+if total_changes > 600:
+    score -= 15
+    issues.append("🔴 เปลี่ยนหนักมาก เสี่ยงพลาด")
 
-if score >= 70:
+if len(code_files) > 0 and len(test_files) == 0:
+    score -= 25
+    issues.append("🟡 มี code change แต่ไม่มี test")
+
+if score < 0:
+    score = 0
+
+# =====================
+# STATE COLOR
+# =====================
+if score >= 75:
     state = "green"
-elif score >= 40:
+    color = "🟩"
+elif score >= 45:
     state = "yellow"
+    color = "🟨"
 else:
     state = "red"
+    color = "🟥"
 
 # =====================
-# FLOW (A–F)
+# FLOW VISUAL
 # =====================
-flow_map = {
-    "green": "🟩",
-    "yellow": "🟨",
-    "red": "🟥"
-}
-
-flow = ["🟩","🟩",flow_map[state],"🟩",flow_map[state],"🟩"]
+flow = ["🟩", color, "🟩", color, "🟩", color]
 
 # =====================
-# IMPACT (G)
+# IMPACT
 # =====================
 impact = {
-    "green": "🟢 ไม่มีผลกระทบ",
-    "yellow": "🟡 มีความเสี่ยงบางส่วน",
-    "red": "🔴 กระทบระบบ"
+    "green": "🟢 ปลอดภัยระดับดี พร้อมพิจารณา merge",
+    "yellow": "🟡 มีจุดเสี่ยง ควรตรวจเพิ่ม",
+    "red": "🔴 ความเสี่ยงสูง ควร review ละเอียด"
 }[state]
 
 # =====================
-# RECOMMEND (R)
+# SUMMARY
+# =====================
+summary = []
+
+summary.append(f"ไฟล์ที่เปลี่ยน: {total_files}")
+summary.append(f"บรรทัดที่เปลี่ยน: {total_changes}")
+summary.append(f"ไฟล์โค้ด: {len(code_files)}")
+summary.append(f"ไฟล์ทดสอบ: {len(test_files)}")
+
+# =====================
+# RECOMMEND
 # =====================
 recommend = []
 
-if tests == 0:
-    recommend.append("เพิ่ม test")
-
 if total_files > 5:
-    recommend.append("แยก PR")
+    recommend.append("แยก PR ให้เล็กลง")
 
 if total_changes > 300:
-    recommend.append("ลดขนาด PR")
+    recommend.append("ลดขนาดงานต่อ PR")
+
+if len(code_files) > 0 and len(test_files) == 0:
+    recommend.append("เพิ่ม test ก่อน merge")
 
 if not recommend:
     recommend.append("สามารถ merge ได้")
 
 # =====================
-# INLINE COMMENTS (D จริง)
+# INLINE COMMENTS
 # =====================
 comments = []
 
 for f in files:
     filename = f["filename"]
-    if f.get("changes", 0) > 200:
-        comments.append({
-            "path": filename,
-            "line": 1,
-            "body": "🔴 แก้ไขหนัก"
-        })
+    changes = f.get("changes", 0)
 
-    if "test" not in filename.lower():
+    if changes > 200:
         comments.append({
             "path": filename,
-            "line": 1,
-            "body": "🟡 ไม่มี test"
+            "body": "🔴 ไฟล์นี้เปลี่ยนจำนวนมาก ควรตรวจละเอียด",
+            "side": "RIGHT",
+            "line": 1
         })
 
 # =====================
-# POST INLINE COMMENTS
+# POST INLINE
 # =====================
 for c in comments:
-    requests.post(
-        f"https://api.github.com/repos/{repo}/pulls/{pr}/comments",
-        headers=headers,
-        json=c
-    )
+    try:
+        requests.post(
+            f"https://api.github.com/repos/{repo}/pulls/{pr}/comments",
+            headers=headers,
+            json=c
+        )
+    except:
+        pass
 
 # =====================
-# BUILD UI (COMMENT)
+# BUILD COMMENT UI
 # =====================
-body = "## 🔍 IGET\n\n"
+body = "## 🔍 IGET v2\\n\\n"
 
-body += "### FLOW\n"
-body += "".join(flow) + f" ({score}%)\n\n"
+body += "### FLOW\\n"
+body += "".join(flow) + f" ({score}%)\\n\\n"
 
-body += "### SUMMARY\n"
-for i in issues:
-    body += f"- {i}\n"
+body += "### SUMMARY\\n"
+for s in summary:
+    body += f"- {s}\\n"
 
-body += "\n### IMPACT\n"
-body += impact + "\n"
+body += "\\n### RISK\\n"
+if issues:
+    for i in issues:
+        body += f"- {i}\\n"
+else:
+    body += "- 🟢 ไม่พบความเสี่ยงเด่นชัด\\n"
 
-body += "\n### RECOMMEND\n"
+body += "\\n### IMPACT\\n"
+body += impact + "\\n"
+
+body += "\\n### RECOMMEND\\n"
 for r in recommend:
-    body += f"- {r}\n"
+    body += f"- {r}\\n"
 
 # =====================
-# POST COMMENT
+# POST MAIN COMMENT
 # =====================
 requests.post(
     f"https://api.github.com/repos/{repo}/issues/{pr}/comments",
