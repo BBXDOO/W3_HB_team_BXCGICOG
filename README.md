@@ -3,6 +3,7 @@
 ---
 * W3 — A living workspace where humans and AI build, fail, learn, and continue together.
 * W3 — พื้นที่ที่มนุษย์และ AI ใช้ชีวิตกับการสร้าง ล้ม เรียนรู้ และเดินต่อไปด้วยกัน
+* W3 / W + 3 / 3 = E / W + E / : WE.
 -----
 ## 🧭 About
 ## 🧱 Structure
