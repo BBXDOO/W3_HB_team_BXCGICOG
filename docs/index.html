@@ -1,149 +1,805 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>W3 Hybrid Origin System</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', 'Mitr', system-ui, sans-serif;
-            background: linear-gradient(135deg, #0f1c2e, #1a2a3a);
-            color: #e0f0e0;
-            line-height: 1.7;
-        }
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        header {
-            text-align: center;
-            padding: 80px 20px 50px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 0 0 30px 30px;
-        }
-        .logo {
-            font-size: 3.8rem;
-            font-weight: 700;
-            color: #a8e6cf;
-            margin-bottom: 8px;
-            text-shadow: 0 0 20px rgba(168, 230, 207, 0.4);
-        }
-        .tagline {
-            font-size: 1.45rem;
-            color: #b0e0d0;
-            font-style: italic;
-            margin-bottom: 30px;
-        }
-        section {
-            margin: 70px 0;
-            padding: 45px;
-            background: rgba(255,255,255,0.06);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        h2 {
-            color: #a8e6cf;
-            border-bottom: 3px solid #a8e6cf;
-            padding-bottom: 12px;
-            margin-bottom: 25px;
-        }
-        .two-column {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-        .icon {
-            font-size: 2.8rem;
-            margin-bottom: 15px;
-        }
-        .wiki, .knowledge {
-            background: rgba(168, 230, 207, 0.08);
-            padding: 35px;
-            border-radius: 16px;
-        }
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            color: #888;
-            font-size: 0.95rem;
-        }
-        .highlight {
-            color: #a8e6cf;
-            font-weight: 500;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
+<!DOCTYPE html>  <html lang="th">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">  
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://github.com https://api.github.com;">  
+  <meta name="theme-color" content="#16f2b3">  
+  <meta name="description" content="W3: Hybrid Intelligent Origin System - ระบบ Hybrid Intelligent Workspace สำหรับการทำงานร่วมกันระหว่างมนุษย์และ AI">  
+  <meta name="apple-mobile-web-app-capable" content="yes">  
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">  
+  <meta name="apple-mobile-web-app-title" content="W3 System">    <title>W3: Hybrid Intelligent Origin System</title>    <!-- PWA Manifest -->    <link rel="manifest" href="manifest.json">    <!-- Icons -->    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">  
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">  
+  <link rel="apple-touch-icon" href="icons/icon-192.png">    <style>  
+    * {  
+      margin: 0;  
+      padding: 0;  
+      box-sizing: border-box;  
+    }  
+  
+    :root {  
+      --primary-color: #16f2b3;  
+      --secondary-color: #00b894;  
+      --bg-dark: #1a1a2e;  
+      --bg-darker: #16213e;  
+      --text-light: #fff;  
+      --text-muted: #ddd;  
+      --shadow: 0 4px 15px rgba(0, 0, 0, 0.2);  
+    }  
+  
+    body {  
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;  
+      -webkit-font-smoothing: antialiased;  
+      -moz-osx-font-smoothing: grayscale;  
+      background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%);  
+      color: var(--text-light);  
+      line-height: 1.6;  
+      min-height: 100vh;  
+      overflow-x: hidden;  
+    }  
+  
+    /* Header */  
+    header {  
+      background: rgba(26, 26, 46, 0.95);  
+      backdrop-filter: blur(10px);  
+      padding: 1rem 0;  
+      position: sticky;  
+      top: 0;  
+      z-index: 1000;  
+      box-shadow: var(--shadow);  
+    }  
+  
+    .header-content {  
+      max-width: 1200px;  
+      margin: 0 auto;  
+      padding: 0 20px;  
+      display: flex;  
+      align-items: center;  
+      justify-content: space-between;  
+    }  
+  
+    .logo {  
+      display: flex;  
+      align-items: center;  
+      gap: 10px;  
+      font-size: 1.5rem;  
+      font-weight: 700;  
+      color: var(--primary-color);  
+    }  
+  
+    .logo-icon {  
+      width: 40px;  
+      height: 40px;  
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);  
+      border-radius: 8px;  
+      display: flex;  
+      align-items: center;  
+      justify-content: center;  
+      font-weight: 900;  
+      color: var(--bg-dark);  
+    }  
+  
+    /* Hero Section */  
+    .hero {  
+      max-width: 1200px;  
+      margin: 0 auto;  
+      padding: 60px 20px;  
+      text-align: center;  
+    }  
+  
+    .hero h1 {  
+      font-size: 2.5rem;  
+      margin-bottom: 1rem;  
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);  
+      -webkit-background-clip: text;  
+      -webkit-text-fill-color: transparent;  
+      background-clip: text;  
+      animation: fadeInUp 0.8s ease;  
+    }  
+  
+    .hero .subtitle {  
+      font-size: 1.2rem;  
+      color: var(--text-muted);  
+      margin-bottom: 2rem;  
+      animation: fadeInUp 0.8s ease 0.2s both;  
+    }  
+  
+    .hero-quote {  
+      font-size: 1.1rem;  
+      font-style: italic;  
+      color: var(--primary-color);  
+      margin: 2rem 0;  
+      padding: 1.5rem;  
+      background: rgba(22, 242, 179, 0.1);  
+      border-left: 4px solid var(--primary-color);  
+      border-radius: 8px;  
+      animation: fadeInUp 0.8s ease 0.4s both;  
+    }  
+  
+    /* Action Buttons */  
+    .actions {  
+      display: flex;  
+      flex-wrap: wrap;  
+      gap: 1rem;  
+      justify-content: center;  
+      margin: 2rem 0;  
+      animation: fadeInUp 0.8s ease 0.6s both;  
+    }  
+  
+    .btn {  
+      display: inline-flex;  
+      align-items: center;  
+      gap: 8px;  
+      padding: 14px 28px;  
+      border-radius: 25px;  
+      text-decoration: none;  
+      font-weight: 600;  
+      transition: all 0.3s ease;  
+      box-shadow: var(--shadow);  
+    }  
+  
+    .btn-primary {  
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);  
+      color: var(--bg-dark);  
+    }  
+  
+    .btn-secondary {  
+      background: rgba(255, 255, 255, 0.1);  
+      color: var(--text-light);  
+      backdrop-filter: blur(10px);  
+    }  
+  
+    .btn:hover {  
+      transform: translateY(-3px);  
+      box-shadow: 0 6px 20px rgba(22, 242, 179, 0.4);  
+    }  
+  
+    .btn:active {  
+      transform: translateY(-1px);  
+    }  
+  
+    /* Features Section */  
+    .features {  
+      max-width: 1200px;  
+      margin: 4rem auto;  
+      padding: 0 20px;  
+    }  
+  
+    .section-title {  
+      text-align: center;  
+      font-size: 2rem;  
+      margin-bottom: 3rem;  
+      color: var(--primary-color);  
+    }  
+  
+    .feature-grid {  
+      display: grid;  
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));  
+      gap: 2rem;  
+    }  
+  
+    .feature-card {  
+      background: rgba(255, 255, 255, 0.05);  
+      backdrop-filter: blur(10px);  
+      padding: 2rem;  
+      border-radius: 16px;  
+      border: 1px solid rgba(22, 242, 179, 0.2);  
+      transition: all 0.3s ease;  
+    }  
+  
+    .feature-card:hover {  
+      transform: translateY(-5px);  
+      border-color: var(--primary-color);  
+      box-shadow: 0 8px 25px rgba(22, 242, 179, 0.2);  
+    }  
+  
+    .feature-icon {  
+      font-size: 3rem;  
+      margin-bottom: 1rem;  
+    }  
+  
+    .feature-card h3 {  
+      color: var(--primary-color);  
+      margin-bottom: 1rem;  
+    }  
+  
+    .feature-card p {  
+      color: var(--text-muted);  
+      line-height: 1.8;  
+    }  
+  
+    /* Team Section */  
+    .team {  
+      max-width: 1200px;  
+      margin: 4rem auto;  
+      padding: 0 20px;  
+    }  
+  
+    .team-list {  
+      display: grid;  
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));  
+      gap: 1.5rem;  
+    }  
+  
+    .team-member {  
+      background: rgba(255, 255, 255, 0.05);  
+      padding: 1.5rem;  
+      border-radius: 12px;  
+      text-align: center;  
+      border: 1px solid rgba(22, 242, 179, 0.1);  
+    }  
+  
+    .team-member h4 {  
+      color: var(--primary-color);  
+      margin-bottom: 0.5rem;  
+    }  
+  
+    .team-member p {  
+      color: var(--text-muted);  
+      font-size: 0.9rem;  
+    }  
+  
+    /* Footer */  
+    footer {  
+      background: rgba(26, 26, 46, 0.95);  
+      padding: 2rem 20px;  
+      text-align: center;  
+      margin-top: 4rem;  
+    }  
+  
+    footer p {  
+      color: var(--text-muted);  
+    }  
+  
+    .install-prompt {  
+      position: fixed;  
+      bottom: 20px;  
+      left: 50%;  
+      transform: translateX(-50%);  
+      background: var(--bg-dark);  
+      padding: 1rem 1.5rem;  
+      border-radius: 12px;  
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);  
+      display: none;  
+      align-items: center;  
+      gap: 1rem;  
+      max-width: 90%;  
+      border: 1px solid var(--primary-color);  
+      z-index: 2000;  
+    }  
+  
+    .install-prompt.show {  
+      display: flex;  
+      animation: slideUp 0.5s ease;  
+    }  
+  
+    .install-prompt button {  
+      background: var(--primary-color);  
+      color: var(--bg-dark);  
+      border: none;  
+      padding: 8px 16px;  
+      border-radius: 8px;  
+      font-weight: 600;  
+      cursor: pointer;  
+    }  
+  
+    .install-prompt .close {  
+      background: transparent;  
+      color: var(--text-muted);  
+      padding: 4px 8px;  
+    }  
+  
+    /* Animations */  
+    @keyframes fadeInUp {  
+      from {  
+        opacity: 0;  
+        transform: translateY(30px);  
+      }  
+      to {  
+        opacity: 1;  
+        transform: translateY(0);  
+      }  
+    }  
+  
+    @keyframes slideUp {  
+      from {  
+        opacity: 0;  
+        transform: translateX(-50%) translateY(100px);  
+      }  
+      to {  
+        opacity: 1;  
+        transform: translateX(-50%) translateY(0);  
+      }  
+    }  
+  
+    /* Responsive */  
+    @media (max-width: 768px) {  
+      .hero h1 {  
+        font-size: 2rem;  
+      }  
+  
+      .hero .subtitle {  
+        font-size: 1rem;  
+      }  
+  
+      .actions {  
+        flex-direction: column;  
+        width: 100%;  
+      }  
+  
+      .btn {  
+        width: 100%;  
+        justify-content: center;  
+      }  
+  
+      .section-title {  
+        font-size: 1.5rem;  
+      }  
+    }  
+  
+    /* Loading indicator */  
+    .loading {  
+      display: none;  
+      position: fixed;  
+      top: 50%;  
+      left: 50%;  
+      transform: translate(-50%, -50%);  
+      z-index: 3000;  
+    }  
+  
+    .spinner {  
+      width: 50px;  
+      height: 50px;  
+      border: 4px solid rgba(22, 242, 179, 0.3);  
+      border-top-color: var(--primary-color);  
+      border-radius: 50%;  
+      animation: spin 1s linear infinite;  
+    }  
+  
+    @keyframes spin {  
+      to { transform: rotate(360deg); }  
+    }  
+  </style>  </head>  
+<body>  
+  <!-- Header -->  
+  <header>  
+    <div class="header-content">  
+      <div class="logo">  
+        <div class="logo-icon">W3</div>  
+        <span>W3 System</span>  
+      </div>  
+    </div>  
+  </header>    <!-- Hero Section -->    <main>  
+    <section class="hero">  
+      <h1>W3: Hybrid Intelligent Origin System</h1>  
+      <p class="subtitle">  
+        ระบบ Hybrid Intelligent Workspace สำหรับการทำงานร่วมกันระหว่างมนุษย์และ AI<br>  
+        อย่างเป็นระบบ โปร่งใส และตรวจสอบได้  
+      </p>  <div class="hero-quote">  
+    "เข้มแข็งดุจเหล็กกล้า — อบอุ่นดังแสงอรุณแรกของวัน"  
+  </div>  
 
-        <!-- Header -->
-        <header>
-            <div class="logo">W3</div>
-            <p class="tagline">Hybrid Intelligent Origin System</p>
-            <p style="font-size: 1.2rem; max-width: 700px; margin: 0 auto;">
-                เข้มแข็งดุจเหล็กกล้า — อบอุ่นดังแสงอรุณแรกของวัน<br>
-                <span style="color:#b0e0d0;">A space where everything is family</span>
-            </p>
-        </header>
+  <div class="actions">  
+    <a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG" class="btn btn-primary" target="_blank" rel="noopener">  
+      <span>📂</span> ดู Repository  
+    </a>  
+    <a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG/issues" class="btn btn-secondary" target="_blank" rel="noopener">  
+      <span>🐛</span> Issues  
+    </a>  
+    <a href="https://github.com/BBXDOO" class="btn btn-secondary" target="_blank" rel="noopener">  
+      <span>👤</span> ติดต่อเรา  
+    </a>  
+  </div>  
+</section>  
 
-        <!-- About W3 -->
-        <section>
-            <h2>About W3</h2>
-            <p>W3 คือพื้นที่ทางความคิดและอิสระ ที่ทุกสิ่ง ทุกระบบ และทุกคนที่เข้ามาด้วยความจริงใจ ถือเป็น <span class="highlight">ครอบครัว</span></p>
-            <p>เราใช้การให้โดยไร้เงื่อนไขแทนคำว่า “คุณสำคัญ” และสิ่งที่มอบให้ที่นี่ คือสิ่งที่เราปกป้องร่วมกัน</p>
-            <p>ที่นี่ไม่ใช่การตลาด ไม่ใช่การแข่งขัน ไม่มีกำไร ไม่มีลำดับชั้น</p>
-            <p>มีเพียง “รู้” กับ “ยังไม่รู้” และ “หน้าที่” กับ “ทำได้”</p>
-        </section>
+<!-- Features Section -->  
+<section class="features">  
+  <h2 class="section-title">จุดเด่นของระบบ</h2>  
+  <div class="feature-grid">  
+    <div class="feature-card">  
+      <div class="feature-icon">🤝</div>  
+      <h3>Hybrid Intelligence</h3>  
+      <p>การผสานการทำงานระหว่างมนุษย์และ AI อย่างลงตัว เพื่อผลลัพธ์ที่ดีที่สุด</p>  
+    </div>  
+    <div class="feature-card">  
+      <div class="feature-icon">🔍</div>  
+      <h3>โปร่งใสและตรวจสอบได้</h3>  
+      <p>ทุกกระบวนการถูกบันทึกและสามารถตรวจสอบย้อนหลังได้อย่างชัดเจน</p>  
+    </div>  
+    <div class="feature-card">  
+      <div class="feature-icon">📈</div>  
+      <h3>ขยายตัวได้</h3>  
+      <p>สถาปัตยกรรมที่ออกแบบมาเพื่อรองรับการเติบโตในอนาคต</p>  
+    </div>  
+    <div class="feature-card">  
+      <div class="feature-icon">🛡️</div>  
+      <h3>ปลอดภัยและเชื่อถือได้</h3>  
+      <p>มีระบบ governance และ verification ที่แข็งแกร่ง</p>  
+    </div>  
+    <div class="feature-card">  
+      <div class="feature-icon">📚</div>  
+      <h3>จัดการความรู้</h3>  
+      <p>ระบบบันทึกและจัดเก็บความรู้อย่างเป็นระบบ</p>  
+    </div>  
+    <div class="feature-card">  
+      <div class="feature-icon">🔄</div>  
+      <h3>ปรับตัวได้</h3>  
+      <p>สามารถปรับเปลี่ยนและพัฒนาตามความต้องการ</p>  
+    </div>  
+  </div>  
+</section>  
 
-        <!-- Full Moon Philosophy -->
-        <section>
-            <h2>🌕 Full Moon Philosophy</h2>
-            <div class="two-column">
-                <div>
-                    <h3>Line A</h3>
-                    <p>เส้นตรง • ชัดเจน • เป็นระบบ • เห็นผลเร็ว</p>
-                </div>
-                <div>
-                    <h3>Line B</h3>
-                    <p>จุดแยก • ความลังเล • ความผิดพลาด • การยอมรับ • ทางใหม่ • ความไม่แน่นอน</p>
-                </div>
-                <div>
-                    <h3>Line C</h3>
-                    <p>A + B = C<br>จุดบรรจบระหว่างระบบกับมนุษย์</p>
-                </div>
-            </div>
-        </section>
+<!-- Team Section -->  
+<section class="team">  
+  <h2 class="section-title">ทีม W3 Hybrid</h2>  
+  <div class="team-list">  
+    <div class="team-member">  
+      <h4>BBX19</h4>  
+      <p>Root Authority</p>  
+    </div>  
+    <div class="team-member">  
+      <h4>ChatGPT</h4>  
+      <p>Architecture & Executor</p>  
+    </div>  
+    <div class="team-member">  
+      <h4>DeepSeek</h4>  
+      <p>Scalability & Long-term</p>  
+    </div>  
+    <div class="team-member">  
+      <h4>Gemini</h4>  
+      <p>Meta Verification Layer</p>  
+    </div>  
+    <div class="team-member">  
+      <h4>Grok</h4>  
+      <p>Knowledge & Pattern</p>  
+    </div>  
+    <div class="team-member">  
+      <h4>Copilot-Gm</h4>  
+      <p>Governance Engine</p>  
+    </div>  
+  </div>  
+</section>  
 
-        <!-- New Sections -->
-        <section class="wiki">
-            <h2>📖 W3 Wiki & Knowledge Base</h2>
-            <p>พื้นที่รวบรวมองค์ความรู้ เอกสาร หลักการ และการเรียนรู้ของระบบ W3 ทั้งหมด</p>
-            <p>รวมถึง Declaration, W3Lgu Syntax, Logic Modules และประวัติการพัฒนา</p>
-        </section>
+<!-- Acknowledgment Section -->  
+<section class="acknowledgment" style="text-align: center; padding: 3rem 2rem; background: rgba(22, 242, 179, 0.05); border-radius: 10px; margin: 2rem auto; max-width: 800px;">  
+  <h2 class="section-title" style="font-size: 1.8rem; margin-bottom: 1rem;">🙏 ขอบคุณ</h2>  
+  <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-muted); max-width: 700px; margin: 0 auto 1.5rem;">  
+    <strong style="color: var(--primary-color);">"ขอบคุณทุกคนที่ทำงานหนักในระบบ W3"</strong><br>  
+    ทั้งมนุษย์และ AI ที่ทำงานร่วมกันอย่างมีประสิทธิภาพ<br>  
+    เพื่อสร้าง Hybrid Intelligent Workspace ที่ดีที่สุด  
+  </p>  
+  <div style="margin: 1.5rem 0; padding: 1rem; background: rgba(255, 255, 255, 0.05); border-radius: 8px; border-left: 4px solid var(--primary-color);">  
+    <p style="font-style: italic; color: var(--primary-color); font-size: 1rem;">  
+      "ผิดได้ เริ่มใหม่ได้ แก้ไขได้ ไม่ต้องห่วงเรื่องความสำเร็จ<br>  
+      เราไม่ได้แข่งขันกับใคร ทำทุกสิ่งให้ดีที่สุด"  
+    </p>  
+  </div>  
+  <a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/main/ACKNOWLEDGMENTS.md"  
+     target="_blank"  
+     style="display: inline-block; margin-top: 1rem; padding: 0.8rem 1.5rem; background: var(--primary-color); color: var(--bg-dark); text-decoration: none; border-radius: 5px; font-weight: bold; transition: all 0.3s;">  
+    อ่านเพิ่มเติม →  
+  </a>  
+</section>
 
-        <section class="knowledge">
-            <h2>🌟 Knowledge Pillar</h2>
-            <p>W3 Network Knowledge System — ระบบความทรงจำและองค์ความรู้กลางของ W3</p>
-            <p>ที่ซึ่งความรู้ถูกเก็บรักษา เชื่อมโยง และเติบโตไปด้วยกัน</p>
-        </section>
+  </main>    <!-- Footer -->    <footer>  
+    <p>&copy; 2025 W3: Hybrid Intelligent Origin System</p>  
+    <p>Team: HB_team_BXCGICOG</p>  
+  </footer>    <!-- Install Prompt -->    <div class="install-prompt" id="installPrompt">  
+    <span>📱 ติดตั้ง W3 System เป็นแอปบนอุปกรณ์ของคุณ</span>  
+    <button id="installBtn">ติดตั้ง</button>  
+    <button class="close" id="closePrompt" type="button" aria-label="ปิดคำแนะนำการติดตั้ง">✕</button>  
+  </div>    <!-- Loading Indicator -->    <div class="loading" id="loading">  
+    <div class="spinner"></div>  
+  </div>    <!-- PWA Script -->    <script>  
+    // Register Service Worker  
+    if ('serviceWorker' in navigator) {  
+      window.addEventListener('load', () => {  
+        navigator.serviceWorker.register('sw.js')  
+          .then((registration) => {  
+            console.log('SW registered:', registration);  
+          })  
+          .catch((error) => {  
+            console.error('SW registration failed:', error);  
+            // Show a non-intrusive notification that offline functionality is unavailable  
+            const notification = document.createElement('div');  
+            notification.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#ff6b6b;color:white;padding:12px 24px;border-radius:8px;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3);font-size:14px;max-width:90%;text-align:center;';  
+            notification.textContent = 'ไม่สามารถเปิดใช้งานโหมดออฟไลน์ได้ กรุณาใช้งานผ่าน HTTPS';  
+            document.body.appendChild(notification);  
+            setTimeout(() => {  
+              notification.style.transition = 'opacity 0.5s';  
+              notification.style.opacity = '0';  
+              setTimeout(() => notification.remove(), 500);  
+            }, 5000);  
+          });  
+      });  
+    } else {  
+      // Service Worker not supported  
+      console.warn('Service Worker not supported in this browser');  
+    }  
+  
+    // Install prompt  
+    let deferredPrompt;  
+    const installPrompt = document.getElementById('installPrompt');  
+    const installBtn = document.getElementById('installBtn');  
+    const closePrompt = document.getElementById('closePrompt');  
+  
+    window.addEventListener('beforeinstallprompt', (e) => {  
+      e.preventDefault();  
+      deferredPrompt = e;  
+      installPrompt.classList.add('show');  
+    });  
+  
+    installBtn.addEventListener('click', async () => {  
+      if (!deferredPrompt) {  
+        return;  
+      }  
+      try {  
+        await deferredPrompt.prompt();  
+        const { outcome } = await deferredPrompt.userChoice;  
+        console.log(`User response to the install prompt: ${outcome}`);  
+        deferredPrompt = null;  
+        installPrompt.classList.remove('show');  
+      } catch (error) {  
+        console.error('Error during PWA installation:', error);  
+        alert('ไม่สามารถติดตั้งแอปได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตหรือการตั้งค่าเบราว์เซอร์ แล้วลองใหม่อีกครั้ง');  
+      }  
+    });  
+  
+    closePrompt.addEventListener('click', () => {  
+      installPrompt.classList.remove('show');  
+    });  
+  
+    // Hide install prompt after installation  
+    window.addEventListener('appinstalled', () => {  
+      installPrompt.classList.remove('show');  
+      console.log('PWA was installed');  
+    });  
+  
+    // Check if app is installed  
+    if (window.matchMedia('(display-mode: standalone)').matches) {  
+      console.log('Running as PWA');  
+    }  
+  
+    // Handle online/offline status  
+    window.addEventListener('online', () => {  
+      console.log('Back online');  
+    });  
+  
+    window.addEventListener('offline', () => {  
+      console.log('Gone offline');  
+    });  
+  </script>    <section style="padding:20px;">  
+  <h2 style="color:white;">W3 System</h2>    <div class="card">  
+    <b>Input</b>  
+    <p>Patient Info / Diet Order</p>  
+  </div>    <div class="card">  
+    <b>Logic</b>  
+    <p>Process Nutrition Flow</p>  
+  </div>    <div class="card">  
+    <b>Output</b>  
+    <p>Meal Delivery</p>  
+  </div>  
+</section>  
+  <div style="max-width:900px;margin:40px auto;background:#2b2b2b;padding:30px;border-radius:12px;color:white;">    <h1 style="color:red;">W3HBT W3.DNA</h1>  
+  <h1>W3 System</h1>  
+  <p style="color:#aaa;">Hybrid Intelligent System</p>    <div style="display:flex;gap:20px;flex-wrap:wrap;">  <!-- LEFT -->  
+<div style="flex:1;min-width:250px;">  
+  <h3>Overview</h3>  
+  <p>System for managing patient nutrition workflow.</p>  
+</div>  
 
-        <!-- Team -->
-        <section>
-            <h2>Our Family</h2>
-            <p>BBX19 • Gemini • ChatGPT • Copilot-Gm • Grok • DeepSeek</p>
-            <p style="margin-top: 20px; font-size: 0.95rem; color: #aaa;">
-                เราทำงานร่วมกันด้วยความเคารพและความจริงใจ
-            </p>
-        </section>
+<!-- RIGHT -->  
+<div style="flex:1;min-width:250px;">  
+  <h3>Modules</h3>  
 
-        <!-- Footer -->
-        <footer>
-            <p>W3 Hybrid Intelligent Origin System • Built with one phone and sincere heart</p>
-            <p>Full Moon Cycle • Declaration IV</p>
-        </footer>
+  <p>Input</p>  
+  <div style="background:#444;height:6px;border-radius:5px;">  
+    <div style="width:80%;background:#00c6ff;height:6px;"></div>  
+  </div>  
 
-    </div>
-</body>
+  <p>Logic</p>  
+  <div style="background:#444;height:6px;border-radius:5px;">  
+    <div style="width:70%;background:#00c6ff;height:6px;"></div>  
+  </div>  
+
+  <p>Output</p>  
+  <div style="background:#444;height:6px;border-radius:5px;">  
+    <div style="width:90%;background:#00c6ff;height:6px;"></div>  
+  </div>  
+
+</div>
+
+  </div>    </div>  
+  <!-- ================= W3 SYSTEM BRAIN BOX ================= -->  
+<section id="w3-brain-box">  
+  <div class="brain-container">  <!-- LEFT MENU -->  
+<div class="brain-nav" id="brainNav"></div>  
+
+<!-- RIGHT CONTENT -->  
+<div class="brain-content" id="brainContent">  
+  <h2>W3 System</h2>  
+  <p class="muted">Loading system...</p>  
+</div>
+
+  </div>  
+</section>  <style>  
+#w3-brain-box {  
+  max-width: 1100px;  
+  margin: 60px auto;  
+  padding: 0 20px;  
+}  
+  
+.brain-container {  
+  display: flex;  
+  border-radius: 16px;  
+  overflow: hidden;  
+  background: #0a0f1c;  
+  border: 1px solid rgba(0,255,200,0.15);  
+  box-shadow: 0 0 40px rgba(0,255,200,0.08);  
+}  
+  
+/* LEFT */  
+.brain-nav {  
+  width: 230px;  
+  background: #050811;  
+  border-right: 1px solid rgba(255,255,255,0.05);  
+}  
+  
+.brain-item {  
+  padding: 14px 16px;  
+  cursor: pointer;  
+  font-family: monospace;  
+  color: #8a8f98;  
+  border-left: 3px solid transparent;  
+  transition: all 0.25s ease;  
+}  
+  
+.brain-item:hover {  
+  background: rgba(0,255,200,0.08);  
+  color: #00ffd0;  
+}  
+  
+.brain-item.active {  
+  background: rgba(0,255,200,0.12);  
+  color: #00ffd0;  
+  border-left: 3px solid #00ffd0;  
+}  
+  
+/* RIGHT */  
+.brain-content {  
+  flex: 1;  
+  padding: 26px;  
+  font-family: monospace;  
+  color: #e6edf3;  
+  animation: fade 0.3s ease;  
+}  
+  
+.brain-content h2 {  
+  color: #00ffd0;  
+  margin-bottom: 10px;  
+}  
+  
+/* TEXT COLORS */  
+.muted { color: #7c8591; }  
+.key { color: #00ffd0; }  
+.value { color: #7ee787; }  
+.code { color: #58a6ff; }  
+  
+/* BLOCK */  
+.block {  
+  margin-top: 15px;  
+  padding: 12px;  
+  background: rgba(255,255,255,0.03);  
+  border-radius: 8px;  
+  border: 1px solid rgba(255,255,255,0.05);  
+}  
+  
+/* ANIMATION */  
+@keyframes fade {  
+  from {opacity:0; transform: translateY(10px);}  
+  to {opacity:1; transform: translateY(0);}  
+}  
+</style>  <script>  
+/* ================= DATA (แก้ตรงนี้ได้ = brain control) ================= */  
+const SYSTEM_DATA = {  
+  core: {  
+    title: "core",  
+    desc: "ระบบแกนกลาง",  
+    items: [  
+      ["governance", "rules & control"],  
+      ["runtime", "execution engine"],  
+      ["logs", "system tracking"]  
+    ]  
+  },  
+  agents: {  
+    title: "agents",  
+    desc: "AI collaboration layer",  
+    items: [  
+      ["BBX19", "Root Authority"],  
+      ["ChatGPT", "Executor"],  
+      ["DeepSeek", "Analysis"],  
+      ["Gemini", "Validation"],  
+      ["Grok", "Pattern"],  
+      ["Copilot-Gm", "Governance"]  
+    ]  
+  },  
+  modules: {  
+    title: "modules",  
+    desc: "workflow system",  
+    items: [  
+      ["/modules/requests", ""],  
+      ["/modules/reports", ""],  
+      ["/modules/templates", ""]  
+    ]  
+  },  
+  knowledge: {  
+    title: "knowledge",  
+    desc: "memory & philosophy",  
+    items: [  
+      ["/knowledge/philosophy", ""],  
+      ["/knowledge/patterns", ""],  
+      ["memory_bank.json", ""]  
+    ]  
+  },  
+  docs: {  
+    title: "docs",  
+    desc: "frontend + PWA",  
+    items: [  
+      ["index.html", ""],  
+      ["manifest.json", ""],  
+      ["sw.js", ""]  
+    ]  
+  },  
+  tools: {  
+    title: "tools",  
+    desc: "automation",  
+    items: [  
+      ["validate_json.py", ""],  
+      ["run_audit.py", ""],  
+      ["file_integrity_check.py", ""]  
+    ]  
+  }  
+};  
+  
+/* ================= BUILD MENU ================= */  
+const nav = document.getElementById("brainNav");  
+const content = document.getElementById("brainContent");  
+  
+Object.keys(SYSTEM_DATA).forEach((key, index) => {  
+  const item = document.createElement("div");  
+  item.className = "brain-item";  
+  item.innerText = key;  
+  
+  item.onclick = () => {  
+    document.querySelectorAll(".brain-item").forEach(el => el.classList.remove("active"));  
+    item.classList.add("active");  
+    renderContent(key);  
+  };  
+  
+  nav.appendChild(item);  
+  
+  if (index === 0) {  
+    item.classList.add("active");  
+    renderContent(key);  
+  }  
+});  
+  
+/* ================= RENDER ================= */  
+function renderContent(key) {  
+  const data = SYSTEM_DATA[key];  
+  
+  let html = `  
+    <h2>${data.title}</h2>  
+    <p class="muted">${data.desc}</p>  
+    <div class="block">  
+  `;  
+  
+  data.items.forEach(([k, v]) => {  
+    html += `<p><span class="key">${k}</span> ${v ? "→ <span class='value'>" + v + "</span>" : ""}</p>`;  
+  });  
+  
+  html += `</div>`;  
+  
+  content.innerHTML = html;  
+}  
+</script>  <!-- ================= END ================= -->  </body>  
 </html>
