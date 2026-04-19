@@ -1,3 +1,195 @@
+IGET (v1) — W3 0.5 PR Flow Assistant
+
+Version: v1
+Status: Active
+Owner: BBX19
+Environment: W3 / GitHub Pull Request Workflow
+
+---
+
+Overview
+
+IGET is a lightweight governance assistant for Pull Requests.
+
+Its purpose is to reduce complex GitHub review signals into a clear human-readable flow using:
+
+- Summary
+- Risk indication
+- Decision support
+- Fast visual status
+
+IGET is built for practical use, low overhead, and real workflow conditions.
+
+---
+
+Core Philosophy
+
+IGET follows the W3 0.5 concept:
+
+«Balance between strict automation and human judgment.»
+
+Not every PR should be blocked.
+Not every PR should be trusted blindly.
+
+The system helps identify what needs attention, what is safe, and what should be reviewed further.
+
+---
+
+W3 Color Trigger System
+
+IGET uses visual status layers for fast understanding.
+
+Color| Meaning
+🟩 Green| Ready / Safe / Low Risk
+🟨 Yellow| Caution / Needs Review
+🟥 Red| High Risk / Hold / Inspect
+
+Colors are used so humans can understand status instantly without reading long reports.
+
+---
+
+2 Modes
+
+1. Normal Run
+
+Used on real Pull Requests.
+
+IGET scans change signals and summarizes:
+
+- files changed
+- lines changed
+- file types
+- possible risks
+- readiness level
+- recommendations
+
+---
+
+2. Soft Run
+
+Used for pre-decision support before merge.
+
+Shows:
+
+- Choice → possible direction
+- Pre-test → expected outcome
+- Recommend → actions likely to pass
+
+Useful during uncertain or active development periods.
+
+---
+
+Primary Check (v1)
+
+Main indicators used in current version:
+
+- total changed files
+- total changed lines
+- code / docs / test ratio
+- risky filenames
+- documentation-only mode
+- PR size pressure
+
+Default behavior begins in soft balance mode.
+
+---
+
+Example Output
+
+Green PR
+
+FLOW
+🟩🟩🟩🟩🟩🟩 (100%)
+
+IMPACT
+Safe level. Ready to merge.
+
+---
+
+Yellow PR
+
+FLOW
+🟩🟨🟨🟩🟨🟩 (72%)
+
+IMPACT
+Some risk detected. Review recommended.
+
+---
+
+Red PR
+
+FLOW
+🟥🟥🟥🟨🟥🟥 (38%)
+
+IMPACT
+High risk. Inspect before merge.
+
+---
+
+Why IGET Exists
+
+Modern PR systems often produce too much noise.
+
+IGET converts complexity into:
+
+- readable signals
+- simple summaries
+- better merge confidence
+- faster human decisions
+
+---
+
+Design Principles
+
+- Fast
+- Clear
+- Lightweight
+- Human-friendly
+- Git-native
+- Expandable
+- Real-world practical
+
+---
+
+Current Structure
+
+iget/
+├── README.md
+├── SPEC_V1.md
+└── main.py
+
+---
+
+Next Evolution
+
+v2 Targets
+
+- Line C scoring model
+- EP packet output
+- trust memory signals
+- workflow type detection
+- historical learning layer
+
+---
+
+Notes
+
+IGET does not replace maintainers.
+IGET assists maintainers.
+
+Final judgment remains human.
+
+---
+
+Identity Statement
+
+Built under practical limits.
+Designed for real use.
+Improved through live operation.
+
+---
+
+End of README
 # IGET (v1) — W3 0.5 PR Flow Assistant
 
 IGET คือปลั๊กอิน/บอตสำหรับ Pull Request ที่ “แปล” ขั้นตอน GitHub ที่ซับซ้อนให้เป็น **Flow + สี + ความเสี่ยง + เงื่อนไขขั้นต่ำ** เพื่อให้เข้าใจได้ทันทีโดยไม่ต้องอ่านคู่มือยาว
