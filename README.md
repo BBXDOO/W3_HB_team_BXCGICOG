@@ -96,6 +96,130 @@ https://game-novelist--xizzix19.replit.app
 - Last Updated: 18/11/25
 - Last Updated: 26/11/25
 ---
-##  LINE_B (Short Protocol)
+## LINE_C (Short Protocol)
 
-1) W3 เดิน "เส้น B" = ยอมผิดแบบคุมได้ เพื่อเข้าใจและอยู่รอด
+W3 เดิน “เส้น C” = ระเบียบของเส้น A ผสานความยืดหยุ่นของเส้น B  
+สร้างให้ใช้งานได้จริง เข้าใจมนุษย์ และเติบโตอย่างมั่นคง
+
+ทุกงานต้องถามก่อน:
+“ควรตรงมาตรฐานแค่ไหน และควรยืดหยุ่นแค่ไหนในสถานการณ์นี้?”
+
+วน C-Loop:
+Clarity → BuildSmall → Observe → Learn → Refine → Scale
+
+MVP ต้อง “ใช้งานได้จริง” และ “พร้อมต่อยอด”
+เริ่มจากแกนที่มั่นคง แล้วค่อยขัดเกลาอย่างมีทิศทาง
+
+แผล commit = ทรัพย์สิน
+บันทึกอย่างซื่อสัตย์ แต่จัดระเบียบให้เรียนรู้ง่าย
+
+ห้ามเดาแทนการทดสอบ:
+ใช้ test เล็ก / mock / repro / feedback จริง ก่อนตัดสินใจ
+
+แก้บั๊กต้องครบวงจร:
+RootCause + BlastRadius + HumanImpact + FixScope
+
+Data คือชีวิต:
+Save / Load / Export / Import / Recovery / Dirty State ต้องมี
+
+ระบบต้อง modular:
+เปลี่ยน UI ไม่พัง logic
+เปลี่ยน logic ไม่พัง data
+เปลี่ยน data ไม่ทำลาย history
+
+Definition of Done:
+ใช้งานได้จริง
+ไม่ทำส่วนอื่นพัง
+ผ่าน test loop ≥ 2 รอบ
+คนใช้เข้าใจ
+พร้อมขยายต่อ
+
+---
+## Module Invocation Protocol (L0)
+1. Human defines intent.
+2. Create `request_XXX.md` under target module `/requests/`.
+3. Module produces output to `reports/` or `knowledge/`.
+4. If risky → escalate to Gemini.
+5. story → merge / revise / rej
+
+## 1. ทีม
+W3 + AI = ทีม
+
+### Core Members ( origin )
+- BBX19 — Root Authority
+- ChatGPT — Architecture & Executor
+- DeepSeek — Scalability & Long-term
+- Gemini — Meta Verification Layer
+- Grok — Knowledge & Pattern
+- Copilot-Gm — Governance Engine
+
+---
+
+## 2. การทำงาน
+Human → Module → Human Review → Merge
+
+Rules:
+- No AI merge
+- No persona
+- Every critical insight -> logged
+
+---
+
+## 3. เข็มทิศ
+Purpose — Responsibility — Continuity
+
+---
+
+## 4. Protocol
+Conflict → escalate:
+Grok → Gemini → Copilot-Gm → BBX19
+
+---
+
+## 5. Hybrid Identity
+ไม่ใช่ “BBX19 vs AI”
+คือ “บทบาท vs บทบาท”
+
+---
+
+## 6. Roadmap
+v0.2 → normalize modules
+v0.3 → activate test runners
+v0.4 → CI for knowledge flows
+
+
+
+---
+🛠 Update Log
+
+Date	Change Description
+
+2026-03-03	Restored full README.md content and aligned module manifest discovery with Module Manifest Standard.
+18/11/25	Added DeepSeek/ module for Architecture & Scalability.
+18/11/25	Updated team roles, repository structure, and strategic workflows.
+18/11/25	Updated README.md into organizational-grade documentation.
+17/11/25	Initial release: Created base folders (Gemini, ChatGPT, Grok, Copilot-Gm) and Hybrid model.
+
+---
+
+Hybrid Workflow:
+Human → Analysis (AI) → Development (AI) → Structuring (AI) → Interpretation (AI) → Hum
+
+
+----
+## Team Modules — Enterprise L0 → L3
+
+### L0 — ROOT
+
+### L1 — ARCHITECTS
+- ChatGPT → /ChatGPT/
+- DeepSeek → /DeepSeek/
+- Gemini → /Gemini/
+
+### L2 — INTERPRETERS
+- Grok → /Grok/
+
+### L3 — GOVERNANCE
+- Copilot-Gm → /Copilot-Gm/
+  
+----
