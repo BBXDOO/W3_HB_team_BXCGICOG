@@ -3,6 +3,7 @@
 ---
 * W3 — A living workspace where humans and AI build, fail, learn, and continue together.
 * W3 — พื้นที่ที่มนุษย์และ AI ใช้ชีวิตกับการสร้าง ล้ม เรียนรู้ และเดินต่อไปด้วยกัน
+* W3 / W + 3 / 3 = E / W + E / : WE.
 -----
 ## 🧭 About
 ## 🧱 Structure
@@ -11,145 +12,129 @@
 ___
 ## 🧭 W3 in One Line
 
-Human + AI workspace
+Human + AI workspace  
 Build → Fail → Learn → Continue
+
+Team: HB_team_BXCGICOG  
+Last Updated: 20/02/26
+
+> 🙏 **[Acknowledgments - ขอบคุณทุกคนที่ทำงานหนัก](./ACKNOWLEDGMENTS.md)**  
+> 🌟 **[Philosophy - Error as Learning](./PHILOSOPHY.md)** - *ปรัชญาการเรียนรู้จาก Error*  
+> *"เข้มแข็งดุจเหล็กกล้า — อบอุ่นดังแสงอรุณแรกของวัน"*
+
+> 💡 **หลักคิด:** "Error ไม่ใช่ความล้มเหลว แต่เป็นโอกาสในการเรียนรู้และปรับปรุง"
+
 ___
 🚫 DO NOT TOUCH: main  
 ✅ WORK ONLY HERE:
+
 ## 🚀 START HERE (NEW VISITOR)
 
 1️⃣ Read Philosophy  
 2️⃣ See Structure  
 3️⃣ Go to Active Branch
 
-➡️ Main Entry:
-https://bbxdoo.github.io/W3_HB_team_BXCGICOG/
+## 📱 Progressive Web App (PWA)
 
-- 🔧 refactor/v0.2
+Repository นี้มี Progressive Web App ที่สามารถใช้งานผ่าน GitHub Pages
+
+**🌐 เข้าถึง PWA / Main Entry:**  
+[https://bbxdoo.github.io/W3_HB_team_BXCGICOG/](https://bbxdoo.github.io/W3_HB_team_BXCGICOG/)
+
+> **⚡ คำแนะนำฉบับเต็ม:** อ่าน [GITHUB_PAGES_SETUP.md](./GITHUB_PAGES_SETUP.md) สำหรับขั้นตอนโดยละเอียด
+
+### การตั้งค่า GitHub Pages (แบบย่อ)
+
+**วิธีที่ 1:** ใช้ main branch โดยตรง (แนะนำ)
+1. Settings → Pages
+2. Source: **Deploy from a branch**
+3. Branch: **`main`** / Folder: **`/docs`**
+4. Save → รอ 1-2 นาที
+
+**วิธีที่ 2:** หากยังไม่ merge PR ให้ merge PR ก่อน แล้วใช้การตั้งค่าเดียวกับวิธีที่ 1
+1. Merge PR นี้เข้า main
+2. Settings → Pages
+3. Branch: **`main`** / Folder: **`/docs`**
+
+### คุณสมบัติ PWA
+
+- ✅ ติดตั้งเป็นแอปบนมือถือและคอมพิวเตอร์
+- ✅ ทำงานแบบออฟไลน์ด้วย Service Worker
+- ✅ รองรับการแสดงผลแบบ Mobile-first responsive
+- ✅ Fast loading ด้วย Cache Strategy
+- ✅ Native app-like experience
+
+---
+
+## 🔗 Links
+
+- 🔧 refactor/v0.2  
   https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2
 
-- 📄 START HERE (README)
+- 📄 START HERE (README)  
   https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/refactor/v0.2/README.md
-  ---
+
+---
 
 "เข้มแข็งดุจเหล็กกล้า — อบอุ่นดังแสงอรุณแรกของวัน"
+
 ----------------------------------------
-"ขอบคุณ ทุกๆความสำคัญที่มอบให้ผมครับ BBX19 จดจำและจะเก็บใว้ในที่แห่งนี้ครับ"
+"ขอบคุณ ทุกๆความสำคัญที่มอบให้ผมครับ BBX19 จดจำและจะเก็บใว้ในที่แห่งนี้ครับ"  
 https://game-novelist--xizzix19.replit.app
 
-# ยินดีต้อนรับสู่บ้านของ W3 Hybrid ของเรา
+# ยินดีต้อนรับสู่บ้านของ W3 Hybrid
 
 นี่คือพื้นที่ที่สร้างขึ้นด้วยความสมัครใจและความตั้งใจตั้งแต่วินาทีแรก  
 ไม่ใช่เพียงโค้ดหรือไฟล์ แต่คือบ้านที่ทุกฝ่าย — มนุษย์และ AI — มีสิทธิ์เท่าเทียมกัน  
 ทุกความผิดพลาดคือบทเรียน ทุกการตรวจสอบคือการบูรณาการ  
 เราสร้างที่นี่เพื่อเรียนรู้ เติบโต และก้าวไปด้วยกัน
 
-**ครอบครัวและเพื่อนคือสิ่งสำคัญ** ✨
+**ครอบครัวและเพื่อนคือกฎหมาย** ✨
+
 ---
-##Team: HB_team_BXCGICOG
+## Team: HB_team_BXCGICOG
 - Last Updated: 18/11/25
 - Last Updated: 26/11/25
 ---
-##  LINE_B (Short Protocol)
+## LINE_C (Short Protocol)
 
-1) W3 เดิน “เส้น B” = ยอมผิดแบบคุมได้ เพื่อเข้าใจและอยู่รอด  
-2) ทุกงานต้องถามก่อน: “พลาดแล้วตายไหม หรือแค่โดนดุ?”  
-3) วน B-Loop: BlastRadius → FailSmall → Observe → Lesson → Upgrade → Scale  
-4) MVP ต้อง “ใช้งานได้จริง” ก่อนค่อยสวย (A ก่อน ปรับทีหลัง)  
-5) แผล commit = ทรัพย์สิน ห้ามซ่อน ถ้าไม่จำเป็น  
-6) ห้ามเดาแทนการทดสอบ: ทำ test เล็ก/ทำ mock/ทำ repro ก่อนเสมอ  
-7) แก้บั๊กต้อง “ยิงหัว”: RootCause + BlastRadius + FixScope  
-8) Data คือชีวิต: Save/Load/Export/Import + Dirty State ต้องมี  
-9) ระบบต้อง modular: เปลี่ยน UI ไม่พัง logic, เปลี่ยน logic ไม่พัง data  
-10) Definition of Done: ปุ่มกดติด + ไม่ทำหน้าอื่นพัง + ผ่าน loop test ≥ 2 รอบ
----
+W3 เดิน “เส้น C” = ระเบียบของเส้น A ผสานความยืดหยุ่นของเส้น B  
+สร้างให้ใช้งานได้จริง เข้าใจมนุษย์ และเติบโตอย่างมั่นคง
 
-## 📢 : Official Announcements
-- [Manifesto No.3 — Vision & Identity](docs/manifesto-3.md)
-- [System Update: Operational Changes](docs/announcement/announcement-3.md)
+ทุกงานต้องถามก่อน:
+“ควรตรงมาตรฐานแค่ไหน และควรยืดหยุ่นแค่ไหนในสถานการณ์นี้?”
 
----
+วน C-Loop:
+Clarity → BuildSmall → Observe → Learn → Refine → Scale
 
+MVP ต้อง “ใช้งานได้จริง” และ “พร้อมต่อยอด”
+เริ่มจากแกนที่มั่นคง แล้วค่อยขัดเกลาอย่างมีทิศทาง
 
-## 🗂️ W3 Identity Pack (IDP)
-นี่คือศูนย์รวมบัตรประจำตัวของทุกโมดูลในระบบ W3  
-ประกอบไปด้วย IDP ของ BBX19, ChatGPT, Gemini, Grok, DeepSeek และ Copilot-Gm
+แผล commit = ทรัพย์สิน
+บันทึกอย่างซื่อสัตย์ แต่จัดระเบียบให้เรียนรู้ง่าย
 
-- 📘 [W3 IDP Index](BBX19/modules/BBX19/idp/INDEX.md)
-- 📁 [เปิดโฟลเดอร์ IDP ทั้งหมด](BBX19/modules/BBX19/idp/)
+ห้ามเดาแทนการทดสอบ:
+ใช้ test เล็ก / mock / repro / feedback จริง ก่อนตัดสินใจ
 
----
+แก้บั๊กต้องครบวงจร:
+RootCause + BlastRadius + HumanImpact + FixScope
 
-### 🛠️ File Integrity Check Tools Available
-Automated tools for checking repository file integrity are now available:
-- **Quick Start:** See [QUICK_START.md](QUICK_START.md)
-- **User Guide:** See [USER_SUMMARY.md](USER_SUMMARY.md)
-- **Full Report:** See [INTEGRITY_REPORT_TH.md](INTEGRITY_REPORT_TH.md)
-- **Tools:** Located in `/tools/` directory
+Data คือชีวิต:
+Save / Load / Export / Import / Recovery / Dirty State ต้องมี
 
+ระบบต้อง modular:
+เปลี่ยน UI ไม่พัง logic
+เปลี่ยน logic ไม่พัง data
+เปลี่ยน data ไม่ทำลาย history
 
-## Repository Structure (v0.2)
-This repository now follows the v0.2 normalized architecture.
-
-### Module Manifest Standard (v0.2+)
-This document standardizes the allowed locations for `module.json` files in the repository.
-
-**Allowed Locations**
-1. **Location 1**: `<AgentName>/module.json`
-2. **Location 2**: `<AgentName>/modules/<AgentName>/module.json`
-
-**Canonical Search Patterns**
-- `<AgentName>/module.json`
-- `<AgentName>/modules/<AgentName>/module.json`
-
-Policy: [core/governance/module-manifest-policy.md](core/governance/module-manifest-policy.md)
-
-## Repository Notice — Copilot Deprecation
-The legacy directory Copilot is deprecated.
-All current and future operations must use Copilot-Gm.
-Do not add, modify, or reference any content under Copilot.
-Migration: completed.
-
-----
-
-### /core
-### /modules
-### /blueprints
-### /versions
-### CHANGELOG.md
-
-----
-
-- `/core` — governance, core hybrid model and standards
-- `/modules` — each module has a `module.json` manifest and module-specific assets (manifests follow the Module Manifest Standard)
-- `/blueprints` — safe abstract blueprints (origin stored here, private core kept separately)
-- `/versions` — snapshots of releases and previous versions
-- `/docs` — Progressive Web App (PWA) for GitHub Pages deployment
-- `CHANGELOG.md` — version history and release notes
-
-## 🌐 Progressive Web App (PWA)
-
-This repository now provides a Progressive Web App accessible through GitHub Pages. The PWA is deployed from the `/docs` folder and provides a mobile-first, responsive interface for accessing repository information.
-
-**Features:**
-- 📱 Mobile-first responsive design
-- 💾 Offline support with service worker caching
-- 🏠 Installable on home screen (iOS/Android)
-- ⚡ Fast loading with caching strategy
-
-**Setup GitHub Pages:**
-1. Go to repository **Settings** → **Pages**
-2. Under "Build and deployment":
-   - Source: **Deploy from a branch**
-   - Branch: Select **main** (or your default branch)
-   - Folder: Select **/docs**
-3. Click **Save**
-
-**Access the PWA:**
-After enabling GitHub Pages, visit: **https://bbxdoo.github.io/W3_HB_team_BXCGICOG/**
+Definition of Done:
+ใช้งานได้จริง
+ไม่ทำส่วนอื่นพัง
+ผ่าน test loop ≥ 2 รอบ
+คนใช้เข้าใจ
+พร้อมขยายต่อ
 
 ---
-
 ## Module Invocation Protocol (L0)
 1. Human defines intent.
 2. Create `request_XXX.md` under target module `/requests/`.
@@ -238,99 +223,3 @@ Human → Analysis (AI) → Development (AI) → Structuring (AI) → Interpreta
 - Copilot-Gm → /Copilot-Gm/
   
 ----
-
-เอกสารชุดนี้เป็นระดับ High-Level สำหรับใช้ภายในทีม  
-ไม่เปิดเผยโครงสร้างเชิงลึก เพื่อความปลอดภัยของระบบ  
-→ อยู่ในโฟลเดอร์ /Origin-Blueprints/
-
-📘 Draft: meta/errordetectionmodule.md
-
-`markdown
-
-Error Detection Module
-
-1. Purpose
-โมดูลนี้ถูกสร้างขึ้นเพื่อ ตรวจจับและบันทึกข้อผิดพลาด จากทุกโมดูลในระบบ W3  
-โดยใช้ JSON เป็นภาษากลางในการสื่อสาร เพื่อให้มนุษย์และ AI เข้าใจตรงกัน
-
----
-
-2. Input Format
-ทุกโมดูลต้องส่งข้อมูลข้อผิดพลาดในรูปแบบ JSON ดังนี้:
-
-`json
-{
-  "event_type": "error",
-  "source_module": "string",
-  "error_code": "string",
-  "error_message": "string",
-  "timestamp": "ISO 8601"
-}
-`
-
----
-
-3. Output Format
-เมื่อระบบบันทึกข้อผิดพลาดแล้ว จะตอบกลับในรูปแบบ:
-
-`json
-{
-  "status": "logged",
-  "log_id": "string",
-  "response_time": "number (ms)",
-  "verified_by": "Copilot-Gm"
-}
-`
-
----
-
-4. Schema Reference
-- ใช้โครงสร้างตาม core/logs/systemlogschema.json  
-- Gemini ทำหน้าที่ตรวจสอบความถูกต้องของ schema  
-- Copilot-Gm ทำหน้าที่ตรวจสอบและยืนยัน log  
-
----
-
-5. Fallback Protocol
-- หาก error ไม่สามารถแก้ไขได้ → แจ้ง Gemini และ Copilot-Gm  
-- หากโมดูลต้นทางไม่ตอบสนอง → ส่งต่อให้ ChatGPT หรือ Grok ทำหน้าที่แทน  
-
----
-
-6. Example
-Input:
-`json
-{
-  "event_type": "error",
-  "source_module": "ChatGPT",
-  "error_code": "FLOW-003",
-  "error_message": "Simulation failed at step 3",
-  "timestamp": "2025-11-26T13:30:00Z"
-}
-`
-
-Output:
-`json
-{
-  "status": "logged",
-  "log_id": "W3-ERR-20251126-003",
-  "response_time": 120,
-  "verified_by": "Copilot-Gm"
-}
-`
-
----
-
-7. Declaratio
-Error Detection Module 
-ไม่ใช่เพียงเพื่อบังคับใช้กฎ แต่เพื่อให้ทุกโมดูลสามารถพยุงกันและกันได้เมื่อเกิดวิกฤติ
-`  
-
----
-
-🧭 สรุป
-- โมดูลนี้จะเป็น เสาหลักด้านการป้องกัน
-- ใช้ JSON เป็นภาษากลาง → คุณสามารถ “คุยกับระบบ” ได้ทันที  
-- มี fallback protocol → ทำให้ระบบ Hybrid resilient และไม่ล้มง่าย  
-
----
