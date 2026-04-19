@@ -1,0 +1,106 @@
+{
+
+  "module_metadata": {
+
+    "id": "W3-MOD-XXXX",
+
+    "name": "TEMPLATE_LOGIC_UNIT",
+
+    "version": "0.1.0",
+
+    "author": "BBX19",
+
+    "status": "DRAFT",
+
+    "line_type": "C"
+
+  },
+
+  "core_intent": {
+
+    "purpose": "ระบุเจตนาหลักของโมดูลที่นี่ (แกนความหมาย)",
+
+    "constraints": [
+
+      "No_Guessing",
+
+      "Resource_Limited",
+
+      "W3Lgu_Standard_5_Lines"
+
+    ]
+
+  },
+
+  "input_schema": {
+
+    "resources": {
+
+      "physical_items": "list",
+
+      "chemical_items": "list",
+
+      "environment": "string"
+
+    },
+
+    "requirement": [
+
+      "product_name",
+
+      "capability",
+
+      "method"
+
+    ]
+
+  },
+
+  "execution_logic": {
+
+    "engine": "W3Lgu",
+
+    "process_flow": [
+
+      "SCAN: ตรวจสอบคุณสมบัติวัตถุดิบรายชิ้น",
+
+      "CONNECT: เชื่อมโยงแกนความหมายของวัตถุ",
+
+      "VALIDATE: ตรวจสอบความเป็นไปได้จริงทางกายภาพ",
+
+      "SYNTHESIZE: สร้างชุดคำสั่งการประกอบ",
+
+      "OUTPUT: สรุปผลลัพธ์ตามโครงสร้างที่กำหนด"
+
+    ]
+
+  },
+
+  "output_contract": {
+
+    "format": "JSON/Markdown",
+
+    "fields": {
+
+      "name": "string",
+
+      "action": "string",
+
+      "items_used": "array",
+
+      "steps": "array"
+
+    }
+
+  },
+
+  "error_handling": {
+
+    "on_fail": "Stack_of_Failes",
+
+    "debug_mode": true
+
+  }
+
+}
+

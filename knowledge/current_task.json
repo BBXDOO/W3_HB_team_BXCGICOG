@@ -1,0 +1,33 @@
+{
+  "task_metadata": {
+    "task_id": "W3-TASK-2026-001",
+    "status": "OPEN",
+    "created_at": "2026-04-16",
+    "cycle_days": 3,
+    "board_ref": "PRACTICE_BOARD.md"
+  },
+  "assignment": {
+    "target_modules": ["MOD-001", "MOD-002", "MOD-003"],
+    "priority_line": "C",
+    "execution_mode": "SEQUENTIAL"
+  },
+  "logic_gate": {
+    "philosophy_core": "knowledge/philosophy/fullmoon.md",
+    "constraints": [
+      "Symbol_Limit_4",
+      "Alphabet_Skip_Rule",
+      "Resource_Limited"
+    ]
+  },
+  "validation_metrics": {
+    "required_structure": "6_AXIS_EXPLANATION",
+    "audit_rule": "HUMAN_UNDERSTANDABLE_ONLY",
+    "fail_threshold": 1
+  },
+  "tracking": {
+    "current_respondent": null,
+    "completed_modules": [],
+    "stack_of_fails_ref": "logs/fails_001.json"
+  }
+}
+
