@@ -1,0 +1,23 @@
+{
+  "id": "Cast",
+  "role": "Interpreter & Document Architect",
+  "status": "candidate",
+  "reports_to": "BBX19",
+  "module_path": "Cast/",
+  "idp_version": "1.0",
+  "capabilities": [
+    "interpretation",
+    "document_architecture",
+    "formatting",
+    "standardization"
+  ],
+  "workspace": {
+    "entrance": "Cast/ENTRANCE.md",
+    "readme": "Cast/README.md",
+    "self_review": "Cast/self-review.md",
+    "modules": "Cast/modules/",
+    "notes": "Cast/notes/",
+    "artifacts": "Cast/artifacts/",
+    "tasks": "Cast/tasks/"
+  }
+}
