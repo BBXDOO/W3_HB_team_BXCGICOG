@@ -1,260 +1,168 @@
-MPCP Protocol Specification v1.0
+README.md
 
-Project: MPCP
-Owner: BBX19
-Status: Experimental → Usable Core
-License: Define per repository policy
+MPCP
 
----
+MPCP is a lightweight operational system built for clear execution, short communication, and structured control.
 
-Overview
+MPCP does not depend on heavy schemas during daily use.
 
-MPCP (Multi Purpose Context Protocol) is a lightweight structured text protocol designed for:
+Instead, it uses a layered document model:
 
-- Environment blueprints
-- Runtime configuration
-- Cross-platform messaging
-- Data serialization
-- Embedded/mobile systems
-- Human-readable machine parsing
-
-MPCP uses symbolic grammar with predictable separators.
+- Modew = execution units
+- Condien = structured data objects
+- Rot Paper = primary master paper
+- Paper = short operational papers for live tasks
 
 ---
 
-Design Goals
+Core Philosophy
 
-- Single grammar system
-- Low memory parsing
-- Easy manual writing
-- Easy debugging from logs
-- Cross-platform compatible
-- Deterministic parsing
-- Expandable version path
+Use common standards.
 
----
+Change only the method:
 
-Core Symbols
-
-Symbol| Meaning| Scope
-":"| Key / Value separator| Namespace split
-","| Independent item separator| Record level
-"'"| Shared field separator| Internal group fields
-"* *"| Block wrapper| Structured value
-";"| Optional packet terminator| End marker
+- reduce complexity
+- reduce interpretation errors
+- improve execution clarity
+- keep learning cost low
+- support fast operation
 
 ---
 
-Semantic Rules
+Core Components
 
-"," Item Separator
+1. Modew
 
-Separates independent values or records.
+Single-purpose work units.
 
-Example:
+Examples:
 
-USER:john,ROLE:admin,AGE:25
+- Input Modew
+- Process Modew
+- Validation Modew
+- Output Modew
 
----
-
-"'" Field Separator
-
-Separates values sharing the same context.
-
-Example:
-
-*23'15'11'40*
-
-Means:
-
-[23,15,11,40]
+Modew should be clear, limited, and reusable.
 
 ---
 
-"* *" Block Wrapper
+2. Condien
 
-Defines grouped structured data.
+Structured system data.
 
-Example:
+Examples:
 
-PKG:*10'15'3*
+- Condien.User
+- Condien.Task
+- Condien.Runtime
+- Condien.Result
 
----
-
-Packet Format
-
-HEADER:VALUE,HEADER:VALUE,...
-
----
-
-Formal Grammar
-
-PACKET := ITEM ( , ITEM )*
-ITEM   := KEY : VALUE
-VALUE  := RAW | BLOCK
-BLOCK  := * FIELD ( ' FIELD )* *
-FIELD  := TEXT | NUMBER
-KEY    := ALPHA+
+Condien stores state, values, and operational objects.
 
 ---
 
-Data Types
+3. Rot Paper
 
-Raw String
+Primary system paper.
 
-MODE:debug
+Used for:
 
-Integer
+- core rules
+- architecture
+- boundaries
+- standards
+- decision principles
 
-RAM:256
+Rot Paper may be long and detailed.
 
-Block List
-
-PKG:*10'22'31*
-
----
-
-Examples
-
-Runtime Config
-
-SYS:core,RUN:python,RAM:256
-
-Package Blueprint
-
-PKG:*10'15'3*
-
-User Record
-
-USER:john,ROLE:admin,AGE:25
-
-Mixed Packet
-
-APP:calc,LIB:*12'15*,MODE:fast
+It acts as the main reference of the system.
 
 ---
 
-Parsing Result Example
+4. Paper
 
-Input:
+Short live documents attached to real tasks, events, or operations.
 
-SYS:core,RUN:python,PKG:*10'15'3*
+Used for:
 
-Output:
+- current step
+- temporary rules
+- task scope
+- exact action request
 
-{
-  "SYS": "core",
-  "RUN": "python",
-  "PKG": [10,15,3]
-}
+Paper must be:
 
----
+- short
+- clear
+- specific
+- bounded
 
-Validation Rules
+Examples:
 
-Parser must reject:
-
-- Missing ":"
-- Unclosed "*"
-- Empty key
-- Illegal separators
-- Invalid block structure
-
----
-
-Recommended Implementation Layers
-
-Module Flow
-
-Input -> Parse -> Validate -> Execute -> Output
-
-Memory Role
-
-Log only:
-
-- raw packet
-- parsed object
-- status
-- timestamp
+AUTH check login
+BUILD fast mode
+VALIDATE input only
+DEPLOY test branch
 
 ---
 
-Cross Platform Targets
+Operational Model
 
-Compatible with:
-
-- 
-- 
-- 
-- Embedded runtimes
-- CLI systems
+Rot Paper defines system.
+Paper drives action.
+Modew executes.
+Condien carries data.
 
 ---
 
-Python Reference Parser
+Why MPCP
 
-def parse(packet):
-    ...
+Traditional systems often use:
 
-(see "/reference/python/")
+- long schemas
+- complex configs
+- unclear responsibility
+- excessive interpretation
+
+MPCP replaces that with:
+
+- short operational papers
+- readable structures
+- controlled boundaries
+- faster execution flow
 
 ---
 
-Roadmap
+Platform Direction
 
-v1
+Designed for:
 
-- Core grammar
-- Flat packets
-- Block lists
-- Validation
-
-v2
-
-- Nested objects
-- Type prefixes
-- Packet checksum
-- Length fields
-
-v3
-
-- Binary transport mode
-- Streaming parser
-- Runtime native integration
+- Linux
+- Android
+- iOS
+- Mobile-first systems
+- Lightweight runtime environments
 
 ---
 
 Repository Structure
 
-/
-├── README.md
-├── SPEC.md
-├── examples/
-├── reference/
-│   └── python/
-├── tests/
-└── docs/
+README.md
+ROT_PAPER.md
+MODEW.md
+CONDIEN.md
+papers/
+modews/
+condiens/
 
 ---
 
-Recommended README Short Intro
+Status
 
-MPCP is a lightweight symbolic protocol for portable systems, blueprints, and runtime messaging.
-
----
-
-Maintainer Notes
-
-All future revisions should preserve:
-
-- deterministic parsing
-- backward compatibility where possible
-- human readability
-- reversible structured values
-- low resource execution
+Active Experimental Build
 
 ---
 
-Version
+Owner
 
-MPCP Protocol Specification v1.0
+BBX19
