@@ -1,0 +1,220 @@
+MPCP_BLUEPRINT_PAPER.md
+
+มาตรฐาน Blueprint ของระบบ MPCP
+
+เอกสารฉบับนี้กำหนดรูปแบบ Blueprint สำหรับระบบ MPCP
+
+Blueprint คือแบบแผนสำหรับสร้างระบบ, สร้างสภาพแวดล้อม, เลือก Library, กำหนดโครงสร้าง และทำให้ระบบสร้างซ้ำได้เหมือนเดิม
+
+«Blueprint ไม่ใช่การรันงาน
+Blueprint คือแผนสำหรับการรันงาน»
+
+---
+
+หลักการสำคัญ
+
+เขียนครั้งเดียว
+สร้างได้ทุกที่
+
+---
+
+เป้าหมาย
+
+- สร้างระบบซ้ำได้
+- ย้ายแพลตฟอร์มง่าย
+- ลดการตั้งค่ามือ
+- คุมมาตรฐาน
+- ใช้ข้อความอ่านง่าย
+- ใช้ภาษา MPCP เท่านั้น
+
+---
+
+ใช้กับอะไรได้บ้าง
+
+- Runtime Environment
+- Mobile Build
+- Desktop Build
+- Library Selection
+- Partition Layout
+- Deployment Package
+- Recovery Setup
+
+---
+
+โครงสร้างมาตรฐาน
+
+Blueprint ใช้รูปแบบข้อความสั้น กระชับ ชัดเจน
+
+KEY:VALUE
+KEY:VALUE
+KEY:VALUE
+
+---
+
+ตัวอย่างพื้นฐาน
+
+NAME:MPCP_CORE
+TARGET:android
+MODE:min
+LIB:fs,net,store
+PARTITION:A,B,C,D
+
+---
+
+ค่าหลักที่แนะนำ
+
+NAME
+
+ชื่อ Blueprint
+
+NAME:MOBILE_CORE
+
+TARGET
+
+แพลตฟอร์มเป้าหมาย
+
+TARGET:linux
+TARGET:android
+TARGET:ios
+
+MODE
+
+รูปแบบการติดตั้ง
+
+MODE:min
+MODE:full
+MODE:test
+
+LIB
+
+ชุด Library ที่ใช้
+
+LIB:fs,parser,store,net
+
+PARTITION
+
+พื้นที่จัดเก็บ
+
+PARTITION:A,B,C,D,E
+
+---
+
+Blueprint สำหรับมือถือ
+
+NAME:MPCP_PHONE
+TARGET:android
+MODE:min
+LIB:fs,store,net,sensor
+PARTITION:A,B,C
+
+---
+
+Blueprint สำหรับ iOS
+
+NAME:MPCP_IOS
+TARGET:ios
+MODE:stable
+LIB:fs,store,net
+PARTITION:A,B,C,D
+
+---
+
+Blueprint สำหรับ Linux
+
+NAME:MPCP_LINUX
+TARGET:linux
+MODE:full
+LIB:fs,store,net,process,shell
+PARTITION:A,B,C,D,E
+
+---
+
+กฎสำคัญ
+
+กฎที่ 1
+
+Blueprint ใช้ภาษา MPCP เท่านั้น
+
+กฎที่ 2
+
+Blueprint ต้องอ่านรู้เรื่องทันที
+
+กฎที่ 3
+
+Blueprint ต้องสร้างซ้ำได้
+
+กฎที่ 4
+
+Blueprint ต้องไม่ผูกกับแพลตฟอร์มเดียว
+
+กฎที่ 5
+
+Blueprint ต้องแก้ไขง่าย
+
+---
+
+สิ่งที่ Blueprint ไม่ใช่
+
+- ไม่ใช่ source code
+- ไม่ใช่ runtime log
+- ไม่ใช่คำสั่งเฉพาะครั้งเดียว
+- ไม่ใช่ event packet
+
+---
+
+การใช้งานจริง
+
+LOAD BLUEPRINT
+→ CHECK TARGET
+→ LOAD LIB
+→ CREATE PARTITION
+→ START RUNTIME
+
+---
+
+การจัดเก็บไฟล์
+
+/blueprints/
+core.bp
+mobile.bp
+linux.bp
+ios.bp
+test.bp
+
+---
+
+ประโยชน์
+
+- เปิดไฟล์แล้วเข้าใจ
+- setup เร็ว
+- deploy ง่าย
+- clone environment ได้
+- scale ได้หลายเครื่อง
+
+---
+
+ข้อห้าม
+
+- ห้ามยัด logic runtime ลง blueprint
+- ห้ามเขียนวกวน
+- ห้ามผูก path ตายตัว
+- ห้ามใส่ค่าลับลง blueprint ตรง ๆ
+
+---
+
+สรุปกฎสูงสุด
+
+Blueprint คือแผน
+ไม่ใช่การกระทำ
+
+---
+
+สถานะ
+
+MPCP Blueprint Standard v1
+
+---
+
+เจ้าของระบบ
+
+BBX19
