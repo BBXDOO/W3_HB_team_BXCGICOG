@@ -14,33 +14,55 @@ def count_ones(binary_string: str) -> int:
 
 
 # -------------------------------------------------
-# PAYLOAD PARSER (รองรับ *12*)
+# PAYLOAD PARSER
+# รองรับ:
+# 22113
+# *12*
+# *23'15'11'40*
+# 22*12*3
 # -------------------------------------------------
 def parse_payload(payload: str):
     """
-    ตัวอย่าง:
-    22113       => [2,2,1,1,3]
-    22*12*3     => [2,2,12,3]
-    *25*13*40*  => [25,1,3,40]
+    return list[int]
+
+    examples:
+    22113            => [2,2,1,1,3]
+    22*12*3          => [2,2,12,3]
+    *23'15'11'40*    => [23,15,11,40]
     """
+
     runs = []
     i = 0
 
     while i < len(payload):
         ch = payload[i]
 
-        # multi-digit mode
+        # block mode
         if ch == "*":
             j = payload.find("*", i + 1)
             if j == -1:
-                raise EPError("Unclosed * marker in payload")
+                raise EPError("Unclosed * marker")
 
-            number_text = payload[i + 1:j]
+            content = payload[i + 1:j]
 
-            if not number_text.isdigit():
-                raise EPError("Invalid number inside * *")
+            if not content:
+                raise EPError("Empty * * block")
 
-            runs.append(int(number_text))
+            # multi values mode
+            if "'" in content:
+                parts = content.split("'")
+
+                for p in parts:
+                    if not p.isdigit():
+                        raise EPError("Invalid block number")
+                    runs.append(int(p))
+
+            # single value mode
+            else:
+                if not content.isdigit():
+                    raise EPError("Invalid number in * *")
+                runs.append(int(content))
+
             i = j + 1
 
         # single digit mode
@@ -55,7 +77,7 @@ def parse_payload(payload: str):
 
 
 # -------------------------------------------------
-# ENCODER
+# RUN LENGTH
 # -------------------------------------------------
 def runs_from_binary(binary_string: str):
     if not binary_string:
@@ -77,12 +99,27 @@ def runs_from_binary(binary_string: str):
     return runs
 
 
+# -------------------------------------------------
+# ENCODE TOKEN
+# -------------------------------------------------
 def encode_run(n: int) -> str:
     if n <= 9:
         return str(n)
     return f"*{n}*"
 
 
+def encode_runs_compact(runs):
+    """
+    1..9   => direct digit
+    10+    => *n*
+    optional block mode if all 10+
+    """
+    return "".join(encode_run(x) for x in runs)
+
+
+# -------------------------------------------------
+# ENCODER
+# -------------------------------------------------
 def encode(binary_string: str, fmt="BIN") -> str:
     if not re.fullmatch(r"[01]+", binary_string):
         raise EPError("Binary input must contain only 0/1")
@@ -92,15 +129,14 @@ def encode(binary_string: str, fmt="BIN") -> str:
 
     header = binary_string[0]
     runs = runs_from_binary(binary_string)
-
-    payload = "".join(encode_run(x) for x in runs)
+    payload = encode_runs_compact(runs)
     verify = count_ones(binary_string)
 
     return f"{header}/{payload}-{verify}'{fmt}"
 
 
 # -------------------------------------------------
-# PARSE FULL EP STRING
+# PARSE FULL EP
 # -------------------------------------------------
 def parse_ep(ep_string: str):
     pattern = r"^([A-Z0-1])\/(.+)-([0-9]+)'([A-Z]+)$"
@@ -132,8 +168,8 @@ def expand_runs(header: str, payload: str):
     current = header
     out = []
 
-    for length in runs:
-        out.append(current * length)
+    for n in runs:
+        out.append(current * n)
         current = "1" if current == "0" else "0"
 
     return "".join(out)
@@ -165,23 +201,25 @@ def validate(ep_string: str):
 # TESTS
 # -------------------------------------------------
 def run_tests():
-    print("=== BASIC TEST ===")
+    print("=== BASIC ===")
     ep = "0/221112133-8'BIN"
     print(ep, "=>", decode(ep))
 
-    print("\n=== MULTI DIGIT TEST ===")
-    binary = "0" * 12 + "1" * 3
-    ep2 = encode(binary)
-    print("binary:", binary)
-    print("EP:", ep2)
-    print("decoded:", decode(ep2))
+    print("\n=== MULTI DIGIT ===")
+    ep2 = "0/22*12*3-15'BIN"
+    print(ep2, "=>", decode(ep2))
 
-    print("\n=== MANUAL PAYLOAD TEST ===")
-    ep3 = "0/22*12*3-15'BIN"
-    print(ep3, "=>", decode(ep3))
+    print("\n=== BLOCK MODE ===")
+    ep3 = "0/*23'15'11'40*-26'BIN"
+    print(parse_payload("*23'15'11'40*"))
 
-    print("\n=== VALIDATION ===")
-    print(validate("0/22*12*3-15'BIN"))
+    print("\n=== AUTO ENCODE ===")
+    binary = "0" * 12 + "1" * 15 + "0" * 11 + "1" * 40
+    ep4 = encode(binary)
+    print(ep4)
+    print(validate(ep4))
+
+    print("\n=== INVALID ===")
     print(validate("0/22*12*3-99'BIN"))
 
 
