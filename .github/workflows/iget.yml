@@ -2,7 +2,17 @@ name: IGET
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - edited
+      - ready_for_review
+      - converted_to_draft
+      - labeled
+      - unlabeled
+      - review_requested
+      - review_request_removed
 
 jobs:
   iget:
