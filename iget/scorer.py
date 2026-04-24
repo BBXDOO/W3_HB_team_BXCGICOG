@@ -25,7 +25,20 @@ def classify_files(files):
         name = f["filename"]
         low = name.lower()
 
-        if low.endswith(CODE_EXT):
+        # Test detection first (used to gate code classification)
+        is_test = (
+            "test" in low
+            or "spec" in low
+            or low.endswith("_test.py")
+            or low.endswith("_test.go")
+            or "/__tests__/" in low
+        )
+
+        if is_test:
+            test_files.append(f)
+
+        # Code files: only if not a test file
+        if not is_test and low.endswith(CODE_EXT):
             code_files.append(f)
 
         if low.endswith(DOC_EXT):
@@ -34,22 +47,12 @@ def classify_files(files):
         if low.endswith(CONFIG_EXT):
             config_files.append(f)
 
-        # Test detection: file or directory named test/spec/tests/__tests__
-        if (
-            "test" in low
-            or "spec" in low
-            or low.endswith("_test.py")
-            or low.endswith("_test.go")
-            or "/__tests__/" in low
-        ):
-            test_files.append(f)
-
         # Workflow files
         if ".github/workflows/" in low or ".github/actions/" in low:
             workflow_files.append(f)
 
         # Risk detection: only non-test, non-doc files
-        if not low.endswith(DOC_EXT):
+        if not low.endswith(DOC_EXT) and not is_test:
             if any(word in low for word in RISK_WORDS):
                 risky_files.append(f)
 

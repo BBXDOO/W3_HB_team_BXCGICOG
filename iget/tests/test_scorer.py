@@ -63,7 +63,7 @@ class TestClassifyFiles:
             {"filename": "tests/test_app.py", "changes": 30},
         ]
         c = classify_files(files)
-        assert len(c["code"]) == 2  # src/app.py and tests/test_app.py both end in .py
+        assert len(c["code"]) == 1  # only src/app.py; tests/test_app.py is in 'test'
         assert len(c["doc"]) == 1
         assert len(c["test"]) == 1
 
@@ -121,7 +121,7 @@ class TestComputeScore:
         c = classify_files(files)
         mode = detect_mode(files, c)
         score, issues = compute_score(files, c, mode)
-        assert any("test" in i.lower() or "test" in i for i in issues)
+        assert any("test" in i.lower() for i in issues)
         assert score < 100
 
     def test_risky_file_deduction(self):
