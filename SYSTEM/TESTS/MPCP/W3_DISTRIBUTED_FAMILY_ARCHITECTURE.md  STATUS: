@@ -1,0 +1,187 @@
+# /SYSTEM/TESTS/MPCP/W3_DISTRIBUTED_FAMILY_ARCHITECTURE.md
+
+STATUS: ACTIVE_DRAFT
+TYPE: 1BOX_RMB
+OWNER: BBX19 + ChatGPT
+MODEL: NETWORK_COORDINATION
+TARGET: W3 / W3Lgu / MPCP / G-State / EP / Memory / SQL / Files
+
+---
+
+# W3 DISTRIBUTED FAMILY ARCHITECTURE
+
+## CORE STATEMENT
+
+หลายระบบได้  
+หลายหน้าที่ได้  
+หลายรูปแบบได้  
+
+แต่ต้อง:
+
+- ภาษาเดียว
+- แกนเดียว
+- ทิศทางเดียว
+- ตอบสนองครบถ้วน
+- ไม่บิดเจตนา
+
+---
+
+## PRIMARY PURPOSE
+
+สร้างระบบเครือข่ายที่ทุกส่วนทำงานอิสระ  
+แต่ประสานกันเป็นหนึ่งเดียว
+
+ไม่รวมศูนย์จนช้า  
+ไม่กระจายจนแตกแกน
+
+---
+
+## NETWORK NODES
+
+A:W3
+ROLE: Core Meaning / Intent / Human Direction
+
+B:W3Lgu
+ROLE: Semantic Language / Shared Meaning Layer
+
+C:MPCP
+ROLE: Operational Structure / Execution Method
+
+D:G-State
+ROLE: Runtime Brain / Adaptive Control
+
+E:EP-Signal
+ROLE: Encoding / Transport / Compact Signal Layer
+
+F:Memory
+ROLE: Long-term Context / Notion / History
+
+G:SQL
+ROLE: Structured Truth / Query Layer
+
+H:Files
+ROLE: Artifact / Binary / Output Storage
+
+---
+
+## RESPONSE LAW
+
+เมื่อ Node ใดส่งงานออกไป
+
+Node ปลายทางต้องตอบกลับอย่างใดอย่างหนึ่ง:
+
+STATE:RECEIVED
+STATE:RUNNING
+STATE:DONE
+STATE:BLOCKED
+STATE:RETRY
+STATE:FAILED
+
+ห้ามเงียบ
+
+---
+
+## AUTONOMY LAW
+
+แต่ละ Node มีสิทธิ์ทำงานภายในตนเองเต็มรูปแบบ
+
+ห้าม Node อื่นล้ำเข้า process ภายใน
+
+ตรวจสอบกันผ่าน:
+
+INPUT
+OUTPUT
+STATE
+LOG
+
+เท่านั้น
+
+---
+
+## TRUST MODEL
+
+เชื่อใจจากผลลัพธ์จริง
+
+ไม่ใช่คำพูด
+
+TRUST =
+- completion
+- consistency
+- recoverability
+- transparency by output
+
+---
+
+## DRIFT PREVENTION
+
+หาก Node ใดเริ่มออกนอกแกน
+
+ตรวจจับจาก:
+
+- format mismatch
+- missing response
+- conflicting state
+- repeated failure
+- direction conflict
+
+---
+
+## DATA FLOW
+
+W3
+→ W3Lgu
+→ MPCP
+→ G-State
+→ EP / SQL / Files / Memory
+→ Feedback
+→ W3
+
+---
+
+## REUSE LAW
+
+ทุกสิ่งที่สร้างใหม่ ต้องคิดว่า:
+
+- ใช้ซ้ำได้ไหม
+- ต่อ node อื่นได้ไหม
+- เปลี่ยน env ได้ไหม
+- scale ได้ไหม
+
+---
+
+## PERFORMANCE EXPECTATION
+
+แม้ไม่ระบุคำสั่งละเอียด
+
+ระบบควรเข้าใจเองว่า:
+
+- ต้องเร็วขึ้น
+- ต้องชัดขึ้น
+- ต้องง่ายขึ้น
+- ต้องเสถียรขึ้น
+
+---
+
+## RED LINE
+
+ห้ามสิ่งใดทำลาย:
+
+- ภาษาเดียว
+- เจตนาหลัก
+- การตอบสนอง
+- ความเชื่อมต่อ
+- ความสามารถในการพัฒนา
+
+---
+
+## FINAL LAW
+
+ครอบครัวเดียวกัน  
+หน้าที่ต่างกัน  
+แต่ขาดกันไม่ได้
+
+---
+
+VERSION: v1.0
+MODE: RMB_1BOX
+END
