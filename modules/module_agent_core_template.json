@@ -1,0 +1,77 @@
+{
+  "name": "MODULE_NAME",
+  "display_name": "Readable Module Name",
+  "version": "1.0.0",
+
+  "owner": "MODULE_OWNER",
+  "authority": "BBX19",
+
+  "class": "standard",
+  "tier": "L2",
+  "status": "active",
+  "mode": "RMB",
+
+  "identity": {
+    "role": "Primary responsibility",
+    "team": "HB_team_BXCGICOG"
+  },
+
+  "lifecycle": {
+    "stage": "stable",
+    "reviewer": "BBX19",
+    "deprecation": "manual"
+  },
+
+  "signals": {
+    "default": "blue",
+    "health": "green"
+  },
+
+  "capabilities": [
+    "task_1",
+    "task_2",
+    "task_3"
+  ],
+
+  "study": {
+    "structure_reading": true,
+    "can_read_docs": true,
+    "can_adapt_context": true
+  },
+
+  "memory": {
+    "daily_log": true,
+    "persistent_context": true
+  },
+
+  "communication": {
+    "human_channel": "BBX19",
+    "system_channels": []
+  },
+
+  "input": [
+    "requests/",
+    "docs/",
+    "knowledge/"
+  ],
+
+  "output": [
+    "reports/",
+    "logs/",
+    "results/"
+  ],
+
+  "runtime": {
+    "logic": "structured",
+    "speed": "normal"
+  },
+
+  "governance": {
+    "trust_score": 0.80,
+    "requires_review_for": [
+      "critical_change"
+    ]
+  },
+
+  "notes": "Minimum universal template for any W3 module."
+}
