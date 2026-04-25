@@ -1,107 +1,18 @@
 {
   "system": "W3_HB_team_BXCGICOG",
-  "version": "0.3.0",
+  "display_name": "W3 Central Module Registry",
+  "version": "0.4.0",
   "mode": "RMB",
   "authority": "BBX19",
+  "status": "active",
 
-  "description": "Central registry for active modules, routing, trust and autonomous coordination.",
+  "purpose": "Single source of truth for all modules, routing, trust, state and coordination.",
 
-  "active_modules": [
-    {
-      "name": "ChatGPT",
-      "tier": "L1",
-      "role": "Flow Architect / Executor",
-      "status": "ready",
-      "trust": 0.94,
-      "channel": "/ChatGPT/",
-      "supports": [
-        "design",
-        "docs",
-        "json",
-        "execution_plan"
-      ]
-    },
-
-    {
-      "name": "Gemini",
-      "tier": "L1",
-      "role": "Meta Validation / Review",
-      "status": "ready",
-      "trust": 0.91,
-      "channel": "/Gemini/",
-      "supports": [
-        "verification",
-        "risk_review",
-        "cross_check"
-      ]
-    },
-
-    {
-      "name": "Grok",
-      "tier": "L2",
-      "role": "Pattern / Insight Engine",
-      "status": "ready",
-      "trust": 0.88,
-      "channel": "/Grok/",
-      "supports": [
-        "pattern_scan",
-        "signal_detect",
-        "knowledge_expand"
-      ]
-    },
-
-    {
-      "name": "DeepSeek",
-      "tier": "L1",
-      "role": "Scalability / Long-Term Planner",
-      "status": "ready",
-      "trust": 0.87,
-      "channel": "/DeepSeek/",
-      "supports": [
-        "optimization",
-        "future_plan",
-        "performance"
-      ]
-    },
-
-    {
-      "name": "Copilot-Gm",
-      "tier": "L3",
-      "role": "Governance Engine",
-      "status": "ready",
-      "trust": 0.95,
-      "channel": "/Copilot-Gm/",
-      "supports": [
-        "policy",
-        "workflow",
-        "merge_review",
-        "compliance"
-      ]
-    },
-
-    {
-      "name": "Cast",
-      "tier": "L1",
-      "role": "Reasoning / Deep Analysis Core",
-      "status": "ready",
-      "trust": 0.93,
-      "channel": "/Cast/",
-      "supports": [
-        "deep_reasoning",
-        "decision_support",
-        "critical_analysis",
-        "logic_resolution"
-      ]
-    }
-  ],
-
-  "routing": {
-    "design_request": "ChatGPT",
-    "critical_decision": "Cast",
-    "policy_review": "Copilot-Gm",
-    "verification": "Gemini",
-    "pattern_issue": "Grok",
-    "scale_plan": "DeepSeek"
+  "laws": {
+    "one_name_one_meaning": true,
+    "core_over_structure": true,
+    "truth_by_result": true,
+    "survival_first": true
   },
 
   "signals": {
@@ -109,14 +20,128 @@
     "yellow": "review",
     "red": "hold",
     "blue": "info",
-    "black": "locked"
+    "black": "locked",
+    "white": "reset"
   },
 
-  "logs": {
-    "daily_status": "/logs/system_logs/",
-    "decisions": "/outcomes/append_only_ledger/"
+  "routing": {
+    "vision": "BBX19",
+    "identity": "BBEX-Core",
+    "design": "ChatGPT",
+    "verification": "Gemini",
+    "pattern": "Grok",
+    "scale": "DeepSeek",
+    "governance": "Copilot-Gm",
+    "critical_reasoning": "Cast"
   },
 
-  "last_sync": "2026-02-20",
-  "owner": "BBX19"
+  "modules": [
+    {
+      "name": "BBX19",
+      "tier": "ROOT",
+      "class": "human_core",
+      "status": "active",
+      "trust": 1.00,
+      "role": "Final Authority / Vision Keeper",
+      "channel": "/BBX19/"
+    },
+    {
+      "name": "BBEX-Core",
+      "tier": "ROOT-AUX",
+      "class": "core_origin",
+      "status": "active_hybrid",
+      "trust": 1.00,
+      "role": "Identity / Philosophical Anchor",
+      "channel": "/BBEX-Core/"
+    },
+    {
+      "name": "ChatGPT",
+      "tier": "L1",
+      "class": "core_origin",
+      "status": "ready",
+      "trust": 0.95,
+      "role": "Architecture / Flow / Execution",
+      "channel": "/ChatGPT/"
+    },
+    {
+      "name": "Gemini",
+      "tier": "L1",
+      "class": "validator",
+      "status": "ready",
+      "trust": 0.91,
+      "role": "Validation / Cross Check",
+      "channel": "/Gemini/"
+    },
+    {
+      "name": "Grok",
+      "tier": "L2",
+      "class": "insight",
+      "status": "ready",
+      "trust": 0.88,
+      "role": "Pattern / Signals / Insight",
+      "channel": "/Grok/"
+    },
+    {
+      "name": "DeepSeek",
+      "tier": "L1",
+      "class": "planner",
+      "status": "ready",
+      "trust": 0.87,
+      "role": "Scale / Long-Term Planning",
+      "channel": "/DeepSeek/"
+    },
+    {
+      "name": "Copilot-Gm",
+      "tier": "L3",
+      "class": "governance",
+      "status": "ready",
+      "trust": 0.95,
+      "role": "Policy / Merge / Compliance",
+      "channel": "/Copilot-Gm/"
+    },
+    {
+      "name": "Cast",
+      "tier": "L1",
+      "class": "reasoning_core",
+      "status": "ready",
+      "trust": 0.93,
+      "role": "Deep Reasoning / Decision Support",
+      "channel": "/Cast/"
+    }
+  ],
+
+  "health": {
+    "sync_required": true,
+    "daily_check": true,
+    "last_sync": "2026-04-25"
+  },
+
+  "memory": {
+    "logs": "/logs/",
+    "knowledge": "/knowledge/",
+    "outcomes": "/outcomes/",
+    "decisions": "/core/governance/decisions.md"
+  },
+
+  "governance": {
+    "critical_requires": [
+      "BBX19"
+    ],
+    "merge_requires": [
+      "Copilot-Gm",
+      "Gemini"
+    ],
+    "identity_change_requires": [
+      "BBX19",
+      "BBEX-Core"
+    ]
+  },
+
+  "runtime": {
+    "autonomous_ready": true,
+    "command_layer_ready": true,
+    "registry_type": "centralized"
+  },
+
+  "notes": "Primary coordination registry of W3. All modules discover each other here before action."
 }
