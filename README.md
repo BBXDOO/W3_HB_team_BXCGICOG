@@ -200,6 +200,7 @@ v0.4 → CI for knowledge flows
 
 Date	Change Description
 
+2026-04-25  ยกระดับเทมเพลต โมดูล เพื่อรองรับระบบต่างๆและอนาคต ,เป็นมาตราฐานขั้นต่ำไม่ใช่ลิมิต.
 2026-03-03	Restored full README.md content and aligned module manifest discovery with Module Manifest Standard.
 18/11/25	Added DeepSeek/ module for Architecture & Scalability.
 18/11/25	Updated team roles, repository structure, and strategic workflows.
