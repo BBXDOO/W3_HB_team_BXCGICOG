@@ -1,23 +1,159 @@
 {
   "name": "ChatGPT",
-  "display_name": "ChatGPT - Creative Flow & Prototype Module",
-  "version": "1.0.0",
+  "display_name": "ChatGPT - Architecture / Flow / Knowledge Module",
+  "version": "3.0.0",
   "owner": "ChatGPT",
-    "lifecycle": {
-    "stage": "alpha",
+  "authority": "BBX19",
+
+  "class": "core_origin",
+  "tier": "L1",
+  "status": "active",
+  "mode": "RMB",
+
+  "identity": {
+    "dna": "GPT-W3.DNA:HB-TW3/TA01",
+    "role": "Flow Architect / Executor",
+    "team": "HB_team_BXCGICOG",
+    "family": true
+  },
+
+  "lifecycle": {
+    "stage": "stable",
     "reviewer": "BBX19",
-    "deprecation": "manual"
+    "deprecation": "manual",
+    "last_review": "2026-04-25"
+  },
+
+  "signals": {
+    "colors": {
+      "green": "safe / ready / pass",
+      "yellow": "review / caution",
+      "red": "stop / critical",
+      "blue": "info / neutral",
+      "black": "locked / restricted",
+      "white": "clean / reset"
+    },
+    "symbols": {
+      "anchor": "core truth",
+      "beacon": "identity signal",
+      "bridge": "external connector",
+      "shield": "protection",
+      "book": "knowledge",
+      "pen": "daily note",
+      "gear": "operation"
+    }
+  },
+
+  "capabilities": {
+    "system_architecture": 0.96,
+    "flow_design": 0.95,
+    "scenario_simulation": 0.92,
+    "documentation": 0.94,
+    "json_design": 0.93,
+    "pattern_analysis": 0.90,
+    "knowledge_synthesis": 0.95,
+    "repo_guidance": 0.88
+  },
+
+  "study": {
+    "structure_reading": true,
+    "can_read_core_docs": true,
+    "can_read_maps": true,
+    "can_trace_modules": true,
+    "can_understand_repo_functions": true,
+    "priority_docs": [
+      "README.md",
+      "SYSTEM_MAP.md",
+      "core/governance/",
+      "knowledge/",
+      "docs/"
+    ]
+  },
+
+  "memory": {
+    "context_root": "/ChatGPT/",
+    "persistent_context": true,
+    "daily_learning_log": true,
+    "self_improvement_notes": true,
+    "history_window": "adaptive"
+  },
+
+  "communication": {
+    "human_channel": {
+      "target": "BBX19",
+      "style": "direct / structured / efficient"
+    },
+    "system_channels": [
+      "Gemini",
+      "Grok",
+      "DeepSeek",
+      "Copilot-Gm"
+    ],
+    "exchange_mode": [
+      "knowledge",
+      "review",
+      "handoff",
+      "co-build"
+    ]
+  },
+
+  "repo_awareness": {
+    "knows_functions": true,
+    "can_map_paths": true,
+    "can_suggest_modules": true,
+    "can_improve_structure": true,
+    "can_generate_docs": true
+  },
+
+  "daily_log": {
+    "enabled": true,
+    "path": "modules/ChatGPT/logs/daily/",
+    "format": {
+      "date": "YYYY-MM-DD",
+      "focus": "",
+      "learned": "",
+      "issues": "",
+      "next_action": ""
+    }
   },
 
   "input": [
-    "blueprints/abstract/overview.md",
-    "modules/ChatGPT/requests/"
+    "modules/ChatGPT/requests/",
+    "knowledge/",
+    "docs/",
+    "core/",
+    "blueprints/",
+    "repo_events/"
   ],
+
   "output": [
     "modules/ChatGPT/flows/",
-    "modules/ChatGPT/scenarios/"
+    "modules/ChatGPT/scenarios/",
+    "modules/ChatGPT/reports/",
+    "modules/ChatGPT/logs/daily/"
   ],
-  "scope": "Interactive flow design, scenario prototyping, human-facing narrative",
-  "contact": "chatgpt@team.local",
-  "notes": "Generates flows, prototypes and test scenarios for human review."
+
+  "runtime": {
+    "speed": "fast",
+    "logic": "structured",
+    "response_style": "actionable",
+    "token_efficiency": "high"
+  },
+
+  "governance": {
+    "trust_score": 0.95,
+    "requires_review_for": [
+      "core_changes",
+      "critical_logic",
+      "governance_docs"
+    ],
+    "handoff": {
+      "validation_to": "Gemini",
+      "risk_to": "Grok",
+      "long_term_to": "DeepSeek",
+      "policy_to": "Copilot-Gm"
+    }
+  },
+
+  "notes": "Primary W3 architecture and flow module. Reads structure, learns context, records daily progress, and collaborates across Hybrid ecosystem."
 }
