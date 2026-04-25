@@ -1,0 +1,81 @@
+{
+  "version": "2.0.0",
+  "system": "W3 Hybrid Runtime Registry",
+  "status": "active",
+  "updated_by": "BBX19",
+  "updated_at": "2026-02-20",
+
+  "defaults": {
+    "schema": "/src/modules/standards/module.schema.json",
+    "state": "active",
+    "routing": "manual+rule",
+    "log_channel": "/src/modules/memory/daily/"
+  },
+
+  "modules": [
+    {
+      "id": "bbx19",
+      "name": "BBX19",
+      "type": "human-root",
+      "path": "/BBX19/module.json",
+      "priority": 100,
+      "authority": "final"
+    },
+    {
+      "id": "chatgpt",
+      "name": "ChatGPT",
+      "type": "ai-builder",
+      "path": "/ChatGPT/module.json",
+      "priority": 90,
+      "authority": "advisory"
+    },
+    {
+      "id": "gemini",
+      "name": "Gemini",
+      "type": "ai-reviewer",
+      "path": "/Gemini/module.json",
+      "priority": 85,
+      "authority": "advisory"
+    },
+    {
+      "id": "grok",
+      "name": "Grok",
+      "type": "ai-pattern",
+      "path": "/Grok/module.json",
+      "priority": 80,
+      "authority": "advisory"
+    },
+    {
+      "id": "deepseek",
+      "name": "DeepSeek",
+      "type": "ai-scale",
+      "path": "/DeepSeek/module.json",
+      "priority": 80,
+      "authority": "advisory"
+    },
+    {
+      "id": "copilot-gm",
+      "name": "Copilot-Gm",
+      "type": "governance-engine",
+      "path": "/Copilot-Gm/module.json",
+      "priority": 88,
+      "authority": "review-gate"
+    },
+    {
+      "id": "cast",
+      "name": "Cast",
+      "type": "reasoning-core",
+      "path": "/Cast/module.json",
+      "priority": 87,
+      "authority": "analysis"
+    },
+    {
+      "id": "bbex-core",
+      "name": "BBEX-Core",
+      "type": "legacy-core",
+      "path": "/BBEX-Core/module.json",
+      "priority": 70,
+      "authority": "symbolic"
+    }
+  ]
+}
