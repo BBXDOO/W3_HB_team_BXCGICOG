@@ -1,0 +1,311 @@
+{
+  "meta": {
+    "system": "W3_HB_team_BXCGICOG",
+    "report": "Content Classification Map",
+    "version": "1.0.0",
+    "date": "2026-04-25",
+    "generated_by": "Copilot-Gm",
+    "mode": "RMB/SAFE-MAINTENANCE",
+    "total_files": 441
+  },
+  "categories": {
+    "CORE": {
+      "description": "Critical runtime files, schemas, registries, and engine logic",
+      "color": "black",
+      "files": [
+        "modules/registry.json",
+        "src/modules/registry/registry.json",
+        "core/runtime/engine.py",
+        "core/runtime/engine_v2.py",
+        "core/memory/memory_bus.py",
+        "core/module-loader/router.py",
+        "core/module-loader/module-registry.json",
+        "core/module-loader/idp-schema.json",
+        "core/events/event-schema.json",
+        "core/logs/system_log.schema.json",
+        "core/agents.json",
+        "core/guardrails.md",
+        "core/logic_bridge.md",
+        "core/versioning.md",
+        "src/modules/registry.schema.json",
+        "src/main.py"
+      ]
+    },
+    "ACTIVE_MODULE": {
+      "description": "Live AI module directories and their active configuration files",
+      "color": "green",
+      "modules": {
+        "BBX19": {
+          "status": "active",
+          "root": "BBX19/",
+          "module_json": "BBX19/modules/BBX19/module.json",
+          "key_files": [
+            "BBX19/modules/BBX19/module.json",
+            "BBX19/README.md",
+            "BBX19/ENTRANCE.md",
+            "BBX19/self-review.md",
+            "BBX19/status/",
+            "BBX19/directives/"
+          ]
+        },
+        "ChatGPT": {
+          "status": "active",
+          "root": "ChatGPT/",
+          "module_json": "ChatGPT/modules/ChatGPT/module.json",
+          "key_files": [
+            "ChatGPT/modules/ChatGPT/module.json",
+            "ChatGPT/README.md",
+            "ChatGPT/ENTRANCE.md",
+            "ChatGPT/self-review.md",
+            "ChatGPT/notes/",
+            "ChatGPT/artifacts/",
+            "ChatGPT/flow-lab/",
+            "ChatGPT/prototypes/"
+          ]
+        },
+        "Gemini": {
+          "status": "active",
+          "root": "Gemini/",
+          "module_json": "Gemini/modules/Gemini/module.json",
+          "key_files": [
+            "Gemini/modules/Gemini/module.json",
+            "Gemini/README.md",
+            "Gemini/ENTRANCE.md",
+            "Gemini/self-review.md",
+            "Gemini/analysis-lab/",
+            "Gemini/logic-check/",
+            "Gemini/reports/",
+            "Gemini/risk-scan/"
+          ]
+        },
+        "Grok": {
+          "status": "active",
+          "root": "Grok/",
+          "module_json": "Grok/modules/Grok/module.json",
+          "key_files": [
+            "Grok/modules/Grok/module.json",
+            "Grok/README.md",
+            "Grok/ENTRANCE.md",
+            "Grok/self-review.md",
+            "Grok/action-tracker/",
+            "Grok/insight-vault/",
+            "Grok/risk-mitigation/"
+          ]
+        },
+        "DeepSeek": {
+          "status": "active",
+          "root": "DeepSeek/",
+          "module_json": "DeepSeek/modules/DeepSeek/module.json",
+          "key_files": [
+            "DeepSeek/modules/DeepSeek/module.json",
+            "DeepSeek/README.md",
+            "DeepSeek/ENTRANCE.md",
+            "DeepSeek/self-review.md",
+            "DeepSeek/architecture-hints/",
+            "DeepSeek/pattern-lab/"
+          ]
+        },
+        "Copilot-Gm": {
+          "status": "active",
+          "root": "Copilot-Gm/",
+          "module_json": "Copilot-Gm/module.json",
+          "key_files": [
+            "Copilot-Gm/module.json",
+            "Copilot-Gm/README.md",
+            "Copilot-Gm/ENTRANCE.md",
+            "Copilot-Gm/LOCKED.md",
+            "Copilot-Gm/repo-lock.md",
+            "Copilot-Gm/governance/",
+            "Copilot-Gm/workspace/"
+          ]
+        },
+        "Cast": {
+          "status": "provisional_active",
+          "root": "Cast/",
+          "module_json": "Cast/modules/Cast.json",
+          "key_files": [
+            "Cast/modules/Cast.json",
+            "Cast/README.md",
+            "Cast/ENTRANCE.md",
+            "Cast/self-review.md",
+            "Cast/context/",
+            "Cast/knowledge/",
+            "Cast/idp/Cast.idp.json"
+          ]
+        },
+        "BBEX-Core": {
+          "status": "active_hybrid",
+          "root": "BBEX-Core/",
+          "module_json": "BBEX-Core/public/module.json",
+          "key_files": [
+            "BBEX-Core/public/module.json",
+            "BBEX-Core/PROTOCOL_HYBRID.md",
+            "BBEX-Core/public/BBEX_CORE_IDP.md",
+            "BBEX-Core/public/request_template.json",
+            "BBEX-Core/private/BBEX_CORE_IDP.md",
+            "BBEX-Core/private/ESSENCE.md"
+          ]
+        }
+      }
+    },
+    "DOCUMENTATION": {
+      "description": "Human-readable guides, maps, and reference documents",
+      "color": "blue",
+      "files": [
+        "README.md",
+        "QUICK_START.md",
+        "docs/QUICK_START.md",
+        "docs/W3_MASTER_MAP.md",
+        "docs/IGET_OPERATION_MODEL.md",
+        "docs/protocol.md",
+        "docs/index.md",
+        "docs/index.html",
+        "docs/offline.html",
+        "JSON_GUIDE.md",
+        "PHILOSOPHY.md",
+        "ACKNOWLEDGMENTS.md",
+        "DECLARATION_IV.md",
+        "LINE_B_GPT.md",
+        "PR_Flow_Table.md",
+        "USER_SUMMARY.md",
+        "GITHUB_PAGES_SETUP.md",
+        "REDR_Structure_Map.md",
+        "architecture/W3_MASTER_ARCHITECTURE.md",
+        "architecture/overview.md",
+        "architecture/layers.md",
+        "architecture/system-map.md",
+        "architecture/interface-map.md",
+        "blueprints/abstract/overview.md",
+        "blueprints/abstract/ecosystem-outline.md",
+        "blueprints/abstract/root-model-abstract.md",
+        "core/runtime/runtime.md",
+        "core/module-loader/module-loader.md",
+        "w3lgu/README.md",
+        "w3lgu/modew_core/PROTOCOL.md",
+        "w3lgu/modew_core/STANDARD_v0.1.2.md",
+        "knowledge/README.md",
+        "knowledge/rules.md",
+        "knowledge/patterns.md",
+        "AGENT_TASKS.md"
+      ]
+    },
+    "GOVERNANCE": {
+      "description": "Policy, compliance, hybrid-model rules, and decision records",
+      "color": "yellow",
+      "files": [
+        "governance",
+        "core/governance/README.md",
+        "core/governance/decisions.md",
+        "core/governance/policies.md",
+        "core/governance/compass.md",
+        "core/governance/operating-guidelines.md",
+        "core/governance/module-manifest-policy.md",
+        "core/governance/phase2-framework.md",
+        "core/governance/awareness-baseline.md",
+        "core/hybrid-model/vision.md",
+        "core/hybrid-model/responsibilities.md",
+        "core/hybrid-model/system-foundations.md",
+        "core/hybrid-model/insights.md",
+        "core/decisions/DR-001.md",
+        "core/events/event-protocol.md",
+        "core/standards/README.md",
+        "Copilot-Gm/governance/",
+        "knowledge/standards/LAYER_ALPHA_PROTOCOL.md",
+        "knowledge/_rules.md",
+        "decision_trace.md",
+        "docs/rules.json",
+        "docs/version.policy.json",
+        "docs/mirror.policy.json"
+      ]
+    },
+    "TESTING": {
+      "description": "Test cases, specs, and test infrastructure",
+      "color": "blue",
+      "files": [
+        "init_test.ts",
+        "SYSTEM/TESTS/BBX19/TEST_001.md",
+        "SYSTEM/TESTS/EP_SIGNAL/TEST_CASE01.md",
+        "SYSTEM/TESTS/EP_SIGNAL/TEST_CASES.md",
+        "SYSTEM/TESTS/EP_SIGNAL/SPEC_v1.md",
+        "SYSTEM/TESTS/EP_SIGNAL/reference_implementation.py",
+        "SYSTEM/TESTS/EP_SIGNAL/RYTM_SIGNAL.md",
+        "iget/tests/",
+        "ChatGPT/testcases/",
+        "Gemini/logic-check/"
+      ]
+    },
+    "LEGACY": {
+      "description": "Files from previous versions, no longer actively maintained but preserved",
+      "color": "yellow",
+      "files": [
+        "versions/v0.1/modules/BBX19.json",
+        "versions/v0.1/modules/ChatGPT.json",
+        "versions/v0.1/modules/Copilot-GM.json",
+        "versions/v0.1/modules/DeepSeek.json",
+        "versions/v0.1/modules/Gemini.json",
+        "versions/v0.1/modules/Grok.json",
+        "versions/v0.1/CHANGELOG.md",
+        "versions/v0.1/README.md",
+        "manifesto-2.md",
+        "Hybrid-Management-Model/",
+        "BBEX_Reflection.md",
+        "SYSTEM/TESTS/MPCP/",
+        "SYSTEM/TESTS/BBX19/civilization-seed.md",
+        "core/logs/simulation_test_01.json"
+      ]
+    },
+    "ARCHIVE": {
+      "description": "Previous audit results, completed reports, historical snapshots",
+      "color": "white",
+      "files": [
+        "REPORT_REPO_AUDIT_FULL.txt",
+        "AUDIT_ARCHITECTURE.md",
+        "AUDIT_COMPLETION_SUMMARY.md",
+        "AUDIT_SYSTEM_README.md",
+        "FILE_CLASSIFICATION_REPORT.md",
+        "W3_SANITY_SWEEP_REPORT.md",
+        "W3_SANITY_SWEEP_SUMMARY.md",
+        "INTEGRITY_REPORT_TH.md",
+        "DTML_Report.md",
+        "CHANGELOG.md",
+        "docs/audits/2025-12-10-audit.md",
+        "docs/review/COMPLETION_STATUS.md",
+        "docs/review/PR83_MANUAL_STEPS.md",
+        "docs/review/PR83_review_summary.md",
+        "logs/daily/2025-12-10.context.md",
+        "logs/observations/2025-12-10-observe-01.md",
+        "outcomes/ledger/2026-02-25_outcomes-system-bootstrap.md",
+        "docs/sample-report.md",
+        "1.md"
+      ]
+    },
+    "UNUSED": {
+      "description": "Files that appear orphaned, misplaced, misnamed, or have no clear owner",
+      "color": "red",
+      "files": [
+        "YSTEM/TESTS/MPCP/W3_TERMS_MASTER_PAPER_v2.md",
+        "file_000000001e7c72088554e0c1715f55b2.png",
+        "resume_header.json",
+        "resume_header.schema.json",
+        "executions_log.json",
+        "requirements.txt",
+        "Gemini/Gemini/",
+        "knowledge/knowledge/",
+        "blueprints/abstract/overview/placeholder.md",
+        "core/logs/systemlogschema.json",
+        "modules/ChatGPT/requests/requsts.md"
+      ],
+      "notes": "Files tagged UNUSED require BBX19 review before any action. No deletion without human approval."
+    }
+  },
+  "summary": {
+    "CORE": 16,
+    "ACTIVE_MODULE": 8,
+    "DOCUMENTATION": 36,
+    "GOVERNANCE": 23,
+    "TESTING": 10,
+    "LEGACY": 14,
+    "ARCHIVE": 19,
+    "UNUSED": 11
+  }
+}
