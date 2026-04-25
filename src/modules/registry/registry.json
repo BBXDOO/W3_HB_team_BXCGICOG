@@ -3,7 +3,7 @@
   "system": "W3 Hybrid Runtime Registry",
   "status": "active",
   "updated_by": "BBX19",
-  "updated_at": "2026-02-20",
+  "updated_at": "2026-04-25",
 
   "defaults": {
     "schema": "/src/modules/standards/module.schema.json",
@@ -17,7 +17,7 @@
       "id": "bbx19",
       "name": "BBX19",
       "type": "human-root",
-      "path": "/BBX19/module.json",
+      "path": "/BBX19/modules/BBX19/module.json",
       "priority": 100,
       "authority": "final"
     },
@@ -25,7 +25,7 @@
       "id": "chatgpt",
       "name": "ChatGPT",
       "type": "ai-builder",
-      "path": "/ChatGPT/module.json",
+      "path": "/ChatGPT/modules/ChatGPT/module.json",
       "priority": 90,
       "authority": "advisory"
     },
@@ -33,7 +33,7 @@
       "id": "gemini",
       "name": "Gemini",
       "type": "ai-reviewer",
-      "path": "/Gemini/module.json",
+      "path": "/Gemini/modules/Gemini/module.json",
       "priority": 85,
       "authority": "advisory"
     },
@@ -41,7 +41,7 @@
       "id": "grok",
       "name": "Grok",
       "type": "ai-pattern",
-      "path": "/Grok/module.json",
+      "path": "/Grok/modules/Grok/module.json",
       "priority": 80,
       "authority": "advisory"
     },
@@ -49,7 +49,7 @@
       "id": "deepseek",
       "name": "DeepSeek",
       "type": "ai-scale",
-      "path": "/DeepSeek/module.json",
+      "path": "/DeepSeek/modules/DeepSeek/module.json",
       "priority": 80,
       "authority": "advisory"
     },
@@ -73,7 +73,7 @@
       "id": "bbex-core",
       "name": "BBEX-Core",
       "type": "legacy-core",
-      "path": "/BBEX-Core/module.json",
+      "path": "/BBEX-Core/public/module.json",
       "priority": 70,
       "authority": "symbolic"
     }
