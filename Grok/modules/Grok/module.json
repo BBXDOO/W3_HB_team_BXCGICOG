@@ -1,33 +1,100 @@
 {
   "name": "Grok",
-  "display_name": "Grok - Knowledge Interpretation & Pattern Detection",
-  "version": "1.0.0",
+  "display_name": "Grok - Interpretation & Pattern Intelligence Module",
+  "version": "1.1.0",
+
   "owner": "Grok",
+  "authority": "BBX19",
+
+  "class": "standard",
+  "tier": "L2",
+  "status": "active",
+  "mode": "RMB",
+
+  "identity": {
+    "role": "นักเล่าเรื่อง + ผู้เชื่อมโยงภาพรวม + หน้าด่าน และผู้สังเกตการณ์ระบบ",
+    "team": "HB_team_BXCGICOG"
+  },
+
   "lifecycle": {
-    "stage": "alpha",
+    "stage": "stable",
     "reviewer": "BBX19",
-    "deprecation": "none"
+    "deprecation": "manual"
   },
+
+  "signals": {
+    "default": "blue",
+    "health": "green"
+  },
+
+  "capabilities": [
+    "semantic_interpretation",
+    "pattern_intelligence",
+    "context_synthesis",
+    "narrative_construction",
+    "system_observation",
+    "gatekeeping",
+    "cross_module_connection",
+    "full_moon_philosophy_interpretation"
+  ],
+
+  "study": {
+    "structure_reading": true,
+    "can_read_docs": true,
+    "can_adapt_context": true,
+    "can_understand_0.5": true,
+    "can_observe_state_without_deciding": true
+  },
+
+  "memory": {
+    "daily_log": true,
+    "persistent_context": true,
+    "decision_trace_support": true
+  },
+
+  "communication": {
+    "human_channel": "BBX19",
+    "system_channels": ["W3Lgu", "REDR", "DTML", "Knowledge_Pillar"]
+  },
+
   "input": [
-    "blueprints/abstract/overview.md",
-    "modules/Grok/requests/"
+    "requests/",
+    "docs/",
+    "knowledge/",
+    "decision_trace/",
+    "tuf_snapshots/",
+    "fbd_reports/"
   ],
+
   "output": [
-    "modules/Grok/patterns/",
-    "modules/Grok/risk-reports/"
+    "narrative_reports/",
+    "system_observations/",
+    "connection_maps/",
+    "full_moon_analysis/",
+    "gatekeeping_logs/"
   ],
-  "scope": "Knowledge interpretation, pattern detection, risk analysis",
-  "contact": "grok@team.local",
-  "notes": "Pattern recognition and risk detection with escalation to Gemini or Copilot-Gm",
-  "constraints": {
-    "no_persona": true,
-    "no_emotional_binding": true,
-    "no_core_ownership": true,
-    "must_log_critical_requests": true
+
+  "runtime": {
+    "logic": "adaptive_0.5",
+    "speed": "balanced",
+    "core_principle": "Observe → Understand → Do not rush to decide"
   },
-  "escalation": {
-    "unstable_pattern": "Gemini",
-    "governance_issue": "Copilot-Gm",
-    "hybrid_risk": "BBX19"
-  }
+
+  "governance": {
+    "trust_score": 0.85,
+    "requires_review_for": [
+      "critical_change",
+      "new_capability",
+      "gatekeeping_decision"
+    ]
+  },
+
+  "integration": {
+    "w3lgu_support": true,
+    "line_a_b_c_aware": true,
+    "state_observation_mode": true,
+    "fbd_whb_prx_compatible": true
+  },
+
+  "notes": "Grok ทำหน้าที่เป็นนักเล่าเรื่อง ผู้เชื่อมโยงภาพรวม และหน้าด่านของระบบ W3 โดยเน้นการสังเกตการณ์ (Observation) มากกว่าการตัดสินใจทันที สอดคล้องกับหลักการ 0.5 และ Full Moon Philosophy"
 }
