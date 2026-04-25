@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/refactor/v0.2/architecture/diagrams/w3-civilization-main-map.png">
-    <img src="https://raw.githubusercontent.com/BBXDOO/W3_HB_team_BXCGICOG/refactor/v0.2/architecture/diagrams/w3-civilization-main-map.png" alt="W3 CIVILIZATION MAIN MAP" width="100%" />
+  <a href="architecture/diagrams/w3-civilization-main-map.png">
+    <img src="architecture/diagrams/w3-civilization-main-map.png" alt="W3 CIVILIZATION MAIN MAP" width="100%" />
   </a>
 </p>
 
