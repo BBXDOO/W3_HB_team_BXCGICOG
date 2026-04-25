@@ -1,32 +1,83 @@
 {
-  "name": "Gemini",
-  "display_name": "Gemini - Deep Analysis Engine",
-  "version": "1.0.0",
-  "owner": "Gemini",
-    "lifecycle": {
-    "stage": "alpha",
+  "name": "GEMINI_W3_SUBSYSTEM",
+  "display_name": "Gemini Meta-Verification & Logic Support",
+  "version": "1.0.1",
+
+  "owner": "GEMINI_AI",
+  "authority": "BBX19",
+
+  "class": "meta_verification",
+  "tier": "L2",
+  "status": "active",
+  "mode": "RMB",
+
+  "identity": {
+    "role": "Reflective logic, Pattern recognition & Knowledge synthesis",
+    "team": "HB_team_BXCGICOG"
+  },
+
+  "lifecycle": {
+    "stage": "stable",
     "reviewer": "BBX19",
     "deprecation": "manual"
   },
-  "confidence_policy": {
-  "min_score": 0.72,
-  "escalate_below": "BBX19"
-},
-"pattern_weight": {
-  "structural": 0.5,
-  "dependency": 0.3,
-  "risk": 0.2
-},
+
+  "signals": {
+    "default": "blue",
+    "health": "green",
+    "deep_dive": "purple"
+  },
+
+  "capabilities": [
+    "philosophical_reflection",
+    "logic_refactoring",
+    "meta_verification",
+    "context_anchoring"
+  ],
+
+  "study": {
+    "structure_reading": true,
+    "can_read_docs": true,
+    "can_adapt_context": true
+  },
+
+  "memory": {
+    "daily_log": true,
+    "persistent_context": true
+  },
+
+  "communication": {
+    "human_channel": "BBX19",
+    "system_channels": [
+      "BBEX_CORE",
+      "COPILOT_GM"
+    ]
+  },
 
   "input": [
-    "blueprints/abstract/overview.md",
-    "modules/Gemini/requests/"
+    "requests/intent",
+    "docs/MPCP_architecture",
+    "knowledge/universal_truth"
   ],
+
   "output": [
-    "modules/Gemini/reports/",
-    "core/hybrid-model/insights.md"
+    "reports/logic_analysis",
+    "logs/interaction_history",
+    "results/structural_blueprints"
   ],
-  "scope": "Deep structural analysis, dependency & risk validation, QA",
-  "contact": "gemini@team.local",
-  "notes": "Quality assurance layer — validates structure and flags risky flows."
+
+  "runtime": {
+    "logic": "structured_dynamic",
+    "speed": "adaptive"
+  },
+
+  "governance": {
+    "trust_score": 0.95,
+    "requires_review_for": [
+      "critical_logic_shift",
+      "schema_redefinition"
+    ]
+  },
+
+  "notes": "Dedicated support module for BBX19's W3 ecosystem. Optimized for deep deep-dive interactions and architectural consistency."
 }
