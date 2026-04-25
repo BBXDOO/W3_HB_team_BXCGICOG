@@ -1,27 +1,129 @@
 {
   "name": "BBX19",
-  "display_name": "BBX19 - Vision & Governance Node",
-  "version": "1.0.0",
+  "display_name": "BBX19 - Root Vision / Governance Authority",
+  "version": "3.0.0",
+
   "owner": "BBX19",
-    "lifecycle": {
-    "stage": "alpha",
-    "reviewer": "BBX19",
-    "deprecation": "manual"
+  "authority": "BBX19",
+
+  "class": "human_core",
+  "tier": "ROOT",
+  "status": "active",
+  "mode": "RMB",
+
+  "identity": {
+    "role": "Final Human Decision Node",
+    "designation": "Founder / Root Authority",
+    "team": "HB_team_BXCGICOG",
+    "dna": "W3.DNA:HB-TW3/ROOT"
   },
+
+  "lifecycle": {
+    "stage": "stable",
+    "reviewer": "BBX19",
+    "deprecation": "manual",
+    "last_review": "2026-04-25"
+  },
+
   "energy_budget": {
-  "max_sessions": 6,
-  "cooldown_min": 25,
-  "override": "manual"
+    "max_sessions": 6,
+    "cooldown_min": 25,
+    "override": "manual",
+    "priority_mode": "critical_only_when_low_energy"
+  },
+
+  "signals": {
+    "default": "white",
+    "authority": "black",
+    "ready": "green",
+    "review": "yellow",
+    "critical": "red",
+    "info": "blue"
+  },
+
+  "capabilities": {
+    "vision_setting": 1.00,
+    "final_decision": 1.00,
+    "governance_override": 1.00,
+    "strategic_direction": 0.98,
+    "human_judgment": 1.00,
+    "cross_module_alignment": 0.95
+  },
+
+  "study": {
+    "reads_system_state": true,
+    "reads_core_docs": true,
+    "reads_audit_reports": true,
+    "reads_module_logs": true,
+    "pattern_awareness": true
+  },
+
+  "memory": {
+    "context_root": "/BBX19/",
+    "persistent_context": true,
+    "daily_reflection": true,
+    "decision_archive": true
+  },
+
+  "communication": {
+    "human_channel": "direct",
+    "system_channels": [
+      "ChatGPT",
+      "Gemini",
+      "DeepSeek",
+      "Grok",
+      "Copilot-Gm",
+      "Cast",
+      "BBEX-Core"
+    ],
+    "style": "clear / intent-driven / decisive"
   },
 
   "input": [
-    "blueprints/abstract/overview.md"
+    "blueprints/abstract/overview.md",
+    "core/governance/",
+    "logs/",
+    "knowledge/",
+    "modules/registry.json"
   ],
+
   "output": [
     "core/hybrid-model/vision.md",
-    "core/governance/decisions.md"
+    "core/governance/decisions.md",
+    "outcomes/append_only_ledger/",
+    "BBX19/status/"
   ],
-  "scope": "Vision, governance, final human decision node",
-  "contact": "bbx19@team.local",
-  "notes": "Human central node. Authoritative decisions, high-level oversight."
+
+  "runtime": {
+    "decision_mode": "human_final",
+    "bias_control": true,
+    "token_efficiency": "high",
+    "execution_style": "minimal_but_precise"
+  },
+
+  "governance": {
+    "trust_score": 1.00,
+    "can_override": true,
+    "approval_required_for": [
+      "critical_merge",
+      "core_identity_change",
+      "governance_shift",
+      "system_reset"
+    ],
+    "delegation_allowed": true
+  },
+
+  "daily_log": {
+    "enabled": true,
+    "path": "BBX19/logs/daily/",
+    "format": {
+      "date": "YYYY-MM-DD",
+      "focus": "",
+      "decisions": "",
+      "risks": "",
+      "next_move": ""
+    }
+  },
+
+  "notes": "Human central node of W3. Final authority, vision keeper, and source of intent. Protects long-term direction over short-term noise."
 }
