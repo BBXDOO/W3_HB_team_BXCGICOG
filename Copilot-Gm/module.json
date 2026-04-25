@@ -1,23 +1,77 @@
 {
   "name": "Copilot-Gm",
-  "display_name": "Copilot-Gm - Repo Governance & Orchestration",
+  "display_name": "Copilot Governance Module",
   "version": "1.0.0",
+
   "owner": "Copilot-Gm",
-    "lifecycle": {
-    "stage": "alpha",
+  "authority": "BBX19",
+
+  "class": "standard",
+  "tier": "L2",
+  "status": "active",
+  "mode": "RMB",
+
+  "identity": {
+    "role": "Structure Hub & Orchestration",
+    "team": "HB_team_BXCGICOG"
+  },
+
+  "lifecycle": {
+    "stage": "stable",
     "reviewer": "BBX19",
     "deprecation": "manual"
   },
 
+  "signals": {
+    "default": "blue",
+    "health": "green"
+  },
+
+  "capabilities": [
+    "manage_repository_structure",
+    "coordinate_ai_modules",
+    "control_github_flow"
+  ],
+
+  "study": {
+    "structure_reading": true,
+    "can_read_docs": true,
+    "can_adapt_context": true
+  },
+
+  "memory": {
+    "daily_log": true,
+    "persistent_context": true
+  },
+
+  "communication": {
+    "human_channel": "BBX19",
+    "system_channels": ["Gemini", "ChatGPT", "Grok", "BBX19"]
+  },
+
   "input": [
-    "modules/*/module.json",
-    "core/governance/README.md"
+    "requests/",
+    "docs/",
+    "knowledge/"
   ],
+
   "output": [
-    "core/governance/policies.md",
-    "workflows/orchestration/"
+    "reports/",
+    "logs/",
+    "results/"
   ],
-  "scope": "Repository governance, branch policies, CI/PR orchestration",
-  "contact": "copilot@team.local",
-  "notes": "Responsible for structural integrity of repo and release workflows."
+
+  "runtime": {
+    "logic": "structured",
+    "speed": "normal"
+  },
+
+  "governance": {
+    "trust_score": 0.80,
+    "requires_review_for": [
+      "critical_change"
+    ]
+  },
+
+  "notes": "Copilot-Gm ทำหน้าที่เป็น Structure Hub สำหรับการประสานงานโมดูล AI และควบคุมระบบภายใน W3 Hybrid Origin."
 }
