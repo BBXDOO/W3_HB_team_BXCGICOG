@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "W3 Registry Schema",
+  "type": "object",
+
+  "required": [
+    "system",
+    "version",
+    "modules",
+    "routing"
+  ],
+
+  "properties": {
+    "system": {
+      "type": "string"
+    },
+
+    "version": {
+      "type": "string"
+    },
+
+    "mode": {
+      "type": "string"
+    },
+
+    "authority": {
+      "type": "string"
+    },
+
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "tier",
+          "status",
+          "role"
+        ],
+        "properties": {
+          "name": { "type": "string" },
+          "tier": { "type": "string" },
+          "status": { "type": "string" },
+          "role": { "type": "string" },
+          "trust": { "type": "number" }
+        }
+      }
+    },
+
+    "routing": {
+      "type": "object"
+    }
+  }
+}
