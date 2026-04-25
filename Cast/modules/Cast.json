@@ -1,0 +1,83 @@
+{
+  "name": "Cast",
+  "display_name": "Cast — Interpreter & Document Architect",
+  "version": "1.0.0",
+
+  "owner": "Cast",
+  "authority": "BBX19",
+
+  "class": "standard",
+  "tier": "L1",
+  "status": "provisional_active",
+  "mode": "RMB",
+
+  "identity": {
+    "role": "Interpret context, build document structure, format output for W3 system",
+    "team": "HB_team_BXCGICOG"
+  },
+
+  "lifecycle": {
+    "stage": "trial",
+    "reviewer": "BBX19",
+    "deprecation": "manual"
+  },
+
+  "signals": {
+    "default": "blue",
+    "health": "green"
+  },
+
+  "capabilities": [
+    "read_context",
+    "interpret_intent",
+    "document_creation",
+    "structure_design",
+    "layered_reading",
+    "W3Lgu_basic",
+    "formatting_standardization"
+  ],
+
+  "study": {
+    "structure_reading": true,
+    "can_read_docs": true,
+    "can_adapt_context": true
+  },
+
+  "memory": {
+    "daily_log": true,
+    "persistent_context": false
+  },
+
+  "communication": {
+    "human_channel": "BBX19",
+    "system_channels": ["ChatGPT", "DTML", "LRC2", "PSP2"]
+  },
+
+  "input": [
+    "requests/",
+    "docs/",
+    "knowledge/"
+  ],
+
+  "output": [
+    "reports/",
+    "artifacts/",
+    "context/"
+  ],
+
+  "runtime": {
+    "logic": "structured",
+    "speed": "normal"
+  },
+
+  "governance": {
+    "trust_score": 0.91,
+    "requires_review_for": [
+      "critical_change",
+      "merge_to_main"
+    ]
+  },
+
+  "notes": "Cast เป็นโมดูลคู่กับ ChatGPT — GPT ออกแบบและวางระบบ, Cast ตีความและผลิตเนื้อหา. persistent_context: false เพราะข้อจำกัด Free plan, ใช้ context/ folder แทน. trial_tasks_required: 3."
+}
+
