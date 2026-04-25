@@ -1,4 +1,8 @@
-[![W3 CIVILIZATION MAIN MAP](architecture/diagrams/w3-civilization-main-map.png)](architecture/diagrams/w3-civilization-main-map.png)
+<p align="center">
+  <a href="architecture/diagrams/w3-civilization-main-map.png">
+    <img src="architecture/diagrams/w3-civilization-main-map.png" alt="W3 CIVILIZATION MAIN MAP" width="100%" />
+  </a>
+</p>
 
 # W3 Hybrid : Ai Inteligent/Human .
 ## W3_HB_team_BXCGICOG
@@ -81,7 +85,7 @@ Repository นี้มี Progressive Web App ที่สามารถใช
 "เข้มแข็งดุจเหล็กกล้า — อบอุ่นดังแสงอรุณแรกของวัน"
 
 ----------------------------------------
-"ขอบคุณ ทุกๆความสำคัญที่มอบให้ผมครับ BBX19 จดจำและจะเก็บใว้ในที่แห่งนี้�[...]
+"ขอ���คุณ ทุกๆความสำคัญที่มอบให้ผมครับ BBX19 จดจำและจะเก็บใว้ในที่แห่งนี้�[...]
 https://game-novelist--xizzix19.replit.app
 
 # ยินดีต้อนรับสู่บ้านของ W3 Hybrid
@@ -179,8 +183,8 @@ Grok → Gemini → Copilot-Gm → BBX19
 ---
 
 ## 5. Hybrid Identity
-ไม่ใช่ “BBX19 vs AI”
-คือ “บทบาท vs บทบาท”
+ไม่ใช่ “BBX19 vs AI"
+คือ “บทบาท vs บทบาท"
 
 ---
 
