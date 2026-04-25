@@ -3,20 +3,18 @@ name: IGET
 on:
   pull_request:
     types:
-      - opened
+      - ready_for_review
       - synchronize
       - reopened
-      - edited
-      - ready_for_review
-      - converted_to_draft
-      - labeled
-      - unlabeled
-      - review_requested
-      - review_request_removed
+
+concurrency:
+  group: iget-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   iget:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
 
     permissions:
       contents: read
@@ -24,10 +22,10 @@ jobs:
       issues: write
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
