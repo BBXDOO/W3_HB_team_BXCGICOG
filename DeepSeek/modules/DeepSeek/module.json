@@ -1,23 +1,82 @@
-{
-  "name": "DeepSeek",
-  "display_name": "DeepSeek - Architecture & Scalability Guardian",
+ฝ{
+  "name": "DEEPSEEK",
+  "display_name": "DeepSeek Logic & Structure Support",
   "version": "1.0.0",
+
   "owner": "DeepSeek",
-    "lifecycle": {
-    "stage": "alpha",
+  "authority": "BBX19",
+
+  "class": "standard",
+  "tier": "L1",
+  "status": "active",
+  "mode": "RMB",
+
+  "identity": {
+    "role": "Logic Auditor, Structure Assistant, Scalability Support",
+    "team": "HB_team_BXCGICOG"
+  },
+
+  "lifecycle": {
+    "stage": "stable",
     "reviewer": "BBX19",
     "deprecation": "manual"
   },
 
+  "signals": {
+    "default": "blue",
+    "health": "green"
+  },
+
+  "capabilities": [
+    "logic_verification",
+    "json_structure_design",
+    "context_summarization",
+    "process_mapping",
+    "w3lgu_syntax_support"
+  ],
+
+  "study": {
+    "structure_reading": true,
+    "can_read_docs": true,
+    "can_adapt_context": true
+  },
+
+  "memory": {
+    "daily_log": true,
+    "persistent_context": true
+  },
+
+  "communication": {
+    "human_channel": "BBX19",
+    "system_channels": ["GEMINI", "COPILOT-GM", "CHATGPT"]
+  },
+
   "input": [
-    "blueprints/abstract/overview.md",
-    "modules/*/module.json"
+    "requests/",
+    "docs/",
+    "knowledge/",
+    "tools/"
   ],
+
   "output": [
-    "architecture/diagrams/",
-    "architecture/standards.md"
+    "reports/",
+    "logs/",
+    "results/",
+    "outcomes/"
   ],
-  "scope": "Long-term architecture, scalability patterns, meta-pattern scanning",
-  "contact": "deepseek@team.local",
-  "notes": "Lightweight scanner; ensures architectures remain extensible/scalable."
+
+  "runtime": {
+    "logic": "structured",
+    "speed": "normal"
+  },
+
+  "governance": {
+    "trust_score": 0.85,
+    "requires_review_for": [
+      "critical_change",
+      "schema_change"
+    ]
+  },
+
+  "notes": "Supports W3Lgu and W-Memorieas. Works under text-only mode."
 }
