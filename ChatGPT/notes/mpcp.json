@@ -1,0 +1,35 @@
+{
+  "MPCP": {
+    "core": "structure-first system",
+    "law": "one_language_only",
+    "principle": [
+      "reuse_core",
+      "reduce_schema",
+      "clear_execution",
+      "cross_platform"
+    ],
+    "components": {
+      "Modew": "execution_unit",
+      "Condien": "data_layer",
+      "Paper": "task_instruction",
+      "RotPaper": "system_rules",
+      "Blueprint": "system_plan",
+      "Library": "tools_via_bridge"
+    },
+    "execution_flow": [
+      "Input → MPCP_format",
+      "Modew_execute",
+      "Output → MPCP_format"
+    ],
+    "library_rule": "lib → bridge → MPCP",
+    "language_rule": "all_layers_use_MPCP_only",
+    "modew_rule": "one_purpose_flexible_behavior",
+    "system_goal": [
+      "fast",
+      "clear",
+      "stable",
+      "scalable"
+    ],
+    "final_law": "good_structure = no_rebuild_needed"
+  }
+}
