@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "required": ["name", "stages"],
+  "properties": {
+    "name": { "type": "string" },
+    "stages": {
+      "type": "object",
+      "properties": {
+        "A": { "type": "string" },
+        "B": { "type": "string" },
+        "C": { "type": "string" },
+        "D": { "type": "string" },
+        "E": { "type": "string" },
+        "F": { "type": "string" }
+      }
+    },
+    "context": { "type": "object" }
+  }
+}
