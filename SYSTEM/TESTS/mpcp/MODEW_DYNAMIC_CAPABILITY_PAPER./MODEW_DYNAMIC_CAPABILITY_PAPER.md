@@ -2,7 +2,7 @@ MODEW_DYNAMIC_CAPABILITY_PAPER.md
 
 ความสามารถแท้จริงของ Modew
 
-Modew คือหน่วยงานทำงานของระบบ MPCP
+Modew คือหน่วยงานทำงานของระบบ mpcp
 มีรูปแบบคล้าย Module แต่ไม่ใช่ Module แบบตายตัว
 
 Modew ถูกออกแบบให้เป็นหน่วยงานที่:

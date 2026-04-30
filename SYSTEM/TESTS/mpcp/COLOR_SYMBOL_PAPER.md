@@ -1,8 +1,8 @@
 COLOR_SYMBOL_PAPER.md
 
-MPCP Color & Symbol System
+mpcp Color & Symbol System
 
-This paper defines the visual communication layer of MPCP.
+This paper defines the visual communication layer of mpcp.
 
 The purpose is immediate understanding without reading long text.
 
@@ -225,7 +225,7 @@ Machine can parse values directly.
 
 Status
 
-MPCP Visual Layer v1
+mpcp Visual Layer v1
 
 ---
 

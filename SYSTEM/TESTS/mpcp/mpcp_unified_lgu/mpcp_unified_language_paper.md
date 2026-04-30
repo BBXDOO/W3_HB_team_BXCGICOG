@@ -1,13 +1,13 @@
-MPCP_UNIFIED_LANGUAGE_PAPER.md
+mpcp_UNIFIED_LANGUAGE_PAPER.md
 
-มาตรฐานภาษาเดียวของระบบ MPCP
+มาตรฐานภาษาเดียวของระบบ mpcp
 
-เอกสารฉบับนี้กำหนดกฎกลางของระบบ MPCP ว่า
+เอกสารฉบับนี้กำหนดกฎกลางของระบบ mpcp ว่า
 
 «ทุกข้อมูลเข้า (Input)
 ทุกข้อมูลออก (Output)
 ทุกการสื่อสารระหว่าง Layer
-ต้องใช้ภาษาของ MPCP เท่านั้น»
+ต้องใช้ภาษาของ mpcp เท่านั้น»
 
 ระบบสามารถใช้ engine ภายในแบบใดก็ได้
 แต่เมื่อมีการรับ-ส่งข้อมูล จะต้องผ่านกฎภาษาเดียวเสมอ
@@ -98,19 +98,19 @@ Layer E
 
 ข้อมูลเข้า
 
-ข้อมูลทุกชนิดต้องถูกแปลงเป็นรูปแบบ MPCP ก่อนเข้าระบบ
+ข้อมูลทุกชนิดต้องถูกแปลงเป็นรูปแบบ mpcp ก่อนเข้าระบบ
 
 external input
 → adapter
-→ MPCP format
+→ mpcp format
 → process
 
 ข้อมูลออก
 
-ผลลัพธ์ทุกชนิดต้องออกเป็นรูปแบบ MPCP ก่อนส่งออก
+ผลลัพธ์ทุกชนิดต้องออกเป็นรูปแบบ mpcp ก่อนส่งออก
 
 result
-→ MPCP format
+→ mpcp format
 → external target
 
 ---
@@ -125,13 +125,13 @@ Library ภายนอกใช้ได้
 
 native lib
 → bridge
-→ MPCP language
+→ mpcp language
 
 ---
 
 กฎ Blueprint
 
-Blueprint ต้องใช้ภาษา MPCP เช่นกัน
+Blueprint ต้องใช้ภาษา mpcp เช่นกัน
 
 TARGET:android
 LIB:fs,net,store
@@ -175,7 +175,7 @@ TIME:now,MODEW:Auth,STATE:done
 
 สถานะ
 
-MPCP Core Law v1
+mpcp Core Law v1
 
 ---
 

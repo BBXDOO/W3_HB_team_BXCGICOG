@@ -1,8 +1,8 @@
 MODEW_PAPER.md
 
-MPCP Modew Standard
+mpcp Modew Standard
 
-This paper defines the execution unit model of MPCP.
+This paper defines the execution unit model of mpcp.
 
 A Modew is a single-purpose operational unit responsible for one clear function.
 
@@ -185,7 +185,7 @@ modews/
 
 Status
 
-MPCP Execution Layer v1
+mpcp Execution Layer v1
 
 ---
 

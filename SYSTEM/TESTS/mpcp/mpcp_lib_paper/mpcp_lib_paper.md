@@ -1,12 +1,12 @@
-MPCP_LIB_PAPER.md
+mpcp_LIB_PAPER.md
 
-มาตรฐาน Library ของระบบ MPCP
+มาตรฐาน Library ของระบบ mpcp
 
-เอกสารฉบับนี้กำหนดแนวทางการใช้ Library ภายในระบบ MPCP
+เอกสารฉบับนี้กำหนดแนวทางการใช้ Library ภายในระบบ mpcp
 
 เป้าหมายหลักคือ:
 
-«ทำให้ MPCP อยู่รอด ใช้งานได้ และย้ายระบบได้
+«ทำให้ mpcp อยู่รอด ใช้งานได้ และย้ายระบบได้
 บนทุกแพลตฟอร์ม»
 
 เช่น:
@@ -37,7 +37,7 @@ Library รับใช้ระบบ
 
 ---
 
-โครงสร้าง Library ของ MPCP
+โครงสร้าง Library ของ mpcp
 
 แบ่งเป็น 3 กลุ่มหลัก
 
@@ -86,7 +86,7 @@ web.bridge
 - process
 - permission
 
-แต่ผลลัพธ์ต้องแปลงกลับเป็นภาษา MPCP
+แต่ผลลัพธ์ต้องแปลงกลับเป็นภาษา mpcp
 
 ---
 
@@ -118,7 +118,7 @@ Library ภายนอก ห้ามกำหนด grammar ของระ�
 
 กฎที่ 3
 
-Input / Output ของ lib ต้องคืนค่าเป็นรูปแบบ MPCP
+Input / Output ของ lib ต้องคืนค่าเป็นรูปแบบ mpcp
 
 กฎที่ 4
 
@@ -136,7 +136,7 @@ Input / Output ของ lib ต้องคืนค่าเป็นรูป
 
 native lib
 → bridge
-→ MPCP format
+→ mpcp format
 → system use
 
 ---
@@ -197,13 +197,13 @@ MODE:min
 สรุปกฎสูงสุด
 
 ใช้ lib ได้ทุกตัว
-แต่ต้องพูดภาษา MPCP
+แต่ต้องพูดภาษา mpcp
 
 ---
 
 สถานะ
 
-MPCP Survival Library Standard v1
+mpcp Survival Library Standard v1
 
 ---
 

@@ -1,7 +1,7 @@
-# MPCP — Pillar Architecture (Marble-patterned Concrete Model)
+# mpcp — Pillar Architecture (Marble-patterned Concrete Model)
 
 ## 1. Purpose
-This document defines the structural model used in MPCP to represent
+This document defines the structural model used in mpcp to represent
 processing units (Modew) using a "pillar architecture".
 
 The pillar represents a complete execution unit:
@@ -125,9 +125,9 @@ This enables:
 
 ---
 
-## 8. Mapping to MPCP
+## 8. Mapping to mpcp
 
-| Concept | MPCP Equivalent |
+| Concept | mpcp Equivalent |
 |--------|----------------|
 | Pillar | Modew |
 | Marble pattern | Condien |
@@ -159,4 +159,4 @@ The pillar model defines a complete execution structure where:
 - Flow = explicit (A–F)
 - Extension = external (lamp)
 
-This forms the foundation for MPCP runtime and W3Lgu mapping.
+This forms the foundation for mpcp runtime and W3Lgu mapping.
