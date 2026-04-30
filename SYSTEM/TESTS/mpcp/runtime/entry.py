@@ -1,17 +1,10 @@
-from mpcp.kernel.pillar import Pillar
-from mpcp.adapter.w3_bridge import execute_with_w3
+from mpcp.runtime.executor import MPCPExecutor
 
 
-def execute(task):
-    pillar = Pillar("mpcp-runtime")
-
-    pillar.set_stage("A", lambda x, c: task)
-    pillar.set_stage("D", lambda x, c: execute_with_w3(x))
-
-    return pillar.run()
+def execute(task: str):
+    executor = MPCPExecutor()
+    return executor.run(task)
 
 
 if __name__ == "__main__":
     print(execute("design"))
-
-
