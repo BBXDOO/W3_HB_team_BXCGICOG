@@ -1,26 +1,54 @@
 from mpcp.lib.pillar import Pillar
 from mpcp.adapter.w3_bridge import execute_with_w3
-from mpcp.kernel.contract import MPCPContract
 
 
-def build_pillar(task):
-    p = Pillar("main")
-
-    # Stage A: define task
-    p.set_stage("A", lambda x, c: task)
-
-    # Stage D: execution via W3
-    p.set_stage("D", lambda x, c: execute_with_w3(x))
-
-    return p
+def stage_A(input_data, context):
+    # design stage
+    return {
+        "task": "design",
+        "status": "🟢"
+    }
 
 
-def run(task):
-    MPCPContract.validate_input(task)
+def stage_D(input_data, context):
+    if not input_data:
+        raise ValueError("Stage D: missing input")
 
-    pillar = build_pillar(task)
-    result = pillar.run()
+    result = execute_with_w3(input_data["task"])
 
-    MPCPContract.validate_output(result)
+    return {
+        "task": input_data["task"],
+        "result": result,
+        "status": "🔵" if result is None else "🟢"
+    }
 
-    return result
+
+def main():
+    p = Pillar("demo")
+
+    # register stages
+    p.set_stage("A", stage_A)
+    p.set_stage("D", stage_D)
+
+    try:
+        result = p.run()
+
+        if isinstance(result, dict):
+            status = result.get("status")
+
+            if status == "🔴":
+                print("STOP: not recommended")
+                return
+
+            if status == "🔵":
+                print("WAIT: still processing")
+                return
+
+        print("SUCCESS:", result)
+
+    except Exception as e:
+        print("ERROR:", str(e))
+
+
+if __name__ == "__main__":
+    main()
