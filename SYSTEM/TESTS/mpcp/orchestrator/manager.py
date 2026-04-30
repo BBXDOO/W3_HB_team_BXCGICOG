@@ -5,118 +5,82 @@ class MPCPManager:
     def __init__(self):
         self.flows = []
 
-    # =========================
-    # ADD FLOW
-    # =========================
     def add_flow(self, flow_name, steps):
-        if not isinstance(steps, list) or not steps:
-            raise ValueError("steps must be a non-empty list")
-
         self.flows.append({
             "name": flow_name,
             "steps": steps,
             "current": 0,
-            "results": [],
-            "status": "PENDING"
+            "results": []
         })
 
-    # =========================
-    # EXECUTE (เริ่ม flow)
-    # =========================
     def execute(self):
         outputs = []
 
         for flow in self.flows:
-            # เริ่มใหม่เสมอ
-            flow["current"] = 0
-            flow["results"] = []
-            flow["status"] = "RUNNING"
-
             result = self._run_flow(flow)
             outputs.append(result)
 
         return outputs
-
-    # =========================
-    # RESUME (ทำต่อจาก WAIT)
-    # =========================
-    def resume(self):
-        outputs = []
-
-        for flow in self.flows:
-            if flow["status"] != "WAIT":
-                continue
-
-            result = self._run_flow(flow)
-            outputs.append(result)
-
-        return outputs
-
-    # =========================
-    # RESET (ล้างทั้งหมด)
-    # =========================
-    def reset(self):
-        for flow in self.flows:
-            flow["current"] = 0
-            flow["results"] = []
-            flow["status"] = "PENDING"
 
     # =========================
     # CORE FLOW ENGINE
     # =========================
     def _run_flow(self, flow):
         while flow["current"] < len(flow["steps"]):
-            task = flow["steps"][flow["current"]]
 
-            result = run(task)
+            step = flow["steps"][flow["current"]]
 
-            # -------------------------
-            # VALIDATION
-            # -------------------------
-            if not isinstance(result, dict) or "status" not in result:
-                flow["status"] = "STOP"
-                return {
-                    "flow": flow["name"],
-                    "status": "STOP",
-                    "error": "invalid executor response",
-                    "step": task
-                }
-
+            result = run(step)
             flow["results"].append(result)
 
-            status = result["status"]
+            # -------------------------
+            # VALIDATION (MPCP format)
+            # -------------------------
+            if not isinstance(result, dict):
+                return self._stop(flow, step, "invalid result type")
+
+            state = result.get("state")
+
+            if state not in ["SUCCESS", "WAIT", "STOP"]:
+                return self._stop(flow, step, f"invalid state: {state}")
 
             # -------------------------
-            # CONTROL
+            # CONTROL FLOW
             # -------------------------
-            if status == "STOP":
-                flow["status"] = "STOP"
-                return {
-                    "flow": flow["name"],
-                    "status": "STOP",
-                    "step": task,
-                    "results": flow["results"]
-                }
+            if state == "STOP":
+                return self._response(flow, step, "STOP")
 
-            if status == "WAIT":
-                flow["status"] = "WAIT"
-                return {
-                    "flow": flow["name"],
-                    "status": "WAIT",
-                    "step": task,
-                    "results": flow["results"]
-                }
+            if state == "WAIT":
+                return self._response(flow, step, "WAIT")
 
-            # SUCCESS → ไปต่อ
+            # SUCCESS → next step
             flow["current"] += 1
 
         # -------------------------
-        # FLOW COMPLETE
+        # DONE
         # -------------------------
-        flow["status"] = "SUCCESS"
-
         return {
             "flow": flow["name"],
-            "status": "SUCCESS",
+            "state": "SUCCESS",
+            "results": flow["results"]
+        }
+
+    # =========================
+    # INTERNAL HELPERS
+    # =========================
+    def _stop(self, flow, step, error):
+        return {
+            "flow": flow["name"],
+            "state": "STOP",
+            "step": step,
+            "error": error,
+            "results": flow["results"]
+        }
+
+    def _response(self, flow, step, state):
+        return {
+            "flow": flow["name"],
+            "state": state,
+            "step": step,
             "results": flow["results"]
         }
