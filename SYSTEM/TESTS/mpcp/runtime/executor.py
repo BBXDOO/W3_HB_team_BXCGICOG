@@ -1,45 +1,26 @@
 from mpcp.lib.pillar import Pillar
 from mpcp.adapter.w3_bridge import execute_with_w3
-from mpcp.runtime.trace import trace
+from mpcp.kernel.contract import MPCPContract
 
 
-class MPCPExecutor:
+def build_pillar(task):
+    p = Pillar("main")
 
-    def __init__(self):
-        self.pillar = Pillar("MAIN")
+    # Stage A: define task
+    p.set_stage("A", lambda x, c: task)
 
-        self.pillar.set_stage("A", self.stage_input)
-        self.pillar.set_stage("D", self.stage_execute)
-        self.pillar.set_stage("F", self.stage_output)
+    # Stage D: execution via W3
+    p.set_stage("D", lambda x, c: execute_with_w3(x))
 
-    # ------------------------
+    return p
 
-    def stage_input(self, _, ctx):
-        task = ctx["task"]
-        trace("A", task)
-        return task
 
-    def stage_execute(self, task, ctx):
-        trace("D", task)
+def run(task):
+    MPCPContract.validate_input(task)
 
-        result = execute_with_w3(task)
+    pillar = build_pillar(task)
+    result = pillar.run()
 
-        trace("D_RESULT", result)
-        return result
+    MPCPContract.validate_output(result)
 
-    def stage_output(self, result, ctx):
-        trace("F", result)
-        return {
-            "system": "MPCP",
-            "status": "SUCCESS",
-            "result": result
-        }
-
-    # ------------------------
-
-    def run(self, task):
-        context = {
-            "task": task
-        }
-
-        return self.pillar.run(context)
+    return result
