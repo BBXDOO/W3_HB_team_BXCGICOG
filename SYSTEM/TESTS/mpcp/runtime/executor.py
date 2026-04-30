@@ -2,41 +2,74 @@ from mpcp.lib.pillar import Pillar
 from mpcp.adapter.w3_bridge import execute_with_w3
 
 
+# =========================
+# Stage A
+# =========================
 def stage_A(input_data, context):
     return {
         "task": "design",
-        "status": "🟢"
+        "state": "SUCCESS",   # machine
+        "color": "🟢"         # human
     }
 
 
+# =========================
+# Stage D
+# =========================
 def stage_D(input_data, context):
     if not input_data:
-        raise ValueError("Stage D: missing input")
+        return {
+            "state": "STOP",
+            "color": "🔴",
+            "error": "missing input"
+        }
 
     result = execute_with_w3(input_data["task"])
+
+    if result is None:
+        return {
+            "task": input_data["task"],
+            "state": "WAIT",
+            "color": "🔵"
+        }
 
     return {
         "task": input_data["task"],
         "result": result,
-        "status": "🔵" if result is None else "🟢"
+        "state": "SUCCESS",
+        "color": "🟢"
     }
 
 
+# =========================
+# RUN ENGINE
+# =========================
 def run(task_name):
     p = Pillar(task_name)
 
+    # register stages
     p.set_stage("A", stage_A)
     p.set_stage("D", stage_D)
 
     result = p.run()
 
+    # ---------- control ----------
     if isinstance(result, dict):
-        status = result.get("status")
+        state = result.get("state")
 
-        if status == "🔴":
-            return {"status": "STOP", "data": result}
+        if state == "STOP":
+            return {
+                "status": "STOP",
+                "data": result
+            }
 
-        if status == "🔵":
-            return {"status": "WAIT", "data": result}
+        if state == "WAIT":
+            return {
+                "status": "WAIT",
+                "data": result
+            }
 
-    return {"status": "SUCCESS", "data": result}
+    return {
+        "status": "SUCCESS",
+        "data": result
+    }
