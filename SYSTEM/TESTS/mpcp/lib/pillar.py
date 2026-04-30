@@ -29,7 +29,7 @@ class Pillar:
         self.stages[stage] = fn
 
     # =========================
-    # Context Management
+    # Context
     # =========================
     def set_context(self, key, value):
         self.context[key] = value
@@ -38,7 +38,7 @@ class Pillar:
         return self.context.get(key, default)
 
     # =========================
-    # Core Execution Engine
+    # Core Execution
     # =========================
     def run(self):
         result = None
@@ -53,56 +53,46 @@ class Pillar:
                 result = fn(result, self.context)
 
             except Exception as e:
-                return {
-                    "state": "STOP",
-                    "color": "🔴",
-                    "error": f"Stage {stage_name} exception: {str(e)}"
-                }
+                return self._stop(stage_name, f"exception: {str(e)}")
 
             # -------------------------
-            # Validation Layer
+            # VALIDATION
             # -------------------------
             if not isinstance(result, dict):
-                return {
-                    "state": "STOP",
-                    "color": "🔴",
-                    "error": f"Stage {stage_name} returned invalid type"
-                }
+                return self._stop(stage_name, "invalid result type")
 
             state = result.get("state")
 
             if state not in self.VALID_STATES:
-                return {
-                    "state": "STOP",
-                    "color": "🔴",
-                    "error": f"Invalid state: {state} (Stage {stage_name})"
-                }
+                return self._stop(stage_name, f"invalid state: {state}")
 
             # -------------------------
-            # Trace (lightweight)
+            # TRACE (mpcp format)
             # -------------------------
-            print(f"[MPCP] {self.name} | Stage {stage_name} → {state}")
+            print(f"MODEW:{self.name},STAGE:{stage_name},STATE:{state}")
 
             # -------------------------
-            # Control Flow
+            # CONTROL FLOW
             # -------------------------
-            if state == "STOP":
-                self.output = result
-                return result
-
-            if state == "WAIT":
+            if state in ["STOP", "WAIT"]:
                 self.output = result
                 return result
 
         # -------------------------
-        # Final Safeguard
+        # FINAL
         # -------------------------
         if result is None:
-            return {
-                "state": "STOP",
-                "color": "🔴",
-                "error": "Empty result"
-            }
+            return self._stop("F", "empty result")
 
         self.output = result
         return result
+
+    # =========================
+    # INTERNAL
+    # =========================
+    def _stop(self, stage, error):
+        return {
+            "state": "STOP",
+            "stage": stage,
+            "error": error
+        }
