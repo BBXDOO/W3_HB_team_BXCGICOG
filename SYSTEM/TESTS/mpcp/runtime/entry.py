@@ -1,10 +1,4 @@
-from mpcp.runtime.executor import MPCPExecutor
-
-
-def execute(task: str):
-    executor = MPCPExecutor()
-    return executor.run(task)
-
+from mpcp.runtime.executor import run
 
 if __name__ == "__main__":
-    print(execute("design"))
+    print(run("design"))
