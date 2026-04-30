@@ -1,8 +1,8 @@
-MPCP_BLUEPRINT_PAPER.md
+mpcp_BLUEPRINT_PAPER.md
 
-มาตรฐาน Blueprint ของระบบ MPCP
+มาตรฐาน Blueprint ของระบบ mpcp
 
-เอกสารฉบับนี้กำหนดรูปแบบ Blueprint สำหรับระบบ MPCP
+เอกสารฉบับนี้กำหนดรูปแบบ Blueprint สำหรับระบบ mpcp
 
 Blueprint คือแบบแผนสำหรับสร้างระบบ, สร้างสภาพแวดล้อม, เลือก Library, กำหนดโครงสร้าง และทำให้ระบบสร้างซ้ำได้เหมือนเดิม
 
@@ -25,7 +25,7 @@ Blueprint คือแผนสำหรับการรันงาน»
 - ลดการตั้งค่ามือ
 - คุมมาตรฐาน
 - ใช้ข้อความอ่านง่าย
-- ใช้ภาษา MPCP เท่านั้น
+- ใช้ภาษา mpcp เท่านั้น
 
 ---
 
@@ -53,7 +53,7 @@ KEY:VALUE
 
 ตัวอย่างพื้นฐาน
 
-NAME:MPCP_CORE
+NAME:mpcp_CORE
 TARGET:android
 MODE:min
 LIB:fs,net,store
@@ -101,7 +101,7 @@ PARTITION:A,B,C,D,E
 
 Blueprint สำหรับมือถือ
 
-NAME:MPCP_PHONE
+NAME:mpcp_PHONE
 TARGET:android
 MODE:min
 LIB:fs,store,net,sensor
@@ -111,7 +111,7 @@ PARTITION:A,B,C
 
 Blueprint สำหรับ iOS
 
-NAME:MPCP_IOS
+NAME:mpcp_IOS
 TARGET:ios
 MODE:stable
 LIB:fs,store,net
@@ -121,7 +121,7 @@ PARTITION:A,B,C,D
 
 Blueprint สำหรับ Linux
 
-NAME:MPCP_LINUX
+NAME:mpcp_LINUX
 TARGET:linux
 MODE:full
 LIB:fs,store,net,process,shell
@@ -133,7 +133,7 @@ PARTITION:A,B,C,D,E
 
 กฎที่ 1
 
-Blueprint ใช้ภาษา MPCP เท่านั้น
+Blueprint ใช้ภาษา mpcp เท่านั้น
 
 กฎที่ 2
 
@@ -211,7 +211,7 @@ Blueprint คือแผน
 
 สถานะ
 
-MPCP Blueprint Standard v1
+mpcp Blueprint Standard v1
 
 ---
 

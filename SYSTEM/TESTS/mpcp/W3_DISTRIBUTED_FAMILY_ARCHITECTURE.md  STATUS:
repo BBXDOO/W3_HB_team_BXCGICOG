@@ -1,10 +1,10 @@
-# /SYSTEM/TESTS/MPCP/W3_DISTRIBUTED_FAMILY_ARCHITECTURE.md
+# /SYSTEM/TESTS/mpcp/W3_DISTRIBUTED_FAMILY_ARCHITECTURE.md
 
 STATUS: ACTIVE_DRAFT
 TYPE: 1BOX_RMB
 OWNER: BBX19 + ChatGPT
 MODEL: NETWORK_COORDINATION
-TARGET: W3 / W3Lgu / MPCP / G-State / EP / Memory / SQL / Files
+TARGET: W3 / W3Lgu / mpcp / G-State / EP / Memory / SQL / Files
 
 ---
 
@@ -44,7 +44,7 @@ ROLE: Core Meaning / Intent / Human Direction
 B:W3Lgu
 ROLE: Semantic Language / Shared Meaning Layer
 
-C:MPCP
+C:mpcp
 ROLE: Operational Structure / Execution Method
 
 D:G-State
@@ -130,7 +130,7 @@ TRUST =
 
 W3
 → W3Lgu
-→ MPCP
+→ mpcp
 → G-State
 → EP / SQL / Files / Memory
 → Feedback

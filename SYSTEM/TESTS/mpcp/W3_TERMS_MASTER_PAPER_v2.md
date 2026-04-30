@@ -1,5 +1,5 @@
 ปลายทาง:
-/SYSTEM/TESTS/MPCP/W3_TERMS_MASTER_PAPER_v2.md
+/SYSTEM/TESTS/mpcp/W3_TERMS_MASTER_PAPER_v2.md
 
 COMMIT:
 docs(mpcp): rebuild glossary v2 with clean repo markdown format
@@ -16,7 +16,7 @@ Stable Current Build
 
 ## Scope
 
-W3 / MPCP / W3Lgu / G-State / EP-Signal / IGET / Repo Operations
+W3 / mpcp / W3Lgu / G-State / EP-Signal / IGET / Repo Operations
 
 ## Rule
 
@@ -53,7 +53,7 @@ Root Authority / Human Core
 
 # B. System Domains
 
-## MPCP
+## mpcp
 ระบบปฏิบัติการเชิงโครงสร้างแบบเบา  
 รวม method + language + deployment logic
 
@@ -98,7 +98,7 @@ data object / structured state container
 ชุดความสามารถเสริม
 
 ## Bridge
-ตัวแปลงระบบภายนอกเข้าสู่ MPCP
+ตัวแปลงระบบภายนอกเข้าสู่ mpcp
 
 ## Adapter
 ตัวเชื่อม input / output

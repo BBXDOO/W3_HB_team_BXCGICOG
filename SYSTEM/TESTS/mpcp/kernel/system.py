@@ -1,4 +1,4 @@
-SYSTEM_NAME = "MPCP"
+SYSTEM_NAME = "mpcp"
 
 def assert_system(name: str):
     if name != SYSTEM_NAME:
