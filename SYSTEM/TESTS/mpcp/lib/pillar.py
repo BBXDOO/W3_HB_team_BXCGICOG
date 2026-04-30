@@ -1,6 +1,9 @@
 class Pillar:
+    VALID_STATES = {"SUCCESS", "WAIT", "STOP"}
+
     def __init__(self, name):
         self.name = name
+
         self.stages = {
             "A": None,
             "B": None,
@@ -9,31 +12,97 @@ class Pillar:
             "E": None,
             "F": None,
         }
+
         self.context = {}
         self.output = None
 
+    # =========================
+    # Stage Registration
+    # =========================
     def set_stage(self, stage, fn):
-        if stage in self.stages:
-            self.stages[stage] = fn
+        if stage not in self.stages:
+            raise ValueError(f"Invalid stage: {stage}")
 
+        if not callable(fn):
+            raise TypeError(f"Stage {stage} must be callable")
+
+        self.stages[stage] = fn
+
+    # =========================
+    # Context Management
+    # =========================
+    def set_context(self, key, value):
+        self.context[key] = value
+
+    def get_context(self, key, default=None):
+        return self.context.get(key, default)
+
+    # =========================
+    # Core Execution Engine
+    # =========================
     def run(self):
         result = None
 
         for stage_name in ["A", "B", "C", "D", "E", "F"]:
             fn = self.stages.get(stage_name)
 
-            if callable(fn):
+            if not callable(fn):
+                continue
+
+            try:
                 result = fn(result, self.context)
 
-                # 🔥 control inside engine
-                if isinstance(result, dict):
-                    state = result.get("state")
+            except Exception as e:
+                return {
+                    "state": "STOP",
+                    "color": "🔴",
+                    "error": f"Stage {stage_name} exception: {str(e)}"
+                }
 
-                    if state == "STOP":
-                        return result
+            # -------------------------
+            # Validation Layer
+            # -------------------------
+            if not isinstance(result, dict):
+                return {
+                    "state": "STOP",
+                    "color": "🔴",
+                    "error": f"Stage {stage_name} returned invalid type"
+                }
 
-                    if state == "WAIT":
-                        return result
+            state = result.get("state")
+
+            if state not in self.VALID_STATES:
+                return {
+                    "state": "STOP",
+                    "color": "🔴",
+                    "error": f"Invalid state: {state} (Stage {stage_name})"
+                }
+
+            # -------------------------
+            # Trace (lightweight)
+            # -------------------------
+            print(f"[MPCP] {self.name} | Stage {stage_name} → {state}")
+
+            # -------------------------
+            # Control Flow
+            # -------------------------
+            if state == "STOP":
+                self.output = result
+                return result
+
+            if state == "WAIT":
+                self.output = result
+                return result
+
+        # -------------------------
+        # Final Safeguard
+        # -------------------------
+        if result is None:
+            return {
+                "state": "STOP",
+                "color": "🔴",
+                "error": "Empty result"
+            }
 
         self.output = result
         return result
