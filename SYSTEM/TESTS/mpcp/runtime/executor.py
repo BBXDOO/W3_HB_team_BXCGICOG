@@ -3,7 +3,6 @@ from mpcp.adapter.w3_bridge import execute_with_w3
 
 
 def stage_A(input_data, context):
-    # design stage
     return {
         "task": "design",
         "status": "🟢"
@@ -23,32 +22,21 @@ def stage_D(input_data, context):
     }
 
 
-def main():
-    p = Pillar("demo")
+def run(task_name):
+    p = Pillar(task_name)
 
-    # register stages
     p.set_stage("A", stage_A)
     p.set_stage("D", stage_D)
 
-    try:
-        result = p.run()
+    result = p.run()
 
-        if isinstance(result, dict):
-            status = result.get("status")
+    if isinstance(result, dict):
+        status = result.get("status")
 
-            if status == "🔴":
-                print("STOP: not recommended")
-                return
+        if status == "🔴":
+            return {"status": "STOP", "data": result}
 
-            if status == "🔵":
-                print("WAIT: still processing")
-                return
+        if status == "🔵":
+            return {"status": "WAIT", "data": result}
 
-        print("SUCCESS:", result)
-
-    except Exception as e:
-        print("ERROR:", str(e))
-
-
-if __name__ == "__main__":
-    main()
+    return {"status": "SUCCESS", "data": result}
