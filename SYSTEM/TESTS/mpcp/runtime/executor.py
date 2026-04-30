@@ -1,75 +1,82 @@
-from mpcp.lib.pillar import Pillar
-from mpcp.adapter.w3_bridge import execute_with_w3
+from mpcp.pillar import Pillar
 
 
 # =========================
-# Stage A
+# SIMPLE REGISTRY (no guess)
 # =========================
-def stage_A(input_data, context):
-    return {
-        "task": "design",
-        "state": "SUCCESS",   # machine
-        "color": "🟢"         # human
-    }
+PILLAR_REGISTRY = {}
 
 
-# =========================
-# Stage D
-# =========================
-def stage_D(input_data, context):
-    if not input_data:
-        return {
-            "state": "STOP",
-            "color": "🔴",
-            "error": "missing input"
-        }
-
-    result = execute_with_w3(input_data["task"])
-
-    if result is None:
-        return {
-            "task": input_data["task"],
-            "state": "WAIT",
-            "color": "🔵"
-        }
-
-    return {
-        "task": input_data["task"],
-        "result": result,
-        "state": "SUCCESS",
-        "color": "🟢"
-    }
+def register(name, builder_fn):
+    if not callable(builder_fn):
+        raise TypeError("builder_fn must be callable")
+    PILLAR_REGISTRY[name] = builder_fn
 
 
 # =========================
-# RUN ENGINE
+# MPCP PARSER (strict)
 # =========================
-def run(task_name):
-    p = Pillar(task_name)
+def parse_mpcp(text):
+    if not isinstance(text, str):
+        raise TypeError("Input must be string")
 
-    # register stages
-    p.set_stage("A", stage_A)
-    p.set_stage("D", stage_D)
+    parts = text.split(",")
+    data = {}
 
-    result = p.run()
+    for part in parts:
+        if ":" not in part:
+            continue
+        k, v = part.split(":", 1)
+        data[k.strip().upper()] = v.strip()
 
-    # ---------- control ----------
-    if isinstance(result, dict):
-        state = result.get("state")
+    return data
 
-        if state == "STOP":
-            return {
-                "status": "STOP",
-                "data": result
-            }
 
-        if state == "WAIT":
-            return {
-                "status": "WAIT",
-                "data": result
-            }
+# =========================
+# OUTPUT NORMALIZER
+# =========================
+def to_mpcp_output(result):
+    if not isinstance(result, dict):
+        return "STATE:FAILED,COLOR:Red,SYM:✕"
 
-    return {
-        "status": "SUCCESS",
-        "data": result
-    }
+    state = result.get("state", "FAILED")
+
+    if state == "SUCCESS":
+        return "STATE:SUCCESS,COLOR:Green,SYM:✓"
+
+    if state == "WAIT":
+        return "STATE:WAIT,COLOR:Yellow,SYM:!"
+
+    if state == "STOP":
+        return "STATE:STOP,COLOR:Red,SYM:✕"
+
+    return "STATE:FAILED,COLOR:Red,SYM:✕"
+
+
+# =========================
+# CORE EXECUTOR
+# =========================
+def run(text):
+    # --- parse ---
+    data = parse_mpcp(text)
+
+    task = data.get("TASK")
+    if not task:
+        return "STATE:FAILED,COLOR:Red,SYM:✕"
+
+    # --- resolve ---
+    builder = PILLAR_REGISTRY.get(task)
+    if not builder:
+        return "STATE:FAILED,COLOR:Red,SYM:✕"
+
+    pillar = builder()
+
+    # --- inject context ---
+    for k, v in data.items():
+        pillar.set_context(k, v)
+
+    # --- execute ---
+    result = pillar.run()
+
+    # --- normalize output ---
+    return to_mpcp_output(result)
