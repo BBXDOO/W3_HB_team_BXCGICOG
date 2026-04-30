@@ -1,17 +1,11 @@
-from mpcp.lib.pillar import Pillar
+from mpcp.orchestrator.manager import MPCPManager
 
-class Flow:
-    def __init__(self):
-        self.pillars = []
+m = MPCPManager()
 
-    def add(self, pillar: Pillar):
-        self.pillars.append(pillar)
+m.add_flow("main_pipeline", [
+    "design",
+    "analysis",
+    "deploy"
+])
 
-    def run(self, input_data):
-        result = input_data
-
-        for p in self.pillars:
-            result = p.run()
-
-        return result
-
+print(m.execute())
