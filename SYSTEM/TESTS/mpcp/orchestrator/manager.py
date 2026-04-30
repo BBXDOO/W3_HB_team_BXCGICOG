@@ -3,19 +3,67 @@ from mpcp.runtime.executor import run
 
 class MPCPManager:
     def __init__(self):
-        self.jobs = []
+        self.flows = []
 
-    def add_job(self, task_name):
-        self.jobs.append(task_name)
+    # -------------------------
+    # เพิ่ม flow (ไม่ใช่ job เดี่ยว)
+    # -------------------------
+    def add_flow(self, flow_name, steps):
+        """
+        steps = ["design", "analysis", ...]
+        """
+        self.flows.append({
+            "name": flow_name,
+            "steps": steps,
+            "current": 0,
+            "results": []
+        })
 
-    def execute_all(self):
-        results = []
+    # -------------------------
+    # execute flow ทั้งหมด
+    # -------------------------
+    def execute(self):
+        outputs = []
 
-        for task in self.jobs:
+        for flow in self.flows:
+            flow_result = self._run_flow(flow)
+            outputs.append(flow_result)
+
+        return outputs
+
+    # -------------------------
+    # core flow engine
+    # -------------------------
+    def _run_flow(self, flow):
+        while flow["current"] < len(flow["steps"]):
+            task = flow["steps"][flow["current"]]
+
             result = run(task)
-            results.append({
-                "task": task,
-                "result": result
-            })
+            flow["results"].append(result)
 
-        return results
+            status = result.get("status")
+
+            if status == "STOP":
+                return {
+                    "flow": flow["name"],
+                    "status": "STOP",
+                    "step": task,
+                    "results": flow["results"]
+                }
+
+            if status == "WAIT":
+                return {
+                    "flow": flow["name"],
+                    "status": "WAIT",
+                    "step": task,
+                    "results": flow["results"]
+                }
+
+            # SUCCESS → ไป step ถัดไป
+            flow["current"] += 1
+
+        return {
+            "flow": flow["name"],
+            "status": "SUCCESS",
+            "results": flow["results"]
+        }
