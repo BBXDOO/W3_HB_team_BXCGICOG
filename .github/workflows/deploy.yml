@@ -2,7 +2,11 @@ name: Deploy
 
 on:
   push:
-    branches: [main]
+    branches: [refactor/v0.2]
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
