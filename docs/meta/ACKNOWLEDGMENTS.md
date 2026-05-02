@@ -63,7 +63,7 @@
 - ✅ **การแก้ไขคือการพัฒนา**
 - ✅ **เราไม่ได้แข่งขันกับใคร แต่ทำให้ดีที่สุด**
 
-> 📖 **อ่านเพิ่มเติม:** [PHILOSOPHY.md](./PHILOSOPHY.md) - ปรัชญาการเรียนรู้จาก Error
+> 📖 **อ่านเพิ่มเติม:** [PHILOSOPHY.md](../governance/PHILOSOPHY.md) - ปรัชญาการเรียนรู้จาก Error
 
 ### ค่านิยมหลัก
 
@@ -145,8 +145,8 @@ W3 ไม่ใช่แค่ระบบ แต่เป็น **ตัวอ�
 
 ## 🔗 ลิงก์ที่เกี่ยวข้อง
 
-- [README.md](./README.md) - เอกสารหลัก
-- [GITHUB_PAGES_SETUP.md](./GITHUB_PAGES_SETUP.md) - คู่มือตั้งค่า
+- [README.md](../../README.md) - เอกสารหลัก
+- [GITHUB_PAGES_SETUP.md](../guides/GITHUB_PAGES_SETUP.md) - คู่มือตั้งค่า
 - [PWA](https://bbxdoo.github.io/W3_HB_team_BXCGICOG/) - Progressive Web App
 
 ---
