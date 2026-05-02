@@ -32,4 +32,4 @@ https://bbxdoo.github.io/W3_HB_team_BXCGICOG/
 
 ---
 
-**คำแนะนำฉบับเต็ม:** [GITHUB_PAGES_SETUP.md](./GITHUB_PAGES_SETUP.md)
+**คำแนะนำฉบับเต็ม:** [GITHUB_PAGES_SETUP.md](./guides/GITHUB_PAGES_SETUP.md)

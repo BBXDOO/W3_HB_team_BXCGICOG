@@ -24,8 +24,8 @@ Build → Fail → Learn → Continue
 Team: HB_team_BXCGICOG  
 Last Updated: 20/02/26
 
-> 🙏 **[Acknowledgments - ขอบคุณทุกคนที่ทำงานหนัก](./ACKNOWLEDGMENTS.md)**  
-> 🌟 **[Philosophy - Error as Learning](./PHILOSOPHY.md)** - *ปรัชญาการเรียนรู้จาก Error*  
+> 🙏 **[Acknowledgments - ขอบคุณทุกคนที่ทำงานหนัก](./docs/meta/ACKNOWLEDGMENTS.md)**  
+> 🌟 **[Philosophy - Error as Learning](./docs/governance/PHILOSOPHY.md)** - *ปรัชญาการเรียนรู้จาก Error*  
 > *"เข้มแข็งดุจเหล็กกล้า — อบอุ่นดังแสงอรุณแรกของวัน"*
 
 > 💡 **หลักคิด:** "Error ไม่ใช่ความล้มเหลว แต่เป็นโอกาสในการเรียนรู้และปรับปร�[...]
@@ -47,7 +47,7 @@ Repository นี้มี Progressive Web App ที่สามารถใช
 **🌐 เข้าถึง PWA / Main Entry:**  
 [https://bbxdoo.github.io/W3_HB_team_BXCGICOG/](https://bbxdoo.github.io/W3_HB_team_BXCGICOG/)
 
-> **⚡ คำแนะนำฉบับเต็ม:** อ่าน [GITHUB_PAGES_SETUP.md](./GITHUB_PAGES_SETUP.md) สำหรับขั้นตอนโดยละเอียด
+> **⚡ คำแนะนำฉบับเต็ม:** อ่าน [GITHUB_PAGES_SETUP.md](./docs/guides/GITHUB_PAGES_SETUP.md) สำหรับขั้นตอนโดยละเอียด
 
 ### การตั้งค่า GitHub Pages (แบบย่อ)
 
@@ -69,6 +69,20 @@ Repository นี้มี Progressive Web App ที่สามารถใช
 - ✅ รองรับการแสดงผลแบบ Mobile-first responsive
 - ✅ Fast loading ด้วย Cache Strategy
 - ✅ Native app-like experience
+
+---
+
+## 📁 Docs Structure
+
+Documentation files are organized under [`docs/`](./docs/) by category:
+
+| Folder | Contents |
+|---|---|
+| [`docs/reports/`](./docs/reports/) | Audit, runtime, sanity, integrity reports |
+| [`docs/guides/`](./docs/guides/) | Quick start, GitHub Pages setup, JSON guide, PR flow, agent tasks |
+| [`docs/governance/`](./docs/governance/) | Philosophy, manifesto, declaration, decision trace, protocol |
+| [`docs/architecture/`](./docs/architecture/) | Architecture maps, structure diagrams, audit architecture |
+| [`docs/meta/`](./docs/meta/) | Changelog, acknowledgments, user summary, reflections |
 
 ---
 
