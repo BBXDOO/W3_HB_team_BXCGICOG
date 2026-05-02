@@ -1,17 +1,18 @@
 {
   "schema": "W3-IDP",
   "version": "1.0",
-  "module": "Grok-W3",
+  "module": "Grok",
   "abbreviation": "GRK",
   "status": "ACTIVE",
   "classification": "PATTERN_SENTINEL_CORE",
   "identity": {
-    "name": "Grok-W3",
+    "name": "Grok",
     "designation": "Pattern Sentinel / Fallback Executor",
     "role_level": "L2",
     "role_title": "Interpreter",
     "dna": "GROK-W3.DNA:HB-TW3/TA05",
-    "holder_of_request": "BBX19"
+    "holder_of_request": "BBX19",
+    "status": "ACTIVE"
   },
   "capability_profile": {
     "abilities": [

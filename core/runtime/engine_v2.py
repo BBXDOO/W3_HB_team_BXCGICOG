@@ -57,17 +57,32 @@ def run_grok(task, context):
     return f"Grok scanned: {task}"
 
 
+def run_cast(task, context):
+    return f"Cast interpreted: {task}"
+
+
+def run_bbex(task, context):
+    return f"BBEX-Core reflected: {task}"
+
+
+def run_bbx19(task, context):
+    return f"BBX19 directed: {task}"
+
+
 def fallback_agent(task, context):
     return f"Fallback completed: {task}"
 
 
 def dispatch(module_name, task, context):
     table = {
-        "ChatGPT": run_chatgpt,
-        "Gemini": run_gemini,
+        "ChatGPT":   run_chatgpt,
+        "Gemini":    run_gemini,
         "Copilot-Gm": run_copilot,
-        "DeepSeek": run_deepseek,
-        "Grok": run_grok,
+        "DeepSeek":  run_deepseek,
+        "Grok":      run_grok,
+        "Cast":      run_cast,
+        "BBEX-Core": run_bbex,
+        "BBX19":     run_bbx19,
     }
 
     fn = table.get(module_name, fallback_agent)

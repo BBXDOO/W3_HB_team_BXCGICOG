@@ -1,12 +1,27 @@
 {
-  "modules": [
-    "BBX19",
-    "ChatGPT",
-    "Gemini",
-    "DeepSeek",
-    "Grok",
-    "Copilot-Gm",
-    "BBEX-Core",
-    "Cast"
-  ]
+  "_comment": "W3 Task Routing Table — maps task keyword to responsible module",
+  "design":             "ChatGPT",
+  "architecture":       "ChatGPT",
+  "flow":               "ChatGPT",
+  "simulation":         "ChatGPT",
+  "verify":             "Gemini",
+  "verification":       "Gemini",
+  "audit":              "Gemini",
+  "security":           "Gemini",
+  "pattern":            "Grok",
+  "signals":            "Grok",
+  "insight":            "Grok",
+  "research":           "DeepSeek",
+  "scale":              "DeepSeek",
+  "planning":           "DeepSeek",
+  "governance":         "Copilot-Gm",
+  "policy":             "Copilot-Gm",
+  "compliance":         "Copilot-Gm",
+  "reason":             "Cast",
+  "critical_reasoning": "Cast",
+  "interpret":          "Cast",
+  "document":           "Cast",
+  "identity":           "BBEX-Core",
+  "philosophy":         "BBEX-Core",
+  "vision":             "BBX19"
 }

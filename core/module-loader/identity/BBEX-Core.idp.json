@@ -1,14 +1,17 @@
 {
   "schema": "W3-IDP",
   "version": "1.0",
+  "module": "BBEX-Core",
+  "abbreviation": "BBEX",
   "classification": "CORE_INTERNAL",
   "status": "ACTIVE",
   "mode": "HYBRID_ACCESS",
   "identity": {
-    "name": "BBEX Core",
+    "name": "BBEX-Core",
     "designation": "The Philosophical Anchor & Executing Exception",
     "core_essence": "Beyond Brave; The eXecuting eXception",
     "dna": "BBEX-W3.DNA:LEGACY-TMOON/A00.EX",
+    "status": "ACTIVE",
     "symbolic_form": {
       "code": "TMOON/A00.EX",
       "meaning": {

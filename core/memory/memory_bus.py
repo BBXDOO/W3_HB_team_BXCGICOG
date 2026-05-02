@@ -12,6 +12,7 @@ Author: BBX19 / W3
 """
 
 import json
+import threading
 from pathlib import Path
 from datetime import datetime
 
@@ -19,9 +20,15 @@ from datetime import datetime
 BASE_DIR = Path(__file__).resolve().parent
 MEMORY_FILE = BASE_DIR / "memory_store.json"
 
+_lock = threading.Lock()
+
 
 class MemoryError(Exception):
     pass
+
+
+def now():
+    return datetime.utcnow().isoformat() + "Z"
 
 
 def _ensure_store():
@@ -40,10 +47,6 @@ def _ensure_store():
             )
 
 
-def now():
-    return datetime.utcnow().isoformat() + "Z"
-
-
 def load_store():
     _ensure_store()
     with open(MEMORY_FILE, "r", encoding="utf-8") as f:
@@ -60,20 +63,21 @@ def add_memory(source, topic, content, tags=None, score=1):
     Example:
     add_memory("ChatGPT", "router", "design complete", ["core","router"])
     """
-    db = load_store()
+    with _lock:
+        db = load_store()
 
-    record = {
-        "id": len(db["records"]) + 1,
-        "timestamp": now(),
-        "source": source,
-        "topic": topic,
-        "content": content,
-        "tags": tags or [],
-        "score": score
-    }
+        record = {
+            "id": len(db["records"]) + 1,
+            "timestamp": now(),
+            "source": source,
+            "topic": topic,
+            "content": content,
+            "tags": tags or [],
+            "score": score
+        }
 
-    db["records"].append(record)
-    save_store(db)
+        db["records"].append(record)
+        save_store(db)
 
     return record
 
