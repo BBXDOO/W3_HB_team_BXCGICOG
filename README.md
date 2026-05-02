@@ -86,6 +86,11 @@ Documentation files are organized under [`docs/`](./docs/) by category:
 
 ---
 
+## 📱 Termux (Android) Guide
+
+- คู่มือใช้งาน repo นี้บน Termux: `docs/guides/TERMUX_REPO_GUIDE.md`
+- คู่มือพื้นฐาน Termux + GitHub: `knowledge/apps_manual/android/termux_github.md`
+
 ## 🔗 Links
 
 - 🔧 refactor/v0.2  
