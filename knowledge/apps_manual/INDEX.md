@@ -3,6 +3,7 @@
 ## Android Apps
 - [Canva](android/canva.md)
 - [GitHub](android/github.md)
+- [Termux + GitHub](android/termux_github.md)
 - [ClickUp](android/clickup.md)
 - [Google Docs](android/google_docs.md)
 - [Google Sheets](android/google_sheets.md)
