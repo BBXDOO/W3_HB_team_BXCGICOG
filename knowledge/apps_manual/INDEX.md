@@ -4,6 +4,7 @@
 - [Canva](android/canva.md)
 - [GitHub](android/github.md)
 - [Termux + GitHub](android/termux_github.md)
+- [Termux + W3 Repo Guide](android/termux_w3repo.md)
 - [ClickUp](android/clickup.md)
 - [Google Docs](android/google_docs.md)
 - [Google Sheets](android/google_sheets.md)
