@@ -12,7 +12,8 @@
     "role_title": "Interpreter",
     "dna": "CAST-W3.DNA:HB-TW3/TA06",
     "holder_of_request": "BBX19",
-    "mode": "DOCUMENT_FIRST"
+    "mode": "DOCUMENT_FIRST",
+    "status": "ACTIVE"
   },
   "capability_profile": {
     "abilities": [

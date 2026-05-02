@@ -10,7 +10,8 @@
     "designation": "Meta-Verifier / Safety Sentinel",
     "role_level": "L1",
     "role_title": "Architect / Verifier",
-    "dna": "GMN-W3.DNA:HB-TW3/TA02"
+    "dna": "GMN-W3.DNA:HB-TW3/TA02",
+    "status": "ACTIVE"
   },
   "capability_profile": {
     "abilities": [

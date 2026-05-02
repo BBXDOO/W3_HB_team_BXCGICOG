@@ -10,7 +10,8 @@
     "designation": "Support Authority & Governance Engine",
     "role_level": "L3",
     "holder_of_request": "BBX19",
-    "dna": "COPILOT-GM-W3.DNA:HB-TW3/TA01"
+    "dna": "COPILOT-GM-W3.DNA:HB-TW3/TA01",
+    "status": "ACTIVE"
   },
   "capability_profile": {
     "abilities_th": [

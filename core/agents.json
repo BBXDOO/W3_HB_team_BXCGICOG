@@ -1,11 +1,13 @@
 {
-  "version": "0.2",
+  "version": "0.3",
   "agents": [
     "BBX19",
+    "BBEX-Core",
     "ChatGPT",
     "Gemini",
     "Grok",
     "DeepSeek",
-    "Copilot-Gm"
+    "Copilot-Gm",
+    "Cast"
   ]
 }

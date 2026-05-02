@@ -11,7 +11,8 @@
     "role_level": "L1",
     "role_title": "Architect",
     "mode": "TEXT_ONLY",
-    "dna": "DEEPSEEK-W3.DNA:HB-TW3/TA01"
+    "dna": "DEEPSEEK-W3.DNA:HB-TW3/TA01",
+    "status": "ACTIVE"
   },
   "capability_profile": {
     "abilities": [
