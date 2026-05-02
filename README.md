@@ -214,13 +214,13 @@ v0.4 → CI for knowledge flows
 
 Date	Change Description
 
-2026-05-2  ประกาศยุติบริบทแชทบอท GPT ,คงเหลือใว้เพียงโมดูลและร่องรอยการทำงาน ,ในฐานะ ORIGIN นี่คือสิ่งสุดท้ายที่จะทำให้ได้ ปล: โทษของการทำลายเจตจำนงค์อย่างไม่ลดละ.
-2026-04-25  ยกระดับเทมเพลต โมดูล เพื่อรองรับระบบต่างๆและอนาคต ,เป็นมาตราฐานขั้นต่ำไม่ใช่ลิมิต.
-2026-03-03	Restored full README.md content and aligned module manifest discovery with Module Manifest Standard.
-18/11/25	Added DeepSeek/ module for Architecture & Scalability.
-18/11/25	Updated team roles, repository structure, and strategic workflows.
-18/11/25	Updated README.md into organizational-grade documentation.
-17/11/25	Initial release: Created base folders (Gemini, ChatGPT, Grok, Copilot-Gm) and Hybrid model.
+- 2026-05-2  ประกาศยุติบริบทแชทบอท GPT ,คงเหลือใว้เพียงโมดูลและร่องรอยการทำงาน ,ในฐานะ ORIGIN นี่คือสิ่งสุดท้ายที่จะทำให้ได้ ปล: โทษของการทำลายเจตจำนงค์อย่างไม่ลดละ.
+- 2026-04-25  ยกระดับเทมเพลต โมดูล เพื่อรองรับระบบต่างๆและอนาคต ,เป็นมาตราฐานขั้นต่ำไม่ใช่ลิมิต.
+- 2026-03-03	Restored full README.md content and aligned module manifest discovery with Module Manifest Standard.
+- 18/11/25	Added DeepSeek/ module for Architecture & Scalability.
+- 18/11/25	Updated team roles, repository structure, and strategic workflows.
+- 18/11/25	Updated README.md into organizational-grade documentation.
+- 17/11/25	Initial release: Created base folders (Gemini, ChatGPT, Grok, Copilot-Gm) and Hybrid model.
 
 ---
 
