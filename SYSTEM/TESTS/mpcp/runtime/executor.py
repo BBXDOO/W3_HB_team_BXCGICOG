@@ -1,7 +1,5 @@
 # mpcp/runtime/executor.py
 
-from mpcp.kernel.validator import MPCPValidator
-
 
 # =========================
 # SIMPLE REGISTRY
@@ -68,8 +66,7 @@ def run(text: str):
         # -------------------------
         # ROT VALIDATION (INPUT)
         # -------------------------
-        MPCPValidator.validate_input(data)
-
+        
         # -------------------------
         # B: RESOLVE MODEW
         # -------------------------
@@ -98,7 +95,6 @@ def run(text: str):
         # -------------------------
         # ROT VALIDATION (OUTPUT)
         # -------------------------
-        MPCPValidator.validate_output(data, result)
 
         # -------------------------
         # E: RETURN (mpcp format)
