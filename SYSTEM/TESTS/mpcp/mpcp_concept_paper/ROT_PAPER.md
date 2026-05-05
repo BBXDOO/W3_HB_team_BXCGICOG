@@ -20,6 +20,11 @@ NOT what the system executes
 
 SYSTEM = CAUSE → ACTION → RESULT
 
+RULE:
+- RESULT must be traceable to ACTION
+- ACTION must be traceable to CAUSE
+- Missing link = invalid system state
+
 NO TRUE / FALSE
 ONLY RELATION
 
@@ -54,7 +59,11 @@ PRX      = Perception (visual layer)
 
 ⚖️ AUTHORITY RULE
 
-ROT > PAPER > MODEW > RESULT > PRX
+FLOW DIRECTION:
+
+ROT → PAPER → MODEW → RESULT → PRX
+
+Reverse control is forbidden
 
 PRX ห้ามย้อนควบคุมระบบ
 
@@ -99,6 +108,13 @@ OUTPUT:
 ห้ามข้ามขอบเขต
 
 ต้องระบุ “ใครเกี่ยว / ไม่เกี่ยว”
+PAPER VALIDATION RULE:
+
+A Paper is invalid if:
+- SCOPE is missing
+- INCLUDE / EXCLUDE is undefined
+- MODEW is ambiguous
+- OUTPUT is unclear
 
 
 
@@ -113,6 +129,11 @@ One Modew = One Purpose
 ห้ามตีความเอง
 
 ทำตาม PAPER เท่านั้น
+MODEW CONSTRAINT:
+
+- Must not create new scope
+- Must not access undefined layer
+- Must not modify external state without Paper
 
 
 
@@ -129,7 +150,10 @@ NOT what expected
 
 RESULT ต้อง trace ได้
 
-
+RESULT must include:
+- action result
+- related context
+- environment snapshot (non-reduced)
 
 ---
 
@@ -195,7 +219,10 @@ PRX = perception only
 Color = signal
 NOT decision truth
 
-
+PRX must not:
+- trigger execution
+- override result
+- hide critical state
 ---
 
 ⚡ DECISION LAW
@@ -268,3 +295,17 @@ But understand correctly
 
 
 ---
+
+FAIL CONDITION LAW:
+
+System is invalid when:
+
+- Missing CAUSE / ACTION / RESULT link
+- Execution outside defined SCOPE
+- MODEW violates boundary
+- PAPER conflicts with ROT
+- RESULT cannot be explained
+
+---
+
+→ Must stop or fallback
