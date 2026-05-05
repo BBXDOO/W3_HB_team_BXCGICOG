@@ -1,27 +1,24 @@
 # mpcp/runtime/executor.py
 
-# =========================
-# IMPORTS
-# =========================
-from typing import Dict, Tuple
+from mpcp.kernel.validator import MPCPValidator
+
 
 # =========================
 # SIMPLE REGISTRY
 # =========================
-# map TASK → Modew class
 PILLAR_REGISTRY = {}
 
 
-def register(name: str, cls):
-    if not callable(cls):
-        raise TypeError("Modew must be callable/class")
-    PILLAR_REGISTRY[name] = cls
+def register(name, builder_fn):
+    if not callable(builder_fn):
+        raise TypeError("builder_fn must be callable")
+    PILLAR_REGISTRY[name] = builder_fn
 
 
 # =========================
-# MPCP PARSER (strict simple)
+# MPCP PARSER
 # =========================
-def parse_mpcp(text: str) -> Dict[str, str]:
+def parse_mpcp(text: str):
     if not isinstance(text, str):
         raise TypeError("Input must be string")
 
@@ -38,40 +35,9 @@ def parse_mpcp(text: str) -> Dict[str, str]:
 
 
 # =========================
-# PAPER VALIDATOR
+# OUTPUT FORMATTER (external only)
 # =========================
-REQUIRED_FIELDS = ["TASK", "SCOPE", "INCLUDE", "EXCLUDE", "MODEW", "OUTPUT"]
-
-
-def validate_paper(data: Dict[str, str]) -> Tuple[bool, str]:
-    # --- required fields ---
-    for field in REQUIRED_FIELDS:
-        if field not in data or not data[field]:
-            return False, f"MISSING:{field}"
-
-    # --- include / exclude overlap ---
-    include = set([x.strip() for x in data["INCLUDE"].split(",") if x.strip()])
-    exclude = set([x.strip() for x in data["EXCLUDE"].split(",") if x.strip()])
-
-    if include & exclude:
-        return False, "CONFLICT:INCLUDE_EXCLUDE"
-
-    # --- scope sanity ---
-    if data["SCOPE"] == "*" or len(data["SCOPE"].strip()) == 0:
-        return False, "INVALID:SCOPE"
-
-    # --- modew mapping must exist ---
-    task = data["TASK"]
-    if task not in PILLAR_REGISTRY:
-        return False, "NO_MODEW_REGISTERED"
-
-    return True, "OK"
-
-
-# =========================
-# OUTPUT NORMALIZER (PRX layer)
-# =========================
-def to_mpcp_output(result: Dict) -> str:
+def to_mpcp_output(result: dict):
     if not isinstance(result, dict):
         return "STATE:FAILED,COLOR:Red,SYM:✕"
 
@@ -90,93 +56,60 @@ def to_mpcp_output(result: Dict) -> str:
 
 
 # =========================
-# TRACE VALIDATION (ROT LAW)
+# CORE EXECUTOR (ROT aligned)
 # =========================
-def validate_trace(result: Dict) -> Tuple[bool, str]:
-    if not isinstance(result, dict):
-        return False, "INVALID_RESULT"
-
-    if "cause" not in result:
-        return False, "MISSING_CAUSE"
-
-    if "action" not in result:
-        return False, "MISSING_ACTION"
-
-    return True, "OK"
-
-
-# =========================
-# CORE EXECUTOR
-# =========================
-def run(text: str) -> str:
-    # -------------------------
-    # 1. PARSE
-    # -------------------------
-    data = parse_mpcp(text)
-
-    # -------------------------
-    # 2. VALIDATE PAPER
-    # -------------------------
-    ok, reason = validate_paper(data)
-    if not ok:
-        return f"STATE:FAILED,COLOR:Red,SYM:✕,REASON:{reason}"
-
-    # -------------------------
-    # 3. RESOLVE MODEW
-    # -------------------------
-    task = data["TASK"]
-    modew_cls = PILLAR_REGISTRY.get(task)
-
+def run(text: str):
     try:
-        modew = modew_cls()
-    except Exception:
-        return "STATE:FAILED,COLOR:Red,SYM:✕,REASON:MODEW_INIT_FAIL"
+        # -------------------------
+        # A: INPUT → PARSE
+        # -------------------------
+        data = parse_mpcp(text)
 
-    # -------------------------
-    # 4. INJECT CONTEXT
-    # -------------------------
-    for k, v in data.items():
-        if hasattr(modew, "set_context"):
-            modew.set_context(k, v)
+        # -------------------------
+        # ROT VALIDATION (INPUT)
+        # -------------------------
+        MPCPValidator.validate_input(data)
 
-    # -------------------------
-    # 5. EXECUTE
-    # -------------------------
-    try:
-        result = modew.run()
-    except Exception:
-        return "STATE:FAILED,COLOR:Red,SYM:✕,REASON:EXECUTION_ERROR"
+        # -------------------------
+        # B: RESOLVE MODEW
+        # -------------------------
+        task = data.get("TASK")
+        builder = PILLAR_REGISTRY.get(task)
 
-    # -------------------------
-    # 6. TRACE CHECK (ROT LAW)
-    # -------------------------
-    ok, reason = validate_trace(result)
-    if not ok:
-        return f"STATE:FAILED,COLOR:Red,SYM:✕,REASON:{reason}"
+        if not builder:
+            return to_mpcp_output({
+                "state": "STOP",
+                "error": f"MODEW_NOT_FOUND:{task}"
+            })
 
-    # -------------------------
-    # 7. OUTPUT (PRX only)
-    # -------------------------
-    return to_mpcp_output(result)
+        pillar = builder()
 
+        # -------------------------
+        # C: INJECT CONTEXT
+        # -------------------------
+        for k, v in data.items():
+            pillar.set_context(k, v)
 
-# =========================
-# EXAMPLE MODEW (SAFE DEFAULT)
-# =========================
-class DefaultModew:
-    def __init__(self):
-        self.context = {}
+        # -------------------------
+        # D: EXECUTE
+        # -------------------------
+        result = pillar.run()
 
-    def set_context(self, k, v):
-        self.context[k] = v
+        # -------------------------
+        # ROT VALIDATION (OUTPUT)
+        # -------------------------
+        MPCPValidator.validate_output(data, result)
 
-    def run(self):
-        return {
-            "state": "SUCCESS",
-            "cause": "default_execution",
-            "action": "noop"
-        }
+        # -------------------------
+        # E: RETURN (mpcp format)
+        # -------------------------
+        return to_mpcp_output(result)
 
-
-# register default (optional fallback)
-register("default", DefaultModew)
+    except Exception as e:
+        # -------------------------
+        # FAIL SAFE (ROT compliant)
+        # -------------------------
+        return to_mpcp_output({
+            "state": "STOP",
+            "error": str(e)
+        })
