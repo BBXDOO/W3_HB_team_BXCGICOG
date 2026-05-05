@@ -32,7 +32,7 @@ def trace(stage: str, data, env: dict = None) -> dict:
         "stage": stage,
         "data": data,
         "env": dict(env) if env else {},
-        "time": datetime.datetime.utcnow().isoformat() + "Z",
+        "time": datetime.datetime.now(datetime.timezone.utc).isoformat(),
     }
     _trace_log.append(entry)
     print(f"[MPCP][{stage}] {data}")

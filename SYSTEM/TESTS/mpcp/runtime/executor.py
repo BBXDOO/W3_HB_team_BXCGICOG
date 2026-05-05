@@ -85,11 +85,12 @@ def run(text: str) -> dict:
         # -------------------------
         # ROT VALIDATION (INPUT)
         # Checks: system name (optional), contract structure (TASK required).
-        # ROT boundary check (CAUSE must be identifiable).
+        # Also runs validate_core with a synthetic STOP result to confirm
+        # the CAUSE (event with TASK) is traceable before execution begins.
         # -------------------------
         validate_system_context(data)
         MPCPContract.validate_input(data)
-        MPCPRot.validate_core(data, {"state": "STOP"})  # pre-check cause exists
+        MPCPRot.validate_core(data, {"state": "STOP"})  # verify CAUSE linkage pre-execution
         mpcp_trace("ROT:INPUT_VALID", {"TASK": data.get("TASK")})
 
         # -------------------------
