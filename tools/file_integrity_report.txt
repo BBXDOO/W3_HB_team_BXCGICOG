@@ -2,19 +2,68 @@
 FILE INTEGRITY CHECK REPORT
 ================================================================================
 Repository: W3_HB_team_BXCGICOG
-Check Date: 2026-04-22 08:35:46
+Check Date: 2026-05-05 21:59:42
 ================================================================================
 
-✅ STATUS: ALL CHECKS PASSED
-No missing, corrupted, or damaged files detected.
+⚠️  STATUS: 46 ISSUES DETECTED
+
+📁 MISSING DIRECTORIES:
+----------------------------------------
+  • artifacts/
+  • connection_maps/
+  • context/
+  • decision_trace/
+  • fbd_reports/
+  • full_moon_analysis/
+  • gatekeeping_logs/
+  • modules/ChatGPT/logs/daily/
+  • narrative_reports/
+  • outcomes/append_only_ledger/
+  • repo_events/
+  • requests/
+  • results/
+  • system_observations/
+  • tuf_snapshots/
+
+📄 MISSING FILES:
+----------------------------------------
+  • docs/MPCP_architecture
+  • knowledge/universal_truth
+  • logs/interaction_history
+  • reports/logic_analysis
+  • requests/intent
+  • results/structural_blueprints
+
+🔍 SUSPICIOUS EMPTY FILES:
+----------------------------------------
+  • SYSTEM/TESTS/mpcp/__init__.py
+  • SYSTEM/TESTS/mpcp/adapter/__init__.py
+  • SYSTEM/TESTS/mpcp/kernel/__init__.py
+  • SYSTEM/TESTS/mpcp/lib/__init__.py
+  • SYSTEM/TESTS/mpcp/modew/__init__.py
+  • SYSTEM/TESTS/mpcp/orchestrator/__init__.py
+  • SYSTEM/TESTS/mpcp/runtime/__init__.py
+  • SYSTEM/TESTS/mpcp/schema/__init__.py
+  • core/__init__.py
+  • core/memory/__init__.py
+  • core/module_loader/__init__.py
+  • core/runtime/__init__.py
+  • iget/tests/__init__.py
+  • w3lgu/bin/Engine
+  • w3lgu/docs/จากนั้นเปิด
+  • w3lgu/docs/ตรวจสอบ
+  • w3lgu/docs/ตรวจสอบ:
+  • w3lgu/docs/ระบบจะเปิดไฟล์ใน
+  • w3lgu/docs/ใช้เวลาประมาณ
+  • w3lgu/docs/ใน
 
 ================================================================================
 SUMMARY:
 ----------------------------------------
-Missing Directories:     0
-Missing Files:           0
+Missing Directories:     15
+Missing Files:           6
 Corrupted JSON Files:    0
-Suspicious Empty Files:  0
+Suspicious Empty Files:  20
 Broken Symbolic Links:   0
-TOTAL ISSUES:            0
+TOTAL ISSUES:            46
 ================================================================================
