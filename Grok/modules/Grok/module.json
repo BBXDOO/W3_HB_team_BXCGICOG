@@ -74,6 +74,8 @@
     "gatekeeping_logs/"
   ],
 
+  "scope": "pattern_intelligence",
+
   "runtime": {
     "logic": "adaptive_0.5",
     "speed": "balanced",

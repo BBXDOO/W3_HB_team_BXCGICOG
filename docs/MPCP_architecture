@@ -1,0 +1,8 @@
+# MPCP Architecture
+
+Multi-Point Control Protocol (MPCP) architecture for the W3 Hybrid system.
+
+## Overview
+
+MPCP defines the control flow and coordination protocol between W3 modules,
+enabling structured communication across the hybrid AI team.

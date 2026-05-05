@@ -1,0 +1,7 @@
+# Interaction History
+
+Log of significant cross-module interactions within the W3 system.
+
+## Format
+
+Each entry records: date, modules involved, interaction type, and outcome.

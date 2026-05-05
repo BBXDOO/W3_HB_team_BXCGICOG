@@ -91,6 +91,8 @@
     "knowledge/philosophy/"
   ],
 
+  "scope": "identity",
+
   "runtime": {
     "activation": "on_demand",
     "response_mode": "reflection_first",

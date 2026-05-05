@@ -133,6 +133,8 @@
     "modules/ChatGPT/logs/daily/"
   ],
 
+  "scope": "architecture",
+
   "runtime": {
     "speed": "fast",
     "logic": "structured",
