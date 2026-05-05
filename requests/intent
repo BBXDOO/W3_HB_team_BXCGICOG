@@ -1,0 +1,7 @@
+# Intent
+
+Incoming intent requests directed to the W3 system for processing and interpretation.
+
+## Format
+
+Each request specifies: source module, intent type, context, and priority.

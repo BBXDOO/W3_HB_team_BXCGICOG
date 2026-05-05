@@ -65,6 +65,8 @@
     "outcomes/"
   ],
 
+  "scope": "logic",
+
   "runtime": {
     "logic": "structured",
     "speed": "normal"

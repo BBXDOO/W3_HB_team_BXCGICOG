@@ -88,6 +88,10 @@ class FileIntegrityChecker:
             if file_path.name == '.gitkeep':
                 continue
                 
+            # __init__.py files are standard Python package markers and are intentionally empty
+            if file_path.name == '__init__.py':
+                continue
+
             if file_path.stat().st_size == 0:
                 rel_path = file_path.relative_to(self.repo_root)
                 self.issues["empty_files_suspicious"].append(str(rel_path))

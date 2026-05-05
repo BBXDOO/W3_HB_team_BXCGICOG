@@ -94,6 +94,8 @@
     "BBX19/status/"
   ],
 
+  "scope": "system_wide",
+
   "runtime": {
     "decision_mode": "human_final",
     "bias_control": true,

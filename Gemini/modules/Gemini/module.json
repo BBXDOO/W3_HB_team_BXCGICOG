@@ -66,6 +66,8 @@
     "results/structural_blueprints"
   ],
 
+  "scope": "verification",
+
   "runtime": {
     "logic": "structured_dynamic",
     "speed": "adaptive"
