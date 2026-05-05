@@ -1,6 +1,45 @@
+# Tools
+
+This directory contains utility scripts for the W3_HB_team_BXCGICOG repository: file integrity checks, schema validation, and engine smoke tests.
+
+---
+
+## smoke_test.py — Android/Termux Smoke Test Runner
+
+A lightweight smoke test that bootstraps the W3 engine, runs for **8 seconds**, then exits automatically with code 0.  
+No OS signals required — safe for Android/Termux environments.
+
+**Run from repo root:**
+```bash
+python tools/smoke_test.py
+```
+
+**Termux (Android) quickstart:**
+```sh
+pkg update && pkg install python git
+git clone https://github.com/BBXDOO/W3_HB_team_BXCGICOG.git
+cd W3_HB_team_BXCGICOG
+git checkout refactor/v0.2
+python tools/smoke_test.py
+```
+
+**What it does:**
+1. Initializes the JSONL logger (`logs/engine/runtime.log`)
+2. Runs `system_check()` — prints Python version + "W3 Hybrid Engine: ONLINE"
+3. Loads engine config (fallback config if `core.config_loader` is unavailable)
+4. Simulates module boot for all configured modules
+5. Emits heartbeat log events for **8 seconds**
+6. Logs a `shutdown` event, closes the logger, and exits with code **0**
+
+**Exit Code:**
+- `0` — Smoke test passed
+- `1` — Unexpected error during test
+
+---
+
 # File Integrity Check Tools
 
-This directory contains tools for checking file integrity, validating JSON schemas, and verifying module definitions in the W3_HB_team_BXCGICOG repository.
+This directory also contains tools for checking file integrity, validating JSON schemas, and verifying module definitions in the W3_HB_team_BXCGICOG repository.
 
 ## Dependencies
 
