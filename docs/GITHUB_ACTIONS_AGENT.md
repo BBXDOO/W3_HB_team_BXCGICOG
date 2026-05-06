@@ -1,112 +1,106 @@
-# W3 Agent CI — GitHub Actions Workflow
+# GitHub Actions Agent Workflow
 
 ## Overview
 
-The file `.github/workflows/w3_agent_ci.yml` defines the **W3 Agent CI** workflow.  
-It runs automatically on every `push` and `pull_request` to any branch, providing deterministic rule-based validation of the repository.
+The file `.github/workflows/w3_agent_ci.yml` defines the **W3 Agent CI** workflow. It runs automatically on every `push` and `pull_request` event, executes the rule-based agent checks, and uploads the resulting reports as build artifacts.
 
 ---
 
-## Workflow Steps
+## Workflow File
 
-| Step | What it does |
-|------|-------------|
-| Checkout code | Clones the repository at the current commit |
-| Set up Python 3.11 | Installs CPython |
-| Install dependencies | `pip install -r requirements.txt` (includes `jsonschema`) |
-| Run W3 Agent CI checks | Executes `python tools/w3_agent_ci.py` |
-| Upload report artifacts | Always uploads `w3_agent_report.md` and `w3_agent_report.json` (retained 30 days) |
+```yaml
+# .github/workflows/w3_agent_ci.yml
+name: W3 Agent CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  w3-agent-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+      - name: Run W3 Agent CI checks
+        run: python tools/w3_agent_ci.py
+      - name: Upload CI reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3-agent-reports
+          path: |
+            w3_agent_report.md
+            w3_agent_report.json
+```
 
 ---
 
-## Triggering the Workflow
+## Trigger Events
 
-The workflow fires on:
+| Trigger | Behaviour |
+|---------|-----------|
+| `push` (any branch) | Runs checks immediately on the pushed commit. |
+| `pull_request` | Runs checks against the PR head commit; result is shown as a status check. |
 
-- **Push** — any branch  
-- **Pull request** — any target branch  
+---
 
-On pull requests the PR body is passed to the orchestrator via the `W3_PR_BODY` environment variable so that the override parser can read `W3-OVERRIDES:` sections.
+## Job Steps
+
+1. **Checkout** — full repository checkout via `actions/checkout@v4`.
+2. **Python setup** — installs the latest Python 3.x release.
+3. **Install dependencies** — installs `requirements.txt` (production) and `requirements-dev.txt` (CI tooling, e.g. PyYAML).
+4. **Run checks** — executes `tools/w3_agent_ci.py`, which:
+   - Loads `core/governance/rules/w3_ruleset.yml`.
+   - Runs each registered check (validate_modules, validate_metadata, compileall, json_schema).
+   - Writes `w3_agent_report.md` and `w3_agent_report.json`.
+   - Exits `1` if any `error`-severity rule failed; exits `0` otherwise.
+5. **Upload artifacts** — always runs (even on failure) to make reports available for download from the Actions UI.
+
+---
+
+## Exit Codes and CI Status
+
+| Exit code | Meaning |
+|-----------|---------|
+| `0` | All non-negotiable checks passed. Negotiable warnings may still be present in the report. |
+| `1` | One or more non-negotiable (`error`) checks failed. The job is marked **failed** and the PR is blocked (if branch protection is enabled). |
 
 ---
 
 ## Artifacts
 
-After each run two report files are uploaded as the `w3-agent-reports` artifact:
+After each run two files are uploaded under the artifact name **`w3-agent-reports`**:
 
-| File | Format | Contents |
-|------|--------|---------|
-| `w3_agent_report.md` | Markdown | Human-readable summary table + collapsible check outputs |
-| `w3_agent_report.json` | JSON | Machine-readable findings, overrides, timestamps |
+| File | Description |
+|------|-------------|
+| `w3_agent_report.md` | Human-friendly Markdown report with a summary table and full check output. |
+| `w3_agent_report.json` | Machine-readable JSON with all check results, suitable for downstream tooling. |
 
-Artifacts are retained for **30 days**.
-
-### Downloading artifacts
-
-Via GitHub UI: *Actions → workflow run → Artifacts → w3-agent-reports*
-
-Via `gh` CLI:
-```bash
-gh run download <run-id> --name w3-agent-reports
-```
+Download artifacts from the **Actions** tab → select the workflow run → **Artifacts** section.
 
 ---
 
-## Interpreting Results
+## Adding or Modifying Rules
 
-### CI passes (exit 0)
-
-All `error`-severity rules either passed or were validly overridden.  
-`warn` and `info` findings may still appear in the report.
-
-### CI fails (exit 1)
-
-One or more `error`-severity rules failed without a valid override.  
-Check the workflow logs and the downloaded `w3_agent_report.md` for details.
-
-### Report table icons
-
-| Icon | Meaning |
-|------|---------|
-| ✅ | Rule passed |
-| ❌ | Rule failed (blocks CI if severity = error) |
-| 🚫 | Rule failed but overridden via PR body |
-| 🔴 | Error severity |
-| 🟡 | Warn severity |
-| 🔵 | Info severity |
+1. Edit `core/governance/rules/w3_ruleset.yml`.
+2. To add a new check, also register a handler in the `CHECK_FN` dict in `tools/w3_agent_ci.py`.
+3. Use `severity: error` for non-negotiable rules and `severity: warn` for negotiable ones.
+4. Open a PR — the workflow will validate your changes automatically.
 
 ---
 
-## Overriding Rules in a PR
+## Troubleshooting
 
-Add a `W3-OVERRIDES:` section to the PR description:
-
-```
-W3-OVERRIDES:
-- rule_id: W3-003
-  reason: Hotfix — metadata added in follow-up PR #456
-```
-
-See [AGENT_RULES_AND_MEMORY.md](./AGENT_RULES_AND_MEMORY.md) for the full override specification.
-
----
-
-## Local Execution
-
-Run the same checks locally before pushing:
-
-```bash
-# from repo root
-pip install -r requirements.txt
-python tools/w3_agent_ci.py
-```
-
-Reports are written to `w3_agent_report.md` and `w3_agent_report.json` in the repo root.  
-Those files are listed in `.gitignore` and will not be committed.
-
----
-
-## Memory Logging
-
-Every CI run appends a summary record to `core/memory/memory_store.json` via `core/memory/memory_bus.add_memory()`.  
-This provides a persistent, searchable audit trail of all CI runs and any overrides that were applied.
+| Symptom | Resolution |
+|---------|------------|
+| `ModuleNotFoundError: yaml` | Ensure `requirements-dev.txt` contains `PyYAML>=6` and is installed. |
+| `ModuleNotFoundError: jsonschema` | Ensure `requirements.txt` contains `jsonschema>=4.10.3`. |
+| Reports not uploaded | Check the "Upload CI reports" step; `if: always()` ensures it runs even on failure. |
+| Memory store not updated | Verify `core/memory/memory_store.json` is writable in the runner environment. |

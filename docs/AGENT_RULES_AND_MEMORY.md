@@ -1,105 +1,129 @@
-# W3 Agent Rules & Memory Logging
+# Agent Rules and Memory
 
 ## Overview
 
-The W3 Agent CI framework provides **deterministic, rule-based checks** that run on every push and pull request.  
-Rules are defined in `core/governance/rules/w3_ruleset.yml` and executed by `tools/w3_agent_ci.py`.
+The W3 Agent CI framework enforces a **rule-based governance policy** without relying on any external LLM APIs. Every check is deterministic: it runs a tool, inspects its exit code and output, and maps the result to a rule severity.
 
 ---
 
-## Rule Structure
+## Rule Severity: Negotiable vs Non-Negotiable
 
-Each rule in `w3_ruleset.yml` contains:
+Rules are defined in `core/governance/rules/w3_ruleset.yml` and carry one of two severity levels:
 
-| Field | Description |
-|-------|-------------|
-| `id` | Unique identifier (e.g. `W3-001`) |
-| `title` | Short human-readable name |
-| `severity` | `error` \| `warn` \| `info` |
-| `description` | What the rule checks and why it matters |
-| `check` | Internal key mapping to a check runner in the orchestrator |
-| `override.allowed` | Whether a PR author may request an override |
-| `override.requires_reason` | Whether the override must include a non-empty reason |
+| Severity | Label | CI Behaviour |
+|----------|-------|-------------|
+| `error` | **Non-negotiable** | CI job **fails** (`exit 1`) if the check fails. No override possible. |
+| `warn` | **Negotiable** | CI job **passes** even if the check fails. Violation appears in the report. |
 
----
+### Non-Negotiable Rules (severity: error)
 
-## Negotiable vs Non-Negotiable Rules
+These rules protect the integrity of the repository and cannot be bypassed:
 
-### 🔴 Non-Negotiable (override.allowed: false)
+| Rule ID | Name | What it checks |
+|---------|------|----------------|
+| RULE-001 | `module_validity` | All `module.json` files have required fields and valid structure. |
+| RULE-002 | `metadata_approval_reason` | Every `approved-by` metadata field is paired with a `reason` field. |
+| RULE-003 | `python_syntax` | All Python files compile without syntax errors (`python -m compileall`). |
 
-These rules can **never** be overridden and will always block CI if they fail:
+### Negotiable Rules (severity: warn)
 
-| Rule ID | Title |
-|---------|-------|
-| W3-001 | Python compile check |
-| W3-002 | Module JSON validation |
+These rules represent best practices. Violations are reported but do not block merges:
 
-Broken Python syntax or invalid module manifests represent fundamental failures that must be fixed before merging.
-
-### 🟡 Negotiable (override.allowed: true)
-
-These rules may be overridden via the PR body with a required explanation:
-
-| Rule ID | Title | Requires Reason |
-|---------|-------|-----------------|
-| W3-003 | Governance metadata validation | ✅ Yes |
-| W3-004 | JSON schema validation | ✅ Yes |
+| Rule ID | Name | What it checks |
+|---------|------|----------------|
+| RULE-004 | `json_schema_valid` | All `*.schema.json` files are valid JSON objects. |
+| RULE-005 | `no_orphan_schemas` | Each `*.schema.json` has a paired `*.json` data file. |
 
 ---
 
-## Override Mechanism (PR Body Format)
+## Flexibility: Overrides and Exceptions
 
-To override one or more rules, add a `W3-OVERRIDES:` section anywhere in your PR body:
+For **negotiable rules** (`severity: warn`, `overridable: true`), a documented override can suppress the warning in the report and record the justification in the memory log.
 
-```
-W3-OVERRIDES:
-- rule_id: W3-003
-  reason: Hotfix path; metadata will be updated in follow-up PR #456
-- rule_id: W3-004
-  reason: Schema update is intentional and reviewed by BBX19
+### How to register an override
+
+1. Open `core/governance/rules/w3_ruleset.yml`.
+2. Add an entry to the `overrides` list:
+
+```yaml
+overrides:
+  - rule_id: RULE-004
+    approved_by: "BBX19"
+    reason: "Schema is a draft-only template, no data file yet."
+    date: "2026-05-06"
 ```
 
-### Rules for overrides
+3. The `w3_agent_ci.py` script will:
+   - Replace the check status with `pass` for that rule.
+   - Prepend an `[OVERRIDE …]` note to the detail field in the report.
+   - Append the override record to `core/memory/memory_store.json` via `memory_bus`.
 
-1. The `rule_id` must match an existing rule ID exactly (case-insensitive).
-2. If the rule sets `override.requires_reason: true`, the `reason` field **must** be non-empty — otherwise the override is rejected and the rule still fails.
-3. Overrides are logged to `core/memory/memory_bus` with full context (rule ID + reason + timestamp).
-4. Non-negotiable rules (`override.allowed: false`) **cannot** be overridden even if a `W3-OVERRIDES` section is present.
-
----
-
-## Severity Levels
-
-| Severity | Effect |
-|----------|--------|
-| `error` | Causes CI to exit with code 1 (blocks PR merge) |
-| `warn` | Reported in the artifact but does **not** block CI |
-| `info` | Informational only; never blocks CI |
+> **Non-negotiable rules (`overridable: false`) cannot be overridden.** Fixing the underlying issue is the only path to a green CI.
 
 ---
 
 ## Memory Logging
 
-Every CI run writes records to `core/memory/memory_bus` via `add_memory()`:
+### What is the memory store?
 
-| Event | topic | tags | score |
-|-------|-------|------|-------|
-| Run summary | `ci_run_summary` | `["ci", "summary", "w3_agent_ci"]` | 5 |
-| Override applied | `override:<rule_id>` | `["ci", "override", "<rule_id>"]` | 4 |
+`core/memory/memory_store.json` is an **append-only JSON log** managed by `core/memory/memory_bus.py`. It records:
 
-The memory store is located at `core/memory/memory_store.json`.  
-You can query it with:
+- CI run summaries (pass/fail, timestamp).
+- Every override / exception applied during a run.
+- Any other agent events routed through `memory_bus.add_memory()`.
 
-```python
-from core.memory.memory_bus import search_memory
-search_memory("ci_run_summary")
-search_memory("override:W3-003")
+### Record schema
+
+Each record appended to `records[]` looks like:
+
+```json
+{
+  "id": 6,
+  "timestamp": "2026-05-06T13:24:00Z",
+  "source": "w3_agent_ci",
+  "topic": "ci_run",
+  "content": "CI PASSED at 2026-05-06T13:24:00Z",
+  "tags": ["ci", "run", "summary"],
+  "score": 3
+}
 ```
+
+### What gets stored
+
+| Event | `topic` | `tags` |
+|-------|---------|--------|
+| CI run summary | `ci_run` | `ci`, `run`, `summary` |
+| Override applied | `override:<RULE_ID>` | `override`, rule ID, rule name |
+
+### Resetting the memory store safely
+
+The store is append-only by design. To reset it without losing the schema:
+
+```bash
+python - <<'EOF'
+import json
+from pathlib import Path
+
+store = Path("core/memory/memory_store.json")
+data = json.loads(store.read_text())
+data["records"] = []          # clear entries
+data["reset_at"] = "<date>"   # optional audit note
+store.write_text(json.dumps(data, indent=2))
+print("Memory store cleared.")
+EOF
+```
+
+> Only reset when intentionally archiving or starting a new governance cycle. Keep the reset action in your PR description for traceability.
 
 ---
 
-## Adding New Rules
+## Files Reference
 
-1. Add a new entry to `core/governance/rules/w3_ruleset.yml`.
-2. Register a corresponding runner function in `tools/w3_agent_ci.py` under `CHECK_RUNNERS`.
-3. Update this document.
+| File | Purpose |
+|------|---------|
+| `core/governance/rules/w3_ruleset.yml` | Rule definitions and override registry |
+| `core/memory/memory_bus.py` | Append-only memory I/O API |
+| `core/memory/memory_store.json` | Persistent memory log |
+| `tools/w3_agent_ci.py` | CI orchestration script |
+| `w3_agent_report.md` | Human-readable run report (artifact) |
+| `w3_agent_report.json` | Machine-readable run report (artifact) |

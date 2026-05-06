@@ -1,43 +1,35 @@
-name: W3 Agent CI — Rule-Based Checks
+name: W3 Agent CI
 
 on:
   push:
-    branches:
-      - "**"
   pull_request:
-    branches:
-      - "**"
+
+permissions:
+  contents: read
 
 jobs:
-  w3-agent-checks:
-    name: W3 Rule-Based Validation
+  w3-agent-ci:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
-      - name: 🚚 Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🐍 Set up Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.x"
 
-      - name: 📦 Install dependencies
+      - name: Install dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
+          if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
 
-      - name: 🔍 Run W3 Agent CI checks
-        env:
-          # Pass the PR body so the orchestrator can parse W3-OVERRIDES sections.
-          # For push events this will be empty, which is fine.
-          W3_PR_BODY: ${{ github.event.pull_request.body }}
-        run: |
-          python tools/w3_agent_ci.py
+      - name: Run W3 Agent CI checks
+        run: python tools/w3_agent_ci.py
 
-      - name: 📤 Upload report artifacts
+      - name: Upload CI reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -46,4 +38,3 @@ jobs:
             w3_agent_report.md
             w3_agent_report.json
           if-no-files-found: warn
-          retention-days: 30

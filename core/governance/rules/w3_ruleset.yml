@@ -1,60 +1,71 @@
 # W3 Agent CI Ruleset
 # Path: core/governance/rules/w3_ruleset.yml
 #
-# Each rule has:
-#   id          : unique rule identifier  (e.g. W3-001)
-#   title       : short human-readable name
-#   severity    : error | warn | info
-#   description : what the rule checks and why it matters
-#   check       : internal key used by the orchestrator to run the check
-#   override:
-#     allowed         : true | false  (can a PR author request an override?)
-#     requires_reason : true | false  (must the override include a non-empty reason?)
+# Rules are classified as:
+#   severity: error  → non-negotiable: CI FAILS if violated
+#   severity: warn   → negotiable: CI PASSES but violation is reported
+#
+# Each rule may carry an optional `overridable` flag and a `reason_required`
+# flag for documenting approved exceptions in memory_store.json.
+
+version: "1.0"
+created: "2026-05-06"
 
 rules:
+  # ── Non-Negotiable (error) ──────────────────────────────────────────────────
 
-  - id: W3-001
-    title: "Python compile check"
+  - id: RULE-001
+    name: module_validity
+    description: "All module.json files must be valid and contain required fields."
     severity: error
-    description: >
-      All Python files in the repository must compile without syntax errors.
-      A compilation failure indicates broken code that cannot be imported or executed.
-    check: python_compile
-    override:
-      allowed: false
-      requires_reason: false
-
-  - id: W3-002
-    title: "Module JSON validation"
-    severity: error
-    description: >
-      All module.json files must contain the required fields (name, display_name,
-      version, owner, input, output, scope) and pass structural validation.
-      Invalid module manifests break the module loader and routing.
     check: validate_modules
-    override:
-      allowed: false
-      requires_reason: false
+    overridable: false
+    tags: [modules, integrity]
 
-  - id: W3-003
-    title: "Governance metadata validation"
+  - id: RULE-002
+    name: metadata_approval_reason
+    description: "Every 'approved-by' metadata field must be accompanied by a 'reason' field."
     severity: error
-    description: >
-      Markdown files in team-member directories must comply with governance metadata
-      rules. Specifically, if 'approved-by' is present then 'reason' must also be
-      present.  Missing reason fields indicate unapproved or untracked changes.
     check: validate_metadata
-    override:
-      allowed: true
-      requires_reason: true
+    overridable: false
+    tags: [metadata, governance]
 
-  - id: W3-004
-    title: "JSON schema validation"
+  - id: RULE-003
+    name: python_syntax
+    description: "All Python source files must be syntactically valid (compilable)."
+    severity: error
+    check: compileall
+    overridable: false
+    tags: [python, syntax]
+
+  # ── Negotiable (warn) ───────────────────────────────────────────────────────
+
+  - id: RULE-004
+    name: json_schema_valid
+    description: "All *.schema.json files should be valid JSON Schema drafts."
     severity: warn
-    description: >
-      Every *.schema.json file that has a matching *.json data file must validate
-      successfully. Schema mismatches indicate data drift or schema rot.
-    check: validate_json_schemas
-    override:
-      allowed: true
-      requires_reason: true
+    check: json_schema
+    overridable: true
+    reason_required: true
+    tags: [schema, json]
+
+  - id: RULE-005
+    name: no_orphan_schemas
+    description: "Each *.schema.json should have a corresponding *.json data file."
+    severity: warn
+    check: json_schema
+    overridable: true
+    reason_required: true
+    tags: [schema, json]
+
+# ── Override / Exception registry ─────────────────────────────────────────────
+# When a negotiable rule is intentionally bypassed, record it here AND via
+# core/memory/memory_bus.py so it appears in the memory log.
+#
+# overrides:
+#   - rule_id: RULE-004
+#     approved_by: "BBX19"
+#     reason: "Schema file is draft-only and not yet paired with data."
+#     date: "2026-05-06"
+
+overrides: []
