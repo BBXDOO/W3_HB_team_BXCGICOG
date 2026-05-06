@@ -61,6 +61,19 @@
         "task"
       ],
       "score": 5
+    },
+    {
+      "id": 6,
+      "timestamp": "2026-05-06T13:27:15.108041Z",
+      "source": "w3_agent_ci",
+      "topic": "ci_run",
+      "content": "CI PASSED at 2026-05-06T13:27:14.902597Z",
+      "tags": [
+        "ci",
+        "run",
+        "summary"
+      ],
+      "score": 3
     }
   ]
 }
