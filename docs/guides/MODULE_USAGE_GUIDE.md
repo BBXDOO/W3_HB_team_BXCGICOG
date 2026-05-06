@@ -296,7 +296,7 @@ export GITHUB_TOKEN="ghp_your_token"
 python -m iget.main
 ```
 
-> **หมายเหตุ:** ต้องติดตั้ง `requests` ก่อน (`pip install requests`) — ปัจจุบันยังไม่ได้ประกาศใน `requirements.txt`
+> **หมายเหตุ:** `requests` ถูกประกาศใน `requirements.txt` แล้ว — ติดตั้งด้วย `pip install -r requirements.txt`
 
 ---
 
@@ -444,7 +444,7 @@ $ python tools/w3run.py design
 
 - [ ] เพิ่ม error handling / retry logic ใน dispatch functions
 - [ ] เพิ่ม system prompt ที่เหมาะสมสำหรับแต่ละโมดูล (อ้างอิง `module.json` แต่ละตัว)
-- [ ] เพิ่ม `requests` ใน `requirements.txt` (ใช้โดย `iget/fetcher.py`)
+- [x] เพิ่ม `requests` ใน `requirements.txt` (ใช้โดย `iget/fetcher.py`) ✅
 - [ ] สร้าง `.env.example` สำหรับ environment variables
 
 ### 🟢 Low — ปรับปรุงระยะยาว
@@ -463,7 +463,7 @@ $ python tools/w3run.py design
 | AI dispatch | 🔴 stub | `run_chatgpt()` ฯลฯ คืนข้อความจำลอง ไม่ได้เรียก API จริง |
 | Memory bus | 🔴 stub | `core/memory/memory_bus.py` ยังไม่มี persistent storage จริง |
 | Authentication | 🔴 ไม่มี | ไม่มีระบบ auth สำหรับ API calls |
-| `iget` dependency | 🟡 ขาด | `requests` ใช้งานได้แต่ไม่ได้ประกาศใน `requirements.txt` |
+| `iget` dependency | ✅ OK | `requests>=2.31.0` ประกาศใน `requirements.txt` แล้ว |
 | Registry sync | 🟡 ไม่มี | `modules/registry.json` และ `src/modules/registry/registry.json` ไม่มี sync mechanism |
 | CI/CD integration | 🟡 ไม่มี | `core/runtime/` ยังไม่มี entry point ที่ถูกเรียกโดย workflow |
 | Schema validation | 🟢 ไม่มี | `src/modules/standards/module.schema.json` ยังไม่ได้สร้าง |
