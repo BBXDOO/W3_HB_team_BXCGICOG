@@ -27,6 +27,11 @@ Thumbs.db
 node_modules/
 package-lock.json
 
+# Secrets / Environment
+.env
+.env.local
+.env.*.local
+
 # W3 Agent CI — generated reports (uploaded as workflow artifacts)
 w3_agent_report.md
 w3_agent_report.json
