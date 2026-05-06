@@ -1,0 +1,71 @@
+# W3 Agent CI Ruleset
+# Path: core/governance/rules/w3_ruleset.yml
+#
+# Rules are classified as:
+#   severity: error  → non-negotiable: CI FAILS if violated
+#   severity: warn   → negotiable: CI PASSES but violation is reported
+#
+# Each rule may carry an optional `overridable` flag and a `reason_required`
+# flag for documenting approved exceptions in memory_store.json.
+
+version: "1.0"
+created: "2026-05-06"
+
+rules:
+  # ── Non-Negotiable (error) ──────────────────────────────────────────────────
+
+  - id: RULE-001
+    name: module_validity
+    description: "All module.json files must be valid and contain required fields."
+    severity: error
+    check: validate_modules
+    overridable: false
+    tags: [modules, integrity]
+
+  - id: RULE-002
+    name: metadata_approval_reason
+    description: "Every 'approved-by' metadata field must be accompanied by a 'reason' field."
+    severity: error
+    check: validate_metadata
+    overridable: false
+    tags: [metadata, governance]
+
+  - id: RULE-003
+    name: python_syntax
+    description: "All Python source files must be syntactically valid (compilable)."
+    severity: error
+    check: compileall
+    overridable: false
+    tags: [python, syntax]
+
+  # ── Negotiable (warn) ───────────────────────────────────────────────────────
+
+  - id: RULE-004
+    name: json_schema_valid
+    description: "All *.schema.json files should be valid JSON Schema drafts."
+    severity: warn
+    check: json_schema
+    overridable: true
+    reason_required: true
+    tags: [schema, json]
+
+  - id: RULE-005
+    name: no_orphan_schemas
+    description: "Each *.schema.json should have a corresponding *.json data file."
+    severity: warn
+    check: json_schema
+    overridable: true
+    reason_required: true
+    tags: [schema, json]
+
+# ── Override / Exception registry ─────────────────────────────────────────────
+# When a negotiable rule is intentionally bypassed, record it here AND via
+# core/memory/memory_bus.py so it appears in the memory log.
+#
+# overrides:
+#   - rule_id: RULE-004
+#     approved_by: "BBX19"
+#     reason: "Schema file is draft-only and not yet paired with data."
+#     date: "2026-05-06"
+
+overrides: []

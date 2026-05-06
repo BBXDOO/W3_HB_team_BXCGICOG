@@ -1,2 +1,7 @@
 jsonschema>=4.10.3
 requests>=2.31.0
+
+# Optional: LLM API integration (required for core/adapters/llm_adapter.py)
+# Uncomment to enable:
+# openai>=1.0.0
+# google-generativeai>=0.8.0
