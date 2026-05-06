@@ -64,6 +64,54 @@
     },
     {
       "id": 6,
+      "timestamp": "2026-05-06T13:06:55.751845Z",
+      "source": "ChatGPT",
+      "topic": "design",
+      "content": "ChatGPT completed: design",
+      "tags": [
+        "runtime",
+        "success"
+      ],
+      "score": 5
+    },
+    {
+      "id": 7,
+      "timestamp": "2026-05-06T13:07:03.702169Z",
+      "source": "ChatGPT",
+      "topic": "design",
+      "content": "ChatGPT completed: design",
+      "tags": [
+        "runtime",
+        "success"
+      ],
+      "score": 5
+    },
+    {
+      "id": 8,
+      "timestamp": "2026-05-06T13:07:03.703237Z",
+      "source": "Gemini",
+      "topic": "verify",
+      "content": "Gemini verified: verify",
+      "tags": [
+        "runtime",
+        "success"
+      ],
+      "score": 5
+    },
+    {
+      "id": 9,
+      "timestamp": "2026-05-06T13:07:03.703566Z",
+      "source": "Gemini",
+      "topic": "audit",
+      "content": "Gemini verified: audit",
+      "tags": [
+        "runtime",
+        "success"
+      ],
+      "score": 5
+    },
+    {
+      "id": 10,
       "timestamp": "2026-05-06T13:27:15.108041Z",
       "source": "w3_agent_ci",
       "topic": "ci_run",
