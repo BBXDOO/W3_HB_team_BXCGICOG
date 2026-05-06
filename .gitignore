@@ -26,3 +26,7 @@ Thumbs.db
 # Node.js
 node_modules/
 package-lock.json
+
+# W3 Agent CI — generated reports (uploaded as workflow artifacts)
+w3_agent_report.md
+w3_agent_report.json

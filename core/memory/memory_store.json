@@ -61,6 +61,45 @@
         "task"
       ],
       "score": 5
+    },
+    {
+      "id": 6,
+      "timestamp": "2026-05-06T13:27:34.060089Z",
+      "source": "w3_agent_ci",
+      "topic": "ci_run_summary",
+      "content": "CI run 2026-05-06T13:27:33.754078+00:00: result=PASS, findings=4, overrides=0, errors=none",
+      "tags": [
+        "ci",
+        "summary",
+        "w3_agent_ci"
+      ],
+      "score": 5
+    },
+    {
+      "id": 7,
+      "timestamp": "2026-05-06T13:28:27.406595Z",
+      "source": "w3_agent_ci",
+      "topic": "ci_run_summary",
+      "content": "CI run 2026-05-06T13:28:27.139697+00:00: result=PASS, findings=4, overrides=0, errors=none",
+      "tags": [
+        "ci",
+        "summary",
+        "w3_agent_ci"
+      ],
+      "score": 5
+    },
+    {
+      "id": 8,
+      "timestamp": "2026-05-06T13:29:54.316145Z",
+      "source": "w3_agent_ci",
+      "topic": "ci_run_summary",
+      "content": "CI run 2026-05-06T13:29:54.037180+00:00: result=PASS, findings=4, overrides=0, errors=none",
+      "tags": [
+        "ci",
+        "summary",
+        "w3_agent_ci"
+      ],
+      "score": 5
     }
   ]
 }
