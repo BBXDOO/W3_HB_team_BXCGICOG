@@ -76,12 +76,17 @@ class MPCPRot:
     def validate_fail_condition(event: dict, result: dict):
         """
         ใช้ detect system invalid state
+        - STOP / fail / block ต้องมี error field
+        - CAUSE→ACTION→RESULT ต้องสอดคล้อง
         """
 
         if not result:
             raise ValueError("ROT_FAIL: EMPTY_RESULT")
 
-        if "state" in result and result["state"] == "STOP":
-            return True  # STOP = valid behavior
+        state = result.get("state")
+
+        # halt states ต้องมี error ระบุสาเหตุ (ROT traceability)
+        if state in ("STOP", "fail", "block") and "error" not in result:
+            raise ValueError(f"ROT_FAIL: HALT_STATE_{state}_MISSING_ERROR")
 
         return True

@@ -1,4 +1,15 @@
 from mpcp.runtime.executor import run
+from mpcp.kernel.contract import VALID_STATES
+
+
+# States that mean "continue to next step"
+_CONTINUE_STATES = frozenset({"SUCCESS", "done"})
+# States that mean "pause / suspend flow"
+_WAIT_STATES = frozenset({"WAIT", "wait"})
+# States that mean "warn but keep going"
+_WARN_STATES = frozenset({"warn"})
+# States that mean "halt the flow"
+_HALT_STATES = frozenset({"STOP", "fail", "block"})
 
 
 class MPCPManager:
@@ -41,20 +52,32 @@ class MPCPManager:
 
             state = result.get("state")
 
-            if state not in ["SUCCESS", "WAIT", "STOP"]:
+            if state not in VALID_STATES:
                 return self._stop(flow, step, f"invalid state: {state}")
 
             # -------------------------
             # CONTROL FLOW
             # -------------------------
-            if state == "STOP":
-                return self._response(flow, step, "STOP")
+            if state in _HALT_STATES:
+                return self._response(flow, step, state)
 
-            if state == "WAIT":
+            if state in _WAIT_STATES:
                 return self._response(flow, step, "WAIT")
 
-            # SUCCESS → next step
-            flow["current"] += 1
+            if state in _WARN_STATES:
+                # continue but propagate warning flag
+                flow["current"] += 1
+                continue
+
+            if state in _CONTINUE_STATES:
+                flow["current"] += 1
+                continue
+
+            # Lifecycle states (idle, ready, run) are Modew *internal* states
+            # and must not appear as a final step result — treat as unexpected
+            # STOP so the flow halts with a traceable error rather than silently
+            # continuing or looping.
+            return self._stop(flow, step, f"unexpected lifecycle state: {state}")
 
         # -------------------------
         # DONE
@@ -62,7 +85,8 @@ class MPCPManager:
         return {
             "flow": flow["name"],
             "state": "SUCCESS",
-            "results": flow["results"]
+            "cause": flow["steps"][0] if flow["steps"] else None,
+            "results": flow["results"],
         }
 
     # =========================
@@ -72,15 +96,17 @@ class MPCPManager:
         return {
             "flow": flow["name"],
             "state": "STOP",
+            "cause": step,
             "step": step,
             "error": error,
-            "results": flow["results"]
+            "results": flow["results"],
         }
 
     def _response(self, flow, step, state):
         return {
             "flow": flow["name"],
             "state": state,
+            "cause": step,
             "step": step,
-            "results": flow["results"]
+            "results": flow["results"],
         }
