@@ -162,6 +162,10 @@ Definition of Done:
 4. If risky → escalate to Gemini.
 5. story → merge / revise / rej
 
+> 📖 **คู่มือใช้งานโมดูล + เชื่อม API:**  
+> [docs/QUICK_START_MODULES.md](./docs/QUICK_START_MODULES.md)  
+> [docs/reports/AGENT_MODULE_CAPABILITY_REPORT.md](./docs/reports/AGENT_MODULE_CAPABILITY_REPORT.md)
+
 ## 1. ทีม
 W3 + AI = ทีม
 
