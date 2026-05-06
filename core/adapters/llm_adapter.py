@@ -250,8 +250,6 @@ def run_module(module_name, task, backend=None, model=None, system_prompt=None):
             "time": _now_str(),
         }
 
-    except LLMAdapterError:
-        raise
     except Exception as exc:
         return {
             "status": "FAILED",
