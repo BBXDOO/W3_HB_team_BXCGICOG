@@ -122,6 +122,18 @@
         "summary"
       ],
       "score": 3
+    },
+    {
+      "id": 11,
+      "timestamp": "2026-05-06T13:39:25.771686Z",
+      "source": "ChatGPT",
+      "topic": "design",
+      "content": "ChatGPT completed: design",
+      "tags": [
+        "runtime",
+        "success"
+      ],
+      "score": 5
     }
   ]
 }
