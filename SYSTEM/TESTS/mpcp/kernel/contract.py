@@ -1,6 +1,17 @@
 # mpcp/kernel/contract.py
 
-SYSTEM_NAME = "mpcp"
+from mpcp.kernel.system import SYSTEM_NAME
+
+
+# All runtime states allowed by spec (MODEW_PAPER + MPCP_RUNTIME_SANITY_SWEEP_v2)
+VALID_STATES = frozenset({
+    # Terminal / execution-result states
+    "SUCCESS", "STOP",
+    # Suspension state
+    "WAIT", "wait",
+    # Modew lifecycle states
+    "idle", "ready", "run", "done", "warn", "block", "fail",
+})
 
 
 class MPCPContract:
@@ -52,7 +63,8 @@ class MPCPContract:
         """
         ตรวจ output ขั้นต่ำ
         - ต้องเป็น dict
-        - ต้องมี state
+        - ต้องมี state ที่อยู่ใน VALID_STATES
+        - state 'fail' ต้องมี error field
         """
         if not isinstance(result, dict):
             raise ValueError("Result must be dict")
@@ -60,7 +72,11 @@ class MPCPContract:
         if "state" not in result:
             raise ValueError("Missing state in result")
 
-        if result["state"] not in ["SUCCESS", "WAIT", "STOP"]:
+        if result["state"] not in VALID_STATES:
             raise ValueError(f"Invalid state: {result['state']}")
+
+        # fail state ต้องมี error ระบุเหตุ
+        if result["state"] == "fail" and "error" not in result:
+            raise ValueError("State 'fail' requires 'error' field")
 
         return True

@@ -30,6 +30,13 @@ class BaseModew:
     # A–F PIPELINE
     # =========================
     def run(self):
+        """
+        Execute the A–F pillar pipeline.
+
+        Prerequisites: call set_context("TASK", ...) before run() so that
+        'cause' is captured correctly for CAUSE→ACTION→RESULT traceability.
+        """
+        cause = self.context.get("TASK")
         try:
             a = self.stage_A_input()
             self.log("A", a)
@@ -49,17 +56,20 @@ class BaseModew:
             f = self.stage_F_output(e)
             self.log("F", f)
 
+            # CAUSE → ACTION → RESULT: include cause so trace is complete
             return {
                 "state": "SUCCESS",
+                "cause": cause,
                 "result": f,
-                "trace": self.trace
+                "trace": self.trace,
             }
 
         except Exception as e:
             return {
                 "state": "STOP",
+                "cause": cause,
                 "error": str(e),
-                "trace": self.trace
+                "trace": self.trace,
             }
 
     # =========================
