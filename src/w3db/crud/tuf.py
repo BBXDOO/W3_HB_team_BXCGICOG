@@ -1,50 +1,62 @@
 """
-W3DB CRUD — TUF domain (Process State Snapshot)
+W3DB CRUD — TUF domain helpers.
 """
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 from src.w3db.models import TUF
-from src.w3db.store import get_store
+from src.w3db.store import W3DBStore, get_store
 
 
-def create(record: TUF) -> TUF:
-    """Persist a new TUF record. Raises ValueError if tuf_id already exists."""
-    store = get_store()["tuf"]
-    if record.tuf_id in store:
-        raise ValueError(f"TUF record '{record.tuf_id}' already exists")
-    store[record.tuf_id] = record.to_dict()
-    return record
+def create_tuf(
+    tuf_id: str,
+    cix_id: Optional[str] = None,
+    initial: str = "0.5",
+    final: str = "0.5",
+    confidence: float = 0.5,
+    resolution: str = "",
+    note: str = "",
+    store: Optional[W3DBStore] = None,
+) -> TUF:
+    """Create and persist a new TUF record."""
+    s = store or get_store()
+    record = TUF(
+        tuf_id=tuf_id,
+        cix_id=cix_id,
+        initial=initial,
+        final=final,
+        confidence=confidence,
+        resolution=resolution,
+        note=note,
+    )
+    return s.create_tuf(record)
 
 
-def read(tuf_id: str) -> Optional[Dict]:
-    """Return the raw dict for tuf_id, or None if not found."""
-    return get_store()["tuf"].get(tuf_id)
+def read_tuf(tuf_id: str, store: Optional[W3DBStore] = None) -> Optional[TUF]:
+    """Return the TUF record with the given ID, or None."""
+    s = store or get_store()
+    return s.read_tuf(tuf_id)
 
 
-def update(tuf_id: str, **fields) -> Dict:
-    """
-    Update mutable fields of an existing TUF record.
-
-    Returns the updated dict.  Raises KeyError if not found.
-    """
-    store = get_store()["tuf"]
-    if tuf_id not in store:
-        raise KeyError(f"TUF record '{tuf_id}' not found")
-    allowed = {"initial", "final", "confidence", "resolution", "note"}
-    for key, value in fields.items():
-        if key in allowed:
-            store[tuf_id][key] = value
-    return store[tuf_id]
+def update_tuf(
+    tuf_id: str,
+    store: Optional[W3DBStore] = None,
+    **kwargs,
+) -> TUF:
+    """Update fields on an existing TUF record."""
+    s = store or get_store()
+    return s.update_tuf(tuf_id, **kwargs)
 
 
-def list_all() -> List[Dict]:
+def delete_tuf(tuf_id: str, store: Optional[W3DBStore] = None) -> bool:
+    """Delete a TUF record. Returns True if deleted, False if not found."""
+    s = store or get_store()
+    return s.delete_tuf(tuf_id)
+
+
+def list_tuf(store: Optional[W3DBStore] = None) -> List[TUF]:
     """Return all TUF records."""
-    return list(get_store()["tuf"].values())
-
-
-def list_by_cix(cix_id: str) -> List[Dict]:
-    """Return all TUF records linked to the given cix_id."""
-    return [r for r in get_store()["tuf"].values() if r.get("cix_id") == cix_id]
+    s = store or get_store()
+    return s.list_tuf()

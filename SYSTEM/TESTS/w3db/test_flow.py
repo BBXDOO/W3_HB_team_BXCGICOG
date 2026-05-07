@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 """
-W3DB Relation Flow Integration Tests
-======================================
-Verifies the end-to-end flow:
-    INPUT → XIZ → TUF → FBD → WHB → PRX
+W3DB Flow Integration Tests
+============================
+Tests for the automatic relation flow:
+  INPUT -> XIZ -> TUF -> FBD -> WHB -> PRX
 
-Run from repo root:
-    python SYSTEM/TESTS/w3db/test_flow.py
+Runs standalone (no pytest required).
 """
 
 import sys
@@ -18,23 +17,21 @@ _REPO_ROOT = os.path.dirname(
 if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
 
-from src.w3db.models import XIZ, TUF
-from src.w3db.store import reset_store, get_store
-from src.w3db.flow import run_flow, run_flow_from_input, FlowResult
-from src.w3db.crud import xiz as xiz_crud
-from src.w3db.crud import tuf as tuf_crud
-from src.w3db.crud import fbd as fbd_crud
-from src.w3db.crud import whb as whb_crud
-from src.w3db.crud import prx as prx_crud
+from src.w3db.store import W3DBStore
+from src.w3db.flow import run_flow
+from src.w3db.config import W3DBConfig
+from src.w3db.models import OBSERVATION_STATES
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# Test harness
+# ---------------------------------------------------------------------------
 
 PASS = "PASS"
 FAIL = "FAIL"
 _results = []
 
 
-def check(label, expr, expected=True):
+def check(label: str, expr, expected=True):
     ok = bool(expr) == bool(expected)
     status = PASS if ok else FAIL
     _results.append((status, label))
@@ -42,188 +39,224 @@ def check(label, expr, expected=True):
     return ok
 
 
-def expect_raise(label, fn, exc_type=Exception):
-    try:
-        fn()
-        _results.append((FAIL, f"{label} — expected {exc_type.__name__}, got none"))
-        print(f"[{FAIL}] {label} — expected {exc_type.__name__}, got none")
-        return False
-    except exc_type:
-        _results.append((PASS, label))
-        print(f"[{PASS}] {label}")
-        return True
+# ---------------------------------------------------------------------------
+# Helper
+# ---------------------------------------------------------------------------
+
+def fresh() -> W3DBStore:
+    return W3DBStore()
 
 
-# ── Test 1: Uncertain outcome (confidence=0.72 → state=0.5, deviation) ────────
+# ---------------------------------------------------------------------------
+# 1. Basic flow — all records created
+# ---------------------------------------------------------------------------
 
-print("\n=== Test 1: Uncertain flow (deviation detected) ===")
-reset_store()
+print("\n=== 1. Basic flow — all five records created ===")
+s = fresh()
+result = run_flow("Patient arrived — BP 140/90", cix_id="CIX-001", confidence=0.72, store=s)
 
-result = run_flow_from_input(
-    cix_id="CIX-001",
-    action="Checked patient",
-    result="Stable",
-    confidence=0.72,
-    xiz_id="XIZ-001",
-    tuf_id="TUF-001",
-)
+check("run_flow returns xiz key", "xiz" in result)
+check("run_flow returns tuf key", "tuf" in result)
+check("run_flow returns fbd key", "fbd" in result)
+check("run_flow returns whb key", "whb" in result)
+check("run_flow returns prx key", "prx" in result)
+check("run_flow returns output key", "output" in result)
 
-check("FlowResult is FlowResult instance", isinstance(result, FlowResult))
-check("state == 0.5 (uncertain)", result.state == 0.5)
-check("deviation_detected == True", result.deviation_detected is True)
-check("XIZ persisted", xiz_crud.read("XIZ-001") is not None)
-check("TUF persisted", tuf_crud.read("TUF-001") is not None)
-check("FBD created (deviation)", result.fbd is not None)
-check("WHB created (deviation)", result.whb is not None)
-check("PRX created (always)", result.prx is not None)
-
-# Check store integrity
-check("XIZ in store", len(xiz_crud.list_all()) == 1)
-check("TUF in store", len(tuf_crud.list_all()) == 1)
-check("FBD in store", len(fbd_crud.list_all()) == 1)
-check("WHB in store", len(whb_crud.list_all()) == 1)
-check("PRX in store", len(prx_crud.list_all()) == 1)
-
-# PRX perception for uncertain state
-check("PRX symbol is ●", result.prx["symbol"] == "●")
-check("PRX color is YELLOW", result.prx["color"] == "YELLOW")
-
-# FBD → WHB referential integrity
-check("WHB.fbd_id == FBD.fbd_id", result.whb["fbd_id"] == result.fbd["fbd_id"])
-
-# XIZ → TUF referential integrity
-check("XIZ.tuf_id == TUF.tuf_id", result.xiz["tuf_id"] == result.tuf["tuf_id"])
+check("store has 1 XIZ", s.stats()["xiz"] == 1)
+check("store has 1 TUF", s.stats()["tuf"] == 1)
+check("store has 1 FBD", s.stats()["fbd"] == 1)
+check("store has 1 WHB", s.stats()["whb"] == 1)
+check("store has 1 PRX", s.stats()["prx"] == 1)
 
 
-# ── Test 2: True outcome (confidence=0.9 → state=1.0, no deviation) ──────────
+# ---------------------------------------------------------------------------
+# 2. Relations are correctly linked
+# ---------------------------------------------------------------------------
 
-print("\n=== Test 2: True flow (no deviation) ===")
-reset_store()
+print("\n=== 2. Relation linking ===")
+s = fresh()
+res = run_flow("Test event", cix_id="CIX-A", confidence=0.8, store=s)
 
-result2 = run_flow_from_input(
-    cix_id="CIX-001",
-    action="Follow-up complete",
-    result="Resolved",
-    confidence=0.9,
-)
+xiz = res["xiz"]
+tuf = res["tuf"]
+fbd = res["fbd"]
+whb = res["whb"]
+prx = res["prx"]
 
-check("state == 1.0 (true)", result2.state == 1.0)
-check("deviation_detected == False", result2.deviation_detected is False)
-check("FBD NOT created when no deviation", result2.fbd is None)
-check("WHB NOT created when no deviation", result2.whb is None)
-check("PRX created even with no deviation", result2.prx is not None)
-check("PRX symbol is ▲ for state=1.0", result2.prx["symbol"] == "▲")
-check("PRX color is RED for state=1.0", result2.prx["color"] == "RED")
-
-# No FBD/WHB in store
-check("FBD store empty", len(fbd_crud.list_all()) == 0)
-check("WHB store empty", len(whb_crud.list_all()) == 0)
+check("XIZ.tuf_id == TUF.tuf_id", xiz.tuf_id == tuf.tuf_id)
+check("FBD.tuf_id == TUF.tuf_id", fbd.tuf_id == tuf.tuf_id)
+check("WHB.fbd_id == FBD.fbd_id", whb.fbd_id == fbd.fbd_id)
+check("PRX.tuf_id == TUF.tuf_id", prx.tuf_id == tuf.tuf_id)
+check("TUF.cix_id == CIX-A", tuf.cix_id == "CIX-A")
 
 
-# ── Test 3: Failure outcome (confidence=0.2 → state=0.0) ─────────────────────
+# ---------------------------------------------------------------------------
+# 3. Confidence → TUF state mapping
+# ---------------------------------------------------------------------------
 
-print("\n=== Test 3: Failure flow (state=0.0) ===")
-reset_store()
-
-result3 = run_flow_from_input(
-    cix_id="CIX-002",
-    action="Emergency intervention",
-    result="Critical",
-    confidence=0.2,
-)
-
-check("state == 0.0 (fail/stable)", result3.state == 0.0)
-check("deviation_detected == True for state=0.0", result3.deviation_detected is True)
-check("FBD created for failure", result3.fbd is not None)
-check("PRX symbol is ■ for state=0.0", result3.prx["symbol"] == "■")
-check("PRX color is GREEN for state=0.0", result3.prx["color"] == "GREEN")
-
-
-# ── Test 4: run_flow referential integrity guard ──────────────────────────────
-
-print("\n=== Test 4: Referential integrity enforcement ===")
-reset_store()
-
-mismatched_xiz = XIZ(xiz_id="XIZ-X", tuf_id="TUF-WRONG", action="a", result="b")
-mismatched_tuf = TUF(tuf_id="TUF-REAL", cix_id="CIX-001", initial=0.5, final=0.5, confidence=0.5)
-
-expect_raise(
-    "run_flow raises ValueError on tuf_id mismatch",
-    lambda: run_flow(mismatched_xiz, mismatched_tuf),
-    ValueError,
-)
-
-
-# ── Test 5: Idempotency guard (duplicate XIZ) ─────────────────────────────────
-
-print("\n=== Test 5: Idempotency — duplicate XIZ rejected ===")
-reset_store()
-
-run_flow_from_input(
-    cix_id="CIX-001",
-    action="First run",
-    result="ok",
-    confidence=0.72,
-    xiz_id="XIZ-DUP",
-    tuf_id="TUF-DUP",
-)
-
-dup_xiz = XIZ(xiz_id="XIZ-DUP", tuf_id="TUF-DUP2", action="dup", result="dup")
-dup_tuf = TUF(tuf_id="TUF-DUP2", cix_id="CIX-001", initial=0.5, final=0.5, confidence=0.5)
-expect_raise(
-    "Second run_flow with same xiz_id raises ValueError",
-    lambda: run_flow(dup_xiz, dup_tuf),
-    ValueError,
-)
-
-
-# ── Test 6: FlowResult.to_dict() completeness ────────────────────────────────
-
-print("\n=== Test 6: FlowResult.to_dict() structure ===")
-reset_store()
-
-result6 = run_flow_from_input(
-    cix_id="CIX-001", action="Scan", result="Normal", confidence=0.72
-)
-d = result6.to_dict()
-
-for key in ("xiz", "tuf", "fbd", "whb", "prx", "state", "deviation_detected"):
-    check(f"to_dict contains key '{key}'", key in d)
-
-
-# ── Test 7: Multiple runs accumulate correctly ────────────────────────────────
-
-print("\n=== Test 7: Multiple flow runs accumulate store records ===")
-reset_store()
-
-for i in range(3):
-    run_flow_from_input(
-        cix_id=f"CIX-{i}",
-        action=f"action_{i}",
-        result=f"result_{i}",
-        confidence=0.5 + i * 0.2,  # 0.5, 0.7, 0.9
+print("\n=== 3. Confidence → TUF state mapping ===")
+_cases = [
+    (1.0, "1"),
+    (0.75, "1"),
+    (0.5, "0.5"),
+    (0.3, "0.5"),
+    (0.25, "0"),
+    (0.0, "0"),
+]
+for conf, expected_state in _cases:
+    s = fresh()
+    res = run_flow("state mapping test", confidence=conf, store=s)
+    tuf = res["tuf"]
+    check(
+        f"confidence={conf} → TUF.final={expected_state!r}",
+        tuf.final == expected_state,
+    )
+    check(
+        f"TUF.final={tuf.final!r} is in OBSERVATION_STATES",
+        tuf.final in OBSERVATION_STATES,
     )
 
-check("3 XIZ records", len(xiz_crud.list_all()) == 3)
-check("3 TUF records", len(tuf_crud.list_all()) == 3)
-check("3 PRX records", len(prx_crud.list_all()) == 3)
-# confidence 0.5 → state=0.5 (dev), 0.7 → 0.5, 0.9 → 1.0
-# deviations for confidence 0.5 and 0.7 (2 FBD/WHB)
-check("2 FBD records (deviations for c<0.8)", len(fbd_crud.list_all()) == 2)
-check("2 WHB records", len(whb_crud.list_all()) == 2)
+
+# ---------------------------------------------------------------------------
+# 4. FBD failure level mapping
+# ---------------------------------------------------------------------------
+
+print("\n=== 4. FBD failure level from confidence ===")
+_fbd_cases = [
+    (0.9, "Green"),
+    (0.5, "Yellow"),
+    (0.1, "Red"),
+]
+for conf, expected_failure in _fbd_cases:
+    s = fresh()
+    res = run_flow("fbd test", confidence=conf, store=s)
+    fbd = res["fbd"]
+    check(
+        f"confidence={conf} → FBD.failure={expected_failure!r}",
+        fbd.failure == expected_failure,
+    )
 
 
-# ── Summary ───────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# 5. PRX derived from TUF (perception mapping)
+# ---------------------------------------------------------------------------
+
+print("\n=== 5. PRX perception mapping ===")
+_prx_cases = [
+    (1.0, "▲", "RED"),
+    (0.0, "■", "GREEN"),
+    (0.5, "●", "YELLOW"),
+    (0.72, "◆", "BLUE"),
+]
+for conf, exp_sym, exp_color in _prx_cases:
+    s = fresh()
+    res = run_flow("prx test", confidence=conf, store=s)
+    prx = res["prx"]
+    check(
+        f"confidence={conf} → PRX.symbol={exp_sym!r}",
+        prx.symbol == exp_sym,
+    )
+    check(
+        f"confidence={conf} → PRX.color={exp_color!r}",
+        prx.color == exp_color,
+    )
+    check(
+        f"confidence={conf} → PRX.intensity >= 0",
+        prx.intensity >= 0,
+    )
+
+
+# ---------------------------------------------------------------------------
+# 6. WHB condition and action generated
+# ---------------------------------------------------------------------------
+
+print("\n=== 6. WHB law generation ===")
+s = fresh()
+res = run_flow("whb test", confidence=0.1, store=s)
+whb = res["whb"]
+check("WHB.condition starts with IF", whb.condition.startswith("IF"))
+check("WHB.action starts with THEN", whb.action.startswith("THEN"))
+
+
+# ---------------------------------------------------------------------------
+# 7. Output dict structure
+# ---------------------------------------------------------------------------
+
+print("\n=== 7. Output dict structure ===")
+s = fresh()
+res = run_flow("output test", confidence=0.6, store=s)
+out = res["output"]
+for key in ("cix", "xiz", "tuf", "fbd", "whb", "prx"):
+    check(f"output contains key={key!r}", key in out)
+
+check("output.tuf contains confidence", "confidence" in out["tuf"])
+check("output.prx contains symbol", "symbol" in out["prx"])
+check("output.prx contains intensity", "intensity" in out["prx"])
+
+
+# ---------------------------------------------------------------------------
+# 8. Multiple runs produce independent records (no ID collision)
+# ---------------------------------------------------------------------------
+
+print("\n=== 8. Multiple independent runs ===")
+s = fresh()
+run_flow("run A", confidence=0.3, store=s)
+run_flow("run B", confidence=0.7, store=s)
+run_flow("run C", confidence=0.5, store=s)
+
+check("3 XIZ records after 3 runs", s.stats()["xiz"] == 3)
+check("3 TUF records after 3 runs", s.stats()["tuf"] == 3)
+check("3 FBD records after 3 runs", s.stats()["fbd"] == 3)
+check("3 WHB records after 3 runs", s.stats()["whb"] == 3)
+check("3 PRX records after 3 runs", s.stats()["prx"] == 3)
+
+
+# ---------------------------------------------------------------------------
+# 9. Explicit IDs are honoured
+# ---------------------------------------------------------------------------
+
+print("\n=== 9. Explicit ID assignment ===")
+s = fresh()
+res = run_flow(
+    "explicit id test",
+    xiz_id="XIZ-EXPLICIT",
+    tuf_id="TUF-EXPLICIT",
+    fbd_id="FBD-EXPLICIT",
+    whb_id="WHB-EXPLICIT",
+    prx_id="PRX-EXPLICIT",
+    store=s,
+)
+check("explicit XIZ id used", res["xiz"].xiz_id == "XIZ-EXPLICIT")
+check("explicit TUF id used", res["tuf"].tuf_id == "TUF-EXPLICIT")
+check("explicit FBD id used", res["fbd"].fbd_id == "FBD-EXPLICIT")
+check("explicit WHB id used", res["whb"].law_id == "WHB-EXPLICIT")
+check("explicit PRX id used", res["prx"].prx_id == "PRX-EXPLICIT")
+
+
+# ---------------------------------------------------------------------------
+# 10. Config — immutable_xiz=True in prod config
+# ---------------------------------------------------------------------------
+
+print("\n=== 10. Config: immutable_xiz=True (prod) ===")
+cfg = W3DBConfig(env="prod", immutable_xiz=True)
+s = fresh()
+res = run_flow("prod flow", confidence=0.5, config=cfg, store=s)
+check("XIZ is immutable in prod config", res["xiz"].immutable is True)
+
+
+# ---------------------------------------------------------------------------
+# Summary
+# ---------------------------------------------------------------------------
 
 print("\n" + "=" * 60)
 total = len(_results)
-passed = sum(1 for s, _ in _results if s == PASS)
+passed = sum(1 for st, _ in _results if st == PASS)
 failed = total - passed
 print(f"W3DB Flow Tests: {passed}/{total} passed")
 if failed:
     print("\nFailed checks:")
-    for s, label in _results:
-        if s == FAIL:
+    for st, label in _results:
+        if st == FAIL:
             print(f"  ✕ {label}")
 print("=" * 60)
 

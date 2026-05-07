@@ -1,1 +1,1 @@
-# W3DB test package
+# W3DB tests package

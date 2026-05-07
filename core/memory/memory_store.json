@@ -203,10 +203,10 @@
     },
     {
       "id": 17,
-      "timestamp": "2026-05-07T16:54:26.772493Z",
+      "timestamp": "2026-05-07T17:00:01.897834Z",
       "source": "w3_agent_ci",
       "topic": "ci_run",
-      "content": "CI PASSED at 2026-05-07T16:54:26.493673Z",
+      "content": "CI PASSED at 2026-05-07T17:00:01.632759Z",
       "tags": [
         "ci",
         "run",
@@ -216,10 +216,36 @@
     },
     {
       "id": 18,
-      "timestamp": "2026-05-07T16:58:11.803400Z",
+      "timestamp": "2026-05-07T17:00:45.512394Z",
       "source": "w3_agent_ci",
       "topic": "ci_run",
-      "content": "CI PASSED at 2026-05-07T16:58:11.584952Z",
+      "content": "CI PASSED at 2026-05-07T17:00:45.290734Z",
+      "tags": [
+        "ci",
+        "run",
+        "summary"
+      ],
+      "score": 3
+    },
+    {
+      "id": 19,
+      "timestamp": "2026-05-07T17:02:23.256913Z",
+      "source": "w3_agent_ci",
+      "topic": "ci_run",
+      "content": "CI PASSED at 2026-05-07T17:02:23.034630Z",
+      "tags": [
+        "ci",
+        "run",
+        "summary"
+      ],
+      "score": 3
+    },
+    {
+      "id": 20,
+      "timestamp": "2026-05-07T17:11:57.458033Z",
+      "source": "w3_agent_ci",
+      "topic": "ci_run",
+      "content": "CI PASSED at 2026-05-07T17:11:57.168076Z",
       "tags": [
         "ci",
         "run",

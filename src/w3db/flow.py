@@ -1,189 +1,236 @@
 """
-W3DB Relation Flow Engine
---------------------------
-Implements the automatic W3 execution flow:
+W3DB Automatic Relation Flow
+-----------------------------
+Implements the full execution pipeline per the W3memoriea spec:
 
-    INPUT → XIZ → (PROCESS) → TUF → FBD → WHB → PRX
+  INPUT -> XIZ -> PROCESS (full run) -> TUF -> FBD -> WHB -> PRX
 
-Rules (from W3memoriea.md):
-  - Process must complete (no interrupts).
-  - State ≠ Decision: state values are OBSERVATION only.
-  - Failure = Boundary: a non-True state creates a FBD record.
-  - Action must answer: "Why is this action taken based on observed reality?"
-  - XIZ records are immutable once created.
-  - PRX is derived only — never user-created.
+Usage
+-----
+  from src.w3db.flow import run_flow
+  from src.w3db.store import W3DBStore
 
-Entry point: ``run_flow(xiz, tuf, config)``
+  store = W3DBStore()
+  result = run_flow(
+      input_event="Patient arrived — BP 140/90",
+      cix_id="CIX-001",
+      store=store,
+  )
+  # result contains: xiz, tuf, fbd, whb, prx records + output dict
 
-Returns a ``FlowResult`` with every domain record that was created.
+Design rules (from spec):
+  - Process must complete — no mid-run interruption.
+  - XIZ is immutable after creation (immutable=True).
+  - State (0 / 0.5 / 1) is for observation only — not for decision-making.
+  - Action must answer "Why is this action taken based on observed reality?"
 """
 
 from __future__ import annotations
 
 import uuid
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from datetime import datetime, timezone
+from typing import Optional, Dict, Any
 
-from src.w3db import crud
-from src.w3db.crud import fbd as fbd_crud
-from src.w3db.crud import prx as prx_crud
-from src.w3db.crud import whb as whb_crud
-from src.w3db.crud import xiz as xiz_crud
-from src.w3db.crud import tuf as tuf_crud
-from src.w3db.models import FBD, PRX, TUF, WHB, XIZ
+from src.w3db.models import XIZ, TUF, FBD, WHB, PRX
+from src.w3db.store import W3DBStore, get_store
+from src.w3db.config import W3DBConfig, get_config
 
 
-def _uid(prefix: str) -> str:
+def _now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def _short_id(prefix: str) -> str:
+    """Generate a short unique ID with the given prefix."""
     return f"{prefix}-{uuid.uuid4().hex[:8].upper()}"
 
 
-@dataclass
-class FlowResult:
-    """Structured output of a single flow run."""
-    xiz: Dict = field(default_factory=dict)
-    tuf: Dict = field(default_factory=dict)
-    fbd: Optional[Dict] = None       # only when state != 1 (deviation detected)
-    whb: Optional[Dict] = None       # only when FBD was created
-    prx: Dict = field(default_factory=dict)
-    state: float = 0.5               # TUF final state
-    deviation_detected: bool = False
-
-    def to_dict(self) -> dict:
-        return {
-            "xiz": self.xiz,
-            "tuf": self.tuf,
-            "fbd": self.fbd,
-            "whb": self.whb,
-            "prx": self.prx,
-            "state": self.state,
-            "deviation_detected": self.deviation_detected,
-        }
-
-
-def run_flow(xiz: XIZ, tuf: TUF, scale: float = 2.0) -> FlowResult:
+def _derive_tuf_state(confidence: float) -> str:
     """
-    Execute the W3 relation flow for a given XIZ + TUF pair.
+    Map confidence [0.0, 1.0] to observation state "0" / "0.5" / "1".
 
-    Steps
-    -----
-    1. Persist XIZ (immutable execution trace).
-    2. Persist TUF (state observation).
-    3. Observe state — if state != 1.0, a deviation is detected.
-    4. If deviation → create FBD + WHB (law/patch).
-    5. Render PRX (always).
+    Thresholds:
+      >= 0.75 → "1"   (True / strong)
+       > 0.25 → "0.5" (Uncertain)
+      <= 0.25 → "0"   (Fail / weak)
+    """
+    if confidence >= 0.75:
+        return "1"
+    if confidence > 0.25:
+        return "0.5"
+    return "0"
+
+
+def _derive_fbd_failure(final_state: str) -> str:
+    """Map TUF final observation state to FBD failure level."""
+    return {
+        "1": "Green",
+        "0.5": "Yellow",
+        "0": "Red",
+    }.get(final_state, "Yellow")
+
+
+def _build_whb_condition(tuf: TUF) -> str:
+    return f"IF final_state={tuf.final} AND confidence={tuf.confidence}"
+
+
+def _build_whb_action(fbd: FBD) -> str:
+    level_map = {
+        "Red": "ESCALATE — boundary exceeded, immediate review required",
+        "Yellow": "OBSERVE — boundary approached, monitor closely",
+        "Green": "PASS — within boundary, no action required",
+        "Blue": "EXTERNAL — defer to external assessment",
+    }
+    return f"THEN {level_map.get(fbd.failure, 'OBSERVE')}"
+
+
+def run_flow(
+    input_event: str,
+    cix_id: Optional[str] = None,
+    confidence: float = 0.5,
+    xiz_id: Optional[str] = None,
+    tuf_id: Optional[str] = None,
+    fbd_id: Optional[str] = None,
+    whb_id: Optional[str] = None,
+    prx_id: Optional[str] = None,
+    store: Optional[W3DBStore] = None,
+    config: Optional[W3DBConfig] = None,
+) -> Dict[str, Any]:
+    """
+    Execute the full W3 relation flow for a single input event.
 
     Parameters
     ----------
-    xiz:   XIZ record to persist.
-    tuf:   TUF record to persist.  Its ``tuf_id`` must match ``xiz.tuf_id``.
-    scale: PRX intensity scale; default 2.0 per spec.
+    input_event : str
+        Description of the triggering event / signal.
+    cix_id : str, optional
+        Identity anchor (CIX_IDENTITY ID).  A new one is generated if omitted.
+    confidence : float
+        Confidence level in [0.0, 1.0].  Drives TUF state + PRX perception.
+    xiz_id … prx_id : str, optional
+        Explicit IDs for each generated record.  Auto-generated if omitted.
+    store : W3DBStore, optional
+        Target store.  Uses the default singleton if omitted.
+    config : W3DBConfig, optional
+        Runtime config.  Uses get_config() if omitted.
 
     Returns
     -------
-    FlowResult with all created records.
-
-    Raises
-    ------
-    ValueError  if xiz.tuf_id != tuf.tuf_id (referential integrity).
+    dict with keys:
+      "xiz", "tuf", "fbd", "whb", "prx"  — the created model instances
+      "output"                             — compact perception dict (PRX view)
     """
-    if xiz.tuf_id != tuf.tuf_id:
-        raise ValueError(
-            f"Referential integrity error: xiz.tuf_id={xiz.tuf_id!r} "
-            f"does not match tuf.tuf_id={tuf.tuf_id!r}"
-        )
+    s = store or get_store()
+    cfg = config or get_config()
 
-    # Step 1 — XIZ (immutable)
-    xiz_crud.create(xiz)
+    ts = _now_iso()
+    resolved_cix = cix_id or _short_id("CIX")
 
-    # Step 2 — TUF
-    tuf_crud.create(tuf)
+    # Pre-compute IDs so XIZ can reference TUF at creation time
+    # (avoids any post-creation mutation, preserving the immutability contract).
+    resolved_tuf_id = tuf_id or _short_id("TUF")
 
-    # Step 3 — Observe
-    observed_state = tuf.state()
-    deviation = observed_state != 1.0
-
-    fbd_dict: Optional[Dict] = None
-    whb_dict: Optional[Dict] = None
-
-    if deviation:
-        # Step 4a — FBD
-        fbd = FBD(
-            fbd_id=_uid("FBD"),
-            source_tuf=tuf.tuf_id,
-            first_deviation=f"state={observed_state} (expected 1.0)",
-            failure_point=xiz.action,
-            conditions=f"confidence={tuf.confidence}",
-            impact=xiz.result,
-            line3_patch=f"IF state={observed_state} THEN observe({tuf.tuf_id})",
-        )
-        fbd_crud.create(fbd)
-        fbd_dict = fbd.to_dict()
-
-        # Step 4b — WHB (law derived from FBD)
-        whb = WHB(
-            law_id=_uid("WHB"),
-            fbd_id=fbd.fbd_id,
-            condition=f"IF confidence < 0.8 AND source_tuf = {tuf.tuf_id!r}",
-            action=(
-                "THEN escalate observation AND re-evaluate after next process run"
-            ),
-        )
-        whb_crud.create(whb)
-        whb_dict = whb.to_dict()
-
-    # Step 5 — PRX (always derived)
-    prx = PRX.derive(tuf, prx_id=_uid("PRX"), scale=scale)
-    prx_crud.create(prx)
-
-    return FlowResult(
-        xiz=xiz.to_dict(),
-        tuf=tuf.to_dict(),
-        fbd=fbd_dict,
-        whb=whb_dict,
-        prx=prx.to_dict(),
-        state=observed_state,
-        deviation_detected=deviation,
-    )
-
-
-def run_flow_from_input(
-    cix_id: str,
-    action: str,
-    result: str,
-    confidence: float,
-    initial_state: float = 0.5,
-    scale: float = 2.0,
-    xiz_id: Optional[str] = None,
-    tuf_id: Optional[str] = None,
-) -> FlowResult:
-    """
-    Convenience wrapper: build XIZ + TUF from raw input and run the flow.
-
-    Parameters
-    ----------
-    cix_id:        Identity root (CIX).
-    action:        What action was executed.
-    result:        Observed result text.
-    confidence:    Float in [0, 1] — drives TUF state and PRX intensity.
-    initial_state: TUF initial state before process ran (default 0.5).
-    scale:         PRX intensity scale (default 2.0).
-    xiz_id:        Optional explicit XIZ ID (auto-generated if omitted).
-    tuf_id:        Optional explicit TUF ID (auto-generated if omitted).
-    """
-    _tuf_id = tuf_id or _uid("TUF")
-    _xiz_id = xiz_id or _uid("XIZ")
-
-    tuf = TUF(
-        tuf_id=_tuf_id,
-        cix_id=cix_id,
-        initial=initial_state,
-        final=confidence,    # final = observed confidence level
-        confidence=confidence,
-    )
+    # -----------------------------------------------------------------
+    # Step 1 — XIZ: log the input event (immutable after creation)
+    # -----------------------------------------------------------------
     xiz = XIZ(
-        xiz_id=_xiz_id,
-        tuf_id=_tuf_id,
-        action=action,
-        result=result,
+        xiz_id=xiz_id or _short_id("XIZ"),
+        action=input_event,
+        timestamp=ts,
+        result="",
+        tuf_id=resolved_tuf_id,
+        immutable=cfg.is_immutable_xiz(),
     )
-    return run_flow(xiz=xiz, tuf=tuf, scale=scale)
+    s.create_xiz(xiz)
+
+    # -----------------------------------------------------------------
+    # Step 2 — TUF: observe the process state
+    # -----------------------------------------------------------------
+    obs_state = _derive_tuf_state(confidence)
+    tuf = TUF(
+        tuf_id=resolved_tuf_id,
+        cix_id=resolved_cix,
+        initial=obs_state,
+        final=obs_state,
+        confidence=confidence,
+        resolution="",
+        note=f"Derived from event: {input_event[:60]}",
+    )
+    s.create_tuf(tuf)
+
+    # -----------------------------------------------------------------
+    # Step 3 — FBD: detect boundary / failure point
+    # -----------------------------------------------------------------
+    fbd_failure = _derive_fbd_failure(tuf.final)
+    fbd = FBD(
+        fbd_id=fbd_id or _short_id("FBD"),
+        tuf_id=tuf.tuf_id,
+        first_deviation=f"Confidence={confidence:.3f} → state={tuf.final}",
+        failure_point="PROCESS_COMPLETE",
+        failure=fbd_failure,
+        conditions=f"initial={tuf.initial} final={tuf.final}",
+        impact=f"Boundary {'exceeded' if fbd_failure == 'Red' else 'within limits'}",
+        line3_patch="",         # set after WHB
+    )
+    s.create_fbd(fbd)
+
+    # -----------------------------------------------------------------
+    # Step 4 — WHB: generate IF → THEN patch (Line 3)
+    # -----------------------------------------------------------------
+    whb_condition = _build_whb_condition(tuf)
+    whb_action = _build_whb_action(fbd)
+    whb = WHB(
+        law_id=whb_id or _short_id("WHB"),
+        fbd_id=fbd.fbd_id,
+        condition=whb_condition,
+        action=whb_action,
+    )
+    s.create_whb(whb)
+
+    # Back-fill FBD line3_patch from WHB
+    s.update_fbd(fbd.fbd_id, line3_patch=f"{whb_condition} {whb_action}")
+
+    # -----------------------------------------------------------------
+    # Step 5 — PRX: derive visual perception (derived only — not a decision)
+    # -----------------------------------------------------------------
+    prx = PRX.from_tuf(prx_id or _short_id("PRX"), tuf)
+    s.create_prx(prx)
+
+    # -----------------------------------------------------------------
+    # Compact output (OPD Dashboard view)
+    # -----------------------------------------------------------------
+    output: Dict[str, Any] = {
+        "cix": resolved_cix,
+        "xiz": xiz.xiz_id,
+        "tuf": {
+            "id": tuf.tuf_id,
+            "initial": tuf.initial,
+            "final": tuf.final,
+            "confidence": tuf.confidence,
+        },
+        "fbd": {
+            "id": fbd.fbd_id,
+            "failure": fbd.failure,
+            "impact": fbd.impact,
+        },
+        "whb": {
+            "id": whb.law_id,
+            "condition": whb.condition,
+            "action": whb.action,
+        },
+        "prx": {
+            "id": prx.prx_id,
+            "symbol": prx.symbol,
+            "color": prx.color,
+            "intensity": prx.intensity,
+        },
+    }
+
+    return {
+        "xiz": xiz,
+        "tuf": tuf,
+        "fbd": fbd,
+        "whb": whb,
+        "prx": prx,
+        "output": output,
+    }

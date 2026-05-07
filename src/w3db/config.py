@@ -1,76 +1,85 @@
 """
 W3DB Configuration
 ------------------
-Loads env/integration settings with dev/test/prod defaults.
+Reads environment variables (or falls back to safe defaults) to produce
+a W3DBConfig instance.  Supports dev / test / prod environments.
 
-Priority (highest → lowest):
-  1. Environment variables (W3DB_*)
-  2. Per-environment defaults below
+Environment variable:
+  W3DB_ENV   — "dev" | "test" | "prod"  (default: "dev")
 """
 
 import os
-from typing import Any, Dict
+from dataclasses import dataclass, field
+from typing import Dict, Any
 
-# ── Per-environment defaults ──────────────────────────────────────────────────
 
-_DEFAULTS: Dict[str, Dict[str, Any]] = {
+# ---------------------------------------------------------------------------
+# Per-environment defaults
+# ---------------------------------------------------------------------------
+
+_ENV_DEFAULTS: Dict[str, Dict[str, Any]] = {
     "dev": {
-        "store_backend": "memory",   # "memory" | "json"
-        "store_path": "data/w3db",   # used only for json backend
+        "backend": "memory",
         "log_level": "DEBUG",
-        "flow_auto": True,           # automatically run relation flow on XIZ create
-        "prx_scale": 2.0,            # intensity = abs(confidence - 0.5) * scale
+        "immutable_xiz": False,
+        "max_store_size": 1000,
     },
     "test": {
-        "store_backend": "memory",
-        "store_path": "data/w3db_test",
+        "backend": "memory",
         "log_level": "WARNING",
-        "flow_auto": True,
-        "prx_scale": 2.0,
+        "immutable_xiz": True,
+        "max_store_size": 500,
     },
     "prod": {
-        "store_backend": "memory",
-        "store_path": "data/w3db_prod",
-        "log_level": "INFO",
-        "flow_auto": True,
-        "prx_scale": 2.0,
+        "backend": "memory",
+        "log_level": "ERROR",
+        "immutable_xiz": True,
+        "max_store_size": 10000,
     },
 }
 
-# ── Loader ────────────────────────────────────────────────────────────────────
+_VALID_ENVS = frozenset(_ENV_DEFAULTS.keys())
 
 
-def load_config() -> Dict[str, Any]:
+@dataclass
+class W3DBConfig:
+    """Runtime configuration for the W3DB layer."""
+
+    env: str = "dev"
+    backend: str = "memory"
+    log_level: str = "DEBUG"
+    immutable_xiz: bool = False
+    max_store_size: int = 1000
+    extra: Dict[str, Any] = field(default_factory=dict)
+
+    def is_immutable_xiz(self) -> bool:
+        """Return True if XIZ records must not be modified after creation."""
+        return self.immutable_xiz
+
+
+def get_config() -> W3DBConfig:
     """
-    Return the active W3DB configuration dict.
+    Build a W3DBConfig from environment variables + per-env defaults.
 
-    Environment variables override defaults:
-      W3DB_ENV           — "dev" | "test" | "prod"  (default: "dev")
-      W3DB_STORE_BACKEND — "memory" | "json"
-      W3DB_STORE_PATH    — filesystem path (json backend only)
-      W3DB_LOG_LEVEL     — logging level string
-      W3DB_FLOW_AUTO     — "1" | "0" / "true" | "false"
-      W3DB_PRX_SCALE     — float scale for PRX intensity formula
+    W3DB_ENV controls which default profile is loaded.  Individual values
+    can be further overridden by additional env-vars (W3DB_LOG_LEVEL, etc.).
     """
-    env = os.environ.get("W3DB_ENV", "dev").lower()
-    if env not in _DEFAULTS:
-        env = "dev"
+    env_name = os.environ.get("W3DB_ENV", "dev").lower()
+    if env_name not in _VALID_ENVS:
+        env_name = "dev"
 
-    cfg: Dict[str, Any] = dict(_DEFAULTS[env])
+    defaults = _ENV_DEFAULTS[env_name].copy()
 
-    if val := os.environ.get("W3DB_STORE_BACKEND"):
-        cfg["store_backend"] = val
-    if val := os.environ.get("W3DB_STORE_PATH"):
-        cfg["store_path"] = val
-    if val := os.environ.get("W3DB_LOG_LEVEL"):
-        cfg["log_level"] = val
-    if val := os.environ.get("W3DB_FLOW_AUTO"):
-        cfg["flow_auto"] = val.lower() in ("1", "true", "yes")
-    if val := os.environ.get("W3DB_PRX_SCALE"):
-        try:
-            cfg["prx_scale"] = float(val)
-        except ValueError:
-            pass
-
-    cfg["env"] = env
-    return cfg
+    return W3DBConfig(
+        env=env_name,
+        backend=os.environ.get("W3DB_BACKEND", defaults["backend"]),
+        log_level=os.environ.get("W3DB_LOG_LEVEL", defaults["log_level"]),
+        immutable_xiz=(
+            os.environ.get("W3DB_IMMUTABLE_XIZ", str(defaults["immutable_xiz"]))
+            .lower()
+            in ("1", "true", "yes")
+        ),
+        max_store_size=int(
+            os.environ.get("W3DB_MAX_STORE_SIZE", str(defaults["max_store_size"]))
+        ),
+    )

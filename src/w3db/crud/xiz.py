@@ -1,40 +1,62 @@
 """
-W3DB CRUD — XIZ domain (Execution Trace)
+W3DB CRUD — XIZ domain helpers.
 
-XIZ records are immutable once written: create is allowed, update is not.
+All functions operate on the provided store (or the default singleton).
 """
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 from src.w3db.models import XIZ
-from src.w3db.store import get_store
+from src.w3db.store import W3DBStore, get_store
 
 
-def create(record: XIZ) -> XIZ:
-    """
-    Persist a new XIZ record.
+def create_xiz(
+    xiz_id: str,
+    action: str,
+    timestamp: str,
+    result: str = "",
+    tuf_id: Optional[str] = None,
+    immutable: bool = False,
+    store: Optional[W3DBStore] = None,
+) -> XIZ:
+    """Create and persist a new XIZ record."""
+    s = store or get_store()
+    record = XIZ(
+        xiz_id=xiz_id,
+        action=action,
+        timestamp=timestamp,
+        result=result,
+        tuf_id=tuf_id,
+        immutable=immutable,
+    )
+    return s.create_xiz(record)
 
-    Raises ValueError if xiz_id already exists (immutability enforced).
-    """
-    store = get_store()["xiz"]
-    if record.xiz_id in store:
-        raise ValueError(f"XIZ record '{record.xiz_id}' already exists (immutable)")
-    store[record.xiz_id] = record.to_dict()
-    return record
+
+def read_xiz(xiz_id: str, store: Optional[W3DBStore] = None) -> Optional[XIZ]:
+    """Return the XIZ record with the given ID, or None."""
+    s = store or get_store()
+    return s.read_xiz(xiz_id)
 
 
-def read(xiz_id: str) -> Optional[Dict]:
-    """Return the raw dict for xiz_id, or None if not found."""
-    return get_store()["xiz"].get(xiz_id)
+def update_xiz(
+    xiz_id: str,
+    store: Optional[W3DBStore] = None,
+    **kwargs,
+) -> XIZ:
+    """Update mutable fields on an existing XIZ record."""
+    s = store or get_store()
+    return s.update_xiz(xiz_id, **kwargs)
 
 
-def list_all() -> List[Dict]:
-    """Return all XIZ records as a list of dicts."""
-    return list(get_store()["xiz"].values())
+def delete_xiz(xiz_id: str, store: Optional[W3DBStore] = None) -> bool:
+    """Delete an XIZ record. Returns True if deleted, False if not found."""
+    s = store or get_store()
+    return s.delete_xiz(xiz_id)
 
 
-def list_by_tuf(tuf_id: str) -> List[Dict]:
-    """Return all XIZ records linked to the given tuf_id."""
-    return [r for r in get_store()["xiz"].values() if r.get("tuf_id") == tuf_id]
+def list_xiz(store: Optional[W3DBStore] = None) -> List[XIZ]:
+    """Return all XIZ records."""
+    s = store or get_store()
+    return s.list_xiz()

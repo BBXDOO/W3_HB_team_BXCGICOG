@@ -1,46 +1,56 @@
 """
-W3DB CRUD — WHB domain (Contextual Law / LINE 3)
+W3DB CRUD — WHB domain helpers.
 """
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 from src.w3db.models import WHB
-from src.w3db.store import get_store
+from src.w3db.store import W3DBStore, get_store
 
 
-def create(record: WHB) -> WHB:
-    """Persist a new WHB record. Raises ValueError if law_id already exists."""
-    store = get_store()["whb"]
-    if record.law_id in store:
-        raise ValueError(f"WHB record '{record.law_id}' already exists")
-    store[record.law_id] = record.to_dict()
-    return record
+def create_whb(
+    law_id: str,
+    fbd_id: str,
+    condition: str = "",
+    action: str = "",
+    store: Optional[W3DBStore] = None,
+) -> WHB:
+    """Create and persist a new WHB record."""
+    s = store or get_store()
+    record = WHB(
+        law_id=law_id,
+        fbd_id=fbd_id,
+        condition=condition,
+        action=action,
+    )
+    return s.create_whb(record)
 
 
-def read(law_id: str) -> Optional[Dict]:
-    """Return the raw dict for law_id, or None if not found."""
-    return get_store()["whb"].get(law_id)
+def read_whb(law_id: str, store: Optional[W3DBStore] = None) -> Optional[WHB]:
+    """Return the WHB record with the given ID, or None."""
+    s = store or get_store()
+    return s.read_whb(law_id)
 
 
-def update(law_id: str, **fields) -> Dict:
-    """Update mutable fields of an existing WHB record."""
-    store = get_store()["whb"]
-    if law_id not in store:
-        raise KeyError(f"WHB record '{law_id}' not found")
-    allowed = {"condition", "action"}
-    for key, value in fields.items():
-        if key in allowed:
-            store[law_id][key] = value
-    return store[law_id]
+def update_whb(
+    law_id: str,
+    store: Optional[W3DBStore] = None,
+    **kwargs,
+) -> WHB:
+    """Update fields on an existing WHB record."""
+    s = store or get_store()
+    return s.update_whb(law_id, **kwargs)
 
 
-def list_all() -> List[Dict]:
+def delete_whb(law_id: str, store: Optional[W3DBStore] = None) -> bool:
+    """Delete a WHB record. Returns True if deleted, False if not found."""
+    s = store or get_store()
+    return s.delete_whb(law_id)
+
+
+def list_whb(store: Optional[W3DBStore] = None) -> List[WHB]:
     """Return all WHB records."""
-    return list(get_store()["whb"].values())
-
-
-def list_by_fbd(fbd_id: str) -> List[Dict]:
-    """Return all WHB records linked to the given fbd_id."""
-    return [r for r in get_store()["whb"].values() if r.get("fbd_id") == fbd_id]
+    s = store or get_store()
+    return s.list_whb()
