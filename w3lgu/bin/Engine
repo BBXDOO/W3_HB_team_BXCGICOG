@@ -1,2 +1,15 @@
-#!/bin/sh
-# W3Lgu Engine entry point
+# MPCP Logic Execution Node
+def process_instruction(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+            print(f"Processing Instruction from: {file_path}")
+            # Logic การประมวลผลเบื้องต้น
+            return f"Processed: {len(content)} characters."
+    except FileNotFoundError:
+        return "Error: Instruction file not found."
+
+if __name__ == "__main__":
+    # ตัวอย่างการเรียกใช้ไฟล์ใน docs
+    result = process_instruction("../docs/BOOTSTRAP_GUIDE.md")
+    print(result)
