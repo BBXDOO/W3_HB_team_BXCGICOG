@@ -27,6 +27,28 @@ W3Lgu คือภาษาการทำงานภายในของร�
 
 ---
 
+## Draft Structure (Core Proposal)
+
+- `parser/` — parser proposal and recovery boundary
+- `adapters/` — input / module / MPCP / ENV bridges
+- `runtime/` — low-overhead execution stages
+- `signals/` — state / color / symbol output
+- `layers/` — cross-layer execution map
+- `memory/` — continuity and recovery notes
+- `papers/` — concept, grammar, runtime, adapter, signal, layer, parser, and event drafts
+
+Core draft papers:
+- `papers/W3LGU_CONCEPT_PAPER.md`
+- `papers/W3LGU_GRAMMAR_PAPER.md`
+- `papers/W3LGU_RUNTIME_PAPER.md`
+- `papers/W3LGU_ADAPTER_PAPER.md`
+- `papers/W3LGU_SIGNAL_PAPER.md`
+- `papers/W3LGU_LAYER_PAPER.md`
+- `papers/W3LGU_PARSER_PAPER.md`
+- `papers/W3LGU_EVENT_PAPER.md`
+
+---
+
 เกี่ยวกับหลักการต่างๆ ใน W3Lgu
 
 คอนเซบ: เบา ,กระชับ ,เห็นแล้วเข้าใจได้ โดยไม่ต้องอธิบายหลักการมากมาย.
