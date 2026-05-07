@@ -187,6 +187,19 @@
         "summary"
       ],
       "score": 3
+    },
+    {
+      "id": 16,
+      "timestamp": "2026-05-07T16:46:53.004253Z",
+      "source": "w3_agent_ci",
+      "topic": "ci_run",
+      "content": "CI PASSED at 2026-05-07T16:46:52.761769Z",
+      "tags": [
+        "ci",
+        "run",
+        "summary"
+      ],
+      "score": 3
     }
   ]
 }
