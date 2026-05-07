@@ -200,6 +200,45 @@
         "summary"
       ],
       "score": 3
+    },
+    {
+      "id": 17,
+      "timestamp": "2026-05-07T17:00:01.897834Z",
+      "source": "w3_agent_ci",
+      "topic": "ci_run",
+      "content": "CI PASSED at 2026-05-07T17:00:01.632759Z",
+      "tags": [
+        "ci",
+        "run",
+        "summary"
+      ],
+      "score": 3
+    },
+    {
+      "id": 18,
+      "timestamp": "2026-05-07T17:00:45.512394Z",
+      "source": "w3_agent_ci",
+      "topic": "ci_run",
+      "content": "CI PASSED at 2026-05-07T17:00:45.290734Z",
+      "tags": [
+        "ci",
+        "run",
+        "summary"
+      ],
+      "score": 3
+    },
+    {
+      "id": 19,
+      "timestamp": "2026-05-07T17:02:23.256913Z",
+      "source": "w3_agent_ci",
+      "topic": "ci_run",
+      "content": "CI PASSED at 2026-05-07T17:02:23.034630Z",
+      "tags": [
+        "ci",
+        "run",
+        "summary"
+      ],
+      "score": 3
     }
   ]
 }
