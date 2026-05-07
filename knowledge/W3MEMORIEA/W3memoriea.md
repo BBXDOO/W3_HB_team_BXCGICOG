@@ -30,7 +30,7 @@
 | Property | Type | Options / Notes |
 |---|---|---|
 | XIZ_ID | Title | ใช้เป็นชื่อหลัก |
-| TUF | Relation | เชื่อมกับ TUF_DECISION |
+| TUF | Relation | เชื่อมกับ TUF_STATE |
 | Action | Text |  |
 | Timestamp | Date |  |
 | Result | Text |  |
@@ -40,7 +40,7 @@
 | Property | Type | Options / Notes |
 |---|---|---|
 | PRX_ID | Title | ใช้เป็นชื่อหลัก |
-| TUF | Relation | เชื่อมกับ TUF_DECISION |
+| TUF | Relation | เชื่อมกับ TUF_STATE |
 | Symbol | Select | ▲, ●, ■, ◆ |
 | Color | Select | Red, Yellow, Green, Blue |
 | Intensity | Formula | ใช้สูตรด้านล่าง |
@@ -50,10 +50,10 @@
 | Property | Type | Options / Notes |
 |---|---|---|
 | FBD_ID | Title | ใช้เป็นชื่อหลัก |
-| TUF | Relation | เชื่อมกับ TUF_DECISION |
+| TUF | Relation | เชื่อมกับ TUF_STATE |
 | First Deviation | Text |  |
-| Failure | Text | Red, Yellow, Green, Blue |
-| Conditions | Text | ใช้สูตรด้านล่าง |
+| Failure | Select | Red, Yellow, Green, Blue |
+| Conditions | Formula | ใช้สูตรด้านล่าง |
 | Impact | Text |  |
 
 ### 7) WHB_LAW
@@ -61,7 +61,7 @@
 |---|---|---|
 | LAW_ID | Title | ใช้เป็นชื่อหลัก |
 | FBD | Relation | เชื่อมกับ FBD_BOUNDARY |
-| Condition | Text | เชื่อมกับ TUF_DECISION |
+| Condition | Text | อ้างอิงจาก TUF_STATE |
 | Action | Text |  |
 
 ---
@@ -263,9 +263,9 @@ abs(confidence - 0.5) * scale
 3. สร้าง formula ใหม่จากค่า rollup แทน
 
 ถ้างง relation:
-- `CIX_IDENTITY` -> เชื่อมไป `TUF_DECISION`
-- `TUF_DECISION` -> เชื่อมไป `XIZ_LOGS`
-- `TUF_DECISION` -> เชื่อมไป `PRX_PERCEPTION`
+- `CIX_IDENTITY` -> เชื่อมไป `TUF_STATE`
+- `TUF_STATE` -> เชื่อมไป `XIZ_LOGS`
+- `TUF_STATE` -> เชื่อมไป `PRX_PERCEPTION`
 
 ---
 
