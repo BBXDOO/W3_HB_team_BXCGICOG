@@ -265,43 +265,6 @@
         "summary"
       ],
       "score": 3
-    },
-    {
-      "id": 22,
-      "timestamp": "2026-05-08T02:48:49.187714Z",
-      "source": "w3_agent_ci",
-      "topic": "ci_run",
-      "content": "CI PASSED at 2026-05-08T02:48:48.907028Z",
-      "tags": [
-        "ci",
-        "run",
-        "summary"
-      ],
-      "score": 3
-    },
-    {
-      "id": 23,
-      "timestamp": "2026-05-08T02:48:52.654475Z",
-      "source": "ChatGPT",
-      "topic": "design",
-      "content": "ChatGPT completed: design",
-      "tags": [
-        "runtime",
-        "success"
-      ],
-      "score": 5
-    },
-    {
-      "id": 24,
-      "timestamp": "2026-05-08T02:48:52.655059Z",
-      "source": "Gemini",
-      "topic": "verify",
-      "content": "Gemini verified: verify",
-      "tags": [
-        "runtime",
-        "success"
-      ],
-      "score": 5
     }
   ]
 }
