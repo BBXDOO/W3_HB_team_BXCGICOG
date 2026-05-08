@@ -270,6 +270,48 @@ check("executor error mentions invalid state", "Invalid state" in result.get("er
 
 
 # ---------------------------------------------------------------------------
+# 8. BaseModew memory / skill / capability
+# ---------------------------------------------------------------------------
+
+print("\n=== 8. BaseModew memory + skill + capability ===")
+
+class _EnhancedModew(BaseModew):
+    def stage_B_validate(self, data):
+        self.require_capability("design")
+        return data
+
+    def stage_D_process(self, data):
+        return self.use_skill("compose", data.get("TASK"), self.context.get("ROLE", "default"))
+
+enh = _EnhancedModew()
+enh.set_context("TASK", "enhanced_task")
+enh.set_role("planner")
+enh.grant_capability("design")
+enh.register_skill("compose", lambda task, role: {"task": task, "role": role, "ok": True})
+
+res_enh = enh.run()
+check("enhanced modew returns SUCCESS", res_enh.get("state") == "SUCCESS")
+check("enhanced modew includes role", res_enh.get("role") == "planner")
+check("enhanced modew stores last_state in memory", enh.recall("last_state") == "SUCCESS")
+check(
+    "enhanced modew task stats incremented",
+    enh.memory["task_stats"].get("enhanced_task", {}).get("runs") == 1,
+)
+check(
+    "enhanced modew role stats incremented",
+    enh.memory["role_stats"].get("planner", {}).get("runs") == 1,
+)
+
+# history cap should keep newest records only
+enh.max_history = 2
+enh.set_context("TASK", "enhanced_task_2")
+enh.run()
+enh.set_context("TASK", "enhanced_task_3")
+enh.run()
+check("history is capped by max_history", len(enh.memory["history"]) == 2)
+
+
+# ---------------------------------------------------------------------------
 # Summary
 # ---------------------------------------------------------------------------
 
