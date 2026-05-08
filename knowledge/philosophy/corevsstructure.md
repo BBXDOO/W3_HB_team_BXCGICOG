@@ -75,6 +75,6 @@
 ---
 
 ## 🗂 การจัดเก็บ
-- **โฟลเดอร์**: `/knowledge/philosophy/corevsstructure.md`  
+- **ไฟล์**: `/knowledge/philosophy/corevsstructure.md`  
 - **ประเภท**: Philosophy / Strategic Thinking  
 - **กลุ่ม**: W3 Core Knowledge
