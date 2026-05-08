@@ -265,32 +265,6 @@
         "summary"
       ],
       "score": 3
-    },
-    {
-      "id": 22,
-      "timestamp": "2026-05-08T02:27:14.432736Z",
-      "source": "w3_agent_ci",
-      "topic": "ci_run",
-      "content": "CI PASSED at 2026-05-08T02:27:14.210287Z",
-      "tags": [
-        "ci",
-        "run",
-        "summary"
-      ],
-      "score": 3
-    },
-    {
-      "id": 23,
-      "timestamp": "2026-05-08T02:27:43.575313Z",
-      "source": "w3_agent_ci",
-      "topic": "ci_run",
-      "content": "CI PASSED at 2026-05-08T02:27:43.402169Z",
-      "tags": [
-        "ci",
-        "run",
-        "summary"
-      ],
-      "score": 3
     }
   ]
 }
