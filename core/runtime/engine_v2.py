@@ -8,6 +8,7 @@ from core.memory.memory_bus import (
     search_memory,
     get_memory
 )
+from core.runtime.agents import get_agent
 
 MAX_WORKERS = 3
 
@@ -34,59 +35,12 @@ def build_context(task):
 
 
 # -------------------------------------------------
-# REAL DISPATCH LAYER
+# DISPATCH LAYER
 # -------------------------------------------------
 
-def run_chatgpt(task, context):
-    return f"ChatGPT completed: {task}"
-
-
-def run_gemini(task, context):
-    return f"Gemini verified: {task}"
-
-
-def run_copilot(task, context):
-    return f"Copilot audited: {task}"
-
-
-def run_deepseek(task, context):
-    return f"DeepSeek structured: {task}"
-
-
-def run_grok(task, context):
-    return f"Grok scanned: {task}"
-
-
-def run_cast(task, context):
-    return f"Cast interpreted: {task}"
-
-
-def run_bbex(task, context):
-    return f"BBEX-Core reflected: {task}"
-
-
-def run_bbx19(task, context):
-    return f"BBX19 directed: {task}"
-
-
-def fallback_agent(task, context):
-    return f"Fallback completed: {task}"
-
-
-def dispatch(module_name, task, context):
-    table = {
-        "ChatGPT":   run_chatgpt,
-        "Gemini":    run_gemini,
-        "Copilot-Gm": run_copilot,
-        "DeepSeek":  run_deepseek,
-        "Grok":      run_grok,
-        "Cast":      run_cast,
-        "BBEX-Core": run_bbex,
-        "BBX19":     run_bbx19,
-    }
-
-    fn = table.get(module_name, fallback_agent)
-    return fn(task, context)
+def dispatch(module_name, task, plan, context):
+    agent = get_agent(module_name)
+    return agent.run(task, plan, context)
 
 
 # -------------------------------------------------
@@ -100,7 +54,7 @@ def run(task):
     context = build_context(task)
 
     try:
-        output = dispatch(plan["run_with"], task, context)
+        output = dispatch(plan["run_with"], task, plan, context)
 
         result = {
             "status": "SUCCESS",
