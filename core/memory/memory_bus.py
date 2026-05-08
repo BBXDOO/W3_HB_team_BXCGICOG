@@ -20,7 +20,7 @@ from datetime import datetime
 BASE_DIR = Path(__file__).resolve().parent
 MEMORY_FILE = BASE_DIR / "memory_store.json"
 
-_lock = threading.Lock()
+_lock = threading.RLock()
 
 
 class MemoryError(Exception):
@@ -48,14 +48,16 @@ def _ensure_store():
 
 
 def load_store():
-    _ensure_store()
-    with open(MEMORY_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
+    with _lock:
+        _ensure_store()
+        with open(MEMORY_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
 
 
 def save_store(data):
-    with open(MEMORY_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+    with _lock:
+        with open(MEMORY_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
 
 
 def add_memory(source, topic, content, tags=None, score=1):

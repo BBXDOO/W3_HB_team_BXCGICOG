@@ -69,12 +69,18 @@ def execution_plan(task_name):
     # status may be in identity sub-object or at top level
     inner = idp.get("identity", {})
     status = inner.get("status") or idp.get("status", "ACTIVE")
+    responsibilities = (
+        idp.get("responsibilities")
+        or idp.get("primary_responsibilities")
+        or []
+    )
 
     return {
         "task": routed["task"],
         "run_with": routed["assigned_module"],
         "role": inner.get("designation", "—"),
         "status": status,
+        "responsibilities": responsibilities,
         "next_step": f"Execute task '{task_name}' using {routed['assigned_module']}"
     }
 
