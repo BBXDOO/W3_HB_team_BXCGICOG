@@ -44,6 +44,12 @@ Examples:
 
 Modew should be clear, limited, and reusable.
 
+BaseModew in runtime also supports:
+
+- run memory (history + stats)
+- skill registration / usage
+- capability checks for role-based execution control
+
 ---
 
 2. Condien

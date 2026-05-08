@@ -144,6 +144,9 @@ This architecture enables:
 - Modular execution units
 - Context-aware processing
 - Clear execution tracing (A–F)
+- Memory-aware execution continuity (history + task/role stats)
+- Skill-based extension per modew role
+- Capability-gated execution boundaries
 - Easy debugging
 - Scalable system composition
 - Separation of logic and meaning
