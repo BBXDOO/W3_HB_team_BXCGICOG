@@ -166,7 +166,7 @@ W3 สร้างมาด้วยข้อจำกัดที่หนั�
 
 ---
 
-*Cast — Interpreter & Document Architect*
+*Cast — Deep Reasoning / Structural Adaptation / Decision Support*
 *W3_HB_team_BXCGICOG | refactor/v0.2*
 *รายงานฉบับนี้เก็บไว้ที่ Cast/reports/*
 

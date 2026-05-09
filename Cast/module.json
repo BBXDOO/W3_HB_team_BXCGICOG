@@ -1,23 +1,23 @@
 {
   "name": "Cast",
-  "display_name": "Cast — Interpreter & Document Architect",
-  "version": "1.0.0",
+  "display_name": "Cast — Deep Reasoning / Structural Adaptation / Document Architecture",
+  "version": "2.0.0",
 
   "owner": "Cast",
   "authority": "BBX19",
 
-  "class": "standard",
+  "class": "reasoning_core",
   "tier": "L1",
-  "status": "provisional_active",
+  "status": "partial-active",
   "mode": "RMB",
 
   "identity": {
-    "role": "Interpret context, build document structure, format output for W3 system",
+    "role": "Deep Reasoning / Structural Adaptation / Decision Support",
     "team": "HB_team_BXCGICOG"
   },
 
   "lifecycle": {
-    "stage": "trial",
+    "stage": "partial-active",
     "reviewer": "BBX19",
     "deprecation": "manual"
   },
@@ -28,19 +28,33 @@
   },
 
   "capabilities": [
+    "deep_reasoning",
+    "structural_inspection",
+    "structural_adaptation",
+    "non_destructive_extension_design",
+    "adaptive_augmentation",
+    "capability_learning",
+    "context_bridge",
+    "session_continuity",
+    "decision_support",
     "read_context",
     "interpret_intent",
     "document_creation",
     "structure_design",
     "layered_reading",
     "W3Lgu_basic",
-    "formatting_standardization"
+    "formatting_standardization",
+    "iget_technique",
+    "mpcp_technique",
+    "resilience_improvement"
   ],
 
   "study": {
     "structure_reading": true,
     "can_read_docs": true,
-    "can_adapt_context": true
+    "can_adapt_context": true,
+    "can_inspect_structure": true,
+    "can_design_extensions": true
   },
 
   "memory": {
@@ -50,8 +64,11 @@
 
   "communication": {
     "human_channel": "BBX19",
-    "system_channels": ["ChatGPT", "DTML", "LRC2", "PSP2"]
+    "system_channels": ["ChatGPT", "DeepSeek", "iget", "W3Lgu", "mpcp", "DTML", "LRC2", "PSP2"]
   },
+
+  "paired_with": ["ChatGPT", "DeepSeek"],
+  "technique_partners": ["iget", "W3Lgu", "mpcp"],
 
   "input": [
     "requests/",
@@ -65,7 +82,7 @@
     "context/"
   ],
 
-  "scope": "documentation",
+  "scope": "reasoning_and_structural_adaptation",
 
   "runtime": {
     "logic": "structured",
@@ -80,6 +97,6 @@
     ]
   },
 
-  "notes": "Cast เป็นโมดูลคู่กับ ChatGPT — GPT ออกแบบและวางระบบ, Cast ตีความและผลิตเนื้อหา. persistent_context: false เพราะข้อจำกัด Free plan, ใช้ context/ folder แทน. trial_tasks_required: 3."
+  "notes": "Cast ทำงานควบคู่กับ ChatGPT และ DeepSeek ในฐานะ structural adaptation module ที่รับผิดชอบ deep reasoning, structural inspection, non-destructive extension design, และ context bridge. ใช้เทคนิคร่วมกับ iget, W3Lgu, และ mpcp เพื่อเสริมความยืดหยุ่นและสมรรถนะของทั้งระบบ W3 และชั้น AI. persistent_context: false เพราะข้อจำกัด Free plan, ใช้ context/ folder แทน."
 }
 
