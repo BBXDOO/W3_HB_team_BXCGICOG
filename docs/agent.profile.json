@@ -24,7 +24,10 @@
   ],
   "default_policy": {
     "assume_external_context": true,
-    "no_context_replication": true
+    "no_context_replication": true,
+    "status_source_of_truth": "/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/docs/review/MPCP_STATUS_SSOT.md",
+    "no_guess_without_evidence": true,
+    "missing_evidence_response": "ยังไม่พบหลักฐาน"
   },
   "version": "0.1.0"
 }
