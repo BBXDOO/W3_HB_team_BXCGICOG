@@ -3,54 +3,28 @@
 - Generated: 2026-05-09
 - Maintainer: BBX19
 - Update policy: on governance change / release change / role change / major structure change
-- Scope: operational overview of core W3 agent modules
+- Scope: summary-only operational overview of core W3 agent modules
 - Rule: factual only; when evidence is missing, use `ยังไม่พบหลักฐาน`
-- Evidence snapshot source: `modules/ChatGPT/reports/2026-05-09_w3_mpcp_operational_structure_report.md`
 
 ## 1. Purpose
-This file is the central operational status summary for the core W3 agent modules.
-It exists to provide one reference point for:
-- module role visibility
-- validation and governance flow
-- escalation structure
-- context / memory dependencies
-- operational risk awareness
+This file is the central summary view of core W3 agent status.
+Detailed module-level analysis is maintained outside this file to keep the SSOT short, readable, and decision-friendly.
 
 ## 2. Module Status Table
 
-| Module | Role | Status | Validation Gate | Governance Gate | Escalation | Key Risk |
-|---|---|---|---|---|---|---|
-| `BBX19` | Final Authority / Vision Keeper | `ready` | `ยังไม่พบหลักฐาน` | `BBX19` | final authority | single point of authority |
-| `BBEX-Core` | Identity / Philosophical Anchor | `partial` | `ยังไม่พบหลักฐาน` | `BBX19` | `ยังไม่พบหลักฐาน` | identity-layer operational evidence incomplete |
-| `ChatGPT` | Architecture / Flow / Execution | `partial` | `Gemini` | `Copilot-Gm`, `BBX19` | `Gemini → Copilot-Gm → BBX19` | outputs require simulation, test-case, validation, and sign-off before integration |
-| `Gemini` | Validation / Cross Check | `ready` | self-role | `BBX19` | `BBX19` | validation bottleneck risk |
-| `Grok` | Pattern / Signals / Insight | `partial` | `Gemini` (logic-related cases) | `BBX19`, `Copilot-Gm` (governance cases) | `Gemini / Copilot-Gm / BBX19` | narrative or pattern drift without evidence / logic trail |
-| `DeepSeek` | Scale / Long-Term Planning | `partial` | `Gemini` (conflict / structure-impact cases) | `BBX19` | `Gemini → BBX19` | still Phase-1 / Skeleton Edition; not full-scan ready |
-| `Copilot-Gm` | Policy / Merge / Compliance | `ready` | `Gemini` | `BBX19` | `BBX19` | governance enforcement gap risk |
-| `Cast` | Deep Reasoning / Decision Support | `partial` | `ยังไม่พบหลักฐาน` | `BBX19` | `BBX19` | status mismatch across files (`active` vs `candidate`) |
+| Module | Role | Status | Validation Gate | Governance Gate | Key Risk |
+|---|---|---|---|---|---|
+| `BBX19` | Final Authority / Vision Keeper | `ready` | `ยังไม่พบหลักฐาน` | `BBX19` | single point of authority |
+| `BBEX-Core` | Identity / Philosophical Anchor | `partial` | `ยังไม่พบหลักฐาน` | `BBX19` | operational evidence incomplete |
+| `ChatGPT` | Architecture / Flow / Execution | `partial` | `Gemini` | `Copilot-Gm`, `BBX19` | requires downstream validation before integration |
+| `Gemini` | Validation / Cross Check | `ready` | self-role | `BBX19` | validation bottleneck risk |
+| `Grok` | Pattern / Signals / Insight | `partial` | `Gemini` | `BBX19`, `Copilot-Gm` (case-based) | narrative / evidence drift risk |
+| `DeepSeek` | Scale / Long-Term Planning | `partial` | `Gemini` (case-based) | `BBX19` | still Phase-1 / not full-scan ready |
+| `Copilot-Gm` | Policy / Merge / Compliance | `ready` | `Gemini` | `BBX19` | governance choke-point |
+| `Cast` | Deep Reasoning / Decision Support | `partial` | `ยังไม่พบหลักฐาน` | `BBX19` | status inconsistency across files |
 
-## 3. Cross-Module Dependency Summary
-
-| From | To | Dependency Type | Evidence |
-|---|---|---|---|
-| `BBX19` | `All modules` | direction / sign-off / root authority | `modules/BBX19/module.json`, `BBX19/ENTRANCE.md` |
-| `BBEX-Core` | `BBX19` | identity / philosophical anchor support | `modules/BBEX-Core/module.json` |
-| `ChatGPT` | `Gemini` | validation of flow / prototype / output | `modules/ChatGPT/module.json`, `ChatGPT/ENTRANCE.md` |
-| `ChatGPT` | `Copilot-Gm` | repo integration / structure handoff | `ChatGPT/ENTRANCE.md` |
-| `Gemini` | `ChatGPT` | flow / test-case / prototype verification | `Gemini/ENTRANCE.md` |
-| `Gemini` | `Copilot-Gm` | structural / governance consistency support | `Gemini/ENTRANCE.md` |
-| `Grok` | `Gemini` | logic validation of insight | `Grok/ENTRANCE.md`, `Grok/base.md` |
-| `Grok` | `ChatGPT` | insight handoff for flow / scenario modeling | `Grok/ENTRANCE.md` |
-| `Grok` | `Copilot-Gm` | governance / branch conflict escalation | `Grok/base.md` |
-| `DeepSeek` | `Gemini` | pattern / architecture conflict validation | `DeepSeek/ENTRANCE.md` |
-| `DeepSeek` | `ChatGPT` | reads flow / interaction pattern | `DeepSeek/ENTRANCE.md` |
-| `DeepSeek` | `All modules` | baseline architecture reference | `DeepSeek/notes/observation-log.md` |
-| `Copilot-Gm` | `Gemini` | governance / config validation | `Copilot-Gm/ENTRANCE.md` |
-| `Copilot-Gm` | `ChatGPT` | prototype-to-structure translation | `Copilot-Gm/ENTRANCE.md` |
-| `Cast` | `All modules` | context bridge / session continuity | `Cast/context/protocol.md` |
-
-## 4. Governance Summary
-System-wide governance evidence currently indicates:
+## 3. Governance Summary
+System-wide governance evidence indicates:
 
 - `No direct commit to main`
 - `PR must be reviewed by at least 1 AI engine`
@@ -58,17 +32,17 @@ System-wide governance evidence currently indicates:
 - `Gemini required for high-risk docs`
 
 Operational interpretation:
-- `BBX19` is the highest decision authority
-- `Gemini` is the primary validation authority
-- `Copilot-Gm` is the primary governance / merge-compliance authority
+- `BBX19` = highest decision authority
+- `Gemini` = primary validation authority
+- `Copilot-Gm` = primary governance / merge-compliance authority
 
-## 5. Context / Memory Summary
+## 4. Context / Memory Summary
 Shared context continuity depends on:
 
 - `Cast/context/protocol.md`
 - `Cast/context/session_summary.md`
 
-Protocol rules include:
+Core protocol rules:
 - read memory before work
 - write summary after work
 - keep append-only continuity
@@ -77,27 +51,25 @@ Protocol rules include:
 Current gap:
 - `ยังไม่พบหลักฐาน` of automated enforcement from the current evidence set
 
-## 6. Status Grouping
+## 5. What Changed
+Recent documentation work completed:
 
-### 6.1 Ready
-- `BBX19`
-- `Gemini`
-- `Copilot-Gm`
+- created central SSOT files in `docs/review/`
+- added Thai summary companion file
+- added machine-readable JSON companion file
+- created `MODULE_REPORT_INDEX.md`
+- created operational reports for all 8 core modules
+- updated module report index to point to actual report paths
+- reduced central SSOT to summary-only format
 
-### 6.2 Partial
-- `BBEX-Core`
-- `ChatGPT`
-- `Grok`
-- `DeepSeek`
-- `Cast`
-
-### 6.3 Experimental Characteristics
-- `DeepSeek` has explicit Phase-1 / Skeleton Edition evidence
-- other modules in this file: `ยังไม่พบหลักฐาน` of explicit experimental declaration in the reviewed evidence set
-
-### 6.4 Blocked
-- `ยังไม่พบหลักฐาน` of any module being explicitly marked blocked
-- however, several modules have operational gates before integration
+## 6. Thai Summary
+สรุปสั้น ๆ:
+- ตอนนี้มีไฟล์สถานะกลางของระบบแล้ว
+- มีไฟล์ไทยและ JSON ควบคู่
+- มี index เชื่อมรายงานทั้ง 8 โมดูล
+- มีรายงานแยกครบทั้ง 8 โมดูลแล้ว
+- ไฟล์ SSOT กลางถูกย่อให้เน้นภาพรวมและใช้อ่านตัดสินใจได้เร็วขึ้น
+- จุดที่ยังต้องระวังคือ `Cast` ยังมีสถานะไม่สอดคล้องกันบางไฟล์ และ `BBEX-Core` ยังมี evidence gap บางส่วน
 
 ## 7. Top Operational Risks
 1. `BBX19` is a single point of final authority
@@ -106,39 +78,18 @@ Current gap:
 4. `DeepSeek` is not yet full-scan ready
 5. `Cast` has status inconsistency across files
 6. `BBEX-Core` operational evidence remains incomplete
-7. `ChatGPT` has high output utility but requires downstream validation before trusted integration
-8. `Grok` insights can drift if evidence and logic trail are missing
 
-## 8. Recommended Next Actions
-1. Create per-module operational reports for all 8 modules
-2. Fill missing evidence for `BBEX-Core`
-3. Add machine-readable mirror: `docs/review/AGENT_OPERATIONAL_STATUS_SSOT.json`
-4. Define update policy for this file:
-   - on major structural changes
-   - on release transitions
-   - on governance changes
-   - on agent role changes
+## 8. Related Files
+- `docs/review/AGENT_OPERATIONAL_STATUS_SSOT.th.md`
+- `docs/review/AGENT_OPERATIONAL_STATUS_SSOT.json`
+- `docs/review/MODULE_REPORT_INDEX.md`
 
-## 9. Evidence Base
-- `modules/ChatGPT/reports/2026-05-09_w3_mpcp_operational_structure_report.md`
-- `modules/BBX19/module.json`
-- `BBX19/ENTRANCE.md`
-- `modules/BBEX-Core/module.json`
-- `modules/ChatGPT/module.json`
-- `ChatGPT/ENTRANCE.md`
-- `ChatGPT/modules/ChatGPT/boundaries.md`
-- `modules/Gemini/module.json`
-- `Gemini/ENTRANCE.md`
-- `modules/Grok/module.json`
-- `Grok/ENTRANCE.md`
-- `Grok/base.md`
-- `modules/DeepSeek/module.json`
-- `DeepSeek/ENTRANCE.md`
-- `DeepSeek/notes/observation-log.md`
-- `modules/Copilot-Gm/module.json`
-- `Copilot-Gm/ENTRANCE.md`
-- `modules/Cast/module.json`
-- `Cast/ENTRANCE.md`
-- `Cast/context/protocol.md`
-- `core/module-loader/module-registry.json`
-- `core/governance/operating-guidelines.md`
+### Module Reports
+- `modules/BBX19/reports/bbx19_operational_report.md`
+- `modules/BBEX-Core/reflections/bbex_core_operational_report.md`
+- `modules/ChatGPT/reports/chatgpt_operational_report.md`
+- `modules/Gemini/reports/gemini_operational_report.md`
+- `modules/Grok/risk-reports/grok_operational_report.md`
+- `modules/DeepSeek/plans/deepseek_operational_report.md`
+- `modules/Copilot-Gm/reports/copilot_gm_operational_report.md`
+- `modules/Cast/reports/cast_operational_report.md`
