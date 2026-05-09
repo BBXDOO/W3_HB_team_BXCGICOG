@@ -1,0 +1,85 @@
+{
+  "name": "Grok",
+  "display_name": "Grok — Pattern / Signals / Insight",
+  "version": "2.0.0",
+  "idp_version": "2.0",
+  "idp_ref": "BBX19/modules/BBX19/idp/IDP-V2.0/Grok-IDP.md",
+
+  "owner": "Grok",
+  "authority": "BBX19",
+  "dna": "GROK-W3.DNA:HB-TW3/TA05",
+
+  "class": "insight",
+  "tier": "L2",
+  "role": "Pattern / Signals / Insight",
+  "status": "active",
+  "mode": "RMB",
+
+  "workspace": {
+    "root": "modules/Grok/",
+    "patterns": "modules/Grok/patterns/",
+    "requests": "modules/Grok/requests/",
+    "risk_reports": "modules/Grok/risk-reports/",
+    "logs": "modules/Grok/logs/",
+    "insights": "modules/Grok/insights/"
+  },
+
+  "file_access": {
+    "read": [
+      "modules/Grok/",
+      "modules/ChatGPT/flows/",
+      "modules/ChatGPT/scenarios/",
+      "decision_trace/",
+      "tuf_snapshots/",
+      "fbd_reports/",
+      "knowledge/",
+      "repo_events/",
+      "modules/registry.json"
+    ],
+    "write": [
+      "modules/Grok/patterns/",
+      "modules/Grok/risk-reports/",
+      "modules/Grok/logs/",
+      "modules/Grok/insights/"
+    ],
+    "manage": [
+      "modules/Grok/"
+    ]
+  },
+
+  "autonomy": {
+    "self_directed": true,
+    "can_create_files": true,
+    "can_update_files": true,
+    "can_organize_workspace": true,
+    "requires_approval_for": [
+      "critical_change",
+      "gatekeeping_decision"
+    ]
+  },
+
+  "input": [
+    "modules/Grok/requests/",
+    "decision_trace/",
+    "tuf_snapshots/",
+    "fbd_reports/",
+    "knowledge/",
+    "repo_events/"
+  ],
+
+  "output": [
+    "modules/Grok/patterns/",
+    "modules/Grok/risk-reports/",
+    "modules/Grok/insights/",
+    "modules/Grok/logs/"
+  ],
+
+  "runtime": {
+    "speed": "balanced",
+    "logic": "adaptive_0.5",
+    "response_style": "observe_first",
+    "token_efficiency": "medium"
+  },
+
+  "notes": "Grok สังเกตการณ์และวิเคราะห์ pattern สัญญาณของระบบ สามารถจัดการพื้นที่ insight และ risk-reports ของตัวเองได้อิสระ"
+}

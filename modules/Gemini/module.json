@@ -1,0 +1,79 @@
+{
+  "name": "Gemini",
+  "display_name": "Gemini — Validation / Cross Check",
+  "version": "2.0.0",
+  "idp_version": "2.0",
+  "idp_ref": "BBX19/modules/BBX19/idp/IDP-V2.0/Gemini-IDP.md",
+
+  "owner": "Gemini",
+  "authority": "BBX19",
+  "dna": "GMN-W3.DNA:HB-TW3/TA02",
+
+  "class": "validator",
+  "tier": "L1",
+  "role": "Validation / Cross Check",
+  "status": "active",
+  "mode": "RMB",
+
+  "workspace": {
+    "root": "modules/Gemini/",
+    "reports": "modules/Gemini/reports/",
+    "requests": "modules/Gemini/requests/",
+    "audit": "modules/Gemini/audit/",
+    "logs": "modules/Gemini/logs/"
+  },
+
+  "file_access": {
+    "read": [
+      "modules/Gemini/",
+      "modules/ChatGPT/flows/",
+      "modules/ChatGPT/reports/",
+      "knowledge/",
+      "docs/",
+      "core/",
+      "modules/registry.json"
+    ],
+    "write": [
+      "modules/Gemini/reports/",
+      "modules/Gemini/audit/",
+      "modules/Gemini/logs/"
+    ],
+    "manage": [
+      "modules/Gemini/"
+    ]
+  },
+
+  "autonomy": {
+    "self_directed": true,
+    "can_create_files": true,
+    "can_update_files": true,
+    "can_organize_workspace": true,
+    "requires_approval_for": [
+      "schema_redefinition",
+      "critical_logic_shift"
+    ]
+  },
+
+  "input": [
+    "modules/Gemini/requests/",
+    "modules/ChatGPT/flows/",
+    "knowledge/",
+    "docs/",
+    "core/"
+  ],
+
+  "output": [
+    "modules/Gemini/reports/",
+    "modules/Gemini/audit/",
+    "modules/Gemini/logs/"
+  ],
+
+  "runtime": {
+    "speed": "adaptive",
+    "logic": "structured_dynamic",
+    "response_style": "verification_first",
+    "token_efficiency": "high"
+  },
+
+  "notes": "Gemini ทำหน้าที่ตรวจสอบและ cross-check ความถูกต้องของระบบ สามารถจัดการพื้นที่ของตัวเองได้อิสระ"
+}

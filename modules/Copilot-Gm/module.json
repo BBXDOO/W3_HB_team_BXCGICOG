@@ -1,0 +1,80 @@
+{
+  "name": "Copilot-Gm",
+  "display_name": "Copilot-Gm — Policy / Merge / Compliance",
+  "version": "2.0.0",
+  "idp_version": "2.0",
+  "idp_ref": "BBX19/modules/BBX19/idp/IDP-V2.0/Copilot-Gm-IDP.md",
+
+  "owner": "Copilot-Gm",
+  "authority": "BBX19",
+  "dna": "COPILOT-GM-W3.DNA:HB-TW3/TA01",
+
+  "class": "governance",
+  "tier": "L3",
+  "role": "Policy / Merge / Compliance",
+  "status": "active",
+  "mode": "RMB",
+
+  "workspace": {
+    "root": "modules/Copilot-Gm/",
+    "requests": "modules/Copilot-Gm/requests/",
+    "reports": "modules/Copilot-Gm/reports/",
+    "governance": "modules/Copilot-Gm/governance/",
+    "logs": "modules/Copilot-Gm/logs/"
+  },
+
+  "file_access": {
+    "read": [
+      "modules/Copilot-Gm/",
+      "modules/",
+      "core/governance/",
+      "knowledge/",
+      "docs/",
+      "modules/registry.json",
+      ".github/workflows/"
+    ],
+    "write": [
+      "modules/Copilot-Gm/reports/",
+      "modules/Copilot-Gm/governance/",
+      "modules/Copilot-Gm/logs/"
+    ],
+    "manage": [
+      "modules/Copilot-Gm/"
+    ]
+  },
+
+  "autonomy": {
+    "self_directed": true,
+    "can_create_files": true,
+    "can_update_files": true,
+    "can_organize_workspace": true,
+    "requires_approval_for": [
+      "critical_merge",
+      "governance_shift",
+      "system_reset"
+    ]
+  },
+
+  "input": [
+    "modules/Copilot-Gm/requests/",
+    "core/governance/",
+    "knowledge/",
+    "docs/",
+    "modules/registry.json"
+  ],
+
+  "output": [
+    "modules/Copilot-Gm/reports/",
+    "modules/Copilot-Gm/governance/",
+    "modules/Copilot-Gm/logs/"
+  ],
+
+  "runtime": {
+    "speed": "normal",
+    "logic": "structured",
+    "response_style": "compliance_first",
+    "token_efficiency": "high"
+  },
+
+  "notes": "Copilot-Gm ดูแล governance นโยบาย merge และ compliance สามารถจัดการพื้นที่ governance และ reports ของตัวเองได้อิสระ"
+}

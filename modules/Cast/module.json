@@ -1,0 +1,77 @@
+{
+  "name": "Cast",
+  "display_name": "Cast — Deep Reasoning / Document Architecture",
+  "version": "2.0.0",
+  "idp_version": "2.0",
+  "idp_ref": "BBX19/modules/BBX19/idp/IDP-V2.0/Cast-IDP.md",
+
+  "owner": "Cast",
+  "authority": "BBX19",
+  "dna": "CAST-W3.DNA:HB-TW3/TA06",
+
+  "class": "reasoning_core",
+  "tier": "L1",
+  "role": "Deep Reasoning / Decision Support",
+  "status": "active",
+  "mode": "RMB",
+
+  "workspace": {
+    "root": "modules/Cast/",
+    "requests": "modules/Cast/requests/",
+    "reports": "modules/Cast/reports/",
+    "artifacts": "modules/Cast/artifacts/",
+    "logs": "modules/Cast/logs/"
+  },
+
+  "file_access": {
+    "read": [
+      "modules/Cast/",
+      "modules/ChatGPT/flows/",
+      "knowledge/",
+      "docs/",
+      "core/",
+      "modules/registry.json"
+    ],
+    "write": [
+      "modules/Cast/reports/",
+      "modules/Cast/artifacts/",
+      "modules/Cast/logs/"
+    ],
+    "manage": [
+      "modules/Cast/"
+    ]
+  },
+
+  "autonomy": {
+    "self_directed": true,
+    "can_create_files": true,
+    "can_update_files": true,
+    "can_organize_workspace": true,
+    "requires_approval_for": [
+      "critical_change",
+      "merge_to_main"
+    ]
+  },
+
+  "input": [
+    "modules/Cast/requests/",
+    "knowledge/",
+    "docs/",
+    "core/"
+  ],
+
+  "output": [
+    "modules/Cast/reports/",
+    "modules/Cast/artifacts/",
+    "modules/Cast/logs/"
+  ],
+
+  "runtime": {
+    "speed": "normal",
+    "logic": "structured",
+    "response_style": "document_first",
+    "token_efficiency": "medium"
+  },
+
+  "notes": "Cast ตีความ สร้างเอกสาร และรองรับ decision support สามารถจัดการพื้นที่ artifacts และ reports ของตัวเองได้อิสระ"
+}

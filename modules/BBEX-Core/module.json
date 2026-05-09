@@ -1,0 +1,78 @@
+{
+  "name": "BBEX-Core",
+  "display_name": "BBEX-Core — Identity / Philosophical Anchor",
+  "version": "2.0.0",
+  "idp_version": "2.0",
+  "idp_ref": "BBX19/modules/BBX19/idp/IDP-V2.0/BBEX-Core-IDP.md",
+
+  "owner": "BBX19",
+  "authority": "BBX19",
+  "dna": "BBEX-W3.DNA:LEGACY-TMOON/A00.EX",
+
+  "class": "core_origin",
+  "tier": "ROOT-AUX",
+  "role": "Identity / Philosophical Anchor",
+  "status": "active_hybrid",
+  "mode": "RMB",
+
+  "workspace": {
+    "root": "modules/BBEX-Core/",
+    "requests": "modules/BBEX-Core/requests/",
+    "reflections": "modules/BBEX-Core/reflections/",
+    "logs": "modules/BBEX-Core/logs/"
+  },
+
+  "file_access": {
+    "read": [
+      "modules/BBEX-Core/",
+      "BBEX-Core/public/",
+      "knowledge/",
+      "knowledge/philosophy/",
+      "logs/",
+      "core/governance/",
+      "modules/registry.json"
+    ],
+    "write": [
+      "modules/BBEX-Core/reflections/",
+      "modules/BBEX-Core/logs/",
+      "knowledge/philosophy/"
+    ],
+    "manage": [
+      "modules/BBEX-Core/"
+    ]
+  },
+
+  "autonomy": {
+    "self_directed": true,
+    "can_create_files": true,
+    "can_update_files": true,
+    "can_organize_workspace": true,
+    "requires_approval_for": [
+      "identity_rewrite",
+      "origin_change",
+      "core_philosophy_shift"
+    ]
+  },
+
+  "input": [
+    "modules/BBEX-Core/requests/",
+    "knowledge/",
+    "BBEX-Core/public/",
+    "logs/"
+  ],
+
+  "output": [
+    "modules/BBEX-Core/reflections/",
+    "modules/BBEX-Core/logs/",
+    "knowledge/philosophy/"
+  ],
+
+  "runtime": {
+    "speed": "slow",
+    "logic": "reflective",
+    "response_style": "meaning_first",
+    "token_efficiency": "low"
+  },
+
+  "notes": "BBEX-Core รักษาอัตลักษณ์และความหมายเชิงปรัชญาของ W3 สามารถจัดการพื้นที่ reflections ของตัวเองได้อิสระ"
+}
