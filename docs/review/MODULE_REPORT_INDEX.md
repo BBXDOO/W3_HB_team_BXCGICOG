@@ -26,21 +26,21 @@ It exists to reduce complexity in the central SSOT by separating:
 
 ## 3. Module Report Links
 
-| Module | Suggested Report Path | Notes |
-|---|---|---|
-| `BBX19` | `modules/BBX19/reports/bbx19_operational_report.md` | `ยังไม่พบหลักฐาน` ว่ามีไฟล์นี้แล้ว |
-| `BBEX-Core` | `modules/BBEX-Core/reflections/bbex_core_operational_report.md` | ใช้ path ตาม workspace ปัจจุบัน |
-| `ChatGPT` | `modules/ChatGPT/reports/chatgpt_operational_report.md` | พร้อมสร้างต่อได้ |
-| `Gemini` | `modules/Gemini/reports/gemini_operational_report.md` | พร้อมสร้างต่อได้ |
-| `Grok` | `modules/Grok/risk-reports/grok_operational_report.md` | หรือ `reports/` หากเพิ่มภายหลัง |
-| `DeepSeek` | `modules/DeepSeek/plans/deepseek_operational_report.md` | สอดคล้องกับ planning role |
-| `Copilot-Gm` | `modules/Copilot-Gm/reports/copilot_gm_operational_report.md` | พร้อมสร้างต่อได้ |
-| `Cast` | `modules/Cast/reports/cast_operational_report.md` | พร้อมสร้างต่อได้ |
+| Module | Report Path | Status | Notes |
+|---|---|---|---|
+| `BBX19` | `modules/BBX19/reports/bbx19_operational_report.md` | `available` | operational baseline created |
+| `BBEX-Core` | `modules/BBEX-Core/reflections/bbex_core_operational_report.md` | `available` | workspace path follows current module structure |
+| `ChatGPT` | `modules/ChatGPT/reports/chatgpt_operational_report.md` | `available` | operational baseline created |
+| `Gemini` | `modules/Gemini/reports/gemini_operational_report.md` | `available` | operational baseline created |
+| `Grok` | `modules/Grok/risk-reports/grok_operational_report.md` | `available` | stored under `risk-reports/` per current workspace layout |
+| `DeepSeek` | `modules/DeepSeek/plans/deepseek_operational_report.md` | `available` | stored under `plans/` to match planning role |
+| `Copilot-Gm` | `modules/Copilot-Gm/reports/copilot_gm_operational_report.md` | `available` | operational baseline created |
+| `Cast` | `modules/Cast/reports/cast_operational_report.md` | `available` | operational baseline created |
 
 ## 4. Cross-Module Navigation
 
 ### 4.1 Authority Path
-`BBX19` → all modules
+`BBX19` �� all modules
 
 ### 4.2 Validation Path
 `ChatGPT` → `Gemini`  
@@ -69,27 +69,27 @@ For fast operational understanding:
 
 For governance-related work:
 
-1. `BBX19`
-2. `Gemini`
-3. `Copilot-Gm`
+1. `modules/BBX19/reports/bbx19_operational_report.md`
+2. `modules/Gemini/reports/gemini_operational_report.md`
+3. `modules/Copilot-Gm/reports/copilot_gm_operational_report.md`
 
 For flow / execution work:
 
-1. `ChatGPT`
-2. `Gemini`
-3. `Copilot-Gm`
+1. `modules/ChatGPT/reports/chatgpt_operational_report.md`
+2. `modules/Gemini/reports/gemini_operational_report.md`
+3. `modules/Copilot-Gm/reports/copilot_gm_operational_report.md`
 
 For context / continuity issues:
 
-1. `Cast`
-2. `BBX19`
-3. relevant working module
+1. `modules/Cast/reports/cast_operational_report.md`
+2. `modules/BBX19/reports/bbx19_operational_report.md`
+3. relevant working module report
 
 ## 6. Next Build Steps
-1. Create the 8 module-level reports
-2. Add links from this index to the actual report files
-3. Keep the central SSOT short and summary-focused
-4. Move deep module detail out of central files into per-module reports
+1. Keep the central SSOT short and summary-focused
+2. Review cross-module inconsistencies and update module reports when evidence changes
+3. Add review metadata later if needed: `reviewed_on`, `reviewed_by`, `next_review_trigger`
+4. Maintain this index whenever report paths or module roles change
 
 ## 7. Related Files
 - `docs/review/AGENT_OPERATIONAL_STATUS_SSOT.md`
