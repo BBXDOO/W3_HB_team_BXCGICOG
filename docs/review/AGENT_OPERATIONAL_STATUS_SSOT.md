@@ -21,7 +21,7 @@ Detailed module-level analysis is maintained outside this file to keep the SSOT 
 | `Grok` | Pattern / Signals / Insight | `partial` | `Gemini` | `BBX19`, `Copilot-Gm` (case-based) | narrative / evidence drift risk |
 | `DeepSeek` | Scale / Long-Term Planning | `partial` | `Gemini` (case-based) | `BBX19` | still Phase-1 / not full-scan ready |
 | `Copilot-Gm` | Policy / Merge / Compliance | `ready` | `Gemini` | `BBX19` | governance choke-point |
-| `Cast` | Deep Reasoning / Decision Support | `partial` | `ยังไม่พบหลักฐาน` | `BBX19` | status inconsistency across files |
+| `Cast` | Deep Reasoning / Structural Adaptation / Decision Support | `partial-active` | `ยังไม่พบหลักฐาน` | `BBX19` | ยังอยู่ในระยะ capability-learning ก่อน full production dependency |
 
 ## 3. Governance Summary
 System-wide governance evidence indicates:
@@ -69,14 +69,14 @@ Recent documentation work completed:
 - มี index เชื่อมรายงานทั้ง 8 โมดูล
 - มีรายงานแยกครบทั้ง 8 โมดูลแล้ว
 - ไฟล์ SSOT กลางถูกย่อให้เน้นภาพรวมและใช้อ่านตัดสินใจได้เร็วขึ้น
-- จุดที่ยังต้องระวังคือ `Cast` ยังมีสถานะไม่สอดคล้องกันบางไฟล์ และ `BBEX-Core` ยังมี evidence gap บางส่วน
+- จุดที่ยังควรระวังคือ `Cast` ยังอยู่ในระยะ capability-learning ก่อน full production dependency และ `BBEX-Core` ยังมี evidence gap บางส่วน
 
 ## 7. Top Operational Risks
 1. `BBX19` is a single point of final authority
 2. `Gemini` is a critical validation dependency
 3. `Copilot-Gm` is a governance choke-point
 4. `DeepSeek` is not yet full-scan ready
-5. `Cast` has status inconsistency across files
+5. `Cast` is in capability-learning phase before full production dependency
 6. `BBEX-Core` operational evidence remains incomplete
 
 ## 8. Related Files

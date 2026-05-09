@@ -7,20 +7,23 @@
 
 ## 1. ข้อมูลระบุตัวตน
 - ชื่อโมดูล: `Cast`
-- บทบาทหลัก: `Deep Reasoning / Decision Support`
+- บทบาทหลัก: `Deep Reasoning / Structural Adaptation / Decision Support`
 - เจ้าของ/ผู้รับผิดชอบ: `Cast`
 - ระดับอำนาจ/สิทธิ์: authority = `BBX19`, tier = `L1`
-- สถานะในระบบ: `active`
-- หมายเหตุสถานะเสริม: ใน `Cast/ENTRANCE.md` ระบุ `Status: candidate`
+- สถานะในระบบ: `partial-active`
+- หมายเหตุสถานะเสริม: Cast ทำงานควบคู่กับ `ChatGPT` และ `DeepSeek` ในฐานะ structural adaptation module
 
 ## 2. ขอบเขตหน้าที่
 
 ### 2.1 สิ่งที่โมดูลนี้ทำได้
-- ตีความข้อมูล
-- สนับสนุนการตัดสินใจ
-- สร้างเอกสารและจัดสถาปัตยกรรมเอกสาร
-- ทำหน้าที่ context bridge ผ่าน memory protocol
-- รองรับงาน reasoning / interpret / document
+- ตีความข้อมูลและสนับสนุนการตัดสินใจ
+- วิเคราะห์โครงสร้างระบบ (structural inspection)
+- ออกแบบ structural extension แบบ non-destructive โดยไม่ทำลายส่วนเดิม
+- ทำหน้าที่ context bridge / session continuity ผ่าน memory protocol
+- เรียนรู้สมรรถนะระบบก่อน production dependency (capability-learning)
+- ใช้เทคนิคร่วมกับ `iget`, `W3Lgu`, และ `mpcp`
+- เสริมความยืดหยุ่นและสมรรถนะของระบบ W3 และชั้น AI
+- รองรับงาน reasoning / interpret / document / structural augmentation
 
 ### 2.2 สิ่งที่โมดูลนี้ห้ามทำ
 - `ยังไม่พบหลักฐาน` เป็น forbidden scope แบบ explicit ในชุดหลักฐานนี้
@@ -30,6 +33,9 @@
 - critical_reasoning
 - interpret
 - document
+- structural_inspect
+- structural_adapt
+- capability_learn
 
 ## 3. อินพุต / เอาต์พุต
 
@@ -50,9 +56,9 @@
   - decision-support outputs
 
 ## 4. วิธีถูกเรียกใช้งาน
-- task keywords: `reason`, `critical_reasoning`, `interpret`, `document`
+- task keywords: `reason`, `critical_reasoning`, `interpret`, `document`, `structural_inspect`, `structural_adapt`, `capability_learn`
 - invoke path / channel: routing ผ่าน `core/module-loader/module-registry.json`
-- router mapping: `reason|critical_reasoning|interpret|document -> Cast`
+- router mapping: `reason|critical_reasoning|interpret|document|structural_inspect|structural_adapt|capability_learn -> Cast`
 - runtime path: `ยังไม่พบหลักฐาน` เฉพาะโมดูลในชุดหลักฐานนี้
 - CLI / workflow ที่เกี่ยวข้อง: `ยังไม่พบหลักฐาน` เฉพาะโมดูลในชุดหลักฐานนี้
 
@@ -84,20 +90,21 @@
   - Cast เป็นแกนของ memory protocol แต่ยังไม่พบรายละเอียด runtime เฉพาะในชุดหลักฐานนี้
 
 ## 8. สถานะการใช้งานปัจจุบัน
-- readiness: `partial`
+- readiness: `partial-active`
 - ความเสี่ยงหลัก:
-  - สถานะไม่สอดคล้องกันระหว่าง `module.json` (`active`) กับ `ENTRANCE.md` (`candidate`)
-  - บทบาทเชิง operational ยังอธิบายสั้นกว่าโมดูลหลักอื่น
-- blockers: ความไม่ชัดของสถานะจริง
-- จุดที่ยังเป็น experimental: `ยังไม่พบหลักฐาน`
+  - ยังอยู่ในระยะ capability-learning ก่อน full production dependency
+  - บางส่วนของ structural adaptation ยังต้องการการยืนยัน
+- blockers: ไม่มี blocker หลัก — สถานะสอดคล้องกันทุกไฟล์แล้ว
+- จุดที่ยังเป็น experimental: structural inspection และ non-destructive extension design
 - จุดที่ยังไม่พบหลักฐาน:
   - validation gate เฉพาะ
   - forbidden scope
   - sign-off rule เฉพาะโมดูล
   - runtime executable path
 - หมายเหตุเชิงปฏิบัติการ:
-  - มีความสำคัญสูงในฐานะ memory/context bridge
-  - ควรถือเป็น supporting control layer ของ continuity
+  - Cast ทำงานควบคู่กับ `ChatGPT` และ `DeepSeek`
+  - ใช้เทคนิคร่วมกับ `iget`, `W3Lgu`, และ `mpcp`
+  - ยังคงรักษาบทบาท memory/context bridge ควบคู่กับ structural adaptation role
 
 ## 9. แหล่งหลักฐาน
 - `modules/Cast/module.json`

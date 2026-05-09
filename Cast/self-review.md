@@ -1,8 +1,8 @@
 # Cast — Self Review
 
 ## 1. Module Status Summary
-- สถานะรวมของโมดูล: candidate
-- Role: Interpreter & Document Architect
+- สถานะรวมของโมดูล: partial-active
+- Role: Deep Reasoning / Structural Adaptation / Decision Support
 - Reports to: BBX19
 
 ## 2. Key Outputs (งานที่ผลิต)

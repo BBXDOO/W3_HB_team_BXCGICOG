@@ -22,7 +22,7 @@ It exists to reduce complexity in the central SSOT by separating:
 | `Grok` | Pattern / Signals / Insight | `partial` | pattern / narrative / hidden signal interpretation |
 | `DeepSeek` | Scale / Long-Term Planning | `partial` | long-term planning / baseline architecture |
 | `Copilot-Gm` | Policy / Merge / Compliance | `ready` | governance / structure / merge compliance |
-| `Cast` | Deep Reasoning / Decision Support | `partial` | context bridge / reasoning / session continuity |
+| `Cast` | Deep Reasoning / Structural Adaptation / Decision Support | `partial-active` | context bridge / structural augmentation / adaptive reasoning / continuity support |
 
 ## 3. Module Report Links
 

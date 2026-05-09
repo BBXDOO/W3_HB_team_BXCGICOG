@@ -21,7 +21,7 @@
 | `Grok` | Pattern / Signals / Insight | `partial` | `Gemini` | `BBX19`, `Copilot-Gm` (บางกรณี) | เสี่ยง drift ด้าน narrative / evidence |
 | `DeepSeek` | Scale / Long-Term Planning | `partial` | `Gemini` (บางกรณี) | `BBX19` | ยังอยู่ใน Phase-1 / ยังไม่พร้อม full-scan |
 | `Copilot-Gm` | Policy / Merge / Compliance | `ready` | `Gemini` | `BBX19` | เป็นคอขวดด้าน governance |
-| `Cast` | Deep Reasoning / Decision Support | `partial` | `ยังไม่พบหลักฐาน` | `BBX19` | สถานะไม่สอดคล้องกันระหว่างบางไฟล์ |
+| `Cast` | Deep Reasoning / Structural Adaptation / Decision Support | `partial-active` | `ยังไม่พบหลักฐาน` | `BBX19` | ยังอยู่ในระยะ capability-learning ก่อน full production dependency |
 
 ## 3. สรุป Governance
 หลักฐานระดับระบบบ่งชี้ว่า:
@@ -71,7 +71,7 @@
 - รายงานแยกครบทุกโมดูล
 
 สิ่งที่ยังควรระวัง:
-- `Cast` ยังมีความไม่สอดคล้องของสถานะในบางไฟล์
+- `Cast` ยังอยู่ในระยะ capability-learning ก่อน full production dependency
 - `BBEX-Core` ยังมี evidence gap บางส่วน
 - `Gemini` และ `Copilot-Gm` ยังเป็นจุดคอขวดสำคัญของระบบ
 
@@ -80,7 +80,7 @@
 2. `Gemini` เป็น critical validation dependency
 3. `Copilot-Gm` เป็น governance choke-point
 4. `DeepSeek` ยังไม่พร้อมสำหรับ full-scan
-5. `Cast` มีสถานะไม่สอดคล้องกันระหว่างไฟล์
+5. `Cast` ยังอยู่ในระยะ capability-learning ก่อน full production dependency
 6. `BBEX-Core` ยังมีหลักฐาน operational ไม่ครบ
 
 ## 8. ไฟล์ที่เกี่ยวข้อง
