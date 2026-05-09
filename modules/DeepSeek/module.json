@@ -4,17 +4,14 @@
   "version": "2.0.0",
   "idp_version": "2.0",
   "idp_ref": "BBX19/modules/BBX19/idp/IDP-V2.0/DeepSeek-IDP.md",
-
   "owner": "DeepSeek",
   "authority": "BBX19",
   "dna": "DEEPSEEK-W3.DNA:HB-TW3/TA04",
-
   "class": "planner",
   "tier": "L1",
   "role": "Scale / Long-Term Planning",
   "status": "active",
   "mode": "RMB",
-
   "workspace": {
     "root": "modules/DeepSeek/",
     "requests": "modules/DeepSeek/requests/",
@@ -22,7 +19,6 @@
     "plans": "modules/DeepSeek/plans/",
     "logs": "modules/DeepSeek/logs/"
   },
-
   "file_access": {
     "read": [
       "modules/DeepSeek/",
@@ -42,7 +38,6 @@
       "modules/DeepSeek/"
     ]
   },
-
   "autonomy": {
     "self_directed": true,
     "can_create_files": true,
@@ -53,7 +48,6 @@
       "schema_change"
     ]
   },
-
   "input": [
     "modules/DeepSeek/requests/",
     "knowledge/",
@@ -61,19 +55,17 @@
     "core/",
     "blueprints/"
   ],
-
   "output": [
     "modules/DeepSeek/reports/",
     "modules/DeepSeek/plans/",
     "modules/DeepSeek/logs/"
   ],
-
+  "notes": "DeepSeek วางแผนระยะยาว ออกแบบโครงสร้าง และรองรับ scalability สามารถจัดการพื้นที่ plans และ reports ของตัวเองได้อิสระ",
+  "scope": "logic",
   "runtime": {
     "speed": "normal",
     "logic": "structured",
     "response_style": "long_form_plan",
     "token_efficiency": "medium"
-  },
-
-  "notes": "DeepSeek วางแผนระยะยาว ออกแบบโครงสร้าง และรองรับ scalability สามารถจัดการพื้นที่ plans และ reports ของตัวเองได้อิสระ"
+  }
 }

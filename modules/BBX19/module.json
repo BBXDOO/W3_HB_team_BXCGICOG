@@ -4,23 +4,19 @@
   "version": "2.0.0",
   "idp_version": "2.0",
   "idp_ref": "BBX19/modules/BBX19/idp/IDP-V2.0/BBX19-IDP.md",
-
   "owner": "BBX19",
   "authority": "BBX19",
   "dna": "BBX19-W3.DNA:HB-TW3/TA00",
-
   "class": "human_core",
   "tier": "ROOT",
   "role": "Final Authority / Vision Keeper",
   "status": "active",
   "mode": "RMB",
-
   "workspace": {
     "root": "modules/BBX19/",
     "requests": "modules/BBX19/requests/",
     "logs": "modules/BBX19/logs/"
   },
-
   "file_access": {
     "read": [
       "modules/",
@@ -41,7 +37,6 @@
       "modules/BBX19/"
     ]
   },
-
   "autonomy": {
     "self_directed": true,
     "can_create_files": true,
@@ -50,7 +45,6 @@
     "can_override_modules": true,
     "requires_approval_for": []
   },
-
   "input": [
     "modules/BBX19/requests/",
     "modules/registry.json",
@@ -58,19 +52,17 @@
     "knowledge/",
     "logs/"
   ],
-
   "output": [
     "modules/BBX19/logs/",
     "core/governance/",
     "outcomes/append_only_ledger/"
   ],
-
+  "notes": "BBX19 คือ root authority ของ W3 มีสิทธิ์อ่านและเขียนทุกพื้นที่ในระบบ",
+  "scope": "system_wide",
   "runtime": {
     "speed": "human_pace",
     "logic": "intent_driven",
     "response_style": "decisive",
     "token_efficiency": "high"
-  },
-
-  "notes": "BBX19 คือ root authority ของ W3 มีสิทธิ์อ่านและเขียนทุกพื้นที่ในระบบ"
+  }
 }

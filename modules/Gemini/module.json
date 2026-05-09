@@ -67,6 +67,7 @@
     "modules/Gemini/audit/",
     "modules/Gemini/logs/"
   ],
+  "scope": "verification",
 
   "runtime": {
     "speed": "adaptive",
