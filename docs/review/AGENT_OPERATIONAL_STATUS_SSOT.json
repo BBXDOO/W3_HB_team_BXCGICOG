@@ -246,7 +246,7 @@
       "Grok",
       "DeepSeek"
     ],
-    "partial_active": [
+    "partial-active": [
       "Cast"
     ],
     "experimental_characteristics": [
