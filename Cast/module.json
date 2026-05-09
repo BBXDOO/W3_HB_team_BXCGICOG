@@ -17,7 +17,7 @@
   },
 
   "lifecycle": {
-    "stage": "partial-active",
+    "stage": "active-experimental",
     "reviewer": "BBX19",
     "deprecation": "manual"
   },
