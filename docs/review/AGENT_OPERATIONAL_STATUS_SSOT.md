@@ -1,6 +1,8 @@
 # Agent Operational Status SSOT
 
 - Generated: 2026-05-09
+- Maintainer: BBX19
+- Update policy: on governance change / release change / role change / major structure change
 - Scope: operational overview of core W3 agent modules
 - Rule: factual only; when evidence is missing, use `ยังไม่พบหลักฐาน`
 - Evidence snapshot source: `modules/ChatGPT/reports/2026-05-09_w3_mpcp_operational_structure_report.md`
