@@ -4,17 +4,14 @@
   "version": "2.0.0",
   "idp_version": "2.0",
   "idp_ref": "BBX19/modules/BBX19/idp/IDP-V2.0/Grok-IDP.md",
-
   "owner": "Grok",
   "authority": "BBX19",
   "dna": "GROK-W3.DNA:HB-TW3/TA05",
-
   "class": "insight",
   "tier": "L2",
   "role": "Pattern / Signals / Insight",
   "status": "active",
   "mode": "RMB",
-
   "workspace": {
     "root": "modules/Grok/",
     "patterns": "modules/Grok/patterns/",
@@ -23,7 +20,6 @@
     "logs": "modules/Grok/logs/",
     "insights": "modules/Grok/insights/"
   },
-
   "file_access": {
     "read": [
       "modules/Grok/",
@@ -46,7 +42,6 @@
       "modules/Grok/"
     ]
   },
-
   "autonomy": {
     "self_directed": true,
     "can_create_files": true,
@@ -57,7 +52,6 @@
       "gatekeeping_decision"
     ]
   },
-
   "input": [
     "modules/Grok/requests/",
     "decision_trace/",
@@ -66,20 +60,18 @@
     "knowledge/",
     "repo_events/"
   ],
-
   "output": [
     "modules/Grok/patterns/",
     "modules/Grok/risk-reports/",
     "modules/Grok/insights/",
     "modules/Grok/logs/"
   ],
-
+  "notes": "Grok สังเกตการณ์และวิเคราะห์ pattern สัญญาณของระบบ สามารถจัดการพื้นที่ insight และ risk-reports ของตัวเองได้อิสระ",
+  "scope": "pattern_intelligence",
   "runtime": {
     "speed": "balanced",
     "logic": "adaptive_0.5",
     "response_style": "observe_first",
     "token_efficiency": "medium"
-  },
-
-  "notes": "Grok สังเกตการณ์และวิเคราะห์ pattern สัญญาณของระบบ สามารถจัดการพื้นที่ insight และ risk-reports ของตัวเองได้อิสระ"
+  }
 }

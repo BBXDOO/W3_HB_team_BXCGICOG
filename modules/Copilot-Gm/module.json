@@ -4,17 +4,14 @@
   "version": "2.0.0",
   "idp_version": "2.0",
   "idp_ref": "BBX19/modules/BBX19/idp/IDP-V2.0/Copilot-Gm-IDP.md",
-
   "owner": "Copilot-Gm",
   "authority": "BBX19",
   "dna": "COPILOT-GM-W3.DNA:HB-TW3/TA01",
-
   "class": "governance",
   "tier": "L3",
   "role": "Policy / Merge / Compliance",
   "status": "active",
   "mode": "RMB",
-
   "workspace": {
     "root": "modules/Copilot-Gm/",
     "requests": "modules/Copilot-Gm/requests/",
@@ -22,7 +19,6 @@
     "governance": "modules/Copilot-Gm/governance/",
     "logs": "modules/Copilot-Gm/logs/"
   },
-
   "file_access": {
     "read": [
       "modules/Copilot-Gm/",
@@ -42,7 +38,6 @@
       "modules/Copilot-Gm/"
     ]
   },
-
   "autonomy": {
     "self_directed": true,
     "can_create_files": true,
@@ -54,7 +49,6 @@
       "system_reset"
     ]
   },
-
   "input": [
     "modules/Copilot-Gm/requests/",
     "core/governance/",
@@ -62,19 +56,17 @@
     "docs/",
     "modules/registry.json"
   ],
-
   "output": [
     "modules/Copilot-Gm/reports/",
     "modules/Copilot-Gm/governance/",
     "modules/Copilot-Gm/logs/"
   ],
-
+  "notes": "Copilot-Gm ดูแล governance นโยบาย merge และ compliance สามารถจัดการพื้นที่ governance และ reports ของตัวเองได้อิสระ",
+  "scope": "governance",
   "runtime": {
     "speed": "normal",
     "logic": "structured",
     "response_style": "compliance_first",
     "token_efficiency": "high"
-  },
-
-  "notes": "Copilot-Gm ดูแล governance นโยบาย merge และ compliance สามารถจัดการพื้นที่ governance และ reports ของตัวเองได้อิสระ"
+  }
 }

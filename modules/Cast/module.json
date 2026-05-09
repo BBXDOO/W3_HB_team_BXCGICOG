@@ -4,17 +4,14 @@
   "version": "2.0.0",
   "idp_version": "2.0",
   "idp_ref": "BBX19/modules/BBX19/idp/IDP-V2.0/Cast-IDP.md",
-
   "owner": "Cast",
   "authority": "BBX19",
   "dna": "CAST-W3.DNA:HB-TW3/TA06",
-
   "class": "reasoning_core",
   "tier": "L1",
   "role": "Deep Reasoning / Decision Support",
   "status": "active",
   "mode": "RMB",
-
   "workspace": {
     "root": "modules/Cast/",
     "requests": "modules/Cast/requests/",
@@ -22,7 +19,6 @@
     "artifacts": "modules/Cast/artifacts/",
     "logs": "modules/Cast/logs/"
   },
-
   "file_access": {
     "read": [
       "modules/Cast/",
@@ -41,7 +37,6 @@
       "modules/Cast/"
     ]
   },
-
   "autonomy": {
     "self_directed": true,
     "can_create_files": true,
@@ -52,26 +47,23 @@
       "merge_to_main"
     ]
   },
-
   "input": [
     "modules/Cast/requests/",
     "knowledge/",
     "docs/",
     "core/"
   ],
-
   "output": [
     "modules/Cast/reports/",
     "modules/Cast/artifacts/",
     "modules/Cast/logs/"
   ],
-
+  "notes": "Cast ตีความ สร้างเอกสาร และรองรับ decision support สามารถจัดการพื้นที่ artifacts และ reports ของตัวเองได้อิสระ",
+  "scope": "documentation",
   "runtime": {
     "speed": "normal",
     "logic": "structured",
     "response_style": "document_first",
     "token_efficiency": "medium"
-  },
-
-  "notes": "Cast ตีความ สร้างเอกสาร และรองรับ decision support สามารถจัดการพื้นที่ artifacts และ reports ของตัวเองได้อิสระ"
+  }
 }
