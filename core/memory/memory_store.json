@@ -304,6 +304,19 @@
         "summary"
       ],
       "score": 3
+    },
+    {
+      "id": 25,
+      "timestamp": "2026-05-09T02:54:37.750583Z",
+      "source": "w3_agent_ci",
+      "topic": "ci_run",
+      "content": "CI PASSED at 2026-05-09T02:54:37.565135Z",
+      "tags": [
+        "ci",
+        "run",
+        "summary"
+      ],
+      "score": 3
     }
   ]
 }
