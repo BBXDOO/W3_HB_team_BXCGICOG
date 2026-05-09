@@ -1,12 +1,16 @@
 {
-  "version": "0.2",
+  "version": "0.3.0",
   "modules": [
     "BBX19",
+    "BBEX-Core",
     "ChatGPT",
     "Gemini",
     "Grok",
     "DeepSeek",
     "Copilot-Gm",
     "Cast"
-  ]
+  ],
+  "module_config": "modules/{name}/module.json",
+  "idp_v2_path": "BBX19/modules/BBX19/idp/IDP-V2.0/",
+  "autonomy": true
 }

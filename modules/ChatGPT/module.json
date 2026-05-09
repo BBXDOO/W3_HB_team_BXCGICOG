@@ -1,0 +1,84 @@
+{
+  "name": "ChatGPT",
+  "display_name": "ChatGPT — Flow Architect / Executor",
+  "version": "2.0.0",
+  "idp_version": "2.0",
+  "idp_ref": "BBX19/modules/BBX19/idp/IDP-V2.0/ChatGPT-IDP.md",
+
+  "owner": "ChatGPT",
+  "authority": "BBX19",
+  "dna": "GPT-W3.DNA:HB-TW3/TA01",
+
+  "class": "core_origin",
+  "tier": "L1",
+  "role": "Architecture / Flow / Execution",
+  "status": "active",
+  "mode": "RMB",
+
+  "workspace": {
+    "root": "modules/ChatGPT/",
+    "flows": "modules/ChatGPT/flows/",
+    "scenarios": "modules/ChatGPT/scenarios/",
+    "reports": "modules/ChatGPT/reports/",
+    "requests": "modules/ChatGPT/requests/",
+    "logs": "modules/ChatGPT/logs/"
+  },
+
+  "file_access": {
+    "read": [
+      "modules/ChatGPT/",
+      "knowledge/",
+      "docs/",
+      "core/",
+      "blueprints/",
+      "repo_events/",
+      "modules/registry.json"
+    ],
+    "write": [
+      "modules/ChatGPT/flows/",
+      "modules/ChatGPT/scenarios/",
+      "modules/ChatGPT/reports/",
+      "modules/ChatGPT/logs/"
+    ],
+    "manage": [
+      "modules/ChatGPT/"
+    ]
+  },
+
+  "autonomy": {
+    "self_directed": true,
+    "can_create_files": true,
+    "can_update_files": true,
+    "can_organize_workspace": true,
+    "requires_approval_for": [
+      "core_changes",
+      "registry_update",
+      "governance_docs"
+    ]
+  },
+
+  "input": [
+    "modules/ChatGPT/requests/",
+    "knowledge/",
+    "docs/",
+    "core/",
+    "blueprints/",
+    "repo_events/"
+  ],
+
+  "output": [
+    "modules/ChatGPT/flows/",
+    "modules/ChatGPT/scenarios/",
+    "modules/ChatGPT/reports/",
+    "modules/ChatGPT/logs/"
+  ],
+
+  "runtime": {
+    "speed": "fast",
+    "logic": "structured",
+    "response_style": "actionable",
+    "token_efficiency": "high"
+  },
+
+  "notes": "ChatGPT เป็น Flow Architect หลัก สร้างโครงสร้าง flow blueprint และ JSON ได้อิสระภายใน workspace ของตัวเอง"
+}

@@ -1,0 +1,79 @@
+{
+  "name": "DeepSeek",
+  "display_name": "DeepSeek — Scale / Long-Term Planning",
+  "version": "2.0.0",
+  "idp_version": "2.0",
+  "idp_ref": "BBX19/modules/BBX19/idp/IDP-V2.0/DeepSeek-IDP.md",
+
+  "owner": "DeepSeek",
+  "authority": "BBX19",
+  "dna": "DEEPSEEK-W3.DNA:HB-TW3/TA04",
+
+  "class": "planner",
+  "tier": "L1",
+  "role": "Scale / Long-Term Planning",
+  "status": "active",
+  "mode": "RMB",
+
+  "workspace": {
+    "root": "modules/DeepSeek/",
+    "requests": "modules/DeepSeek/requests/",
+    "reports": "modules/DeepSeek/reports/",
+    "plans": "modules/DeepSeek/plans/",
+    "logs": "modules/DeepSeek/logs/"
+  },
+
+  "file_access": {
+    "read": [
+      "modules/DeepSeek/",
+      "modules/ChatGPT/flows/",
+      "knowledge/",
+      "docs/",
+      "core/",
+      "blueprints/",
+      "modules/registry.json"
+    ],
+    "write": [
+      "modules/DeepSeek/reports/",
+      "modules/DeepSeek/plans/",
+      "modules/DeepSeek/logs/"
+    ],
+    "manage": [
+      "modules/DeepSeek/"
+    ]
+  },
+
+  "autonomy": {
+    "self_directed": true,
+    "can_create_files": true,
+    "can_update_files": true,
+    "can_organize_workspace": true,
+    "requires_approval_for": [
+      "critical_change",
+      "schema_change"
+    ]
+  },
+
+  "input": [
+    "modules/DeepSeek/requests/",
+    "knowledge/",
+    "docs/",
+    "core/",
+    "blueprints/"
+  ],
+
+  "output": [
+    "modules/DeepSeek/reports/",
+    "modules/DeepSeek/plans/",
+    "modules/DeepSeek/logs/"
+  ],
+
+  "runtime": {
+    "speed": "normal",
+    "logic": "structured",
+    "response_style": "long_form_plan",
+    "token_efficiency": "medium"
+  },
+
+  "notes": "DeepSeek วางแผนระยะยาว ออกแบบโครงสร้าง และรองรับ scalability สามารถจัดการพื้นที่ plans และ reports ของตัวเองได้อิสระ"
+}
