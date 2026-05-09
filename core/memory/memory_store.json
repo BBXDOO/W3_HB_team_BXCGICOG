@@ -265,6 +265,19 @@
         "summary"
       ],
       "score": 3
+    },
+    {
+      "id": 22,
+      "timestamp": "2026-05-09T02:26:02.760008Z",
+      "source": "w3_agent_ci",
+      "topic": "ci_run",
+      "content": "CI FAILED (error-severity violations found) at 2026-05-09T02:26:02.473128Z",
+      "tags": [
+        "ci",
+        "run",
+        "summary"
+      ],
+      "score": 3
     }
   ]
 }
