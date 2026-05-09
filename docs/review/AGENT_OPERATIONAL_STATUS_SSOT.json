@@ -71,12 +71,15 @@
     },
     {
       "name": "Cast",
-      "role": "Deep Reasoning / Decision Support",
-      "status": "partial",
+      "role": "Deep Reasoning / Structural Adaptation / Decision Support",
+      "primary_function": "context bridge / structural augmentation / adaptive reasoning / continuity support",
+      "status": "partial-active",
+      "paired_with": ["ChatGPT", "DeepSeek"],
+      "technique_partners": ["iget", "W3Lgu", "mpcp"],
       "validation_gate": "ยังไม่พบหลักฐาน",
       "governance_gate": "BBX19",
       "escalation": "BBX19",
-      "key_risk": "status mismatch across files (`active` vs `candidate`)"
+      "key_risk": "capability-learning phase before full production dependency; structural adaptation still experimental"
     }
   ],
   "dependencies": [
@@ -198,9 +201,12 @@
     {
       "from": "Cast",
       "to": "All modules",
-      "type": "context bridge / session continuity",
+      "type": "context bridge / structural augmentation / session continuity",
+      "technique_partners": ["iget", "W3Lgu", "mpcp"],
       "evidence": [
-        "Cast/context/protocol.md"
+        "Cast/context/protocol.md",
+        "Cast/ENTRANCE.md",
+        "modules/Cast/module.json"
       ]
     }
   ],
@@ -238,7 +244,9 @@
       "BBEX-Core",
       "ChatGPT",
       "Grok",
-      "DeepSeek",
+      "DeepSeek"
+    ],
+    "partial-active": [
       "Cast"
     ],
     "experimental_characteristics": [
@@ -251,7 +259,7 @@
     "Gemini is a critical validation dependency",
     "Copilot-Gm is a governance choke-point",
     "DeepSeek is not yet full-scan ready",
-    "Cast has status inconsistency across files",
+    "Cast is in capability-learning phase before full production dependency; structural adaptation experimental",
     "BBEX-Core operational evidence remains incomplete",
     "ChatGPT requires downstream validation before trusted integration",
     "Grok insights can drift if evidence and logic trail are missing"

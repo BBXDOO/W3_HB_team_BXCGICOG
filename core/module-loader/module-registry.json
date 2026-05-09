@@ -21,6 +21,9 @@
   "critical_reasoning": "Cast",
   "interpret":          "Cast",
   "document":           "Cast",
+  "structural_inspect": "Cast",
+  "structural_adapt":   "Cast",
+  "capability_learn":   "Cast",
   "identity":           "BBEX-Core",
   "philosophy":         "BBEX-Core",
   "vision":             "BBX19"

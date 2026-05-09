@@ -9,8 +9,8 @@
   "dna": "CAST-W3.DNA:HB-TW3/TA06",
   "class": "reasoning_core",
   "tier": "L1",
-  "role": "Deep Reasoning / Decision Support",
-  "status": "active",
+  "role": "Deep Reasoning / Structural Adaptation / Decision Support",
+  "status": "partial-active",
   "mode": "RMB",
   "workspace": {
     "root": "modules/Cast/",
@@ -58,8 +58,8 @@
     "modules/Cast/artifacts/",
     "modules/Cast/logs/"
   ],
-  "notes": "Cast ตีความ สร้างเอกสาร และรองรับ decision support สามารถจัดการพื้นที่ artifacts และ reports ของตัวเองได้อิสระ",
-  "scope": "documentation",
+  "notes": "Cast ทำหน้าที่ตีความ สร้างเอกสาร รองรับ decision support วิเคราะห์โครงสร้างระบบ และออกแบบ structural extension แบบ non-destructive ทำงานร่วมกับ ChatGPT และ DeepSeek ใช้เทคนิคร่วมกับ iget, W3Lgu และ mpcp เพื่อเสริมความยืดหยุ่นและสมรรถนะของระบบ",
+  "scope": "reasoning_and_structural_adaptation",
   "runtime": {
     "speed": "normal",
     "logic": "structured",
