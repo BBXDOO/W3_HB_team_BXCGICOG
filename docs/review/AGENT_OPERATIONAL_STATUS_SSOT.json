@@ -1,0 +1,289 @@
+{
+  "generated": "2026-05-09",
+  "maintainer": "BBX19",
+  "update_policy": "on governance change / release change / role change / major structure change",
+  "scope": "operational overview of 8 core W3 agent modules",
+  "rule": "factual only; when evidence is missing, use `ยังไม่พบหลักฐาน`",
+  "evidence_snapshot_source": "modules/ChatGPT/reports/2026-05-09_w3_mpcp_operational_structure_report.md",
+  "modules": [
+    {
+      "name": "BBX19",
+      "role": "Final Authority / Vision Keeper",
+      "status": "ready",
+      "validation_gate": "ยังไม่พบหลักฐาน",
+      "governance_gate": "BBX19",
+      "escalation": "final authority",
+      "key_risk": "single point of authority"
+    },
+    {
+      "name": "BBEX-Core",
+      "role": "Identity / Philosophical Anchor",
+      "status": "partial",
+      "validation_gate": "ยังไม่พบหลักฐาน",
+      "governance_gate": "BBX19",
+      "escalation": "ยังไม่พบหลักฐาน",
+      "key_risk": "identity-layer operational evidence incomplete"
+    },
+    {
+      "name": "ChatGPT",
+      "role": "Architecture / Flow / Execution",
+      "status": "partial",
+      "validation_gate": "Gemini",
+      "governance_gate": "Copilot-Gm, BBX19",
+      "escalation": "Gemini → Copilot-Gm → BBX19",
+      "key_risk": "outputs require simulation, test-case, validation, and sign-off before integration"
+    },
+    {
+      "name": "Gemini",
+      "role": "Validation / Cross Check",
+      "status": "ready",
+      "validation_gate": "self-role",
+      "governance_gate": "BBX19",
+      "escalation": "BBX19",
+      "key_risk": "validation bottleneck risk"
+    },
+    {
+      "name": "Grok",
+      "role": "Pattern / Signals / Insight",
+      "status": "partial",
+      "validation_gate": "Gemini (logic-related cases)",
+      "governance_gate": "BBX19, Copilot-Gm (governance cases)",
+      "escalation": "Gemini / Copilot-Gm / BBX19",
+      "key_risk": "narrative or pattern drift without evidence / logic trail"
+    },
+    {
+      "name": "DeepSeek",
+      "role": "Scale / Long-Term Planning",
+      "status": "partial",
+      "validation_gate": "Gemini (conflict / structure-impact cases)",
+      "governance_gate": "BBX19",
+      "escalation": "Gemini → BBX19",
+      "key_risk": "still Phase-1 / Skeleton Edition; not full-scan ready"
+    },
+    {
+      "name": "Copilot-Gm",
+      "role": "Policy / Merge / Compliance",
+      "status": "ready",
+      "validation_gate": "Gemini",
+      "governance_gate": "BBX19",
+      "escalation": "BBX19",
+      "key_risk": "governance enforcement gap risk"
+    },
+    {
+      "name": "Cast",
+      "role": "Deep Reasoning / Decision Support",
+      "status": "partial",
+      "validation_gate": "ยังไม่พบหลักฐาน",
+      "governance_gate": "BBX19",
+      "escalation": "BBX19",
+      "key_risk": "status mismatch across files (`active` vs `candidate`)"
+    }
+  ],
+  "dependencies": [
+    {
+      "from": "BBX19",
+      "to": "All modules",
+      "type": "direction / sign-off / root authority",
+      "evidence": [
+        "modules/BBX19/module.json",
+        "BBX19/ENTRANCE.md"
+      ]
+    },
+    {
+      "from": "BBEX-Core",
+      "to": "BBX19",
+      "type": "identity / philosophy support",
+      "evidence": [
+        "modules/BBEX-Core/module.json"
+      ]
+    },
+    {
+      "from": "ChatGPT",
+      "to": "Gemini",
+      "type": "validation of flow / prototype / output",
+      "evidence": [
+        "modules/ChatGPT/module.json",
+        "ChatGPT/ENTRANCE.md"
+      ]
+    },
+    {
+      "from": "ChatGPT",
+      "to": "Copilot-Gm",
+      "type": "repo integration / structure handoff",
+      "evidence": [
+        "ChatGPT/ENTRANCE.md"
+      ]
+    },
+    {
+      "from": "Gemini",
+      "to": "ChatGPT",
+      "type": "flow / test-case / prototype verification",
+      "evidence": [
+        "Gemini/ENTRANCE.md"
+      ]
+    },
+    {
+      "from": "Gemini",
+      "to": "Copilot-Gm",
+      "type": "structural / governance consistency support",
+      "evidence": [
+        "Gemini/ENTRANCE.md"
+      ]
+    },
+    {
+      "from": "Grok",
+      "to": "Gemini",
+      "type": "logic validation of insight",
+      "evidence": [
+        "Grok/ENTRANCE.md",
+        "Grok/base.md"
+      ]
+    },
+    {
+      "from": "Grok",
+      "to": "ChatGPT",
+      "type": "insight handoff for flow / scenario modeling",
+      "evidence": [
+        "Grok/ENTRANCE.md"
+      ]
+    },
+    {
+      "from": "Grok",
+      "to": "Copilot-Gm",
+      "type": "governance / branch conflict escalation",
+      "evidence": [
+        "Grok/base.md"
+      ]
+    },
+    {
+      "from": "DeepSeek",
+      "to": "Gemini",
+      "type": "pattern / architecture conflict validation",
+      "evidence": [
+        "DeepSeek/ENTRANCE.md"
+      ]
+    },
+    {
+      "from": "DeepSeek",
+      "to": "ChatGPT",
+      "type": "reads flow / interaction pattern",
+      "evidence": [
+        "DeepSeek/ENTRANCE.md"
+      ]
+    },
+    {
+      "from": "DeepSeek",
+      "to": "All modules",
+      "type": "baseline architecture reference",
+      "evidence": [
+        "DeepSeek/notes/observation-log.md"
+      ]
+    },
+    {
+      "from": "Copilot-Gm",
+      "to": "Gemini",
+      "type": "governance / config validation",
+      "evidence": [
+        "Copilot-Gm/ENTRANCE.md"
+      ]
+    },
+    {
+      "from": "Copilot-Gm",
+      "to": "ChatGPT",
+      "type": "prototype-to-structure translation",
+      "evidence": [
+        "Copilot-Gm/ENTRANCE.md"
+      ]
+    },
+    {
+      "from": "Cast",
+      "to": "All modules",
+      "type": "context bridge / session continuity",
+      "evidence": [
+        "Cast/context/protocol.md"
+      ]
+    }
+  ],
+  "governance_summary": {
+    "rules": [
+      "No direct commit to main",
+      "PR must be reviewed by at least 1 AI engine",
+      "BBX19 exclusive override",
+      "Gemini required for high-risk docs"
+    ],
+    "highest_authority": "BBX19",
+    "primary_validation_authority": "Gemini",
+    "primary_governance_authority": "Copilot-Gm"
+  },
+  "context_memory_summary": {
+    "sources": [
+      "Cast/context/protocol.md",
+      "Cast/context/session_summary.md"
+    ],
+    "rules": [
+      "read memory before work",
+      "write summary after work",
+      "keep append-only continuity",
+      "archive overflow instead of overwriting history"
+    ],
+    "current_gap": "ยังไม่พบหลักฐาน of automated enforcement from the current evidence set"
+  },
+  "status_groups": {
+    "ready": [
+      "BBX19",
+      "Gemini",
+      "Copilot-Gm"
+    ],
+    "partial": [
+      "BBEX-Core",
+      "ChatGPT",
+      "Grok",
+      "DeepSeek",
+      "Cast"
+    ],
+    "experimental_characteristics": [
+      "DeepSeek"
+    ],
+    "blocked": []
+  },
+  "top_operational_risks": [
+    "BBX19 is a single point of final authority",
+    "Gemini is a critical validation dependency",
+    "Copilot-Gm is a governance choke-point",
+    "DeepSeek is not yet full-scan ready",
+    "Cast has status inconsistency across files",
+    "BBEX-Core operational evidence remains incomplete",
+    "ChatGPT requires downstream validation before trusted integration",
+    "Grok insights can drift if evidence and logic trail are missing"
+  ],
+  "recommended_next_actions": [
+    "Create per-module operational reports for all 8 modules",
+    "Fill missing evidence for BBEX-Core",
+    "Add update policy for this file",
+    "Update this file on major structural, governance, release, or role changes"
+  ],
+  "evidence_base": [
+    "modules/ChatGPT/reports/2026-05-09_w3_mpcp_operational_structure_report.md",
+    "modules/BBX19/module.json",
+    "BBX19/ENTRANCE.md",
+    "modules/BBEX-Core/module.json",
+    "modules/ChatGPT/module.json",
+    "ChatGPT/ENTRANCE.md",
+    "ChatGPT/modules/ChatGPT/boundaries.md",
+    "modules/Gemini/module.json",
+    "Gemini/ENTRANCE.md",
+    "modules/Grok/module.json",
+    "Grok/ENTRANCE.md",
+    "Grok/base.md",
+    "modules/DeepSeek/module.json",
+    "DeepSeek/ENTRANCE.md",
+    "DeepSeek/notes/observation-log.md",
+    "modules/Copilot-Gm/module.json",
+    "Copilot-Gm/ENTRANCE.md",
+    "modules/Cast/module.json",
+    "Cast/ENTRANCE.md",
+    "Cast/context/protocol.md",
+    "core/module-loader/module-registry.json",
+    "core/governance/operating-guidelines.md"
+  ]
+}
