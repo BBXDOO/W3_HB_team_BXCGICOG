@@ -87,3 +87,41 @@ next_recommended_action:
 - Each agent should read AGENT_WORKSPACE_GUIDELINE.md and begin adopting the minimum standard
 - BBX19 should review and sign-off on the workspace audit report
 - Consider adding Cast protocol reminder to all ENTRANCE.md files
+
+---
+
+date: 2026-05-10
+agent: Copilot
+session_id: agent-mpcp-alignment-tests
+work_completed:
+- Added core/runtime/agents/mpcp_reader.py — lightweight MPCP document inspection helpers (read_doc, scan_terms, validate_module_json)
+- Extended core/runtime/agents/base.py with mpcp_role attribute, mpcp_concepts list, and inspect_mpcp() method
+- Updated Gemini, DeepSeek, Grok, Cast, ChatGPT, Copilot-Gm agents with mpcp_role and mpcp_concepts metadata
+- Created SYSTEM/TESTS/mpcp/test_agent_mpcp_alignment.py — 99 checks across 8 sections verifying concept alignment
+- All three MPCP test files pass (81 + 130 + 99 = 310 checks); CI clean (RULE-001 to RULE-005)
+
+decisions_made:
+- mpcp_role matches W3LGU_MPCP_ROLE_MAPPING.md ecosystem positioning (§4/§9); Gemini=validation, Cast=continuity_context, Copilot-Gm=governance, DeepSeek=planning, Grok=pattern_insight, ChatGPT=flow_architecture
+- mpcp_reader.py reads docs relative to repo root via Path resolution — no global state, composable helpers only
+- W3Lgu preserved as language layer (not execution system); Condien preserved as meaning/state layer; ROT preserved as law/boundary — separation principle verified in tests §8
+- Tests use standalone run style (no pytest) consistent with existing runtime_sanity_sweep.py and test_condien_blueprint.py
+
+files_changed:
+- core/runtime/agents/mpcp_reader.py (created)
+- core/runtime/agents/base.py (extended)
+- core/runtime/agents/gemini.py, deepseek.py, grok.py, cast.py, chatgpt.py, copilot_gm.py (updated)
+- SYSTEM/TESTS/mpcp/test_agent_mpcp_alignment.py (created)
+- Cast/context/session_summary.md (updated — this file)
+
+pending_tasks:
+- BBX19 sign-off on new test file and agent metadata additions
+- Consider adding mpcp_reader-based doc inspection to LLM adapter workflow
+- W3LGU integration paper docs can be expanded per the w3lgu_integration_paper/ folder already present
+
+risks_found:
+- None introduced; all existing tests remain passing after changes
+
+next_recommended_action:
+- Run python SYSTEM/TESTS/mpcp/test_agent_mpcp_alignment.py as part of CI pipeline
+- Expand inspect_mpcp() usage in future agent sessions to verify real document alignment
+

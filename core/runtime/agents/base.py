@@ -1,9 +1,33 @@
 from typing import Dict, Any, List
 
+from .mpcp_reader import scan_terms, MPCP_CORE_TERMS
+
 
 class RuntimeAgent:
     module_name = "Fallback"
     action_label = "processed"
+
+    # MPCP / W3Lgu concept alignment (W3LGU_MPCP_ROLE_MAPPING.md §4 / §9)
+    # Subclasses override these to declare their position in the W3 ecosystem.
+    # mpcp_role  — short label matching the role mapping document
+    # mpcp_concepts — key concept words the agent is responsible for;
+    #                 used by inspect_mpcp() to verify concept-document coverage
+    mpcp_role: str = "operational"
+    mpcp_concepts: List[str] = []
+
+    def inspect_mpcp(self, doc_text: str) -> List[str]:
+        """
+        Return the subset of this agent's *mpcp_concepts* that appear in
+        *doc_text* (case-insensitive substring match).
+
+        Agents call this against MPCP concept documents to verify that the
+        documents mention their responsibilities — a lightweight alignment
+        check without heavy schema machinery.
+        """
+        if not self.mpcp_concepts:
+            return []
+        terms_set = frozenset(self.mpcp_concepts)
+        return scan_terms(doc_text, terms_set)
 
     def _responsibilities(self, plan: Dict[str, Any]) -> List[str]:
         duties = plan.get("responsibilities") or []
