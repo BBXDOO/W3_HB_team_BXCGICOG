@@ -222,50 +222,7 @@ def parse_blueprint(text: str, *, validate: bool = True) -> Blueprint:
         line = raw_line.strip()
         if not line:
             continue
-
-        # A line may contain multiple comma-separated KEY:VALUE pairs
-        # (e.g. "CONDIEN:CORE,MODEW:REPORT").  We split on commas and then
-        # re-join any that are NOT a KEY:VALUE pair to preserve multi-value
-        # fields like "LIB:fs,store,net".
-        #
-        # Strategy: split on the FIRST ':' of each token to detect KV pairs.
-        # A token is a KV pair if its left side looks like a FIELD name
-        # (all-caps, underscores, digits). Otherwise it's a value continuation.
-
-        # First pass: try to detect if this line is a multi-pair inline line.
-        # Multi-pair lines have at least two tokens where both sides of ':' form
-        # a valid field name.
-        parts = line.split(",")
-        # Detect KV tokens: left side is identifier-like (UPPER / digits / _)
-        kv_tokens = []
-        current_key: Optional[str] = None
-        current_values: List[str] = []
-
-        for part in parts:
-            if ":" in part:
-                left, right = part.split(":", 1)
-                if _is_field_name(left.strip()):
-                    # Save previous accumulated KV pair
-                    if current_key is not None:
-                        fields[current_key] = (
-                            ",".join(current_values)
-                            if current_key not in LIST_FIELDS
-                            else [v for v in current_values if v]
-                        )
-                    current_key = left.strip().upper()
-                    current_values = [right.strip()] if right.strip() else []
-                    continue
-            # Not a new key — continuation value for current key
-            if current_key is not None:
-                current_values.append(part.strip())
-
-        # Flush the last accumulated pair
-        if current_key is not None:
-            fields[current_key] = (
-                ",".join(current_values)
-                if current_key not in LIST_FIELDS
-                else [v for v in current_values if v]
-            )
+        _parse_line_into(line, fields)
 
     bp = Blueprint(fields)
     if validate:
@@ -273,6 +230,61 @@ def parse_blueprint(text: str, *, validate: bool = True) -> Blueprint:
     return bp
 
 
+def _parse_line_into(line: str, fields: Dict[str, object]) -> None:
+    """
+    Parse a single Blueprint line (possibly containing multiple comma-separated
+    KEY:VALUE pairs) and merge the results into `fields`.
+
+    Supports two formats on the same line:
+      - Single pair:  ``NAME:CONDIEN_CORE``
+      - Multi-pair:   ``CONDIEN:CORE,MODEW:REPORT,PAPER:daily``
+      - Multi-value:  ``LIB:fs,store,net``  (treated as a list for LIST_FIELDS)
+
+    A token opening a new field must satisfy ``_is_field_name`` (first character
+    alphabetic, remaining characters alpha/digit/_).  Non-conforming tokens are
+    treated as additional values for the most recent field key.
+    """
+    parts = line.split(",")
+    current_key: Optional[str] = None
+    current_values: List[str] = []
+
+    for part in parts:
+        if ":" in part:
+            left, right = part.split(":", 1)
+            if _is_field_name(left.strip()):
+                # Flush the previous accumulated key/values
+                if current_key is not None:
+                    _flush(current_key, current_values, fields)
+                current_key = left.strip().upper()
+                current_values = [right.strip()] if right.strip() else []
+                continue
+        # Not a new key — continuation value for the current key
+        if current_key is not None:
+            current_values.append(part.strip())
+
+    # Flush the last accumulated pair
+    if current_key is not None:
+        _flush(current_key, current_values, fields)
+
+
+def _flush(key: str, values: List[str], fields: Dict[str, object]) -> None:
+    """Commit accumulated key/values to the fields dict."""
+    if key in LIST_FIELDS:
+        fields[key] = [v for v in values if v]
+    else:
+        fields[key] = ",".join(values)
+
+
 def _is_field_name(s: str) -> bool:
-    """Return True if s looks like a Blueprint field name (UPPER_CASE letters/digits)."""
-    return bool(s) and all(c.isalpha() or c == "_" or c.isdigit() for c in s) and s == s.upper()
+    """Return True if s looks like a Blueprint field name.
+
+    Rules:
+      - Non-empty
+      - First character must be an uppercase ASCII letter (A-Z)
+      - Remaining characters may be uppercase letters, digits, or underscores
+    """
+    if not s:
+        return False
+    if not s[0].isalpha() or not s[0].isupper():
+        return False
+    return all(c.isalpha() or c == "_" or c.isdigit() for c in s) and s == s.upper()
