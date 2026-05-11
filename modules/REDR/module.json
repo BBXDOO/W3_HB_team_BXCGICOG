@@ -1,0 +1,11 @@
+{
+  "name": "REDR",
+  "display_name": "REDR — Risk Escalation Decision Router",
+  "version": "1.0.0",
+  "class": "risk_router",
+  "tier": "L2",
+  "role": "risk triage and escalation",
+  "status": "active",
+  "workspace": {"root": "modules/REDR/"},
+  "scope": "risk_escalation"
+}

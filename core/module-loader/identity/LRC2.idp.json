@@ -1,0 +1,12 @@
+{
+  "identity": {
+    "name": "LRC2",
+    "designation": "Lifecycle Review Checkpoint v2",
+    "status": "ACTIVE"
+  },
+  "primary_responsibilities": [
+    "lifecycle checkpoint review",
+    "compliance checkpoint",
+    "release readiness signal"
+  ]
+}

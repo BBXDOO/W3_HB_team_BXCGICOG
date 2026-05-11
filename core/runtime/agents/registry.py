@@ -5,8 +5,12 @@ from .cast import CastAgent
 from .chatgpt import ChatGPTAgent
 from .copilot_gm import CopilotGmAgent
 from .deepseek import DeepSeekAgent
+from .dtml import DTMLAgent
 from .gemini import GeminiAgent
 from .grok import GrokAgent
+from .lrc2 import LRC2Agent
+from .psp2 import PSP2Agent
+from .redr import REDRAgent
 
 
 AGENT_TABLE = {
@@ -18,6 +22,10 @@ AGENT_TABLE = {
     "Cast": CastAgent,
     "BBEX-Core": BBEXCoreAgent,
     "BBX19": BBX19Agent,
+    "PSP2": PSP2Agent,
+    "REDR": REDRAgent,
+    "DTML": DTMLAgent,
+    "LRC2": LRC2Agent,
 }
 
 
