@@ -6,18 +6,6 @@
   "tier": "L2",
   "role": "decision traceability",
   "status": "active",
-  "workspace": {
-    "root": "modules/DTML/"
-  },
-  "scope": "decision_trace",
-  "owner": "DTML",
-  "input": [
-    "modules/requests/",
-    "docs/",
-    "knowledge/",
-    "core/"
-  ],
-  "output": [
-    "modules/DTML/"
-  ]
+  "workspace": {"root": "modules/DTML/"},
+  "scope": "decision_trace"
 }

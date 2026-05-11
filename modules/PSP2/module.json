@@ -6,18 +6,6 @@
   "tier": "L2",
   "role": "STAMP + ROUTE",
   "status": "active",
-  "workspace": {
-    "root": "modules/PSP2/"
-  },
-  "scope": "pr_flow",
-  "owner": "PSP2",
-  "input": [
-    "modules/requests/",
-    "docs/",
-    "knowledge/",
-    "core/"
-  ],
-  "output": [
-    "modules/PSP2/"
-  ]
+  "workspace": {"root": "modules/PSP2/"},
+  "scope": "pr_flow"
 }

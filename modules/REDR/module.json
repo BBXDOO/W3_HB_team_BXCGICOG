@@ -6,18 +6,6 @@
   "tier": "L2",
   "role": "risk triage and escalation",
   "status": "active",
-  "workspace": {
-    "root": "modules/REDR/"
-  },
-  "scope": "risk_escalation",
-  "owner": "REDR",
-  "input": [
-    "modules/requests/",
-    "docs/",
-    "knowledge/",
-    "core/"
-  ],
-  "output": [
-    "modules/REDR/"
-  ]
+  "workspace": {"root": "modules/REDR/"},
+  "scope": "risk_escalation"
 }

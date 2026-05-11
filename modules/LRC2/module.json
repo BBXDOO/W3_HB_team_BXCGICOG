@@ -6,18 +6,6 @@
   "tier": "L2",
   "role": "lifecycle review and checkpointing",
   "status": "active",
-  "workspace": {
-    "root": "modules/LRC2/"
-  },
-  "scope": "lifecycle_review",
-  "owner": "LRC2",
-  "input": [
-    "modules/requests/",
-    "docs/",
-    "knowledge/",
-    "core/"
-  ],
-  "output": [
-    "modules/LRC2/"
-  ]
+  "workspace": {"root": "modules/LRC2/"},
+  "scope": "lifecycle_review"
 }
