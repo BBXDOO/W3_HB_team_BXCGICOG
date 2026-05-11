@@ -2,7 +2,7 @@ import os
 import sys
 
 from .fetcher import fetch_pr_files, post_issue_comment, post_inline_comment
-from .scorer import classify_files, compute_score, detect_mode, get_state
+from .scorer import classify_files, build_stats, compute_score, detect_mode, get_state
 from .reporter import (
     build_summary_lines,
     build_recommendations,
@@ -30,14 +30,15 @@ if files is None:
 # CLASSIFY & SCORE
 # ==========================================
 classified = classify_files(files)
-mode = detect_mode(files, classified)
-score, issues = compute_score(files, classified, mode)
+stats = build_stats(files, classified)
+mode = detect_mode(files, classified, stats)
+score, issues = compute_score(files, classified, mode, stats)
 state = get_state(score)
 
 # ==========================================
 # BUILD OUTPUT
 # ==========================================
-total_changes = sum(f.get("changes", 0) for f in files)
+total_changes = stats["total_changes"]
 summary_lines = build_summary_lines(files, classified, mode)
 recommend = build_recommendations(files, classified, mode, total_changes)
 inline_comments = build_inline_comments(files, classified, mode)

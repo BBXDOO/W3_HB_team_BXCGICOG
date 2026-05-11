@@ -1,0 +1,11 @@
+{
+  "name": "LRC2",
+  "display_name": "LRC2 — Lifecycle Review Checkpoint",
+  "version": "1.0.0",
+  "class": "review_gate",
+  "tier": "L2",
+  "role": "lifecycle review and checkpointing",
+  "status": "active",
+  "workspace": {"root": "modules/LRC2/"},
+  "scope": "lifecycle_review"
+}

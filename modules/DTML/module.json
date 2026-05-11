@@ -1,0 +1,11 @@
+{
+  "name": "DTML",
+  "display_name": "DTML — Decision Trace Mapping Layer",
+  "version": "1.0.0",
+  "class": "trace_engine",
+  "tier": "L2",
+  "role": "decision traceability",
+  "status": "active",
+  "workspace": {"root": "modules/DTML/"},
+  "scope": "decision_trace"
+}
