@@ -1,0 +1,12 @@
+{
+  "identity": {
+    "name": "DTML",
+    "designation": "Decision Trace Mapping Layer",
+    "status": "ACTIVE"
+  },
+  "primary_responsibilities": [
+    "decision trace mapping",
+    "timeline evidence logging",
+    "cross-module trace integrity"
+  ]
+}

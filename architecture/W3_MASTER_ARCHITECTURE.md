@@ -464,3 +464,6 @@ Governed with intent.
 ---
 
 End of Master Architecture Draft
+
+
+- Execution plan detail: `docs/roadmaps/P1_P3_EXECUTION_PLAN.md`
