@@ -1,0 +1,15 @@
+{
+  "name": "mpcp_core_pillar",
+  "stages": {
+    "A": "input",
+    "B": "resolve",
+    "C": "inject_context",
+    "D": "execute",
+    "E": "return",
+    "F": "memory"
+  },
+  "context": {
+    "owner": "SYSTEM/TESTS/mpcp",
+    "status": "reference"
+  }
+}
