@@ -1,0 +1,11 @@
+{
+  "name": "PSP2",
+  "display_name": "PSP2 — Pointer Stamp",
+  "version": "1.0.0",
+  "class": "pr_flow_router",
+  "tier": "L2",
+  "role": "STAMP + ROUTE",
+  "status": "active",
+  "workspace": {"root": "modules/PSP2/"},
+  "scope": "pr_flow"
+}
