@@ -1,2 +1,3 @@
 # Dev / CI tooling dependencies
 PyYAML>=6.0
+jsonschema
