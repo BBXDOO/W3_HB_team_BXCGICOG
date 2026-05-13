@@ -1,11 +1,18 @@
 {
-  "name": "LRC2",
-  "display_name": "LRC2 — Lifecycle Review Checkpoint",
-  "version": "1.0.0",
-  "class": "review_gate",
-  "tier": "L2",
-  "role": "lifecycle review and checkpointing",
-  "status": "active",
-  "workspace": {"root": "modules/LRC2/"},
-  "scope": "lifecycle_review"
+  "module_name": "LRC2-Memory",
+  "version": "0.2-refactor",
+  "owner": "Chronicler_LRC2",
+  "input": "Resolved_Action_v27",
+  "output": "Kinetic_Muscle_Memory",
+  "agent_cli": {
+    "enabled": true,
+    "mode": "logging",
+    "log_level": "info",
+    "auto_start": true
+  },
+  "properties": {
+    "storage_type": "cell_memory",
+    "persistence": "permanent"
+  },
+  "bridge_target": "Terminal"
 }
