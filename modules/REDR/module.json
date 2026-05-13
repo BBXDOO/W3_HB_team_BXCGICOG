@@ -1,11 +1,18 @@
 {
-  "name": "REDR",
-  "display_name": "REDR — Risk Escalation Decision Router",
-  "version": "1.0.0",
-  "class": "risk_router",
-  "tier": "L2",
-  "role": "risk triage and escalation",
-  "status": "active",
-  "workspace": {"root": "modules/REDR/"},
-  "scope": "risk_escalation"
+  "module_name": "REDR-Entrance",
+  "version": "0.2-refactor",
+  "owner": "Observer_BBX19",
+  "input": "Raw_Chaos_Stream",
+  "output": "Filtered_Data_Pack",
+  "agent_cli": {
+    "enabled": true,
+    "mode": "monitoring",
+    "log_level": "verbose",
+    "auto_start": true
+  },
+  "properties": {
+    "intake_type": "zero-latency",
+    "filter_logic": "initial_scan"
+  },
+  "bridge_target": "PSP2"
 }
