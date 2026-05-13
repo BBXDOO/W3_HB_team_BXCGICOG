@@ -1,11 +1,19 @@
 {
-  "name": "DTML",
-  "display_name": "DTML — Decision Trace Mapping Layer",
-  "version": "1.0.0",
-  "class": "trace_engine",
-  "tier": "L2",
-  "role": "decision traceability",
-  "status": "active",
-  "workspace": {"root": "modules/DTML/"},
-  "scope": "decision_trace"
+  "module_name": "DTML-Core",
+  "version": "0.2-refactor",
+  "owner": "The_Singularity_Engine",
+  "input": "Condensed_Context",
+  "output": "Resolved_Action_v27",
+  "agent_cli": {
+    "enabled": true,
+    "mode": "execution",
+    "log_level": "critical",
+    "auto_start": true
+  },
+  "properties": {
+    "logic_count": 27,
+    "matrix_dimension": "3x3",
+    "processing_mode": "non-linear"
+  },
+  "bridge_target": "LRC2"
 }
