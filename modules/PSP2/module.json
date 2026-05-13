@@ -1,11 +1,18 @@
 {
-  "name": "PSP2",
-  "display_name": "PSP2 — Pointer Stamp",
-  "version": "1.0.0",
-  "class": "pr_flow_router",
-  "tier": "L2",
-  "role": "STAMP + ROUTE",
-  "status": "active",
-  "workspace": {"root": "modules/PSP2/"},
-  "scope": "pr_flow"
+  "module_name": "PSP2-Accelerator",
+  "version": "0.2-refactor",
+  "owner": "Wormhole_Pilot",
+  "input": "Filtered_Data_Pack",
+  "output": "Condensed_Context",
+  "agent_cli": {
+    "enabled": true,
+    "mode": "routing",
+    "log_level": "info",
+    "auto_start": true
+  },
+  "properties": {
+    "compression_ratio": "high",
+    "dispatch_speed": "warp"
+  },
+  "bridge_target": "DTML"
 }
