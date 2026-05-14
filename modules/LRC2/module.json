@@ -1,16 +1,18 @@
 {
   "name": "LRC2",
   "display_name": "LRC2 — Lifecycle Review & Continuity Checkpoint",
-  "version": "1.1.0",
+  "version": "1.2.0-linec",
+  "owner": "LRC2",
+  "authority": "BBX19",
   "class": "review_continuity_gate",
   "tier": "L2",
-  "role": "lifecycle review + continuity checkpoints",
+  "role": "Lifecycle / Review / Continuity",
   "status": "active",
-  "owner": "LRC2",
   "scope": "lifecycle_review",
   "identity": {
     "stable_id": "LRC2",
-    "line_c_profile": "adaptive_runtime"
+    "line_c_profile": "adaptive_runtime",
+    "legacy_owner_alias": "The_Singularity_Engine"
   },
   "workspace": {
     "root": "modules/LRC2/",
@@ -21,7 +23,18 @@
   "runtime": {
     "mode": "adaptive",
     "execution_style": "checkpoint_first",
-    "compatibility": ["mpcp", "w3lgu", "iget"]
+    "compatibility": ["mpcp", "w3lgu", "iget"],
+    "agent_cli": {
+      "enabled": true,
+      "mode": "adaptive",
+      "log_level": "critical",
+      "auto_start": true
+    }
+  },
+  "properties": {
+    "checkpoint_depth": "phase2",
+    "continuity_guard": true,
+    "backward_compatible": true
   },
   "input": [
     "modules/requests/",

@@ -1,16 +1,18 @@
 {
   "name": "REDR",
   "display_name": "REDR — Risk Escalation & Decision Router",
-  "version": "1.1.0",
+  "version": "1.2.0-linec",
+  "owner": "REDR",
+  "authority": "BBX19",
   "class": "risk_decision_router",
   "tier": "L2",
-  "role": "risk traceability + escalation routing",
+  "role": "Risk / Escalation / Routing",
   "status": "active",
-  "owner": "REDR",
   "scope": "risk_escalation",
   "identity": {
     "stable_id": "REDR",
-    "line_c_profile": "adaptive_runtime"
+    "line_c_profile": "adaptive_runtime",
+    "legacy_owner_alias": "The_Singularity_Engine"
   },
   "workspace": {
     "root": "modules/REDR/",
@@ -21,7 +23,18 @@
   "runtime": {
     "mode": "adaptive",
     "execution_style": "escalation_first",
-    "compatibility": ["mpcp", "w3lgu", "iget"]
+    "compatibility": ["mpcp", "w3lgu", "iget"],
+    "agent_cli": {
+      "enabled": true,
+      "mode": "adaptive",
+      "log_level": "critical",
+      "auto_start": true
+    }
+  },
+  "properties": {
+    "risk_bands": ["green", "yellow", "red"],
+    "escalation_guard": true,
+    "backward_compatible": true
   },
   "input": [
     "modules/requests/",
