@@ -1,4 +1,4 @@
-📘 Knowledge Document — Atom, Perception, Dimension, and Layered Truth
+# 📘 Knowledge Document — Atom, Perception, Dimension, and Layered Truth
 
 🧭 บทนำ
 
