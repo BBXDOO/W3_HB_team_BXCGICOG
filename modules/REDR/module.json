@@ -1,18 +1,47 @@
 {
-  "module_name": "REDR-Entrance",
-  "version": "0.2-refactor",
+  "name": "REDR",
+  "display_name": "REDR — Entrance Filter Layer",
+
+  "version": "0.2.0-refactor",
+
   "owner": "Observer_BBX19",
-  "input": "Raw_Chaos_Stream",
-  "output": "Filtered_Data_Pack",
+  "authority": "BBX19",
+
+  "class": "processing_node",
+  "tier": "L2",
+  "role": "Ingress / Filtering",
+
+  "status": "active",
+  "scope": "processing",
+
+  "input": [
+    "Raw_Chaos_Stream"
+  ],
+
+  "output": [
+    "Filtered_Data_Pack"
+  ],
+
   "agent_cli": {
     "enabled": true,
     "mode": "monitoring",
     "log_level": "verbose",
     "auto_start": true
   },
+
   "properties": {
     "intake_type": "zero-latency",
     "filter_logic": "initial_scan"
   },
-  "bridge_target": "PSP2"
+
+  "bridge_target": "PSP2",
+
+  "runtime": {
+    "speed": "fast",
+    "logic": "filtering",
+    "response_style": "minimal",
+    "token_efficiency": "high"
+  },
+
+  "notes": "REDR ทำหน้าที่ ingress filtering และคัดกรอง raw stream ก่อนส่งต่อไปยัง PSP2"
 }
