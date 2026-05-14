@@ -10,4 +10,3 @@
   "behavior": "Andromeda_Pull",
   "instruction": "เมื่อ Data ตกกระทบที่ Node ใดก็ตาม ให้ข้ามการตรวจสอบ Metadata และมุ่งหน้าสู่จุด Resolution ใน LRC2 ทันที"
 }
-
