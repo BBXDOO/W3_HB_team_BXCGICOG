@@ -1,47 +1,48 @@
 {
   "name": "REDR",
-  "display_name": "REDR — Entrance Filter Layer",
-
-  "version": "0.2.0-refactor",
-
-  "owner": "Observer_BBX19",
+  "display_name": "REDR — Risk Escalation & Decision Router",
+  "version": "1.2.0-linec",
+  "owner": "REDR",
   "authority": "BBX19",
-
-  "class": "processing_node",
+  "class": "risk_decision_router",
   "tier": "L2",
-  "role": "Ingress / Filtering",
-
+  "role": "Risk / Escalation / Routing",
   "status": "active",
-  "scope": "processing",
-
-  "input": [
-    "Raw_Chaos_Stream"
-  ],
-
-  "output": [
-    "Filtered_Data_Pack"
-  ],
-
-  "agent_cli": {
-    "enabled": true,
-    "mode": "monitoring",
-    "log_level": "verbose",
-    "auto_start": true
+  "scope": "risk_escalation",
+  "identity": {
+    "stable_id": "REDR",
+    "line_c_profile": "adaptive_runtime",
+    "legacy_owner_alias": "The_Singularity_Engine"
   },
-
-  "properties": {
-    "intake_type": "zero-latency",
-    "filter_logic": "initial_scan"
+  "workspace": {
+    "root": "modules/REDR/",
+    "requests": "modules/requests/",
+    "reports": "modules/REDR/reports/",
+    "logs": "modules/REDR/logs/"
   },
-
-  "bridge_target": "PSP2",
-
   "runtime": {
-    "speed": "fast",
-    "logic": "filtering",
-    "response_style": "minimal",
-    "token_efficiency": "high"
+    "mode": "adaptive",
+    "execution_style": "escalation_first",
+    "compatibility": ["mpcp", "w3lgu", "iget"],
+    "agent_cli": {
+      "enabled": true,
+      "mode": "adaptive",
+      "log_level": "critical",
+      "auto_start": true
+    }
   },
-
-  "notes": "REDR ทำหน้าที่ ingress filtering และคัดกรอง raw stream ก่อนส่งต่อไปยัง PSP2"
+  "properties": {
+    "risk_bands": ["green", "yellow", "red"],
+    "escalation_guard": true,
+    "backward_compatible": true
+  },
+  "input": [
+    "modules/requests/",
+    "docs/",
+    "knowledge/",
+    "core/"
+  ],
+  "output": [
+    "modules/REDR/"
+  ]
 }

@@ -1,48 +1,48 @@
 {
   "name": "DTML",
-  "display_name": "DTML — Decision Transformation Matrix Layer",
-
-  "version": "0.2.0-refactor",
-
-  "owner": "The_Singularity_Engine",
+  "display_name": "DTML — Decision Trace & Transformation Matrix Layer",
+  "version": "1.2.0-linec",
+  "owner": "DTML",
   "authority": "BBX19",
-
-  "class": "execution_core",
-  "tier": "L1",
-  "role": "Decision / Transformation / Execution",
-
+  "class": "trace_transform_engine",
+  "tier": "L2",
+  "role": "Decision / Transformation / Traceability",
   "status": "active",
-  "scope": "execution",
-
-  "input": [
-    "Condensed_Context"
-  ],
-
-  "output": [
-    "Resolved_Action_v27"
-  ],
-
-  "agent_cli": {
-    "enabled": true,
-    "mode": "execution",
-    "log_level": "critical",
-    "auto_start": true
+  "scope": "decision_trace",
+  "identity": {
+    "stable_id": "DTML",
+    "line_c_profile": "adaptive_runtime",
+    "legacy_owner_alias": "The_Singularity_Engine"
   },
-
+  "workspace": {
+    "root": "modules/DTML/",
+    "requests": "modules/requests/",
+    "reports": "modules/DTML/reports/",
+    "logs": "modules/DTML/logs/"
+  },
+  "runtime": {
+    "mode": "adaptive",
+    "execution_style": "trace_first",
+    "compatibility": ["mpcp", "w3lgu", "iget"],
+    "agent_cli": {
+      "enabled": true,
+      "mode": "adaptive",
+      "log_level": "critical",
+      "auto_start": true
+    }
+  },
   "properties": {
     "logic_count": 27,
-    "matrix_dimension": "3x3",
-    "processing_mode": "non-linear"
+    "matrix_dimensions": "3x3",
+    "backward_compatible": true
   },
-
-  "bridge_target": "LRC2",
-
-  "runtime": {
-    "speed": "adaptive",
-    "logic": "multi-path",
-    "response_style": "decisive",
-    "token_efficiency": "high"
-  },
-
-  "notes": "DTML เป็น execution core สำหรับประมวลผล condensed context และสร้าง resolved action state ก่อนส่งต่อไปยัง LRC2"
+  "input": [
+    "modules/requests/",
+    "docs/",
+    "knowledge/",
+    "core/"
+  ],
+  "output": [
+    "modules/DTML/"
+  ]
 }

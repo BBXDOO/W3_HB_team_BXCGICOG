@@ -1,47 +1,48 @@
 {
   "name": "PSP2",
-  "display_name": "PSP2 — Context Acceleration Layer",
-
-  "version": "0.2.0-refactor",
-
-  "owner": "Wormhole_Pilot",
+  "display_name": "PSP2 — Pointer Stamp & Flow Router",
+  "version": "1.2.0-linec",
+  "owner": "PSP2",
   "authority": "BBX19",
-
-  "class": "processing_node",
+  "class": "flow_stamp_router",
   "tier": "L2",
-  "role": "Compression / Routing",
-
+  "role": "Package / Stamp / Route",
   "status": "active",
-  "scope": "processing",
-
-  "input": [
-    "Filtered_Data_Pack"
-  ],
-
-  "output": [
-    "Condensed_Context"
-  ],
-
-  "agent_cli": {
-    "enabled": true,
-    "mode": "routing",
-    "log_level": "info",
-    "auto_start": true
+  "scope": "pr_flow",
+  "identity": {
+    "stable_id": "PSP2",
+    "line_c_profile": "adaptive_runtime",
+    "legacy_owner_alias": "The_Singularity_Engine"
   },
-
-  "properties": {
-    "compression_ratio": "high",
-    "dispatch_speed": "warp"
+  "workspace": {
+    "root": "modules/PSP2/",
+    "requests": "modules/requests/",
+    "reports": "modules/PSP2/reports/",
+    "logs": "modules/PSP2/logs/"
   },
-
-  "bridge_target": "DTML",
-
   "runtime": {
-    "speed": "fast",
-    "logic": "compression",
-    "response_style": "minimal",
-    "token_efficiency": "high"
+    "mode": "adaptive",
+    "execution_style": "route_first",
+    "compatibility": ["mpcp", "w3lgu", "iget"],
+    "agent_cli": {
+      "enabled": true,
+      "mode": "adaptive",
+      "log_level": "critical",
+      "auto_start": true
+    }
   },
-
-  "notes": "PSP2 ทำหน้าที่เร่งการจัดส่ง context และบีบอัดข้อมูลก่อนส่งต่อไปยัง DTML"
+  "properties": {
+    "stamp_protocol": "pointer_v2",
+    "handoff_trace": true,
+    "backward_compatible": true
+  },
+  "input": [
+    "modules/requests/",
+    "docs/",
+    "knowledge/",
+    "core/"
+  ],
+  "output": [
+    "modules/PSP2/"
+  ]
 }
