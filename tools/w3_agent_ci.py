@@ -18,7 +18,10 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-import yaml  # PyYAML (in requirements-dev.txt)
+try:
+    import yaml  # PyYAML (optional at runtime)
+except ModuleNotFoundError:  # pragma: no cover
+    yaml = None
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -33,13 +36,81 @@ sys.path.insert(0, str(REPO_ROOT))
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
+
+
+def _parse_ruleset_without_yaml(path: Path) -> dict:
+    """Minimal parser for this repo's simple ruleset YAML subset."""
+    rules = []
+    overrides = []
+    version = ""
+    created = ""
+    section = None
+    current = None
+
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.split("#", 1)[0].rstrip()
+        if not line.strip():
+            continue
+
+        if line.startswith("version:"):
+            version = line.split(":", 1)[1].strip().strip('"')
+            continue
+        if line.startswith("created:"):
+            created = line.split(":", 1)[1].strip().strip('"')
+            continue
+        if line.startswith("rules:"):
+            if current:
+                (rules if section == "rules" else overrides).append(current)
+                current = None
+            section = "rules"
+            continue
+        if line.startswith("overrides:"):
+            if current:
+                (rules if section == "rules" else overrides).append(current)
+                current = None
+            if line.strip().endswith("[]"):
+                section = "overrides"
+                continue
+            section = "overrides"
+            continue
+
+        if line.lstrip().startswith("- "):
+            if current:
+                (rules if section == "rules" else overrides).append(current)
+            current = {}
+            kv = line.lstrip()[2:]
+            if ":" in kv:
+                k, v = kv.split(":", 1)
+                current[k.strip()] = v.strip().strip('"')
+            continue
+
+        if current is not None and ":" in line:
+            k, v = line.strip().split(":", 1)
+            v = v.strip()
+            if v in ("true", "false"):
+                current[k] = (v == "true")
+            elif v.startswith("[") and v.endswith("]"):
+                inner = v[1:-1].strip()
+                current[k] = [x.strip().strip("'").strip('"') for x in inner.split(",") if x.strip()]
+            elif v.startswith('"') and v.endswith('"'):
+                current[k] = v[1:-1]
+            elif v:
+                current[k] = v
+
+    if current:
+        (rules if section == "rules" else overrides).append(current)
+
+    return {"version": version, "created": created, "rules": rules, "overrides": overrides}
+
 def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
 def load_ruleset() -> dict:
-    with open(RULESET_PATH, "r", encoding="utf-8") as f:
-        return yaml.safe_load(f)
+    if yaml is not None:
+        with open(RULESET_PATH, "r", encoding="utf-8") as f:
+            return yaml.safe_load(f)
+    return _parse_ruleset_without_yaml(RULESET_PATH)
 
 
 def run_subprocess(cmd: list[str]) -> tuple[int, str]:

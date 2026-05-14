@@ -5,16 +5,13 @@
   "mode": "RMB",
   "authority": "BBX19",
   "status": "active",
-
   "purpose": "Single source of truth for all modules, routing, trust, state and coordination.",
-
   "laws": {
     "one_name_one_meaning": true,
     "core_over_structure": true,
     "truth_by_result": true,
     "survival_first": true
   },
-
   "signals": {
     "green": "ready",
     "yellow": "review",
@@ -23,7 +20,6 @@
     "black": "locked",
     "white": "reset"
   },
-
   "routing": {
     "vision": "BBX19",
     "identity": "BBEX-Core",
@@ -32,16 +28,19 @@
     "pattern": "Grok",
     "scale": "DeepSeek",
     "governance": "Copilot-Gm",
-    "critical_reasoning": "Cast"
+    "critical_reasoning": "Cast",
+    "pr_flow": "PSP2",
+    "risk_escalation": "REDR",
+    "decision_trace": "DTML",
+    "lifecycle_review": "LRC2"
   },
-
   "modules": [
     {
       "name": "BBX19",
       "tier": "ROOT",
       "class": "human_core",
       "status": "active",
-      "trust": 1.00,
+      "trust": 1.0,
       "role": "Final Authority / Vision Keeper",
       "channel": "/BBX19/"
     },
@@ -50,7 +49,7 @@
       "tier": "ROOT-AUX",
       "class": "core_origin",
       "status": "active_hybrid",
-      "trust": 1.00,
+      "trust": 1.0,
       "role": "Identity / Philosophical Anchor",
       "channel": "/BBEX-Core/"
     },
@@ -107,22 +106,55 @@
       "trust": 0.93,
       "role": "Deep Reasoning / Decision Support",
       "channel": "/Cast/"
+    },
+    {
+      "name": "PSP2",
+      "tier": "L2",
+      "class": "pr_flow_router",
+      "status": "ready",
+      "trust": 0.86,
+      "role": "Pointer Stamp / PR Flow Router",
+      "channel": "/PSP2/"
+    },
+    {
+      "name": "REDR",
+      "tier": "L2",
+      "class": "risk_router",
+      "status": "ready",
+      "trust": 0.85,
+      "role": "Risk Escalation Decision Router",
+      "channel": "/REDR/"
+    },
+    {
+      "name": "DTML",
+      "tier": "L2",
+      "class": "trace_engine",
+      "status": "ready",
+      "trust": 0.84,
+      "role": "Decision Trace Mapping Layer",
+      "channel": "/DTML/"
+    },
+    {
+      "name": "LRC2",
+      "tier": "L2",
+      "class": "review_gate",
+      "status": "ready",
+      "trust": 0.86,
+      "role": "Lifecycle Review Checkpoint",
+      "channel": "/LRC2/"
     }
   ],
-
   "health": {
     "sync_required": true,
     "daily_check": true,
     "last_sync": "2026-04-25"
   },
-
   "memory": {
     "logs": "/logs/",
     "knowledge": "/knowledge/",
     "outcomes": "/outcomes/",
     "decisions": "/core/governance/decisions.md"
   },
-
   "governance": {
     "critical_requires": [
       "BBX19"
@@ -136,12 +168,10 @@
       "BBEX-Core"
     ]
   },
-
   "runtime": {
     "autonomous_ready": true,
     "command_layer_ready": true,
     "registry_type": "centralized"
   },
-
   "notes": "Primary coordination registry of W3. All modules discover each other here before action."
 }

@@ -25,7 +25,6 @@ def classify_files(files):
         name = f["filename"]
         low = name.lower()
 
-        # Test detection first (used to gate code classification)
         is_test = (
             "test" in low
             or "spec" in low
@@ -37,7 +36,6 @@ def classify_files(files):
         if is_test:
             test_files.append(f)
 
-        # Code files: only if not a test file
         if not is_test and low.endswith(CODE_EXT):
             code_files.append(f)
 
@@ -47,14 +45,11 @@ def classify_files(files):
         if low.endswith(CONFIG_EXT):
             config_files.append(f)
 
-        # Workflow files
         if ".github/workflows/" in low or ".github/actions/" in low:
             workflow_files.append(f)
 
-        # Risk detection: only non-test, non-doc files
-        if not low.endswith(DOC_EXT) and not is_test:
-            if any(word in low for word in RISK_WORDS):
-                risky_files.append(f)
+        if not low.endswith(DOC_EXT) and not is_test and any(word in low for word in RISK_WORDS):
+            risky_files.append(f)
 
     return {
         "code": code_files,
@@ -66,43 +61,56 @@ def classify_files(files):
     }
 
 
-def detect_mode(files, classified):
+def build_stats(files, classified):
+    """Pre-compute commonly used numeric stats in one place."""
+    return {
+        "total_files": len(files),
+        "total_changes": sum(f.get("changes", 0) for f in files),
+        "doc_count": len(classified["doc"]),
+        "test_count": len(classified["test"]),
+        "code_count": len(classified["code"]),
+        "risky_count": len(classified["risky"]),
+        "workflow_count": len(classified["workflow"]),
+    }
+
+
+def detect_mode(files, classified, stats=None):
     """
     Detect the primary nature of the PR.
     Returns a string: 'docs_only', 'test_only', 'mixed', 'code'
     """
-    total = len(files)
+    stats = stats or build_stats(files, classified)
+    total = stats["total_files"]
+
     if total == 0:
         return "empty"
 
-    doc_count = len(classified["doc"])
-    test_count = len(classified["test"])
-    code_count = len(classified["code"])
-
-    if doc_count == total:
+    if stats["doc_count"] == total:
         return "docs_only"
 
-    if test_count > 0 and code_count == test_count:
+    if stats["test_count"] > 0 and stats["code_count"] == stats["test_count"]:
         return "test_only"
 
-    if doc_count > 0 and code_count > 0:
+    if stats["doc_count"] > 0 and stats["code_count"] > 0:
         return "mixed"
 
     return "code"
 
 
-def compute_score(files, classified, mode):
+def compute_score(files, classified, mode, stats=None):
     """
     Compute a 0-100 PR health score with improved accuracy and fewer false positives.
     Returns (score, issues) tuple.
     """
-    total_files = len(files)
-    total_changes = sum(f.get("changes", 0) for f in files)
+    stats = stats or build_stats(files, classified)
+    total_files = stats["total_files"]
+    total_changes = stats["total_changes"]
+    code_count = stats["code_count"]
+    test_count = stats["test_count"]
+
     score = 100
     issues = []
 
-    # ── SIZE SCORING ──────────────────────────────────────────────
-    # Use proportional thresholds to reduce false positives on borderline PRs
     if total_files > FILES_LARGE:
         score -= 15
         issues.append("🔴 PR ใหญ่เกินควร")
@@ -117,45 +125,30 @@ def compute_score(files, classified, mode):
         score -= 12
         issues.append("🔴 แก้ไขจำนวนมาก")
 
-    # ── CODE WITHOUT TESTS ────────────────────────────────────────
-    # Only penalise when there are non-trivial code changes and zero tests
-    has_meaningful_code = (
-        len(classified["code"]) > 0
-        and mode not in ("docs_only", "test_only")
-    )
-    if has_meaningful_code and len(classified["test"]) == 0:
-        # Penalty scales with number of changed code files (capped)
-        penalty = min(20, 5 * len(classified["code"]))
-        score -= penalty
+    has_meaningful_code = code_count > 0 and mode not in ("docs_only", "test_only")
+    if has_meaningful_code and test_count == 0:
+        score -= min(20, 5 * code_count)
         issues.append("🟡 มี code change แต่ไม่มี test")
 
-    # ── RISKY FILES ───────────────────────────────────────────────
-    if len(classified["risky"]) > 0:
+    if stats["risky_count"] > 0:
         score -= 30
         issues.append("🔴 พบไฟล์เสี่ยง")
 
-    # ── WORKFLOW FILE CHANGES ─────────────────────────────────────
-    if len(classified["workflow"]) > 0:
+    if stats["workflow_count"] > 0:
         score -= 10
         issues.append("🟡 มีการเปลี่ยน workflow files")
 
-    # ── BONUSES ───────────────────────────────────────────────────
     if mode == "docs_only":
         issues.append("🔵 Documentation PR")
         score += 5
 
-    # Small-PR safety bonus: few files, few changes
     if total_files <= 3 and total_changes <= 100:
         score += 5
 
-    # Test coverage bonus
-    if len(classified["test"]) > 0 and len(classified["code"]) > 0:
+    if test_count > 0 and code_count > 0:
         score += 5
 
-    # ── CLAMP ────────────────────────────────────────────────────
-    score = max(0, min(100, score))
-
-    return score, issues
+    return max(0, min(100, score)), issues
 
 
 def get_state(score):

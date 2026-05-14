@@ -1,0 +1,12 @@
+{
+  "identity": {
+    "name": "PSP2",
+    "designation": "Pointer Stamp / PR Flow Router",
+    "status": "ACTIVE"
+  },
+  "primary_responsibilities": [
+    "stamp package",
+    "route package",
+    "handoff status trace"
+  ]
+}
