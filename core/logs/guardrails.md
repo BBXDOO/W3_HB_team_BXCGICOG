@@ -1,9 +1,17 @@
-write_access:
+NAME: LOG_ARCHIVE_POLICY
+
+WRITE_ACCESS:
   - Copilot-Gm
   - BBX19
 
-read_access:
-  - all AI modules
-  - humans
+READ_SCOPE:
+  - internal-modules
+  - human-review
 
-no_edit_after_archive: true
+ARCHIVE_MODE: immutable
+
+OVERRIDE_ROLE:
+  - ROOT
+  - governance
+
+TRACE_REQUIRED: true
