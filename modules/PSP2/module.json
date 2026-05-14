@@ -1,18 +1,47 @@
 {
-  "module_name": "PSP2-Accelerator",
-  "version": "0.2-refactor",
+  "name": "PSP2",
+  "display_name": "PSP2 — Context Acceleration Layer",
+
+  "version": "0.2.0-refactor",
+
   "owner": "Wormhole_Pilot",
-  "input": "Filtered_Data_Pack",
-  "output": "Condensed_Context",
+  "authority": "BBX19",
+
+  "class": "processing_node",
+  "tier": "L2",
+  "role": "Compression / Routing",
+
+  "status": "active",
+  "scope": "processing",
+
+  "input": [
+    "Filtered_Data_Pack"
+  ],
+
+  "output": [
+    "Condensed_Context"
+  ],
+
   "agent_cli": {
     "enabled": true,
     "mode": "routing",
     "log_level": "info",
     "auto_start": true
   },
+
   "properties": {
     "compression_ratio": "high",
     "dispatch_speed": "warp"
   },
-  "bridge_target": "DTML"
+
+  "bridge_target": "DTML",
+
+  "runtime": {
+    "speed": "fast",
+    "logic": "compression",
+    "response_style": "minimal",
+    "token_efficiency": "high"
+  },
+
+  "notes": "PSP2 ทำหน้าที่เร่งการจัดส่ง context และบีบอัดข้อมูลก่อนส่งต่อไปยัง DTML"
 }
