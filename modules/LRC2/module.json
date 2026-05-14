@@ -1,18 +1,47 @@
 {
-  "module_name": "LRC2-Memory",
-  "version": "0.2-refactor",
+  "name": "LRC2",
+  "display_name": "LRC2 — Long-Range Cell Memory",
+
+  "version": "0.2.0-refactor",
+
   "owner": "Chronicler_LRC2",
-  "input": "Resolved_Action_v27",
-  "output": "Kinetic_Muscle_Memory",
+  "authority": "BBX19",
+
+  "class": "memory_node",
+  "tier": "L3",
+  "role": "Persistence / Recall",
+
+  "status": "active",
+  "scope": "memory",
+
+  "input": [
+    "Resolved_Action_v27"
+  ],
+
+  "output": [
+    "Kinetic_Muscle_Memory"
+  ],
+
   "agent_cli": {
     "enabled": true,
     "mode": "logging",
     "log_level": "info",
     "auto_start": true
   },
+
   "properties": {
     "storage_type": "cell_memory",
     "persistence": "permanent"
   },
-  "bridge_target": "Terminal"
+
+  "bridge_target": "Terminal",
+
+  "runtime": {
+    "speed": "stable",
+    "logic": "memory_persistence",
+    "response_style": "archival",
+    "token_efficiency": "medium"
+  },
+
+  "notes": "LRC2 ทำหน้าที่จัดเก็บ persistent operational memory และ kinetic recall state สำหรับระบบ"
 }
