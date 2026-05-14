@@ -1,19 +1,48 @@
 {
-  "module_name": "DTML-Core",
-  "version": "0.2-refactor",
+  "name": "DTML",
+  "display_name": "DTML — Decision Transformation Matrix Layer",
+
+  "version": "0.2.0-refactor",
+
   "owner": "The_Singularity_Engine",
-  "input": "Condensed_Context",
-  "output": "Resolved_Action_v27",
+  "authority": "BBX19",
+
+  "class": "execution_core",
+  "tier": "L1",
+  "role": "Decision / Transformation / Execution",
+
+  "status": "active",
+  "scope": "execution",
+
+  "input": [
+    "Condensed_Context"
+  ],
+
+  "output": [
+    "Resolved_Action_v27"
+  ],
+
   "agent_cli": {
     "enabled": true,
     "mode": "execution",
     "log_level": "critical",
     "auto_start": true
   },
+
   "properties": {
     "logic_count": 27,
     "matrix_dimension": "3x3",
     "processing_mode": "non-linear"
   },
-  "bridge_target": "LRC2"
+
+  "bridge_target": "LRC2",
+
+  "runtime": {
+    "speed": "adaptive",
+    "logic": "multi-path",
+    "response_style": "decisive",
+    "token_efficiency": "high"
+  },
+
+  "notes": "DTML เป็น execution core สำหรับประมวลผล condensed context และสร้าง resolved action state ก่อนส่งต่อไปยัง LRC2"
 }
