@@ -1,16 +1,28 @@
 {
   "name": "DTML",
-  "display_name": "DTML — Decision Trace Mapping Layer",
-  "version": "1.0.0",
-  "class": "trace_engine",
+  "display_name": "DTML — Decision Trace & Transformation Mapping Layer",
+  "version": "1.1.0",
+  "class": "trace_transform_engine",
   "tier": "L2",
-  "role": "decision traceability",
+  "role": "decision traceability + transformation mapping",
   "status": "active",
-  "workspace": {
-    "root": "modules/DTML/"
-  },
-  "scope": "decision_trace",
   "owner": "DTML",
+  "scope": "decision_trace",
+  "identity": {
+    "stable_id": "DTML",
+    "line_c_profile": "adaptive_runtime"
+  },
+  "workspace": {
+    "root": "modules/DTML/",
+    "requests": "modules/requests/",
+    "reports": "modules/DTML/reports/",
+    "logs": "modules/DTML/logs/"
+  },
+  "runtime": {
+    "mode": "adaptive",
+    "execution_style": "trace_first",
+    "compatibility": ["mpcp", "w3lgu", "iget"]
+  },
   "input": [
     "modules/requests/",
     "docs/",

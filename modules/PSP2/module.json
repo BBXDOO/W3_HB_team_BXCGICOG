@@ -1,16 +1,28 @@
 {
   "name": "PSP2",
-  "display_name": "PSP2 — Pointer Stamp",
-  "version": "1.0.0",
-  "class": "pr_flow_router",
+  "display_name": "PSP2 — Pointer Stamp & Flow Router",
+  "version": "1.1.0",
+  "class": "flow_stamp_router",
   "tier": "L2",
-  "role": "STAMP + ROUTE",
+  "role": "traceable stamp + adaptive package routing",
   "status": "active",
-  "workspace": {
-    "root": "modules/PSP2/"
-  },
-  "scope": "pr_flow",
   "owner": "PSP2",
+  "scope": "pr_flow",
+  "identity": {
+    "stable_id": "PSP2",
+    "line_c_profile": "adaptive_runtime"
+  },
+  "workspace": {
+    "root": "modules/PSP2/",
+    "requests": "modules/requests/",
+    "reports": "modules/PSP2/reports/",
+    "logs": "modules/PSP2/logs/"
+  },
+  "runtime": {
+    "mode": "adaptive",
+    "execution_style": "route_first",
+    "compatibility": ["mpcp", "w3lgu", "iget"]
+  },
   "input": [
     "modules/requests/",
     "docs/",

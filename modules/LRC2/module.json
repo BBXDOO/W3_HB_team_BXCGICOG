@@ -1,16 +1,28 @@
 {
   "name": "LRC2",
-  "display_name": "LRC2 — Lifecycle Review Checkpoint",
-  "version": "1.0.0",
-  "class": "review_gate",
+  "display_name": "LRC2 — Lifecycle Review & Continuity Checkpoint",
+  "version": "1.1.0",
+  "class": "review_continuity_gate",
   "tier": "L2",
-  "role": "lifecycle review and checkpointing",
+  "role": "lifecycle review + continuity checkpoints",
   "status": "active",
-  "workspace": {
-    "root": "modules/LRC2/"
-  },
-  "scope": "lifecycle_review",
   "owner": "LRC2",
+  "scope": "lifecycle_review",
+  "identity": {
+    "stable_id": "LRC2",
+    "line_c_profile": "adaptive_runtime"
+  },
+  "workspace": {
+    "root": "modules/LRC2/",
+    "requests": "modules/requests/",
+    "reports": "modules/LRC2/reports/",
+    "logs": "modules/LRC2/logs/"
+  },
+  "runtime": {
+    "mode": "adaptive",
+    "execution_style": "checkpoint_first",
+    "compatibility": ["mpcp", "w3lgu", "iget"]
+  },
   "input": [
     "modules/requests/",
     "docs/",
