@@ -1,0 +1,4 @@
+{
+  "name": "W3 Workspace",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu"
+}
