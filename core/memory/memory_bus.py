@@ -4,11 +4,11 @@ Path: core/memory/memory_bus.py
 
 Purpose:
 - Shared memory between AI modules
-- Save / Load / Search context
-- Persistent lightweight memory store
-- Mobile friendly JSON backend
-- Crash-safe JSON write
+- Persistent lightweight JSON backend
+- Crash-safe runtime memory
 - Multi-runtime compatible
+- Thread-safe operations
+- W3 orchestration support
 
 Author: BBX19 / W3
 """
@@ -57,17 +57,35 @@ class MemoryError(Exception):
 
 
 # =========================================================
-# Helpers
+# Time Helpers
 # =========================================================
 
 def now():
     return datetime.utcnow().isoformat() + "Z"
 
 
+# =========================================================
+# Store Initialization
+# =========================================================
+
+def _default_store():
+
+    return {
+        "version": "2.0",
+        "created": now(),
+
+        "runtime": {
+            "engine": "W3_HB_Runtime",
+            "memory_format": "LRC2",
+            "write_mode": "atomic",
+            "storage": "json"
+        },
+
+        "records": []
+    }
+
+
 def _ensure_store():
-    """
-    Create memory store if not exists.
-    """
 
     if not MEMORY_FILE.exists():
 
@@ -76,30 +94,14 @@ def _ensure_store():
             exist_ok=True
         )
 
-        with open(
-            MEMORY_FILE,
-            "w",
-            encoding="utf-8"
-        ) as f:
+        _atomic_write(_default_store())
 
-            json.dump(
-                {
-                    "version": "2.0",
-                    "created": now(),
-                    "records": []
-                },
-                f,
-                indent=2,
-                ensure_ascii=False
-            )
 
+# =========================================================
+# Atomic JSON Write
+# =========================================================
 
 def _atomic_write(data):
-    """
-    Crash-safe JSON write.
-    Prevent corrupted memory_store.json
-    on mobile/process interruption.
-    """
 
     MEMORY_FILE.parent.mkdir(
         parents=True,
@@ -119,6 +121,9 @@ def _atomic_write(data):
             indent=2,
             ensure_ascii=False
         )
+
+        tmp.flush()
+        os.fsync(tmp.fileno())
 
         tmp_path = Path(tmp.name)
 
@@ -143,7 +148,7 @@ def load_store():
                 encoding="utf-8"
             ) as f:
 
-                return json.load(f)
+                db = json.load(f)
 
         except json.JSONDecodeError as e:
 
@@ -151,11 +156,54 @@ def load_store():
                 f"Corrupted memory store: {e}"
             )
 
+        # Auto schema patch
+        if "runtime" not in db:
+            db["runtime"] = {
+                "engine": "W3_HB_Runtime",
+                "memory_format": "LRC2",
+                "write_mode": "atomic",
+                "storage": "json"
+            }
+
+        if "records" not in db:
+            db["records"] = []
+
+        return db
+
 
 def save_store(data):
 
     with _lock:
         _atomic_write(data)
+
+
+# =========================================================
+# Record Helpers
+# =========================================================
+
+def _build_record(
+    source,
+    topic,
+    content,
+    tags=None,
+    score=1,
+    record_type="memory"
+):
+
+    return {
+        "id": str(uuid.uuid4()),
+        "timestamp": now(),
+
+        "type": record_type,
+
+        "source": source,
+        "topic": topic,
+        "content": content,
+
+        "tags": tags or [],
+
+        "score": score
+    }
 
 
 # =========================================================
@@ -167,31 +215,22 @@ def add_memory(
     topic,
     content,
     tags=None,
-    score=1
+    score=1,
+    record_type="memory"
 ):
-    """
-    Example:
-    add_memory(
-        source="ChatGPT",
-        topic="router",
-        content="design complete",
-        tags=["core", "router"]
-    )
-    """
 
     with _lock:
 
         db = load_store()
 
-        record = {
-            "id": str(uuid.uuid4()),
-            "timestamp": now(),
-            "source": source,
-            "topic": topic,
-            "content": content,
-            "tags": tags or [],
-            "score": score
-        }
+        record = _build_record(
+            source=source,
+            topic=topic,
+            content=content,
+            tags=tags,
+            score=score,
+            record_type=record_type
+        )
 
         db["records"].append(record)
 
@@ -218,10 +257,11 @@ def search_memory(keyword):
     for row in db["records"]:
 
         searchable = (
+            f"{row.get('type', '')} "
+            f"{row.get('source', '')} "
             f"{row.get('topic', '')} "
             f"{row.get('content', '')} "
-            f"{' '.join(row.get('tags', []))} "
-            f"{row.get('source', '')}"
+            f"{' '.join(row.get('tags', []))}"
         ).lower()
 
         if keyword in searchable:
@@ -237,6 +277,16 @@ def memory_by_source(source):
     return [
         row for row in db["records"]
         if row.get("source") == source
+    ]
+
+
+def memory_by_type(record_type):
+
+    db = load_store()
+
+    return [
+        row for row in db["records"]
+        if row.get("type") == record_type
     ]
 
 
@@ -261,8 +311,39 @@ def runtime_info():
         "memory_file": str(MEMORY_FILE),
         "exists": MEMORY_FILE.exists(),
         "records": len(db["records"]),
-        "runtime": "W3 Shared Memory Core"
+        "runtime": db.get("runtime", {})
     }
+
+
+# =========================================================
+# Migration
+# =========================================================
+
+def migrate_legacy_ids():
+
+    with _lock:
+
+        db = load_store()
+
+        changed = False
+
+        for row in db["records"]:
+
+            if not isinstance(
+                row.get("id"),
+                str
+            ):
+
+                row["id"] = str(uuid.uuid4())
+                changed = True
+
+        if changed:
+
+            db["version"] = "2.0"
+
+            save_store(db)
+
+        return changed
 
 
 # =========================================================
@@ -271,17 +352,20 @@ def runtime_info():
 
 if __name__ == "__main__":
 
+    migrate_legacy_ids()
+
     add_memory(
         source="ChatGPT",
-        topic="router",
-        content="W3 module router initialized",
-        tags=["core", "router"],
-        score=5
+        topic="runtime",
+        content="W3 runtime initialized",
+        tags=["runtime", "boot"],
+        score=5,
+        record_type="system"
     )
 
     print(
         json.dumps(
-            get_memory(),
+            runtime_info(),
             indent=2,
             ensure_ascii=False
         )
@@ -289,7 +373,7 @@ if __name__ == "__main__":
 
     print(
         json.dumps(
-            runtime_info(),
+            get_memory(),
             indent=2,
             ensure_ascii=False
         )
