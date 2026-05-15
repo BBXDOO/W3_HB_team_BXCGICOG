@@ -1,34 +1,50 @@
 {
   "system_name": "W3_HB_Runtime",
-
   "system_version": "0.2.0-refactor",
-
+  "schema_version": "W3-RUNTIME-0.2",
   "status": "active",
-
   "runtime": {
     "acceleration_mode": "wormhole",
     "processing_model": "distributed",
-    "execution_mode": "parallel"
+    "execution_bias": "parallel"
   },
-
   "modules": {
     "entry": "REDR",
     "compression": "PSP2",
     "core": "DTML",
     "memory": "LRC2"
   },
-
   "pipeline_settings": {
     "auto_clean_bureaucracy": true,
-    "force_simultaneity": true,
+    "parallel_preferred": true,
     "persistent_memory_sync": true
   },
-
+  "compatibility": {
+    "mpcp": true,
+    "W3Lgu": true,
+    "IDP": "v2.0",
+    "iget": "v6+"
+  },
   "environment": {
     "containerized": true,
     "codespaces_ready": true,
-    "devcontainer_enabled": true
+    "devcontainer_enabled": true,
+    "mobile_runtime_supported": true,
+    "termux_compatible": true
   },
-
-  "notes": "Primary runtime environment configuration for W3 HB orchestration pipeline"
+  "airtable_binding": {
+    "base": "W3 HYBRID INTELIGENT",
+    "context_table": "W3_Context_Notes",
+    "module_table": "MODULES",
+    "task_table": "TASKS",
+    "paper_table": "PAPER_ACTIVE",
+    "condien_table": "CONDIEN_STATE",
+    "runtime_log_table": "RUNTIME_LOG"
+  },
+  "philosophy": {
+    "error_policy": "experience",
+    "execution_style": "adaptive",
+    "human_priority": true
+  },
+  "notes": "Primary runtime environment configuration for W3 HB orchestration pipeline. Airtable acts as operational memory/control registry, not the whole runtime."
 }
