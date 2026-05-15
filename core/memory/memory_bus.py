@@ -7,12 +7,15 @@ Purpose:
 - Save / Load / Search context
 - Persistent lightweight memory store
 - Mobile friendly JSON backend
+- Crash-safe JSON write
+- Multi-runtime compatible
 
 Author: BBX19 / W3
 """
 
 import os
 import json
+import uuid
 import tempfile
 import threading
 
@@ -31,7 +34,10 @@ DEFAULT_MEMORY_FILE = (
 )
 
 MEMORY_FILE = Path(
-    os.environ.get("W3_MEMORY_FILE", DEFAULT_MEMORY_FILE)
+    os.environ.get(
+        "W3_MEMORY_FILE",
+        DEFAULT_MEMORY_FILE
+    )
 ).expanduser().resolve()
 
 
@@ -70,10 +76,15 @@ def _ensure_store():
             exist_ok=True
         )
 
-        with open(MEMORY_FILE, "w", encoding="utf-8") as f:
+        with open(
+            MEMORY_FILE,
+            "w",
+            encoding="utf-8"
+        ) as f:
+
             json.dump(
                 {
-                    "version": "1.0",
+                    "version": "2.0",
                     "created": now(),
                     "records": []
                 },
@@ -85,8 +96,9 @@ def _ensure_store():
 
 def _atomic_write(data):
     """
-    Prevent corrupted JSON during crash/interruption.
-    Mobile-safe.
+    Crash-safe JSON write.
+    Prevent corrupted memory_store.json
+    on mobile/process interruption.
     """
 
     MEMORY_FILE.parent.mkdir(
@@ -95,7 +107,7 @@ def _atomic_write(data):
     )
 
     with tempfile.NamedTemporaryFile(
-        "w",
+        mode="w",
         delete=False,
         encoding="utf-8",
         dir=MEMORY_FILE.parent
@@ -134,6 +146,7 @@ def load_store():
                 return json.load(f)
 
         except json.JSONDecodeError as e:
+
             raise MemoryError(
                 f"Corrupted memory store: {e}"
             )
@@ -159,10 +172,10 @@ def add_memory(
     """
     Example:
     add_memory(
-        "ChatGPT",
-        "router",
-        "design complete",
-        ["core", "router"]
+        source="ChatGPT",
+        topic="router",
+        content="design complete",
+        tags=["core", "router"]
     )
     """
 
@@ -171,7 +184,7 @@ def add_memory(
         db = load_store()
 
         record = {
-            "id": len(db["records"]) + 1,
+            "id": str(uuid.uuid4()),
             "timestamp": now(),
             "source": source,
             "topic": topic,
@@ -204,12 +217,14 @@ def search_memory(keyword):
 
     for row in db["records"]:
 
-        text = json.dumps(
-            row,
-            ensure_ascii=False
+        searchable = (
+            f"{row.get('topic', '')} "
+            f"{row.get('content', '')} "
+            f"{' '.join(row.get('tags', []))} "
+            f"{row.get('source', '')}"
         ).lower()
 
-        if keyword in text:
+        if keyword in searchable:
             results.append(row)
 
     return results
@@ -220,8 +235,8 @@ def memory_by_source(source):
     db = load_store()
 
     return [
-        x for x in db["records"]
-        if x["source"] == source
+        row for row in db["records"]
+        if row.get("source") == source
     ]
 
 
@@ -231,28 +246,27 @@ def top_memory(limit=10):
 
     rows = sorted(
         db["records"],
-        key=lambda x: x["score"],
+        key=lambda x: x.get("score", 0),
         reverse=True
     )
 
     return rows[:limit]
 
 
-# =========================================================
-# Runtime Info
-# =========================================================
-
 def runtime_info():
+
+    db = load_store()
 
     return {
         "memory_file": str(MEMORY_FILE),
         "exists": MEMORY_FILE.exists(),
-        "record_count": len(load_store()["records"])
+        "records": len(db["records"]),
+        "runtime": "W3 Shared Memory Core"
     }
 
 
 # =========================================================
-# Test
+# Test Runtime
 # =========================================================
 
 if __name__ == "__main__":
@@ -265,14 +279,18 @@ if __name__ == "__main__":
         score=5
     )
 
-    print(json.dumps(
-        get_memory(),
-        indent=2,
-        ensure_ascii=False
-    ))
+    print(
+        json.dumps(
+            get_memory(),
+            indent=2,
+            ensure_ascii=False
+        )
+    )
 
-    print(json.dumps(
-        runtime_info(),
-        indent=2,
-        ensure_ascii=False
-    ))
+    print(
+        json.dumps(
+            runtime_info(),
+            indent=2,
+            ensure_ascii=False
+        )
+    )
