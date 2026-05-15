@@ -1,15 +1,34 @@
 {
-  "system_version": "0.2-refactor",
-  "void_state": "active",
-  "acceleration_mode": "wormhole",
+  "system_name": "W3_HB_Runtime",
+
+  "system_version": "0.2.0-refactor",
+
+  "status": "active",
+
+  "runtime": {
+    "acceleration_mode": "wormhole",
+    "processing_model": "distributed",
+    "execution_mode": "parallel"
+  },
+
   "modules": {
     "entry": "REDR",
+    "compression": "PSP2",
     "core": "DTML",
     "memory": "LRC2"
   },
+
   "pipeline_settings": {
     "auto_clean_bureaucracy": true,
-    "force_simultaneity": true
-  }
-}
+    "force_simultaneity": true,
+    "persistent_memory_sync": true
+  },
 
+  "environment": {
+    "containerized": true,
+    "codespaces_ready": true,
+    "devcontainer_enabled": true
+  },
+
+  "notes": "Primary runtime environment configuration for W3 HB orchestration pipeline"
+}
