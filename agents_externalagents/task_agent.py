@@ -11,9 +11,8 @@ TASK_QUEUE = REPO_ROOT / "core" / "memory" / "task_queue.json"
 # ── Runtime Agents ───────────────────────────────────────
 from core.runtime.agents import gemini, copilot_gm, grok, bbx19, deepseek
 
-# ── ฟังก์ชันหลัก ────────────────────────────────────────
+# ── ฟังก์ชันสร้าง Task ─────────────────────────────────
 def create_task(name: str, desc: str, agent: str = "Copilot-Gm", module: str = "W3Lgu"):
-    """สร้าง Task ใหม่และบันทึกลงคิว"""
     task_id = str(uuid.uuid4())[:8]
     timestamp = datetime.datetime.now().isoformat()
 
@@ -27,7 +26,6 @@ def create_task(name: str, desc: str, agent: str = "Copilot-Gm", module: str = "
         "status": "queued"
     }
 
-    # บันทึกลง task_queue.json
     save_to_queue(task)
     print(f"[TaskAgent] ✅ สร้าง Task แล้ว: {task_id}")
     return task
@@ -45,30 +43,54 @@ def save_to_queue(task: dict):
     TASK_QUEUE.write_text(json.dumps(queue, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
-# ── Dispatch ─────────────────────────────────────────────
-def dispatch_to_agent(name: str, desc: str, agent: str):
-    """ส่งคำสั่งไปยังเอเจนท์ที่เลือก"""
-    print(f"[TaskAgent] 🚀 ส่งคำสั่งไปยัง {agent} …")
+# ── ฟังก์ชันอัปเดตสถานะ ────────────────────────────────
+def update_task_status(task_id: str, status: str):
+    """อัปเดตสถานะของ task ในคิว"""
+    if not TASK_QUEUE.exists():
+        return f"⚠️ ไม่มี task_queue.json"
 
+    queue = json.loads(TASK_QUEUE.read_text(encoding="utf-8"))
+    for task in queue:
+        if task["task_id"] == task_id:
+            task["status"] = status
+            TASK_QUEUE.write_text(json.dumps(queue, indent=2, ensure_ascii=False), encoding="utf-8")
+            return f"[TaskAgent] 🔄 อัปเดต Task {task_id} → {status}"
+    return f"⚠️ Task {task_id} ไม่พบในคิว"
+
+
+# ── Dispatch ─────────────────────────────────────────────
+def dispatch_to_agent(name: str, desc: str, agent: str, task_id: str = None):
+    """ส่งคำสั่งไปยังเอเจนท์ที่เลือก พร้อมอัปเดตสถานะ"""
+    if task_id:
+        update_task_status(task_id, "running")
+
+    print(f"[TaskAgent] 🚀 ส่งคำสั่งไปยัง {agent} …")
     try:
         if agent == "Gemini":
-            return gemini.process_task(name, desc)
+            result = gemini.process_task(name, desc)
         elif agent == "Copilot-Gm":
-            return copilot_gm.orchestrate(name, desc)
+            result = copilot_gm.orchestrate(name, desc)
         elif agent == "Grok":
-            return grok.analyze(name, desc)
+            result = grok.analyze(name, desc)
         elif agent == "BBX19":
-            return bbx19.integrate(name, desc)
+            result = bbx19.integrate(name, desc)
         elif agent == "DeepSeek":
-            return deepseek.evaluate(name, desc)
+            result = deepseek.evaluate(name, desc)
         else:
-            return f"⚠️ Agent '{agent}' ไม่พบในระบบ"
+            result = f"⚠️ Agent '{agent}' ไม่พบในระบบ"
+
+        if task_id:
+            update_task_status(task_id, "done")
+        return result
+
     except Exception as e:
+        if task_id:
+            update_task_status(task_id, "failed")
         return f"❌ เกิดข้อผิดพลาดใน {agent}: {e}"
 
 
 # ── ตัวอย่างการใช้งาน ───────────────────────────────────
 if __name__ == "__main__":
     task = create_task("ทดสอบระบบ", "ลองส่ง task ผ่าน TaskAgent", agent="Gemini")
-    result = dispatch_to_agent(task["name"], task["desc"], task["agent"])
+    result = dispatch_to_agent(task["name"], task["desc"], task["agent"], task["task_id"])
     print(f"[TaskAgent] ผลลัพธ์จาก {task['agent']}: {result}")
