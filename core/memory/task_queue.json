@@ -1,0 +1,74 @@
+[
+  {
+    "task_id": "a1b2c3d4",
+    "name": "ทดสอบระบบ Gemini",
+    "desc": "ลองส่ง task ไปยัง Gemini agent",
+    "agent": "Gemini",
+    "module": "Origin",
+    "timestamp": "2026-05-17T07:30:00",
+    "status": "queued"
+  },
+  {
+    "task_id": "e5f6g7h8",
+    "name": "ตรวจสอบโครงสร้าง Copilot-Gm",
+    "desc": "ให้ Copilot-Gm ตรวจสอบ metadata",
+    "agent": "Copilot-Gm",
+    "module": "Origin",
+    "timestamp": "2026-05-17T07:31:00",
+    "status": "running"
+  },
+  {
+    "task_id": "i9j0k1l2",
+    "name": "วิเคราะห์ข้อมูล Grok",
+    "desc": "ใช้ Grok วิเคราะห์ผลลัพธ์จาก training board",
+    "agent": "Grok",
+    "module": "Origin",
+    "timestamp": "2026-05-17T07:32:00",
+    "status": "done"
+  },
+  {
+    "task_id": "m3n4o5p6",
+    "name": "ทดสอบ DeepSeek",
+    "desc": "ลองให้ DeepSeek ประเมินโจทย์ที่ซับซ้อน",
+    "agent": "DeepSeek",
+    "module": "Origin",
+    "timestamp": "2026-05-17T07:33:00",
+    "status": "failed"
+  },
+  {
+    "task_id": "x7y8z9w0",
+    "name": "ตรวจสอบตรรกะ DTML",
+    "desc": "ให้ DTML ตรวจสอบการ validate โครงสร้าง",
+    "agent": "DTML",
+    "module": "W3Lgu",
+    "timestamp": "2026-05-17T07:34:00",
+    "status": "queued"
+  },
+  {
+    "task_id": "u1v2w3x4",
+    "name": "Routing ด้วย REDR",
+    "desc": "ใช้ REDR จัดเส้นทางข้อมูลภายในระบบ",
+    "agent": "REDR",
+    "module": "W3Lgu",
+    "timestamp": "2026-05-17T07:35:00",
+    "status": "running"
+  },
+  {
+    "task_id": "y5z6a7b8",
+    "name": "คำนวณด้วย LRC2",
+    "desc": "ให้ LRC2 ประมวลผล logic computation",
+    "agent": "LRC2",
+    "module": "W3Lgu",
+    "timestamp": "2026-05-17T07:36:00",
+    "status": "done"
+  },
+  {
+    "task_id": "c9d0e1f2",
+    "name": "Optimize ด้วย PSP2",
+    "desc": "ใช้ PSP2 ปรับปรุง performance ของระบบ",
+    "agent": "PSP2",
+    "module": "W3Lgu",
+    "timestamp": "2026-05-17T07:37:00",
+    "status": "failed"
+  }
+]
