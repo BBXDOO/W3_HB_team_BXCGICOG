@@ -89,8 +89,70 @@ def dispatch_to_agent(name: str, desc: str, agent: str, task_id: str = None):
         return f"❌ เกิดข้อผิดพลาดใน {agent}: {e}"
 
 
+# ── ฟังก์ชันแสดงรายการ Task ────────────────────────────
+def list_tasks():
+    """ดึงรายการ task ทั้งหมดจากคิวและแสดงสถานะ"""
+    if not TASK_QUEUE.exists():
+        return "⚠️ ไม่มี task_queue.json"
+
+    try:
+        queue = json.loads(TASK_QUEUE.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return "⚠️ task_queue.json ไม่สามารถอ่านได้"
+
+    if not queue:
+        return "ℹ️ ไม่มี task ในคิว"
+
+    # สร้างตารางสรุป
+    lines = []
+    lines.append("| Task ID  | Agent       | Name                | Status   | Timestamp           |")
+    lines.append("|----------|-------------|---------------------|----------|---------------------|")
+    for task in queue:
+        lines.append(
+            f"| {task['task_id']} | {task['agent']:<11} | {task['name']:<19} | {task['status']:<8} | {task['timestamp']} |"
+        )
+
+    return "\n".join(lines)
+
+
+# ── ฟังก์ชัน Filter Task ────────────────────────────────
+def filter_tasks(status: str):
+    """ดึงเฉพาะ task ที่มีสถานะตรงกับที่กำหนด"""
+    if not TASK_QUEUE.exists():
+        return "⚠️ ไม่มี task_queue.json"
+
+    try:
+        queue = json.loads(TASK_QUEUE.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return "⚠️ task_queue.json ไม่สามารถอ่านได้"
+
+    filtered = [t for t in queue if t["status"] == status]
+    if not filtered:
+        return f"ℹ️ ไม่มี task ที่สถานะ = {status}"
+
+    lines = []
+    lines.append(f"📋 Task ที่สถานะ = {status}")
+    lines.append("| Task ID  | Agent       | Name                | Timestamp           |")
+    lines.append("|----------|-------------|---------------------|---------------------|")
+    for task in filtered:
+        lines.append(
+            f"| {task['task_id']} | {task['agent']:<11} | {task['name']:<19} | {task['timestamp']} |"
+        )
+
+    return "\n".join(lines)
+
+
 # ── ตัวอย่างการใช้งาน ───────────────────────────────────
 if __name__ == "__main__":
+    # สร้าง task ใหม่
     task = create_task("ทดสอบระบบ", "ลองส่ง task ผ่าน TaskAgent", agent="Gemini")
     result = dispatch_to_agent(task["name"], task["desc"], task["agent"], task["task_id"])
     print(f"[TaskAgent] ผลลัพธ์จาก {task['agent']}: {result}")
+
+    # แสดงรายการ task ทั้งหมด
+    print("\n[TaskAgent] 📋 รายการ Task ปัจจุบัน:")
+    print(list_tasks())
+
+    # แสดงเฉพาะ task ที่สถานะ = done
+    print("\n[TaskAgent] 📋 Task ที่เสร็จแล้ว:")
+    print(filter_tasks("done"))
