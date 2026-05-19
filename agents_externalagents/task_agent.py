@@ -1,4 +1,4 @@
-# agents_externalagen/task_agent.py
+# agents_externalagents/task_agent.py
 import uuid
 import datetime
 import json
@@ -9,101 +9,113 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 TASK_QUEUE = REPO_ROOT / "core" / "memory" / "task_queue.json"
 
 # ── Runtime Agents ───────────────────────────────────────
-from core.runtime.agents import gemini, copilot_gm, grok, bbx19, deepseek
+try:
+    from core.runtime.agents import gemini, copilot_gm, grok, bbx19, deepseek
+except ImportError:
+    # mock agents (ใช้งานภายนอก ให้ comment ส่วนนี้ออกเมื่อใช้จริง)
+    class MockAgent:
+        def process_task(self, name, desc): return f"[Gemini] {name} :: {desc}"
+        def orchestrate(self, name, desc): return f"[Copilot-Gm] {name} :: {desc}"
+        def analyze(self, name, desc): return f"[Grok] {name} :: {desc}"
+        def integrate(self, name, desc): return f"[BBX19] {name} :: {desc}"
+        def evaluate(self, name, desc): return f"[DeepSeek] {name} :: {desc}"
+    gemini = MockAgent()
+    copilot_gm = MockAgent()
+    grok = MockAgent()
+    bbx19 = MockAgent()
+    deepseek = MockAgent()
+
+# ── AGENT NAME MAPPING ──────────────────────────────────
+AGENT_FUNCTIONS = {
+    "gemini":      lambda name, desc: gemini.process_task(name, desc),
+    "copilot-gm":  lambda name, desc: copilot_gm.orchestrate(name, desc),
+    "grok":        lambda name, desc: grok.analyze(name, desc),
+    "bbx19":       lambda name, desc: bbx19.integrate(name, desc),
+    "deepseek":    lambda name, desc: deepseek.evaluate(name, desc),
+}
+
+# ── JSON utility ────────────────────────────────────────
+def read_json_queue():
+    """อ่าน task_queue.json แบบ robust"""
+    if not TASK_QUEUE.exists():
+        return []
+    try:
+        return json.loads(TASK_QUEUE.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return []
+
+def write_json_queue(queue):
+    """เขียน task_queue.json"""
+    TASK_QUEUE.parent.mkdir(parents=True, exist_ok=True)
+    TASK_QUEUE.write_text(json.dumps(queue, indent=2, ensure_ascii=False), encoding="utf-8")
 
 # ── ฟังก์ชันสร้าง Task ─────────────────────────────────
-def create_task(name: str, desc: str, agent: str = "Copilot-Gm", module: str = "W3Lgu"):
+def create_task(name: str, desc: str, agent: str = "copilot-gm", module: str = "W3Lgu"):
     task_id = str(uuid.uuid4())[:8]
     timestamp = datetime.datetime.now().isoformat()
-
+    agent_norm = str(agent).strip().lower()
     task = {
         "task_id": task_id,
         "name": name,
         "desc": desc,
-        "agent": agent,
+        "agent": agent_norm,
         "module": module,
         "timestamp": timestamp,
         "status": "queued"
     }
-
-    save_to_queue(task)
+    # Save to queue
+    queue = read_json_queue()
+    queue.append(task)
+    write_json_queue(queue)
     print(f"[TaskAgent] ✅ สร้าง Task แล้ว: {task_id}")
     return task
-
-
-def save_to_queue(task: dict):
-    """บันทึก task ลงไฟล์คิว"""
-    queue = []
-    if TASK_QUEUE.exists():
-        try:
-            queue = json.loads(TASK_QUEUE.read_text(encoding="utf-8"))
-        except json.JSONDecodeError:
-            queue = []
-    queue.append(task)
-    TASK_QUEUE.write_text(json.dumps(queue, indent=2, ensure_ascii=False), encoding="utf-8")
-
 
 # ── ฟังก์ชันอัปเดตสถานะ ────────────────────────────────
 def update_task_status(task_id: str, status: str):
     """อัปเดตสถานะของ task ในคิว"""
-    if not TASK_QUEUE.exists():
-        return f"⚠️ ไม่มี task_queue.json"
-
-    queue = json.loads(TASK_QUEUE.read_text(encoding="utf-8"))
+    queue = read_json_queue()
+    found = False
     for task in queue:
         if task["task_id"] == task_id:
             task["status"] = status
-            TASK_QUEUE.write_text(json.dumps(queue, indent=2, ensure_ascii=False), encoding="utf-8")
-            return f"[TaskAgent] 🔄 อัปเดต Task {task_id} → {status}"
-    return f"⚠️ Task {task_id} ไม่พบในคิว"
-
+            found = True
+            break
+    if found:
+        write_json_queue(queue)
+        return f"[TaskAgent] 🔄 อัปเดต Task {task_id} → {status}"
+    else:
+        return f"⚠️ Task {task_id} ไม่พบในคิว"
 
 # ── Dispatch ─────────────────────────────────────────────
 def dispatch_to_agent(name: str, desc: str, agent: str, task_id: str = None):
     """ส่งคำสั่งไปยังเอเจนท์ที่เลือก พร้อมอัปเดตสถานะ"""
+    agent_norm = str(agent).strip().lower()
     if task_id:
         update_task_status(task_id, "running")
 
     print(f"[TaskAgent] 🚀 ส่งคำสั่งไปยัง {agent} …")
     try:
-        if agent == "Gemini":
-            result = gemini.process_task(name, desc)
-        elif agent == "Copilot-Gm":
-            result = copilot_gm.orchestrate(name, desc)
-        elif agent == "Grok":
-            result = grok.analyze(name, desc)
-        elif agent == "BBX19":
-            result = bbx19.integrate(name, desc)
-        elif agent == "DeepSeek":
-            result = deepseek.evaluate(name, desc)
+        if agent_norm in AGENT_FUNCTIONS:
+            result = AGENT_FUNCTIONS[agent_norm](name, desc)
+            if task_id:
+                update_task_status(task_id, "done")
+            return result
         else:
-            result = f"⚠️ Agent '{agent}' ไม่พบในระบบ"
-
-        if task_id:
-            update_task_status(task_id, "done")
-        return result
-
+            if task_id:
+                update_task_status(task_id, "failed")
+            return f"⚠️ Agent '{agent}' ไม่พบในระบบ"
     except Exception as e:
         if task_id:
             update_task_status(task_id, "failed")
         return f"❌ เกิดข้อผิดพลาดใน {agent}: {e}"
 
-
 # ── ฟังก์ชันแสดงรายการ Task ────────────────────────────
 def list_tasks():
     """ดึงรายการ task ทั้งหมดจากคิวและแสดงสถานะ"""
-    if not TASK_QUEUE.exists():
-        return "⚠️ ไม่มี task_queue.json"
-
-    try:
-        queue = json.loads(TASK_QUEUE.read_text(encoding="utf-8"))
-    except json.JSONDecodeError:
-        return "⚠️ task_queue.json ไม่สามารถอ่านได้"
-
+    queue = read_json_queue()
     if not queue:
         return "ℹ️ ไม่มี task ในคิว"
 
-    # สร้างตารางสรุป
     lines = []
     lines.append("| Task ID  | Agent       | Name                | Status   | Timestamp           |")
     lines.append("|----------|-------------|---------------------|----------|---------------------|")
@@ -111,21 +123,12 @@ def list_tasks():
         lines.append(
             f"| {task['task_id']} | {task['agent']:<11} | {task['name']:<19} | {task['status']:<8} | {task['timestamp']} |"
         )
-
     return "\n".join(lines)
-
 
 # ── ฟังก์ชัน Filter Task ────────────────────────────────
 def filter_tasks(status: str):
     """ดึงเฉพาะ task ที่มีสถานะตรงกับที่กำหนด"""
-    if not TASK_QUEUE.exists():
-        return "⚠️ ไม่มี task_queue.json"
-
-    try:
-        queue = json.loads(TASK_QUEUE.read_text(encoding="utf-8"))
-    except json.JSONDecodeError:
-        return "⚠️ task_queue.json ไม่สามารถอ่านได้"
-
+    queue = read_json_queue()
     filtered = [t for t in queue if t["status"] == status]
     if not filtered:
         return f"ℹ️ ไม่มี task ที่สถานะ = {status}"
@@ -140,7 +143,6 @@ def filter_tasks(status: str):
         )
 
     return "\n".join(lines)
-
 
 # ── ตัวอย่างการใช้งาน ───────────────────────────────────
 if __name__ == "__main__":
