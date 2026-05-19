@@ -1,5 +1,6 @@
 jsonschema>=4.10.3
 requests>=2.31.0
+requirements.txt
 
 # Optional: LLM API integration (required for core/adapters/llm_adapter.py)
 # Uncomment to enable:
