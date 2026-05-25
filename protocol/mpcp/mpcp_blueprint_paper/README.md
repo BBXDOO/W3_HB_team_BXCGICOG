@@ -1,4 +1,4 @@
-README.md — /SYSTEM/TESTS/mpcp/mpcp_blueprint_paper/
+README.md — /protocol/mpcp/mpcp_blueprint_paper/
 
 # MPCP Blueprint Paper
 W3_HB_team_BXCGICOG | refactor/v0.2

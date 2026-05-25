@@ -26,7 +26,7 @@
 
 **หมายเหตุ:**  
 เอกสารหลักของ concept/system อยู่ที่  
-- `SYSTEM/TESTS/mpcp/mpcp_concept_paper/`  
-- `SYSTEM/TESTS/mpcp/w3lgu_integration_paper/`
+- `protocol/mpcp/mpcp_concept_paper/`  
+- `protocol/mpcp/w3lgu_integration_paper/`
 
 ส่วนที่นี่สำหรับ retrospective analysis, practical report, และ knowledge aggregation เท่านั้น
