@@ -9,7 +9,7 @@
     "F": "memory"
   },
   "context": {
-    "owner": "SYSTEM/TESTS/mpcp",
+    "owner": "protocol/mpcp",
     "status": "reference"
   }
 }

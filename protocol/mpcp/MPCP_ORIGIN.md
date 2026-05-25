@@ -165,5 +165,5 @@ Merging ไม่ใช่การ merge โค้ด
 *Cast — Interpreter & Document Architect*
 *อ้างอิง: ภาพร่างต้นฉบับ BBX19 (MPCP_sketch)*
 *W3_HB_team_BXCGICOG | refactor/v0.2*
-*เก็บไว้ที่: SYSTEM/TESTS/mpcp/MPCP_ORIGIN.md*
+*เก็บไว้ที่: protocol/mpcp/MPCP_ORIGIN.md*
 
