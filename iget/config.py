@@ -1,8 +1,8 @@
 # ==========================================
-# IGET v5 — Configuration
+# IGET v6.0 — Configuration
 # ==========================================
 
-VERSION = "5"
+VERSION = "6.0"
 
 MAX_INLINE_COMMENTS = 5
 
@@ -37,15 +37,10 @@ RISK_WORDS = [
     "client_secret",
 ]
 
-# Score thresholds
 SCORE_GREEN = 85
 SCORE_YELLOW = 60
-
-# PR size thresholds
 FILES_WARN = 6
 FILES_LARGE = 15
 CHANGES_WARN = 400
 CHANGES_LARGE = 800
-
-# Pagination
 GITHUB_PAGE_SIZE = 100

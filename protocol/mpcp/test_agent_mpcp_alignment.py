@@ -35,8 +35,8 @@ Concept alignment expectations (W3LGU_MPCP_ROLE_MAPPING.md):
 Runs standalone (no pytest required) — mirrors existing repo test style.
 Assumptions:
   - Repo root is four levels above this file:
-      SYSTEM/TESTS/mpcp/test_agent_mpcp_alignment.py
-  - MPCP concept documents are present under SYSTEM/TESTS/mpcp/
+      protocol/mpcp/test_agent_mpcp_alignment.py
+  - MPCP concept documents are present under protocol/mpcp/
   - module.json files are present under modules/<name>/module.json
 """
 
@@ -47,11 +47,11 @@ import os
 # Path setup — resolve repo root so both `core.*` and `src.*` imports work
 # ---------------------------------------------------------------------------
 
-_HERE = os.path.dirname(os.path.abspath(__file__))           # .../SYSTEM/TESTS/mpcp
-_SYSTEM_TESTS = os.path.dirname(_HERE)                       # .../SYSTEM/TESTS
-_REPO_ROOT = os.path.dirname(os.path.dirname(_SYSTEM_TESTS)) # repo root
+_HERE = os.path.dirname(os.path.abspath(__file__))           # .../protocol/mpcp
+_PROTOCOL_ROOT = os.path.dirname(_HERE)                     # .../protocol
+_REPO_ROOT = os.path.dirname(_PROTOCOL_ROOT)                 # repo root
 
-for _p in (_REPO_ROOT,):
+for _p in (_REPO_ROOT, _PROTOCOL_ROOT):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
@@ -111,10 +111,10 @@ MODULES_UNDER_TEST = [
 
 # Core MPCP concept documents (paths relative to repo root)
 CONCEPT_DOCS = {
-    "ROT_PAPER":    "SYSTEM/TESTS/mpcp/mpcp_concept_paper/ROT_PAPER.md",
-    "MODEW_PAPER":  "SYSTEM/TESTS/mpcp/MODEW_PAPER.md",
-    "MPCP_CONCEPT": "SYSTEM/TESTS/mpcp/mpcp_concept_paper/mpcp_concept_paper.md",
-    "ROLE_MAPPING": "SYSTEM/TESTS/mpcp/w3lgu_integration_paper/W3LGU_MPCP_ROLE_MAPPING.md",
+    "ROT_PAPER":    "protocol/mpcp/mpcp_concept_paper/ROT_PAPER.md",
+    "MODEW_PAPER":  "protocol/mpcp/MODEW_PAPER.md",
+    "MPCP_CONCEPT": "protocol/mpcp/mpcp_concept_paper/mpcp_concept_paper.md",
+    "ROLE_MAPPING": "protocol/mpcp/w3lgu_integration_paper/W3LGU_MPCP_ROLE_MAPPING.md",
 }
 
 # Role mapping document — used for ecosystem positioning checks
