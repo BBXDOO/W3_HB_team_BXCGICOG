@@ -158,3 +158,17 @@ Phase D — Scalable
 9. Commit Suggestion
 
 docs(root): add W3 Master Map v1 unified network architecture
+
+## Integration Grade v0.3 Map
+
+The v0.3 integration path connects these append-only components:
+
+- EP_SIGNAL bridge: `integrations/ep_signal_w3db.py`
+- W3DB relation flow: `src/w3db/flow.py`
+- Hospitication W3DB bridge: `hospitication/w3db_adapter.py`
+- Pilot 2 layer separation: `scripts/enforce_layer_separation.py`
+- Semantic Router interpretation: `core/semantic_router.py`
+- Reference policy: `docs/standards/referencing_standard.md`
+
+All interpretation and recovery outputs must reference source truth and must not
+mutate EP_SIGNAL payloads, Hospitication signals/reports, or W3DB records.
