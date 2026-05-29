@@ -1,3 +1,23 @@
+# IGET v8.0 — Semantic PR Governance Update
+
+IGET v8.0 is the active CI/runtime version for semantic PR governance. This
+update preserves the existing `iget` package and older documentation below while
+fixing the stale `iget_v7.*` import path that caused GitHub Actions to fail.
+
+## v8 operational notes
+
+- Canonical smoke suite: `python -m iget.tests.test_iget_v8`
+- Compatibility wrapper: `python -m iget.tests.test_iget_v7`
+- Active engine version: `iget.config.VERSION`
+- GitHub Actions workflow: `.github/workflows/iget.yml`
+- Public import path remains stable: `import iget`
+
+The v8 suite keeps semantic state, proof trace, replay determinism, and
+MPCP-compatible trace output. Tests should assert against `iget.config.VERSION`
+rather than hard-coded version text.
+
+---
+
 IGET (v1) — W3 0.5 PR Flow Assistant
 
 Version: v1
