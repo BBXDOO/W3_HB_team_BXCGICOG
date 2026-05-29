@@ -1,5 +1,5 @@
 # ==========================================
-# IGET v7.0 — Scoring Engine
+# IGET v8.0 — Scoring Engine
 # Semantic state + causal proof annotation
 # Ontology tag: iget:module = "scorer"
 # ==========================================
@@ -283,7 +283,7 @@ def get_state(
     return state
 
 
-# ── Semantic state annotation (v7 new) ────────────────────────
+# ── Semantic state annotation (v8) ────────────────────────
 
 def get_semantic_state(
     score:      int,

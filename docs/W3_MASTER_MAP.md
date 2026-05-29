@@ -158,3 +158,33 @@ Phase D — Scalable
 9. Commit Suggestion
 
 docs(root): add W3 Master Map v1 unified network architecture
+
+## Integration Grade v0.3 Map
+
+The v0.3 integration path connects these append-only components:
+
+- EP_SIGNAL bridge: `integrations/ep_signal_w3db.py`
+- W3DB relation flow: `src/w3db/flow.py`
+- Hospitication W3DB bridge: `hospitication/w3db_adapter.py`
+- Pilot 2 layer separation: `scripts/enforce_layer_separation.py`
+- Semantic Router interpretation: `core/semantic_router.py`
+- Reference policy: `docs/standards/referencing_standard.md`
+
+All interpretation and recovery outputs must reference source truth and must not
+mutate EP_SIGNAL payloads, Hospitication signals/reports, or W3DB records.
+
+## W3Lgu Core Runtime Anchor
+
+W3Lgu is now represented by an importable core aligned with the RML01 five-line
+law:
+
+- Runtime minimal law: `protocol/w3lgu/RML01.md`
+- Immutable packet contracts: `protocol/w3lgu/core.py`
+- Parser/normalizer: `protocol/w3lgu/parser.py`
+- Runtime/signal handoff: `protocol/w3lgu/runtime.py`, `protocol/w3lgu/signals.py`
+- Bridges: `protocol/w3lgu/adapters.py`
+- Validation: `protocol/w3lgu/validator.py`
+
+The core keeps `MEM`, `PATCH`, `LAW`, `EVENT`, and `SIGNAL` separate so W3Lgu
+can cross MPCP, W3DB, Hospitication, and Semantic Router without collapsing
+memory, law, execution, and perception into one hidden layer.
