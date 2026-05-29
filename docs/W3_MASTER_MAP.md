@@ -172,3 +172,19 @@ The v0.3 integration path connects these append-only components:
 
 All interpretation and recovery outputs must reference source truth and must not
 mutate EP_SIGNAL payloads, Hospitication signals/reports, or W3DB records.
+
+## W3Lgu Core Runtime Anchor
+
+W3Lgu is now represented by an importable core aligned with the RML01 five-line
+law:
+
+- Runtime minimal law: `protocol/w3lgu/RML01.md`
+- Immutable packet contracts: `protocol/w3lgu/core.py`
+- Parser/normalizer: `protocol/w3lgu/parser.py`
+- Runtime/signal handoff: `protocol/w3lgu/runtime.py`, `protocol/w3lgu/signals.py`
+- Bridges: `protocol/w3lgu/adapters.py`
+- Validation: `protocol/w3lgu/validator.py`
+
+The core keeps `MEM`, `PATCH`, `LAW`, `EVENT`, and `SIGNAL` separate so W3Lgu
+can cross MPCP, W3DB, Hospitication, and Semantic Router without collapsing
+memory, law, execution, and perception into one hidden layer.
