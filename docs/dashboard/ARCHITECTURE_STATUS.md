@@ -13,5 +13,5 @@ Last updated: 2026-05-11
 | Unified Product Layer | Pending | roadmap target |
 
 ## Quick Links
-- Master architecture: `architecture/W3_MASTER_ARCHITECTURE.md`
-- Execution plan: `docs/roadmaps/P1_P3_EXECUTION_PLAN.md`
+- `architecture/W3_MASTER_ARCHITECTURE.md`
+- `docs/roadmaps/P1_P3_EXECUTION_PLAN.md`
