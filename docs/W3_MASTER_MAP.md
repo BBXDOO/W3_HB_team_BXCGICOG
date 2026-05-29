@@ -188,3 +188,19 @@ law:
 The core keeps `MEM`, `PATCH`, `LAW`, `EVENT`, and `SIGNAL` separate so W3Lgu
 can cross MPCP, W3DB, Hospitication, and Semantic Router without collapsing
 memory, law, execution, and perception into one hidden layer.
+
+## Codex Implementation Agent Boundary
+
+Codex is registered as the W3 implementation executor, not a truth authority:
+
+- Agent workspace: `codex/`
+- Central module workspace: `modules/Codex/`
+- Module manifest: `codex/modules.json`, `modules/Codex/module.json`
+- Runtime identity: `core/module-loader/identity/Codex.idp.json`
+- IDP v2.0 capsule: `BBX19/modules/BBX19/idp/IDP-V2.0/Codex-IDP.md`
+- Loader routing: `core/module-loader/module-registry.json`
+
+Codex may transform approved intent and architecture into code, tests,
+documentation, commits, and PR-ready changes. It must hand off every result to
+Human Review and Governance Gate before the result can be treated as accepted
+W3 source truth.
