@@ -468,3 +468,16 @@ Spec ยังไม่ตายตัว
 แปลว่ามันยังเดินถูกทาง
 
 ---
+
+## PX Position Exchange
+
+PX is the W3Lgu position-exchange layer for cross-system references. It answers
+"where did this meaning come from, where is it going, and what source does it
+reference?" without becoming an execution or diagnosis layer.
+
+- Contract: `protocol/w3lgu/px.py`
+- Append flow: `src/w3db/append_flow.py`
+- Default references: `protocol/w3lgu/RML01.md`, `docs/standards/referencing_standard.md`
+
+PX may be appended to W3DB as an observation through the append flow. Existing
+records are not overwritten; repeated appends can be handled idempotently.

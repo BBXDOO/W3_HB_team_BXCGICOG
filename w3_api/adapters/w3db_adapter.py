@@ -8,12 +8,14 @@ from __future__ import annotations
 
 from typing import Any
 
-from protocol.w3lgu import W3LguFiveLineProgram
+from protocol.w3lgu import W3LguFiveLineProgram, px_from_five_line, px_to_append_envelope
 
 
 def build_w3db_trace_plan(event_id: str, program: W3LguFiveLineProgram) -> dict[str, Any]:
     """Return deterministic W3DB append-intent metadata without mutating W3DB."""
 
+    px = px_from_five_line(program, extra_payload={"event_id": event_id, "gateway": "w3_api"})
+    append_envelope = px_to_append_envelope(px)
     return {
         "mode": "append_plan_only",
         "mutated": False,
@@ -21,4 +23,6 @@ def build_w3db_trace_plan(event_id: str, program: W3LguFiveLineProgram) -> dict[
         "tuf_hint": f"TUF-API-{event_id[:8]}",
         "source": program.memory.get("SOURCE"),
         "target": program.law.get("TARGET"),
+        "px": px.to_dict(),
+        "append_envelope": append_envelope.to_dict(),
     }

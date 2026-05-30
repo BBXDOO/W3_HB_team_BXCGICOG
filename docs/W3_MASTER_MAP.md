@@ -204,3 +204,18 @@ Codex may transform approved intent and architecture into code, tests,
 documentation, commits, and PR-ready changes. It must hand off every result to
 Human Review and Governance Gate before the result can be treated as accepted
 W3 source truth.
+
+## PX / W3DB Append Flow
+
+PX is the W3Lgu position-exchange pointer for cross-system meaning. It connects
+source, target, subject, relation, payload, and references without becoming an
+execution layer.
+
+- PX contract: `protocol/w3lgu/px.py`
+- Append-only envelope: `src/w3db/append_flow.py`
+- W3-API trace plan: `w3_api/adapters/w3db_adapter.py`
+- Guide: `docs/px_w3db_append_flow.md`
+
+W3DB append flow creates XIZ/TUF/FBD/WHB/PRX records through the existing W3DB
+relation flow and returns deterministic trace IDs. It is idempotent by default
+and does not overwrite prior records.
