@@ -158,3 +158,64 @@ Phase D — Scalable
 9. Commit Suggestion
 
 docs(root): add W3 Master Map v1 unified network architecture
+
+## Integration Grade v0.3 Map
+
+The v0.3 integration path connects these append-only components:
+
+- EP_SIGNAL bridge: `integrations/ep_signal_w3db.py`
+- W3DB relation flow: `src/w3db/flow.py`
+- Hospitication W3DB bridge: `hospitication/w3db_adapter.py`
+- Pilot 2 layer separation: `scripts/enforce_layer_separation.py`
+- Semantic Router interpretation: `core/semantic_router.py`
+- Reference policy: `docs/standards/referencing_standard.md`
+
+All interpretation and recovery outputs must reference source truth and must not
+mutate EP_SIGNAL payloads, Hospitication signals/reports, or W3DB records.
+
+## W3Lgu Core Runtime Anchor
+
+W3Lgu is now represented by an importable core aligned with the RML01 five-line
+law:
+
+- Runtime minimal law: `protocol/w3lgu/RML01.md`
+- Immutable packet contracts: `protocol/w3lgu/core.py`
+- Parser/normalizer: `protocol/w3lgu/parser.py`
+- Runtime/signal handoff: `protocol/w3lgu/runtime.py`, `protocol/w3lgu/signals.py`
+- Bridges: `protocol/w3lgu/adapters.py`
+- Validation: `protocol/w3lgu/validator.py`
+
+The core keeps `MEM`, `PATCH`, `LAW`, `EVENT`, and `SIGNAL` separate so W3Lgu
+can cross MPCP, W3DB, Hospitication, and Semantic Router without collapsing
+memory, law, execution, and perception into one hidden layer.
+
+## Codex Implementation Agent Boundary
+
+Codex is registered as the W3 implementation executor, not a truth authority:
+
+- Agent workspace: `codex/`
+- Central module workspace: `modules/Codex/`
+- Module manifest: `codex/modules.json`, `modules/Codex/module.json`
+- Runtime identity: `core/module-loader/identity/Codex.idp.json`
+- IDP v2.0 capsule: `BBX19/modules/BBX19/idp/IDP-V2.0/Codex-IDP.md`
+- Loader routing: `core/module-loader/module-registry.json`
+
+Codex may transform approved intent and architecture into code, tests,
+documentation, commits, and PR-ready changes. It must hand off every result to
+Human Review and Governance Gate before the result can be treated as accepted
+W3 source truth.
+
+## PX / W3DB Append Flow
+
+PX is the W3Lgu position-exchange pointer for cross-system meaning. It connects
+source, target, subject, relation, payload, and references without becoming an
+execution layer.
+
+- PX contract: `protocol/w3lgu/px.py`
+- Append-only envelope: `src/w3db/append_flow.py`
+- W3-API trace plan: `w3_api/adapters/w3db_adapter.py`
+- Guide: `docs/px_w3db_append_flow.md`
+
+W3DB append flow creates XIZ/TUF/FBD/WHB/PRX records through the existing W3DB
+relation flow and returns deterministic trace IDs. It is idempotent by default
+and does not overwrite prior records.

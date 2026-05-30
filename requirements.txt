@@ -6,3 +6,7 @@ PyGithub==2.1.1
 # Uncomment to enable:
 # openai>=1.0.0
 # google-generativeai>=0.8.0
+
+# W3-API cross gateway
+fastapi>=0.111,<1
+httpx>=0.27,<1

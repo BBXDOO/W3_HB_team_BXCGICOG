@@ -1,5 +1,5 @@
 # ==========================================
-# IGET v7.0 — Reporter
+# IGET v8.0 — Reporter
 # Semantic output + proof-ready formatting
 # Ontology tag: iget:module = "reporter"
 # ==========================================
@@ -189,7 +189,7 @@ def build_comment(
     """
     Assemble the full PR comment body.
 
-    v7.0 adds:
+    v8.0 carries forward:
       - Semantic State section
       - Proof Trace summary (optional, collapsed)
       - MPCP result tag
@@ -222,7 +222,7 @@ def build_comment(
     body += "\n### IMPACT\n"
     body += impact + "\n"
 
-    # SEMANTIC STATE (v7 new)
+    # SEMANTIC STATE (v8)
     if semantic_state:
         body += "\n### SEMANTIC STATE\n"
         body += f"- สถานะ: **{semantic_state['label']}**\n"
@@ -234,7 +234,7 @@ def build_comment(
     for r in recommend:
         body += f"- {r}\n"
 
-    # PROOF TRACE (v7 new — collapsed section)
+    # PROOF TRACE (v8 — collapsed section)
     if mpcp_result and mpcp_result.get("trace"):
         elapsed  = mpcp_result.get("elapsed_sec", 0)
         steps    = " → ".join(e["step"] for e in mpcp_result["trace"])
