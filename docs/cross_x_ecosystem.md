@@ -10,6 +10,7 @@ ecosystem. It is not a bug hunt and not an execution authority.
 Human / Agent intent
 → Cross-X plan
 → W3Lgu five-line packet
+→ REDR / PSP2 / DTML process trace
 → PX position anchor
 → W3DB append envelope
 → EP_SIGNAL preview
@@ -36,6 +37,7 @@ Config is not source truth. It links existing truth sources and protocols.
 - W3DB append envelopes are append-only intents.
 - EP_SIGNAL output is preview-only unless an approved adapter appends it.
 - EP_SIGNAL:Rytm is a reversible pulse-cadence preview, not a new truth store.
+- REDR/PSP2/DTML/LRC2 process traces are plan-only until an approved adapter persists them.
 - Human Review and Governance Gate remain required.
 
 ## Example
@@ -66,3 +68,10 @@ Cross-X  = plan-only coordinator that carries both without mutating source truth
 
 The implementation lives in `protocol/EP_SIGNAL/rytm.py` and is referenced by
 `cross_x/core.py` when building plan dictionaries.
+
+## REDR / PSP2 / DTML / LRC2 base
+
+Cross-X now carries a `process_trace` built by `core/runtime/process_layer.py`.
+REDR packages the intent, PSP2 stamps/routes it, DTML emits a review signal, and
+LRC2 prepares an immutable memory preview. The trace is non-mutating by default
+and can be persisted only through a separately approved append adapter.

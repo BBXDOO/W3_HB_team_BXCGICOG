@@ -42,8 +42,11 @@
     "Codex": true,
     "IDP": "v2.0",
     "iget": "v8.0",
-    "EP_SIGNAL_RYTM": true
-    "iget": "v8.0"
+    "EP_SIGNAL_RYTM": true,
+    "REDR": true,
+    "PSP2": true,
+    "DTML": true,
+    "LRC2": true
   },
   "environment": {
     "containerized": true,
@@ -74,7 +77,12 @@
     "docs/px_w3db_append_flow.md",
     "docs/W3_MASTER_MAP.md",
     "protocol/EP_SIGNAL/RYTM_SIGNAL.md",
-    "protocol/EP_SIGNAL/rytm.py"
+    "protocol/EP_SIGNAL/rytm.py",
+    "core/runtime/process_layer.py",
+    "modules/REDR/module.json",
+    "modules/PSP2/module.json",
+    "modules/DTML/module.json",
+    "modules/LRC2/module.json"
   ],
   "notes": "Primary runtime environment configuration for W3 HB orchestration pipeline. Airtable acts as operational memory/control registry, not the whole runtime. Cross-X coordinates systems at the cross point to improve working method without mutating source truth."
 }

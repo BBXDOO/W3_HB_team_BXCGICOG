@@ -15,6 +15,7 @@ from uuid import uuid4
 
 from config.loader import W3ConfigBundle, load_w3_config
 from protocol.EP_SIGNAL.ep_signal_adapter import to_ep_signal
+from core.runtime.process_layer import run_w3_process_layer
 from protocol.EP_SIGNAL.rytm import build_rytm_preview
 from protocol.w3lgu import W3LguFiveLineProgram, parse_five_line_program, px_from_five_line, px_to_append_envelope, validate_five_line
 from protocol.w3lgu.px import PXAnchor
@@ -96,6 +97,7 @@ class CrossXPlan:
     px: PXAnchor
     append_envelope: AppendEnvelope
     ep_signal: Mapping[str, Any]
+    process_trace: Mapping[str, Any] = field(default_factory=dict)
     status: str = "planned"
     mutated: bool = False
     governance: Mapping[str, bool] = field(
@@ -119,6 +121,7 @@ class CrossXPlan:
             "px": self.px.to_dict(),
             "append_envelope": self.append_envelope.to_dict(),
             "ep_signal": dict(self.ep_signal),
+            "process_trace": dict(self.process_trace),
             "governance": dict(self.governance),
         }
 
@@ -168,6 +171,15 @@ def build_cross_x_plan(
         },
     )
     append_envelope = px_to_append_envelope(px, confidence=float(resolved_request.payload.get("confidence", 0.5)))
+    process_trace = run_w3_process_layer(
+        source=resolved_request.source,
+        intent=resolved_request.intent,
+        target=resolved_request.target,
+        mode=resolved_request.mode,
+        payload=resolved_request.payload,
+        process_id=cross_id,
+        timestamp=timestamp,
+    ).to_dict()
     return CrossXPlan(
         cross_id=cross_id or str(uuid4()),
         timestamp=timestamp or _now_iso(),
@@ -177,4 +189,5 @@ def build_cross_x_plan(
         px=px,
         append_envelope=append_envelope,
         ep_signal=_build_ep_signal_preview(program.to_text()),
+        process_trace=process_trace,
     )

@@ -21,10 +21,14 @@
   "chain": [
     "W3-API",
     "W3Lgu",
+    "REDR",
+    "PSP2",
+    "DTML",
     "PX",
     "W3DB_APPEND",
     "EP_SIGNAL",
     "EP_SIGNAL_RYTM",
+    "LRC2",
     "Hospitication",
     "IGET"
   ],
@@ -36,7 +40,11 @@
     "EP_SIGNAL": "preview_or_decode_without_payload_mutation",
     "Hospitication": "observe_detect_emit_report_propose_only",
     "IGET": "governance_check_not_truth_authority",
-    "EP_SIGNAL_RYTM": "rhythm_preview_reversible_no_payload_mutation"
+    "EP_SIGNAL_RYTM": "rhythm_preview_reversible_no_payload_mutation",
+    "REDR": "read_classify_tag_package_no_mutation",
+    "PSP2": "stamp_route_only_no_inspection_mutation",
+    "DTML": "decision_trace_review_no_execution_authority",
+    "LRC2": "immutable_memory_log_preview_append_only_when_approved"
   },
   "references": [
     "protocol/w3lgu/RML01.md",
@@ -46,7 +54,11 @@
     "docs/px_w3db_append_flow.md",
     "docs/standards/referencing_standard.md",
     "protocol/EP_SIGNAL/RYTM_SIGNAL.md",
-    "protocol/EP_SIGNAL/rytm.py"
-    "docs/standards/referencing_standard.md"
+    "protocol/EP_SIGNAL/rytm.py",
+    "core/runtime/process_layer.py",
+    "modules/REDR/module.json",
+    "modules/PSP2/module.json",
+    "modules/DTML/module.json",
+    "modules/LRC2/module.json"
   ]
 }

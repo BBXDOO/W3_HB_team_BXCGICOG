@@ -242,3 +242,11 @@ Cross-X carries EP_SIGNAL in two forms: the compact reversible EP payload and a
 Rytm pulse-cadence preview. Rytm lives at `protocol/EP_SIGNAL/rytm.py`, is listed
 as `EP_SIGNAL_RYTM` in config, and remains preview-only/non-mutating unless a
 separate approved adapter appends an observation.
+
+
+### REDR / PSP2 / DTML / LRC2 process layer
+
+The W3 process layer lives at `core/runtime/process_layer.py` and gives the four
+process units private workspaces under `modules/REDR/`, `modules/PSP2/`,
+`modules/DTML/`, and `modules/LRC2/`. Cross-X includes the process trace as a
+plan-only artifact before PX/W3DB/EP_SIGNAL handoff.

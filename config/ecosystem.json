@@ -58,6 +58,26 @@
       "role": "pulse_rhythm_preview_layer",
       "path": "protocol/EP_SIGNAL/rytm.py",
       "mutation_authority": false
+    },
+    "REDR": {
+      "role": "reader_package_classifier",
+      "path": "modules/REDR/",
+      "mutation_authority": false
+    },
+    "PSP2": {
+      "role": "pointer_stamp_route_only",
+      "path": "modules/PSP2/",
+      "mutation_authority": false
+    },
+    "DTML": {
+      "role": "decision_trace_review_layer",
+      "path": "modules/DTML/",
+      "mutation_authority": false
+    },
+    "LRC2": {
+      "role": "immutable_lifecycle_memory_preview",
+      "path": "modules/LRC2/",
+      "mutation_authority": false
     }
   },
   "routing": {
@@ -69,7 +89,11 @@
     "external_cross": "W3-API",
     "signal_transport": "EP_SIGNAL",
     "governance_check": "IGET",
-    "signal_rhythm": "EP_SIGNAL_RYTM"
+    "signal_rhythm": "EP_SIGNAL_RYTM",
+    "package_reader": "REDR",
+    "route_stamp": "PSP2",
+    "decision_trace": "DTML",
+    "continuity_memory": "LRC2"
   },
   "governance": {
     "human_review_required": true,
