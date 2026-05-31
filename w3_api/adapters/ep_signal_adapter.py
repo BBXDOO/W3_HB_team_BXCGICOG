@@ -16,6 +16,7 @@ def build_ep_signal_preview(w3lgu_text: str) -> dict[str, object]:
     digest_bits = "".join(f"{byte:08b}" for byte in w3lgu_text.encode("utf-8")[:8])
     binary = digest_bits or "0"
     ep_signal = to_ep_signal(binary)
+    ep_signal = to_ep_signal(digest_bits or "0")
     return {
         "mode": "preview_only",
         "mutated": False,

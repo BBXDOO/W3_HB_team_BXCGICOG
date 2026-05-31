@@ -47,5 +47,6 @@
     "docs/standards/referencing_standard.md",
     "protocol/EP_SIGNAL/RYTM_SIGNAL.md",
     "protocol/EP_SIGNAL/rytm.py"
+    "docs/standards/referencing_standard.md"
   ]
 }
