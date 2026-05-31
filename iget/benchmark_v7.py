@@ -1,5 +1,5 @@
 # ==========================================
-# IGET v7.0 — Benchmark
+# IGET v8.0 — Benchmark
 # v5 profiles + semantic state + proof trace
 # ==========================================
 
@@ -98,7 +98,7 @@ BENCHMARK_PROFILES = [
 def run_benchmark(profiles=None):
     """
     Run scoring benchmark against all profiles.
-    v7.0: adds semantic_state + proof trace per profile.
+    v8.0: carries semantic_state + proof trace per profile.
     Returns a list of result dicts.
     """
     if profiles is None:
@@ -124,7 +124,7 @@ def run_benchmark(profiles=None):
             "mode":          mode,
             "score":         score,
             "state":         state,
-            # v7.0 additions
+            # v8.0 additions
             "semantic_key":  semantic["semantic_key"],
             "semantic_label":semantic["label"],
             "semantic_proof":semantic["proof"],
