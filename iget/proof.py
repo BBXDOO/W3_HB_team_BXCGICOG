@@ -1,5 +1,5 @@
 # ==========================================
-# IGET v7.0 — Proof Tracer
+# IGET v8.0 — Proof Tracer
 # Semantic annotation + causal proof engine
 # Ontology tag: iget:module = "proof"
 # ==========================================
