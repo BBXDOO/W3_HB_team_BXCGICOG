@@ -219,3 +219,19 @@ execution layer.
 W3DB append flow creates XIZ/TUF/FBD/WHB/PRX records through the existing W3DB
 relation flow and returns deterministic trace IDs. It is idempotent by default
 and does not overwrite prior records.
+
+## Cross-X / ENV Runtime Map
+
+Cross-X is the ecosystem coordination point for W3: it pulls related systems into
+one traceable plan so the workflow can improve without treating every finding as
+a bug.
+
+- Cross-X coordinator: `cross_x/core.py`
+- Runtime ENV map: `config/environment.json`
+- Ecosystem systems: `config/ecosystem.json`
+- Cross policy: `config/cross_system.json`
+- Canonical paths: `config/paths.json`
+- Guide: `docs/cross_x_ecosystem.md`
+
+Default Cross-X output is plan-only and non-mutating. Human Review and
+Governance Gate are still required before any source-truth change.

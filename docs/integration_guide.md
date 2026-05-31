@@ -39,3 +39,20 @@ python examples/use_semantic_router_hospitication.py
 - `protocol/EP_SIGNAL/INTERPRETATION_BOUNDARY_PAPER.md`
 - `hospitication/docs/ARCHITECTURE.md`
 - `core/semantic_router.py`
+
+## Cross-X coordination
+
+Cross-X adds an ecosystem-level planning layer above the existing adapters:
+
+```text
+Intent -> Cross-X -> W3Lgu -> PX -> W3DB append envelope -> EP_SIGNAL preview
+```
+
+- Config map: `config/environment.json`, `config/ecosystem.json`, `config/cross_system.json`, `config/paths.json`
+- Coordinator: `cross_x/core.py`
+- PX pointer: `protocol/w3lgu/px.py`
+- Append envelope: `src/w3db/append_flow.py`
+
+Cross-X plans do not persist records by default. They describe what should cross
+what, why, and which append envelope can be used after Human Review and
+Governance Gate.
