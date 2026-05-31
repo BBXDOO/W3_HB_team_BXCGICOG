@@ -51,6 +51,8 @@ def test_w3_cross_defaults_to_observe_and_auto_target():
     assert body["signal"]["w3db"]["mutated"] is False
     assert body["signal"]["ep_signal"]["mode"] == "preview_only"
     assert body["signal"]["ep_signal"]["mutated"] is False
+    assert body["signal"]["ep_signal"]["rytm"]["mode"] == "preview_only"
+    assert body["signal"]["ep_signal"]["rytm"]["mutated"] is False
 
 
 def test_w3_cross_does_not_mutate_w3db_store():

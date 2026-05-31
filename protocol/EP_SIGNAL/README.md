@@ -139,3 +139,23 @@ Maintainer Note
 
 Created under BBX19 research direction.
 All future revisions should preserve decode reversibility and validation consistency.
+
+---
+
+## Cross-X / Rytm Runtime Base
+
+EP_SIGNAL now has a small importable Rytm layer for Cross-X planning:
+
+- `protocol/EP_SIGNAL/rytm.py` exposes immutable Rytm packets.
+- Rytm packets preserve reversible binary truth and add pulse-cadence metadata.
+- Cross-X and W3-API use Rytm as `preview_only`; it does not persist or rewrite EP_SIGNAL payloads.
+- Canonical preview shape: `[START]/[RHYTHM]'META'-[VERIFY]//[FORMAT].`
+
+Example:
+
+```text
+EP_SIGNAL: 0/2222-4'BIN
+RYTM:      0/2222'CROSS_X'-4//BIN.
+```
+
+Design rule: EP_SIGNAL remains the compact transport payload; Rytm is the readable rhythm view carried beside it.

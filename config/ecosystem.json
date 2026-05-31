@@ -53,6 +53,11 @@
       "role": "truth_and_observation_store",
       "path": "src/w3db/",
       "mutation_authority": false
+    },
+    "EP_SIGNAL_RYTM": {
+      "role": "pulse_rhythm_preview_layer",
+      "path": "protocol/EP_SIGNAL/rytm.py",
+      "mutation_authority": false
     }
   },
   "routing": {
@@ -63,7 +68,8 @@
     "append_observation": "W3DB_APPEND",
     "external_cross": "W3-API",
     "signal_transport": "EP_SIGNAL",
-    "governance_check": "IGET"
+    "governance_check": "IGET",
+    "signal_rhythm": "EP_SIGNAL_RYTM"
   },
   "governance": {
     "human_review_required": true,

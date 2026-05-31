@@ -15,6 +15,7 @@ from uuid import uuid4
 
 from config.loader import W3ConfigBundle, load_w3_config
 from protocol.EP_SIGNAL.ep_signal_adapter import to_ep_signal
+from protocol.EP_SIGNAL.rytm import build_rytm_preview
 from protocol.w3lgu import W3LguFiveLineProgram, parse_five_line_program, px_from_five_line, px_to_append_envelope, validate_five_line
 from protocol.w3lgu.px import PXAnchor
 from src.w3db.append_flow import AppendEnvelope
@@ -49,11 +50,13 @@ def _build_cross_w3lgu_packet(*, source: str, intent: str, target: str | None, m
 
 def _build_ep_signal_preview(w3lgu_text: str) -> dict[str, object]:
     digest_bits = "".join(f"{byte:08b}" for byte in w3lgu_text.encode("utf-8")[:8])
+    binary = digest_bits or "0"
     return {
         "mode": "preview_only",
         "mutated": False,
         "format": "BIN",
-        "ep_signal": to_ep_signal(digest_bits or "0"),
+        "ep_signal": to_ep_signal(binary),
+        "rytm": build_rytm_preview(binary, meta=("CROSS_X", "EP_SIGNAL")),
     }
 
 

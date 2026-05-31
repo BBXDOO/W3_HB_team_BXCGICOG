@@ -235,3 +235,10 @@ a bug.
 
 Default Cross-X output is plan-only and non-mutating. Human Review and
 Governance Gate are still required before any source-truth change.
+
+### EP_SIGNAL:Rytm preview layer
+
+Cross-X carries EP_SIGNAL in two forms: the compact reversible EP payload and a
+Rytm pulse-cadence preview. Rytm lives at `protocol/EP_SIGNAL/rytm.py`, is listed
+as `EP_SIGNAL_RYTM` in config, and remains preview-only/non-mutating unless a
+separate approved adapter appends an observation.

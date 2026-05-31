@@ -13,6 +13,7 @@ Human / Agent intent
 → PX position anchor
 → W3DB append envelope
 → EP_SIGNAL preview
+→ EP_SIGNAL:Rytm pulse preview
 → Human Review + Governance Gate
 ```
 
@@ -34,6 +35,7 @@ Config is not source truth. It links existing truth sources and protocols.
 - PX is a pointer, not execution.
 - W3DB append envelopes are append-only intents.
 - EP_SIGNAL output is preview-only unless an approved adapter appends it.
+- EP_SIGNAL:Rytm is a reversible pulse-cadence preview, not a new truth store.
 - Human Review and Governance Gate remain required.
 
 ## Example
@@ -49,3 +51,18 @@ plan = build_cross_x_plan(
 )
 print(plan.to_dict()["chain"])
 ```
+
+## EP_SIGNAL:Rytm base
+
+Cross-X now includes `EP_SIGNAL_RYTM` as the rhythm preview layer after the raw
+EP_SIGNAL preview. The Rytm packet keeps the same binary digest reversible while
+exposing pulse groups, verification, and W3 context tokens for humans and agents.
+
+```text
+EP_SIGNAL = compact reversible signal payload
+Rytm     = readable pulse-cadence view of that payload
+Cross-X  = plan-only coordinator that carries both without mutating source truth
+```
+
+The implementation lives in `protocol/EP_SIGNAL/rytm.py` and is referenced by
+`cross_x/core.py` when building plan dictionaries.

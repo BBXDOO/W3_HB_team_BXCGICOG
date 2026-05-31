@@ -15,6 +15,7 @@ def test_w3_config_bundle_covers_current_ecosystem():
     assert config.environment["compatibility"]["PX"] is True
     assert "PX" in config.ecosystem["components"]
     assert "W3DB_APPEND" in config.ecosystem["components"]
+    assert "EP_SIGNAL_RYTM" in config.ecosystem["components"]
     assert config.cross_system["cross_x"]["truth_mutation"] is False
     assert config.component_path("px") == "protocol/w3lgu/px.py"
 
@@ -36,11 +37,14 @@ def test_cross_x_plan_builds_full_non_mutating_chain():
     assert body["mutated"] is False
     assert body["governance"]["human_review_required"] is True
     assert body["governance"]["truth_mutation_allowed"] is False
-    assert body["chain"] == ["W3-API", "W3Lgu", "PX", "W3DB_APPEND", "EP_SIGNAL", "Hospitication", "IGET"]
+    assert body["chain"] == ["W3-API", "W3Lgu", "PX", "W3DB_APPEND", "EP_SIGNAL", "EP_SIGNAL_RYTM", "Hospitication", "IGET"]
     assert body["w3lgu"].splitlines()[0].startswith("MEM:")
     assert body["px"]["relation"] == "cross_x.workflow_improvement"
     assert body["append_envelope"]["kind"] == "PX"
     assert body["ep_signal"]["mode"] == "preview_only"
+    assert body["ep_signal"]["rytm"]["mode"] == "preview_only"
+    assert body["ep_signal"]["rytm"]["mutated"] is False
+    assert body["ep_signal"]["rytm"]["rytm_signal"].endswith("//BIN.")
 
 
 def test_cross_x_rejects_unsupported_modes():
