@@ -1,302 +1,102 @@
-Hospitication
+# Hospitication
 
-Structural Recovery & Signal Stability Framework
+Structural Recovery & Signal Stability Framework for the W3 ecosystem.
 
-«“Do not rewrite truth.
-Recover structural integrity.”»
+> Do not rewrite truth. Recover structural integrity.
 
----
+Hospitication is a production-oriented health observer for W3 repositories. It is
+not a linter and it is not a demo monitor. It observes structural pressure across
+memory, governance, protocol, replay, outcome, and coordination surfaces, emits
+immutable signals, and produces non-mutating recovery proposals.
 
-Overview
+## Scope
 
-Hospitication is a structural recovery framework designed to observe, preserve, and recover system integrity without mutating historical truth.
+Hospitication separates the pipeline into explicit layers:
 
-Unlike traditional monitoring systems that focus on logs, alerts, or runtime failures, Hospitication treats software systems as evolving causal structures with:
+1. **Observe** — read repository structure without mutation.
+2. **Detect** — identify drift, spikes, oscillation, or divergence.
+3. **Emit** — convert detections into immutable signal envelopes.
+4. **Evaluate** — compute health/burden metrics.
+5. **Recover** — propose mitigation only; never apply changes by default.
+6. **Report** — render deterministic Markdown or JSON without changing state.
 
-- pressure
-- instability
-- replayable history
-- structural fatigue
-- semantic drift
+## Production Guarantees
 
-The system is designed around the philosophy that:
+- Uses Python standard library only.
+- Truth/signal/report contracts use immutable dataclasses where appropriate.
+- Reports are deterministic by sorted ordering and configurable fixed timestamp.
+- Recovery proposals are non-destructive and have `destructive=False`.
+- Existing W3 memory/governance/replay files are observed but not rewritten.
+- Signal detection never diagnoses root cause.
+- Detector modules never call recovery modules.
+- Reporter modules never mutate repository state.
 
-signal != logging
-signal = structural nervous response
+## Package Layout
 
----
-
-Core Philosophy
-
-1. Recovery over Rewrite
-
-Hospitication never rewrites historical truth.
-
-Recovery is performed through:
-
-- derived signals
-- replay annotations
-- mitigation proposals
-- causal recovery paths
-
-Original events remain immutable.
-
----
-
-2. Signal before Collapse
-
-The framework focuses on detecting:
-
-- oscillation
-- divergence
-- pressure accumulation
-- replay instability
-- semantic drift
-
-before visible failure occurs.
-
-Similar to ICU monitoring:
-the goal is not to react to collapse,
-but to detect instability patterns early.
-
----
-
-3. Detection != Diagnosis
-
-A detector may identify:
-
-- instability
-- drift
-- oscillation
-- pressure spikes
-
-without knowing the root cause.
-
-The architecture explicitly separates:
-
-- observation
-- detection
-- evaluation
-- recovery
-
-to preserve causal integrity.
-
----
-
-4. Replayable Truth
-
-Every signal is:
-
-- immutable
-- replayable
-- causally anchored
-- locality-aware
-
-Historical lineage must never break.
-
-Even after decay or compression,
-minimal replay truth is preserved through shadow lineage.
-
----
-
-Architecture
-
+```text
 hospitication/
-├── core/
-│   ├── nodes/
-│   │   ├── active/
-│   │   ├── dormant/
-│   │   └── shadow/
-│   │
-│   ├── signal/
-│   │   ├── observer/
-│   │   ├── detector/
-│   │   └── emitter/
-│   │
-│   └── types.py
-│
-├── layers/
-│   ├── a_structure/
-│   ├── b_process/
-│   ├── c_stability/
-│   └── d_record/
-│
-├── analysis/
-│   ├── burden/
-│   ├── causal/
-│   └── replay/
-│
-├── recovery/
-│   ├── proposals/
-│   ├── paths/
-│   └── mitigations/
-│
-├── interface/
-│   ├── adapters/
-│   ├── contracts/
-│   └── replay_boundary/
-│
-├── db/
-└── tests/
+├── core/          # contracts, config, registry
+├── signal/        # observer, detector, emitter, envelope helpers
+├── analysis/      # structural burden analyzers
+├── recovery/      # non-mutating proposals and mitigation catalog
+├── reporter/      # deterministic markdown/json renderers
+├── docs/          # design notes and integration guidance
+└── cli.py         # command-line entrypoint
+```
 
----
+## CLI Usage
 
-Signal Doctrine
+Run a Markdown report against the current repository:
 
-Observer
+```bash
+python -m hospitication.cli --repo . --format markdown
+```
 
-Passive temporal observation.
+Write deterministic JSON:
 
-Responsibilities:
+```bash
+python -m hospitication.cli --repo . --format json --output hospitication-report.json
+```
 
-- drift accumulation
-- trend monitoring
-- continuous structural observation
+Use a concrete timestamp for replayable CI output:
 
-Observer does NOT:
+```bash
+python -m hospitication.cli --repo . --format json --timestamp 2026-05-28T00:00:00Z
+```
 
-- diagnose
-- recover
-- evaluate
+## Analyzer Coverage
 
----
+- `semantic_pressure` — overloaded W3 governance/replay vocabulary pressure.
+- `dependency_fatigue` — import breadth and repeated coupling points.
+- `replay_complexity` — event/outcome/ledger/checkpoint/replay surfaces.
+- `recovery_resistance` — large files with limited test/doc counterweight.
+- `cognitive_cost` — file count, line breadth, and configuration surface.
 
-Detector
+## W3 Integration Notes
 
-Pattern recognition layer.
+Hospitication is intentionally read-only over W3 surfaces such as:
 
-Detects:
+- `core/memory/`
+- `core/governance/`
+- `core/events/`
+- `core/runtime/`
+- `iget/`
+- `docs/`
 
-- oscillation
-- divergence
-- spike
-- drift
+It can be wired into CI or agent coordination as a health report generator. If a
+future integration writes to the W3 memory bus or outcome ledger, that integration
+should add a new derived record rather than mutate existing truth.
 
-Detector does NOT:
+## Development
 
-- determine root cause
-- recommend recovery
+Run tests:
 
----
+```bash
+python -m pytest tests/test_hospitication_core.py tests/test_hospitication_cli.py
+```
 
-Emitter
+Run syntax checks:
 
-Signal compression and emission layer.
-
-Responsibilities:
-
-- emit pressure signals
-- severity filtering
-- reduce noise
-
-Emitter does NOT:
-
-- interpret
-- mutate truth
-- recover systems
-
----
-
-Signal Lifecycle
-
-observe
-  -> detect
-      -> emit
-          -> replay
-              -> evaluate
-                  -> recover
-
-Recovery never mutates emitted truth.
-
----
-
-Pressure Grades
-
-informational_drift
-caution_pressure
-structural_instability
-critical_collapse_risk
-
-These represent structural pressure —
-not merely runtime failure severity.
-
----
-
-Replay Philosophy
-
-Replay exists to preserve:
-
-- causal lineage
-- historical integrity
-- structural memory
-
-Replay is not debugging history.
-
-Replay is:
-a preserved nervous trace of the system.
-
----
-
-Current Status
-
-Phase:
-
-- Ontology stabilization
-- Core contract locking
-- Signal doctrine definition
-
-Current implementation focus:
-
-- immutable contracts
-- replay boundaries
-- causal locality
-- signal retention philosophy
-
-Behavioral logic intentionally deferred.
-
----
-
-Design Rules
-
-MUST
-
-- Preserve historical truth
-- Separate detection from diagnosis
-- Keep signals immutable
-- Maintain replay lineage
-- Prefer locality over global noise
-
-MUST NOT
-
-- Rewrite signal history
-- Merge observer with recovery logic
-- Turn signals into logging spam
-- Mutate replay truth
-- Collapse causal boundaries
-
----
-
-Long-Term Vision
-
-Hospitication aims to become:
-
-- a structural nervous system
-- a replay-aware recovery framework
-- a causal stability layer
-- a semantic pressure monitor
-
-for complex evolving systems.
-
-Not merely a monitoring tool.
-
-Not merely observability.
-
-But a framework for preserving structural integrity under continuous change.
-
----
-
-Status
-
-Experimental architecture phase.
-
-Core ontology and contracts currently under active stabilization.
+```bash
+python -m compileall hospitication tests
+```

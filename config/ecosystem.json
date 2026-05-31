@@ -1,0 +1,80 @@
+{
+  "schema_version": "W3-ECOSYSTEM-0.3",
+  "status": "active",
+  "purpose": "Runtime map for W3 systems that participate in Cross-X coordination.",
+  "components": {
+    "Codex": {
+      "role": "implementation_executor",
+      "path": "codex/",
+      "mutation_authority": false
+    },
+    "Hospitication": {
+      "role": "structural_health_observer",
+      "path": "hospitication/",
+      "mutation_authority": false
+    },
+    "W3Lgu": {
+      "role": "language_contract",
+      "path": "protocol/w3lgu/",
+      "mutation_authority": false
+    },
+    "PX": {
+      "role": "position_exchange_pointer",
+      "path": "protocol/w3lgu/px.py",
+      "mutation_authority": false
+    },
+    "W3DB_APPEND": {
+      "role": "append_only_observation_flow",
+      "path": "src/w3db/append_flow.py",
+      "mutation_authority": false
+    },
+    "W3-API": {
+      "role": "cross_gateway",
+      "path": "w3_api/",
+      "mutation_authority": false
+    },
+    "EP_SIGNAL": {
+      "role": "signal_transport",
+      "path": "protocol/EP_SIGNAL/",
+      "mutation_authority": false
+    },
+    "IGET": {
+      "role": "governance_ci_assistant",
+      "path": "iget/",
+      "mutation_authority": false,
+      "version": "8.0"
+    },
+    "MPCP": {
+      "role": "operational_protocol",
+      "path": "protocol/mpcp/",
+      "mutation_authority": false
+    },
+    "W3DB": {
+      "role": "truth_and_observation_store",
+      "path": "src/w3db/",
+      "mutation_authority": false
+    },
+    "EP_SIGNAL_RYTM": {
+      "role": "pulse_rhythm_preview_layer",
+      "path": "protocol/EP_SIGNAL/rytm.py",
+      "mutation_authority": false
+    }
+  },
+  "routing": {
+    "implementation": "Codex",
+    "observe_health": "Hospitication",
+    "language_packet": "W3Lgu",
+    "position_reference": "PX",
+    "append_observation": "W3DB_APPEND",
+    "external_cross": "W3-API",
+    "signal_transport": "EP_SIGNAL",
+    "governance_check": "IGET",
+    "signal_rhythm": "EP_SIGNAL_RYTM"
+  },
+  "governance": {
+    "human_review_required": true,
+    "governance_gate_required": true,
+    "no_ai_merge": true,
+    "truth_mutation_default": false
+  }
+}
