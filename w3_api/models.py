@@ -10,8 +10,8 @@ from pydantic import BaseModel, Field
 class W3CrossRequest(BaseModel):
     """External/agent request entering the W3 cross gateway."""
 
-    source: str
-    intent: str
+    source: str = Field(..., min_length=1)
+    intent: str = Field(..., min_length=1)
     target: str | None = None
     mode: str = "observe"
     payload: dict[str, Any] = Field(default_factory=dict)

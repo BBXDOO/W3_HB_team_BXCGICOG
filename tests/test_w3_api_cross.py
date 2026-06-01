@@ -34,6 +34,11 @@ def test_w3_cross_returns_traceable_five_line_packet():
     assert body["signal"]["type"] == "W3_API_CROSS"
     assert body["signal"]["traceable"] is True
     assert body["signal"]["mutated"] is False
+    assert "references" in body["signal"]
+    assert "protocol/w3lgu/RML01.md" in body["signal"]["references"]
+    assert "CONTRACT:" in lines[2]
+    assert "w3db" in body["signal"]
+    assert "ep_signal" in body["signal"]
 
 
 def test_w3_cross_defaults_to_observe_and_auto_target():
@@ -72,5 +77,11 @@ def test_w3_cross_does_not_mutate_w3db_store():
 
 def test_w3_cross_validates_required_fields():
     response = client.post("/w3/cross", json={"source": "BBX19"})
+
+    assert response.status_code == 422
+
+
+def test_w3_cross_rejects_empty_intent():
+    response = client.post("/w3/cross", json={"source": "BBX19", "intent": ""})
 
     assert response.status_code == 422
