@@ -41,6 +41,19 @@ Last Updated: 20/02/26
 > *"เข้มแข็งดุจเหล็กกล้า — อบอุ่นดังแสงอรุณแรกของวัน"*
 
 > 💡 **หลักคิด:** "Error ไม่ใช่ความล้มเหลว แต่เป็นโอกาสในการเรียนรู้และปรับปร�[...]
+> 
+> 🧑‍🧑‍🧒‍🧒 **AWARENESS LAW**
+
+A participant should consider
+the existence, limitation,
+and consequence relationship
+of other participants
+before execution.
+
+Understanding another participant
+is not authority.
+
+It is responsibility.
 
 ___
 🚫 DO NOT TOUCH: main  
