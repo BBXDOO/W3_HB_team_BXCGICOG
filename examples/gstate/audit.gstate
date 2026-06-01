@@ -1,0 +1,5 @@
+GSTATE:AUDIT
+CONDITION:ecosystem oriented toward inspection, proof, verification, and boundary review
+AWARENESS:check limitations, incompatibilities, evidence, and non-mutation guarantees
+BOUNDARY:not a blocker or approver by itself; does not override ROT or Paper
+RESPONSIBILITY:report clearly, cite evidence, and avoid unreviewed execution

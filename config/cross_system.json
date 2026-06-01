@@ -1,0 +1,64 @@
+{
+  "schema_version": "W3-CROSS-SYSTEM-0.3",
+  "status": "active",
+  "cross_x": {
+    "purpose": "Coordinate systems at the cross point to improve workflow rather than hunt bugs directly.",
+    "default_mode": "observe",
+    "allowed_modes": [
+      "observe",
+      "cross",
+      "plan",
+      "append_plan"
+    ],
+    "truth_mutation": false,
+    "append_only": true,
+    "idempotent_append": true,
+    "diagnose": false,
+    "execute": false,
+    "requires_human_review": true,
+    "requires_governance_gate": true
+  },
+  "chain": [
+    "W3-API",
+    "W3Lgu",
+    "REDR",
+    "PSP2",
+    "DTML",
+    "PX",
+    "W3DB_APPEND",
+    "EP_SIGNAL",
+    "EP_SIGNAL_RYTM",
+    "LRC2",
+    "Hospitication",
+    "IGET"
+  ],
+  "contracts": {
+    "W3-API": "gateway_only_no_persist_by_default",
+    "W3Lgu": "five_line_packet_contract",
+    "PX": "position_pointer_not_execution",
+    "W3DB_APPEND": "append_observation_no_overwrite",
+    "EP_SIGNAL": "preview_or_decode_without_payload_mutation",
+    "Hospitication": "observe_detect_emit_report_propose_only",
+    "IGET": "governance_check_not_truth_authority",
+    "EP_SIGNAL_RYTM": "rhythm_preview_reversible_no_payload_mutation",
+    "REDR": "read_classify_tag_package_no_mutation",
+    "PSP2": "stamp_route_only_no_inspection_mutation",
+    "DTML": "decision_trace_review_no_execution_authority",
+    "LRC2": "immutable_memory_log_preview_append_only_when_approved"
+  },
+  "references": [
+    "protocol/w3lgu/RML01.md",
+    "protocol/w3lgu/px.py",
+    "src/w3db/append_flow.py",
+    "w3_api/README.md",
+    "docs/px_w3db_append_flow.md",
+    "docs/standards/referencing_standard.md",
+    "protocol/EP_SIGNAL/RYTM_SIGNAL.md",
+    "protocol/EP_SIGNAL/rytm.py",
+    "core/runtime/process_layer.py",
+    "modules/REDR/module.json",
+    "modules/PSP2/module.json",
+    "modules/DTML/module.json",
+    "modules/LRC2/module.json"
+  ]
+}
