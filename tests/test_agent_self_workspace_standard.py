@@ -10,9 +10,7 @@ def test_agent_self_workspace_standard_exists_and_defines_scope():
     doc = STANDARD.read_text(encoding="utf-8")
 
     assert "Agent Self Workspace Standard" in doc
-    assert "workspace pact" in doc
-    assert "ข้อตกลงภายในสภาพแวดล้อม W3" in doc
-    assert "ไม่ใช่มาตรฐานตลาด" in doc
+    assert "workspace standard" in doc
     assert "ไม่ใช่ runtime engine" in doc
     assert "ไม่ใช่ runtime engine, workflow executor, state machine" in doc
     assert "MUTATION_ALLOWED:false" in doc
@@ -29,9 +27,6 @@ def test_agent_self_workspace_standard_covers_core_self_work_needs():
         "วางแผนและส่งต่อ",
         "Responsibility Routing",
         "Handoff",
-        "อิสระสูงภายในพื้นที่ของตัวเอง",
-        "W3Lgu alignment",
-        "technical stabilization",
     ):
         assert phrase in doc
 

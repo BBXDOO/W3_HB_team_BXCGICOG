@@ -55,7 +55,7 @@
 
 ---
 
-## 2.3 `SYSTEM/TESTS/mpcp/` (แกนทดสอบ MPCP)
+## 2.3 `protocol/mpcp/` (แกนทดสอบ MPCP)
 
 - เก็บ runtime sanity tests, contract checks, schema, และเอกสารเชิงแนวคิด
 - `schema/` ใช้ตรวจความสอดคล้องข้อมูลตาม schema

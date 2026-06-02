@@ -1,14 +1,12 @@
-# Agent Self Workspace Standard — W3-native agent workspace pact
+# Agent Self Workspace Standard — มาตรฐานพื้นที่ทำงานของเอเจนท์
 
-เอกสารนี้กำหนดข้อตกลงเชิงปฏิบัติแบบ W3-native สำหรับเอเจนท์หรือแชทบอทที่มีพื้นที่ตามชื่อของตัวเองใน repository W3_HB_team_BXCGICOG เช่น `ChatGPT/`, `Gemini/`, `Grok/`, `DeepSeek/`, `Copilot-Gm/`, `Cast/`, `BBX19/` และพื้นที่ภายใต้ `modules/<agent-name>/`.
+เอกสารนี้กำหนดมาตรฐานเชิงปฏิบัติสำหรับเอเจนท์หรือแชทบอทที่มีพื้นที่ตามชื่อของตัวเองใน repository W3_HB_team_BXCGICOG เช่น `ChatGPT/`, `Gemini/`, `Grok/`, `DeepSeek/`, `Copilot-Gm/`, `Cast/`, `BBX19/` และพื้นที่ภายใต้ `modules/<agent-name>/`.
 
-คำว่า standard ในเอกสารนี้หมายถึง **ข้อตกลงภายในสภาพแวดล้อม W3** ไม่ใช่มาตรฐานตลาด/องค์กรทั่วไป และไม่ใช้ลดทอนความสามารถเฉพาะตัวของแต่ละระบบ. พื้นที่เอเจนท์ยังเป็นพื้นที่เสรีสำหรับร่วมรับรู้ กระจายงาน สร้างสรรค์งาน ทดลองคิด และจัดงานของตัวเองตาม DNA/role ของระบบนั้น.
-
-เอกสารนี้เป็น **workspace pact** เท่านั้น ไม่ใช่ runtime engine, workflow executor, state machine, governance authority หรือสิทธิ์ mutate source truth.
+มาตรฐานนี้เป็น **workspace standard** เท่านั้น ไม่ใช่ runtime engine, workflow executor, state machine, governance authority หรือสิทธิ์ mutate source truth.
 
 ## 1) จุดประสงค์
 
-ให้แต่ละเอเจนท์สามารถทำงานในพื้นที่ของตัวเองได้อย่างเสรีแต่มี boundary ตามสภาพแวดล้อม W3 โดยรองรับ 4 งานหลัก:
+ให้แต่ละเอเจนท์สามารถทำงานในพื้นที่ของตัวเองได้อย่างเป็นระเบียบ โดยรองรับ 4 งานหลัก:
 
 1. ออกแบบโมดูลตัวเอง (`self-design`)
 2. บันทึกบริบทตัวเอง (`context log`)
@@ -19,9 +17,7 @@
 
 ## 2) ขอบเขตสิทธิ์พื้นฐาน
 
-เอเจนท์มีอิสระสูงภายในพื้นที่ของตัวเอง เพราะแต่ละระบบมีความสามารถต่างกันและมีวิธีสร้างงานไม่เหมือนกัน อิสระนี้ครอบคลุมการออกแบบโมดูล บันทึกบริบท ทดลองแนวคิด ทำ request/report/plan และจัดลำดับงานใน folder ของตัวเอง
-
-ข้อจำกัดหลักมีเพียง: งานนั้นต้องไม่ขัดกับ registry, protocol, source code truth, governance boundary หรือหน้าที่ของระบบอื่น และถ้าจะเกี่ยวกับระบบอื่นต้องมีเหตุผลเชิงหน้าที่ชัดเจน
+เอเจนท์มีอิสระภายในพื้นที่ของตัวเอง เมื่อไฟล์นั้นไม่ขัดกับ registry, protocol, source code truth, governance boundary หรือหน้าที่ของระบบอื่น
 
 ตัวอย่างพื้นที่ของตัวเอง:
 
@@ -41,17 +37,16 @@ modules/<agent-name>/notes/
 
 เอเจนท์อาจทำสิ่งต่อไปนี้ในพื้นที่ของตัวเอง:
 
-- เขียน self-design ว่าตัวเองรับผิดชอบอะไร โดยไม่ต้องเลียนแบบระบบอื่น
+- เขียน self-design ว่าตัวเองรับผิดชอบอะไร
 - บันทึก context ของ session, ข้อจำกัด, สิ่งที่รู้, สิ่งที่ยังไม่รู้
 - แยกงานเป็น queue / task / backlog เฉพาะพื้นที่ตัวเอง
 - วางแผนงานแบบ plan-only ก่อนส่งต่อให้ระบบที่เกี่ยวข้อง
 - ทำ report, note, request, proposal หรือ handoff ที่ตรวจสอบได้
 - อ้างอิงระบบอื่นเฉพาะเท่าที่เกี่ยวกับหน้าที่ของงาน
-- สร้างสรรค์งานตามความถนัดของระบบ เช่น analysis, validation, language mapping, architecture hint, context memory, implementation support
 
 ## 4) สิ่งที่ห้ามทำ
 
-เสรีภาพในพื้นที่ตัวเองไม่ใช่สิทธิ์ครอบระบบอื่น เอเจนท์ต้องไม่ใช้พื้นที่ตัวเองเพื่อ:
+เอเจนท์ต้องไม่ใช้พื้นที่ตัวเองเพื่อ:
 
 - mutate registry / protocol / source code truth โดยไม่มี gate
 - override ROT, Paper, Result, Condien, governance หรือ human review
@@ -137,15 +132,13 @@ modules/<agent-name>/
 | งาน | ผู้เกี่ยวข้องหลัก | หมายเหตุ |
 |---|---|---|
 | flow / prototype / scenario | ChatGPT | วาง flow หรือ blueprint ในพื้นที่ของตัวเองก่อน |
-| validation / cross-check / W3Lgu alignment | Gemini | ตรวจความถูกต้อง ความเสี่ยง compatibility และช่วยมองความสอดคล้องกับ W3Lgu เมื่อได้รับงานที่เกี่ยวข้อง |
+| validation / cross-check | Gemini | ตรวจความถูกต้อง ความเสี่ยง และ compatibility |
 | pattern / signal / risk insight | Grok | เสนอ insight หรือ risk report แบบ observe-first |
 | structure / architecture pattern | DeepSeek | เสนอ architecture hint หรือ pattern โดยไม่ rewrite truth |
 | governance / template / repo hygiene | Copilot-Gm | จัด governance doc/template เฉพาะเมื่อมีหน้าที่เกี่ยวข้อง |
 | context/session continuity | Cast | เก็บ context และ session summary |
-| implementation patch/test/PR / technical stabilization | Codex | สาย dev ที่ซัพพอร์ตงานเทคนิคโดยตรง ปรับปรุงโครงสร้างให้เสถียรแบบ branch-safe ภายใต้สภาพแวดล้อม W3 และ review/gate |
+| implementation patch/test/PR | Codex | ทำ branch-safe implementation ภายใต้ review/gate |
 | direction / final authority | BBX19 / Human | ตัดสินใจขั้นสุดท้ายและอนุมัติ boundary สำคัญ |
-
-ตัวอย่าง: ถ้างานเกี่ยวกับ W3Lgu และต้องการ validation/ภาษาระบบ สามารถส่งให้ Gemini ตรวจ alignment ได้ แต่ Gemini ไม่ได้กลายเป็น owner ของ W3Lgu truth โดยอัตโนมัติ. ถ้างานต้องแก้โค้ด ทดสอบ หรือทำ PR ให้ส่ง Codex เป็น dev support แต่ Codex ต้องทำตาม W3 boundary ไม่ใช่มาตรฐานตลาดภายนอก.
 
 ## 8) Handoff ที่ปลอดภัย
 
@@ -171,7 +164,6 @@ MUTATION_ALLOWED:false
 - `config` = orientation map
 - `docs` = explanation / public boundary / branch strategy
 - `G-State` = shared awareness layer, not authority
-- `Agent folders` = free creative/working space within W3 boundary
 - `Hospitication` = observer / evaluator / proposal-first care
 - `W3-API` = gateway-only
 - `Cross-X` = plan-only
@@ -185,7 +177,7 @@ MUTATION_ALLOWED:false
 ผ่านเมื่อ:
 
 - ไฟล์อยู่ในพื้นที่ของเอเจนท์หรือใน template/example ที่ระบุไว้
-- ระบุ responsibility และ boundary ชัดเจน แต่ไม่บังคับให้ทุกเอเจนท์มีรูปแบบความคิดเหมือนกัน
+- ระบุ responsibility และ boundary ชัดเจน
 - มี `MUTATION_ALLOWED:false` หรือ boundary เทียบเท่าเมื่อเป็น plan/proposal
 - ไม่อ้างสิทธิ์เหนือ registry, protocol, source truth หรือ governance
 - มี handoff target เมื่อแตะระบบอื่น

@@ -657,7 +657,6 @@ python -m iget.tests.test_iget_v8
 ```bash
 python tools/w3_agent_ci.py
 python tools/run_hospitication.py
-python tools/w3api.py --health
 ```
 
 ทดสอบเอกสาร branch/public boundary:

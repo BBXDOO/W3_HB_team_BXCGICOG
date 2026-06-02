@@ -85,19 +85,3 @@ def test_w3_cross_rejects_empty_intent():
     response = client.post("/w3/cross", json={"source": "BBX19", "intent": ""})
 
     assert response.status_code == 422
-
-
-def test_w3_api_health_routes_are_gateway_only():
-    root_response = client.get("/health")
-    prefixed_response = client.get("/w3/health")
-
-    for response in (root_response, prefixed_response):
-        assert response.status_code == 200
-        body = response.json()
-        assert body["status"] == "ok"
-        assert body["service"] == "w3-api"
-        assert body["gateway_only"] is True
-        assert body["mutated"] is False
-        assert "POST /w3/cross" in body["routes"]
-        assert body["boundaries"]["w3db"] == "append_plan_only"
-        assert body["boundaries"]["ep_signal"] == "preview_only"

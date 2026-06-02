@@ -15,31 +15,6 @@ from w3_api.models import W3CrossRequest, W3CrossResponse
 router = APIRouter(prefix="/w3", tags=["w3-cross"])
 
 
-def health_payload() -> dict[str, object]:
-    """Return a non-mutating health snapshot for gateway discovery."""
-
-    return {
-        "status": "ok",
-        "service": "w3-api",
-        "gateway_only": True,
-        "mutated": False,
-        "routes": ["GET /health", "GET /w3/health", "POST /w3/cross"],
-        "boundaries": {
-            "w3_api": "gateway_only",
-            "w3db": "append_plan_only",
-            "ep_signal": "preview_only",
-            "runtime_state": "not_mutated",
-        },
-    }
-
-
-@router.get("/health")
-def w3_health() -> dict[str, object]:
-    """W3-prefixed gateway health check. Does not touch W3 truth stores."""
-
-    return health_payload()
-
-
 @router.post("/cross", response_model=W3CrossResponse)
 def cross(req: W3CrossRequest) -> W3CrossResponse:
     """Cross-gateway entrypoint for external/AI-agent intents.

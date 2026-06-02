@@ -51,7 +51,6 @@ def test_w3unive_handbook_links_to_real_core_paths():
         "../../../src/w3db/",
         "../../../hospitication/",
         "../../../tools/run_hospitication.py",
-        "../../../tools/w3api.py",
         "../../governance/G_STATE_PAPER.md",
         "../../../codex/",
         "../../../config/",
@@ -67,7 +66,6 @@ def test_w3unive_handbook_lists_known_commands_without_promoting_missing_w3db_te
         "python -m pytest tests/test_g_state_foundation.py",
         "python -m pytest tests/test_hospitication_runner.py",
         "python tools/run_hospitication.py",
-        "python tools/w3api.py --health",
         "python -m iget.tests.test_iget_v8",
     ):
         assert command in doc

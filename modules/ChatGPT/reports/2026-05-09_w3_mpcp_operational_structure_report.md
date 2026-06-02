@@ -312,7 +312,7 @@
 
 ### 1.3 MPCP tree (depth 4)
 ```text
-/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/
+/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/
 ├── adapter/
 │   └── w3_bridge.py
 ├── kernel/
@@ -366,7 +366,7 @@
 - Architecture docs: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/architecture/`
 - Core runtime: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/core/runtime/`
 - Core memory: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/core/memory/`
-- MPCP runtime: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/`
+- MPCP runtime: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/`
 - Reports root: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/reports/`
 - `protocols/` root directory: `ยังไม่พบหลักฐาน` (checked repo root; no `/protocols/` directory matched)
 
@@ -418,11 +418,11 @@
 - `COLOR_STATE.md`: color system position = `Decision Layer`
 
 ### 3.3 Runtime location
-- Runtime executor: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/runtime/executor.py`
-- Runtime entry: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/runtime/entry.py`
-- Modew base: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/modew/base_modew.py`
-- Orchestrator: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/orchestrator/manager.py`
-- Adapter bridge: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/adapter/w3_bridge.py`
+- Runtime executor: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/runtime/executor.py`
+- Runtime entry: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/runtime/entry.py`
+- Modew base: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/modew/base_modew.py`
+- Orchestrator: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/orchestrator/manager.py`
+- Adapter bridge: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/adapter/w3_bridge.py`
 
 ### 3.4 Interfaces
 - Input parser in `runtime/executor.py`: `TASK:value,KEY:value`
@@ -431,13 +431,13 @@
 - W3 bridge stub in `adapter/w3_bridge.py`: `execute_with_w3(task)`
 
 ### 3.5 Protocol docs
-- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/README.md`
-- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/MPCP_ORIGIN.md`
-- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/COLOR_STATE.md`
-- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/COLOR_SYMBOL_PAPER.md`
-- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/MODEW_PAPER.md`
-- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/mpcp_concept_paper/ROT_PAPER.md`
-- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/W3_TERMS_MASTER_PAPER_v2.md`
+- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/README.md`
+- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/MPCP_ORIGIN.md`
+- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/COLOR_STATE.md`
+- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/COLOR_SYMBOL_PAPER.md`
+- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/MODEW_PAPER.md`
+- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/mpcp_concept_paper/ROT_PAPER.md`
+- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/W3_TERMS_MASTER_PAPER_v2.md`
 - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/docs/MPCP_architecture`
 
 ### 3.6 Dependency map
@@ -466,7 +466,7 @@
 ### 4.1 Local / cloud split
 | Area | Evidence |
 |---|---|
-| Local runtime | `docs/W3_MASTER_MAP.md`: `Termux = Local Runtime Engine`; `core/runtime/engine.py`; `core/runtime/engine_v2.py`; `SYSTEM/TESTS/mpcp/runtime/executor.py` |
+| Local runtime | `docs/W3_MASTER_MAP.md`: `Termux = Local Runtime Engine`; `core/runtime/engine.py`; `core/runtime/engine_v2.py`; `protocol/mpcp/runtime/executor.py` |
 | Cloud source/version layer | `docs/W3_MASTER_MAP.md`: `GitHub = Version Truth / Source Authority`; `.github/workflows/w3_agent_ci.yml`; `docs/GITHUB_ACTIONS_AGENT.md` |
 | Public web surface | `README.md` GitHub Pages URL; `docs/manifest.json`; `docs/index.html`; `docs/sw.js`; `docs/mirror.policy.json` |
 | Public/private split | `docs/mirror.policy.json` |
@@ -476,7 +476,7 @@
 - W3 runtime engine v2: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/core/runtime/engine_v2.py`
 - Runtime CLI: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/tools/w3run.py`
 - Runtime agent registry: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/core/runtime/agents/registry.py`
-- MPCP orchestrator: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/orchestrator/manager.py`
+- MPCP orchestrator: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/orchestrator/manager.py`
 - W3 Agent CI workflow: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/.github/workflows/w3_agent_ci.yml`
 - IGET PR governance unit: `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/iget/README.md`
 
@@ -504,7 +504,7 @@
 - Task registry: `core/module-loader/module-registry.json`
 - Runtime dispatch: `core/runtime/engine_v2.py`
 - Runtime flow note: `core/runtime/runtime.md`
-- MPCP flow manager: `SYSTEM/TESTS/mpcp/orchestrator/manager.py`
+- MPCP flow manager: `protocol/mpcp/orchestrator/manager.py`
 - Event protocol: `core/events/event-protocol.md`
 
 ## 5. Agent Flow
@@ -529,7 +529,7 @@
   - `add_memory(...)`
 - `core/runtime/runtime.md`:
   - `Event → Router + IDP → Context Memory → Agent Module → Result + Memory Log`
-- `SYSTEM/TESTS/mpcp/runtime/executor.py`:
+- `protocol/mpcp/runtime/executor.py`:
   - `A (parse) → ROT input check → B (resolve) → C (inject) → D (execute) → ROT output check → E (return)`
 
 ### 5.3 Verification flow
@@ -633,17 +633,17 @@
 - `Cast/context/session_summary.md`: `no automated enforcement exists yet`
 
 ### 8.5 Experimental zones
-- `SYSTEM/TESTS/mpcp/README.md`: `Status: Active Experimental Build`
+- `protocol/mpcp/README.md`: `Status: Active Experimental Build`
 - `DeepSeek/ENTRANCE.md`: `Skeleton Edition`, `Phase-1`
 - `DeepSeek/notes/observation-log.md`: `ยังไม่เปิด full meta-scan`
-- `SYSTEM/TESTS/EP_SIGNAL/README.md`: `experimental system design`, `Build experimental protocol layer for future systems`
+- `protocol/EP_SIGNAL/README.md`: `experimental system design`, `Build experimental protocol layer for future systems`
 
 ## 9. Existing AI Systems
 
 ### 9.1 Internal agents and systems
 - Runtime agents: `BBX19`, `BBEX-Core`, `ChatGPT`, `Gemini`, `Grok`, `DeepSeek`, `Copilot-Gm`, `Cast` — `core/runtime/runtime.md`, `core/runtime/agents/*.py`
 - IGET governance assistant — `iget/README.md`, `docs/IGET_OPERATION_MODEL.md`
-- MPCP runtime/orchestrator — `SYSTEM/TESTS/mpcp/runtime/*.py`, `SYSTEM/TESTS/mpcp/orchestrator/*.py`
+- MPCP runtime/orchestrator — `protocol/mpcp/runtime/*.py`, `protocol/mpcp/orchestrator/*.py`
 - W3 memory core — `core/memory/memory_bus.py`
 - W3DB — `src/w3db/*.py`
 
@@ -692,9 +692,9 @@
   - `BBX19 exclusive override`
 
 ### 10.3 Termination / halt conditions
-- `SYSTEM/TESTS/mpcp/kernel/contract.py`: valid halt states include `STOP`, `fail`, `block`
-- `SYSTEM/TESTS/mpcp/kernel/rot.py`: halt states must include `error`
-- `SYSTEM/TESTS/mpcp/runtime/executor.py`: unknown modew returns `MODEW_NOT_FOUND:<task>` with state `STOP`
+- `protocol/mpcp/kernel/contract.py`: valid halt states include `STOP`, `fail`, `block`
+- `protocol/mpcp/kernel/rot.py`: halt states must include `error`
+- `protocol/mpcp/runtime/executor.py`: unknown modew returns `MODEW_NOT_FOUND:<task>` with state `STOP`
 - `docs/agent.profile.json`: when evidence is missing, response = `ยังไม่พบหลักฐาน`
 
 ### 10.4 Escalation rules
@@ -718,9 +718,9 @@
 - `Gemini/notes/qa-issues.md`: `Cast session_summary.md — single contributor` (severity `MEDIUM`)
 
 ### 11.2 Hallucination points documented in repo
-- `SYSTEM/TESTS/mpcp/MPCP_ORIGIN.md`: `นี่คือจุดที่ GPT ตีความผิดบ่อยที่สุดครับ`
-- `SYSTEM/TESTS/mpcp/MPCP_ORIGIN.md`: `❌ A→F ≠ ลำดับความสำคัญ`
-- `SYSTEM/TESTS/mpcp/MPCP_ORIGIN.md`: `❌ Structure ≠ Meaning`
+- `protocol/mpcp/MPCP_ORIGIN.md`: `นี่คือจุดที่ GPT ตีความผิดบ่อยที่สุดครับ`
+- `protocol/mpcp/MPCP_ORIGIN.md`: `❌ A→F ≠ ลำดับความสำคัญ`
+- `protocol/mpcp/MPCP_ORIGIN.md`: `❌ Structure ≠ Meaning`
 - `docs/agent.profile.json`: `no_guess_without_evidence: true`
 - `BBX19/modules/BBX19/context/chatgpt_context.json`: `no hallucination`
 
@@ -731,7 +731,7 @@
 - `docs/reports/AGENT_WORKSPACE_AUDIT.md`: `ไม่มี cross-agent knowledge flow ที่วัดได้`
 
 ### 11.4 Protocol drift points
-- `SYSTEM/TESTS/mpcp/MPCP_ORIGIN.md`: `ถ้า AI หรือระบบใดตีความว่า structure = meaning นั่นคือ drift`
+- `protocol/mpcp/MPCP_ORIGIN.md`: `ถ้า AI หรือระบบใดตีความว่า structure = meaning นั่นคือ drift`
 - `docs/index.md`: externalized context exists `to reduce token usage, prevent context drift`
 - `Gemini/tasks/checkpoints.md`: `pattern drift จาก Grok`
 - `Copilot-Gm/self-review.md`: `commit drift: …`
@@ -778,7 +778,7 @@
 |---|---|
 | Slack | `ยังไม่พบหลักฐาน` in `docs/`, `architecture/`, `core/`, root README, module entrances |
 | GitHub | `.github/workflows/w3_agent_ci.yml`; `docs/GITHUB_ACTIONS_AGENT.md`; `README.md` GitHub Pages URL; `architecture/W3_MASTER_ARCHITECTURE.md` current inputs = `GitHub Pull Requests` |
-| MCP / MPCP | `SYSTEM/TESTS/mpcp/`; `docs/MPCP_architecture`; `runtime/executor.py` MPCP parser/output formatter |
+| MCP / MPCP | `protocol/mpcp/`; `docs/MPCP_architecture`; `runtime/executor.py` MPCP parser/output formatter |
 | APIs | `core/adapters/llm_adapter.py`; `docs/QUICK_START_MODULES.md` |
 | Filesystem | `modules/*/requests/`, `modules/*/reports/`, `core/memory/memory_store.json`, `Cast/context/session_summary.md` |
 | Web panels | `docs/index.html`; `docs/manifest.json`; `docs/sw.js`; `README.md` GitHub Pages instructions |
@@ -908,7 +908,7 @@
 - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/core/module-loader/module-registry.json`
 - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/core/module-loader/router.py`
 - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/tools/w3run.py`
-- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/runtime/executor.py`
+- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/runtime/executor.py`
 
 ### 16.4 Memory
 - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/core/memory/memory_bus.py`
@@ -935,7 +935,7 @@
 - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/modules/Copilot-Gm/module.json`
 - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/modules/Cast/module.json`
 - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/core/module-loader/idp-schema.json`
-- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/kernel/contract.py`
+- `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/kernel/contract.py`
 - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/core/events/event-schema.json`
 
 ## 17. Current Operational Objective
