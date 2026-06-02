@@ -1,6 +1,6 @@
 import unittest
-from ep_signal_adapter import to_ep_signal, from_ep_signal, interop_with_w3lgu, interop_with_mpcp
-from ep_codec import EPError
+from protocol.EP_SIGNAL.ep_signal_adapter import to_ep_signal, from_ep_signal, interop_with_w3lgu, interop_with_mpcp
+from protocol.EP_SIGNAL.reference_implementation import EPError
 
 class TestEPSignalAdapter(unittest.TestCase):
     
