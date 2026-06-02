@@ -1,5 +1,5 @@
 # ==========================================
-# IGET v7.0 — Main Entry Point
+# IGET v8.0 — Main Entry Point
 # Semantic pipeline: fetch → classify → score → semantic → report
 # Ontology tag: iget:module = "main"
 # MPCP role: governance_assistant
@@ -32,7 +32,7 @@ from .scorer import (
 
 def _resolve_runtime_env() -> tuple[str, str, str]:
     """
-    IGET v7 runtime env resolution.
+    IGET v8 runtime env resolution.
     Supports both direct vars and GitHub Actions aliases.
     error_proof: raises RuntimeError with missing var names.
     Ontology tag: iget:env_resolution
@@ -55,7 +55,7 @@ def _resolve_runtime_env() -> tuple[str, str, str]:
 
 def main() -> int:
     """
-    IGET v7.0 — full semantic governance pipeline.
+    IGET v8.0 — full semantic governance pipeline.
 
     Pipeline:
         env_resolve
@@ -65,19 +65,19 @@ def main() -> int:
         → detect_mode
         → compute_score         (with causal proof)
         → get_state
-        → get_semantic_state    (v7 new)
+        → get_semantic_state    (v8)
         → build_summary / recommend / inline
         → build_comment         (with semantic + proof trace)
         → post_inline_comments
         → post_issue_comment
 
     Ontology tag: iget:main_pipeline
-    MPCP claim: governance_assistant v7.0
+    MPCP claim: governance_assistant v8.0
     """
 
     # ── 1. Init tracer ────────────────────────────────────────
     tracer = ProofTracer()
-    tracer.record("pipeline_start", "IGET v7.0 pipeline started", None, "iget:pipeline_start")
+    tracer.record("pipeline_start", "IGET v8.0 pipeline started", None, "iget:pipeline_start")
 
     # ── 2. Resolve env ────────────────────────────────────────
     try:

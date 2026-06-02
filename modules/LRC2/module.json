@@ -1,7 +1,7 @@
 {
   "name": "LRC2",
   "display_name": "LRC2 — Lifecycle Review & Continuity Checkpoint",
-  "version": "1.2.0-linec",
+  "version": "1.3.0-process-layer",
   "owner": "LRC2",
   "authority": "BBX19",
   "class": "review_continuity_gate",
@@ -16,14 +16,19 @@
   },
   "workspace": {
     "root": "modules/LRC2/",
-    "requests": "modules/requests/",
+    "requests": "modules/LRC2/requests/",
     "reports": "modules/LRC2/reports/",
-    "logs": "modules/LRC2/logs/"
+    "logs": "modules/LRC2/logs/",
+    "memory": "modules/LRC2/memory/"
   },
   "runtime": {
     "mode": "adaptive",
     "execution_style": "checkpoint_first",
-    "compatibility": ["mpcp", "w3lgu", "iget"],
+    "compatibility": [
+      "mpcp",
+      "w3lgu",
+      "iget"
+    ],
     "agent_cli": {
       "enabled": true,
       "mode": "adaptive",
@@ -34,15 +39,22 @@
   "properties": {
     "checkpoint_depth": "phase2",
     "continuity_guard": true,
-    "backward_compatible": true
+    "backward_compatible": true,
+    "process_layer_enabled": true,
+    "mutation_authority": false,
+    "memory_preview_only_by_default": true
   },
   "input": [
+    "modules/LRC2/requests/",
     "modules/requests/",
     "docs/",
     "knowledge/",
-    "core/"
+    "core/",
+    "config/"
   ],
   "output": [
-    "modules/LRC2/"
+    "modules/LRC2/memory/",
+    "modules/LRC2/reports/",
+    "modules/LRC2/logs/"
   ]
 }

@@ -1,5 +1,5 @@
 # ==========================================
-# IGET v7.0 — GitHub API Fetcher
+# IGET v8.0 — GitHub API Fetcher
 # Recovery / Resilience: checkpoint, retry, error_proof
 # Ontology tag: iget:module = "fetcher"
 # ==========================================
