@@ -59,9 +59,11 @@ class RuntimeAgent:
         main_duty = responsibilities[0] if responsibilities else "execute assigned task"
         experience = self._experience_summary(task, context)
 
+        target = context.get("target") or context.get("request", {}).get("target") or "W3"
+
         return (
             f"{self.module_name} ({role}) {self.action_label}: {task} | "
-            f"duty: {main_duty} | experience: {experience}"
+            f"target: {target} | duty: {main_duty} | experience: {experience}"
         )
 
 

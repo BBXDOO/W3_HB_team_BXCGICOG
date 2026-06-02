@@ -48,10 +48,10 @@ import os
 # ---------------------------------------------------------------------------
 
 _HERE = os.path.dirname(os.path.abspath(__file__))           # .../protocol/mpcp
-_PROTOCOL_ROOT = os.path.dirname(_HERE)                     # .../protocol
-_REPO_ROOT = os.path.dirname(_PROTOCOL_ROOT)                 # repo root
+_SYSTEM_TESTS = os.path.dirname(_HERE)                       # .../SYSTEM/TESTS
+_REPO_ROOT = os.path.dirname(os.path.dirname(_SYSTEM_TESTS)) # repo root
 
-for _p in (_REPO_ROOT, _PROTOCOL_ROOT):
+for _p in (_REPO_ROOT,):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
