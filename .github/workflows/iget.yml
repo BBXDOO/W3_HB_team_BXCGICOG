@@ -1,4 +1,4 @@
-name: IGET v7.0
+name: IGET v8.0
 
 on:
   pull_request:
@@ -19,9 +19,9 @@ concurrency:
 
 jobs:
   iget:
-    name: "IGET v7.0 — Semantic PR Governance"
+    name: "IGET v8.0 — Semantic PR Governance"
     runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false
 
     permissions:
       contents: read
@@ -53,15 +53,15 @@ jobs:
 
       - name: Run test suite
         run: |
-          echo "── IGET v7.0 Test Suite ──"
-          python -m iget.tests.test_iget_v7
+          echo "── IGET v8.0 Test Suite ──"
+          python -m iget.tests.test_iget_v8
         continue-on-error: false
 
-      - name: Run IGET v7.0
+      - name: Run IGET v8.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number || inputs.pr_number }}
         run: |
-          echo "── Running IGET v7.0 pipeline ──"
+          echo "── Running IGET v8.0 pipeline ──"
           python -m iget.main
