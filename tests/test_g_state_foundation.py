@@ -48,7 +48,10 @@ def test_g_state_examples_are_human_readable_and_non_runtime():
     assert {example.name for example in examples} == {
         "audit.gstate",
         "build.gstate",
+        "learning.gstate",
+        "maintenance.gstate",
         "recovery.gstate",
+        "research.gstate",
     }
     for example in examples:
         text = example.read_text(encoding="utf-8")
@@ -74,3 +77,15 @@ def test_v0_2_to_v0_3_readiness_locks_truth_and_gateway_boundaries():
     assert "Preview / signal trace" in doc
     assert "refactor/v0.2" in doc
     assert "main" in doc
+
+
+def test_g_state_culture_link_is_advisory_context_not_authority():
+    doc = read_doc("notes/gstate/W3_ORGANIZATIONAL_CULTURE_LINK.md")
+
+    assert "f37c77f13dc0a274541d8c825fed656aa580278f" in doc
+    assert "G-State is an awareness layer" in doc
+    assert "working-habit reference" in doc
+    assert "not runtime truth" in doc
+    assert "not execution authority" in doc
+    assert "does not override ROT, Paper, source code, protocol, registry truth" in doc
+    assert "docs/governance/G_STATE_PAPER.md" in doc
