@@ -35,5 +35,12 @@
   "decision_trace": "DTML",
   "trace": "DTML",
   "lifecycle_review": "LRC2",
-  "checkpoint": "LRC2"
+  "checkpoint": "LRC2",
+  "implementation": "Codex",
+  "implement": "Codex",
+  "code": "Codex",
+  "repo_execute": "Codex",
+  "pr_ready": "Codex",
+  "ci_repair": "Codex",
+  "adapter_build": "Codex"
 }
