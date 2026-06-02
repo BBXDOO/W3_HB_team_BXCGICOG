@@ -47,6 +47,7 @@ git status --short
 | System | Path | Purpose | Run/Test | Boundary |
 |---|---|---|---|---|
 | W3-API | [w3_api](../../../w3_api/) | Cross Gateway / normalizer / trace planner | `python -m pytest tests/test_w3_api_cross.py` | gateway-only, `mutated:false` |
+| W3 local client | [tools/w3api.py](../../../tools/w3api.py), [w3](../../../w3) | local shell/Termux client + optional Markdown writer | `python tools/w3api.py --help` | local wrapper only, server remains gateway-only |
 | Cross-X | [cross_x](../../../cross_x/) | cross-point coordinator | `python -m pytest tests/test_cross_x_config.py` | plan-only, non-mutating |
 | W3Lgu | [protocol/w3lgu](../../../protocol/w3lgu/) | five-line packet / expression layer | `python -m pytest tests/test_w3lgu_core.py` | protocol/expression, ไม่ใช่ executor เอง |
 | W3DB | [src/w3db](../../../src/w3db/) | relation flow + in-process store | ดูตัวอย่าง Python ในหัวข้อ W3DB | append/trace path, ห้าม rewrite truth |
@@ -102,9 +103,11 @@ Boundary:
 - ไม่เขียน W3DB จริงจาก endpoint นี้
 - ไม่ mutate EP_SIGNAL, MPCP, W3Lgu, หรือ runtime state
 
-Endpoint:
+Endpoints:
 
 ```text
+GET /health
+GET /w3/health
 POST /w3/cross
 ```
 
@@ -146,10 +149,36 @@ POST /w3/cross
 }
 ```
 
+ตรวจ health:
+
+```bash
+python tools/w3api.py --health
+```
+
+เรียก `/w3/cross` ผ่าน local client/wrapper:
+
+```bash
+python tools/w3api.py --source termux --intent review --target W3 --mode cross --focus system
+```
+
+ถ้าต้องการเขียน Markdown ลงเครื่อง ให้ wrapper เขียนไฟล์เอง ไม่ใช่ server เขียน:
+
+```bash
+python tools/w3api.py --source termux --intent review --target W3 --mode cross --write-md docs/generated/w3-cross-review.md
+```
+
+ใช้ shell wrapper ที่ root repo ได้เช่นกัน:
+
+```bash
+./w3 --health
+./w3 --source termux --intent review --target W3 --mode cross --focus system
+```
+
 ทดสอบ:
 
 ```bash
 python -m pytest tests/test_w3_api_cross.py
+python -m pytest tests/test_w3api_tools.py
 ```
 
 ## 5) Cross-X
@@ -654,7 +683,7 @@ python -m pip install -r requirements.txt
 3. รันชุด test หลักที่เกี่ยวกับ handbook นี้
 
 ```bash
-python -m pytest tests/test_g_state_foundation.py tests/test_hospitication_runner.py tests/test_w3_api_cross.py tests/test_cross_x_config.py tests/test_process_layer.py
+python -m pytest tests/test_g_state_foundation.py tests/test_hospitication_runner.py tests/test_w3_api_cross.py tests/test_w3api_tools.py tests/test_cross_x_config.py tests/test_process_layer.py
 ```
 
 4. รัน Hospitication แบบ read-only
