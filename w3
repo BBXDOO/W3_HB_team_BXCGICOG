@@ -1,4 +1,129 @@
-#!/usr/bin/env sh
-# Local convenience wrapper for Termux/developer shells.
-# Calls the W3-API gateway client; it does not make the server mutate truth.
-exec python tools/w3api.py "$@"
+#!/data/data/com.termux/files/usr/bin/bash
+
+API="http://127.0.0.1:8000/w3/cross"
+
+cmd="${1:-ตรวจระบบ}"
+item="${2:-W3}"
+detail="${3:-general}"
+more="${*:4}"
+
+case "$cmd" in
+  "สร้างเอกสาร"|"create"|"doc")
+    intent="create_document"
+    target="W3"
+    focus="document"
+    data="$item | $detail | $more"
+    ;;
+
+  "วิเคราะห์เอกสาร"|"analyze"|"analyze_doc")
+    intent="analyze_document"
+    target="W3"
+    focus="document"
+    data="$item | $detail | $more"
+    ;;
+
+  "ตรวจระบบ"|"check"|"health")
+    intent="health"
+    target="W3"
+    focus="server"
+    data="$item | $detail | $more"
+    ;;
+
+  "รีวิว"|"review")
+    intent="review"
+    target="$item"
+    focus="$detail"
+    data="$more"
+    ;;
+
+  "ออกแบบ"|"design")
+    intent="design"
+    target="$item"
+    focus="$detail"
+    data="$more"
+    ;;
+
+  *)
+    intent="$cmd"
+    target="$item"
+    focus="$detail"
+    data="$more"
+    ;;
+esac
+
+python - "$API" "$intent" "$target" "$focus" "$data" <<'PY'
+import json
+import sys
+import urllib.request
+import urllib.error
+
+api, intent, target, focus, data = sys.argv[1:6]
+
+payload = {
+    "source": "termux",
+    "intent": intent,
+    "target": target,
+    "mode": "cross",
+    "payload": {
+        "focus": focus,
+        "data": data,
+    },
+}
+
+try:
+    req = urllib.request.Request(
+        api,
+        data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    with urllib.request.urlopen(req, timeout=10) as res:
+        r = json.loads(res.read().decode("utf-8"))
+except urllib.error.URLError as e:
+    print("")
+    print("W3 SERVER: OFFLINE")
+    print("เปิด server ก่อน:")
+    print("python -m uvicorn w3_api.main:app --host 127.0.0.1 --port 8000 --reload")
+    print("")
+    print("detail:", e)
+    raise SystemExit(1)
+except Exception as e:
+    print("")
+    print("W3 ERROR:", e)
+    raise SystemExit(1)
+
+signal = r.get("signal", {})
+w3db = signal.get("w3db", {})
+px = w3db.get("px", {})
+ep = signal.get("ep_signal", {})
+
+ok = r.get("status") == "accepted"
+
+print("")
+print("W3 รับคำสั่งแล้ว" if ok else "W3 ตอบกลับแล้ว")
+print("────────────────────")
+print("สถานะ :", r.get("status"))
+print("คำสั่ง :", intent)
+print("เป้าหมาย:", target)
+print("โฟกัส :", focus)
+print("เขียนไฟล์จริง:", "ไม่" if signal.get("mutated") is False else signal.get("mutated"))
+print("ติดตามได้:", "ใช่" if signal.get("traceable") else "ไม่")
+print("")
+print("W3LGU")
+print("────────────────────")
+print(r.get("w3lgu", "-"))
+print("")
+print("แผนบันทึก")
+print("────────────────────")
+print("W3DB :", w3db.get("mode"))
+print("XIZ  :", w3db.get("xiz_hint"))
+print("TUF  :", w3db.get("tuf_hint"))
+print("PX   :", px.get("px_id"))
+print("")
+print("สัญญาณ")
+print("────────────────────")
+print("EP   :", ep.get("mode"))
+print("FORM :", ep.get("format"))
+print("SIG  :", ep.get("ep_signal"))
+print("")
+PY
