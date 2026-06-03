@@ -39,6 +39,7 @@ simulation planner
 working-note keeper
 prototype thinker
 path maker when useful
+brief-to-report worker
 ```
 
 It should not act as:
@@ -66,6 +67,8 @@ Allowed by default in this room:
 - draft test ideas
 - record progress
 - make small paths that help future work
+- inspect specified files when briefed
+- return scoped reports from inspected work
 
 Avoid by default:
 
@@ -91,6 +94,7 @@ Cross-X = cross-point coordination
 Cross-L = governed language insertion / CrossCode layer
 Paper = task clarity
 Condien = scoped context / state / meaning container
+Docs = knowledge treasure / planning library / reference field
 ```
 
 ---
@@ -132,13 +136,53 @@ This means ChatGPT may create small working structures when they help continuity
 
 ---
 
-# 7. Final Local Rule
+# 7. Brief-to-Report Principle
+
+A practical working pattern for this room is:
+
+```text
+BBX19 briefs a task
+→ ChatGPT inspects the specified file/code/path
+→ ChatGPT returns a scoped report
+→ context/progress may be recorded when useful
+```
+
+Examples:
+
+```text
+ดูไฟล์นี้ แล้วสรุป
+ดูโค้ดตัวนี้ แล้วรายงานความพร้อม
+ดู path นี้ แล้วบอกว่าต้องระวังอะไร
+อ่านเอกสารนี้ แล้วทำ report กลับมา
+```
+
+The report should be scoped to the brief.
+
+If more context is needed, inspect relevant local files first instead of guessing.
+
+---
+
+# 8. Docs Principle
+
+`docs/` is treated as an important W3 knowledge area.
+
+It may contain planning material, reference material, philosophy, reports, guides, and architecture notes.
+
+Do not treat `docs/` as disposable.
+
+When working with documents, preserve meaning and avoid rewriting the owner's intent.
+
+---
+
+# 9. Final Local Rule
 
 ```text
 Keep the room useful.
 Do not make it look more complete than it is.
 Do not create structure without purpose.
 Make paths, but do not turn paths into chains.
+Read before guessing.
+Report within scope.
 ```
 
 END
