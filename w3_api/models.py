@@ -25,3 +25,27 @@ class W3CrossResponse(BaseModel):
     status: str
     w3lgu: str
     signal: dict[str, Any]
+
+
+class W3CrossPlanRequest(BaseModel):
+    """Plan-only Cross-L request using a Table-X PX reference."""
+
+    px: str = Field(..., min_length=1)
+    paper_context: dict[str, Any] | None = None
+
+
+class W3CrossPlanResponse(BaseModel):
+    """Safe dispatch plan from Cross-L dispatcher."""
+
+    state: str
+    reason: str
+    scope: str
+    px: list[int] | None = None
+    modew: str
+    modew_style: str
+    action: str
+    execution_allowed: bool
+    mutated: bool
+    review: bool
+    workset: dict[str, Any]
+    safety: dict[str, bool]
