@@ -1,0 +1,115 @@
+# W3_PLUGIN_MODEW_PACK
+
+TYPE: W3MD_MANIFEST  
+STATUS: TEMPLATE_DRAFT  
+SCOPE: W3_PLUGIN / MODEW_PACK / CAPABILITY_BUNDLE  
+OWNER: BBX19  
+MUTATED: false  
+EXECUTION_ALLOWED: false  
+REVIEW: true  
+
+---
+
+## INTENT
+
+Define a reusable W3 capability bundle that can be read by humans, AI agents, modules, and W3API without granting execution permission by default.
+
+---
+
+## CONTEXT
+
+This manifest is used when a capability needs to be packaged as a W3-style pack.
+
+Examples:
+
+```text
+- W3API Gateway pack
+- Cross-L Planner pack
+- Hospitication Intake pack
+- WE PAPER Library pack
+- Table-X Matrix pack
+- Modew Dynamic pack
+```
+
+---
+
+## W3LGU 5-LINE DRAFT
+
+```text
+MEM: W3_PLUGIN_MODEW_PACK; REF:w3_tool_store/modew_pack_template.
+PATCH: package capability as reusable bounded pack.
+LAW: mutated:false; execution_allowed:false; review:true; boundary_first.
+EVENT: pack/request -> skills/agents/commands/hooks -> return_contract.
+RETURN: state, reason, trace, mutated, review, capability_summary.
+```
+
+---
+
+## STRUCTURE
+
+```text
+pack identity
+skills
+agents
+commands
+hooks
+assets
+mpcp/mcp hints
+boundary
+return contract
+```
+
+---
+
+## BOUNDARY
+
+Allowed:
+
+```text
+- describe capability
+- provide templates
+- provide commands as patterns
+- provide hooks as observation points
+- provide return contract
+- support planning and review
+```
+
+Denied by default:
+
+```text
+- direct execution
+- truth mutation
+- repo write
+- direct merge
+- secret access
+- network action without explicit bridge
+```
+
+---
+
+## OUTPUT CONTRACT
+
+Any pack based on this template should return at minimum:
+
+```text
+state
+reason
+trace
+mutated
+review
+capability_summary
+```
+
+---
+
+## PHILOSOPHY
+
+Use external plugin structures as materials, not as masters.
+
+```text
+We do not copy the form.
+We extract useful organs.
+W3 gives them new role, boundary, and meaning.
+```
+
+END
