@@ -1,0 +1,25 @@
+{
+  "name": "modew_pack_template",
+  "version": "0.1.0",
+  "type": "w3_plugin_modew_pack",
+  "status": "template_draft",
+  "scope": ["W3", "Modew", "PluginPack", "CapabilityBundle"],
+  "description": "W3-style reusable capability pack template.",
+  "w3md_manifest": "./W3_PLUGIN_MODEW_PACK.w3md",
+  "skills": "./skills/",
+  "agents": "./agents/",
+  "commands": "./commands/",
+  "hooks": "./hooks/hooks.json",
+  "assets": "./assets/",
+  "mpcp": "./mpcp.json",
+  "mcp": "./mcp.json",
+  "boundary": "./boundary/boundary.json",
+  "return_contract": "./return_contract/return_contract.json",
+  "safety": {
+    "mutated": false,
+    "execution_allowed": false,
+    "review": true,
+    "repo_write_allowed": false,
+    "direct_merge_allowed": false
+  }
+}
