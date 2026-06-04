@@ -7,10 +7,11 @@ from uuid import uuid4
 
 from fastapi import APIRouter
 
+from croll.cross_l_dispatcher import dispatch_workset
 from w3_api.adapters.ep_signal_adapter import build_ep_signal_preview
 from w3_api.adapters.w3db_adapter import build_w3db_trace_plan
 from w3_api.adapters.w3lgu_adapter import build_cross_w3lgu_packet
-from w3_api.models import W3CrossRequest, W3CrossResponse
+from w3_api.models import W3CrossPlanRequest, W3CrossPlanResponse, W3CrossRequest, W3CrossResponse
 
 router = APIRouter(prefix="/w3", tags=["w3-cross"])
 
@@ -55,3 +56,15 @@ def cross(req: W3CrossRequest) -> W3CrossResponse:
         w3lgu=w3lgu_text,
         signal=signal,
     )
+
+
+@router.post("/cross/plan", response_model=W3CrossPlanResponse)
+def cross_plan(req: W3CrossPlanRequest) -> W3CrossPlanResponse:
+    """Return a safe Cross-L dispatch plan from a PX reference.
+
+    This endpoint is planner-only. It does not execute Modew, mutate truth,
+    write repository files, merge changes, or call external systems.
+    """
+
+    plan = dispatch_workset(req.px, paper_context=req.paper_context)
+    return W3CrossPlanResponse(**plan)
