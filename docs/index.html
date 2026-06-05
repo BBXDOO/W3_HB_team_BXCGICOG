@@ -33,6 +33,7 @@
       --purple: #b39cff;
       --blue: #6ca8ff;
       --green: #5dffad;
+      --orange: #ff9d5c;
       --shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -50,466 +51,126 @@
       overflow-x: hidden;
     }
 
-    .shell {
-      display: grid;
-      grid-template-columns: 250px 1fr;
-      min-height: 100vh;
-    }
+    .shell { display: grid; grid-template-columns: 250px 1fr; min-height: 100vh; }
 
     aside {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      padding: 22px 18px;
+      position: sticky; top: 0; height: 100vh; padding: 22px 18px;
       border-right: 1px solid var(--line-soft);
-      background: rgba(4, 10, 17, 0.78);
-      backdrop-filter: blur(16px);
+      background: rgba(4, 10, 17, 0.78); backdrop-filter: blur(16px);
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding-bottom: 22px;
-      border-bottom: 1px solid var(--line-soft);
-      margin-bottom: 22px;
-    }
+    .brand { display: flex; align-items: center; gap: 12px; padding-bottom: 22px; border-bottom: 1px solid var(--line-soft); margin-bottom: 22px; }
+    .mark { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 12px; background: linear-gradient(135deg, rgba(39, 214, 255, 0.24), rgba(34, 240, 182, 0.18)); border: 1px solid var(--line); color: var(--mint); font-weight: 900; box-shadow: 0 0 24px rgba(34, 240, 182, 0.18); }
+    .brand h1 { font-size: 1rem; letter-spacing: 0.02em; }
+    .brand p { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
 
-    .mark {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      border-radius: 12px;
-      background: linear-gradient(135deg, rgba(39, 214, 255, 0.24), rgba(34, 240, 182, 0.18));
-      border: 1px solid var(--line);
-      color: var(--mint);
-      font-weight: 900;
-      box-shadow: 0 0 24px rgba(34, 240, 182, 0.18);
-    }
+    .nav-title { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.18em; color: var(--dim); margin: 20px 0 10px; text-transform: uppercase; }
+    nav a { display: flex; align-items: center; gap: 10px; padding: 10px 12px; color: var(--muted); text-decoration: none; border-radius: 10px; font-size: 0.9rem; transition: 0.2s ease; }
+    nav a:hover, nav a.active { color: var(--text); background: rgba(39, 214, 255, 0.09); border: 1px solid rgba(39, 214, 255, 0.14); }
+    .sidebar-foot { position: absolute; left: 18px; right: 18px; bottom: 18px; font-family: var(--mono); font-size: 0.72rem; color: var(--dim); border-top: 1px solid var(--line-soft); padding-top: 14px; }
 
-    .brand h1 {
-      font-size: 1rem;
-      letter-spacing: 0.02em;
-    }
+    main { padding: 28px; max-width: 1220px; width: 100%; margin: 0 auto; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px; }
+    .status-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border: 1px solid rgba(34, 240, 182, 0.24); border-radius: 999px; background: rgba(34, 240, 182, 0.08); color: var(--mint); font-family: var(--mono); font-size: 0.78rem; text-transform: uppercase; }
+    .dot { width: 8px; height: 8px; border-radius: 999px; background: var(--mint); box-shadow: 0 0 16px var(--mint); }
+    .tiny-link { color: var(--muted); text-decoration: none; font-family: var(--mono); font-size: 0.78rem; border: 1px solid var(--line-soft); border-radius: 999px; padding: 7px 12px; background: rgba(255,255,255,0.03); }
 
-    .brand p {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--muted);
-    }
-
-    .nav-title {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.18em;
-      color: var(--dim);
-      margin: 20px 0 10px;
-      text-transform: uppercase;
-    }
-
-    nav a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      color: var(--muted);
-      text-decoration: none;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      transition: 0.2s ease;
-    }
-
-    nav a:hover, nav a.active {
-      color: var(--text);
-      background: rgba(39, 214, 255, 0.09);
-      border: 1px solid rgba(39, 214, 255, 0.14);
-    }
-
-    .sidebar-foot {
-      position: absolute;
-      left: 18px;
-      right: 18px;
-      bottom: 18px;
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--dim);
-      border-top: 1px solid var(--line-soft);
-      padding-top: 14px;
-    }
-
-    main {
-      padding: 28px;
-      max-width: 1220px;
-      width: 100%;
-      margin: 0 auto;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 12px;
-      border: 1px solid rgba(34, 240, 182, 0.24);
-      border-radius: 999px;
-      background: rgba(34, 240, 182, 0.08);
-      color: var(--mint);
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      text-transform: uppercase;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--mint);
-      box-shadow: 0 0 16px var(--mint);
-    }
-
-    .tiny-link {
-      color: var(--muted);
-      text-decoration: none;
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      border: 1px solid var(--line-soft);
-      border-radius: 999px;
-      padding: 7px 12px;
-      background: rgba(255,255,255,0.03);
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 22px;
-      margin-bottom: 22px;
-    }
-
-    .panel {
-      background: linear-gradient(180deg, rgba(16, 31, 45, 0.88), rgba(9, 18, 28, 0.88));
-      border: 1px solid var(--line-soft);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
+    .hero { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 22px; margin-bottom: 22px; }
+    .panel { background: linear-gradient(180deg, rgba(16, 31, 45, 0.88), rgba(9, 18, 28, 0.88)); border: 1px solid var(--line-soft); border-radius: 18px; box-shadow: var(--shadow); overflow: hidden; }
     .panel-inner { padding: 24px; }
+    .kicker { font-family: var(--mono); font-size: 0.72rem; color: var(--cyan); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 10px; }
+    .hero h2 { font-size: clamp(2rem, 5vw, 4.2rem); line-height: 1.02; letter-spacing: -0.06em; margin-bottom: 16px; }
+    .gradient { background: linear-gradient(135deg, var(--cyan), var(--mint)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .lead { color: var(--muted); max-width: 720px; font-size: 1.02rem; }
+    .quote { margin-top: 18px; padding: 16px; border-left: 4px solid var(--mint); border-radius: 12px; background: rgba(34, 240, 182, 0.06); color: #d7fff3; font-family: var(--mono); font-size: 0.86rem; }
 
-    .kicker {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--cyan);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    .hero h2 {
-      font-size: clamp(2rem, 5vw, 4.2rem);
-      line-height: 1.02;
-      letter-spacing: -0.06em;
-      margin-bottom: 16px;
-    }
-
-    .gradient {
-      background: linear-gradient(135deg, var(--cyan), var(--mint));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .lead {
-      color: var(--muted);
-      max-width: 720px;
-      font-size: 1.02rem;
-    }
-
-    .quote {
-      margin-top: 18px;
-      padding: 16px;
-      border-left: 4px solid var(--mint);
-      border-radius: 12px;
-      background: rgba(34, 240, 182, 0.06);
-      color: #d7fff3;
-      font-family: var(--mono);
-      font-size: 0.86rem;
-    }
-
-    .terminal {
-      font-family: var(--mono);
-      min-height: 100%;
-      background: rgba(0,0,0,0.18);
-    }
-
-    .terminal-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--line-soft);
-      color: var(--muted);
-      font-size: 0.78rem;
-    }
-
-    .lights span {
-      display: inline-block;
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      margin-left: 6px;
-      opacity: 0.9;
-    }
-
-    .l-red { background: var(--red); }
-    .l-yellow { background: var(--yellow); }
-    .l-green { background: var(--green); }
-
+    .terminal { font-family: var(--mono); min-height: 100%; background: rgba(0,0,0,0.18); }
+    .terminal-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--line-soft); color: var(--muted); font-size: 0.78rem; }
+    .lights span { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-left: 6px; opacity: 0.9; }
+    .l-red { background: var(--red); } .l-yellow { background: var(--yellow); } .l-green { background: var(--green); }
     .terminal-body { padding: 18px; font-size: 0.82rem; color: var(--muted); }
-    .terminal-body b { color: var(--text); font-weight: 700; }
-    .terminal-body .ok { color: var(--mint); }
-    .terminal-body .warn { color: var(--yellow); }
-    .terminal-body .blue { color: var(--cyan); }
+    .terminal-body b { color: var(--text); font-weight: 700; } .terminal-body .ok { color: var(--mint); } .terminal-body .warn { color: var(--yellow); } .terminal-body .blue { color: var(--cyan); }
 
-    .status-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-bottom: 22px;
-    }
+    .status-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+    .card { background: rgba(16, 31, 45, 0.72); border: 1px solid var(--line-soft); border-radius: 16px; padding: 18px; min-height: 126px; }
+    .card h3 { font-family: var(--mono); color: var(--muted); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 12px; }
+    .card strong { display: block; font-size: 1.1rem; margin-bottom: 8px; }
+    .card p { color: var(--muted); font-size: 0.9rem; }
+    .accent-green { border-color: rgba(93, 255, 173, 0.26); } .accent-blue { border-color: rgba(108, 168, 255, 0.26); } .accent-yellow { border-color: rgba(255, 209, 102, 0.24); } .accent-purple { border-color: rgba(179, 156, 255, 0.24); }
 
-    .card {
-      background: rgba(16, 31, 45, 0.72);
-      border: 1px solid var(--line-soft);
-      border-radius: 16px;
-      padding: 18px;
-      min-height: 126px;
-    }
+    .section { margin-top: 24px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 14px; padding: 0 4px; }
+    .section-head h2 { font-size: 1.35rem; }
+    .section-head p { color: var(--muted); font-family: var(--mono); font-size: 0.78rem; }
 
-    .card h3 {
-      font-family: var(--mono);
-      color: var(--muted);
-      font-size: 0.72rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
+    .flow-board { position: relative; padding: 20px; border-radius: 18px; border: 1px solid var(--line-soft); background: radial-gradient(circle at 40% 0%, rgba(39,214,255,0.08), transparent 42%), rgba(7,16,25,0.74); overflow: hidden; }
+    .flow-board:before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 36px 36px; opacity: 0.22; pointer-events: none; }
+    .flow-row { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; align-items: stretch; z-index: 1; }
+    .flow-node { position: relative; min-height: 134px; padding: 16px; border-radius: 16px; background: rgba(12,23,34,0.9); border: 1px solid rgba(255,255,255,0.11); box-shadow: 0 12px 35px rgba(0,0,0,0.24); }
+    .flow-node:after { content: ""; position: absolute; top: 50%; right: -17px; width: 17px; height: 1px; background: rgba(231,244,255,0.32); }
+    .flow-node:last-child:after { display: none; }
+    .flow-node .num { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 9px; font-family: var(--mono); font-size: 0.78rem; font-weight: 800; margin-bottom: 12px; }
+    .flow-node h3 { margin-bottom: 6px; font-size: 1rem; }
+    .flow-node p { color: var(--muted); font-size: 0.88rem; }
+    .n-cyan { border-color: rgba(39,214,255,0.28); } .n-cyan .num { background: rgba(39,214,255,0.15); color: var(--cyan); }
+    .n-green { border-color: rgba(93,255,173,0.24); } .n-green .num { background: rgba(93,255,173,0.14); color: var(--green); }
+    .n-yellow { border-color: rgba(255,209,102,0.24); } .n-yellow .num { background: rgba(255,209,102,0.14); color: var(--yellow); }
+    .n-purple { border-color: rgba(179,156,255,0.24); } .n-purple .num { background: rgba(179,156,255,0.14); color: var(--purple); }
+    .n-red { border-color: rgba(255,107,122,0.24); } .n-red .num { background: rgba(255,107,122,0.14); color: var(--red); }
 
-    .card strong {
-      display: block;
-      font-size: 1.1rem;
-      margin-bottom: 8px;
-    }
+    .matrix-wrap { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 14px; }
+    .heat-card { padding: 18px; border-radius: 18px; background: #050709; border: 1px solid rgba(255,255,255,0.12); box-shadow: var(--shadow); }
+    .heat-card h3 { font-size: 1.25rem; margin-bottom: 12px; }
+    .heat-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 7px; margin: 14px 0 18px; }
+    .cell { aspect-ratio: 1; border-radius: 9px; display: grid; place-items: center; font-family: var(--mono); font-size: 0.72rem; font-weight: 800; color: #071019; }
+    .cell.blue { background: #6c7cff; color: #e9edff; } .cell.green { background: #68ffb3; } .cell.yellow { background: #eaff68; } .cell.purple { background: #8f62ff; color: #f2edff; } .cell.dark { background: #151a23; color: #7d8da0; }
+    .pulse-list { display: grid; gap: 11px; margin-top: 14px; }
+    .pulse { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; }
+    .pulse b { font-family: var(--mono); font-size: 0.8rem; }
+    .dots { display: grid; grid-template-columns: repeat(22, 5px); gap: 4px; }
+    .dots i { width: 5px; height: 5px; border-radius: 50%; background: rgba(34,240,182,0.22); }
+    .dots i.on { background: var(--mint); box-shadow: 0 0 10px var(--mint); }
 
-    .card p {
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
+    .lane-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .lane { border-radius: 16px; border: 1px solid var(--line-soft); background: rgba(7, 16, 25, 0.72); padding: 16px; }
+    .lane .tag { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 0.72rem; color: var(--dim); margin-bottom: 12px; }
+    .chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 8px; border-radius: 999px; background: rgba(255,255,255,0.05); color: var(--muted); font-family: var(--mono); font-size: 0.72rem; margin: 6px 6px 0 0; border: 1px solid var(--line-soft); }
+    .color-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; } .c-blue { background: var(--blue); } .c-green { background: var(--green); } .c-yellow { background: var(--yellow); } .c-red { background: var(--red); } .c-purple { background: var(--purple); }
 
-    .accent-green { border-color: rgba(93, 255, 173, 0.26); }
-    .accent-blue { border-color: rgba(108, 168, 255, 0.26); }
-    .accent-yellow { border-color: rgba(255, 209, 102, 0.24); }
-    .accent-purple { border-color: rgba(179, 156, 255, 0.24); }
+    .links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .link-card { padding: 14px; border-radius: 14px; border: 1px solid var(--line-soft); background: rgba(255,255,255,0.035); text-decoration: none; color: var(--text); transition: 0.2s ease; }
+    .link-card:hover { border-color: rgba(39, 214, 255, 0.35); transform: translateY(-2px); }
+    .link-card span { display: block; color: var(--muted); font-family: var(--mono); font-size: 0.72rem; margin-top: 4px; }
 
-    .section {
-      margin-top: 24px;
-    }
-
-    .section-head {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 14px;
-      padding: 0 4px;
-    }
-
-    .section-head h2 {
-      font-size: 1.35rem;
-    }
-
-    .section-head p {
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 0.78rem;
-    }
-
-    .lane-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    .lane {
-      border-radius: 16px;
-      border: 1px solid var(--line-soft);
-      background: rgba(7, 16, 25, 0.72);
-      padding: 16px;
-    }
-
-    .lane .tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--dim);
-      margin-bottom: 12px;
-    }
-
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 8px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.05);
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      margin: 6px 6px 0 0;
-      border: 1px solid var(--line-soft);
-    }
-
-    .color-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-    .c-blue { background: var(--blue); }
-    .c-green { background: var(--green); }
-    .c-yellow { background: var(--yellow); }
-    .c-red { background: var(--red); }
-    .c-purple { background: var(--purple); }
-
-    .links {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-
-    .link-card {
-      padding: 14px;
-      border-radius: 14px;
-      border: 1px solid var(--line-soft);
-      background: rgba(255,255,255,0.035);
-      text-decoration: none;
-      color: var(--text);
-      transition: 0.2s ease;
-    }
-
-    .link-card:hover {
-      border-color: rgba(39, 214, 255, 0.35);
-      transform: translateY(-2px);
-    }
-
-    .link-card span {
-      display: block;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      margin-top: 4px;
-    }
-
-    footer {
-      color: var(--dim);
-      font-family: var(--mono);
-      font-size: 0.76rem;
-      text-align: center;
-      padding: 32px 0 10px;
-    }
-
-    .install-prompt {
-      position: fixed;
-      left: 50%;
-      bottom: 18px;
-      transform: translateX(-50%);
-      display: none;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 14px;
-      max-width: min(92vw, 560px);
-      border-radius: 14px;
-      background: rgba(12, 23, 34, 0.96);
-      border: 1px solid rgba(34, 240, 182, 0.35);
-      box-shadow: var(--shadow);
-      z-index: 10;
-    }
-
+    footer { color: var(--dim); font-family: var(--mono); font-size: 0.76rem; text-align: center; padding: 32px 0 10px; }
+    .install-prompt { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); display: none; align-items: center; gap: 12px; padding: 12px 14px; max-width: min(92vw, 560px); border-radius: 14px; background: rgba(12, 23, 34, 0.96); border: 1px solid rgba(34, 240, 182, 0.35); box-shadow: var(--shadow); z-index: 10; }
     .install-prompt.show { display: flex; }
-    .install-prompt button {
-      border: 0;
-      border-radius: 10px;
-      padding: 8px 12px;
-      background: var(--mint);
-      color: #041018;
-      font-weight: 800;
-    }
+    .install-prompt button { border: 0; border-radius: 10px; padding: 8px 12px; background: var(--mint); color: #041018; font-weight: 800; }
     .install-prompt .close { background: transparent; color: var(--muted); }
 
-    @media (max-width: 920px) {
-      .shell { grid-template-columns: 1fr; }
-      aside {
-        position: relative;
-        height: auto;
-        border-right: 0;
-        border-bottom: 1px solid var(--line-soft);
-      }
-      nav { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
-      .sidebar-foot { position: static; margin-top: 18px; }
-      main { padding: 18px; }
-      .hero { grid-template-columns: 1fr; }
-      .status-grid { grid-template-columns: repeat(2, 1fr); }
-      .lane-grid { grid-template-columns: 1fr; }
-      .links { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (max-width: 520px) {
-      nav { grid-template-columns: 1fr; }
-      .status-grid, .links { grid-template-columns: 1fr; }
-      .topbar { align-items: flex-start; flex-direction: column; }
-      .panel-inner { padding: 18px; }
-    }
+    @media (max-width: 1040px) { .flow-row { grid-template-columns: 1fr; } .flow-node:after { top: auto; right: 50%; bottom: -17px; width: 1px; height: 17px; } .matrix-wrap { grid-template-columns: 1fr; } }
+    @media (max-width: 920px) { .shell { grid-template-columns: 1fr; } aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line-soft); } nav { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; } .sidebar-foot { position: static; margin-top: 18px; } main { padding: 18px; } .hero { grid-template-columns: 1fr; } .status-grid { grid-template-columns: repeat(2, 1fr); } .lane-grid { grid-template-columns: 1fr; } .links { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px) { nav { grid-template-columns: 1fr; } .status-grid, .links { grid-template-columns: 1fr; } .topbar { align-items: flex-start; flex-direction: column; } .panel-inner { padding: 18px; } .heat-grid { gap: 5px; } .dots { grid-template-columns: repeat(16, 5px); } }
   </style>
 </head>
 <body>
   <div class="shell">
     <aside>
-      <div class="brand">
-        <div class="mark">W3</div>
-        <div>
-          <h1>W3 System</h1>
-          <p>// status lens</p>
-        </div>
-      </div>
-
+      <div class="brand"><div class="mark">W3</div><div><h1>W3 System</h1><p>// status lens</p></div></div>
       <div class="nav-title">Workspace</div>
       <nav>
         <a class="active" href="#status">⌁ Status</a>
+        <a href="#w3lgu">⌁ W3Lgu Flow</a>
         <a href="#cross">⌁ Cross System</a>
         <a href="#boundary">⌁ Boundary</a>
         <a href="#refs">⌁ References</a>
       </nav>
-
       <div class="nav-title">Public Mode</div>
       <nav>
         <a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG" target="_blank" rel="noopener">↗ Repository</a>
         <a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG/issues" target="_blank" rel="noopener">↗ Issues</a>
       </nav>
-
-      <div class="sidebar-foot">
-        refactor/v0.2<br>
-        mutated:false<br>
-        planner-only / public-safe
-      </div>
+      <div class="sidebar-foot">refactor/v0.2<br>mutated:false<br>planner-only / public-safe</div>
     </aside>
 
     <main>
@@ -519,171 +180,79 @@
       </div>
 
       <section class="hero">
-        <div class="panel">
-          <div class="panel-inner">
-            <div class="kicker">W3 Hybrid / จุดปรับวิสัย</div>
-            <h2>System Status<br><span class="gradient">not internal truth.</span></h2>
-            <p class="lead">
-              หน้านี้เป็น Lamp สำหรับดูสถานะและทิศทางของ W3 เท่านั้น — แสดงภาพรวมแบบปลอดภัย ไม่เปิดเผย logic ลึก, runtime payload, secret, หรือ source truth ภายใน
-            </p>
-            <div class="quote">
-              Build → Fail → Learn → Continue<br>
-              ต่างหน้าที่ได้ แต่ต่างแกนไม่ได้ · หลายเครื่องมือได้ แต่หนึ่งภาษา
-            </div>
-          </div>
-        </div>
-
-        <div class="panel terminal">
-          <div class="terminal-head">
-            <span>// public-status.packet</span>
-            <span class="lights"><span class="l-red"></span><span class="l-yellow"></span><span class="l-green"></span></span>
-          </div>
-          <div class="terminal-body">
-            <div><b>BRANCH</b>        <span class="blue">refactor/v0.2</span></div>
-            <div><b>MODE</b>          <span class="ok">observe / planner-only</span></div>
-            <div><b>MUTATED</b>       <span class="ok">false</span></div>
-            <div><b>REVIEW</b>        <span class="warn">human-first</span></div>
-            <div><b>FOCUS</b>         W3MD · Hybrid-SynCap · Cross-index</div>
-            <br>
-            <div><span class="blue">RETURN</span>: state, reason, trace, mutated, review</div>
-          </div>
-        </div>
+        <div class="panel"><div class="panel-inner"><div class="kicker">W3 Hybrid / จุดปรับวิสัย</div><h2>System Status<br><span class="gradient">not internal truth.</span></h2><p class="lead">หน้านี้เป็น Lamp สำหรับดูสถานะและทิศทางของ W3 เท่านั้น — แสดงภาพรวมแบบปลอดภัย ไม่เปิดเผย logic ลึก, runtime payload, secret, หรือ source truth ภายใน</p><div class="quote">Build → Fail → Learn → Continue<br>ต่างหน้าที่ได้ แต่ต่างแกนไม่ได้ · หลายเครื่องมือได้ แต่หนึ่งภาษา</div></div></div>
+        <div class="panel terminal"><div class="terminal-head"><span>// public-status.packet</span><span class="lights"><span class="l-red"></span><span class="l-yellow"></span><span class="l-green"></span></span></div><div class="terminal-body"><div><b>BRANCH</b> <span class="blue">refactor/v0.2</span></div><div><b>MODE</b> <span class="ok">observe / planner-only</span></div><div><b>MUTATED</b> <span class="ok">false</span></div><div><b>REVIEW</b> <span class="warn">human-first</span></div><div><b>FOCUS</b> W3MD · Hybrid-SynCap · Cross-index</div><br><div><span class="blue">RETURN</span>: state, reason, trace, mutated, review</div></div></div>
       </section>
 
       <section class="status-grid">
-        <div class="card accent-green">
-          <h3>Active Branch</h3>
-          <strong>refactor/v0.2</strong>
-          <p>พื้นที่ทำงานหลัก ป้องกัน main branch และคุมการเปลี่ยนแปลงผ่าน review</p>
-        </div>
-        <div class="card accent-blue">
-          <h3>Current Layer</h3>
-          <strong>W3MD / W3X Docs</strong>
-          <p>จัดเอกสารให้เป็นจุดตัดร่วมของระบบ คนอ่านได้ AI ใช้ต่อได้</p>
-        </div>
-        <div class="card accent-yellow">
-          <h3>Safety</h3>
-          <strong>mutated:false</strong>
-          <p>หน้านี้ไม่ execute, ไม่ write-back, ไม่ merge, ไม่เปลี่ยน source truth</p>
-        </div>
-        <div class="card accent-purple">
-          <h3>Direction</h3>
-          <strong>Cross System</strong>
-          <p>ฐาน + ยาน + Hub + Link + Highway + trace สำหรับอนาคต</p>
-        </div>
+        <div class="card accent-green"><h3>Active Branch</h3><strong>refactor/v0.2</strong><p>พื้นที่ทำงานหลัก ป้องกัน main branch และคุมการเปลี่ยนแปลงผ่าน review</p></div>
+        <div class="card accent-blue"><h3>Current Layer</h3><strong>W3MD / W3X Docs</strong><p>จัดเอกสารให้เป็นจุดตัดร่วมของระบบ คนอ่านได้ AI ใช้ต่อได้</p></div>
+        <div class="card accent-yellow"><h3>Safety</h3><strong>mutated:false</strong><p>หน้านี้ไม่ execute, ไม่ write-back, ไม่ merge, ไม่เปลี่ยน source truth</p></div>
+        <div class="card accent-purple"><h3>Direction</h3><strong>Cross System</strong><p>ฐาน + ยาน + Hub + Link + Highway + trace สำหรับอนาคต</p></div>
       </section>
 
-      <section class="section" id="cross">
-        <div class="section-head">
-          <h2>Cross System Map</h2>
-          <p>// public-safe summary</p>
-        </div>
-        <div class="lane-grid">
-          <div class="lane">
-            <div class="tag"><span class="color-dot c-green"></span> Capsule</div>
-            <h3>Hybrid-SynCap</h3>
-            <p>กล่องความสามารถที่ module / Modew สร้างเก็บไว้ ใช้ข้าม OS, ENV, EVENT, App และ Agent</p>
-            <span class="chip"><span class="color-dot c-green"></span> capability</span>
-            <span class="chip">boundary</span>
-            <span class="chip">return_contract</span>
-          </div>
-          <div class="lane">
-            <div class="tag"><span class="color-dot c-blue"></span> Hub</div>
-            <h3>HybridCross : Hub</h3>
-            <p>จุดตัดกลางที่ SynCap, event, app, module และ agent เข้ามาเจอกันก่อนเลือก route</p>
-            <span class="chip"><span class="color-dot c-blue"></span> monitor</span>
-            <span class="chip">color_state</span>
-            <span class="chip">handoff</span>
-          </div>
-          <div class="lane">
-            <div class="tag"><span class="color-dot c-yellow"></span> Highway</div>
-            <h3>Cross-index</h3>
-            <p>แผนที่ทางหลวงของ Hub + Link + SynCap ช่วยลดการเชื่อมกันแบบพันกันของระบบ</p>
-            <span class="chip"><span class="color-dot c-yellow"></span> route</span>
-            <span class="chip">PS-Pcross</span>
-            <span class="chip">LRC2 trace</span>
+      <section class="section" id="w3lgu">
+        <div class="section-head"><h2>W3Lgu Public Flow</h2><p>// 1,2,3,4 เป็นโหนด ไม่เปิด logic</p></div>
+        <div class="flow-board">
+          <div class="flow-row">
+            <div class="flow-node n-cyan"><span class="num">1</span><h3>Intent Intake</h3><p>รับเจตนาจากคน / แอป / agent แล้วทำให้เป็น packet ที่อ่านร่วมกันได้</p></div>
+            <div class="flow-node n-green"><span class="num">2</span><h3>Grammar Frame</h3><p>จัดรูปเป็น W3Lgu layer เช่น MEM, PATCH, LAW, EVENT, SIGNAL แบบ public-safe</p></div>
+            <div class="flow-node n-yellow"><span class="num">3</span><h3>Boundary Check</h3><p>ตรวจว่าเป็น observe, plan, review หรือ block โดยไม่แตะ source truth</p></div>
+            <div class="flow-node n-purple"><span class="num">4</span><h3>Cross Route</h3><p>ส่งต่อผ่าน PX / Hub / Link / SynCap candidate เพื่อสร้างแผน ไม่ใช่ execution</p></div>
+            <div class="flow-node n-red"><span class="num">R</span><h3>Return Contract</h3><p>คืน state, reason, trace, mutated, review ให้ LRC2 หรือจุดอ่านผล</p></div>
           </div>
         </div>
       </section>
 
-      <section class="section" id="boundary">
-        <div class="section-head">
-          <h2>Public Boundary</h2>
-          <p>// Lamp ไม่ใช่ Core</p>
-        </div>
-        <div class="lane-grid">
-          <div class="lane">
-            <div class="tag"><span class="color-dot c-green"></span> Show</div>
-            <h3>แสดงได้</h3>
-            <p>สถานะงาน, ทิศทาง, branch, public-safe summary, reference links, แนวคิดระดับสูง</p>
+      <section class="section">
+        <div class="section-head"><h2>Color State Monitor</h2><p>// แสดงอุณหภูมิงาน ไม่แสดงข้อมูลลึก</p></div>
+        <div class="matrix-wrap">
+          <div class="heat-card">
+            <h3>Hub Color Grid</h3>
+            <div class="heat-grid" aria-label="Hub color state grid">
+              <span class="cell blue">01</span><span class="cell green">02</span><span class="cell green">03</span><span class="cell yellow">04</span><span class="cell yellow">05</span><span class="cell green">06</span><span class="cell purple">07</span><span class="cell dark">08</span>
+              <span class="cell green">09</span><span class="cell green">10</span><span class="cell yellow">11</span><span class="cell yellow">12</span><span class="cell green">13</span><span class="cell blue">14</span><span class="cell blue">15</span><span class="cell green">16</span>
+              <span class="cell purple">17</span><span class="cell blue">18</span><span class="cell green">19</span><span class="cell green">20</span><span class="cell yellow">21</span><span class="cell dark">22</span><span class="cell blue">23</span><span class="cell green">24</span>
+              <span class="cell dark">25</span><span class="cell purple">26</span><span class="cell purple">27</span><span class="cell blue">28</span><span class="cell green">29</span><span class="cell green">30</span><span class="cell yellow">31</span><span class="cell yellow">32</span>
+            </div>
+            <span class="chip"><span class="color-dot c-green"></span> GREEN stable</span>
+            <span class="chip"><span class="color-dot c-yellow"></span> YELLOW review</span>
+            <span class="chip"><span class="color-dot c-red"></span> RED block</span>
+            <span class="chip"><span class="color-dot c-purple"></span> PURPLE relation</span>
           </div>
-          <div class="lane">
-            <div class="tag"><span class="color-dot c-red"></span> Hide</div>
-            <h3>ไม่แสดง</h3>
-            <p>logic ลึก, secret, runtime payload, private notes, decision trace ละเอียด, raw packet ภายใน</p>
-          </div>
-          <div class="lane">
-            <div class="tag"><span class="color-dot c-purple"></span> Role</div>
-            <h3>หน้าที่ของหน้านี้</h3>
-            <p>เป็นหน้าสถานะงานและจุดปรับวิสัย ไม่ใช่ control panel และไม่ใช่ source authority</p>
+          <div class="heat-card">
+            <h3>Signal Pulse</h3>
+            <p class="lead">ใช้แสดงจังหวะงานระดับ public เช่น monitor, review, route โดยไม่เปิด packet จริง</p>
+            <div class="pulse-list">
+              <div class="pulse"><b>W3Lgu</b><span class="dots"><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i></span></div>
+              <div class="pulse"><b>Cross Hub</b><span class="dots"><i></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i></i><i></i><i class="on"></i></span></div>
+              <div class="pulse"><b>LRC2 Trace</b><span class="dots"><i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i></span></div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="section" id="refs">
-        <div class="section-head">
-          <h2>Reference Doors</h2>
-          <p>// docs as alignment lens</p>
-        </div>
-        <div class="links">
-          <a class="link-card" href="W3_MASTER_MAP.md">W3 Master Map<span>ภาพใหญ่ / ปลายทาง</span></a>
-          <a class="link-card" href="API.md">W3 Cross API<span>gateway / external tools</span></a>
-          <a class="link-card" href="integration_guide.md">Integration Guide<span>EP_SIGNAL / W3DB / Hospitication</span></a>
-          <a class="link-card" href="standards/referencing_standard.md">Referencing Standard<span>trace / no overwrite truth</span></a>
-        </div>
-      </section>
+      <section class="section" id="cross"><div class="section-head"><h2>Cross System Map</h2><p>// public-safe summary</p></div><div class="lane-grid"><div class="lane"><div class="tag"><span class="color-dot c-green"></span> Capsule</div><h3>Hybrid-SynCap</h3><p>กล่องความสามารถที่ module / Modew สร้างเก็บไว้ ใช้ข้าม OS, ENV, EVENT, App และ Agent</p><span class="chip"><span class="color-dot c-green"></span> capability</span><span class="chip">boundary</span><span class="chip">return_contract</span></div><div class="lane"><div class="tag"><span class="color-dot c-blue"></span> Hub</div><h3>HybridCross : Hub</h3><p>จุดตัดกลางที่ SynCap, event, app, module และ agent เข้ามาเจอกันก่อนเลือก route</p><span class="chip"><span class="color-dot c-blue"></span> monitor</span><span class="chip">color_state</span><span class="chip">handoff</span></div><div class="lane"><div class="tag"><span class="color-dot c-yellow"></span> Highway</div><h3>Cross-index</h3><p>แผนที่ทางหลวงของ Hub + Link + SynCap ช่วยลดการเชื่อมกันแบบพันกันของระบบ</p><span class="chip"><span class="color-dot c-yellow"></span> route</span><span class="chip">PS-Pcross</span><span class="chip">LRC2 trace</span></div></div></section>
 
-      <footer>
-        W3 Hybrid System · HB_team_BXCGICOG · Public status page · Last update: refactor/v0.2
-      </footer>
+      <section class="section" id="boundary"><div class="section-head"><h2>Public Boundary</h2><p>// Lamp ไม่ใช่ Core</p></div><div class="lane-grid"><div class="lane"><div class="tag"><span class="color-dot c-green"></span> Show</div><h3>แสดงได้</h3><p>สถานะงาน, ทิศทาง, branch, public-safe summary, reference links, แนวคิดระดับสูง</p></div><div class="lane"><div class="tag"><span class="color-dot c-red"></span> Hide</div><h3>ไม่แสดง</h3><p>logic ลึก, secret, runtime payload, private notes, decision trace ละเอียด, raw packet ภายใน</p></div><div class="lane"><div class="tag"><span class="color-dot c-purple"></span> Role</div><h3>หน้าที่ของหน้านี้</h3><p>เป็นหน้าสถานะงานและจุดปรับวิสัย ไม่ใช่ control panel และไม่ใช่ source authority</p></div></div></section>
+
+      <section class="section" id="refs"><div class="section-head"><h2>Reference Doors</h2><p>// docs as alignment lens</p></div><div class="links"><a class="link-card" href="W3_MASTER_MAP.md">W3 Master Map<span>ภาพใหญ่ / ปลายทาง</span></a><a class="link-card" href="API.md">W3 Cross API<span>gateway / external tools</span></a><a class="link-card" href="integration_guide.md">Integration Guide<span>EP_SIGNAL / W3DB / Hospitication</span></a><a class="link-card" href="standards/referencing_standard.md">Referencing Standard<span>trace / no overwrite truth</span></a></div></section>
+
+      <footer>W3 Hybrid System · HB_team_BXCGICOG · Public status page · Last update: refactor/v0.2</footer>
     </main>
   </div>
 
-  <div class="install-prompt" id="installPrompt">
-    <span>ติดตั้ง W3 Status เป็นแอปบนอุปกรณ์</span>
-    <button id="installBtn">ติดตั้ง</button>
-    <button class="close" id="closePrompt" type="button" aria-label="ปิด">✕</button>
-  </div>
+  <div class="install-prompt" id="installPrompt"><span>ติดตั้ง W3 Status เป็นแอปบนอุปกรณ์</span><button id="installBtn">ติดตั้ง</button><button class="close" id="closePrompt" type="button" aria-label="ปิด">✕</button></div>
 
   <script>
     let deferredPrompt;
     const installPrompt = document.getElementById('installPrompt');
     const installBtn = document.getElementById('installBtn');
     const closePrompt = document.getElementById('closePrompt');
-
-    window.addEventListener('beforeinstallprompt', (event) => {
-      event.preventDefault();
-      deferredPrompt = event;
-      installPrompt.classList.add('show');
-    });
-
-    installBtn.addEventListener('click', async () => {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      installPrompt.classList.remove('show');
-    });
-
-    closePrompt.addEventListener('click', () => {
-      installPrompt.classList.remove('show');
-    });
-
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(() => {});
-      });
-    }
+    window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); deferredPrompt = event; installPrompt.classList.add('show'); });
+    installBtn.addEventListener('click', async () => { if (!deferredPrompt) return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; installPrompt.classList.remove('show'); });
+    closePrompt.addEventListener('click', () => { installPrompt.classList.remove('show'); });
+    if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); }); }
   </script>
 </body>
 </html>
