@@ -20,15 +20,15 @@ from pathlib import Path
 # Common patterns for secrets
 SECRET_PATTERNS = [
     # API Keys and Tokens
-    (r'api[_-]?key[\s]*[:=][\s]*[\'"]?([a-zA-Z0-9_\-]{20,})[\'"]?', 'API Key'),
-    (r'token[\s]*[:=][\s]*[\'"]?([a-zA-Z0-9_\-]{20,})[\'"]?', 'Token'),
-    (r'secret[\s]*[:=][\s]*[\'"]?([a-zA-Z0-9_\-]{20,})[\'"]?', 'Secret'),
-    (r'password[\s]*[:=][\s]*[\'"]?([a-zA-Z0-9_\-]{8,})[\'"]?', 'Password'),
-    (r'credential[\s]*[:=][\s]*[\'"]?([a-zA-Z0-9_\-]{10,})[\'"]?', 'Credential'),
+    (r'api[_-]?key[\s]*[:=][\s]*[\'\"]?([a-zA-Z0-9_\-]{20,})[\'\"]?', 'API Key'),
+    (r'token[\s]*[:=][\s]*[\'\"]?([a-zA-Z0-9_\-]{20,})[\'\"]?', 'Token'),
+    (r'secret[\s]*[:=][\s]*[\'\"]?([a-zA-Z0-9_\-]{20,})[\'\"]?', 'Secret'),
+    (r'password[\s]*[:=][\s]*[\'\"]?([a-zA-Z0-9_\-]{8,})[\'\"]?', 'Password'),
+    (r'credential[\s]*[:=][\s]*[\'\"]?([a-zA-Z0-9_\-]{10,})[\'\"]?', 'Credential'),
     
     # AWS Keys
     (r'AKIA[0-9A-Z]{16}', 'AWS Access Key'),
-    (r'aws[_-]?secret[_-]?access[_-]?key[\s]*[:=][\s]*[\'"]?([a-zA-Z0-9/+=]{40})[\'"]?', 'AWS Secret Key'),
+    (r'aws[_-]?secret[_-]?access[_-]?key[\s]*[:=][\s]*[\'\"]?([a-zA-Z0-9/+=]{40})[\'\"]?', 'AWS Secret Key'),
     
     # GitHub Tokens
     (r'gh[ps]_[a-zA-Z0-9]{36,}', 'GitHub Token'),
@@ -89,7 +89,10 @@ class DTMLScanner:
                             'type': secret_type,
                             'file': str(file_path.relative_to(self.repo_path)),
                             'line': line_number,
-                            'context': line.strip()[:100]
+                            # Never store the matched source line in reports. If this
+                            # is a real secret, copying context into DTML_Report.md
+                            # would persist the secret as clear text.
+                            'context': '[REDACTED]'
                         })
                         self.status = "RISK"
         except Exception as e:
