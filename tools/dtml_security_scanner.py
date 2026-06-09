@@ -20,15 +20,15 @@ from pathlib import Path
 # Common patterns for secrets
 SECRET_PATTERNS = [
     # API Keys and Tokens
-    (r'api[_-]?key[\s]*[:=][\s]*[\'"]?([a-zA-Z0-9_\-]{20,})[\'"]?', 'API Key'),
-    (r'token[\s]*[:=][\s]*[\'"]?([a-zA-Z0-9_\-]{20,})[\'"]?', 'Token'),
-    (r'secret[\s]*[:=][\s]*[\'"]?([a-zA-Z0-9_\-]{20,})[\'"]?', 'Secret'),
-    (r'password[\s]*[:=][\s]*[\'"]?([a-zA-Z0-9_\-]{8,})[\'"]?', 'Password'),
-    (r'credential[\s]*[:=][\s]*[\'"]?([a-zA-Z0-9_\-]{10,})[\'"]?', 'Credential'),
+    (r'api[_-]?key[\s]*[:=][\s]*[\'\"]?([a-zA-Z0-9_\-]{20,})[\'\"]?', 'API Key'),
+    (r'token[\s]*[:=][\s]*[\'\"]?([a-zA-Z0-9_\-]{20,})[\'\"]?', 'Token'),
+    (r'secret[\s]*[:=][\s]*[\'\"]?([a-zA-Z0-9_\-]{20,})[\'\"]?', 'Secret'),
+    (r'password[\s]*[:=][\s]*[\'\"]?([a-zA-Z0-9_\-]{8,})[\'\"]?', 'Password'),
+    (r'credential[\s]*[:=][\s]*[\'\"]?([a-zA-Z0-9_\-]{10,})[\'\"]?', 'Credential'),
     
     # AWS Keys
     (r'AKIA[0-9A-Z]{16}', 'AWS Access Key'),
-    (r'aws[_-]?secret[_-]?access[_-]?key[\s]*[:=][\s]*[\'"]?([a-zA-Z0-9/+=]{40})[\'"]?', 'AWS Secret Key'),
+    (r'aws[_-]?secret[_-]?access[_-]?key[\s]*[:=][\s]*[\'\"]?([a-zA-Z0-9/+=]{40})[\'\"]?', 'AWS Secret Key'),
     
     # GitHub Tokens
     (r'gh[ps]_[a-zA-Z0-9]{36,}', 'GitHub Token'),
@@ -85,11 +85,13 @@ class DTMLScanner:
                         if 'xxx' in match.group(0).lower():
                             continue
                             
+                        # Do not store the matched source line or matched value.
+                        # A security report must identify location and type only;
+                        # otherwise it can become clear-text storage for secrets.
                         self.findings.append({
                             'type': secret_type,
                             'file': str(file_path.relative_to(self.repo_path)),
                             'line': line_number,
-                            'context': line.strip()[:100]
                         })
                         self.status = "RISK"
         except Exception as e:
@@ -238,7 +240,7 @@ class DTMLScanner:
                 report.append(f"### Finding #{i}: {finding['type']}")
                 report.append(f"- **File:** `{finding['file']}`")
                 report.append(f"- **Line:** {finding['line']}")
-                report.append(f"- **Context:** `{finding['context']}`")
+                report.append("- **Context:** `[REDACTED - source line intentionally not stored]`")
                 report.append("")
         else:
             report.append("✅ No secrets or credentials detected")
@@ -307,6 +309,7 @@ class DTMLScanner:
         report.append("")
         report.append("- This scan checks the last 48 hours of commits")
         report.append("- False positives may occur in documentation or example files")
+        report.append("- Secret source lines are intentionally not stored in this report")
         report.append("- Always verify findings manually before taking action")
         report.append("- Risky files are flagged for review, not necessarily problematic")
         report.append("")

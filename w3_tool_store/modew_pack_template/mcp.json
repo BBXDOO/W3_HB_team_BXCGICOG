@@ -1,0 +1,18 @@
+{
+  "type": "mcp_connector_hint",
+  "status": "template_draft",
+  "purpose": "Describe optional MCP-facing connector information for this pack.",
+  "default": {
+    "enabled": false,
+    "execution_allowed": false,
+    "mutated": false,
+    "review": true
+  },
+  "servers": [],
+  "tools": [],
+  "notes": [
+    "MCP configuration is optional.",
+    "This template does not start servers or call tools.",
+    "Runtime connection must be explicitly reviewed before use."
+  ]
+}
