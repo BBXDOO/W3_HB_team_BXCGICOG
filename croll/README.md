@@ -630,3 +630,79 @@ Let them become governed participants.
 ---
 
 END
+
+---
+
+# 20. Portable Reference Runtime
+
+The `croll` directory includes a dependency-free Python reference runtime. It is a
+planner and lookup layer only: it does not execute embedded code, write files, use
+the network, mutate truth, or merge changes.
+
+## Supported environments
+
+- CPython 3.9 or newer
+- Linux and cloud runners
+- Windows PowerShell or Command Prompt
+- macOS Terminal
+- Android Termux
+
+The runtime uses only the Python standard library, UTF-8 JSON output, `pathlib`
+for context files, and `python -m croll` so callers do not depend on a platform-
+specific script path.
+
+## Stable commands
+
+Run these commands from the repository root:
+
+```sh
+python -m croll lookup "1,1"
+python -m croll plan "PX:[2,1]"
+python -m croll list
+python -m croll --version
+```
+
+Optional Paper context can be passed as inline JSON:
+
+```sh
+python -m croll plan "1,1" --context '{"paper_id":"demo"}'
+```
+
+For shells where JSON quoting is inconvenient (especially Windows), save a UTF-8
+JSON object and prefix its path with `@`:
+
+```sh
+python -m croll plan "1,1" --context @paper-context.json
+```
+
+## Python API
+
+```python
+from croll import dispatch_workset, get_workset_from_px
+
+workset = get_workset_from_px("1,1")
+plan = dispatch_workset("PX:[2,1]", paper_context={"paper_id": "demo"})
+```
+
+Both APIs preserve the dictionary-based interface from the draft implementation.
+Versioned outputs include `contract_version` so future adapters can negotiate
+changes without relying on the package version alone. Unknown or malformed PX
+values remain safe review results; they never enable execution.
+
+## Compatibility policy
+
+- Additive fields may be introduced within contract version `1.x`.
+- Existing field meanings and safety defaults must not change within `1.x`.
+- Removing or renaming fields requires a new contract version.
+- `execution_allowed`, `mutated`, and every safety permission remain `false` in
+  this planner package.
+- The package remains dependency-free unless a future runtime is split into an
+  explicitly optional component.
+
+## Validation
+
+```sh
+python -m compileall croll
+python -m unittest discover -s croll -p "test_*.py" -v
+python -m croll plan "1,1"
+```

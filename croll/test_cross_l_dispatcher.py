@@ -1,6 +1,6 @@
 import unittest
 
-from cross_l_dispatcher import dispatch_workset
+from croll.cross_l_dispatcher import dispatch_workset
 
 
 class TestCrossLDispatcher(unittest.TestCase):

@@ -19,9 +19,12 @@ Important:
 from __future__ import annotations
 
 from copy import deepcopy
-from typing import Any, Dict, Iterable, Optional, Tuple, Union
+from collections.abc import Mapping, Sequence
+from numbers import Integral
+from typing import Any, Dict, Optional, Tuple, Union
 
-PXInput = Union[str, Iterable[int], Tuple[int, int]]
+PXInput = Union[str, Sequence[int], Tuple[int, int]]
+CONTRACT_VERSION = "1.0"
 Workset = Dict[str, Any]
 
 
@@ -127,30 +130,58 @@ FALLBACK_WORKSET: Workset = {
 }
 
 
+def _coordinate(value: Any) -> int:
+    """Normalize one coordinate without silently truncating floats or booleans."""
+    if isinstance(value, bool):
+        raise ValueError("PX coordinates must be integers, not booleans")
+    if isinstance(value, Integral):
+        coordinate = int(value)
+    elif isinstance(value, str) and value.strip():
+        text = value.strip()
+        if text[0] in "+-":
+            digits = text[1:]
+        else:
+            digits = text
+        if not digits.isdecimal():
+            raise ValueError(f"PX coordinate is not an integer: {value!r}")
+        coordinate = int(text)
+    else:
+        raise ValueError(f"PX coordinate is not an integer: {value!r}")
+
+    if coordinate < 1:
+        raise ValueError(f"PX coordinates must be positive integers: {coordinate}")
+    return coordinate
+
+
 def parse_px(px: PXInput) -> Tuple[int, int]:
-    """
-    Convert a PX input into a tuple: (row, col).
-
-    Supported:
-        - "1,1"
-        - "PX:[1,1]"
-        - "[1,1]"
-        - [1, 1]
-        - (1, 1)
-    """
-    if isinstance(px, (tuple, list)) and len(px) == 2:
-        return int(px[0]), int(px[1])
-
+    """Convert a supported PX representation into a validated ``(row, col)`` tuple."""
+    values: Sequence[Any]
     if isinstance(px, str):
         raw = px.strip()
-        if raw.startswith("PX:"):
+        if raw[:3].upper() == "PX:":
             raw = raw[3:].strip()
-        raw = raw.strip("[]")
+        if raw.startswith("[") and raw.endswith("]"):
+            raw = raw[1:-1].strip()
         parts = raw.split(",")
-        if len(parts) == 2:
-            return int(parts[0].strip()), int(parts[1].strip())
+        if len(parts) != 2:
+            raise ValueError(f"Invalid PX format: {px!r}")
+        values = parts
+    elif isinstance(px, Sequence) and not isinstance(px, (bytes, bytearray)):
+        if len(px) != 2:
+            raise ValueError(f"Invalid PX format: {px!r}")
+        values = px
+    else:
+        raise ValueError(f"Invalid PX format: {px!r}")
 
-    raise ValueError(f"Invalid PX format: {px}")
+    try:
+        return _coordinate(values[0]), _coordinate(values[1])
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"Invalid PX format: {px!r} ({exc})") from exc
+
+
+def list_px() -> list[list[int]]:
+    """Return registered coordinates in deterministic order for UIs and adapters."""
+    return [[row, col] for row, col in sorted(TABLE_X)]
 
 
 def _review_required(default_review: Optional[str]) -> bool:
@@ -158,7 +189,7 @@ def _review_required(default_review: Optional[str]) -> bool:
     return default_review not in (None, "never", "false", "none")
 
 
-def get_workset_from_px(px: PXInput, paper_context: Optional[Dict[str, Any]] = None) -> Workset:
+def get_workset_from_px(px: PXInput, paper_context: Optional[Mapping[str, Any]] = None) -> Workset:
     """
     Look up a bounded workset from Table-X by PX.
 
@@ -174,13 +205,14 @@ def get_workset_from_px(px: PXInput, paper_context: Optional[Dict[str, Any]] = N
     try:
         row, col = parse_px(px)
     except (TypeError, ValueError) as exc:
-        return {**deepcopy(FALLBACK_WORKSET), "reason": str(exc)}
+        return {**deepcopy(FALLBACK_WORKSET), "contract_version": CONTRACT_VERSION, "px": None, "reason": str(exc)}
 
     workset = TABLE_X.get((row, col))
     if workset is None:
-        return {**deepcopy(FALLBACK_WORKSET), "reason": f"PX ({row},{col}) not found in Table-X"}
+        return {**deepcopy(FALLBACK_WORKSET), "contract_version": CONTRACT_VERSION, "px": [row, col], "reason": f"PX ({row},{col}) not found in Table-X"}
 
     result: Workset = {
+        "contract_version": CONTRACT_VERSION,
         "px": [row, col],
         "rytm": workset["rytm"],
         "work_type": workset["work_type"],

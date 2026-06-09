@@ -8,10 +8,6 @@ on:
       - synchronize
       - reopened
   workflow_dispatch:
-    inputs:
-      pr_number:
-        description: "PR number (for manual run)"
-        required: false
 
 concurrency:
   group: iget-${{ github.event.pull_request.number || github.run_id }}

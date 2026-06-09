@@ -18,6 +18,7 @@ Core law:
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import Any, Dict, Optional
 
 try:
@@ -33,7 +34,7 @@ def _unknown_workset(workset: Dict[str, Any]) -> bool:
     return workset.get("rytm") == "UNKNOWN" or workset.get("work_type") == "UNKNOWN"
 
 
-def dispatch_workset(px: Any, paper_context: Optional[Dict[str, Any]] = None) -> DispatchPlan:
+def dispatch_workset(px: Any, paper_context: Optional[Mapping[str, Any]] = None) -> DispatchPlan:
     """
     Build a safe dispatch plan from a PX reference.
 
@@ -48,6 +49,7 @@ def dispatch_workset(px: Any, paper_context: Optional[Dict[str, Any]] = None) ->
     workset = get_workset_from_px(px, paper_context=paper_context)
 
     plan: DispatchPlan = {
+        "contract_version": "1.0",
         "state": "planned",
         "reason": "dispatch_plan_created",
         "scope": "CROSS_L_ONLY",

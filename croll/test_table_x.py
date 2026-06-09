@@ -1,6 +1,6 @@
 import unittest
 
-from table_x import get_workset_from_px, parse_px
+from croll.table_x import get_workset_from_px, list_px, parse_px
 
 
 class TestTableX(unittest.TestCase):
@@ -13,8 +13,21 @@ class TestTableX(unittest.TestCase):
         self.assertEqual(parse_px((4, 1)), (4, 1))
         self.assertEqual(parse_px([5, 1]), (5, 1))
 
+    def test_parse_px_is_case_insensitive_and_whitespace_tolerant(self):
+        self.assertEqual(parse_px(" px: [ 2 , 1 ] "), (2, 1))
+
+    def test_parse_px_rejects_lossy_or_unsafe_coordinates(self):
+        for value in ((1.5, 1), (True, 1), (0, 1), (-1, 1), "1.5,1", b"1,1"):
+            with self.subTest(value=value):
+                with self.assertRaises(ValueError):
+                    parse_px(value)
+
+    def test_list_px_is_deterministic(self):
+        self.assertEqual(list_px(), [[1, 1], [2, 1], [3, 1], [4, 1], [5, 1], [6, 1]])
+
     def test_px_1_1_rock_fast_patch(self):
         ws = get_workset_from_px("1,1")
+        self.assertEqual(ws["contract_version"], "1.0")
         self.assertEqual(ws["px"], [1, 1])
         self.assertEqual(ws["rytm"], "ROCK")
         self.assertEqual(ws["work_type"], "FAST_PATCH")
@@ -86,6 +99,7 @@ class TestTableX(unittest.TestCase):
     def test_invalid_px_format(self):
         ws = get_workset_from_px("invalid")
         self.assertEqual(ws["rytm"], "UNKNOWN")
+        self.assertIsNone(ws["px"])
         self.assertTrue(ws["review"])
         self.assertIn("Invalid PX format", ws["reason"])
 

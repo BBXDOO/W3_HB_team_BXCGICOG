@@ -1,9 +1,8 @@
 # ==========================================
-# IGET v8.0 — Configuration
-# Semantic Governance + Proof-Ready
+# IGET v6.0 — Configuration
 # ==========================================
 
-VERSION = "8.0"
+VERSION = "6.0"
 
 # ── Output limits ──────────────────────────────────────────────
 MAX_INLINE_COMMENTS = 5
@@ -31,15 +30,12 @@ RISK_WORDS = [
     "client_secret",
 ]
 
-# ── Scoring thresholds ─────────────────────────────────────────
-SCORE_GREEN  = 85
+SCORE_GREEN = 85
 SCORE_YELLOW = 60
-FILES_WARN   = 6
-FILES_LARGE  = 15
-CHANGES_WARN  = 400
+FILES_WARN = 6
+FILES_LARGE = 15
+CHANGES_WARN = 400
 CHANGES_LARGE = 800
-
-# ── GitHub API ─────────────────────────────────────────────────
 GITHUB_PAGE_SIZE = 100
 
 # ── v8.0 — Semantic State Definitions ─────────────────────────
