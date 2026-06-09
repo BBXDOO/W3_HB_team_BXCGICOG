@@ -121,9 +121,9 @@ pattern = parse_payload("221112133")
 
 ## (7) ลิงก์ไฟล์ที่เกี่ยวข้อง/ศึกษา
 
-- [ep_signal_adapter.py](../../SYSTEM/TESTS/EP_SIGNAL/ep_signal_adapter.py)
-- [reference_implementation.py](../../SYSTEM/TESTS/EP_SIGNAL/reference_implementation.py)
-- [README_integration.md](../../SYSTEM/TESTS/EP_SIGNAL/README_integration.md)
+- [ep_signal_adapter.py](./ep_signal_adapter.py)
+- [reference_implementation.py](./reference_implementation.py)
+- [README_integration.md](./README_integration.md)
 - [docs/W3DB_คู่มือภาษาไทย.md](../../docs/W3DB_คู่มือภาษาไทย.md)
 
 ---

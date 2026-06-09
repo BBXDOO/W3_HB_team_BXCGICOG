@@ -1,1 +1,1 @@
-# IGET v5 package
+# IGET v6.0 package
