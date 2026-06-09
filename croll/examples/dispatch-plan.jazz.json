@@ -1,0 +1,72 @@
+{
+  "contract_version": "1.0",
+  "state": "planned",
+  "reason": "dispatch_plan_created",
+  "scope": "CROSS_L_ONLY",
+  "px": [
+    2,
+    1
+  ],
+  "modew": "Adapter",
+  "modew_style": "Adapter",
+  "action": "call_modew_stub_only",
+  "execution_allowed": false,
+  "mutated": false,
+  "review": true,
+  "workset": {
+    "contract_version": "1.0",
+    "px": [
+      2,
+      1
+    ],
+    "rytm": "JAZZ",
+    "work_type": "ADAPTIVE_RULE",
+    "modew_style": "Adapter",
+    "boundary": "observe",
+    "mutated": false,
+    "review": true,
+    "color": "YELLOW",
+    "symbol": "◆",
+    "tag_group": [
+      "SCRIPT",
+      "GEN",
+      "CONFIG",
+      "DOC"
+    ],
+    "lang_candidate": [
+      "Lua",
+      "Python",
+      "JSON",
+      "YAML",
+      "Markdown"
+    ],
+    "deny": [
+      "truth_mutation",
+      "file_write",
+      "network",
+      "merge"
+    ],
+    "return_contract": [
+      "state",
+      "reason",
+      "trace",
+      "mutated",
+      "review"
+    ],
+    "default_review_condition": "on_uncertain",
+    "paper_context_received": true,
+    "paper_context_keys": [
+      "intent",
+      "paper_id",
+      "requester",
+      "scope"
+    ]
+  },
+  "safety": {
+    "planner_only": true,
+    "modew_execution_allowed": false,
+    "truth_mutation_allowed": false,
+    "repo_write_allowed": false,
+    "direct_merge_allowed": false
+  }
+}

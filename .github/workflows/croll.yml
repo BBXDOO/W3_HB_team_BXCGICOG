@@ -1,0 +1,55 @@
+name: CROLL portability
+
+on:
+  push:
+    paths:
+      - "croll/**"
+      - "docs/croll/**"
+      - ".github/workflows/croll.yml"
+  pull_request:
+    paths:
+      - "croll/**"
+      - "docs/croll/**"
+      - ".github/workflows/croll.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: ${{ matrix.os }} / Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+        python-version:
+          - "3.9"
+          - "3.13"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Compile CROLL
+        run: python -m compileall croll
+
+      - name: Run CROLL tests
+        run: python -m unittest discover -s croll -p "test_*.py" -v
+
+      - name: Smoke-test portable CLI
+        run: python -m croll --compact plan "PX:[2,1]"
+
+      - name: Validate shipped CROLL contracts
+        run: |
+          python -m croll validate boundary croll/examples/boundary.w3-internal.json
+          python -m croll validate workset croll/examples/workset.rock.json
+          python -m croll validate plan croll/examples/dispatch-plan.jazz.json

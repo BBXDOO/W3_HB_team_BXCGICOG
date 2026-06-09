@@ -1,5 +1,5 @@
 ปลายทาง:
-/SYSTEM/TESTS/mpcp/W3_TERMS_MASTER_PAPER_v2.md
+/protocol/mpcp/W3_TERMS_MASTER_PAPER_v2.md
 
 COMMIT:
 docs(mpcp): rebuild glossary v2 with clean repo markdown format

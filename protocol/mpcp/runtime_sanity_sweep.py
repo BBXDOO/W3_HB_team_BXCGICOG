@@ -18,7 +18,7 @@ Verifies:
 import sys
 import os
 
-# Resolve package root (SYSTEM/TESTS) so `mpcp.*` imports work from any cwd.
+# Resolve package root (protocol/) so `mpcp.*` imports work from any cwd.
 _PACKAGE_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _PACKAGE_ROOT not in sys.path:
     sys.path.insert(0, _PACKAGE_ROOT)
