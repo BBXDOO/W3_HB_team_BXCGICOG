@@ -29,7 +29,7 @@ src/w3db/
     ├── whb.py           # CRUD helpers for WHB domain
     └── prx.py           # CRUD helpers for PRX domain
 
-SYSTEM/TESTS/w3db/
+protocol/w3db/
 ├── __init__.py
 ├── test_crud.py         # 44 unit tests for all domain CRUD
 └── test_flow.py         # 65 integration tests for relation flow
@@ -112,10 +112,10 @@ print(read_xiz("XIZ-001", store=store).to_dict())
 
 ```bash
 # CRUD unit tests (44 checks)
-python SYSTEM/TESTS/w3db/test_crud.py
+python protocol/w3db/test_crud.py
 
 # Relation flow integration tests (65 checks)
-python SYSTEM/TESTS/w3db/test_flow.py
+python protocol/w3db/test_flow.py
 
 # Full repo CI
 python tools/w3_agent_ci.py

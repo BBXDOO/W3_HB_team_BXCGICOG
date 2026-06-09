@@ -1,31 +1,29 @@
-# IGET v9.0 — Reliable PR Governance Runtime
+# IGET v9.0 — Reliable Semantic PR Governance Runtime
 
-IGET v9 is the active runtime used by `.github/workflows/iget.yml`. It analyzes
-Pull Request file metadata through the GitHub API, then creates or updates one
-stable summary comment. It does not execute code from the Pull Request.
+IGET v9.0 is the active CI/runtime version. It preserves the base branch's
+semantic state, proof trace, replay, and MPCP-compatible output while adding
+compatibility and runtime reliability fixes.
 
-## v9 reliability model
+## v9 operational notes
 
-- Runs from trusted base-branch code through `pull_request_target`, including fork PRs.
-- Supports manual runs with a required PR number.
-- Resolves repository and PR data from environment aliases or `GITHUB_EVENT_PATH`.
-- Reuses one retry-capable GitHub API session for file pagination and comment updates.
-- Updates legacy IGET bot comments instead of adding a new summary on every push.
-- Reports API permission/status failures instead of silently returning success.
-- Keeps inline review comments disabled by default because arbitrary line 1 may not be
-  part of the Pull Request diff; enable them only with `IGET_INLINE_COMMENTS=true`.
-- Supports `IGET_DRY_RUN=true` for local output without writing to GitHub.
+- Canonical tests: `python -m pytest iget/tests -q`
+- Compatibility suites: `python -m iget.tests.test_iget_v8` and v7 wrapper
+- Trusted base-code execution through `pull_request_target`; PR code is not executed
+- Manual dispatch requires an explicit PR number
+- One retry-capable GitHub API client and one idempotently updated summary comment
+- Legacy IGET bot comments are upgraded in place using `<!-- iget:summary -->`
+- Semantic/proof modules from v8 remain available and are included in reports
+- Inline comments remain opt-in; required checks and humans retain merge authority
 
 Runtime version: `9.0`
-Comment contract marker: `<!-- iget:summary -->`
 
 ---
 
-IGET (v1) — W3 0.5 PR Flow Assistant (Historical Foundation)
+IGET (v1) — W3 0.5 PR Flow Assistant
 
 Historical specification: v1
 Active runtime: v9.0
-Status: Reference history; runtime behavior is defined by the v9 section above
+Status: Historical foundation; v9 is active
 Owner: BBX19
 Environment: W3 / GitHub Pull Request Workflow
 

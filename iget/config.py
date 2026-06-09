@@ -1,4 +1,4 @@
-"""IGET v9 runtime and scoring configuration."""
+"""IGET v9 runtime, scoring, semantic, and proof configuration."""
 
 from __future__ import annotations
 
@@ -27,3 +27,18 @@ FILES_LARGE = 15
 CHANGES_WARN = 400
 CHANGES_LARGE = 800
 GITHUB_PAGE_SIZE = 100
+
+# Semantic/proof contracts introduced on the base branch are preserved in v9.
+SEMANTIC_STATES = {
+    "safe": "PR พร้อม merge ไม่มีความเสี่ยงสำคัญ",
+    "caution": "PR มีจุดที่ควรตรวจสอบก่อน merge",
+    "critical": "PR มีความเสี่ยงสูง ต้องการ review เชิงลึก",
+    "unknown": "ไม่สามารถประเมิน semantic state ได้",
+}
+MPCP_ROLE = "governance_assistant"
+MPCP_VERSION = "1.0"
+MAX_FETCH_RETRY = 4
+CHECKPOINT_ENABLED = True
+ROLLBACK_ON_FAIL = True
+PROOF_TRACE_ENABLED = True
+PROOF_MAX_ENTRIES = 50

@@ -1,0 +1,17 @@
+{
+  "type": "mpcp_bridge_hint",
+  "status": "template_draft",
+  "env_scope": "all_os_optional",
+  "purpose": "Describe how this pack may be carried across environment/platform boundaries when explicitly allowed.",
+  "default": {
+    "enabled": false,
+    "execution_allowed": false,
+    "mutated": false,
+    "review": true
+  },
+  "notes": [
+    "MPCP is a bridge hint, not permission.",
+    "Pack must pass boundary and review before runtime use.",
+    "All OS support is a direction, not a default execution grant."
+  ]
+}

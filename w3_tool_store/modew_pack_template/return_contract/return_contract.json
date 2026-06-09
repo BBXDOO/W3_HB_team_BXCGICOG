@@ -1,0 +1,31 @@
+{
+  "type": "return_contract_template",
+  "status": "template_draft",
+  "required_fields": [
+    "state",
+    "reason",
+    "trace",
+    "mutated",
+    "review"
+  ],
+  "optional_fields": [
+    "capability_summary",
+    "boundary_notes",
+    "risk",
+    "next_step",
+    "artifacts",
+    "references"
+  ],
+  "defaults": {
+    "mutated": false,
+    "review": true
+  },
+  "example": {
+    "state": "planned",
+    "reason": "capability_pack_loaded_as_template",
+    "trace": [],
+    "mutated": false,
+    "review": true,
+    "capability_summary": "Reusable W3 capability bundle template."
+  }
+}

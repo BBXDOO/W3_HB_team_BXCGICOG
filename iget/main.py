@@ -12,8 +12,16 @@ from typing import Any, Mapping, Optional
 
 from .config import DEFAULT_API_URL, DEFAULT_TIMEOUT, VERSION
 from .fetcher import GitHubAPIError, GitHubClient
+from .proof import ProofTracer
 from .reporter import build_comment, build_inline_comments, build_recommendations, build_summary_lines
-from .scorer import build_stats, classify_files, compute_score, detect_mode, get_state
+from .scorer import (
+    build_stats,
+    classify_files,
+    compute_score,
+    detect_mode,
+    get_semantic_state,
+    get_state,
+)
 
 REPOSITORY_PATTERN = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 
@@ -107,18 +115,27 @@ def run(context: RuntimeContext, client: Optional[GitHubClient] = None) -> str:
         api_url=context.api_url,
         timeout=context.timeout,
     )
+    tracer = ProofTracer()
     files = api.fetch_pr_files(context.repo, context.pr)
-    classified = classify_files(files)
-    stats = build_stats(files, classified)
-    mode = detect_mode(files, classified, stats)
-    score, issues = compute_score(files, classified, mode, stats)
-    state = get_state(score)
+    classified = classify_files(files, tracer)
+    stats = build_stats(files, classified, tracer)
+    mode = detect_mode(files, classified, stats, tracer)
+    score, issues = compute_score(files, classified, mode, stats, tracer)
+    state = get_state(score, tracer)
+    semantic_state = get_semantic_state(score, state, classified, tracer)
+    summary = build_summary_lines(files, classified, mode, tracer)
+    recommendations = build_recommendations(
+        files, classified, mode, stats["total_changes"], tracer
+    )
     body = build_comment(
         score,
         state,
         issues,
-        build_summary_lines(files, classified, mode),
-        build_recommendations(files, classified, mode, stats["total_changes"]),
+        summary,
+        recommendations,
+        semantic_state=semantic_state,
+        mpcp_result=tracer.to_mpcp_result(),
+        tracer=tracer,
     )
 
     if context.dry_run:
@@ -127,7 +144,7 @@ def run(context: RuntimeContext, client: Optional[GitHubClient] = None) -> str:
 
     operation = api.upsert_issue_comment(context.repo, context.pr, body)
     if context.inline_comments:
-        for comment in build_inline_comments(files, classified, mode):
+        for comment in build_inline_comments(files, classified, mode, tracer):
             try:
                 api.post_inline_comment(
                     context.repo,
