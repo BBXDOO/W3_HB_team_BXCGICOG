@@ -1,4 +1,4 @@
-name: IGET
+name: IGET v8.0
 
 on:
   pull_request:
@@ -10,13 +10,14 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: iget-${{ github.event.pull_request.number }}
+  group: iget-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: true
 
 jobs:
   iget:
+    name: "IGET v8.0 — Semantic PR Governance"
     runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false
 
     permissions:
       contents: read
@@ -24,19 +25,39 @@ jobs:
       issues: write
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
-      - name: Install
-        run: pip install requests
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install requests
 
-      - name: Run IGET
+      - name: Verify iget structure
+        run: |
+          echo "── iget package check ──"
+          python -c "import iget; print('iget import: OK')"
+          echo "── proof module check ──"
+          python -c "from iget.proof import ProofTracer; print('ProofTracer: OK')"
+          echo "── scorer check ──"
+          python -c "from iget.scorer import get_semantic_state; print('semantic_state: OK')"
+
+      - name: Run test suite
+        run: |
+          echo "── IGET v8.0 Test Suite ──"
+          python -m iget.tests.test_iget_v8
+        continue-on-error: false
+
+      - name: Run IGET v8.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
-          PR: ${{ github.event.pull_request.number }}
-        run: python -m iget.main
+          PR: ${{ github.event.pull_request.number || inputs.pr_number }}
+        run: |
+          echo "── Running IGET v8.0 pipeline ──"
+          python -m iget.main

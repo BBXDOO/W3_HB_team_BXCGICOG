@@ -49,6 +49,40 @@ Core draft papers:
 
 ---
 
+## Production Core Implementation
+
+The importable W3Lgu core now lives in these modules:
+
+- `protocol.w3lgu.core` — immutable packet, pair, line, and five-line contracts.
+- `protocol.w3lgu.parser` — Line C parser and canonical normalizer.
+- `protocol.w3lgu.runtime` — low-overhead runtime result and signal handoff.
+- `protocol.w3lgu.signals` — state/color/symbol mapping.
+- `protocol.w3lgu.adapters` — text, dict, and MPCP bridges.
+- `protocol.w3lgu.validator` — packet and five-line validation.
+- `protocol/w3lgu/RML01.md` — reconstructed Runtime Minimal Law / five-line anchor.
+
+Minimal usage:
+
+```python
+from protocol.w3lgu import parse_line, run_line
+
+packet = parse_line("TASK:sync MODE:auto STATE:ready")
+result = run_line(packet.to_text())
+print(result.signal_packet.to_text())
+```
+
+Five-line shape:
+
+```text
+MEM:LAST_STATE:idle
+PATCH:CASE:room3
+LAW:RULE:divide_by_2
+EVENT:TASK:sync,STATE:ready
+SIGNAL:STATE:ready,COLOR:blue,SYM:◆
+```
+
+---
+
 เกี่ยวกับหลักการต่างๆ ใน W3Lgu
 
 คอนเซบ: เบา ,กระชับ ,เห็นแล้วเข้าใจได้ โดยไม่ต้องอธิบายหลักการมากมาย.
@@ -434,3 +468,16 @@ Spec ยังไม่ตายตัว
 แปลว่ามันยังเดินถูกทาง
 
 ---
+
+## PX Position Exchange
+
+PX is the W3Lgu position-exchange layer for cross-system references. It answers
+"where did this meaning come from, where is it going, and what source does it
+reference?" without becoming an execution or diagnosis layer.
+
+- Contract: `protocol/w3lgu/px.py`
+- Append flow: `src/w3db/append_flow.py`
+- Default references: `protocol/w3lgu/RML01.md`, `docs/standards/referencing_standard.md`
+
+PX may be appended to W3DB as an observation through the append flow. Existing
+records are not overwritten; repeated appends can be handled idempotently.

@@ -1,3 +1,12 @@
+# ==========================================
+# IGET v8.0 — Main Entry Point
+# Semantic pipeline: fetch → classify → score → semantic → report
+# Ontology tag: iget:module = "main"
+# MPCP role: governance_assistant
+# ==========================================
+
+from __future__ import annotations
+
 import os
 import sys
 

@@ -11,13 +11,22 @@ from src.w3db.crud.xiz import create_xiz
 from src.w3db.crud.fbd import create_fbd
 from src.w3db.crud.prx import create_prx_from_tuf
 from src.w3db.crud.tuf import create_tuf
-import datetime
+from datetime import datetime, timezone
 import uuid
 
 
 class NoSuitableAgentError(Exception):
     """Raised when no agent matches the required role/concept."""
     pass
+
+
+def _confidence_state(confidence: float) -> str:
+    """Map routing confidence to W3DB observation state values."""
+    if confidence >= 0.75:
+        return "1"
+    if confidence > 0.25:
+        return "0.5"
+    return "0"
 
 
 def _create_routing_trace(
@@ -33,14 +42,14 @@ def _create_routing_trace(
         tuf_id=f"TUF-{uuid.uuid4().hex[:8]}",
         cix_id="ROUTER",
         initial="0",
-        final=str(confidence),
+        final=_confidence_state(confidence),
         confidence=confidence,
         store=store
     )
     xiz = create_xiz(
         xiz_id=f"XIZ-{uuid.uuid4().hex[:8]}",
         action=f"route_task:{task}",
-        timestamp=datetime.datetime.utcnow().isoformat(),
+        timestamp=datetime.now(timezone.utc).isoformat(),
         result=selected_agent if not failed else "NO_AGENT",
         store=store,
         tuf_id=tuf.tuf_id
@@ -133,4 +142,28 @@ def route_task(
     )
     raise NoSuitableAgentError(
         f"No suitable agent for role={required_role} concepts={concept_keywords}"
+    )
+
+
+def interpret_hospitication_report(
+    report_path: str,
+    store: Optional[W3DBStore] = None,
+    fallback_agent: Optional[str] = "Cast",
+) -> Any:
+    """Route Hospitication report interpretation to Gemini/Cast without mutating truth.
+
+    The routed task explicitly instructs interpretation layers to create derived
+    references only. Signals and reports remain source truth artifacts.
+    """
+
+    return route_task(
+        task_description=(
+            "interpret_hospitication_report "
+            f"source={report_path} references=hospitication/docs/ARCHITECTURE.md "
+            "policy=do_not_overwrite_signal_or_report"
+        ),
+        required_role=None,
+        concept_keywords=["validation", "interpretation", "context", "reasoning"],
+        store=store,
+        fallback_agent=fallback_agent,
     )
