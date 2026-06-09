@@ -1,8 +1,8 @@
 # ==========================================
-# IGET v5 — Reporter
+# IGET v9 — Reporter
 # ==========================================
 
-from .config import MAX_INLINE_COMMENTS, VERSION, CODE_EXT
+from .config import COMMENT_MARKER, MAX_INLINE_COMMENTS, VERSION, CODE_EXT
 
 
 FLOW_ICONS = {
@@ -12,7 +12,7 @@ FLOW_ICONS = {
 }
 
 IMPACT_TEXT = {
-    "green": "🟢 ปลอดภัยระดับดี พร้อม merge",
+    "green": "🟢 ความเสี่ยงจากสัญญาณไฟล์ต่ำ; ให้ required checks และมนุษย์ตัดสิน merge",
     "yellow": "🟡 มีความเสี่ยงบางส่วน ควรตรวจเพิ่ม",
     "red": "🔴 เสี่ยงสูง ควร review ก่อน merge"
 }
@@ -50,7 +50,7 @@ def build_recommendations(files, classified, mode, total_changes):
         recommend.append("ตรวจ workflow changes ก่อน merge")
 
     if not recommend:
-        recommend.append("สามารถ merge ได้")
+        recommend.append("ไม่พบข้อเสนอเพิ่มจาก IGET; ให้ required checks และมนุษย์ตัดสิน merge")
 
     return recommend
 
@@ -115,7 +115,7 @@ def build_comment(score, state, issues, summary_lines, recommend):
     flow = build_flow(state)
     impact = IMPACT_TEXT[state]
 
-    body = f"## 🔍 IGET v{VERSION}\n\n"
+    body = f"{COMMENT_MARKER}\n## 🔍 IGET v{VERSION}\n\n"
 
     body += "### FLOW\n"
     body += "".join(flow) + f" ({score}%)\n\n"

@@ -1,5 +1,5 @@
 """
-Tests for iget/reporter.py — IGET v5 Reporter
+Tests for iget/reporter.py — IGET v9 Reporter
 """
 import sys
 import os
@@ -14,7 +14,7 @@ from iget.reporter import (
     build_summary_lines,
 )
 from iget.scorer import classify_files, compute_score, detect_mode, get_state
-from iget.config import VERSION
+from iget.config import COMMENT_MARKER, VERSION
 
 
 class TestBuildFlow:
@@ -41,7 +41,9 @@ class TestBuildComment:
 
     def test_comment_contains_version(self):
         body = self._make_comment()
+        assert VERSION == "9.0"
         assert f"v{VERSION}" in body
+        assert body.startswith(COMMENT_MARKER)
 
     def test_comment_contains_score(self):
         body = self._make_comment(score=77)

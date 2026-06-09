@@ -1,5 +1,5 @@
 """
-Tests for iget/scorer.py — IGET v5 Scoring Engine
+Tests for iget/scorer.py — IGET v9 Scoring Engine
 """
 import pytest
 import sys

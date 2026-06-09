@@ -1,5 +1,7 @@
 # IGET Roadmap v7.0 (Ontology-Aligned, Proof-Ready)
 
+> Historical planning note for v7; the active production runtime is IGET v9.0.
+
 ## เป้าหมาย
 
 - รองรับ semantic trace, proof, recovery, self-introspection
