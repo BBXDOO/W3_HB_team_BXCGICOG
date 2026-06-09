@@ -34,14 +34,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check repository paths are cross-platform
-        run: python tools/check_portable_paths.py
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Check repository paths are cross-platform
+        run: python tools/check_portable_paths.py
       - name: Compile CROLL
         run: python -m compileall croll
 
