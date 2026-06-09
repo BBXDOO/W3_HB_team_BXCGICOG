@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Mapping, Optional, Sequence
 
 from . import __version__
+from .contracts import ContractError, VALIDATORS, validate_artifact
 from .cross_l_dispatcher import dispatch_workset
 from .table_x import get_workset_from_px, list_px
 
@@ -70,6 +71,9 @@ def _parser() -> argparse.ArgumentParser:
         )
 
     commands.add_parser("list", help="list registered Table-X coordinates")
+    validate = commands.add_parser("validate", help="validate a CROLL JSON artifact")
+    validate.add_argument("kind", choices=sorted(VALIDATORS), help="artifact contract")
+    validate.add_argument("file", type=Path, help="UTF-8 JSON artifact path")
     return parser
 
 
@@ -89,6 +93,19 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         payload = get_workset_from_px(args.px, paper_context=args.context)
     elif args.command == "plan":
         payload = dispatch_workset(args.px, paper_context=args.context)
+    elif args.command == "validate":
+        try:
+            artifact = json.loads(args.file.read_text(encoding="utf-8"))
+            validate_artifact(args.kind, artifact)
+        except (OSError, json.JSONDecodeError, ContractError) as exc:
+            print(f"ERROR: {exc}", file=sys.stderr)
+            return 2
+        payload = {
+            "contract_version": "1.0",
+            "valid": True,
+            "kind": args.kind,
+            "file": str(args.file),
+        }
     else:
         payload = {"contract_version": "1.0", "coordinates": list_px()}
 

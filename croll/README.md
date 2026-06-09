@@ -708,3 +708,17 @@ python -m compileall croll
 python -m unittest discover -s croll -p "test_*.py" -v
 python -m croll plan "1,1"
 ```
+
+## Thai documentation and WHUB boundary kit
+
+- [ภาพรวม CROLL ภาษาไทย](../docs/croll/README_TH.md)
+- [วิธีใช้งานภาษาไทย](../docs/croll/USAGE_TH.md)
+- [ขอบเขตและการสงวนระบบ](../docs/croll/BOUNDARY_TH.md)
+- [ตัวอย่างที่ตรวจได้](examples/README.md)
+- [Lightweight JSON contracts](schema/README.md)
+
+Validate a W3-scoped boundary before a WHUB integration request:
+
+```sh
+python -m croll validate boundary croll/examples/boundary.w3-internal.json
+```

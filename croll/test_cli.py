@@ -54,6 +54,29 @@ class TestCrossLCli(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(json.loads(result.stdout)["coordinates"][0], [1, 1])
 
+    def test_validate_boundary_example(self):
+        result = self.run_cli(
+            "validate",
+            "boundary",
+            "croll/examples/boundary.w3-internal.json",
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertTrue(payload["valid"])
+        self.assertEqual(payload["kind"], "boundary")
+
+    def test_validate_rejects_unsafe_boundary(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "unsafe.json"
+            path.write_text(
+                '{"contract_version":"1.0","kind":"croll-boundary"}',
+                encoding="utf-8",
+            )
+            result = self.run_cli("validate", "boundary", str(path))
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("missing required fields", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
     def test_invalid_context_is_reported_without_traceback(self):
         result = self.run_cli("plan", "1,1", "--context", "[]")
         self.assertEqual(result.returncode, 2)

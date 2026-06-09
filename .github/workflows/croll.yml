@@ -4,10 +4,12 @@ on:
   push:
     paths:
       - "croll/**"
+      - "docs/croll/**"
       - ".github/workflows/croll.yml"
   pull_request:
     paths:
       - "croll/**"
+      - "docs/croll/**"
       - ".github/workflows/croll.yml"
   workflow_dispatch:
 
@@ -45,3 +47,9 @@ jobs:
 
       - name: Smoke-test portable CLI
         run: python -m croll --compact plan "PX:[2,1]"
+
+      - name: Validate shipped CROLL contracts
+        run: |
+          python -m croll validate boundary croll/examples/boundary.w3-internal.json
+          python -m croll validate workset croll/examples/workset.rock.json
+          python -m croll validate plan croll/examples/dispatch-plan.jazz.json
