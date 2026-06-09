@@ -1,200 +1,147 @@
-# ==========================================
-# IGET v8.0 — GitHub API Fetcher
-# Recovery / Resilience: checkpoint, retry, error_proof
-# Ontology tag: iget:module = "fetcher"
-# ==========================================
+"""IGET v9 resilient GitHub API client."""
 
 from __future__ import annotations
+
+from typing import Any, Dict, List, Optional
 
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-from .config import GITHUB_PAGE_SIZE, MAX_FETCH_RETRY, ROLLBACK_ON_FAIL
-from .proof import ProofTracer
+from .config import COMMENT_MARKER, DEFAULT_API_URL, DEFAULT_TIMEOUT, GITHUB_PAGE_SIZE, VERSION
 
 
-# ── Session factory ────────────────────────────────────────────
-
-def _build_session() -> requests.Session:
-    """
-    Shared retry-capable session.
-    Recovery: exponential backoff on 429/5xx, pool reuse.
-    Ontology tag: iget:resilience
-    """
-    session = requests.Session()
-    retry = Retry(
-        total              = MAX_FETCH_RETRY,
-        connect            = MAX_FETCH_RETRY,
-        read               = MAX_FETCH_RETRY,
-        backoff_factor     = 0.5,
-        status_forcelist   = (429, 500, 502, 503, 504),
-        allowed_methods    = ("GET", "POST"),
-        raise_on_status    = False,
-    )
-    adapter = HTTPAdapter(
-        max_retries    = retry,
-        pool_connections = 10,
-        pool_maxsize   = 10,
-    )
-    session.mount("https://", adapter)
-    session.mount("http://",  adapter)
-    return session
+class GitHubAPIError(RuntimeError):
+    """Raised when GitHub returns an unexpected response."""
 
 
-def _build_headers(token: str) -> dict:
+class GitHubClient:
+    """Small reusable GitHub client with retries, pagination and comment upsert."""
+
+    def __init__(
+        self,
+        token: str,
+        *,
+        api_url: str = DEFAULT_API_URL,
+        timeout: float = DEFAULT_TIMEOUT,
+        session: Optional[requests.Session] = None,
+    ) -> None:
+        self.api_url = api_url.rstrip("/")
+        self.timeout = timeout
+        self.session = session or build_session()
+        self.headers = build_headers(token)
+
+    def _request(self, method: str, path: str, **kwargs: Any) -> requests.Response:
+        response = self.session.request(
+            method,
+            f"{self.api_url}{path}",
+            headers=self.headers,
+            timeout=self.timeout,
+            **kwargs,
+        )
+        if not 200 <= response.status_code < 300:
+            detail = response.text.strip().replace("\n", " ")[:300]
+            raise GitHubAPIError(
+                f"GitHub API {method} {path} returned {response.status_code}: {detail or 'no response body'}"
+            )
+        return response
+
+    def _pages(self, path: str) -> List[Dict[str, Any]]:
+        items: List[Dict[str, Any]] = []
+        page = 1
+        while True:
+            response = self._request(
+                "GET",
+                path,
+                params={"per_page": GITHUB_PAGE_SIZE, "page": page},
+            )
+            batch = response.json()
+            if not isinstance(batch, list):
+                raise GitHubAPIError(f"GitHub API GET {path} returned a non-list payload")
+            items.extend(batch)
+            if len(batch) < GITHUB_PAGE_SIZE:
+                return items
+            page += 1
+
+    def fetch_pr_files(self, repo: str, pr: int) -> List[Dict[str, Any]]:
+        return self._pages(f"/repos/{repo}/pulls/{pr}/files")
+
+    def list_issue_comments(self, repo: str, pr: int) -> List[Dict[str, Any]]:
+        return self._pages(f"/repos/{repo}/issues/{pr}/comments")
+
+    def upsert_issue_comment(self, repo: str, pr: int, body: str) -> str:
+        """Create or update the latest IGET summary and return the operation."""
+        existing = None
+        for comment in reversed(self.list_issue_comments(repo, pr)):
+            comment_body = str(comment.get("body", ""))
+            user = comment.get("user") or {}
+            login = str(user.get("login", ""))
+            is_iget = COMMENT_MARKER in comment_body or comment_body.startswith("## 🔍 IGET v")
+            is_bot = user.get("type") == "Bot" or login.endswith("[bot]")
+            if is_iget and is_bot and comment.get("id"):
+                existing = comment
+                break
+
+        if existing:
+            self._request(
+                "PATCH",
+                f"/repos/{repo}/issues/comments/{existing['id']}",
+                json={"body": body},
+            )
+            return "updated"
+
+        self._request(
+            "POST",
+            f"/repos/{repo}/issues/{pr}/comments",
+            json={"body": body},
+        )
+        return "created"
+
+    def post_inline_comment(self, repo: str, pr: int, path: str, line: int, body: str) -> None:
+        self._request(
+            "POST",
+            f"/repos/{repo}/pulls/{pr}/comments",
+            json={"path": path, "line": line, "side": "RIGHT", "body": body},
+        )
+
+
+def build_headers(token: str) -> Dict[str, str]:
     return {
         "Authorization": f"Bearer {token}",
-        "Accept":        "application/vnd.github+json",
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": f"W3-IGET/{VERSION}",
     }
 
 
-# ── Core fetch ────────────────────────────────────────────────
-
-def fetch_pr_files(
-    repo:    str,
-    pr:      str,
-    token:   str,
-    tracer:  ProofTracer | None = None,
-) -> list[dict] | None:
-    """
-    Fetch all files for a PR with pagination + checkpoint recovery.
-
-    Checkpoint: accumulates pages; partial result preserved on error.
-    Rollback: returns None (not partial) when ROLLBACK_ON_FAIL=True
-              so caller gets a clean failure signal.
-
-    Ontology tag: iget:fetch_pr_files
-    """
-    tracer = tracer or ProofTracer(enabled=False)
-    headers  = _build_headers(token)
-    base_url = f"https://api.github.com/repos/{repo}/pulls/{pr}/files"
-    session  = _build_session()
-
-    all_files: list[dict] = []   # checkpoint accumulator
-    page = 1
-
-    tracer.record(
-        "fetch_start",
-        f"begin fetch PR#{pr} repo={repo}",
-        {"repo": repo, "pr": pr},
-        "iget:fetch_start",
+def build_session() -> requests.Session:
+    session = requests.Session()
+    retry = Retry(
+        total=4,
+        connect=4,
+        read=4,
+        status=4,
+        backoff_factor=0.5,
+        status_forcelist=(429, 500, 502, 503, 504),
+        allowed_methods=frozenset({"GET", "PATCH"}),
+        respect_retry_after_header=True,
     )
-
-    while True:
-        params = {"per_page": GITHUB_PAGE_SIZE, "page": page}
-        try:
-            res = session.get(base_url, headers=headers, params=params, timeout=15)
-        except requests.RequestException as exc:
-            # error_proof: log and return clean failure
-            tracer.record(
-                "fetch_network_error",
-                f"network error on page {page}: {exc}",
-                {"page": page, "error": str(exc)},
-                "iget:error",
-            )
-            return None if ROLLBACK_ON_FAIL else (all_files or None)
-
-        if res.status_code != 200:
-            tracer.record(
-                "fetch_http_error",
-                f"HTTP {res.status_code} on page {page}",
-                {"status": res.status_code, "page": page},
-                "iget:error",
-            )
-            return None if ROLLBACK_ON_FAIL else (all_files or None)
-
-        batch = res.json()
-        if not batch:
-            break
-
-        all_files.extend(batch)
-        tracer.record(
-            f"fetch_page_{page}",
-            f"fetched {len(batch)} files (total {len(all_files)})",
-            {"page": page, "batch_size": len(batch)},
-            "iget:fetch_page",
-        )
-
-        if len(batch) < GITHUB_PAGE_SIZE:
-            break
-        page += 1
-
-    tracer.record(
-        "fetch_complete",
-        f"fetched {len(all_files)} files total",
-        {"total_files": len(all_files)},
-        "iget:fetch_complete",
-    )
-    return all_files
+    adapter = HTTPAdapter(max_retries=retry, pool_connections=10, pool_maxsize=10)
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+    return session
 
 
-# ── Comment posting ────────────────────────────────────────────
-
-def post_issue_comment(
-    repo:    str,
-    pr:      str,
-    token:   str,
-    body:    str,
-    tracer:  ProofTracer | None = None,
-) -> bool:
-    """
-    Post a comment on a PR/issue.
-    error_proof: returns False on failure, never raises.
-    Ontology tag: iget:post_comment
-    """
-    tracer = tracer or ProofTracer(enabled=False)
-    headers = _build_headers(token)
-    url     = f"https://api.github.com/repos/{repo}/issues/{pr}/comments"
-    session = _build_session()
-
-    try:
-        res = session.post(url, headers=headers, json={"body": body}, timeout=15)
-        ok  = res.status_code in (200, 201)
-    except requests.RequestException as exc:
-        tracer.record("post_comment_error", str(exc), None, "iget:error")
-        return False
-
-    tracer.record(
-        "post_comment",
-        f"comment posted: {ok} (HTTP {res.status_code})",
-        {"status": res.status_code},
-        "iget:post_comment",
-    )
-    return ok
+# Compatibility functions for callers using the pre-v9 module API.
+def fetch_pr_files(repo: str, pr: int, token: str):
+    return GitHubClient(token).fetch_pr_files(repo, int(pr))
 
 
-def post_inline_comment(
-    repo:    str,
-    pr:      str,
-    token:   str,
-    path:    str,
-    line:    int,
-    body:    str,
-    tracer:  ProofTracer | None = None,
-) -> bool:
-    """
-    Post an inline review comment on a PR file.
-    error_proof: returns False on failure, never raises.
-    Ontology tag: iget:post_inline_comment
-    """
-    tracer  = tracer or ProofTracer(enabled=False)
-    headers = _build_headers(token)
-    url     = f"https://api.github.com/repos/{repo}/pulls/{pr}/comments"
-    payload = {"path": path, "line": line, "body": body}
-    session = _build_session()
+def post_issue_comment(repo: str, pr: int, token: str, body: str):
+    GitHubClient(token).upsert_issue_comment(repo, int(pr), body)
+    return True
 
-    try:
-        res = session.post(url, headers=headers, json=payload, timeout=15)
-        ok  = res.status_code in (200, 201)
-    except requests.RequestException as exc:
-        tracer.record("post_inline_error", str(exc), None, "iget:error")
-        return False
 
-    tracer.record(
-        "post_inline",
-        f"inline comment on {path}:{line} → {ok}",
-        {"path": path, "line": line, "status": res.status_code},
-        "iget:post_inline_comment",
-    )
-    return ok
+def post_inline_comment(repo: str, pr: int, token: str, path: str, line: int, body: str):
+    GitHubClient(token).post_inline_comment(repo, int(pr), path, line, body)
+    return True

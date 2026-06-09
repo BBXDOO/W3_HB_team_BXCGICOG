@@ -1,12 +1,12 @@
 # ==========================================
-# IGET v8.0 — Reporter
+# IGET v9 — Reporter
 # Semantic output + proof-ready formatting
 # Ontology tag: iget:module = "reporter"
 # ==========================================
 
 from __future__ import annotations
 
-from .config import CODE_EXT, MAX_INLINE_COMMENTS, VERSION
+from .config import COMMENT_MARKER, CODE_EXT, MAX_INLINE_COMMENTS, VERSION
 from .proof  import ProofTracer
 
 
@@ -17,7 +17,7 @@ FLOW_ICONS = {
 }
 
 IMPACT_TEXT = {
-    "green":  "🟢 ปลอดภัยระดับดี พร้อม merge",
+    "green":  "🟢 ความเสี่ยงจากสัญญาณไฟล์ต่ำ; ให้ required checks และมนุษย์ตัดสิน merge",
     "yellow": "🟡 มีความเสี่ยงบางส่วน ควรตรวจเพิ่ม",
     "red":    "🔴 เสี่ยงสูง ควร review ก่อน merge",
 }
@@ -69,7 +69,7 @@ def build_recommendations(
         recommend.append("ตรวจ workflow changes ก่อน merge")
 
     if not recommend:
-        recommend.append("สามารถ merge ได้")
+        recommend.append("ไม่พบข้อเสนอเพิ่มจาก IGET; ให้ required checks และมนุษย์ตัดสิน merge")
 
     tracer.record(
         "build_recommendations",
@@ -189,7 +189,7 @@ def build_comment(
     """
     Assemble the full PR comment body.
 
-    v8.0 carries forward:
+    v9 carries forward the base-branch semantic contracts:
       - Semantic State section
       - Proof Trace summary (optional, collapsed)
       - MPCP result tag
@@ -200,7 +200,7 @@ def build_comment(
     flow   = build_flow(state)
     impact = IMPACT_TEXT[state]
 
-    body  = f"## 🔍 IGET v{VERSION}\n\n"
+    body  = f"{COMMENT_MARKER}\n## 🔍 IGET v{VERSION}\n\n"
 
     # FLOW
     body += "### FLOW\n"

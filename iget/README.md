@@ -1,27 +1,29 @@
-# IGET v8.0 — Semantic PR Governance Update
+# IGET v9.0 — Reliable Semantic PR Governance Runtime
 
-IGET v8.0 is the active CI/runtime version for semantic PR governance. This
-update preserves the existing `iget` package and older documentation below while
-fixing the stale `iget_v7.*` import path that caused GitHub Actions to fail.
+IGET v9.0 is the active CI/runtime version. It preserves the base branch's
+semantic state, proof trace, replay, and MPCP-compatible output while adding
+compatibility and runtime reliability fixes.
 
-## v8 operational notes
+## v9 operational notes
 
-- Canonical smoke suite: `python -m iget.tests.test_iget_v8`
-- Compatibility wrapper: `python -m iget.tests.test_iget_v7`
-- Active engine version: `iget.config.VERSION`
-- GitHub Actions workflow: `.github/workflows/iget.yml`
-- Public import path remains stable: `import iget`
+- Canonical tests: `python -m pytest iget/tests -q`
+- Compatibility suites: `python -m iget.tests.test_iget_v8` and v7 wrapper
+- Trusted base-code execution through `pull_request_target`; PR code is not executed
+- Manual dispatch requires an explicit PR number
+- One retry-capable GitHub API client and one idempotently updated summary comment
+- Legacy IGET bot comments are upgraded in place using `<!-- iget:summary -->`
+- Semantic/proof modules from v8 remain available and are included in reports
+- Inline comments remain opt-in; required checks and humans retain merge authority
 
-The v8 suite keeps semantic state, proof trace, replay determinism, and
-MPCP-compatible trace output. Tests should assert against `iget.config.VERSION`
-rather than hard-coded version text.
+Runtime version: `9.0`
 
 ---
 
 IGET (v1) — W3 0.5 PR Flow Assistant
 
-Version: v1
-Status: Active
+Historical specification: v1
+Active runtime: v9.0
+Status: Historical foundation; v9 is active
 Owner: BBX19
 Environment: W3 / GitHub Pull Request Workflow
 

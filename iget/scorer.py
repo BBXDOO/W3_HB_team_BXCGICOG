@@ -1,5 +1,5 @@
 # ==========================================
-# IGET v8.0 — Scoring Engine
+# IGET v9 — Scoring Engine
 # Semantic state + causal proof annotation
 # Ontology tag: iget:module = "scorer"
 # ==========================================
