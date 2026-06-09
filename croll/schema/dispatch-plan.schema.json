@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3.local/croll/schema/dispatch-plan.schema.json",
+  "title": "CROLL Planner-Only Dispatch Plan",
+  "type": "object",
+  "required": ["contract_version", "state", "reason", "scope", "px", "modew", "modew_style", "action", "execution_allowed", "mutated", "review", "workset", "safety"],
+  "properties": {
+    "contract_version": {"const": "1.0"},
+    "state": {"enum": ["planned", "review"]},
+    "reason": {"type": "string", "minLength": 1},
+    "scope": {"const": "CROSS_L_ONLY"},
+    "px": {"oneOf": [{"type": "null"}, {"type": "array", "prefixItems": [{"type": "integer", "minimum": 1}, {"type": "integer", "minimum": 1}], "items": false}]},
+    "modew": {"type": "string", "minLength": 1},
+    "modew_style": {"type": "string", "minLength": 1},
+    "action": {"enum": ["call_modew_stub_only", "review_before_dispatch"]},
+    "execution_allowed": {"const": false},
+    "mutated": {"const": false},
+    "review": {"const": true},
+    "workset": {"$ref": "workset.schema.json"},
+    "safety": {
+      "type": "object",
+      "required": ["planner_only", "modew_execution_allowed", "truth_mutation_allowed", "repo_write_allowed", "direct_merge_allowed"],
+      "properties": {
+        "planner_only": {"const": true},
+        "modew_execution_allowed": {"const": false},
+        "truth_mutation_allowed": {"const": false},
+        "repo_write_allowed": {"const": false},
+        "direct_merge_allowed": {"const": false}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

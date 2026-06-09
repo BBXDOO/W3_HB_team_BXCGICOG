@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3.local/croll/schema/boundary.schema.json",
+  "title": "CROLL W3 Network Boundary Manifest",
+  "type": "object",
+  "required": ["contract_version", "kind", "ecosystem", "network_scope", "owner", "purpose", "boundary", "review"],
+  "properties": {
+    "contract_version": {"const": "1.0"},
+    "kind": {"const": "croll-boundary"},
+    "ecosystem": {"const": "W3"},
+    "network_scope": {"enum": ["w3-internal", "w3-partner"]},
+    "owner": {"type": "string", "minLength": 1},
+    "purpose": {"type": "string", "minLength": 1},
+    "boundary": {
+      "type": "object",
+      "required": ["mode", "allow", "deny"],
+      "properties": {
+        "mode": {"enum": ["planner_only", "observe", "record_only"]},
+        "allow": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+        "deny": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 3,
+          "uniqueItems": true,
+          "allOf": [
+            {"contains": {"const": "truth_mutation"}},
+            {"contains": {"const": "direct_merge"}},
+            {"contains": {"const": "unreviewed_execution"}}
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "review": {
+      "type": "object",
+      "required": ["required", "on_uncertainty"],
+      "properties": {
+        "required": {"const": true},
+        "on_uncertainty": {"const": true}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -3,9 +3,11 @@ name: IGET
 on:
   pull_request:
     types:
+      - opened
       - ready_for_review
       - synchronize
       - reopened
+  workflow_dispatch:
 
 concurrency:
   group: iget-${{ github.event.pull_request.number }}
