@@ -269,13 +269,13 @@ Legacy directories that should not be used.
 ### Issue #15
 - **Type:** Directory
 - **Path 1:** `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/BBX19`
-- **Path 2:** `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/BBX19`
+- **Path 2:** `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/BBX19`
 - **Issue:** Similar names differing only in case
 
 ### Issue #16
 - **Type:** File
 - **Path 1:** `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/README.md`
-- **Path 2:** `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/BBX19/README.md`
+- **Path 2:** `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/BBX19/README.md`
 - **Issue:** Similar names differing only in case
 
 ### Issue #17

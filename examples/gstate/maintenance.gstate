@@ -1,0 +1,5 @@
+GSTATE:MAINTENANCE
+CONDITION:ecosystem oriented toward cleanup, dependency care, tests, documentation alignment, or stability
+AWARENESS:check existing contracts, test coverage, backward compatibility, and origin traces before changing structure
+BOUNDARY:not permission to hide risks, rewrite history, or skip review because work appears routine
+RESPONSIBILITY:keep the system healthy, minimize disruption, and document visible care actions

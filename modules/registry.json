@@ -32,7 +32,9 @@
     "pr_flow": "PSP2",
     "risk_escalation": "REDR",
     "decision_trace": "DTML",
-    "lifecycle_review": "LRC2"
+    "lifecycle_review": "LRC2",
+    "implementation": "Codex",
+    "repo_execution": "Codex"
   },
   "modules": [
     {
@@ -142,6 +144,15 @@
       "trust": 0.86,
       "role": "Lifecycle Review Checkpoint",
       "channel": "/LRC2/"
+    },
+    {
+      "name": "Codex",
+      "tier": "L1",
+      "class": "implementation_executor",
+      "status": "ready",
+      "trust": 0.9,
+      "role": "Implementation / Tests / PR Execution",
+      "channel": "/codex/"
     }
   ],
   "health": {
@@ -166,6 +177,10 @@
     "identity_change_requires": [
       "BBX19",
       "BBEX-Core"
+    ],
+    "implementation_requires": [
+      "Human Review",
+      "Governance Gate"
     ]
   },
   "runtime": {

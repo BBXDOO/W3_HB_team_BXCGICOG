@@ -1,0 +1,5 @@
+GSTATE:RECOVERY
+CONDITION:ecosystem oriented toward repair, continuity, rollback planning, or non-destructive restoration
+AWARENESS:preserve evidence, identify blast radius, and prefer append-only recovery traces
+BOUNDARY:not permission to rewrite truth history or bypass governance
+RESPONSIBILITY:protect continuity, document risk, and wait for approved recovery action

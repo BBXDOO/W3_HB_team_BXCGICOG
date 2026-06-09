@@ -1,7 +1,7 @@
 {
   "name": "REDR",
   "display_name": "REDR — Risk Escalation & Decision Router",
-  "version": "1.2.0-linec",
+  "version": "1.3.0-process-layer",
   "owner": "REDR",
   "authority": "BBX19",
   "class": "risk_decision_router",
@@ -16,14 +16,19 @@
   },
   "workspace": {
     "root": "modules/REDR/",
-    "requests": "modules/requests/",
+    "requests": "modules/REDR/requests/",
     "reports": "modules/REDR/reports/",
-    "logs": "modules/REDR/logs/"
+    "logs": "modules/REDR/logs/",
+    "packages": "modules/REDR/packages/"
   },
   "runtime": {
     "mode": "adaptive",
     "execution_style": "escalation_first",
-    "compatibility": ["mpcp", "w3lgu", "iget"],
+    "compatibility": [
+      "mpcp",
+      "w3lgu",
+      "iget"
+    ],
     "agent_cli": {
       "enabled": true,
       "mode": "adaptive",
@@ -32,17 +37,27 @@
     }
   },
   "properties": {
-    "risk_bands": ["green", "yellow", "red"],
+    "risk_bands": [
+      "green",
+      "yellow",
+      "red"
+    ],
     "escalation_guard": true,
-    "backward_compatible": true
+    "backward_compatible": true,
+    "process_layer_enabled": true,
+    "mutation_authority": false
   },
   "input": [
+    "modules/REDR/requests/",
     "modules/requests/",
     "docs/",
     "knowledge/",
-    "core/"
+    "core/",
+    "config/"
   ],
   "output": [
-    "modules/REDR/"
+    "modules/REDR/packages/",
+    "modules/REDR/reports/",
+    "modules/REDR/logs/"
   ]
 }
