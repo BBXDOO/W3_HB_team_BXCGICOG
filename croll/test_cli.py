@@ -1,4 +1,5 @@
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -7,13 +8,17 @@ from pathlib import Path
 
 
 class TestCrossLCli(unittest.TestCase):
-    def run_cli(self, *args):
+    def run_cli(self, *args, env=None):
+        child_env = os.environ.copy()
+        if env:
+            child_env.update(env)
         return subprocess.run(
             [sys.executable, "-m", "croll", *args],
             check=False,
             capture_output=True,
             text=True,
             encoding="utf-8",
+            env=child_env,
         )
 
     def test_plan_outputs_portable_json(self):
@@ -24,6 +29,17 @@ class TestCrossLCli(unittest.TestCase):
         self.assertEqual(payload["modew"], "Adapter")
         self.assertFalse(payload["execution_allowed"])
         self.assertEqual(payload["workset"]["paper_context_keys"], ["paper_id"])
+
+    def test_plan_forces_utf8_on_legacy_console_encoding(self):
+        result = self.run_cli(
+            "--compact",
+            "plan",
+            "1,1",
+            env={"PYTHONIOENCODING": "cp1252"},
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["workset"]["symbol"], "▲")
 
     def test_context_can_be_loaded_from_utf8_file(self):
         with tempfile.TemporaryDirectory() as directory:

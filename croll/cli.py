@@ -13,6 +13,14 @@ from .cross_l_dispatcher import dispatch_workset
 from .table_x import get_workset_from_px, list_px
 
 
+def _configure_utf8_stdio() -> None:
+    """Use UTF-8 for JSON and errors even on legacy Windows console code pages."""
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is not None:
+            reconfigure(encoding="utf-8", errors="backslashreplace")
+
+
 def _context(value: Optional[str]) -> Optional[Mapping[str, Any]]:
     if value is None:
         return None
@@ -73,6 +81,7 @@ def _write_json(payload: Any, compact: bool) -> None:
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
+    _configure_utf8_stdio()
     parser = _parser()
     args = parser.parse_args(argv)
 

@@ -649,7 +649,9 @@ the network, mutate truth, or merge changes.
 
 The runtime uses only the Python standard library, UTF-8 JSON output, `pathlib`
 for context files, and `python -m croll` so callers do not depend on a platform-
-specific script path.
+specific script path. The CLI explicitly configures UTF-8 output, including on
+Windows runners that inherit a legacy console code page, so Cross-L symbols and
+Thai context can be emitted without `UnicodeEncodeError`.
 
 ## Stable commands
 
