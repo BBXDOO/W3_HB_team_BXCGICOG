@@ -2,7 +2,7 @@ EP Signal Encoding (EP-Signal)
 
 Status: Experimental
 Owner: BBX19
-Location: "SYSTEM/TESTS/EP_SIGNAL/"
+Location: "protocol/EP_SIGNAL/"
 
 ---
 

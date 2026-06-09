@@ -111,8 +111,8 @@ create_xiz(
 
 ## การทดสอบระบบ
 
-- CRUD unit test: `python SYSTEM/TESTS/w3db/test_crud.py`
-- Integration test: `python SYSTEM/TESTS/w3db/test_flow.py`
+- CRUD unit test: `python protocol/w3db/test_crud.py`
+- Integration test: `python protocol/w3db/test_flow.py`
 - ทดสอบครบ: `python tools/w3_agent_ci.py`
 
 -------------------------------
