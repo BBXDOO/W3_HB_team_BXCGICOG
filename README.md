@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="branding/logo/REPO-W1.png" alt="W3HBT logo" width="520" />
+  <img src="branding/logo/REPO-W1.png" alt="W3HBT logo" width="100%" />
 </p>
 
 # W3 Hybrid : Ai Inteligent/Human .
