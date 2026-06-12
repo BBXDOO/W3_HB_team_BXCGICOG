@@ -1,5 +1,5 @@
 """
-Tests for iget/benchmark.py — IGET v5 Benchmark Engine
+Tests for iget/benchmark.py — IGET v9 Benchmark Engine
 """
 import sys
 import os

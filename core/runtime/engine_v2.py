@@ -25,12 +25,18 @@ def now():
 # CONTEXT
 # -------------------------------------------------
 
-def build_context(task):
+def build_context(task, request=None):
     hits = search_memory(task)
+    request = request or {}
 
     return {
         "matches": len(hits),
-        "records": hits[:5]
+        "records": hits[:5],
+        "request": request,
+        "source": request.get("source"),
+        "target": request.get("target"),
+        "mode": request.get("mode"),
+        "payload": request.get("payload", {}),
     }
 
 
@@ -47,11 +53,11 @@ def dispatch(module_name, task, plan, context):
 # SINGLE RUN
 # -------------------------------------------------
 
-def run(task):
+def run(task, request=None):
     started = time.time()
 
     plan = execution_plan(task)
-    context = build_context(task)
+    context = build_context(task, request)
 
     try:
         output = dispatch(plan["run_with"], task, plan, context)

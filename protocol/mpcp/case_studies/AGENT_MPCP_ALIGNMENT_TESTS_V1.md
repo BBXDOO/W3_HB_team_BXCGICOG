@@ -32,7 +32,7 @@ draft
 - `core/runtime/agents/cast.py`
 - `core/runtime/agents/chatgpt.py`
 - `core/runtime/agents/copilot_gm.py`
-- `SYSTEM/TESTS/mpcp/test_agent_mpcp_alignment.py`
+- `protocol/mpcp/test_agent_mpcp_alignment.py`
 
 ---
 
@@ -150,7 +150,7 @@ role/concept mapping ที่ถูก bind:
 ### 4. Agent Alignment Test Suite
 ไฟล์:
 ```text
-SYSTEM/TESTS/mpcp/test_agent_mpcp_alignment.py
+protocol/mpcp/test_agent_mpcp_alignment.py
 ```
 
 สิ่งที่ตรวจ:

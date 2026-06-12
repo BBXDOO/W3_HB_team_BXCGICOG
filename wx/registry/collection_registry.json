@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "collections": [
+    {
+      "collection_id": "COLLECTION:CROSS_L_PAPERS_V1",
+      "blueprint_id": "BPD:COLLECTION_PAPER_V1",
+      "blueprint_path": "wx/blueprints/collection/paper_collection.md",
+      "status": "proposed"
+    }
+  ]
+}

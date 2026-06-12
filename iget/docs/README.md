@@ -210,6 +210,16 @@ FILE: /iget/docs/CHANGELOG_IGET.md
 
 # Changelog
 
+
+## v9.0 — Active Runtime
+
+- Idempotent summary comment updates with `<!-- iget:summary -->`
+- Fork-safe `pull_request_target` workflow using trusted base code only
+- Manual dispatch with explicit PR number
+- Event-payload runtime resolution and strict repository/PR validation
+- Shared retry-capable GitHub API session and actionable API errors
+- Inline comments opt-in; summary reporting remains the reliable default
+
 ## v5
 
 - scoring improved

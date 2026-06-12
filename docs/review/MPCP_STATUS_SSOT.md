@@ -28,8 +28,8 @@
 ### [FACT] ROT ถูกบังคับใช้ใน runtime executor จริง
 - `status: applied`
 - `evidence:`
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/runtime/executor.py` (เรียก `MPCPRot.validate_core` และ `MPCPRot.validate_fail_condition`)
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/kernel/rot.py` (นิยามกฎ `validate_core` และ `validate_fail_condition`)
+  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/runtime/executor.py` (เรียก `MPCPRot.validate_core` และ `MPCPRot.validate_fail_condition`)
+  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/kernel/rot.py` (นิยามกฎ `validate_core` และ `validate_fail_condition`)
 - `runtime_usage: ใช้จริง`
 - `last_verified: 2026-05-09`
 - `owner: BBX19`
@@ -41,9 +41,9 @@
 ### [FACT] Paper documentation มีอยู่ แต่ runtime ยังไม่พบ document-loader ที่ผูกไฟล์ Paper เข้าการรันโดยตรง
 - `status: implemented`
 - `evidence:`
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/README.md` (ระบุบทบาท Paper/Rot/Modew/Condien)
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/mpcp_concept_paper/mpcp_concept_paper.md` (มีเอกสารแนว Paper/Concept)
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/runtime/executor.py` (มี parser ข้อความอินพุต `TASK:...` แต่ไม่พบการ load ไฟล์ Paper)
+  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/README.md` (ระบุบทบาท Paper/Rot/Modew/Condien)
+  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/mpcp_concept_paper/mpcp_concept_paper.md` (มีเอกสารแนว Paper/Concept)
+  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/runtime/executor.py` (มี parser ข้อความอินพุต `TASK:...` แต่ไม่พบการ load ไฟล์ Paper)
 - `runtime_usage: ยังไม่ใช้จริง`
 - `last_verified: 2026-05-09`
 - `owner: BBX19`
@@ -51,9 +51,9 @@
 ### [FACT] Blueprint documentation มีอยู่ แต่ยังไม่พบการเชื่อมเข้า MPCP runtime โดยตรง
 - `status: implemented`
 - `evidence:`
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/mpcp_blueprint_paper/mpcp_blueprint_paper.md` (นิยาม Blueprint ชัดเจน)
+  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/mpcp_blueprint_paper/mpcp_blueprint_paper.md` (นิยาม Blueprint ชัดเจน)
   - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/blueprints/abstract/overview.md` (มีโครงสร้าง blueprint ระดับรีโป)
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/runtime/executor.py` (ไม่พบการ load blueprint เข้ารันไทม์โดยตรง)
+  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/runtime/executor.py` (ไม่พบการ load blueprint เข้ารันไทม์โดยตรง)
 - `runtime_usage: ยังไม่ใช้จริง`
 - `last_verified: 2026-05-09`
 - `owner: BBX19`
@@ -65,8 +65,8 @@
 ### [PROPOSAL] เพิ่มตัวเชื่อม Paper file → runtime execution
 - `status: planned`
 - `evidence:`
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/README.md` (ประกาศแนวคิด Paper-driven operation)
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/runtime/executor.py` (ปัจจุบันรับ text input โดยตรง)
+  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/README.md` (ประกาศแนวคิด Paper-driven operation)
+  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/runtime/executor.py` (ปัจจุบันรับ text input โดยตรง)
 - `runtime_usage: ยังไม่ใช้จริง`
 - `last_verified: 2026-05-09`
 - `owner: BBX19`
@@ -74,8 +74,8 @@
 ### [PROPOSAL] เพิ่มตัวเชื่อม Blueprint file → runtime/bootstrap flow
 - `status: planned`
 - `evidence:`
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/mpcp_blueprint_paper/mpcp_blueprint_paper.md` (มี blueprint spec)
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/runtime/executor.py` (ยังไม่มี blueprint bootstrap path)
+  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/mpcp_blueprint_paper/mpcp_blueprint_paper.md` (มี blueprint spec)
+  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/runtime/executor.py` (ยังไม่มี blueprint bootstrap path)
 - `runtime_usage: ยังไม่ใช้จริง`
 - `last_verified: 2026-05-09`
 - `owner: BBX19`
@@ -87,8 +87,8 @@
 ### [FACT] Condien ถูกนิยามเชิงแนวคิด/เอกสารอย่างชัดเจน
 - `status: concept`
 - `evidence:`
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/W3_TERMS_MASTER_PAPER_v2.md` (นิยาม Condien)
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/README.md` (ระบุบทบาท Condien)
+  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/W3_TERMS_MASTER_PAPER_v2.md` (นิยาม Condien)
+  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/README.md` (ระบุบทบาท Condien)
 - `runtime_usage: ยังไม่ใช้จริง`
 - `last_verified: 2026-05-09`
 - `owner: BBX19`
@@ -96,8 +96,8 @@
 ### [FACT] โครงไฟล์ที่ README ระบุ (`CONDIEN.md`, `condiens/`, `papers/`) ยังไม่พบในโฟลเดอร์ MPCP ปัจจุบัน
 - `status: concept`
 - `evidence:`
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/README.md` (ระบุโครงสร้างที่คาดหวัง)
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/SYSTEM/TESTS/mpcp/` (ไม่พบไฟล์/โฟลเดอร์ตามที่ระบุ)
+  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/README.md` (ระบุโครงสร้างที่คาดหวัง)
+  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/` (ไม่พบไฟล์/โฟลเดอร์ตามที่ระบุ)
 - `runtime_usage: ยังไม่ใช้จริง`
 - `last_verified: 2026-05-09`
 - `owner: BBX19`

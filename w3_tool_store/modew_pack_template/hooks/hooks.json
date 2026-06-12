@@ -1,0 +1,21 @@
+{
+  "type": "hooks_template",
+  "status": "template_draft",
+  "hooks": {
+    "before_plan": {
+      "purpose": "Observe input before planning.",
+      "mutated": false,
+      "execution_allowed": false
+    },
+    "after_plan": {
+      "purpose": "Review plan output before any runtime bridge.",
+      "mutated": false,
+      "execution_allowed": false
+    },
+    "on_uncertain": {
+      "purpose": "Route to review or Hospitication instead of execution.",
+      "mutated": false,
+      "execution_allowed": false
+    }
+  }
+}

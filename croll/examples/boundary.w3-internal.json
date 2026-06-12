@@ -1,0 +1,17 @@
+{
+  "contract_version": "1.0",
+  "kind": "croll-boundary",
+  "ecosystem": "W3",
+  "network_scope": "w3-internal",
+  "owner": "W3_HB_team_BXCGICOG",
+  "purpose": "Allow WHUB to request CROLL planning without granting execution authority.",
+  "boundary": {
+    "mode": "planner_only",
+    "allow": ["table_x.lookup", "dispatch.plan", "result.read"],
+    "deny": ["truth_mutation", "direct_merge", "unreviewed_execution", "repo_write", "network_call"]
+  },
+  "review": {
+    "required": true,
+    "on_uncertainty": true
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "agents": [
+    {
+      "agent_id": "BOX:INDEXOR_V1",
+      "role": "Binder",
+      "path": "wx/indexor.py",
+      "capabilities": ["read_registry", "locate_reference", "suggest_reference"],
+      "execution_allowed": false,
+      "mutation_allowed": false,
+      "human_review_required": true
+    }
+  ]
+}

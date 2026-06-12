@@ -1,29 +1,54 @@
 {
   "system_name": "W3_HB_Runtime",
-  "system_version": "0.2.0-refactor",
-  "schema_version": "W3-RUNTIME-0.2",
+  "system_version": "0.3.0-integration",
+  "schema_version": "W3-RUNTIME-0.3",
   "status": "active",
   "runtime": {
     "acceleration_mode": "wormhole",
     "processing_model": "distributed",
-    "execution_bias": "parallel"
+    "execution_bias": "parallel",
+    "default_cross_mode": "observe",
+    "truth_mutation_default": false
   },
   "modules": {
     "entry": "REDR",
     "compression": "PSP2",
     "core": "DTML",
-    "memory": "LRC2"
+    "memory": "LRC2",
+    "implementation": "Codex",
+    "health_observer": "Hospitication",
+    "cross_gateway": "W3-API",
+    "language_core": "W3Lgu",
+    "position_exchange": "PX",
+    "append_flow": "W3DB_APPEND",
+    "governance_ci": "IGET",
+    "signal_rhythm": "EP_SIGNAL_RYTM",
+    "knowledge_reference": "BOX"
   },
   "pipeline_settings": {
     "auto_clean_bureaucracy": true,
     "parallel_preferred": true,
-    "persistent_memory_sync": true
+    "persistent_memory_sync": true,
+    "append_only_observation": true,
+    "idempotent_cross_append": true
   },
   "compatibility": {
     "mpcp": true,
     "W3Lgu": true,
+    "PX": true,
+    "W3DB_append_flow": true,
+    "EP_SIGNAL": true,
+    "Hospitication": true,
+    "W3_API": true,
+    "Codex": true,
     "IDP": "v2.0",
-    "iget": "v6+"
+    "iget": "v8.0",
+    "EP_SIGNAL_RYTM": true,
+    "REDR": true,
+    "PSP2": true,
+    "DTML": true,
+    "LRC2": true,
+    "BOX": true
   },
   "environment": {
     "containerized": true,
@@ -44,7 +69,23 @@
   "philosophy": {
     "error_policy": "experience",
     "execution_style": "adaptive",
-    "human_priority": true
+    "human_priority": true,
+    "cross_x_policy": "improve_workflow_not_bug_hunt"
   },
-  "notes": "Primary runtime environment configuration for W3 HB orchestration pipeline. Airtable acts as operational memory/control registry, not the whole runtime."
+  "references": [
+    "config/ecosystem.json",
+    "config/cross_system.json",
+    "config/paths.json",
+    "docs/px_w3db_append_flow.md",
+    "docs/W3_MASTER_MAP.md",
+    "protocol/EP_SIGNAL/RYTM_SIGNAL.md",
+    "protocol/EP_SIGNAL/rytm.py",
+    "core/runtime/process_layer.py",
+    "modules/REDR/module.json",
+    "modules/PSP2/module.json",
+    "modules/DTML/module.json",
+    "modules/LRC2/module.json",
+    "wx/registry/template_registry.json"
+  ],
+  "notes": "Primary runtime environment configuration for W3 HB orchestration pipeline. Airtable acts as operational memory/control registry, not the whole runtime. Cross-X coordinates systems at the cross point to improve working method without mutating source truth."
 }

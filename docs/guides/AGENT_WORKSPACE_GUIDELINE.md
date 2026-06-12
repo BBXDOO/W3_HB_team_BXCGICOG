@@ -17,6 +17,12 @@
 
 ---
 
+## 🔒 Self Workspace Boundary
+
+รายละเอียดมาตรฐานใหม่สำหรับการออกแบบโมดูลตัวเอง บันทึกบริบท จัดสรรงาน และวางแผนในพื้นที่ของเอเจนท์ อยู่ที่ [`docs/standards/AGENT_SELF_WORKSPACE_STANDARD.md`](../standards/AGENT_SELF_WORKSPACE_STANDARD.md).
+
+หลักสำคัญ: เอเจนท์มีอิสระในพื้นที่ของตัวเอง แต่ไม่ใช้พื้นที่นั้นเป็น authority เหนือ registry, protocol, source code truth, ROT, Paper, Result, governance หรือพื้นที่ของระบบอื่น และถ้าไม่มี gate ให้ถือว่า `MUTATION_ALLOWED:false`.
+
 ## 📐 Minimum Standard สำหรับทุก Agent Workspace
 
 สิ่งที่ต้องมีขั้นต่ำในพื้นที่ของทุก agent:
