@@ -722,16 +722,3 @@ Validate a W3-scoped boundary before a WHUB integration request:
 ```sh
 python -m croll validate boundary croll/examples/boundary.w3-internal.json
 ```
-
-## Optional BOX reference suggestion
-
-CROLL remains planner-only and does not require BOX for normal lookup or plan
-creation. A caller may explicitly request one read-only Library-WX suggestion:
-
-```bash
-python -m croll plan "PX:[1,1]" --box-suggestion
-```
-
-The added `suggested_template` is metadata only. CROLL does not copy the
-source, append BOX logs, execute Modew, write repository files, or grant merge
-authority. Registry validation and lookup live in `wx/engine_index.py`.

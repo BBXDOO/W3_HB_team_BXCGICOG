@@ -44,14 +44,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check repository paths are cross-platform
-        run: python tools/check_portable_paths.py
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Check repository paths are cross-platform
+        run: python tools/check_portable_paths.py
       - name: Compile CROLL and BOX
         run: python -m compileall croll wx
 
@@ -71,6 +70,7 @@ jobs:
           python -m croll validate boundary croll/examples/boundary.w3-internal.json
           python -m croll validate workset croll/examples/workset.rock.json
           python -m croll validate plan croll/examples/dispatch-plan.jazz.json
+
 
   box-api:
     name: BOX / W3-API integration
