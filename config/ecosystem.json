@@ -78,12 +78,6 @@
       "role": "immutable_lifecycle_memory_preview",
       "path": "modules/LRC2/",
       "mutation_authority": false
-    },
-    "BOX": {
-      "role": "planner_only_knowledge_reference",
-      "path": "wx/",
-      "mutation_authority": false,
-      "execution_authority": false
     }
   },
   "routing": {
@@ -99,8 +93,7 @@
     "package_reader": "REDR",
     "route_stamp": "PSP2",
     "decision_trace": "DTML",
-    "continuity_memory": "LRC2",
-    "knowledge_reference": "BOX"
+    "continuity_memory": "LRC2"
   },
   "governance": {
     "human_review_required": true,

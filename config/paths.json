@@ -19,8 +19,6 @@
     "mpcp": "protocol/mpcp/",
     "integration_guide": "docs/integration_guide.md",
     "px_append_guide": "docs/px_w3db_append_flow.md",
-    "master_map": "docs/W3_MASTER_MAP.md",
-    "box": "wx/",
-    "box_template_registry": "wx/registry/template_registry.json"
+    "master_map": "docs/W3_MASTER_MAP.md"
   }
 }

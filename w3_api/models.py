@@ -32,13 +32,11 @@ class W3CrossPlanRequest(BaseModel):
 
     px: str = Field(..., min_length=1)
     paper_context: dict[str, Any] | None = None
-    include_box_suggestion: bool = False
 
 
 class W3CrossPlanResponse(BaseModel):
     """Safe dispatch plan from Cross-L dispatcher."""
 
-    contract_version: str = "1.0"
     state: str
     reason: str
     scope: str
@@ -51,4 +49,3 @@ class W3CrossPlanResponse(BaseModel):
     review: bool
     workset: dict[str, Any]
     safety: dict[str, bool]
-    suggested_template: dict[str, Any] | None = None

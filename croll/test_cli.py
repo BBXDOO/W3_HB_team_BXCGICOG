@@ -30,13 +30,6 @@ class TestCrossLCli(unittest.TestCase):
         self.assertFalse(payload["execution_allowed"])
         self.assertEqual(payload["workset"]["paper_context_keys"], ["paper_id"])
 
-    def test_plan_can_request_box_suggestion(self):
-        result = self.run_cli("plan", "1,1", "--box-suggestion")
-        self.assertEqual(result.returncode, 0, result.stderr)
-        payload = json.loads(result.stdout)
-        self.assertTrue(payload["suggested_template"]["reference_only"])
-        self.assertFalse(payload["execution_allowed"])
-
     def test_plan_forces_utf8_on_legacy_console_encoding(self):
         result = self.run_cli(
             "--compact",

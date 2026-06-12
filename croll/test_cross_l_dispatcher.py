@@ -60,18 +60,6 @@ class TestCrossLDispatcher(unittest.TestCase):
         self.assertEqual(plan["workset"]["rytm"], "UNKNOWN")
         self.assertIn("Invalid PX format", plan["reason"])
 
-    def test_dispatch_can_include_read_only_box_suggestion(self):
-        plan = dispatch_workset("1,1", enable_box_suggestion=True)
-        self.assert_safe_plan(plan)
-        suggestion = plan["suggested_template"]
-        self.assertTrue(suggestion["reference_only"])
-        self.assertTrue(suggestion["path"].startswith("wx/templates/"))
-
-    def test_dispatch_box_suggestion_falls_back_to_none(self):
-        plan = dispatch_workset("99,99", enable_box_suggestion=True)
-        self.assert_safe_plan(plan)
-        self.assertIsNone(plan["suggested_template"])
-
     def test_dispatch_with_paper_context_marker(self):
         plan = dispatch_workset("1,1", paper_context={"paper_id": "demo", "scope": "CROSS_L_ONLY"})
         self.assert_safe_plan(plan)

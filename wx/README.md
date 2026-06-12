@@ -38,9 +38,3 @@ python -m croll --compact plan "PX:[1,1]" --box-suggestion
 ```
 
 The second command only adds a registered suggestion to a non-executing CROLL plan.
-
-## คู่มือภาษาไทย
-
-- [ภาพรวม BOX ภาษาไทย](../docs/box/README_TH.md)
-- [วิธีใช้งาน BOX ภาษาไทย](../docs/box/USAGE_TH.md)
-- [ขอบเขตและความปลอดภัย](../docs/box/BOUNDARY_TH.md)

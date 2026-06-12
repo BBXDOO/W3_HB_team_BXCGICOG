@@ -28,25 +28,6 @@
         "direct_merge_allowed": {"const": false}
       },
       "additionalProperties": false
-    },
-    "suggested_template": {
-      "oneOf": [
-        {"type": "null"},
-        {
-          "type": "object",
-          "required": ["template_id", "name", "path", "version", "boundary", "deny", "reference_only"],
-          "properties": {
-            "template_id": {"type": "string", "minLength": 1},
-            "name": {"type": "string", "minLength": 1},
-            "path": {"type": "string", "pattern": "^wx/"},
-            "version": {"type": "string", "minLength": 1},
-            "boundary": {"type": "string", "minLength": 1},
-            "deny": {"type": "array", "items": {"type": "string", "minLength": 1}},
-            "reference_only": {"const": true}
-          },
-          "additionalProperties": false
-        }
-      ]
     }
   },
   "additionalProperties": false
