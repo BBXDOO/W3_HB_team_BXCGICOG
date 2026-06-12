@@ -69,6 +69,12 @@ def _parser() -> argparse.ArgumentParser:
             metavar="JSON|@FILE",
             help="Paper context as a JSON object or UTF-8 JSON file",
         )
+        if name == "plan":
+            command.add_argument(
+                "--box-suggestion",
+                action="store_true",
+                help="include a read-only BOX template suggestion",
+            )
 
     commands.add_parser("list", help="list registered Table-X coordinates")
     validate = commands.add_parser("validate", help="validate a CROLL JSON artifact")
@@ -92,7 +98,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if args.command == "lookup":
         payload = get_workset_from_px(args.px, paper_context=args.context)
     elif args.command == "plan":
-        payload = dispatch_workset(args.px, paper_context=args.context)
+        payload = dispatch_workset(
+            args.px,
+            paper_context=args.context,
+            enable_box_suggestion=args.box_suggestion,
+        )
     elif args.command == "validate":
         try:
             artifact = json.loads(args.file.read_text(encoding="utf-8"))

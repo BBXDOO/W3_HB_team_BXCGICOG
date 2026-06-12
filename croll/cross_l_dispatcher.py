@@ -34,7 +34,12 @@ def _unknown_workset(workset: Dict[str, Any]) -> bool:
     return workset.get("rytm") == "UNKNOWN" or workset.get("work_type") == "UNKNOWN"
 
 
-def dispatch_workset(px: Any, paper_context: Optional[Mapping[str, Any]] = None) -> DispatchPlan:
+def dispatch_workset(
+    px: Any,
+    paper_context: Optional[Mapping[str, Any]] = None,
+    *,
+    enable_box_suggestion: bool = False,
+) -> DispatchPlan:
     """
     Build a safe dispatch plan from a PX reference.
 
@@ -42,6 +47,8 @@ def dispatch_workset(px: Any, paper_context: Optional[Mapping[str, Any]] = None)
         px: PX reference, e.g. "1,1", "PX:[1,1]", [1, 1], or (1, 1).
         paper_context: Optional Cross-L paper context. This function only passes the
             context into Table-X lookup for trace markers. It does not execute anything.
+        enable_box_suggestion: When true, add one read-only BOX registry suggestion.
+            The lookup does not copy, write, execute, or grant new authority.
 
     Returns:
         A dispatch plan with execution_allowed=False and mutated=False always.
@@ -80,7 +87,25 @@ def dispatch_workset(px: Any, paper_context: Optional[Mapping[str, Any]] = None)
                 "action": "review_before_dispatch",
             }
         )
-        return plan
+
+    if enable_box_suggestion:
+        # Lazy import keeps CROLL usable as a standalone planner when BOX is absent.
+        from wx.engine_index import search_by_px
+
+        template = search_by_px(workset.get("px"))
+        plan["suggested_template"] = (
+            {
+                "template_id": template["template_id"],
+                "name": template["name"],
+                "path": template["path"],
+                "version": template["version"],
+                "boundary": template["boundary"],
+                "deny": list(template["deny"]),
+                "reference_only": True,
+            }
+            if template
+            else None
+        )
 
     return plan
 
