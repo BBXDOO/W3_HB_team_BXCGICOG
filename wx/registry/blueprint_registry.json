@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "blueprints": [
+    {
+      "blueprint_id": "BPD:BOX_KNOWLEDGE_INFRASTRUCTURE_V1",
+      "type": "system",
+      "path": "wx/blueprints/system/box_knowledge_infrastructure.md",
+      "owner": "BBX19",
+      "status": "proposed"
+    },
+    {
+      "blueprint_id": "BPD:COLLECTION_PAPER_V1",
+      "type": "collection",
+      "path": "wx/blueprints/collection/paper_collection.md",
+      "owner": "BBX19",
+      "status": "proposed"
+    }
+  ]
+}
