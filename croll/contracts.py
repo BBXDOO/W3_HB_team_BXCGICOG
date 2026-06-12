@@ -100,8 +100,28 @@ def validate_dispatch_plan(value: Any) -> Dict[str, Any]:
         "safety",
     )
     _version(data)
+
+    if data.get("state") not in ("planned", "review"):
+        raise ContractError("dispatch_plan.state must be 'planned' or 'review'")
+    if not isinstance(data.get("reason"), str) or not data["reason"].strip():
+        raise ContractError("dispatch_plan.reason must be a non-empty string")
     if data["scope"] != "CROSS_L_ONLY":
         raise ContractError("dispatch_plan.scope must be 'CROSS_L_ONLY'")
+    if data.get("action") not in ("call_modew_stub_only", "review_before_dispatch"):
+        raise ContractError("dispatch_plan.action is not allowed")
+
+    px = data.get("px")
+    if px is None:
+        pass
+    elif not isinstance(px, list) or len(px) != 2:
+        raise ContractError("dispatch_plan.px must be null or a two-item array")
+    elif any(isinstance(item, bool) or not isinstance(item, int) or item < 1 for item in px):
+        raise ContractError("dispatch_plan.px coordinates must be positive integers")
+
+    for field in ("modew", "modew_style"):
+        if not isinstance(data.get(field), str) or not data[field]:
+            raise ContractError(f"dispatch_plan.{field} must be a non-empty string")
+
     for field in ("execution_allowed", "mutated"):
         if data[field] is not False:
             raise ContractError(f"dispatch_plan.{field} must be false")

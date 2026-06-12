@@ -44,8 +44,7 @@
     "REDR": "read_classify_tag_package_no_mutation",
     "PSP2": "stamp_route_only_no_inspection_mutation",
     "DTML": "decision_trace_review_no_execution_authority",
-    "LRC2": "immutable_memory_log_preview_append_only_when_approved",
-    "BOX": "reference_and_suggestion_only_no_copy_write_or_execution"
+    "LRC2": "immutable_memory_log_preview_append_only_when_approved"
   },
   "references": [
     "protocol/w3lgu/RML01.md",
@@ -60,7 +59,6 @@
     "modules/REDR/module.json",
     "modules/PSP2/module.json",
     "modules/DTML/module.json",
-    "modules/LRC2/module.json",
-    "wx/README.md"
+    "modules/LRC2/module.json"
   ]
 }

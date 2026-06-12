@@ -22,8 +22,7 @@
     "position_exchange": "PX",
     "append_flow": "W3DB_APPEND",
     "governance_ci": "IGET",
-    "signal_rhythm": "EP_SIGNAL_RYTM",
-    "knowledge_reference": "BOX"
+    "signal_rhythm": "EP_SIGNAL_RYTM"
   },
   "pipeline_settings": {
     "auto_clean_bureaucracy": true,
@@ -47,8 +46,7 @@
     "REDR": true,
     "PSP2": true,
     "DTML": true,
-    "LRC2": true,
-    "BOX": true
+    "LRC2": true
   },
   "environment": {
     "containerized": true,
@@ -84,8 +82,7 @@
     "modules/REDR/module.json",
     "modules/PSP2/module.json",
     "modules/DTML/module.json",
-    "modules/LRC2/module.json",
-    "wx/registry/template_registry.json"
+    "modules/LRC2/module.json"
   ],
   "notes": "Primary runtime environment configuration for W3 HB orchestration pipeline. Airtable acts as operational memory/control registry, not the whole runtime. Cross-X coordinates systems at the cross point to improve working method without mutating source truth."
 }

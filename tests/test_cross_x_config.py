@@ -18,9 +18,6 @@ def test_w3_config_bundle_covers_current_ecosystem():
     assert "EP_SIGNAL_RYTM" in config.ecosystem["components"]
     assert config.cross_system["cross_x"]["truth_mutation"] is False
     assert config.component_path("px") == "protocol/w3lgu/px.py"
-    assert config.environment["compatibility"]["BOX"] is True
-    assert config.ecosystem["components"]["BOX"]["execution_authority"] is False
-    assert config.component_path("box") == "wx/"
 
 
 def test_cross_x_plan_builds_full_non_mutating_chain():

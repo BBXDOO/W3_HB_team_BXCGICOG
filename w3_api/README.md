@@ -65,20 +65,3 @@ uvicorn w3_api.main:app --reload
 W3-API normalizes and routes intent. It does not overwrite source truth. Any
 future write integration should append derived W3DB records through a reviewed
 adapter and keep references back to this gateway signal.
-
-## BOX-assisted Cross-L planning
-
-`POST /w3/cross/plan` accepts the optional boolean
-`include_box_suggestion`. When true, the response may include a registered
-`suggested_template` from `wx/registry/template_registry.json`. The default is
-false, so existing callers retain the original response shape.
-
-```json
-{
-  "px": "1,1",
-  "include_box_suggestion": true
-}
-```
-
-This is a reference lookup only: no template is copied, no log is appended, no
-runtime is executed, and `execution_allowed`/`mutated` remain false.

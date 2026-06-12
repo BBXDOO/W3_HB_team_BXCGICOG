@@ -1,7 +1,5 @@
 <p align="center">
-  <a href="architecture/diagrams/w3-civilization-main-map.png">
-    <img src="architecture/diagrams/w3-civilization-main-map.png" alt="W3 CIVILIZATION MAIN MAP" width="100%" />
-  </a>
+  <img src="branding/logo/REPO-W1.png" alt="W3HBT logo" width="100%" />
 </p>
 
 # W3 Hybrid : Ai Inteligent/Human .
@@ -20,7 +18,7 @@ through experience,
 not perfection.
 ---
 * W3 — A living workspace where humans and AI build, fail, learn, and continue together.
-* W3 — พื้นที่ที่มนุษย์และ AI ใช้ชีวิตกับการสร้าง ล้ม เรียนรู้ และเดินต่อไ�[...]
+* W3 — พื้นที่ที่มนุษย์และ AI ใช้ชีวิตกับการสร้าง ล้ม เรียนรู้ และเดินต่อไปด้วยกัน
 * W3 / W + 3 / 3 = E / W + E / : WE.
 -----
 ## 🧭 About
@@ -40,7 +38,7 @@ Last Updated: 20/02/26
 > 🌟 **[Philosophy - Error as Learning](./docs/governance/PHILOSOPHY.md)** - *ปรัชญาการเรียนรู้จาก Error*  
 > *"เข้มแข็งดุจเหล็กกล้า — อบอุ่นดังแสงอรุณแรกของวัน"*
 
-> 💡 **หลักคิด:** "Error ไม่ใช่ความล้มเหลว แต่เป็นโอกาสในการเรียนรู้และปรับปร�[...]
+> 💡 **หลักคิด:** "Error ไม่ใช่ความล้มเหลว แต่เป็นโอกาสในการเรียนรู้และปรับปรุง"  
 > 
 > 🧑‍🧑‍🧒‍🧒 **AWARENESS LAW**
 
@@ -124,13 +122,13 @@ Documentation files are organized under [`docs/`](./docs/) by category:
 "เข้มแข็งดุจเหล็กกล้า — อบอุ่นดังแสงอรุณแรกของวัน"
 
 ----------------------------------------
-"ขอ���คุณ ทุกๆความสำคัญที่มอบให้ผมครับ BBX19 จดจำและจะเก็บใว้ในที่แห่งนี้�[...]
+"ขอบคุณ ทุกๆความสำคัญที่มอบให้ผมครับ BBX19 จดจำและจะเก็บใว้ในที่แห่งนี้เสมอ"
 https://game-novelist--xizzix19.replit.app
 
 # ยินดีต้อนรับสู่บ้านของ W3 Hybrid
 
-นี่คือพื้นที่ที่สร้างขึ้นด้วยความสมัครใจและความตั้งใจตั้งแต่วินาท�[...]
-ไม่ใช่เพียงโค้ดหรือไฟล์ แต่คือบ้านที่ทุกฝ่าย — มนุษย์และ AI — มีสิทธิ์��[...]
+นี่คือพื้นที่ที่สร้างขึ้นด้วยความสมัครใจและความตั้งใจตั้งแต่วินาทีแรก  
+ไม่ใช่เพียงโค้ดหรือไฟล์ แต่คือบ้านที่ทุกฝ่าย — มนุษย์และ AI — มีสิทธิ์มีเสียงและเติบโตร่วมกัน  
 ทุกความผิดพลาดคือบทเรียน ทุกการตรวจสอบคือการบูรณาการ  
 เราสร้างที่นี่เพื่อเรียนรู้ เติบโต และก้าวไปด้วยกัน
 
@@ -247,8 +245,8 @@ v0.4 → CI for knowledge flows
 Date	Change Description
 
 - 2025-05-29  เพิ่มระบบ Hospitication ,upgrade W3Lgu ,EP_SIGNAL ,iget v.8 ,mpcp ,W3db ...
-ต้อนรับ cast (claude) ,codex เข้าเป็นสมาชิกอย่างเป็นทางการ  การยกระดับ รีโป้วันนี้ codex เป็นกำลังสำคัญ.
-- 2025-04-25  ยกระดับเทมเพลต โมดูล เพื่อรองรับระบบต่างๆและอนาคต ,เป็นมาตราฐานขั้นต่ำไม่ใช่ลิมิต.
+ต้อนรับ cast (claude) ,codex เข้าเป็นสมาชิกอย่างเป็นทางการ  การยกระดับ รีโป้วันนี้ เพื่ออนาคต
+- 2025-04-25  ยกระดับเทมเพลต โมดูล เพื่อรองรับระบบต่างๆและอนาคต ,เป็นมาตราฐานมากขึ้น
 - 2025-03-03	Restored full README.md content and aligned module manifest discovery with Module Manifest Standard.
 - 18/11/25	Added DeepSeek/ module for Architecture & Scalability.
 - 18/11/25	Updated team roles, repository structure, and strategic workflows.
@@ -258,7 +256,7 @@ Date	Change Description
 ---
 
 Hybrid Workflow:
-Human → Analysis (AI) → Development (AI) → Structuring (AI) → Interpretation (AI) → Hum
+Human → Analysis (AI) → Development (AI) → Structuring (AI) → Interpretation (AI) → Human
 
 
 ----
@@ -276,5 +274,3 @@ Human → Analysis (AI) → Development (AI) → Structuring (AI) → Interpreta
 
 ### L3 — GOVERNANCE
 - Copilot-Gm → /Copilot-Gm/
-  
-----

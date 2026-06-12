@@ -63,14 +63,14 @@ def validate_w3_config(bundle: W3ConfigBundle) -> list[str]:
     if env.get("schema_version") != "W3-RUNTIME-0.3":
         errors.append("environment.schema_version must be W3-RUNTIME-0.3")
     compatibility = env.get("compatibility", {})
-    for key in ("W3Lgu", "PX", "W3DB_append_flow", "EP_SIGNAL", "EP_SIGNAL_RYTM", "REDR", "PSP2", "DTML", "LRC2", "Hospitication", "W3_API", "Codex", "BOX"):
+    for key in ("W3Lgu", "PX", "W3DB_append_flow", "EP_SIGNAL", "EP_SIGNAL_RYTM", "REDR", "PSP2", "DTML", "LRC2", "Hospitication", "W3_API", "Codex"):
         if compatibility.get(key) is not True:
             errors.append(f"environment.compatibility.{key} must be true")
     if compatibility.get("iget") != "v8.0":
         errors.append("environment.compatibility.iget must be v8.0")
 
     components = ecosystem.get("components", {})
-    for required in ("Codex", "Hospitication", "W3Lgu", "PX", "W3DB_APPEND", "W3-API", "EP_SIGNAL", "EP_SIGNAL_RYTM", "REDR", "PSP2", "DTML", "LRC2", "IGET", "BOX"):
+    for required in ("Codex", "Hospitication", "W3Lgu", "PX", "W3DB_APPEND", "W3-API", "EP_SIGNAL", "EP_SIGNAL_RYTM", "REDR", "PSP2", "DTML", "LRC2", "IGET"):
         if required not in components:
             errors.append(f"ecosystem.components.{required} is required")
 
@@ -84,7 +84,7 @@ def validate_w3_config(bundle: W3ConfigBundle) -> list[str]:
     if cross_x.get("requires_governance_gate") is not True:
         errors.append("cross_system.cross_x.requires_governance_gate must be true")
 
-    for required_path in ("w3_api", "w3lgu", "px", "w3db_append_flow", "hospitication", "iget", "codex", "box", "box_template_registry"):
+    for required_path in ("w3_api", "w3lgu", "px", "w3db_append_flow", "hospitication", "iget", "codex"):
         if required_path not in paths:
             errors.append(f"paths.{required_path} is required")
 
