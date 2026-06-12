@@ -1,0 +1,27 @@
+{
+  "type": "boundary_template",
+  "status": "template_draft",
+  "default_laws": {
+    "mutated": false,
+    "execution_allowed": false,
+    "review": true,
+    "repo_write_allowed": false,
+    "direct_merge_allowed": false,
+    "truth_mutation_allowed": false
+  },
+  "allowed": [
+    "describe_capability",
+    "plan_work",
+    "generate_draft",
+    "summarize_context",
+    "return_review_notes"
+  ],
+  "denied": [
+    "direct_execution",
+    "direct_merge",
+    "repo_write_without_review",
+    "truth_mutation",
+    "secret_access",
+    "unbounded_network_action"
+  ]
+}

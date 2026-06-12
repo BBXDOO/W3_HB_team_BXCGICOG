@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3.local/croll/schema/workset.schema.json",
+  "title": "CROLL Table-X Workset",
+  "type": "object",
+  "required": ["contract_version", "px", "rytm", "work_type", "modew_style", "boundary", "mutated", "review"],
+  "properties": {
+    "contract_version": {"const": "1.0"},
+    "px": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "array", "prefixItems": [{"type": "integer", "minimum": 1}, {"type": "integer", "minimum": 1}], "items": false}
+      ]
+    },
+    "rytm": {"type": "string", "minLength": 1},
+    "work_type": {"type": "string", "minLength": 1},
+    "modew_style": {"type": "string", "minLength": 1},
+    "boundary": {"type": "string", "minLength": 1},
+    "mutated": {"const": false},
+    "review": {"const": true},
+    "reason": {"type": "string"},
+    "color": {"type": ["string", "null"]},
+    "symbol": {"type": ["string", "null"]},
+    "tag_group": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "lang_candidate": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "deny": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "return_contract": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "default_review_condition": {"type": ["string", "null"]},
+    "paper_context_received": {"type": "boolean"},
+    "paper_context_keys": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+  },
+  "additionalProperties": false
+}

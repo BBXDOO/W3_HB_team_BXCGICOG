@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#071019">
+  <title>W3 Weekly Health Lens</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0} :root{--bg:#071019;--panel:#0c1722;--text:#e7f4ff;--muted:#8ea4b8;--dim:#5f7586;--line:rgba(255,255,255,.1);--mint:#22f0b6;--yellow:#ffd166;--red:#ff6b7a;--purple:#b39cff;--blue:#6ca8ff;--green:#5dffad;--orange:#ff9d5c;--mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;--sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}body{min-height:100vh;background:radial-gradient(circle at 20% 0%,rgba(34,240,182,.12),transparent 35%),linear-gradient(135deg,#050910,#071019 55%,#091927);color:var(--text);font-family:var(--sans);line-height:1.6}.wrap{max-width:1180px;margin:0 auto;padding:28px}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:22px}.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(34,240,182,.25);border-radius:999px;background:rgba(34,240,182,.08);color:var(--mint);font-family:var(--mono);font-size:.78rem}.dot{width:8px;height:8px;border-radius:99px;background:var(--mint);box-shadow:0 0 14px var(--mint)}a{color:var(--muted);text-decoration:none}.hero{padding:24px;border:1px solid var(--line);border-radius:18px;background:rgba(12,23,34,.82);box-shadow:0 18px 60px rgba(0,0,0,.34);margin-bottom:18px}h1{font-size:clamp(2rem,5vw,4rem);line-height:1;letter-spacing:-.06em}.grad{background:linear-gradient(135deg,#27d6ff,var(--mint));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}.lead{color:var(--muted);max-width:760px;margin-top:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.card{padding:18px;border:1px solid var(--line);border-radius:18px;background:#050709}.card h2{font-size:1.25rem;margin-bottom:12px}.list{display:grid;gap:10px}.row{display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:start;padding:14px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.035)}.badge{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;font-family:var(--mono);font-weight:900;border:1px solid rgba(255,255,255,.12)}.ok{background:rgba(93,255,173,.12);color:var(--green)}.mon{background:rgba(108,168,255,.12);color:var(--blue)}.rev{background:rgba(255,209,102,.12);color:var(--yellow)}.rel{background:rgba(179,156,255,.12);color:var(--purple)}.stop{background:rgba(255,107,122,.12);color:var(--red)}.row h3{font-size:1rem}.row p{color:var(--muted);font-size:.88rem}.row small{display:block;color:var(--dim);font-family:var(--mono);font-size:.68rem;margin-top:4px}.note{grid-column:1/-1;padding:16px;border:1px solid rgba(255,209,102,.22);border-radius:16px;background:rgba(255,209,102,.06);color:var(--muted)}.note strong{color:var(--yellow)}footer{padding:28px 0 0;text-align:center;color:var(--dim);font-family:var(--mono);font-size:.76rem}@media(max-width:860px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.wrap{padding:18px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="top"><div class="pill"><span class="dot"></span> Weekly Health Lens</div><a href="index.html">← กลับหน้า W3 Status</a></div>
+    <section class="hero"><p class="pill">weekly · public-safe · guide only · not runtime truth</p><h1>Module & Agent<br><span class="grad">Health Snapshot</span></h1><p class="lead">ใช้ดูภาระงานรายสัปดาห์แบบเบา ๆ ว่าโมดูลหรือเอเจนท์เริ่มนิ่ง เซ เสี่ยง หรือควรพักก่อน ไม่ใช่ระบบตัดสินจริง และไม่เปิด logic ภายใน</p></section>
+    <section class="grid">
+      <div class="card"><h2>Module Health</h2><div class="list">
+        <div class="row"><div class="badge ok">OK</div><div><h3>W3Lgu</h3><p>GREEN · grammar layer stable</p><small>ยังใช้เป็นแกนภาษาได้ตามปกติ</small></div></div>
+        <div class="row"><div class="badge mon">MON</div><div><h3>MPCP</h3><p>BLUE · cross support under observe</p><small>ยังไม่เร่ง Hyper Lib / Condien เกินจำเป็น</small></div></div>
+        <div class="row"><div class="badge rev">REV</div><div><h3>EP_SIGNAL</h3><p>YELLOW · transport relation needs review</p><small>ดู relation กับ Rytm / All Rytm แบบเบา ๆ</small></div></div>
+        <div class="row"><div class="badge ok">OK</div><div><h3>LRC2</h3><p>GREEN · trace memory stable</p><small>ใช้จำทาง / จำ trace ไม่แก้ source truth</small></div></div>
+        <div class="row"><div class="badge rev">WAT</div><div><h3>Hospitication</h3><p>YELLOW · recovery pattern under watch</p><small>ใช้เป็นจุดพัก/ตรวจอาการ ไม่เปิดงานใหม่เกินแรง</small></div></div>
+        <div class="row"><div class="badge ok">OK</div><div><h3>Cross-L</h3><p>GREEN · planner-only locked</p><small>execution_allowed:false / mutated:false</small></div></div>
+      </div></div>
+      <div class="card"><h2>Agent & Workload Health</h2><div class="list">
+        <div class="row"><div class="badge rev">LOAD</div><div><h3>Repository Scan Load</h3><p>YELLOW · ตรวจรีโป้/วิเคราะห์ถี่</p><small>ถ้าเริ่มล้า ให้พักการสร้าง feature ใหม่ก่อน</small></div></div>
+        <div class="row"><div class="badge rev">CG</div><div><h3>ChatGPT</h3><p>YELLOW · active flow/prototype support</p><small>ช่วยต่อได้ แต่ควรสรุปก่อนขยายงานใหม่</small></div></div>
+        <div class="row"><div class="badge ok">GM</div><div><h3>Gemini</h3><p>GREEN · validation role stable</p><small>เหมาะกับตรวจผล / cross-check รอบถัดไป</small></div></div>
+        <div class="row"><div class="badge mon">GK</div><div><h3>Grok</h3><p>BLUE · signal/pattern observation</p><small>เฝ้าดู pattern ได้ แต่ยังไม่ต้องขยาย semantic network</small></div></div>
+        <div class="row"><div class="badge rev">CA</div><div><h3>Cast</h3><p>YELLOW · context bridge needs summary</p><small>session ยาวควรสรุป context ก่อนทำงานใหญ่</small></div></div>
+        <div class="row"><div class="badge ok">CP</div><div><h3>Copilot-Gm</h3><p>GREEN · governance boundary stable</p><small>ยังทำหน้าที่ guard / template / structure ได้</small></div></div>
+      </div></div>
+      <div class="note"><strong>Weekly guide:</strong> ถ้าหลายจุดเป็น YELLOW พร้อมกัน ให้ลดการสร้างงานใหม่ หันไปสรุป จัดหมวด validate หรือพักเข้าระยะ Hospitication ก่อน</div>
+    </section>
+    <footer>W3 Hybrid System · Weekly Module & Agent Health · refactor/v0.2</footer>
+  </main>
+</body>
+</html>

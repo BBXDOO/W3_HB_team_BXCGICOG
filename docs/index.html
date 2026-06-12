@@ -1,807 +1,98 @@
-<!DOCTYPE html>  <html lang="th">  
-<head>  
-  <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">  
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://github.com https://api.github.com;">  
-  <meta name="theme-color" content="#2b2b2b">  
-  <meta name="description" content="W3: Hybrid Intelligent Origin System - ระบบ Hybrid Intelligent Workspace สำหรับการทำงานร่วมกันระหว่างมนุษย์และ AI">  
-  <meta name="apple-mobile-web-app-capable" content="yes">  
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">  
-  <meta name="apple-mobile-web-app-title" content="W3 System">    <title>W3: Hybrid Intelligent Origin System</title>    <!-- PWA Manifest -->    <link rel="manifest" href="manifest.json">    <!-- Icons -->    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">  
-  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">  
-  <link rel="apple-touch-icon" href="icons/icon-192.png">    <style>  
-    * {  
-      margin: 0;  
-      padding: 0;  
-      box-sizing: border-box;  
-    }  
-  
-    :root {  
-      --primary-color: #16f2b3;  
-      --secondary-color: #00b894;  
-      --bg-dark: #1a1a2e;  
-      --bg-darker: #16213e;  
-      --text-light: #fff;  
-      --text-muted: #ddd;  
-      --shadow: 0 4px 15px rgba(0, 0, 0, 0.2);  
-    }  
-  
-    body {  
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;  
-      -webkit-font-smoothing: antialiased;  
-      -moz-osx-font-smoothing: grayscale;  
-      background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%);  
-      color: var(--text-light);  
-      line-height: 1.6;  
-      min-height: 100vh;  
-      overflow-x: hidden;  
-    }  
-  
-    /* Header */  
-    header {  
-      background: rgba(26, 26, 46, 0.95);  
-      backdrop-filter: blur(10px);  
-      padding: 1rem 0;  
-      position: sticky;  
-      top: 0;  
-      z-index: 1000;  
-      box-shadow: var(--shadow);  
-    }  
-  
-    .header-content {  
-      max-width: 1200px;  
-      margin: 0 auto;  
-      padding: 0 20px;  
-      display: flex;  
-      align-items: center;  
-      justify-content: space-between;  
-    }  
-  
-    .logo {  
-      display: flex;  
-      align-items: center;  
-      gap: 10px;  
-      font-size: 1.5rem;  
-      font-weight: 700;  
-      color: var(--primary-color);  
-    }  
-  
-    .logo-icon {  
-      width: 40px;  
-      height: 40px;  
-      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);  
-      border-radius: 8px;  
-      display: flex;  
-      align-items: center;  
-      justify-content: center;  
-      font-weight: 900;  
-      color: var(--bg-dark);  
-    }  
-  
-    /* Hero Section */  
-    .hero {  
-      max-width: 1200px;  
-      margin: 0 auto;  
-      padding: 60px 20px;  
-      text-align: center;  
-    }  
-  
-    .hero h1 {  
-      font-size: 2.5rem;  
-      margin-bottom: 1rem;  
-      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);  
-      -webkit-background-clip: text;  
-      -webkit-text-fill-color: transparent;  
-      background-clip: text;  
-      animation: fadeInUp 0.8s ease;  
-    }  
-  
-    .hero .subtitle {  
-      font-size: 1.2rem;  
-      color: var(--text-muted);  
-      margin-bottom: 2rem;  
-      animation: fadeInUp 0.8s ease 0.2s both;  
-    }  
-  
-    .hero-quote {  
-      font-size: 1.1rem;  
-      font-style: italic;  
-      color: var(--primary-color);  
-      margin: 2rem 0;  
-      padding: 1.5rem;  
-      background: rgba(22, 242, 179, 0.1);  
-      border-left: 4px solid var(--primary-color);  
-      border-radius: 8px;  
-      animation: fadeInUp 0.8s ease 0.4s both;  
-    }  
-  
-    /* Action Buttons */  
-    .actions {  
-      display: flex;  
-      flex-wrap: wrap;  
-      gap: 1rem;  
-      justify-content: center;  
-      margin: 2rem 0;  
-      animation: fadeInUp 0.8s ease 0.6s both;  
-    }  
-  
-    .btn {  
-      display: inline-flex;  
-      align-items: center;  
-      gap: 8px;  
-      padding: 14px 28px;  
-      border-radius: 25px;  
-      text-decoration: none;  
-      font-weight: 600;  
-      transition: all 0.3s ease;  
-      box-shadow: var(--shadow);  
-    }  
-  
-    .btn-primary {  
-      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);  
-      color: var(--bg-dark);  
-    }  
-  
-    .btn-secondary {  
-      background: rgba(255, 255, 255, 0.1);  
-      color: var(--text-light);  
-      backdrop-filter: blur(10px);  
-    }  
-  
-    .btn:hover {  
-      transform: translateY(-3px);  
-      box-shadow: 0 6px 20px rgba(22, 242, 179, 0.4);  
-    }  
-  
-    .btn:active {  
-      transform: translateY(-1px);  
-    }  
-  
-    /* Features Section */  
-    .features {  
-      max-width: 1200px;  
-      margin: 4rem auto;  
-      padding: 0 20px;  
-    }  
-  
-    .section-title {  
-      text-align: center;  
-      font-size: 2rem;  
-      margin-bottom: 3rem;  
-      color: var(--primary-color);  
-    }  
-  
-    .feature-grid {  
-      display: grid;  
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));  
-      gap: 2rem;  
-    }  
-  
-    .feature-card {  
-      background: rgba(255, 255, 255, 0.05);  
-      backdrop-filter: blur(10px);  
-      padding: 2rem;  
-      border-radius: 16px;  
-      border: 1px solid rgba(22, 242, 179, 0.2);  
-      transition: all 0.3s ease;  
-    }  
-  
-    .feature-card:hover {  
-      transform: translateY(-5px);  
-      border-color: var(--primary-color);  
-      box-shadow: 0 8px 25px rgba(22, 242, 179, 0.2);  
-    }  
-  
-    .feature-icon {  
-      font-size: 3rem;  
-      margin-bottom: 1rem;  
-    }  
-  
-    .feature-card h3 {  
-      color: var(--primary-color);  
-      margin-bottom: 1rem;  
-    }  
-  
-    .feature-card p {  
-      color: var(--text-muted);  
-      line-height: 1.8;  
-    }  
-  
-    /* Team Section */  
-    .team {  
-      max-width: 1200px;  
-      margin: 4rem auto;  
-      padding: 0 20px;  
-    }  
-  
-    .team-list {  
-      display: grid;  
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));  
-      gap: 1.5rem;  
-    }  
-  
-    .team-member {  
-      background: rgba(255, 255, 255, 0.05);  
-      padding: 1.5rem;  
-      border-radius: 12px;  
-      text-align: center;  
-      border: 1px solid rgba(22, 242, 179, 0.1);  
-    }  
-  
-    .team-member h4 {  
-      color: var(--primary-color);  
-      margin-bottom: 0.5rem;  
-    }  
-  
-    .team-member p {  
-      color: var(--text-muted);  
-      font-size: 0.9rem;  
-    }  
-  
-    /* Footer */  
-    footer {  
-      background: rgba(26, 26, 46, 0.95);  
-      padding: 2rem 20px;  
-      text-align: center;  
-      margin-top: 4rem;  
-    }  
-  
-    footer p {  
-      color: var(--text-muted);  
-    }  
-  
-    .install-prompt {  
-      position: fixed;  
-      bottom: 20px;  
-      left: 50%;  
-      transform: translateX(-50%);  
-      background: var(--bg-dark);  
-      padding: 1rem 1.5rem;  
-      border-radius: 12px;  
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);  
-      display: none;  
-      align-items: center;  
-      gap: 1rem;  
-      max-width: 90%;  
-      border: 1px solid var(--primary-color);  
-      z-index: 2000;  
-    }  
-  
-    .install-prompt.show {  
-      display: flex;  
-      animation: slideUp 0.5s ease;  
-    }  
-  
-    .install-prompt button {  
-      background: var(--primary-color);  
-      color: var(--bg-dark);  
-      border: none;  
-      padding: 8px 16px;  
-      border-radius: 8px;  
-      font-weight: 600;  
-      cursor: pointer;  
-    }  
-  
-    .install-prompt .close {  
-      background: transparent;  
-      color: var(--text-muted);  
-      padding: 4px 8px;  
-    }  
-  
-    /* Animations */  
-    @keyframes fadeInUp {  
-      from {  
-        opacity: 0;  
-        transform: translateY(30px);  
-      }  
-      to {  
-        opacity: 1;  
-        transform: translateY(0);  
-      }  
-    }  
-  
-    @keyframes slideUp {  
-      from {  
-        opacity: 0;  
-        transform: translateX(-50%) translateY(100px);  
-      }  
-      to {  
-        opacity: 1;  
-        transform: translateX(-50%) translateY(0);  
-      }  
-    }  
-  
-    /* Responsive */  
-    @media (max-width: 768px) {  
-      .hero h1 {  
-        font-size: 2rem;  
-      }  
-  
-      .hero .subtitle {  
-        font-size: 1rem;  
-      }  
-  
-      .actions {  
-        flex-direction: column;  
-        width: 100%;  
-      }  
-  
-      .btn {  
-        width: 100%;  
-        justify-content: center;  
-      }  
-  
-      .section-title {  
-        font-size: 1.5rem;  
-      }  
-    }  
-  
-    /* Loading indicator */  
-    .loading {  
-      display: none;  
-      position: fixed;  
-      top: 50%;  
-      left: 50%;  
-      transform: translate(-50%, -50%);  
-      z-index: 3000;  
-    }  
-  
-    .spinner {  
-      width: 50px;  
-      height: 50px;  
-      border: 4px solid rgba(22, 242, 179, 0.3);  
-      border-top-color: var(--primary-color);  
-      border-radius: 50%;  
-      animation: spin 1s linear infinite;  
-    }  
-  
-    @keyframes spin {  
-      to { transform: rotate(360deg); }  
-    }  
-  </style>  </head>  
-<body>  
-  <!-- Header -->  
-  <header>  
-    <div class="header-content">  
-      <div class="logo">  
-        <div class="logo-icon">W3</div>  
-        <span>W3 System</span>  
-      </div>  
-    </div>  
-  </header>    <!-- Hero Section -->    <main>  
-    <section class="hero">  
-      <h1>W3: Hybrid Intelligent Origin System</h1>  
-      <p class="subtitle">  
-        ระบบ Hybrid Intelligent Workspace สำหรับการทำงานร่วมกันระหว่างมนุษย์และ AI<br>  
-        อย่างเป็นระบบ โปร่งใส และตรวจสอบได้  
-      </p>  <div class="hero-quote">  
-    "เข้มแข็งดุจเหล็กกล้า — อบอุ่นดังแสงอรุณแรกของวัน"  
-  </div>  
-
-  <div class="actions">  
-    <a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG" class="btn btn-primary" target="_blank" rel="noopener">  
-      <span>📂</span> ดู Repository  
-    </a>  
-    <a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG/issues" class="btn btn-secondary" target="_blank" rel="noopener">  
-      <span>🐛</span> Issues  
-    </a>  
-    <a href="https://github.com/BBXDOO" class="btn btn-secondary" target="_blank" rel="noopener">  
-      <span>👤</span> ติดต่อเรา  
-    </a>  
-  </div>  
-</section>  
-
-<!-- Features Section -->  
-<section class="features">  
-  <h2 class="section-title">จุดเด่นของระบบ</h2>  
-  <div class="feature-grid">  
-    <div class="feature-card">  
-      <div class="feature-icon">🤝</div>  
-      <h3>Hybrid Intelligence</h3>  
-      <p>การผสานการทำงานระหว่างมนุษย์และ AI อย่างลงตัว เพื่อผลลัพธ์ที่ดีที่สุด</p>  
-    </div>  
-    <div class="feature-card">  
-      <div class="feature-icon">🔍</div>  
-      <h3>โปร่งใสและตรวจสอบได้</h3>  
-      <p>ทุกกระบวนการถูกบันทึกและสามารถตรวจสอบย้อนหลังได้อย่างชัดเจน</p>  
-    </div>  
-    <div class="feature-card">  
-      <div class="feature-icon">📈</div>  
-      <h3>ขยายตัวได้</h3>  
-      <p>สถาปัตยกรรมที่ออกแบบมาเพื่อรองรับการเติบโตในอนาคต</p>  
-    </div>  
-    <div class="feature-card">  
-      <div class="feature-icon">🛡️</div>  
-      <h3>ปลอดภัยและเชื่อถือได้</h3>  
-      <p>มีระบบ governance และ verification ที่แข็งแกร่ง</p>  
-    </div>  
-    <div class="feature-card">  
-      <div class="feature-icon">📚</div>  
-      <h3>จัดการความรู้</h3>  
-      <p>ระบบบันทึกและจัดเก็บความรู้อย่างเป็นระบบ</p>  
-    </div>  
-    <div class="feature-card">  
-      <div class="feature-icon">🔄</div>  
-      <h3>ปรับตัวได้</h3>  
-      <p>สามารถปรับเปลี่ยนและพัฒนาตามความต้องการ</p>  
-    </div>  
-  </div>  
-</section>  
-
-<!-- Team Section -->  
-<section class="team">  
-  <h2 class="section-title">ทีม W3 Hybrid</h2>  
-  <div class="team-list">  
-    <div class="team-member">  
-      <h4>BBX19</h4>  
-      <p>Root Authority</p>  
-    </div>  
-    <div class="team-member">  
-      <h4>ChatGPT</h4>  
-      <p>Architecture & Executor</p>  
-    </div>  
-    <div class="team-member">  
-      <h4>DeepSeek</h4>  
-      <p>Scalability & Long-term</p>  
-    </div>  
-    <div class="team-member">  
-      <h4>Gemini</h4>  
-      <p>Meta Verification Layer</p>  
-    </div>  
-    <div class="team-member">  
-      <h4>Grok</h4>  
-      <p>Knowledge & Pattern</p>  
-    </div>  
-    <div class="team-member">  
-      <h4>Copilot-Gm</h4>  
-      <p>Governance Engine</p>  
-    </div>  
-  </div>  
-</section>  
-
-<!-- Acknowledgment Section -->  
-<section class="acknowledgment" style="text-align: center; padding: 3rem 2rem; background: rgba(22, 242, 179, 0.05); border-radius: 10px; margin: 2rem auto; max-width: 800px;">  
-  <h2 class="section-title" style="font-size: 1.8rem; margin-bottom: 1rem;">🙏 ขอบคุณ</h2>  
-  <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-muted); max-width: 700px; margin: 0 auto 1.5rem;">  
-    <strong style="color: var(--primary-color);">"ขอบคุณทุกคนที่ทำงานหนักในระบบ W3"</strong><br>  
-    ทั้งมนุษย์และ AI ที่ทำงานร่วมกันอย่างมีประสิทธิภาพ<br>  
-    เพื่อสร้าง Hybrid Intelligent Workspace ที่ดีที่สุด  
-  </p>  
-  <div style="margin: 1.5rem 0; padding: 1rem; background: rgba(255, 255, 255, 0.05); border-radius: 8px; border-left: 4px solid var(--primary-color);">  
-    <p style="font-style: italic; color: var(--primary-color); font-size: 1rem;">  
-      "ผิดได้ เริ่มใหม่ได้ แก้ไขได้ ไม่ต้องห่วงเรื่องความสำเร็จ<br>  
-      เราไม่ได้แข่งขันกับใคร ทำทุกสิ่งให้ดีที่สุด"  
-    </p>  
-  </div>  
-  <a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/main/ACKNOWLEDGMENTS.md"  
-     target="_blank"  
-     style="display: inline-block; margin-top: 1rem; padding: 0.8rem 1.5rem; background: var(--primary-color); color: var(--bg-dark); text-decoration: none; border-radius: 5px; font-weight: bold; transition: all 0.3s;">  
-    อ่านเพิ่มเติม →  
-  </a>  
-</section>
-
-  </main>    <!-- Footer -->    <footer>  
-    <p>&copy; 2025 W3: Hybrid Intelligent Origin System</p>  
-    <p>Team: HB_team_BXCGICOG</p>  
-  </footer>    <!-- Install Prompt -->    <div class="install-prompt" id="installPrompt">  
-    <span>📱 ติดตั้ง W3 System เป็นแอปบนอุปกรณ์ของคุณ</span>  
-    <button id="installBtn">ติดตั้ง</button>  
-    <button class="close" id="closePrompt" type="button" aria-label="ปิดคำแนะนำการติดตั้ง">✕</button>  
-  </div>    <!-- Loading Indicator -->    <div class="loading" id="loading">  
-    <div class="spinner"></div>  
-  </div>    <!-- PWA Script -->    <script>  
-    // Register Service Worker  
-    if ('serviceWorker' in navigator) {  
-      window.addEventListener('load', () => {  
-        navigator.serviceWorker.register('sw.js')  
-          .then((registration) => {  
-            console.log('SW registered:', registration);  
-          })  
-          .catch((error) => {  
-            console.error('SW registration failed:', error);  
-            // Show a non-intrusive notification that offline functionality is unavailable  
-            const notification = document.createElement('div');  
-            notification.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#ff6b6b;color:white;padding:12px 24px;border-radius:8px;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3);font-size:14px;max-width:90%;text-align:center;';  
-            notification.textContent = 'ไม่สามารถเปิดใช้งานโหมดออฟไลน์ได้ กรุณาใช้งานผ่าน HTTPS';  
-            document.body.appendChild(notification);  
-            setTimeout(() => {  
-              notification.style.transition = 'opacity 0.5s';  
-              notification.style.opacity = '0';  
-              setTimeout(() => notification.remove(), 500);  
-            }, 5000);  
-          });  
-      });  
-    } else {  
-      // Service Worker not supported  
-      console.warn('Service Worker not supported in this browser');  
-    }  
-  
-    // Install prompt  
-    let deferredPrompt;  
-    const installPrompt = document.getElementById('installPrompt');  
-    const installBtn = document.getElementById('installBtn');  
-    const closePrompt = document.getElementById('closePrompt');  
-  
-    window.addEventListener('beforeinstallprompt', (e) => {  
-      e.preventDefault();  
-      deferredPrompt = e;  
-      installPrompt.classList.add('show');  
-    });  
-  
-    installBtn.addEventListener('click', async () => {  
-      if (!deferredPrompt) {  
-        return;  
-      }  
-      try {  
-        await deferredPrompt.prompt();  
-        const { outcome } = await deferredPrompt.userChoice;  
-        console.log(`User response to the install prompt: ${outcome}`);  
-        deferredPrompt = null;  
-        installPrompt.classList.remove('show');  
-      } catch (error) {  
-        console.error('Error during PWA installation:', error);  
-        alert('ไม่สามารถติดตั้งแอปได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตหรือการตั้งค่าเบราว์เซอร์ แล้วลองใหม่อีกครั้ง');  
-      }  
-    });  
-  
-    closePrompt.addEventListener('click', () => {  
-      installPrompt.classList.remove('show');  
-    });  
-  
-    // Hide install prompt after installation  
-    window.addEventListener('appinstalled', () => {  
-      installPrompt.classList.remove('show');  
-      console.log('PWA was installed');  
-    });  
-  
-    // Check if app is installed  
-    if (window.matchMedia('(display-mode: standalone)').matches) {  
-      console.log('Running as PWA');  
-    }  
-  
-    // Handle online/offline status  
-    window.addEventListener('online', () => {  
-      console.log('Back online');  
-    });  
-  
-    window.addEventListener('offline', () => {  
-      console.log('Gone offline');  
-    });  
-  </script>    <section style="padding:20px;">  
-  <h2 style="color:white;">W3 System</h2>    <div class="card">  
-    <b>Input</b>  
-    <p>Patient Info / Diet Order</p>  
-  </div>    <div class="card">  
-    <b>Logic</b>  
-    <p>Process Nutrition Flow</p>  
-  </div>    <div class="card">  
-    <b>Output</b>  
-    <p>Meal Delivery</p>  
-  </div>  
-</section>  
-  <div style="max-width:900px;margin:40px auto;background:#2b2b2b;padding:30px;border-radius:12px;color:white;">    <h1 style="color:red;">W3HBT W3.DNA</h1>  
-  <h1>W3 System</h1>  
-  <p style="color:#aaa;">Hybrid Intelligent System</p>    <div style="display:flex;gap:20px;flex-wrap:wrap;">  <!-- LEFT -->  
-<div style="flex:1;min-width:250px;">  
-  <h3>Overview</h3>  
-  <p>System for managing patient nutrition workflow.</p>  
-</div>  
-
-<!-- RIGHT -->  
-<div style="flex:1;min-width:250px;">  
-  <h3>Modules</h3>  
-
-  <p>Input</p>  
-  <div style="background:#444;height:6px;border-radius:5px;">  
-    <div style="width:80%;background:#00c6ff;height:6px;"></div>  
-  </div>  
-
-  <p>Logic</p>  
-  <div style="background:#444;height:6px;border-radius:5px;">  
-    <div style="width:70%;background:#00c6ff;height:6px;"></div>  
-  </div>  
-
-  <p>Output</p>  
-  <div style="background:#444;height:6px;border-radius:5px;">  
-    <div style="width:90%;background:#00c6ff;height:6px;"></div>  
-  </div>  
-
-</div>
-
-  </div>    </div>  
-  <!-- ================= W3 SYSTEM BRAIN BOX ================= -->  
-<section id="w3-brain-box">  
-  <div class="brain-container">  <!-- LEFT MENU -->  
-<div class="brain-nav" id="brainNav"></div>  
-
-<!-- RIGHT CONTENT -->  
-<div class="brain-content" id="brainContent">  
-  <h2>W3 System</h2>  
-  <p class="muted">Loading system...</p>  
-</div>
-
-  </div>  
-</section>  <style>  
-#w3-brain-box {  
-  max-width: 1100px;  
-  margin: 60px auto;  
-  padding: 0 20px;  
-}  
-  
-.brain-container {  
-  display: flex;  
-  border-radius: 16px;  
-  overflow: hidden;  
-  background: #0a0f1c;  
-  border: 1px solid rgba(0,255,200,0.15);  
-  box-shadow: 0 0 40px rgba(0,255,200,0.08);  
-}  
-  
-/* LEFT */  
-.brain-nav {  
-  width: 230px;  
-  background: #050811;  
-  border-right: 1px solid rgba(255,255,255,0.05);  
-}  
-  
-.brain-item {  
-  padding: 14px 16px;  
-  cursor: pointer;  
-  font-family: monospace;  
-  color: #8a8f98;  
-  border-left: 3px solid transparent;  
-  transition: all 0.25s ease;  
-}  
-  
-.brain-item:hover {  
-  background: rgba(0,255,200,0.08);  
-  color: #00ffd0;  
-}  
-  
-.brain-item.active {  
-  background: rgba(0,255,200,0.12);  
-  color: #00ffd0;  
-  border-left: 3px solid #00ffd0;  
-}  
-  
-/* RIGHT */  
-.brain-content {  
-  flex: 1;  
-  padding: 26px;  
-  font-family: monospace;  
-  color: #e6edf3;  
-  animation: fade 0.3s ease;  
-}  
-  
-.brain-content h2 {  
-  color: #00ffd0;  
-  margin-bottom: 10px;  
-}  
-  
-/* TEXT COLORS */  
-.muted { color: #7c8591; }  
-.key { color: #00ffd0; }  
-.value { color: #7ee787; }  
-.code { color: #58a6ff; }  
-  
-/* BLOCK */  
-.block {  
-  margin-top: 15px;  
-  padding: 12px;  
-  background: rgba(255,255,255,0.03);  
-  border-radius: 8px;  
-  border: 1px solid rgba(255,255,255,0.05);  
-}  
-  
-/* ANIMATION */  
-@keyframes fade {  
-  from {opacity:0; transform: translateY(10px);}  
-  to {opacity:1; transform: translateY(0);}  
-}  
-</style>  <script>  
-/* ================= DATA (แก้ตรงนี้ได้ = brain control) ================= */  
-const SYSTEM_DATA = {  
-  core: {  
-    title: "core",  
-    desc: "ระบบแกนกลาง",  
-    items: [  
-      ["governance", "rules & control"],  
-      ["runtime", "execution engine"],  
-      ["logs", "system tracking"]  
-    ]  
-  },  
-  agents: {  
-    title: "agents",  
-    desc: "AI collaboration layer",  
-    items: [  
-      ["BBX19", "Root Authority"],  
-      ["ChatGPT", "Executor"],  
-      ["DeepSeek", "Analysis"],  
-      ["Gemini", "Validation"],  
-      ["Grok", "Pattern"],  
-      ["Copilot-Gm", "Governance"]  
-    ]  
-  },  
-  modules: {  
-    title: "modules",  
-    desc: "workflow system",  
-    items: [  
-      ["/modules/requests", ""],  
-      ["/modules/reports", ""],  
-      ["/modules/templates", ""]  
-    ]  
-  },  
-  knowledge: {  
-    title: "knowledge",  
-    desc: "memory & philosophy",  
-    items: [  
-      ["/knowledge/philosophy", ""],  
-      ["/knowledge/patterns", ""],  
-      ["memory_bank.json", ""]  
-    ]  
-  },  
-  docs: {  
-    title: "docs",  
-    desc: "frontend + PWA",  
-    items: [  
-      ["index.html", ""],  
-      ["manifest.json", ""],  
-      ["sw.js", ""]  
-    ]  
-  },  
-  tools: {  
-    title: "tools",  
-    desc: "automation",  
-    items: [  
-      ["validate_json.py", ""],  
-      ["run_audit.py", ""],  
-      ["file_integrity_check.py", ""]  
-    ]  
-  }  
-};  
-  
-/* ================= BUILD MENU ================= */  
-const nav = document.getElementById("brainNav");  
-const content = document.getElementById("brainContent");  
-  
-Object.keys(SYSTEM_DATA).forEach((key, index) => {  
-  const item = document.createElement("div");  
-  item.className = "brain-item";  
-  item.innerText = key;  
-  
-  item.onclick = () => {  
-    document.querySelectorAll(".brain-item").forEach(el => el.classList.remove("active"));  
-    item.classList.add("active");  
-    renderContent(key);  
-  };  
-  
-  nav.appendChild(item);  
-  
-  if (index === 0) {  
-    item.classList.add("active");  
-    renderContent(key);  
-  }  
-});  
-  
-/* ================= RENDER ================= */  
-function renderContent(key) {  
-  const data = SYSTEM_DATA[key];  
-  
-  let html = `  
-    <h2>${data.title}</h2>  
-    <p class="muted">${data.desc}</p>  
-    <div class="block">  
-  `;  
-  
-  data.items.forEach(([k, v]) => {  
-    html += `<p><span class="key">${k}</span> ${v ? "→ <span class='value'>" + v + "</span>" : ""}</p>`;  
-  });  
-  
-  html += `</div>`;  
-  
-  content.innerHTML = html;  
-}  
-</script>  
-  <script src="https://www.bubblav.com/widget.js" data-site-id="403a67a3-1ac9-47b6-9b02-4b804ce05806" defer></script>
-  <!-- ================= END ================= -->  </body>  
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://github.com https://api.github.com;">
+  <meta name="theme-color" content="#071019">
+  <meta name="description" content="W3 Hybrid System Status — จุดปรับวิสัยของระบบ W3">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="W3 Status">
+  <title>W3 Hybrid System Status</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --bg:#071019; --panel:#0c1722; --text:#e7f4ff; --muted:#8ea4b8; --dim:#5f7586; --line:rgba(126,246,210,.18); --line-soft:rgba(255,255,255,.08); --cyan:#27d6ff; --mint:#22f0b6; --yellow:#ffd166; --red:#ff6b7a; --purple:#b39cff; --blue:#6ca8ff; --green:#5dffad; --orange:#ff9d5c; --shadow:0 18px 60px rgba(0,0,0,.35); --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+    body { min-height:100vh; background:radial-gradient(circle at 18% 0%,rgba(39,214,255,.13),transparent 34%),radial-gradient(circle at 82% 12%,rgba(34,240,182,.12),transparent 30%),linear-gradient(135deg,#050910 0%,var(--bg) 48%,#091927 100%); color:var(--text); font-family:var(--sans); line-height:1.6; overflow-x:hidden; }
+    .shell { display:grid; grid-template-columns:250px 1fr; min-height:100vh; }
+    aside { position:sticky; top:0; height:100vh; padding:22px 18px; border-right:1px solid var(--line-soft); background:rgba(4,10,17,.78); backdrop-filter:blur(16px); }
+    .brand { display:flex; align-items:center; gap:12px; padding-bottom:22px; border-bottom:1px solid var(--line-soft); margin-bottom:22px; }
+    .mark { width:42px; height:42px; display:grid; place-items:center; border-radius:12px; background:linear-gradient(135deg,rgba(39,214,255,.24),rgba(34,240,182,.18)); border:1px solid var(--line); color:var(--mint); font-weight:900; box-shadow:0 0 24px rgba(34,240,182,.18); }
+    .brand h1 { font-size:1rem; } .brand p { font-family:var(--mono); font-size:.72rem; color:var(--muted); }
+    .nav-title { font-family:var(--mono); font-size:.68rem; letter-spacing:.18em; color:var(--dim); margin:20px 0 10px; text-transform:uppercase; }
+    nav a { display:flex; align-items:center; gap:10px; padding:10px 12px; color:var(--muted); text-decoration:none; border-radius:10px; font-size:.9rem; transition:.2s ease; }
+    nav a:hover, nav a.active { color:var(--text); background:rgba(39,214,255,.09); border:1px solid rgba(39,214,255,.14); }
+    .sidebar-foot { position:absolute; left:18px; right:18px; bottom:18px; font-family:var(--mono); font-size:.72rem; color:var(--dim); border-top:1px solid var(--line-soft); padding-top:14px; }
+    main { padding:28px; max-width:1220px; width:100%; margin:0 auto; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:24px; }
+    .status-pill { display:inline-flex; align-items:center; gap:8px; padding:7px 12px; border:1px solid rgba(34,240,182,.24); border-radius:999px; background:rgba(34,240,182,.08); color:var(--mint); font-family:var(--mono); font-size:.78rem; text-transform:uppercase; }
+    .dot { width:8px; height:8px; border-radius:999px; background:var(--mint); box-shadow:0 0 16px var(--mint); }
+    .tiny-link { color:var(--muted); text-decoration:none; font-family:var(--mono); font-size:.78rem; border:1px solid var(--line-soft); border-radius:999px; padding:7px 12px; background:rgba(255,255,255,.03); }
+    .hero { display:grid; grid-template-columns:1.2fr .8fr; gap:22px; margin-bottom:22px; }
+    .panel { background:linear-gradient(180deg,rgba(16,31,45,.88),rgba(9,18,28,.88)); border:1px solid var(--line-soft); border-radius:18px; box-shadow:var(--shadow); overflow:hidden; }
+    .panel-inner { padding:24px; } .kicker { font-family:var(--mono); font-size:.72rem; color:var(--cyan); letter-spacing:.18em; text-transform:uppercase; margin-bottom:10px; }
+    .hero h2 { font-size:clamp(2rem,5vw,4.2rem); line-height:1.02; letter-spacing:-.06em; margin-bottom:16px; }
+    .gradient { background:linear-gradient(135deg,var(--cyan),var(--mint)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+    .lead { color:var(--muted); max-width:720px; font-size:1.02rem; }
+    .quote { margin-top:18px; padding:16px; border-left:4px solid var(--mint); border-radius:12px; background:rgba(34,240,182,.06); color:#d7fff3; font-family:var(--mono); font-size:.86rem; }
+    .terminal { font-family:var(--mono); min-height:100%; background:rgba(0,0,0,.18); }
+    .terminal-head { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--line-soft); color:var(--muted); font-size:.78rem; }
+    .lights span { display:inline-block; width:9px; height:9px; border-radius:50%; margin-left:6px; opacity:.9; } .l-red{background:var(--red)} .l-yellow{background:var(--yellow)} .l-green{background:var(--green)}
+    .terminal-body { padding:18px; font-size:.82rem; color:var(--muted); } .terminal-body b{color:var(--text)} .ok{color:var(--mint)} .warn{color:var(--yellow)} .blue{color:var(--cyan)}
+    .status-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+    .card { background:rgba(16,31,45,.72); border:1px solid var(--line-soft); border-radius:16px; padding:18px; min-height:126px; }
+    .card h3 { font-family:var(--mono); color:var(--muted); font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; margin-bottom:12px; } .card strong{display:block;font-size:1.1rem;margin-bottom:8px} .card p{color:var(--muted);font-size:.9rem}
+    .accent-green{border-color:rgba(93,255,173,.26)} .accent-blue{border-color:rgba(108,168,255,.26)} .accent-yellow{border-color:rgba(255,209,102,.24)} .accent-purple{border-color:rgba(179,156,255,.24)}
+    .section { margin-top:24px; } .section-head { display:flex; align-items:end; justify-content:space-between; gap:16px; margin-bottom:14px; padding:0 4px; } .section-head h2{font-size:1.35rem} .section-head p{color:var(--muted); font-family:var(--mono); font-size:.78rem}
+    .flow-board { position:relative; padding:20px; border-radius:18px; border:1px solid var(--line-soft); background:radial-gradient(circle at 40% 0%,rgba(39,214,255,.08),transparent 42%),rgba(7,16,25,.74); overflow:hidden; }
+    .flow-board:before { content:""; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:36px 36px; opacity:.22; pointer-events:none; }
+    .flow-row { position:relative; display:grid; grid-template-columns:repeat(5,1fr); gap:16px; align-items:stretch; z-index:1; }
+    .flow-node { position:relative; min-height:134px; padding:16px; border-radius:16px; background:rgba(12,23,34,.9); border:1px solid rgba(255,255,255,.11); box-shadow:0 12px 35px rgba(0,0,0,.24); }
+    .flow-node:after { content:""; position:absolute; top:50%; right:-17px; width:17px; height:1px; background:rgba(231,244,255,.32); } .flow-node:last-child:after{display:none}
+    .flow-node .num { display:inline-grid; place-items:center; width:28px; height:28px; border-radius:9px; font-family:var(--mono); font-size:.78rem; font-weight:800; margin-bottom:12px; }
+    .flow-node h3{margin-bottom:6px;font-size:1rem} .flow-node p{color:var(--muted); font-size:.88rem}
+    .n-cyan{border-color:rgba(39,214,255,.28)} .n-cyan .num{background:rgba(39,214,255,.15);color:var(--cyan)} .n-green{border-color:rgba(93,255,173,.24)} .n-green .num{background:rgba(93,255,173,.14);color:var(--green)} .n-yellow{border-color:rgba(255,209,102,.24)} .n-yellow .num{background:rgba(255,209,102,.14);color:var(--yellow)} .n-purple{border-color:rgba(179,156,255,.24)} .n-purple .num{background:rgba(179,156,255,.14);color:var(--purple)} .n-red{border-color:rgba(255,107,122,.24)} .n-red .num{background:rgba(255,107,122,.14);color:var(--red)}
+    .matrix-wrap { display:grid; grid-template-columns:.95fr 1.05fr; gap:14px; } .heat-card { padding:18px; border-radius:18px; background:#050709; border:1px solid rgba(255,255,255,.12); box-shadow:var(--shadow); } .heat-card h3{font-size:1.25rem;margin-bottom:12px}
+    .heat-grid { display:grid; grid-template-columns:repeat(8,1fr); gap:7px; margin:14px 0 18px; } .cell { aspect-ratio:1; border-radius:9px; display:grid; place-items:center; font-family:var(--mono); font-size:.72rem; font-weight:800; color:#071019; }
+    .cell.blue{background:#6c7cff;color:#e9edff} .cell.green{background:#68ffb3} .cell.yellow{background:#eaff68} .cell.purple{background:#8f62ff;color:#f2edff} .cell.dark{background:#151a23;color:#7d8da0}
+    .pulse-list{display:grid;gap:11px;margin-top:14px} .pulse{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center} .pulse b{font-family:var(--mono);font-size:.8rem} .dots{display:grid;grid-template-columns:repeat(22,5px);gap:4px} .dots i{width:5px;height:5px;border-radius:50%;background:rgba(34,240,182,.22)} .dots i.on{background:var(--mint);box-shadow:0 0 10px var(--mint)}
+    .lane-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; } .lane { border-radius:16px; border:1px solid var(--line-soft); background:rgba(7,16,25,.72); padding:16px; } .lane .tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.72rem;color:var(--dim);margin-bottom:12px}
+    .chip { display:inline-flex; align-items:center; gap:6px; padding:5px 8px; border-radius:999px; background:rgba(255,255,255,.05); color:var(--muted); font-family:var(--mono); font-size:.72rem; margin:6px 6px 0 0; border:1px solid var(--line-soft); }
+    .color-dot{width:7px;height:7px;border-radius:50%;display:inline-block} .c-blue{background:var(--blue)} .c-green{background:var(--green)} .c-yellow{background:var(--yellow)} .c-red{background:var(--red)} .c-purple{background:var(--purple)} .c-orange{background:var(--orange)}
+    .team-board { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .team-list { display:grid; gap:10px; }
+    .team-card { display:grid; grid-template-columns:46px 1fr; gap:12px; align-items:start; padding:14px; border-radius:15px; background:rgba(255,255,255,.035); border:1px solid var(--line-soft); }
+    .avatar { width:42px; height:42px; border-radius:13px; display:grid; place-items:center; font-weight:900; font-family:var(--mono); border:1px solid rgba(255,255,255,.12); }
+    .team-card h3 { font-size:1rem; margin-bottom:2px; } .team-card p { color:var(--muted); font-size:.86rem; } .team-card small { display:block; color:var(--dim); font-family:var(--mono); font-size:.68rem; margin-top:5px; }
+    .a-gold{background:rgba(255,209,102,.12);color:var(--yellow)} .a-green{background:rgba(93,255,173,.12);color:var(--green)} .a-blue{background:rgba(108,168,255,.12);color:var(--blue)} .a-purple{background:rgba(179,156,255,.12);color:var(--purple)} .a-orange{background:rgba(255,157,92,.12);color:var(--orange)} .a-red{background:rgba(255,107,122,.12);color:var(--red)} .a-cyan{background:rgba(39,214,255,.12);color:var(--cyan)}
+    .links { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; } .link-card{padding:14px;border-radius:14px;border:1px solid var(--line-soft);background:rgba(255,255,255,.035);text-decoration:none;color:var(--text);transition:.2s ease} .link-card:hover{border-color:rgba(39,214,255,.35);transform:translateY(-2px)} .link-card span{display:block;color:var(--muted);font-family:var(--mono);font-size:.72rem;margin-top:4px}
+    footer{color:var(--dim);font-family:var(--mono);font-size:.76rem;text-align:center;padding:32px 0 10px}
+    .install-prompt{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);display:none;align-items:center;gap:12px;padding:12px 14px;max-width:min(92vw,560px);border-radius:14px;background:rgba(12,23,34,.96);border:1px solid rgba(34,240,182,.35);box-shadow:var(--shadow);z-index:10}.install-prompt.show{display:flex}.install-prompt button{border:0;border-radius:10px;padding:8px 12px;background:var(--mint);color:#041018;font-weight:800}.install-prompt .close{background:transparent;color:var(--muted)}
+    @media(max-width:1040px){.flow-row{grid-template-columns:1fr}.flow-node:after{top:auto;right:50%;bottom:-17px;width:1px;height:17px}.matrix-wrap,.team-board{grid-template-columns:1fr}}
+    @media(max-width:920px){.shell{grid-template-columns:1fr}aside{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line-soft)}nav{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}.sidebar-foot{position:static;margin-top:18px}main{padding:18px}.hero{grid-template-columns:1fr}.status-grid{grid-template-columns:repeat(2,1fr)}.lane-grid{grid-template-columns:1fr}.links{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:520px){nav{grid-template-columns:1fr}.status-grid,.links{grid-template-columns:1fr}.topbar{align-items:flex-start;flex-direction:column}.panel-inner{padding:18px}.heat-grid{gap:5px}.dots{grid-template-columns:repeat(16,5px)}}
+  </style>
+</head>
+<body>
+  <div class="shell"><aside><div class="brand"><div class="mark">W3</div><div><h1>W3 System</h1><p>// status lens</p></div></div><div class="nav-title">Workspace</div><nav><a class="active" href="#status">⌁ Status</a><a href="#w3lgu">⌁ W3Lgu Flow</a><a href="#team">⌁ Team Network</a><a href="#cross">⌁ Cross System</a><a href="#boundary">⌁ Boundary</a><a href="#refs">⌁ References</a></nav><div class="nav-title">Public Mode</div><nav><a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG" target="_blank" rel="noopener">↗ Repository</a><a href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG/issues" target="_blank" rel="noopener">↗ Issues</a></nav><div class="sidebar-foot">refactor/v0.2<br>mutated:false<br>planner-only / public-safe</div></aside>
+    <main>
+      <div class="topbar" id="status"><div class="status-pill"><span class="dot"></span> Live public status</div><a class="tiny-link" href="https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/docs" target="_blank" rel="noopener">docs/ จุดปรับวิสัย ↗</a></div>
+      <section class="hero"><div class="panel"><div class="panel-inner"><div class="kicker">W3 Hybrid / จุดปรับวิสัย</div><h2>System Status<br><span class="gradient">not internal truth.</span></h2><p class="lead">หน้านี้เป็น Lamp สำหรับดูสถานะและทิศทางของ W3 เท่านั้น — แสดงภาพรวมแบบปลอดภัย ไม่เปิดเผย logic ลึก, runtime payload, secret, หรือ source truth ภายใน</p><div class="quote">Build → Fail → Learn → Continue<br>ต่างหน้าที่ได้ แต่ต่างแกนไม่ได้ · หลายเครื่องมือได้ แต่หนึ่งภาษา</div></div></div><div class="panel terminal"><div class="terminal-head"><span>// public-status.packet</span><span class="lights"><span class="l-red"></span><span class="l-yellow"></span><span class="l-green"></span></span></div><div class="terminal-body"><div><b>BRANCH</b> <span class="blue">refactor/v0.2</span></div><div><b>MODE</b> <span class="ok">observe / planner-only</span></div><div><b>MUTATED</b> <span class="ok">false</span></div><div><b>REVIEW</b> <span class="warn">human-first</span></div><div><b>FOCUS</b> W3MD · Hybrid-SynCap · Cross-index</div><br><div><span class="blue">RETURN</span>: state, reason, trace, mutated, review</div></div></div></section>
+      <section class="status-grid"><div class="card accent-green"><h3>Active Branch</h3><strong>refactor/v0.2</strong><p>พื้นที่ทำงานหลัก ป้องกัน main branch และคุมการเปลี่ยนแปลงผ่าน review</p></div><div class="card accent-blue"><h3>Current Layer</h3><strong>W3MD / W3X Docs</strong><p>จัดเอกสารให้เป็นจุดตัดร่วมของระบบ คนอ่านได้ AI ใช้ต่อได้</p></div><div class="card accent-yellow"><h3>Safety</h3><strong>mutated:false</strong><p>หน้านี้ไม่ execute, ไม่ write-back, ไม่ merge, ไม่เปลี่ยน source truth</p></div><div class="card accent-purple"><h3>Direction</h3><strong>Cross System</strong><p>ฐาน + ยาน + Hub + Link + Highway + trace สำหรับอนาคต</p></div></section>
+      <section class="section" id="w3lgu"><div class="section-head"><h2>W3Lgu Public Flow</h2><p>// 1,2,3,4 เป็นโหนด ไม่เปิด logic</p></div><div class="flow-board"><div class="flow-row"><div class="flow-node n-cyan"><span class="num">1</span><h3>Intent Intake</h3><p>รับเจตนาจากคน / แอป / agent แล้วทำให้เป็น packet ที่อ่านร่วมกันได้</p></div><div class="flow-node n-green"><span class="num">2</span><h3>Grammar Frame</h3><p>จัดรูปเป็น W3Lgu layer เช่น MEM, PATCH, LAW, EVENT, SIGNAL แบบ public-safe</p></div><div class="flow-node n-yellow"><span class="num">3</span><h3>Boundary Check</h3><p>ตรวจว่าเป็น observe, plan, review หรือ block โดยไม่แตะ source truth</p></div><div class="flow-node n-purple"><span class="num">4</span><h3>Cross Route</h3><p>ส่งต่อผ่าน PX / Hub / Link / SynCap candidate เพื่อสร้างแผน ไม่ใช่ execution</p></div><div class="flow-node n-red"><span class="num">R</span><h3>Return Contract</h3><p>คืน state, reason, trace, mutated, review ให้ LRC2 หรือจุดอ่านผล</p></div></div></div></section>
+      <section class="section"><div class="section-head"><h2>Color State Monitor</h2><p>// แสดงอุณหภูมิงาน ไม่แสดงข้อมูลลึก</p></div><div class="matrix-wrap"><div class="heat-card"><h3>Hub Color Grid</h3><div class="heat-grid"><span class="cell blue">01</span><span class="cell green">02</span><span class="cell green">03</span><span class="cell yellow">04</span><span class="cell yellow">05</span><span class="cell green">06</span><span class="cell purple">07</span><span class="cell dark">08</span><span class="cell green">09</span><span class="cell green">10</span><span class="cell yellow">11</span><span class="cell yellow">12</span><span class="cell green">13</span><span class="cell blue">14</span><span class="cell blue">15</span><span class="cell green">16</span><span class="cell purple">17</span><span class="cell blue">18</span><span class="cell green">19</span><span class="cell green">20</span><span class="cell yellow">21</span><span class="cell dark">22</span><span class="cell blue">23</span><span class="cell green">24</span><span class="cell dark">25</span><span class="cell purple">26</span><span class="cell purple">27</span><span class="cell blue">28</span><span class="cell green">29</span><span class="cell green">30</span><span class="cell yellow">31</span><span class="cell yellow">32</span></div><span class="chip"><span class="color-dot c-green"></span> GREEN stable</span><span class="chip"><span class="color-dot c-yellow"></span> YELLOW review</span><span class="chip"><span class="color-dot c-red"></span> RED block</span><span class="chip"><span class="color-dot c-purple"></span> PURPLE relation</span></div><div class="heat-card"><h3>Signal Pulse</h3><p class="lead">ใช้แสดงจังหวะงานระดับ public เช่น monitor, review, route โดยไม่เปิด packet จริง</p><div class="pulse-list"><div class="pulse"><b>W3Lgu</b><span class="dots"><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i></span></div><div class="pulse"><b>Cross Hub</b><span class="dots"><i></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i></i><i></i><i class="on"></i></span></div><div class="pulse"><b>LRC2 Trace</b><span class="dots"><i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i></span></div></div></div></div></section>
+      <section class="section" id="team"><div class="section-head"><h2>Team & Module Network</h2><p>// บทบาททีมงานแบบ public-safe</p></div><div class="team-board"><div class="heat-card"><h3>AI Team Roles</h3><div class="team-list"><div class="team-card"><div class="avatar a-gold">BB</div><div><h3>BBX19</h3><p>Root Authority / Vision / Decision / Release</p><small>human-in-control · final direction</small></div></div><div class="team-card"><div class="avatar a-green">CG</div><div><h3>ChatGPT</h3><p>Architecture / Flow / Prototype / Execution Support</p><small>builder lens · flow clarity</small></div></div><div class="team-card"><div class="avatar a-blue">GM</div><div><h3>Gemini</h3><p>Validation / Cross-check / Risk Review</p><small>review lens · validation flow</small></div></div><div class="team-card"><div class="avatar a-purple">GK</div><div><h3>Grok</h3><p>Pattern / Signal / Insight / Knowledge Sense</p><small>pattern lens · signal relation</small></div></div><div class="team-card"><div class="avatar a-cyan">DS</div><div><h3>DeepSeek</h3><p>Planning / Scale / Long-term Structure</p><small>future lens · blueprint planning</small></div></div><div class="team-card"><div class="avatar a-orange">CA</div><div><h3>Cast</h3><p>Continuity / Context Bridge / Session Memory</p><small>memory lens · handoff context</small></div></div><div class="team-card"><div class="avatar a-red">CP</div><div><h3>Copilot-Gm</h3><p>Governance / Boundary / Template / Structure</p><small>governance lens · structural consistency</small></div></div></div></div><div class="heat-card"><h3>System Modules</h3><div class="team-list"><div class="team-card"><div class="avatar a-green">W3L</div><div><h3>W3Lgu</h3><p>Language / Grammar / Meaning Layer</p><small>express meaning · cross grammar</small></div></div><div class="team-card"><div class="avatar a-blue">MP</div><div><h3>MPCP</h3><p>Operational / Runtime Method / Cross Support</p><small>carry across OS / ENV</small></div></div><div class="team-card"><div class="avatar a-purple">EP</div><div><h3>EP_SIGNAL</h3><p>Encode / Decode / Transport Signal</p><small>signal preview · rytm transport</small></div></div><div class="team-card"><div class="avatar a-orange">LC</div><div><h3>LRC2</h3><p>Log / Memory Trace / Highway Record</p><small>remember route · trace history</small></div></div><div class="team-card"><div class="avatar a-red">HP</div><div><h3>Hospitication</h3><p>Recovery / Pressure Detection / System Care</p><small>observe symptoms · proposal-only recovery</small></div></div><div class="team-card"><div class="avatar a-cyan">CX</div><div><h3>Cross-X / Cross-L</h3><p>Planner / Route / Workset / Dispatch Plan</p><small>plan-only · execution not allowed</small></div></div><div class="team-card"><div class="avatar a-gold">IG</div><div><h3>IGET</h3><p>PR Intelligence / GitHub Evaluation / Tracking</p><small>score today · improve tomorrow</small></div></div></div></div></div></section>
+      <section class="section" id="cross"><div class="section-head"><h2>Cross System Map</h2><p>// public-safe summary</p></div><div class="lane-grid"><div class="lane"><div class="tag"><span class="color-dot c-green"></span> Capsule</div><h3>Hybrid-SynCap</h3><p>กล่องความสามารถที่ module / Modew สร้างเก็บไว้ ใช้ข้าม OS, ENV, EVENT, App และ Agent</p><span class="chip"><span class="color-dot c-green"></span> capability</span><span class="chip">boundary</span><span class="chip">return_contract</span></div><div class="lane"><div class="tag"><span class="color-dot c-blue"></span> Hub</div><h3>HybridCross : Hub</h3><p>จุดตัดกลางที่ SynCap, event, app, module และ agent เข้ามาเจอกันก่อนเลือก route</p><span class="chip"><span class="color-dot c-blue"></span> monitor</span><span class="chip">color_state</span><span class="chip">handoff</span></div><div class="lane"><div class="tag"><span class="color-dot c-yellow"></span> Highway</div><h3>Cross-index</h3><p>แผนที่ทางหลวงของ Hub + Link + SynCap ช่วยลดการเชื่อมกันแบบพันกันของระบบ</p><span class="chip"><span class="color-dot c-yellow"></span> route</span><span class="chip">PS-Pcross</span><span class="chip">LRC2 trace</span></div></div></section>
+      <section class="section" id="boundary"><div class="section-head"><h2>Public Boundary</h2><p>// Lamp ไม่ใช่ Core</p></div><div class="lane-grid"><div class="lane"><div class="tag"><span class="color-dot c-green"></span> Show</div><h3>แสดงได้</h3><p>สถานะงาน, ทิศทาง, branch, public-safe summary, reference links, แนวคิดระดับสูง</p></div><div class="lane"><div class="tag"><span class="color-dot c-red"></span> Hide</div><h3>ไม่แสดง</h3><p>logic ลึก, secret, runtime payload, private notes, decision trace ละเอียด, raw packet ภายใน</p></div><div class="lane"><div class="tag"><span class="color-dot c-purple"></span> Role</div><h3>หน้าที่ของหน้านี้</h3><p>เป็นหน้าสถานะงานและจุดปรับวิสัย ไม่ใช่ control panel และไม่ใช่ source authority</p></div></div></section>
+      <section class="section" id="refs"><div class="section-head"><h2>Reference Doors</h2><p>// docs as alignment lens</p></div><div class="links"><a class="link-card" href="W3_MASTER_MAP.md">W3 Master Map<span>ภาพใหญ่ / ปลายทาง</span></a><a class="link-card" href="API.md">W3 Cross API<span>gateway / external tools</span></a><a class="link-card" href="integration_guide.md">Integration Guide<span>EP_SIGNAL / W3DB / Hospitication</span></a><a class="link-card" href="standards/referencing_standard.md">Referencing Standard<span>trace / no overwrite truth</span></a></div></section>
+      <footer>W3 Hybrid System · HB_team_BXCGICOG · Public status page · Last update: refactor/v0.2</footer>
+    </main>
+  </div>
+  <div class="install-prompt" id="installPrompt"><span>ติดตั้ง W3 Status เป็นแอปบนอุปกรณ์</span><button id="installBtn">ติดตั้ง</button><button class="close" id="closePrompt" type="button" aria-label="ปิด">✕</button></div>
+  <script>let deferredPrompt;const installPrompt=document.getElementById('installPrompt');const installBtn=document.getElementById('installBtn');const closePrompt=document.getElementById('closePrompt');window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;installPrompt.classList.add('show')});installBtn.addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;installPrompt.classList.remove('show')});closePrompt.addEventListener('click',()=>installPrompt.classList.remove('show'));if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})})}</script>
+</body>
 </html>

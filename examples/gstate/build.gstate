@@ -1,0 +1,5 @@
+GSTATE:BUILD
+CONDITION:ecosystem oriented toward construction, integration, or implementation
+AWARENESS:confirm scope, dependencies, tests, and human review before change
+BOUNDARY:not a runtime executor; not approval to mutate source truth
+RESPONSIBILITY:build small, preserve traceability, and keep rollback visible

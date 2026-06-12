@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Local convenience wrapper for Termux/developer shells.
+# Calls the W3-API gateway client; it does not make the server mutate truth.
+exec python tools/w3api.py "$@"

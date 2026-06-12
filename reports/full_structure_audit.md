@@ -30,7 +30,7 @@
 | Path | `/YSTEM/` |
 | Issue | ~~Typo of `/SYSTEM/` — missing leading `S`~~ **Fixed** |
 | Contents | ~~1 file: `YSTEM/TESTS/MPCP/W3_TERMS_MASTER_PAPER_v2.md`~~ File moved to `SYSTEM/TESTS/MPCP/W3_TERMS_MASTER_PAPER_v2.md` |
-| Status | ✅ File merged into `/SYSTEM/TESTS/MPCP/`; `YSTEM/` directory removed |
+| Status | ✅ File merged into `/protocol/MPCP/`; `YSTEM/` directory removed |
 
 ---
 
@@ -123,7 +123,7 @@ Actual module.json locations do not follow a single standard pattern. The runtim
 | File | Issue |
 |------|-------|
 | `1.md` | Unnamed document — unclear purpose |
-| `init_test.ts` | TypeScript test file at root, not in `/SYSTEM/TESTS/` |
+| `init_test.ts` | TypeScript test file at root, not in `/protocol/` |
 | `requirements.txt` | Python dependency file — `openai` only, no corresponding runtime at root |
 | `resume_header.json` / `.schema.json` | Personal resume data at root — should be in `docs/` or `meta/` |
 | `executions_log.json` | Log file at root — should be in `logs/` |
@@ -151,7 +151,7 @@ Actual module.json locations do not follow a single standard pattern. The runtim
 |------|--------------------------|
 | `versions/v0.1/` | Old module JSON snapshots (2024-era), not updated |
 | `src/` | Mostly `.gitkeep` placeholder files — skeleton only |
-| `SYSTEM/TESTS/EP_SIGNAL/` | Test spec files with no linked implementation |
+| `protocol/EP_SIGNAL/` | Test spec files with no linked implementation |
 | `logs/daily/2025-12-10.context.md` | Last entry 2025-12-10 — 4+ months stale |
 
 ---
