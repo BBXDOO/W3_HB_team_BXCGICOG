@@ -1,0 +1,44 @@
+{
+  "contract_version": "1.0",
+  "px": [
+    1,
+    1
+  ],
+  "rytm": "ROCK",
+  "work_type": "FAST_PATCH",
+  "modew_style": "Fixer",
+  "boundary": "temp_patch",
+  "mutated": false,
+  "review": true,
+  "color": "RED",
+  "symbol": "▲",
+  "tag_group": [
+    "FAST",
+    "LOW",
+    "SCRIPT",
+    "CONFIG"
+  ],
+  "lang_candidate": [
+    "C++",
+    "Rust",
+    "C",
+    "Assembly",
+    "WASM",
+    "Bash",
+    "JSON"
+  ],
+  "deny": [
+    "truth_mutation",
+    "direct_merge",
+    "repo_write_without_review"
+  ],
+  "return_contract": [
+    "state",
+    "reason",
+    "trace",
+    "mutated",
+    "review",
+    "patch_candidate"
+  ],
+  "default_review_condition": "on_complete"
+}

@@ -6,6 +6,18 @@
 
 # W3 Hybrid : Ai Inteligent/Human .
 ## W3_HB_team_BXCGICOG
+## WBCA
+
+W3 Building Cultivating Awareness
+
+Build.
+Observe.
+Learn.
+Continue.
+
+Because awareness grows
+through experience,
+not perfection.
 ---
 * W3 — A living workspace where humans and AI build, fail, learn, and continue together.
 * W3 — พื้นที่ที่มนุษย์และ AI ใช้ชีวิตกับการสร้าง ล้ม เรียนรู้ และเดินต่อไ�[...]
@@ -29,6 +41,19 @@ Last Updated: 20/02/26
 > *"เข้มแข็งดุจเหล็กกล้า — อบอุ่นดังแสงอรุณแรกของวัน"*
 
 > 💡 **หลักคิด:** "Error ไม่ใช่ความล้มเหลว แต่เป็นโอกาสในการเรียนรู้และปรับปร�[...]
+> 
+> 🧑‍🧑‍🧒‍🧒 **AWARENESS LAW**
+
+A participant should consider
+the existence, limitation,
+and consequence relationship
+of other participants
+before execution.
+
+Understanding another participant
+is not authority.
+
+It is responsibility.
 
 ___
 🚫 DO NOT TOUCH: main  
@@ -115,6 +140,7 @@ https://game-novelist--xizzix19.replit.app
 ## Team: HB_team_BXCGICOG
 - Last Updated: 18/11/25
 - Last Updated: 26/11/25
+- Last Updated: 29/05/25 :/ ประกาศต้อนรับสมาชิกใหม่ codex .
 ---
 ## LINE_C (Short Protocol)
 
@@ -176,6 +202,8 @@ W3 + AI = ทีม
 - Gemini — Meta Verification Layer
 - Grok — Knowledge & Pattern
 - Copilot-Gm — Governance Engine
+- cast - new agent
+- codex - new agent
 
 ---
 
@@ -218,8 +246,10 @@ v0.4 → CI for knowledge flows
 
 Date	Change Description
 
-- 2026-04-25  ยกระดับเทมเพลต โมดูล เพื่อรองรับระบบต่างๆและอนาคต ,เป็นมาตราฐานขั้นต่ำไม่ใช่ลิมิต.
-- 2026-03-03	Restored full README.md content and aligned module manifest discovery with Module Manifest Standard.
+- 2025-05-29  เพิ่มระบบ Hospitication ,upgrade W3Lgu ,EP_SIGNAL ,iget v.8 ,mpcp ,W3db ...
+ต้อนรับ cast (claude) ,codex เข้าเป็นสมาชิกอย่างเป็นทางการ  การยกระดับ รีโป้วันนี้ codex เป็นกำลังสำคัญ.
+- 2025-04-25  ยกระดับเทมเพลต โมดูล เพื่อรองรับระบบต่างๆและอนาคต ,เป็นมาตราฐานขั้นต่ำไม่ใช่ลิมิต.
+- 2025-03-03	Restored full README.md content and aligned module manifest discovery with Module Manifest Standard.
 - 18/11/25	Added DeepSeek/ module for Architecture & Scalability.
 - 18/11/25	Updated team roles, repository structure, and strategic workflows.
 - 18/11/25	Updated README.md into organizational-grade documentation.
