@@ -4,7 +4,7 @@ on:
   issues:
     types: [opened, edited, labeled]
   issue_comment:
-    types: [created]
+    types: [created, edited]
 
 permissions:
   issues: write
@@ -17,37 +17,65 @@ jobs:
       contains(github.event.issue.title, '[DECISION]')
     runs-on: ubuntu-latest
     steps:
-      - name: Post module review request comment
+      - name: Add decision labels
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue_number = context.payload.issue.number;
+            const labels = [
+              'decision-needed',
+              'review:bbx19',
+              'review:gemini',
+              'review:copilot-gm'
+            ];
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number,
+              labels,
+            });
+
+      - name: Post module review checklist comment
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const issue_number = context.payload.issue.number;
             const body = [
-              'Requesting module responses for this decision review.',
+              'Decision workflow triggered for this issue.',
+              '',
+              '## Auto checklist',
+              '- [ ] BBX19 review requested',
+              '- [ ] Gemini validation requested',
+              '- [ ] Copilot-Gm governance review requested',
+              '- [ ] Contract-only scope confirmed',
+              '- [ ] Runtime mutation explicitly blocked',
+              '- [ ] Testcases requested before implementation',
+              '',
+              '## Required module outputs',
               '',
               '### BBX19',
-              'Please reply with:',
               '- APPROVE or REJECT',
               '- reason',
               '- conditions',
               '- date',
               '',
               '### Gemini',
-              'Please validate:',
-              '- event-frame structure',
+              '- structural validation',
               '- contract safety',
-              '- risk points',
+              '- risks',
               '- recommended constraints before runtime',
               '',
               '### Copilot-Gm',
-              'Please review:',
-              '- governance boundary',
-              '- scope control',
-              '- whether Option B is safe as contract-only phase',
+              '- governance boundary review',
+              '- scope control review',
+              '- confirm whether Option B is safe as contract-only phase',
               '',
-              'Target: decision for Option B only.',
-              'Do not approve runtime mutation in this issue.',
+              'Target: Option B only. Do not approve runtime mutation in this issue.',
+              '',
+              'To call modules manually, comment with: @BBX19 @Gemini @Copilot-Gm'
             ].join('\n');
 
             await github.rest.issues.createComment({
@@ -67,30 +95,35 @@ jobs:
       )
     runs-on: ubuntu-latest
     steps:
+      - name: Detect requested modules
+        id: detect
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const comment = context.payload.comment.body;
+            const modules = [];
+            if (comment.includes('@BBX19')) modules.push('BBX19');
+            if (comment.includes('@Gemini')) modules.push('Gemini');
+            if (comment.includes('@Copilot-Gm')) modules.push('Copilot-Gm');
+            core.setOutput('modules', JSON.stringify(modules));
+
       - name: Acknowledge module call
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const issue_number = context.payload.issue.number;
-            const comment = context.payload.comment.body;
-            const modules = [];
-
-            if (comment.includes('@BBX19')) modules.push('BBX19');
-            if (comment.includes('@Gemini')) modules.push('Gemini');
-            if (comment.includes('@Copilot-Gm')) modules.push('Copilot-Gm');
-
+            const modules = JSON.parse(`${{ steps.detect.outputs.modules }}`);
             const body = [
               'Module request received.',
               '',
               `Detected modules: ${modules.join(', ') || 'none'}`,
               '',
-              'This workflow currently acknowledges the request and standardizes follow-up.',
-              'If you want real module automation, connect this workflow to:',
-              '- label routing',
-              '- repository_dispatch',
-              '- external webhook handlers',
-              '- AI/API responders',
+              'Routing status:',
+              '- labels/checklist: enabled',
+              '- AI/API dispatch: enabled when webhook secrets are configured',
+              '- approval summary parsing: enabled',
             ].join('\n');
 
             await github.rest.issues.createComment({
@@ -98,4 +131,143 @@ jobs:
               repo: context.repo.repo,
               issue_number,
               body,
+            });
+
+      - name: Dispatch to external AI responder
+        if: ${{ vars.MODULE_WEBHOOK_ENABLED == 'true' }}
+        env:
+          MODULE_WEBHOOK_URL: ${{ secrets.MODULE_WEBHOOK_URL }}
+          MODULE_WEBHOOK_TOKEN: ${{ secrets.MODULE_WEBHOOK_TOKEN }}
+          MODULES: ${{ steps.detect.outputs.modules }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          REPO: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import sys
+          import urllib.request
+
+          url = os.environ.get("MODULE_WEBHOOK_URL", "").strip()
+          token = os.environ.get("MODULE_WEBHOOK_TOKEN", "").strip()
+
+          if not url or not token:
+              print("Webhook dispatch skipped: missing MODULE_WEBHOOK_URL or MODULE_WEBHOOK_TOKEN")
+              sys.exit(0)
+
+          payload = {
+              "repository": os.environ["REPO"],
+              "issue_number": os.environ["ISSUE_NUMBER"],
+              "issue_title": os.environ["ISSUE_TITLE"],
+              "issue_body": os.environ["ISSUE_BODY"],
+              "issue_url": os.environ["ISSUE_URL"],
+              "comment_body": os.environ["COMMENT_BODY"],
+              "modules": json.loads(os.environ["MODULES"] or "[]"),
+          }
+
+          req = urllib.request.Request(
+              url,
+              data=json.dumps(payload).encode("utf-8"),
+              headers={
+                  "Content-Type": "application/json",
+                  "Authorization": f"Bearer {token}",
+              },
+              method="POST",
+          )
+
+          with urllib.request.urlopen(req) as resp:
+              print(resp.read().decode("utf-8"))
+          PY
+
+  summarize-approvals:
+    if: >-
+      github.event_name == 'issue_comment' &&
+      contains(github.event.issue.title, '[DECISION]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Summarize approval state
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue_number = context.payload.issue.number;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner, repo, issue_number, per_page: 100 }
+            );
+
+            const modules = ['BBX19', 'Gemini', 'Copilot-Gm'];
+            const decisions = {};
+
+            for (const moduleName of modules) {
+              decisions[moduleName] = {
+                approve: false,
+                reject: false,
+                reviewRequired: false
+              };
+            }
+
+            for (const c of comments) {
+              const body = c.body || '';
+              for (const moduleName of modules) {
+                if (
+                  body.includes(moduleName) ||
+                  body.includes(`@${moduleName}`) ||
+                  (c.user && c.user.login && c.user.login.includes(moduleName))
+                ) {
+                  const upper = body.toUpperCase();
+                  if (upper.includes('APPROVE')) decisions[moduleName].approve = true;
+                  if (upper.includes('REJECT')) decisions[moduleName].reject = true;
+                  if (upper.includes('REVIEW_REQUIRED')) decisions[moduleName].reviewRequired = true;
+                }
+              }
+            }
+
+            const approvedModules = modules.filter(m => decisions[m].approve && !decisions[m].reject);
+            const rejectedModules = modules.filter(m => decisions[m].reject);
+            const pendingModules = modules.filter(m => !decisions[m].approve && !decisions[m].reject);
+
+            let finalLabel = null;
+            if (rejectedModules.length > 0) {
+              finalLabel = 'decision:needs-revision';
+            } else if (approvedModules.length >= 2) {
+              finalLabel = 'decision:approved-contract-phase';
+            } else {
+              finalLabel = 'decision:pending-review';
+            }
+
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number,
+              labels: [finalLabel],
+            });
+
+            const summary = [
+              '## Decision status summary',
+              '',
+              `- Approved: ${approvedModules.join(', ') || 'none'}`,
+              `- Rejected: ${rejectedModules.join(', ') || 'none'}`,
+              `- Pending: ${pendingModules.join(', ') || 'none'}`,
+              '',
+              `Current state label: ${finalLabel}`,
+              '',
+              'Rule:',
+              '- any REJECT => needs revision',
+              '- 2 or more APPROVE => approved contract phase',
+              '- otherwise => pending review',
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number,
+              body: summary,
             });
