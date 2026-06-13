@@ -1,9 +1,16 @@
 from __future__ import annotations
 
 from hashlib import sha1
-from typing import Any, Dict, Mapping
+from typing import Any, Dict, Iterable, List, Mapping
 
-from .contracts import ACTIVE, WAIT, make_result, normalize_text
+from .contracts import ACTIVE, REVIEW_REQUIRED, WAIT, make_result, normalize_text
+
+KNOWN_MODULES = ["REDR", "PSP2", "DTML", "LRC2"]
+ROUTE_MARKERS = {
+    "DTML": {"dtml", "decision", "trace", "review", "law", "governance"},
+    "LRC2": {"lrc2", "memory", "checkpoint", "record", "history", "lifecycle", "continuity"},
+    "REDR": {"redr", "risk", "event", "classify", "triage"},
+}
 
 
 def _as_payload(package: Any) -> Dict[str, Any]:
@@ -17,11 +24,50 @@ def _stable_stamp(payload: Dict[str, Any]) -> str:
     return sha1(raw.encode("utf-8")).hexdigest()[:12]
 
 
-def route_package(package: Any) -> object:
-    """Create a minimal route stamp and handoff path for a W3Lgu package.
+def _normalize_modules(value: Any) -> List[str]:
+    if value is None:
+        return []
+    if isinstance(value, str):
+        values: Iterable[Any] = [value]
+    else:
+        try:
+            values = list(value)
+        except TypeError:
+            values = [value]
 
-    PSP2's minimum functional concept is route selection and handoff preview.
-    It does not execute the target module and does not mutate package state.
+    modules = []
+    for item in values:
+        name = str(item).upper().strip()
+        if name in KNOWN_MODULES and name not in modules:
+            modules.append(name)
+    return modules
+
+
+def _detect_route(payload: Dict[str, Any], text: str) -> List[str]:
+    route_path: List[str] = []
+
+    requested = _normalize_modules(payload.get("next") or payload.get("next_modules"))
+    for module in requested:
+        if module != "PSP2" and module not in route_path:
+            route_path.append(module)
+
+    for module, markers in ROUTE_MARKERS.items():
+        if module == "PSP2":
+            continue
+        if any(marker in text for marker in markers) and module not in route_path:
+            route_path.append(module)
+
+    if not route_path:
+        route_path.append("DTML")
+    return route_path
+
+
+def route_package(package: Any) -> object:
+    """Create a route stamp and handoff preview for a W3Lgu package.
+
+    PSP2's standard MFC role is:
+    package in -> route stamp -> next module list -> standby list.
+    It does not execute the target module.
     """
 
     payload = _as_payload(package)
@@ -37,28 +83,20 @@ def route_package(package: Any) -> object:
             reason="no package data was provided",
             next_modules=[],
             standby=["REDR", "DTML", "LRC2"],
-            details={"payload": payload},
+            details={"payload": payload, "route_quality": "none"},
         )
 
-    requested_next = payload.get("next") or payload.get("next_modules") or []
-    if isinstance(requested_next, str):
-        requested_next = [requested_next]
-
-    route_path = []
-    if "DTML" in requested_next or "dtml" in text or "review" in text or "trace" in text:
-        route_path.append("DTML")
-    if "LRC2" in requested_next or "lrc2" in text or "memory" in text or "checkpoint" in text:
-        route_path.append("LRC2")
-    if not route_path:
-        route_path.append("DTML")
-
+    route_path = _detect_route(payload, text)
+    route_quality = "explicit" if payload.get("next") or payload.get("next_modules") else "inferred"
+    status = REVIEW_REQUIRED if payload.get("status") == REVIEW_REQUIRED and "LRC2" in route_path else ACTIVE
+    confidence = 0.9 if route_quality == "explicit" else 0.7
     stamp = _stable_stamp(payload)
-    standby = [name for name in ["REDR", "DTML", "LRC2"] if name not in route_path]
+    standby = [name for name in KNOWN_MODULES if name not in route_path and name != "PSP2"]
 
     return make_result(
         module="PSP2",
-        status=ACTIVE,
-        confidence=0.75 if route_path else 0.5,
+        status=status,
+        confidence=confidence,
         input_type="package:route",
         decision="handoff_path_prepared",
         reason="package was stamped and assigned to a preview route",
@@ -67,6 +105,7 @@ def route_package(package: Any) -> object:
         details={
             "route_stamp": f"PSP2-{stamp}",
             "route_path": route_path,
+            "route_quality": route_quality,
             "payload": payload,
         },
     )
