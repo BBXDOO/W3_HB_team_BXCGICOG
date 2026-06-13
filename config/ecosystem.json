@@ -36,5 +36,5 @@
     "decision_trace": "DTML",
     "continuity_memory": "LRC2"
   },
-  "governance": {"human_review_required": true, "governance_gate_required": true, "human_final_review": true, "truth_mutation_default": false}
+  "governance": {"human_review_required": true, "governance_gate_required": true, "human_final_review": true, "no_unreviewed_merge": true, "truth_mutation_default": false}
 }
