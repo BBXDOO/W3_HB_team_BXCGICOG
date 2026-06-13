@@ -28,9 +28,20 @@ jobs:
 
             const labels = [
               'decision-needed',
+              'final:bbxdoo',
               'review:bbx19',
               'review:gemini',
-              'review:copilot-gm'
+              'review:copilot-gm',
+              'module:redr',
+              'module:dtml',
+              'module:lrc2',
+              'module:cross-x',
+              'module:mpcp',
+              'module:w3db',
+              'module:ep-signal',
+              'module:6room',
+              'module:e-cs',
+              'module:w3lgu'
             ];
 
             try {
@@ -65,39 +76,78 @@ jobs:
               marker,
               'Decision workflow triggered for this issue.',
               '',
-              '## Auto checklist',
-              '- [ ] BBX19 review requested',
-              '- [ ] Gemini validation requested',
-              '- [ ] Copilot-Gm governance review requested',
+              '## Final approver',
+              '- [ ] BBXDOO final review requested',
+              '- [ ] BBXDOO responded',
+              '',
+              '## Core reviewers',
               '- [ ] BBX19 responded',
               '- [ ] Gemini responded',
               '- [ ] Copilot-Gm responded',
+              '',
+              '## W3Lgu / system modules',
+              '- [ ] W3Lgu responded',
+              '- [ ] REDR responded',
+              '- [ ] DTML responded',
+              '- [ ] LRC2 responded',
+              '- [ ] Cross-X responded',
+              '- [ ] MPCP responded',
+              '- [ ] W3DB responded',
+              '- [ ] EP_SIGNAL responded',
+              '- [ ] 6room responded',
+              '- [ ] E-CS responded',
+              '',
+              '## Contract conditions',
               '- [ ] Contract-only scope confirmed',
               '- [ ] Runtime mutation explicitly blocked',
               '- [ ] Testcases requested before implementation',
               '',
-              '## Required module response format',
-              '',
-              'Use one of these strict formats:',
+              '## Required response format',
               '',
               '### Format A',
-              'Module: BBX19',
+              'Module: BBXDOO',
               'Decision: APPROVE',
               'Reason: ...',
               'Conditions: ...',
               'Date: 2026-06-13',
               '',
               '### Format B',
-              'approved-by: BBX19',
-              'decision: APPROVE',
+              'approved-by: REDR',
+              'decision: REVIEW_REQUIRED',
               'reason: ...',
               'date: 2026-06-13',
               '',
               'Allowed decisions: APPROVE, REJECT, REVIEW_REQUIRED',
               '',
+              'Final approver:',
+              '- BBXDOO',
+              '',
+              'Core reviewers:',
+              '- BBX19',
+              '- Gemini',
+              '- Copilot-Gm',
+              '',
+              'System modules:',
+              '- W3Lgu',
+              '- REDR',
+              '- DTML',
+              '- LRC2',
+              '- Cross-X',
+              '- MPCP',
+              '- W3DB',
+              '- EP_SIGNAL',
+              '- 6room',
+              '- E-CS',
+              '',
+              'Final rule:',
+              '- BBXDOO APPROVE => approved contract phase',
+              '- BBXDOO REJECT => needs revision',
+              '- otherwise => pending review',
+              '',
               'Target: Option B only. Do not approve runtime mutation in this issue.',
               '',
-              'To call modules manually, comment with: @BBX19 @Gemini @Copilot-Gm'
+              'To call modules manually, comment with:',
+              '@BBXDOO @BBX19 @Gemini @Copilot-Gm @W3Lgu @REDR @DTML @LRC2 @Cross-X @MPCP @W3DB @EP_SIGNAL @6room @E-CS'
             ].join('\n');
 
             if (existing) {
@@ -122,12 +172,7 @@ jobs:
 
   route-module-call:
     if: >-
-      github.event_name == 'issue_comment' &&
-      (
-        contains(github.event.comment.body, '@BBX19') ||
-        contains(github.event.comment.body, '@Gemini') ||
-        contains(github.event.comment.body, '@Copilot-Gm')
-      )
+      github.event_name == 'issue_comment'
     runs-on: ubuntu-latest
     steps:
       - name: Detect requested modules
@@ -137,14 +182,34 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const body = context.payload.comment.body || '';
-            const modules = [];
-            if (body.includes('@BBX19')) modules.push('BBX19');
-            if (body.includes('@Gemini')) modules.push('Gemini');
-            if (body.includes('@Copilot-Gm')) modules.push('Copilot-Gm');
-            core.setOutput('modules', JSON.stringify(modules));
+            const allModules = [
+              'BBXDOO',
+              'BBX19',
+              'Gemini',
+              'Copilot-Gm',
+              'W3Lgu',
+              'REDR',
+              'DTML',
+              'LRC2',
+              'Cross-X',
+              'MPCP',
+              'W3DB',
+              'EP_SIGNAL',
+              '6room',
+              'E-CS'
+            ];
+
+            const mentioned = [];
+            for (const moduleName of allModules) {
+              if (body.includes(`@${moduleName}`)) mentioned.push(moduleName);
+            }
+
+            core.setOutput('modules', JSON.stringify(mentioned));
             core.setOutput('comment_id', String(context.payload.comment.id));
+            core.setOutput('has_mentions', mentioned.length > 0 ? 'true' : 'false');
 
       - name: Create or update acknowledge comment
+        if: ${{ steps.detect.outputs.has_mentions == 'true' }}
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -165,8 +230,9 @@ jobs:
               'Routing status:',
               '- labels/checklist: enabled',
               '- strict decision parsing: enabled',
-              '- AI/API dispatch: enabled when webhook secrets are configured',
               '- summary/checklist sync: enabled',
+              '- final approver: BBXDOO',
+              '- webhook: disabled in this version',
             ].join('\n');
 
             const comments = await github.paginate(
@@ -196,63 +262,13 @@ jobs:
               });
             }
 
-      - name: Dispatch to external AI responder
-        if: ${{ vars.MODULE_WEBHOOK_ENABLED == 'true' }}
-        env:
-          MODULE_WEBHOOK_URL: ${{ secrets.MODULE_WEBHOOK_URL }}
-          MODULE_WEBHOOK_TOKEN: ${{ secrets.MODULE_WEBHOOK_TOKEN }}
-          MODULES: ${{ steps.detect.outputs.modules }}
-          ISSUE_TITLE: ${{ github.event.issue.title }}
-          ISSUE_BODY: ${{ github.event.issue.body }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-          ISSUE_URL: ${{ github.event.issue.html_url }}
-          COMMENT_BODY: ${{ github.event.comment.body }}
-          REPO: ${{ github.repository }}
-        run: |
-          python - <<'PY'
-          import json
-          import os
-          import sys
-          import urllib.request
-
-          url = os.environ.get("MODULE_WEBHOOK_URL", "").strip()
-          token = os.environ.get("MODULE_WEBHOOK_TOKEN", "").strip()
-
-          if not url or not token:
-              print("Webhook dispatch skipped: missing MODULE_WEBHOOK_URL or MODULE_WEBHOOK_TOKEN")
-              sys.exit(0)
-
-          payload = {
-              "repository": os.environ["REPO"],
-              "issue_number": os.environ["ISSUE_NUMBER"],
-              "issue_title": os.environ["ISSUE_TITLE"],
-              "issue_body": os.environ["ISSUE_BODY"],
-              "issue_url": os.environ["ISSUE_URL"],
-              "comment_body": os.environ["COMMENT_BODY"],
-              "modules": json.loads(os.environ["MODULES"] or "[]"),
-          }
-
-          req = urllib.request.Request(
-              url,
-              data=json.dumps(payload).encode("utf-8"),
-              headers={
-                  "Content-Type": "application/json",
-                  "Authorization": f"Bearer {token}",
-              },
-              method="POST",
-          )
-
-          with urllib.request.urlopen(req) as resp:
-              print(resp.read().decode("utf-8"))
-          PY
-
   summarize-approvals:
     if: >-
       github.event_name == 'issue_comment' &&
       contains(github.event.issue.title, '[DECISION]')
     runs-on: ubuntu-latest
     steps:
-      - name: Parse module decisions and sync summary
+      - name: Parse decisions and sync summary
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -268,7 +284,11 @@ jobs:
               { owner, repo, issue_number, per_page: 100 }
             );
 
-            const modules = ['BBX19', 'Gemini', 'Copilot-Gm'];
+            const finalApprover = 'BBXDOO';
+            const coreReviewers = ['BBX19', 'Gemini', 'Copilot-Gm'];
+            const systemModules = ['W3Lgu', 'REDR', 'DTML', 'LRC2', 'Cross-X', 'MPCP', 'W3DB', 'EP_SIGNAL', '6room', 'E-CS'];
+            const allModules = [finalApprover, ...coreReviewers, ...systemModules];
+
             const stateLabels = [
               'decision:pending-review',
               'decision:approved-contract-phase',
@@ -276,7 +296,7 @@ jobs:
             ];
 
             const decisions = {};
-            for (const m of modules) {
+            for (const m of allModules) {
               decisions[m] = {
                 responded: false,
                 approve: false,
@@ -308,7 +328,7 @@ jobs:
               if (!candidate) return null;
 
               const normalized = candidate.trim();
-              if (modules.includes(normalized)) return normalized;
+              if (allModules.includes(normalized)) return normalized;
               return null;
             }
 
@@ -337,16 +357,25 @@ jobs:
               if (decisionField === 'REVIEW_REQUIRED') decisions[moduleName].reviewRequired = true;
             }
 
-            const approvedModules = modules.filter(m => decisions[m].approve);
-            const rejectedModules = modules.filter(m => decisions[m].reject);
-            const reviewRequiredModules = modules.filter(m => decisions[m].reviewRequired);
-            const respondedModules = modules.filter(m => decisions[m].responded);
-            const pendingModules = modules.filter(m => !decisions[m].responded);
+            const finalApproved = decisions[finalApprover].approve;
+            const finalRejected = decisions[finalApprover].reject;
+
+            const coreResponded = coreReviewers.filter(m => decisions[m].responded);
+            const coreApproved = coreReviewers.filter(m => decisions[m].approve);
+            const coreRejected = coreReviewers.filter(m => decisions[m].reject);
+            const coreReviewRequired = coreReviewers.filter(m => decisions[m].reviewRequired);
+            const corePending = coreReviewers.filter(m => !decisions[m].responded);
+
+            const sysResponded = systemModules.filter(m => decisions[m].responded);
+            const sysApproved = systemModules.filter(m => decisions[m].approve);
+            const sysRejected = systemModules.filter(m => decisions[m].reject);
+            const sysReviewRequired = systemModules.filter(m => decisions[m].reviewRequired);
+            const sysPending = systemModules.filter(m => !decisions[m].responded);
 
             let finalLabel = 'decision:pending-review';
-            if (rejectedModules.length > 0) {
+            if (finalRejected) {
               finalLabel = 'decision:needs-revision';
-            } else if (approvedModules.length >= 2) {
+            } else if (finalApproved) {
               finalLabel = 'decision:approved-contract-phase';
             }
 
@@ -356,7 +385,9 @@ jobs:
               issue_number,
             });
 
-            const currentLabels = (issue.data.labels || []).map(l => typeof l === 'string' ? l : l.name).filter(Boolean);
+            const currentLabels = (issue.data.labels || [])
+              .map(l => typeof l === 'string' ? l : l.name)
+              .filter(Boolean);
 
             for (const label of currentLabels) {
               if (stateLabels.includes(label) && label !== finalLabel) {
@@ -390,17 +421,31 @@ jobs:
               summaryMarker,
               '## Decision status summary',
               '',
-              `- Responded: ${respondedModules.join(', ') || 'none'}`,
-              `- Approved: ${approvedModules.join(', ') || 'none'}`,
-              `- Rejected: ${rejectedModules.join(', ') || 'none'}`,
-              `- Review required: ${reviewRequiredModules.join(', ') || 'none'}`,
-              `- Pending: ${pendingModules.join(', ') || 'none'}`,
+              '### Final approver',
+              `- Responded: ${decisions[finalApprover].responded ? finalApprover : 'none'}`,
+              `- Approved: ${finalApproved ? finalApprover : 'none'}`,
+              `- Rejected: ${finalRejected ? finalApprover : 'none'}`,
+              `- Review required: ${decisions[finalApprover].reviewRequired ? finalApprover : 'none'}`,
+              '',
+              '### Core reviewers',
+              `- Responded: ${coreResponded.join(', ') || 'none'}`,
+              `- Approved: ${coreApproved.join(', ') || 'none'}`,
+              `- Rejected: ${coreRejected.join(', ') || 'none'}`,
+              `- Review required: ${coreReviewRequired.join(', ') || 'none'}`,
+              `- Pending: ${corePending.join(', ') || 'none'}`,
+              '',
+              '### System modules',
+              `- Responded: ${sysResponded.join(', ') || 'none'}`,
+              `- Approved: ${sysApproved.join(', ') || 'none'}`,
+              `- Rejected: ${sysRejected.join(', ') || 'none'}`,
+              `- Review required: ${sysReviewRequired.join(', ') || 'none'}`,
+              `- Pending: ${sysPending.join(', ') || 'none'}`,
               '',
               `Current state label: ${finalLabel}`,
               '',
-              'Rule:',
-              '- any REJECT => needs revision',
-              '- 2 or more APPROVE => approved contract phase',
+              'Final rule:',
+              '- BBXDOO APPROVE => approved contract phase',
+              '- BBXDOO REJECT => needs revision',
               '- otherwise => pending review',
             ].join('\n');
 
@@ -443,10 +488,24 @@ jobs:
                 return text;
               };
 
+              updatedChecklist = replaceLine(updatedChecklist, 'BBXDOO responded', decisions['BBXDOO'].responded);
+
               updatedChecklist = replaceLine(updatedChecklist, 'BBX19 responded', decisions['BBX19'].responded);
               updatedChecklist = replaceLine(updatedChecklist, 'Gemini responded', decisions['Gemini'].responded);
               updatedChecklist = replaceLine(updatedChecklist, 'Copilot-Gm responded', decisions['Copilot-Gm'].responded);
-              updatedChecklist = replaceLine(updatedChecklist, 'Contract-only scope confirmed', approvedModules.length >= 2 && rejectedModules.length === 0);
+
+              updatedChecklist = replaceLine(updatedChecklist, 'W3Lgu responded', decisions['W3Lgu'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'REDR responded', decisions['REDR'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'DTML responded', decisions['DTML'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'LRC2 responded', decisions['LRC2'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'Cross-X responded', decisions['Cross-X'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'MPCP responded', decisions['MPCP'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'W3DB responded', decisions['W3DB'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'EP_SIGNAL responded', decisions['EP_SIGNAL'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, '6room responded', decisions['6room'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'E-CS responded', decisions['E-CS'].responded);
+
+              updatedChecklist = replaceLine(updatedChecklist, 'Contract-only scope confirmed', finalApproved && !finalRejected);
               updatedChecklist = replaceLine(updatedChecklist, 'Runtime mutation explicitly blocked', true);
               updatedChecklist = replaceLine(updatedChecklist, 'Testcases requested before implementation', true);
 
