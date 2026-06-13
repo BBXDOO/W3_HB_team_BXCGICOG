@@ -48,7 +48,7 @@ class TestW3LguMFCLogic(unittest.TestCase):
         self.assertEqual(data["details"]["review_state"], "review_required")
 
     def test_dtml_waits_on_unclear_trace(self):
-        result = trace_decision("plain message without route marker")
+        result = trace_decision("plain message without context clue")
         data = result.as_dict()
         self.assertEqual(data["module"], "DTML")
         self.assertEqual(data["status"], "WAIT")
