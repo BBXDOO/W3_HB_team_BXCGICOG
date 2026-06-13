@@ -6,6 +6,13 @@ from typing import Any, Dict, Mapping
 
 from .contracts import ACTIVE, WAIT, make_result, normalize_text
 
+PHASE_MARKERS = {
+    "review": {"review", "risk", "conflict", "governance", "law"},
+    "route": {"route", "handoff", "stamp", "package", "transfer"},
+    "memory": {"memory", "checkpoint", "record", "history", "continuity"},
+    "trace": {"trace", "decision", "timeline", "verify"},
+}
+
 
 def _as_payload(record: Any) -> Dict[str, Any]:
     if isinstance(record, Mapping):
@@ -18,11 +25,19 @@ def _stable_key(payload: Dict[str, Any]) -> str:
     return sha1(raw.encode("utf-8")).hexdigest()[:16]
 
 
+def _record_phase(text: str) -> str:
+    lowered = text.lower()
+    for phase, markers in PHASE_MARKERS.items():
+        if any(marker in lowered for marker in markers):
+            return phase
+    return "general"
+
+
 def checkpoint_lifecycle(record: Any) -> object:
     """Create a lifecycle checkpoint preview for W3Lgu module flow.
 
-    LRC2 already has richer runtime behavior. This function only gives the MFC
-    layer a shared contract-shaped checkpoint result.
+    LRC2 already has richer runtime behavior. This function gives the MFC layer
+    a shared contract-shaped checkpoint result.
     """
 
     payload = _as_payload(record)
@@ -38,14 +53,17 @@ def checkpoint_lifecycle(record: Any) -> object:
             reason="no record was provided for checkpoint preview",
             next_modules=[],
             standby=["REDR", "PSP2", "DTML"],
-            details={"payload": payload},
+            details={"payload": payload, "record_phase": "none"},
         )
 
     checkpoint_key = f"LRC2-{_stable_key(payload)}"
+    record_phase = _record_phase(text)
+    confidence = 0.85 if record_phase != "general" else 0.65
+
     return make_result(
         module="LRC2",
         status=ACTIVE,
-        confidence=0.8,
+        confidence=confidence,
         input_type="record:checkpoint_preview",
         decision="checkpoint_preview_ready",
         reason="record can be represented as a lifecycle checkpoint preview",
@@ -54,6 +72,7 @@ def checkpoint_lifecycle(record: Any) -> object:
         details={
             "checkpoint_key": checkpoint_key,
             "record_length": len(text),
+            "record_phase": record_phase,
             "payload": payload,
         },
     )
