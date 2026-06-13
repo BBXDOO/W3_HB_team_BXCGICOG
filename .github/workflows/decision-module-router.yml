@@ -1,0 +1,101 @@
+name: decision-module-router
+
+on:
+  issues:
+    types: [opened, edited, labeled]
+  issue_comment:
+    types: [created]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  route-decision-issue:
+    if: >-
+      github.event_name == 'issues' &&
+      contains(github.event.issue.title, '[DECISION]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post module review request comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue_number = context.payload.issue.number;
+            const body = [
+              'Requesting module responses for this decision review.',
+              '',
+              '### BBX19',
+              'Please reply with:',
+              '- APPROVE or REJECT',
+              '- reason',
+              '- conditions',
+              '- date',
+              '',
+              '### Gemini',
+              'Please validate:',
+              '- event-frame structure',
+              '- contract safety',
+              '- risk points',
+              '- recommended constraints before runtime',
+              '',
+              '### Copilot-Gm',
+              'Please review:',
+              '- governance boundary',
+              '- scope control',
+              '- whether Option B is safe as contract-only phase',
+              '',
+              'Target: decision for Option B only.',
+              'Do not approve runtime mutation in this issue.',
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number,
+              body,
+            });
+
+  route-module-call:
+    if: >-
+      github.event_name == 'issue_comment' &&
+      (
+        contains(github.event.comment.body, '@BBX19') ||
+        contains(github.event.comment.body, '@Gemini') ||
+        contains(github.event.comment.body, '@Copilot-Gm')
+      )
+    runs-on: ubuntu-latest
+    steps:
+      - name: Acknowledge module call
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue_number = context.payload.issue.number;
+            const comment = context.payload.comment.body;
+            const modules = [];
+
+            if (comment.includes('@BBX19')) modules.push('BBX19');
+            if (comment.includes('@Gemini')) modules.push('Gemini');
+            if (comment.includes('@Copilot-Gm')) modules.push('Copilot-Gm');
+
+            const body = [
+              'Module request received.',
+              '',
+              `Detected modules: ${modules.join(', ') || 'none'}`,
+              '',
+              'This workflow currently acknowledges the request and standardizes follow-up.',
+              'If you want real module automation, connect this workflow to:',
+              '- label routing',
+              '- repository_dispatch',
+              '- external webhook handlers',
+              '- AI/API responders',
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number,
+              body,
+            });
