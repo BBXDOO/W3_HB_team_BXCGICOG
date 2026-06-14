@@ -60,6 +60,9 @@ def test_cross_x_plan_builds_full_non_mutating_chain():
     assert body["ep_signal"]["rytm"]["rytm_signal"].endswith("//BIN.")
     assert [stage["stage"] for stage in body["process_trace"]["stages"]] == ["REDR", "PSP2", "DTML", "LRC2"]
     assert body["process_trace"]["mutated"] is False
+    assert body["system_audit"]["status"] == "ready"
+    assert body["system_audit"]["checked"] == len(body["chain"])
+    assert body["system_audit"]["issues"] == []
 
 
 def test_cross_x_rejects_unsupported_modes():

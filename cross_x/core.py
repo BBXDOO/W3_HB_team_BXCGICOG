@@ -108,6 +108,7 @@ class CrossXPlan:
     append_envelope: AppendEnvelope
     ep_signal: Mapping[str, Any]
     process_trace: Mapping[str, Any] = field(default_factory=dict)
+    system_audit: Mapping[str, Any] = field(default_factory=dict)
     status: str = "planned"
     mutated: bool = False
     governance: Mapping[str, bool] = field(
@@ -133,6 +134,7 @@ class CrossXPlan:
             "append_envelope": self.append_envelope.to_dict(),
             "ep_signal": dict(self.ep_signal),
             "process_trace": dict(self.process_trace),
+            "system_audit": dict(self.system_audit),
             "governance": dict(self.governance),
         }
 
@@ -193,6 +195,11 @@ def build_cross_x_plan(
         process_id=resolved_cross_id,
         timestamp=timestamp,
     ).to_dict()
+    system_audit = audit_cross_systems(cfg)
+    component_states = {
+        system: str(cfg.ecosystem["components"].get(system, {}).get("status", "active"))
+        for system in cfg.cross_system["chain"]
+    }
     return CrossXPlan(
         cross_id=resolved_cross_id,
         timestamp=timestamp or _now_iso(),
@@ -209,4 +216,5 @@ def build_cross_x_plan(
         append_envelope=append_envelope,
         ep_signal=_build_ep_signal_preview(program.to_text()),
         process_trace=process_trace,
+        system_audit=system_audit,
     )
