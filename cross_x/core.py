@@ -196,10 +196,12 @@ def build_cross_x_plan(
         timestamp=timestamp,
     ).to_dict()
     system_audit = audit_cross_systems(cfg)
-    component_states = {
-        system: str(cfg.ecosystem["components"].get(system, {}).get("status", "active"))
-        for system in cfg.cross_system["chain"]
-    }
+    components = cfg.ecosystem.get("components", {})
+    component_states = {}
+    for system in cfg.cross_system["chain"]:
+        component = components.get(system)
+        status = component.get("status", "active") if isinstance(component, Mapping) else "active"
+        component_states[system] = str(status)
     return CrossXPlan(
         cross_id=resolved_cross_id,
         timestamp=timestamp or _now_iso(),
