@@ -9,7 +9,7 @@ from .logic27_registry import Logic27Slot, get_logic_slot
 RISK_MARKERS = {"risk", "conflict", "review", "law", "governance"}
 ROUTE_MARKERS = {"route", "handoff", "next", "transfer", "psp2"}
 MEMORY_MARKERS = {"memory", "checkpoint", "record", "history", "lrc2", "continuity"}
-BORROW_MARKERS = {"borrow", "external_field", "field_missing", "insufficient_field", "cross-x"}
+BORROW_MARKERS = {"borrow", "external_field", "field_missing", "insufficient_field"}
 SHADOW_MARKERS = {"shadow", "unclear", "fuzzy", "unknown"}
 
 
@@ -22,7 +22,6 @@ def _as_field(value: EventField | dict[str, Any]) -> EventField:
 def _field_text(field: EventField) -> str:
     return normalize_text(
         {
-            "source": field.source,
             "intent": field.intent,
             "context": dict(field.context),
             "signals": dict(field.signals),
