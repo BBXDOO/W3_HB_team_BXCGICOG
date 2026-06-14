@@ -105,6 +105,10 @@ def validate_w3_config(bundle: W3ConfigBundle) -> list[str]:
     for system in chain if isinstance(chain, list) else ():
         if system not in contracts:
             errors.append(f"cross_system.contracts.{system} is required")
+            continue
+        value = contracts.get(system)
+        if not isinstance(value, str) or not value.strip():
+            errors.append(f"cross_system.contracts.{system} must be a non-empty string")
 
     for required_path in ("w3_api", "w3lgu", "px", "w3db_append_flow", "hospitication", "iget", "codex"):
         if required_path not in paths:
