@@ -83,8 +83,18 @@ def validate_w3_config(bundle: W3ConfigBundle) -> list[str]:
         errors.append("cross_system.cross_x.requires_human_review must be true")
     if cross_x.get("requires_governance_gate") is not True:
         errors.append("cross_system.cross_x.requires_governance_gate must be true")
-    if not isinstance(cross_x.get("event_chain_supervisor"), str) or not cross_x["event_chain_supervisor"].strip():
+    supervisor = cross_x.get("event_chain_supervisor")
+    supervisor = supervisor.strip() if isinstance(supervisor, str) else ""
+    if not supervisor:
         errors.append("cross_system.cross_x.event_chain_supervisor must be a non-empty string")
+    elif not (
+        supervisor[0].isalnum()
+        and len(supervisor) <= 128
+        and all(ch.isalnum() or ch in "._-" for ch in supervisor)
+    ):
+        errors.append(
+            "cross_system.cross_x.event_chain_supervisor must use 1-128 letters, digits, '.', '_' or '-'"
+        )
 
     chain = cross.get("chain", ())
     contracts = cross.get("contracts", {})
