@@ -1,9 +1,17 @@
 # W3Lgu MFC Logic Layer
 
-Status: draft / contract-safe
+Status: draft / contract-safe / reference-only
 Scope: REDR, PSP2, DTML, LRC2 minimum functional concept logic
 
 This folder keeps the first W3Lgu module logic implementation separate from the existing runtime agent wrappers.
+
+## Scope Guard
+
+This folder is a W3Lgu local MFC proof and reference implementation only.
+
+It is not a global system standard, not a Cross-Series conformance suite, and not an authority model for Codex, Copilot, Cross-L, Modew, W3-API, MPCP, IGET, or other system-owned projects.
+
+Other systems may reuse the result shape if useful, but they must keep their own owner tests and contracts.
 
 Purpose:
 
@@ -27,6 +35,9 @@ Initial modules:
 - `dtml_mfc_logic.py` — build decision trace and review state
 - `lrc2_mfc_logic.py` — create lifecycle checkpoint preview
 - `contracts.py` — shared result contract
+- `event_field.py` — local event-field identity object
+- `logic27_registry.py` — local 3x3x3 logic slot registry
+- `logic27_selector.py` — local event-field logic slot selector
 
 This is intentionally small. It proves each declared role can perform at least one real action before deeper runtime bridge work begins.
 
@@ -58,4 +69,22 @@ Standard statuses:
 - `STOP` — module should not continue
 - `ERROR` — contract/status error
 
-This folder should become the template for later W3Lgu module specialization only after the four initial modules stay stable through tests.
+## Phase 1.2 Local Event Field + Logic27
+
+The local Event Field and Logic27 files test whether a field-based logic selector can keep event identity visible while choosing a logic slot.
+
+Minimum field identity:
+
+```text
+chain_id / event_id / sequence / owner_scope / mutated / traceable
+```
+
+Local selector goal:
+
+```text
+event field -> logic slot -> next / standby -> contract result
+```
+
+This phase is intentionally local. Cross-Series and E-CS remain the shared identity backbone; this folder only proves a W3Lgu MFC reading pattern.
+
+This folder should become the template for later W3Lgu module specialization only after the four initial modules and local field tests stay stable through tests.
