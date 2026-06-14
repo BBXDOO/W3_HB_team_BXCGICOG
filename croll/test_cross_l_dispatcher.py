@@ -1,6 +1,6 @@
 import unittest
 
-from croll.cross_l_dispatcher import dispatch_workset
+from croll.cross_l_dispatcher import dispatch_cross_code, dispatch_workset
 
 
 class TestCrossLDispatcher(unittest.TestCase):
@@ -78,6 +78,28 @@ class TestCrossLDispatcher(unittest.TestCase):
         self.assertEqual(plan["state"], "planned")
         self.assertTrue(plan["workset"]["paper_context_received"])
         self.assertEqual(plan["workset"]["paper_context_keys"], ["paper_id", "scope"])
+
+    def test_cross_code_dispatch_binds_plan_to_ecs_event(self):
+        envelope = dispatch_cross_code(
+            "2,1",
+            chain_id="cross-test",
+            event_id="ECS-06-TEST",
+            paper_context={"event_system": "PX"},
+        )
+
+        self.assertEqual(envelope["kind"], "cross-code-dispatch")
+        self.assertEqual(envelope["chain_id"], "cross-test")
+        self.assertEqual(envelope["event_id"], "ECS-06-TEST")
+        self.assertEqual(envelope["handoff"]["from"], "Cross-L")
+        self.assertEqual(envelope["handoff"]["to"], "Modew")
+        self.assertEqual(envelope["handoff"]["boundary"], "observe")
+        self.assertFalse(envelope["execution_allowed"])
+        self.assertFalse(envelope["mutated"])
+        self.assertTrue(envelope["review"])
+
+    def test_cross_code_dispatch_requires_trace_identity(self):
+        with self.assertRaisesRegex(ValueError, "chain_id"):
+            dispatch_cross_code("1,1", chain_id="", event_id="ECS-01")
 
 
 if __name__ == "__main__":

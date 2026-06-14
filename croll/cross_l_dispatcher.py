@@ -27,6 +27,7 @@ except ImportError:  # Allows direct execution: python croll/cross_l_dispatcher.
     from table_x import get_workset_from_px
 
 DispatchPlan = Dict[str, Any]
+CrossCodeEnvelope = Dict[str, Any]
 
 
 def _unknown_workset(workset: Dict[str, Any]) -> bool:
@@ -108,6 +109,48 @@ def dispatch_workset(
         )
 
     return plan
+
+
+def dispatch_cross_code(
+    px: Any,
+    *,
+    chain_id: str,
+    event_id: str,
+    paper_context: Optional[Mapping[str, Any]] = None,
+    enable_box_suggestion: bool = False,
+) -> CrossCodeEnvelope:
+    """Bind a Cross-L plan to one E-CS event without executing CrossCode.
+
+    The envelope is the Cross-Series handoff contract: E-CS supplies trace
+    identity, Cross-L supplies bounded work logic, and Modew remains a stub
+    target until human review and governance approve a separate execution step.
+    """
+
+    if not chain_id.strip() or not event_id.strip():
+        raise ValueError("CrossCode dispatch requires non-empty chain_id and event_id")
+    plan = dispatch_workset(
+        px,
+        paper_context=paper_context,
+        enable_box_suggestion=enable_box_suggestion,
+    )
+    return {
+        "contract_version": "1.0",
+        "kind": "cross-code-dispatch",
+        "chain_id": chain_id,
+        "event_id": event_id,
+        "state": plan["state"],
+        "cross_l_plan": plan,
+        "handoff": {
+            "from": "Cross-L",
+            "to": "Modew",
+            "action": plan["action"],
+            "boundary": plan["workset"]["boundary"],
+            "return_contract": list(plan["workset"].get("return_contract", [])),
+        },
+        "execution_allowed": False,
+        "mutated": False,
+        "review": True,
+    }
 
 
 if __name__ == "__main__":
