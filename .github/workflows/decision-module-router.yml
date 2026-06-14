@@ -1,0 +1,522 @@
+name: decision-module-router
+
+on:
+  issues:
+    types: [opened, edited, labeled]
+  issue_comment:
+    types: [created, edited]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  route-decision-issue:
+    if: >-
+      github.event_name == 'issues' &&
+      contains(github.event.issue.title, '[DECISION]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add review labels
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = context.payload.issue.number;
+
+            const labels = [
+              'decision-needed',
+              'final:bbxdoo',
+              'review:bbx19',
+              'review:gemini',
+              'review:copilot-gm',
+              'module:redr',
+              'module:dtml',
+              'module:lrc2',
+              'module:cross-x',
+              'module:mpcp',
+              'module:w3db',
+              'module:ep-signal',
+              'module:6room',
+              'module:e-cs',
+              'module:w3lgu'
+            ];
+
+            try {
+              await github.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number,
+                labels,
+              });
+            } catch (error) {
+              core.info(`addLabels skipped/error: ${error.message}`);
+            }
+
+      - name: Create or update checklist comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = context.payload.issue.number;
+            const marker = '<!-- decision-router-checklist -->';
+
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner, repo, issue_number, per_page: 100 }
+            );
+
+            const existing = comments.find(c => (c.body || '').includes(marker));
+
+            const body = [
+              marker,
+              'Decision workflow triggered for this issue.',
+              '',
+              '## Final approver',
+              '- [ ] BBXDOO final review requested',
+              '- [ ] BBXDOO responded',
+              '',
+              '## Core reviewers',
+              '- [ ] BBX19 responded',
+              '- [ ] Gemini responded',
+              '- [ ] Copilot-Gm responded',
+              '',
+              '## W3Lgu / system modules',
+              '- [ ] W3Lgu responded',
+              '- [ ] REDR responded',
+              '- [ ] DTML responded',
+              '- [ ] LRC2 responded',
+              '- [ ] Cross-X responded',
+              '- [ ] MPCP responded',
+              '- [ ] W3DB responded',
+              '- [ ] EP_SIGNAL responded',
+              '- [ ] 6room responded',
+              '- [ ] E-CS responded',
+              '',
+              '## Contract conditions',
+              '- [ ] Contract-only scope confirmed',
+              '- [ ] Runtime mutation explicitly blocked',
+              '- [ ] Testcases requested before implementation',
+              '',
+              '## Required response format',
+              '',
+              '### Format A',
+              'Module: BBXDOO',
+              'Decision: APPROVE',
+              'Reason: ...',
+              'Conditions: ...',
+              'Date: 2026-06-13',
+              '',
+              '### Format B',
+              'approved-by: REDR',
+              'decision: REVIEW_REQUIRED',
+              'reason: ...',
+              'date: 2026-06-13',
+              '',
+              'Allowed decisions: APPROVE, REJECT, REVIEW_REQUIRED',
+              '',
+              'Final approver:',
+              '- BBXDOO',
+              '',
+              'Core reviewers:',
+              '- BBX19',
+              '- Gemini',
+              '- Copilot-Gm',
+              '',
+              'System modules:',
+              '- W3Lgu',
+              '- REDR',
+              '- DTML',
+              '- LRC2',
+              '- Cross-X',
+              '- MPCP',
+              '- W3DB',
+              '- EP_SIGNAL',
+              '- 6room',
+              '- E-CS',
+              '',
+              'Final rule:',
+              '- BBXDOO APPROVE => approved contract phase',
+              '- BBXDOO REJECT => needs revision',
+              '- otherwise => pending review',
+              '',
+              'Target: Option B only. Do not approve runtime mutation in this issue.',
+              '',
+              'To call modules manually, comment with:',
+              '@BBXDOO @BBX19 @Gemini @Copilot-Gm @W3Lgu @REDR @DTML @LRC2 @Cross-X @MPCP @W3DB @EP_SIGNAL @6room @E-CS'
+            ].join('\n');
+
+            if (existing) {
+              if ((existing.body || '') !== body) {
+                await github.rest.issues.updateComment({
+                  owner,
+                  repo,
+                  comment_id: existing.id,
+                  body,
+                });
+              } else {
+                core.info('Checklist already up to date.');
+              }
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body,
+              });
+            }
+
+  route-module-call:
+    if: >-
+      github.event_name == 'issue_comment'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Detect requested modules
+        id: detect
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const body = context.payload.comment.body || '';
+            const allModules = [
+              'BBXDOO',
+              'BBX19',
+              'Gemini',
+              'Copilot-Gm',
+              'W3Lgu',
+              'REDR',
+              'DTML',
+              'LRC2',
+              'Cross-X',
+              'MPCP',
+              'W3DB',
+              'EP_SIGNAL',
+              '6room',
+              'E-CS'
+            ];
+
+            const mentioned = [];
+            for (const moduleName of allModules) {
+              if (body.includes(`@${moduleName}`)) mentioned.push(moduleName);
+            }
+
+            core.setOutput('modules', JSON.stringify(mentioned));
+            core.setOutput('comment_id', String(context.payload.comment.id));
+            core.setOutput('has_mentions', mentioned.length > 0 ? 'true' : 'false');
+
+      - name: Create or update acknowledge comment
+        if: ${{ steps.detect.outputs.has_mentions == 'true' }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = context.payload.issue.number;
+            const sourceCommentId = `${{ steps.detect.outputs.comment_id }}`;
+            const modules = JSON.parse(`${{ steps.detect.outputs.modules }}`);
+            const marker = `<!-- decision-router-ack:${sourceCommentId} -->`;
+
+            const body = [
+              marker,
+              'Module request received.',
+              '',
+              `Detected modules: ${modules.join(', ') || 'none'}`,
+              '',
+              'Routing status:',
+              '- labels/checklist: enabled',
+              '- strict decision parsing: enabled',
+              '- summary/checklist sync: enabled',
+              '- final approver: BBXDOO',
+              '- webhook: disabled in this version',
+            ].join('\n');
+
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner, repo, issue_number, per_page: 100 }
+            );
+
+            const existing = comments.find(c => (c.body || '').includes(marker));
+
+            if (existing) {
+              if ((existing.body || '') !== body) {
+                await github.rest.issues.updateComment({
+                  owner,
+                  repo,
+                  comment_id: existing.id,
+                  body,
+                });
+              } else {
+                core.info('Ack already up to date.');
+              }
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body,
+              });
+            }
+
+  summarize-approvals:
+    if: >-
+      github.event_name == 'issue_comment' &&
+      contains(github.event.issue.title, '[DECISION]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Parse decisions and sync summary
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = context.payload.issue.number;
+            const summaryMarker = '<!-- decision-router-summary -->';
+            const checklistMarker = '<!-- decision-router-checklist -->';
+
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner, repo, issue_number, per_page: 100 }
+            );
+
+            const finalApprover = 'BBXDOO';
+            const coreReviewers = ['BBX19', 'Gemini', 'Copilot-Gm'];
+            const systemModules = ['W3Lgu', 'REDR', 'DTML', 'LRC2', 'Cross-X', 'MPCP', 'W3DB', 'EP_SIGNAL', '6room', 'E-CS'];
+            const allModules = [finalApprover, ...coreReviewers, ...systemModules];
+
+            const stateLabels = [
+              'decision:pending-review',
+              'decision:approved-contract-phase',
+              'decision:needs-revision'
+            ];
+
+            const decisions = {};
+            for (const m of allModules) {
+              decisions[m] = {
+                responded: false,
+                approve: false,
+                reject: false,
+                reviewRequired: false,
+                matchedCommentUrl: null
+              };
+            }
+
+            function extractField(body, field) {
+              const regex = new RegExp(`^${field}\\s*:\\s*(.+)$`, 'im');
+              const match = body.match(regex);
+              return match ? match[1].trim() : null;
+            }
+
+            function normalizeDecision(value) {
+              if (!value) return null;
+              const v = value.trim().toUpperCase();
+              if (v === 'APPROVE') return 'APPROVE';
+              if (v === 'REJECT') return 'REJECT';
+              if (v === 'REVIEW_REQUIRED') return 'REVIEW_REQUIRED';
+              return null;
+            }
+
+            function detectModule(body) {
+              const moduleField = extractField(body, 'Module');
+              const approvedByField = extractField(body, 'approved-by');
+              const candidate = moduleField || approvedByField;
+              if (!candidate) return null;
+
+              const normalized = candidate.trim();
+              if (allModules.includes(normalized)) return normalized;
+              return null;
+            }
+
+            for (const c of comments) {
+              const body = c.body || '';
+              if (
+                body.includes(summaryMarker) ||
+                body.includes(checklistMarker) ||
+                body.includes('decision-router-ack:')
+              ) {
+                continue;
+              }
+
+              const moduleName = detectModule(body);
+              if (!moduleName) continue;
+
+              const decisionField =
+                normalizeDecision(extractField(body, 'Decision')) ||
+                normalizeDecision(extractField(body, 'decision'));
+
+              decisions[moduleName].responded = true;
+              decisions[moduleName].matchedCommentUrl = c.html_url;
+
+              if (decisionField === 'APPROVE') decisions[moduleName].approve = true;
+              if (decisionField === 'REJECT') decisions[moduleName].reject = true;
+              if (decisionField === 'REVIEW_REQUIRED') decisions[moduleName].reviewRequired = true;
+            }
+
+            const finalApproved = decisions[finalApprover].approve;
+            const finalRejected = decisions[finalApprover].reject;
+
+            const coreResponded = coreReviewers.filter(m => decisions[m].responded);
+            const coreApproved = coreReviewers.filter(m => decisions[m].approve);
+            const coreRejected = coreReviewers.filter(m => decisions[m].reject);
+            const coreReviewRequired = coreReviewers.filter(m => decisions[m].reviewRequired);
+            const corePending = coreReviewers.filter(m => !decisions[m].responded);
+
+            const sysResponded = systemModules.filter(m => decisions[m].responded);
+            const sysApproved = systemModules.filter(m => decisions[m].approve);
+            const sysRejected = systemModules.filter(m => decisions[m].reject);
+            const sysReviewRequired = systemModules.filter(m => decisions[m].reviewRequired);
+            const sysPending = systemModules.filter(m => !decisions[m].responded);
+
+            let finalLabel = 'decision:pending-review';
+            if (finalRejected) {
+              finalLabel = 'decision:needs-revision';
+            } else if (finalApproved) {
+              finalLabel = 'decision:approved-contract-phase';
+            }
+
+            const issue = await github.rest.issues.get({
+              owner,
+              repo,
+              issue_number,
+            });
+
+            const currentLabels = (issue.data.labels || [])
+              .map(l => typeof l === 'string' ? l : l.name)
+              .filter(Boolean);
+
+            for (const label of currentLabels) {
+              if (stateLabels.includes(label) && label !== finalLabel) {
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner,
+                    repo,
+                    issue_number,
+                    name: label,
+                  });
+                } catch (error) {
+                  core.info(`removeLabel skipped/error: ${error.message}`);
+                }
+              }
+            }
+
+            if (!currentLabels.includes(finalLabel)) {
+              try {
+                await github.rest.issues.addLabels({
+                  owner,
+                  repo,
+                  issue_number,
+                  labels: [finalLabel],
+                });
+              } catch (error) {
+                core.info(`final addLabels skipped/error: ${error.message}`);
+              }
+            }
+
+            const summaryBody = [
+              summaryMarker,
+              '## Decision status summary',
+              '',
+              '### Final approver',
+              `- Responded: ${decisions[finalApprover].responded ? finalApprover : 'none'}`,
+              `- Approved: ${finalApproved ? finalApprover : 'none'}`,
+              `- Rejected: ${finalRejected ? finalApprover : 'none'}`,
+              `- Review required: ${decisions[finalApprover].reviewRequired ? finalApprover : 'none'}`,
+              '',
+              '### Core reviewers',
+              `- Responded: ${coreResponded.join(', ') || 'none'}`,
+              `- Approved: ${coreApproved.join(', ') || 'none'}`,
+              `- Rejected: ${coreRejected.join(', ') || 'none'}`,
+              `- Review required: ${coreReviewRequired.join(', ') || 'none'}`,
+              `- Pending: ${corePending.join(', ') || 'none'}`,
+              '',
+              '### System modules',
+              `- Responded: ${sysResponded.join(', ') || 'none'}`,
+              `- Approved: ${sysApproved.join(', ') || 'none'}`,
+              `- Rejected: ${sysRejected.join(', ') || 'none'}`,
+              `- Review required: ${sysReviewRequired.join(', ') || 'none'}`,
+              `- Pending: ${sysPending.join(', ') || 'none'}`,
+              '',
+              `Current state label: ${finalLabel}`,
+              '',
+              'Final rule:',
+              '- BBXDOO APPROVE => approved contract phase',
+              '- BBXDOO REJECT => needs revision',
+              '- otherwise => pending review',
+            ].join('\n');
+
+            const existingSummary = comments.find(c => (c.body || '').includes(summaryMarker));
+
+            if (existingSummary) {
+              if ((existingSummary.body || '') !== summaryBody) {
+                await github.rest.issues.updateComment({
+                  owner,
+                  repo,
+                  comment_id: existingSummary.id,
+                  body: summaryBody,
+                });
+              } else {
+                core.info('Summary already up to date.');
+              }
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body: summaryBody,
+              });
+            }
+
+            const checklistComment = comments.find(c => (c.body || '').includes(checklistMarker));
+            if (checklistComment) {
+              const yes = '- [x]';
+              const no = '- [ ]';
+
+              let updatedChecklist = checklistComment.body || '';
+
+              const replaceLine = (text, label, checked) => {
+                const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(`^- \\[[ x]\\] ${escaped}$`, 'm');
+                const replacement = `${checked ? yes : no} ${label}`;
+                if (regex.test(text)) {
+                  return text.replace(regex, replacement);
+                }
+                return text;
+              };
+
+              updatedChecklist = replaceLine(updatedChecklist, 'BBXDOO responded', decisions['BBXDOO'].responded);
+
+              updatedChecklist = replaceLine(updatedChecklist, 'BBX19 responded', decisions['BBX19'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'Gemini responded', decisions['Gemini'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'Copilot-Gm responded', decisions['Copilot-Gm'].responded);
+
+              updatedChecklist = replaceLine(updatedChecklist, 'W3Lgu responded', decisions['W3Lgu'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'REDR responded', decisions['REDR'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'DTML responded', decisions['DTML'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'LRC2 responded', decisions['LRC2'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'Cross-X responded', decisions['Cross-X'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'MPCP responded', decisions['MPCP'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'W3DB responded', decisions['W3DB'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'EP_SIGNAL responded', decisions['EP_SIGNAL'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, '6room responded', decisions['6room'].responded);
+              updatedChecklist = replaceLine(updatedChecklist, 'E-CS responded', decisions['E-CS'].responded);
+
+              updatedChecklist = replaceLine(updatedChecklist, 'Contract-only scope confirmed', finalApproved && !finalRejected);
+              updatedChecklist = replaceLine(updatedChecklist, 'Runtime mutation explicitly blocked', true);
+              updatedChecklist = replaceLine(updatedChecklist, 'Testcases requested before implementation', true);
+
+              if ((checklistComment.body || '') !== updatedChecklist) {
+                await github.rest.issues.updateComment({
+                  owner,
+                  repo,
+                  comment_id: checklistComment.id,
+                  body: updatedChecklist,
+                });
+              } else {
+                core.info('Checklist sync not needed.');
+              }
+            }
