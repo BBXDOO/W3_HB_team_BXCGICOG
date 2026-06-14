@@ -31,6 +31,19 @@ def _clean(value: object) -> str:
     return " ".join(str(value).replace("\n", " ").replace("\r", " ").split())
 
 
+def _validate_cross_id(chain_id: str) -> None:
+    """Keep the Cross-X chain id safe before embedding it in W3Lgu text."""
+
+    if not isinstance(chain_id, str) or not chain_id.strip():
+        raise ValueError("chain_id must be a non-empty string")
+    if chain_id != chain_id.strip():
+        raise ValueError("chain_id must not include surrounding whitespace")
+    if len(chain_id) > 128:
+        raise ValueError("chain_id must be 128 characters or fewer")
+    if not all(ch.isalnum() or ch in "._-" for ch in chain_id):
+        raise ValueError("chain_id may only use letters, digits, '.', '_' or '-'")
+
+
 def _build_cross_w3lgu_packet(
     *,
     chain_id: str,
@@ -40,6 +53,7 @@ def _build_cross_w3lgu_packet(
     mode: str,
     payload: Mapping[str, Any],
 ) -> W3LguFiveLineProgram:
+    _validate_cross_id(chain_id)
     target_value = target or "auto"
     contract = str(payload.get("contract", "observe_only"))
     text = "\n".join(
@@ -67,6 +81,49 @@ def _build_ep_signal_preview(w3lgu_text: str) -> dict[str, object]:
         "format": "BIN",
         "ep_signal": to_ep_signal(binary),
         "rytm": build_rytm_preview(binary, meta=("CROSS_X", "EP_SIGNAL")),
+    }
+
+
+def audit_cross_systems(config: W3ConfigBundle) -> dict[str, Any]:
+    """Return a plan-time readiness audit for the Cross-X chain.
+
+    This is a non-mutating readiness snapshot. It checks whether every system in
+    the configured chain has a component entry, a contract, and plan-only
+    component authority.
+    """
+
+    chain = config.cross_system.get("chain", ())
+    contracts = config.cross_system.get("contracts", {})
+    components = config.ecosystem.get("components", {})
+    issues: list[dict[str, str]] = []
+    component_states: dict[str, dict[str, Any]] = {}
+
+    for system in chain:
+        component = components.get(system)
+        if not isinstance(component, Mapping):
+            issues.append({"system": str(system), "issue": "missing_component"})
+            component_states[str(system)] = {"status": "missing"}
+            continue
+
+        contract = contracts.get(system)
+        if not isinstance(contract, str) or not contract.strip():
+            issues.append({"system": str(system), "issue": "missing_contract"})
+
+        if component.get("mutation_authority") is not False:
+            issues.append({"system": str(system), "issue": "mutation_authority_not_false"})
+
+        component_states[str(system)] = {
+            "role": component.get("role"),
+            "path": component.get("path"),
+            "mutation_authority": component.get("mutation_authority"),
+            "contract": contract,
+        }
+
+    return {
+        "status": "ready" if not issues else "review_required",
+        "checked": len(tuple(chain)),
+        "issues": issues,
+        "components": component_states,
     }
 
 
@@ -167,6 +224,7 @@ def build_cross_x_plan(
         raise ValueError(f"Cross-X mode {resolved_request.mode!r} is not allowed")
 
     resolved_cross_id = cross_id or str(uuid4())
+    _validate_cross_id(resolved_cross_id)
     program = _build_cross_w3lgu_packet(
         chain_id=resolved_cross_id,
         source=resolved_request.source,
