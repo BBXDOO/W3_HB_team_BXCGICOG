@@ -17,7 +17,7 @@ from config.loader import W3ConfigBundle, load_w3_config
 from protocol.EP_SIGNAL.ep_signal_adapter import to_ep_signal
 from core.runtime.process_layer import run_w3_process_layer
 from protocol.EP_SIGNAL.rytm import build_rytm_preview
-from protocol.w3lgu import W3LguFiveLineProgram, encode_w3lgu_value, parse_five_line_program, px_from_five_line, px_to_append_envelope, validate_five_line
+from protocol.w3lgu import W3LguFiveLineProgram, parse_five_line_program, px_from_five_line, px_to_append_envelope, validate_five_line
 from protocol.w3lgu.px import PXAnchor
 from src.w3db.append_flow import AppendEnvelope
 from cross_x.event_chain import EventChain, build_event_chain
@@ -223,7 +223,7 @@ def build_cross_x_plan(
     if resolved_request.mode not in allowed_modes:
         raise ValueError(f"Cross-X mode {resolved_request.mode!r} is not allowed")
 
-    resolved_cross_id = cross_id or str(uuid4())
+    resolved_cross_id = str(uuid4()) if cross_id is None else cross_id
     _validate_cross_id(resolved_cross_id)
     program = _build_cross_w3lgu_packet(
         chain_id=resolved_cross_id,
@@ -254,12 +254,6 @@ def build_cross_x_plan(
         timestamp=timestamp,
     ).to_dict()
     system_audit = audit_cross_systems(cfg)
-    components = cfg.ecosystem.get("components", {})
-    component_states = {}
-    for system in cfg.cross_system["chain"]:
-        component = components.get(system)
-        status = component.get("status", "active") if isinstance(component, Mapping) else "active"
-        component_states[system] = str(status)
     return CrossXPlan(
         cross_id=resolved_cross_id,
         timestamp=timestamp or _now_iso(),
