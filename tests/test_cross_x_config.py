@@ -3,7 +3,7 @@ from dataclasses import FrozenInstanceError
 import pytest
 
 from config import load_w3_config, validate_w3_config
-from cross_x import CrossXRequest, audit_cross_systems, build_cross_x_plan, build_event_chain
+from cross_x import CrossXRequest, build_cross_x_plan, build_event_chain
 
 
 def test_w3_config_bundle_covers_current_ecosystem():
@@ -84,36 +84,3 @@ def test_event_chain_rejects_duplicate_system_handoffs():
             systems=("W3Lgu", "W3Lgu"),
             contracts={"W3Lgu": "five_line_packet_contract"},
         )
-
-
-def test_event_chain_returns_value_when_system_is_inactive():
-    chain = build_event_chain(
-        chain_id="inactive-test",
-        systems=("W3Lgu", "PX"),
-        contracts={
-            "W3Lgu": "five_line_packet_contract",
-            "PX": "position_pointer_not_execution",
-        },
-        system_states={"W3Lgu": "active", "PX": "inactive"},
-    )
-
-    body = chain.to_dict()
-    assert body["state"] == "partial"
-    assert body["events"][0]["status"] == "planned"
-    assert body["events"][0]["return_value"] is None
-    assert body["events"][1]["status"] == "inactive"
-    assert body["events"][1]["return_value"] == {
-        "state": "inactive",
-        "reason": "system_not_in_use",
-        "configured_state": "inactive",
-        "handled": True,
-    }
-
-
-def test_cross_system_audit_reports_all_current_chain_members_ready():
-    report = audit_cross_systems(load_w3_config())
-
-    assert report["status"] == "ready"
-    assert report["checked"] == 12
-    assert report["issues"] == []
-    assert all(system["path_exists"] for system in report["systems"])

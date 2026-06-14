@@ -21,7 +21,6 @@ from protocol.w3lgu import W3LguFiveLineProgram, parse_five_line_program, px_fro
 from protocol.w3lgu.px import PXAnchor
 from src.w3db.append_flow import AppendEnvelope
 from cross_x.event_chain import EventChain, build_event_chain
-from cross_x.audit import audit_cross_systems
 
 
 def _now_iso() -> str:
@@ -210,7 +209,6 @@ def build_cross_x_plan(
             chain_id=resolved_cross_id,
             systems=tuple(cfg.cross_system["chain"]),
             contracts=cfg.cross_system["contracts"],
-            system_states=component_states,
             supervisor=str(cross_x.get("event_chain_supervisor", "AI_SUPERVISOR")),
         ),
         program=program,
