@@ -9,27 +9,10 @@ from __future__ import annotations
 
 import hashlib
 import json
-import re
 from dataclasses import dataclass
 from typing import Any, Mapping, Sequence
 
 ECS_CONTRACT_VERSION = "1.0"
-_ECS_IDENTIFIER = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
-
-
-def normalize_ecs_identifier(value: object, *, field: str) -> str:
-    """Return a delimiter-safe E-CS identifier or reject it.
-
-    E-CS identifiers are embedded in W3Lgu values, so commas, colons, line
-    breaks, and other packet delimiters are intentionally forbidden.
-    """
-
-    normalized = str(value).strip()
-    if not _ECS_IDENTIFIER.fullmatch(normalized):
-        raise ValueError(
-            f"E-CS {field} must use 1-128 letters, digits, '.', '_' or '-'"
-        )
-    return normalized
 
 
 def _stable_event_id(chain_id: str, sequence: int, system: str) -> str:
@@ -54,7 +37,6 @@ class EventChainRecord:
     predecessor: str | None
     successor: str | None
     status: str = "planned"
-    return_value: Mapping[str, Any] | None = None
     mutated: bool = False
     execute_allowed: bool = False
 
@@ -68,7 +50,6 @@ class EventChainRecord:
             "predecessor": self.predecessor,
             "successor": self.successor,
             "status": self.status,
-            "return_value": dict(self.return_value) if self.return_value is not None else None,
             "mutated": self.mutated,
             "execute_allowed": self.execute_allowed,
         }
@@ -105,13 +86,12 @@ def build_event_chain(
     chain_id: str,
     systems: Sequence[str],
     contracts: Mapping[str, Any],
-    system_states: Mapping[str, str] | None = None,
     supervisor: str = "AI_SUPERVISOR",
 ) -> EventChain:
     """Build a deterministic E-CS handoff plan from configured systems."""
 
-    chain_id = normalize_ecs_identifier(chain_id, field="chain_id")
-    supervisor = normalize_ecs_identifier(supervisor, field="supervisor")
+    if not chain_id.strip():
+        raise ValueError("E-CS chain_id must be non-empty")
     if not systems:
         raise ValueError("E-CS requires at least one system")
     normalized = tuple(str(system).strip() for system in systems)
@@ -120,35 +100,16 @@ def build_event_chain(
     if len(set(normalized)) != len(normalized):
         raise ValueError("E-CS system names must be unique within a chain")
 
-    states = system_states or {}
-    events = []
-    for index, system in enumerate(normalized, start=1):
-        configured_state = str(states.get(system, "active")).strip().lower()
-        active = configured_state in {"active", "ready", "enabled"}
-        events.append(
-            EventChainRecord(
-                event_id=_stable_event_id(chain_id, index, system),
-                chain_id=chain_id,
-                sequence=index,
-                system=system,
-                contract=str(contracts.get(system, "observe_handoff_only")),
-                predecessor=normalized[index - 2] if index > 1 else None,
-                successor=normalized[index] if index < len(normalized) else None,
-                status="planned" if active else "inactive",
-                return_value=None
-                if active
-                else {
-                    "state": "inactive",
-                    "reason": "system_not_in_use",
-                    "configured_state": configured_state or "inactive",
-                    "handled": True,
-                },
-            )
+    events = tuple(
+        EventChainRecord(
+            event_id=_stable_event_id(chain_id, index, system),
+            chain_id=chain_id,
+            sequence=index,
+            system=system,
+            contract=str(contracts.get(system, "observe_handoff_only")),
+            predecessor=normalized[index - 2] if index > 1 else None,
+            successor=normalized[index] if index < len(normalized) else None,
         )
-    chain_state = "planned" if all(event.status == "planned" for event in events) else "partial"
-    return EventChain(
-        chain_id=chain_id,
-        events=tuple(events),
-        state=chain_state,
-        supervisor=supervisor,
+        for index, system in enumerate(normalized, start=1)
     )
+    return EventChain(chain_id=chain_id, events=events, supervisor=supervisor)

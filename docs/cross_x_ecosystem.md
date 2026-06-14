@@ -41,8 +41,6 @@ Config is not source truth. It links existing truth sources and protocols.
 - REDR/PSP2/DTML/LRC2 process traces are plan-only until an approved adapter persists them.
 - Human Review and Governance Gate remain required.
 - E-CS records planned subsystem handoffs; it never executes the chain itself.
-- Inactive subsystems return a handled `inactive` result instead of silently
-  disappearing from the chain or receiving a handoff.
 
 ## Event-Chain System (E-CS)
 
@@ -51,11 +49,6 @@ Every record includes a stable event ID, sequence, subsystem contract,
 predecessor/successor, and explicit `execute_allowed: false`. The supervising
 AI may coordinate and report chain state, but it receives no truth-mutation or
 execution authority from E-CS.
-
-If a subsystem is configured as inactive, its event remains visible with
-`status: inactive` and a structured `return_value` containing
-`reason: system_not_in_use`. Other event records remain traceable, while the
-overall chain reports `state: partial`.
 
 Cross-L can bind a bounded workset to an E-CS identity through
 `dispatch_cross_code`. This produces a CrossCode handoff envelope for Modew;

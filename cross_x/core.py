@@ -20,8 +20,7 @@ from protocol.EP_SIGNAL.rytm import build_rytm_preview
 from protocol.w3lgu import W3LguFiveLineProgram, parse_five_line_program, px_from_five_line, px_to_append_envelope, validate_five_line
 from protocol.w3lgu.px import PXAnchor
 from src.w3db.append_flow import AppendEnvelope
-from cross_x.event_chain import EventChain, build_event_chain, normalize_ecs_identifier
-from cross_x.audit import audit_cross_systems
+from cross_x.event_chain import EventChain, build_event_chain
 
 
 def _now_iso() -> str:
@@ -167,10 +166,7 @@ def build_cross_x_plan(
     if resolved_request.mode not in allowed_modes:
         raise ValueError(f"Cross-X mode {resolved_request.mode!r} is not allowed")
 
-    resolved_cross_id = normalize_ecs_identifier(
-        str(uuid4()) if cross_id is None else cross_id,
-        field="chain_id",
-    )
+    resolved_cross_id = cross_id or str(uuid4())
     program = _build_cross_w3lgu_packet(
         chain_id=resolved_cross_id,
         source=resolved_request.source,
@@ -213,7 +209,6 @@ def build_cross_x_plan(
             chain_id=resolved_cross_id,
             systems=tuple(cfg.cross_system["chain"]),
             contracts=cfg.cross_system["contracts"],
-            system_states=component_states,
             supervisor=str(cross_x.get("event_chain_supervisor", "AI_SUPERVISOR")),
         ),
         program=program,

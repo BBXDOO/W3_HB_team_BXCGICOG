@@ -27,3 +27,43 @@
 │ File.void does not store artifacts.          │
 │ It preserves the ability for form to emerge. │
 └──────────────────────────────────────────────┘
+```
+
+## Runtime package
+
+Concept docs stay in `protocol/Files.void/` because `File.void` is the W3 concept name.
+The importable Python tool lives in `protocol/files_void/`.
+
+```python
+from protocol.files_void import file_void_tool
+
+result = file_void_tool(
+    action="manifest",
+    source_ref="BOX:CROSS_L_BLOCK",
+    source_body="return {state='pass'}",
+    env="lua.env",
+    lib="lua.lib",
+    artifact_type="lua",
+    mpcp_task="manifest_cross_code",
+)
+```
+
+## MPCP / Blueprint adapter
+
+MPCP or Blueprint-style contexts can call File.void through:
+
+```python
+from protocol.mpcp.adapter.file_void_tool import call_file_void_tool, build_file_void_stage
+```
+
+- `call_file_void_tool(context)` accepts KEY:VALUE-style context dictionaries.
+- `build_file_void_stage(action)` returns a stage function compatible with `protocol.mpcp.lib.Pillar`.
+
+## Boundary contract
+
+- File.void is a staging / manifestation layer only.
+- File.void may manifest, copy, release, or create a persistence handoff record.
+- File.void must not write final storage directly.
+- `:/ SAVE` means `persist_handoff`, not direct write.
+- `[/] != artifact` remains an invariant.
+- Source truth must remain unchanged.

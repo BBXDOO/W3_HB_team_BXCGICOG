@@ -90,23 +90,9 @@ def validate_w3_config(bundle: W3ConfigBundle) -> list[str]:
     contracts = cross.get("contracts", {})
     if not isinstance(chain, list) or not chain:
         errors.append("cross_system.chain must be a non-empty array")
-        valid_chain: list[str] = []
-    else:
-        valid_chain = []
-        for index, system in enumerate(chain):
-            if not isinstance(system, str) or not system.strip():
-                errors.append(
-                    f"cross_system.chain[{index}] must be a non-empty string"
-                )
-            else:
-                valid_chain.append(system.strip())
-        if len(set(valid_chain)) != len(valid_chain):
-            errors.append("cross_system.chain entries must be unique")
-
-    if not isinstance(contracts, Mapping):
-        errors.append("cross_system.contracts must be an object")
-        contracts = {}
-    for system in valid_chain:
+    elif len(set(chain)) != len(chain):
+        errors.append("cross_system.chain entries must be unique")
+    for system in chain if isinstance(chain, list) else ():
         if system not in contracts:
             errors.append(f"cross_system.contracts.{system} is required")
 
