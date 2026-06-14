@@ -70,6 +70,19 @@ def test_cross_x_rejects_unsupported_modes():
         build_cross_x_plan(source="BBX19", intent="execute directly", mode="execute")
 
 
+@pytest.mark.parametrize(
+    "cross_id",
+    (
+        "foo,CHAIN_ID:evil",
+        "foo\nCHAIN_ID:evil",
+        "",
+    ),
+)
+def test_cross_x_rejects_w3lgu_unsafe_cross_ids(cross_id):
+    with pytest.raises(ValueError, match="chain_id"):
+        build_cross_x_plan(source="Codex", intent="trace", cross_id=cross_id)
+
+
 def test_cross_x_request_is_immutable():
     request = CrossXRequest(source="Codex", intent="plan", target="PX")
 
