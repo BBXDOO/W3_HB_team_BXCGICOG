@@ -20,12 +20,15 @@ from protocol.EP_SIGNAL.rytm import build_rytm_preview
 from protocol.w3lgu import W3LguFiveLineProgram, encode_w3lgu_value, parse_five_line_program, px_from_five_line, px_to_append_envelope, validate_five_line
 from protocol.w3lgu.px import PXAnchor
 from src.w3db.append_flow import AppendEnvelope
-from cross_x.event_chain import EventChain, build_event_chain, normalize_ecs_identifier
-from cross_x.audit import audit_cross_systems
+from cross_x.event_chain import EventChain, build_event_chain
 
 
 def _now_iso() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def _clean(value: object) -> str:
+    return " ".join(str(value).replace("\n", " ").replace("\r", " ").split())
 
 
 def _build_cross_w3lgu_packet(
@@ -41,10 +44,10 @@ def _build_cross_w3lgu_packet(
     contract = str(payload.get("contract", "observe_only"))
     text = "\n".join(
         (
-            f"MEM:SOURCE:{encode_w3lgu_value(source)},CHAIN_ID:{chain_id}",
-            f"PATCH:MODE:{encode_w3lgu_value(mode)}",
-            f"LAW:TARGET:{encode_w3lgu_value(target_value)},CONTRACT:{encode_w3lgu_value(contract)}",
-            f"EVENT:INTENT:{encode_w3lgu_value(intent)},ECS_STATE:planned",
+            f"MEM:SOURCE:{_clean(source)},CHAIN_ID:{_clean(chain_id)}",
+            f"PATCH:MODE:{_clean(mode)}",
+            f"LAW:TARGET:{_clean(target_value)},CONTRACT:{_clean(contract)}",
+            f"EVENT:INTENT:{_clean(intent)},ECS_STATE:planned",
             "SIGNAL:STATUS:received,TRACEABLE:true,EXECUTE_ALLOWED:false",
         )
     )
@@ -163,10 +166,7 @@ def build_cross_x_plan(
     if resolved_request.mode not in allowed_modes:
         raise ValueError(f"Cross-X mode {resolved_request.mode!r} is not allowed")
 
-    resolved_cross_id = normalize_ecs_identifier(
-        str(uuid4()) if cross_id is None else cross_id,
-        field="chain_id",
-    )
+    resolved_cross_id = cross_id or str(uuid4())
     program = _build_cross_w3lgu_packet(
         chain_id=resolved_cross_id,
         source=resolved_request.source,
@@ -196,10 +196,12 @@ def build_cross_x_plan(
         timestamp=timestamp,
     ).to_dict()
     system_audit = audit_cross_systems(cfg)
-    component_states = {
-        system: str(cfg.ecosystem["components"].get(system, {}).get("status", "active"))
-        for system in cfg.cross_system["chain"]
-    }
+    components = cfg.ecosystem.get("components", {})
+    component_states = {}
+    for system in cfg.cross_system["chain"]:
+        component = components.get(system)
+        status = component.get("status", "active") if isinstance(component, Mapping) else "active"
+        component_states[system] = str(status)
     return CrossXPlan(
         cross_id=resolved_cross_id,
         timestamp=timestamp or _now_iso(),
@@ -209,7 +211,6 @@ def build_cross_x_plan(
             chain_id=resolved_cross_id,
             systems=tuple(cfg.cross_system["chain"]),
             contracts=cfg.cross_system["contracts"],
-            system_states=component_states,
             supervisor=str(cross_x.get("event_chain_supervisor", "AI_SUPERVISOR")),
         ),
         program=program,
