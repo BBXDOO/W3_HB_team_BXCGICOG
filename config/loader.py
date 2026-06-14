@@ -83,6 +83,32 @@ def validate_w3_config(bundle: W3ConfigBundle) -> list[str]:
         errors.append("cross_system.cross_x.requires_human_review must be true")
     if cross_x.get("requires_governance_gate") is not True:
         errors.append("cross_system.cross_x.requires_governance_gate must be true")
+    if not isinstance(cross_x.get("event_chain_supervisor"), str) or not cross_x["event_chain_supervisor"].strip():
+        errors.append("cross_system.cross_x.event_chain_supervisor must be a non-empty string")
+
+    chain = cross.get("chain", ())
+    contracts = cross.get("contracts", {})
+    if not isinstance(chain, list) or not chain:
+        errors.append("cross_system.chain must be a non-empty array")
+        valid_chain: list[str] = []
+    else:
+        valid_chain = []
+        for index, system in enumerate(chain):
+            if not isinstance(system, str) or not system.strip():
+                errors.append(
+                    f"cross_system.chain[{index}] must be a non-empty string"
+                )
+            else:
+                valid_chain.append(system.strip())
+        if len(set(valid_chain)) != len(valid_chain):
+            errors.append("cross_system.chain entries must be unique")
+
+    if not isinstance(contracts, Mapping):
+        errors.append("cross_system.contracts must be an object")
+        contracts = {}
+    for system in valid_chain:
+        if system not in contracts:
+            errors.append(f"cross_system.contracts.{system} is required")
 
     for required_path in ("w3_api", "w3lgu", "px", "w3db_append_flow", "hospitication", "iget", "codex"):
         if required_path not in paths:
