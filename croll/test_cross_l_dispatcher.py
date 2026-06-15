@@ -101,22 +101,6 @@ class TestCrossLDispatcher(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "chain_id"):
             dispatch_cross_code("1,1", chain_id="", event_id="ECS-01")
 
-    def test_inactive_cross_code_returns_handled_value_without_plan(self):
-        envelope = dispatch_cross_code(
-            "1,1",
-            chain_id="cross-inactive",
-            event_id="ECS-01-INACTIVE",
-            active=False,
-        )
-
-        self.assertEqual(envelope["state"], "inactive")
-        self.assertEqual(envelope["reason"], "cross_code_not_in_use")
-        self.assertIsNone(envelope["cross_l_plan"])
-        self.assertIsNone(envelope["handoff"])
-        self.assertTrue(envelope["return_value"]["handled"])
-        self.assertFalse(envelope["execution_allowed"])
-        self.assertFalse(envelope["mutated"])
-
 
 if __name__ == "__main__":
     unittest.main()

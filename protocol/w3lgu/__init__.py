@@ -3,23 +3,6 @@
 from protocol.w3lgu.adapters import from_mapping, from_mpcp, from_text, to_mpcp
 from protocol.w3lgu.core import W3LguError, W3LguFiveLineProgram, W3LguLine, W3LguPacket, W3LguPair
 from protocol.w3lgu.encoding import decode_w3lgu_value, encode_w3lgu_value
-from protocol.w3lgu.operational import (
-    MINIMUM_LAWS,
-    ROOMS,
-    LRC2Ledger,
-    LRC2Record,
-    OperationalPackage,
-    OperationalResult,
-    OperationalStage,
-    PointOfConvergence,
-    PXPosition,
-    RoomSpec,
-    W3LguOperationalRuntime,
-    classify_room,
-    operational_template,
-    resolve_px,
-    validate_minimum_laws,
-)
 from protocol.w3lgu.parser import normalize_line, parse_five_line_program, parse_line, split_events
 from protocol.w3lgu.px import PXAnchor, append_px_to_w3db, px_from_five_line, px_to_append_envelope
 from protocol.w3lgu.runtime import W3LguRuntimeResult, run_five_line, run_line, run_packet

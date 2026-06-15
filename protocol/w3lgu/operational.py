@@ -36,7 +36,6 @@ _PX_RE = re.compile(
     r"^(?:PX\s*:\s*)?LN(?P<room>CA|CU|RE|SI|AP|EV)'(?P<position>[0-9]{4})$",
     re.IGNORECASE,
 )
-_OPERATIONAL_IDENTIFIER_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
 
 
 def _now_iso() -> str:
@@ -54,33 +53,6 @@ def _stable_id(prefix: str, value: object, *, length: int = 20) -> str:
 
 def _immutable_mapping(value: Mapping[str, Any]) -> Mapping[str, Any]:
     return MappingProxyType(dict(value))
-
-
-def _normalize_operational_identifier(value: object, *, field: str) -> str:
-    """Return a delimiter-safe identifier for emitted operational text."""
-
-    if not isinstance(value, str):
-        raise W3LguError(f"{field} must be a string")
-    normalized = value.strip()
-    if not _OPERATIONAL_IDENTIFIER_RE.fullmatch(normalized):
-        raise W3LguError(
-            f"{field} must use 1-128 letters, digits, '.', '_' or '-'"
-        )
-    return normalized
-
-
-def _require_unique_packet_keys(packet: W3LguPacket) -> None:
-    """Reject ambiguous packets before governance or durable recording."""
-
-    seen: set[str] = set()
-    duplicates: set[str] = set()
-    for pair in packet.pairs:
-        if pair.key in seen:
-            duplicates.add(pair.key)
-        seen.add(pair.key)
-    if duplicates:
-        joined = ",".join(sorted(duplicates))
-        raise W3LguError(f"Operational packet keys must be unique: {joined}")
 
 
 @dataclass(frozen=True)
@@ -217,7 +189,9 @@ class PointOfConvergence:
     y: int
 
     def __post_init__(self) -> None:
-        cross_id = _normalize_operational_identifier(self.cross_id, field="POC cross_id")
+        cross_id = str(self.cross_id).strip()
+        if not cross_id:
+            raise W3LguError("POC cross_id must be non-empty")
         if self.x < 1 or self.y < 1:
             raise W3LguError("POC coordinates must be positive")
         object.__setattr__(self, "cross_id", cross_id)
@@ -439,17 +413,11 @@ class W3LguOperationalRuntime:
         cross_id: str | None = None,
         timestamp: str | None = None,
     ) -> OperationalResult:
-        _require_unique_packet_keys(packet)
         room, room_basis = classify_room(packet)
         px, px_basis = resolve_px(packet, room)
-        supplied_cross_id = cross_id if cross_id is not None else packet.get("CROSS_ID")
-        if supplied_cross_id is None:
+        resolved_cross_id = str(cross_id or packet.get("CROSS_ID") or "").strip()
+        if not resolved_cross_id:
             resolved_cross_id = _stable_id("CROSS", packet.to_dict(), length=16)
-        else:
-            resolved_cross_id = _normalize_operational_identifier(
-                supplied_cross_id,
-                field="POC cross_id",
-            )
         poc = PointOfConvergence(resolved_cross_id, px.x, px.y)
         tags = _derive_tags(packet, room, room_basis, px_basis)
         package_body = {

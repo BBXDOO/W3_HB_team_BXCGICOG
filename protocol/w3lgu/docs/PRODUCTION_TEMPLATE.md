@@ -115,12 +115,3 @@ assert runtime.ledger.verify()
 
 ผลลัพธ์เป็น immutable dataclass และ `to_dict()` ได้สำหรับ API, event bus,
 audit หรือ durable adapter
-
-## Input integrity
-
-- `CROSS_ID`/POC identifiers รับเฉพาะอักษร ตัวเลข `.`, `_`, `-` ความยาว
-  1–128 ตัว เพื่อไม่ให้ delimiter หรือ newline แทรก field ใหม่ในข้อความ POC
-- operational runtime ปฏิเสธ packet ที่มี key ซ้ำก่อน REDR, DTML และ LRC2
-  เพราะ packet ที่กำกวมต้องไม่ถูกตัดสินหรือบันทึกเป็นประวัติ
-- parser ระดับทั่วไปยังสามารถรายงาน duplicate เป็น warning ได้ แต่เมื่อเข้าสู่
-  operational boundary จะใช้กฎ fail-closed

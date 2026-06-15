@@ -7,11 +7,8 @@ import pytest
 from protocol.w3lgu import (
     MINIMUM_LAWS,
     LRC2Ledger,
-    PointOfConvergence,
     PXPosition,
     W3LguError,
-    W3LguPacket,
-    W3LguPair,
     W3LguOperationalRuntime,
     operational_template,
     parse_line,
@@ -146,58 +143,6 @@ def test_explicit_px_must_match_room_and_confidence_must_be_valid():
         runtime.process_line("EVENT:test,ROOM:CA,PX:LNEV'0001")
     with pytest.raises(W3LguError, match="between 0 and 1"):
         runtime.process_line("EVENT:test,CONF:2")
-
-
-@pytest.mark.parametrize(
-    "cross_id",
-    (
-        "cross'X0009",
-        "cross\nEVENT:forged",
-        "cross,STATE:STOP",
-        "cross:STATE:STOP",
-        " cross with spaces ",
-    ),
-)
-def test_poc_rejects_delimiter_unsafe_cross_ids(cross_id: str):
-    runtime = W3LguOperationalRuntime()
-
-    with pytest.raises(W3LguError, match="POC cross_id must use"):
-        runtime.process_line("EVENT:test", cross_id=cross_id)
-    with pytest.raises(W3LguError, match="POC cross_id must use"):
-        PointOfConvergence(cross_id, 1, 1)
-
-
-def test_operational_runtime_rejects_duplicate_governance_keys_before_recording():
-    ledger = LRC2Ledger()
-    runtime = W3LguOperationalRuntime(ledger=ledger)
-    packet = W3LguPacket(
-        (
-            W3LguPair("EVENT", "route"),
-            W3LguPair("STATE", "READY"),
-            W3LguPair("STATE", "STOP"),
-        ),
-        source="EVENT:route,STATE:READY,STATE:STOP",
-    )
-
-    with pytest.raises(W3LguError, match="keys must be unique: STATE"):
-        runtime.process_packet(packet, cross_id="cross-duplicate")
-    assert len(ledger) == 0
-
-
-def test_operational_runtime_rejects_duplicate_cross_id_from_text():
-    runtime = W3LguOperationalRuntime()
-
-    with pytest.raises(W3LguError, match="keys must be unique: CROSS_ID"):
-        runtime.process_line(
-            "EVENT:test,CROSS_ID:cross-safe,CROSS_ID:cross-other"
-        )
-
-
-def test_operational_runtime_validates_packet_cross_id_before_rendering_poc():
-    runtime = W3LguOperationalRuntime()
-
-    with pytest.raises(W3LguError, match="POC cross_id must use"):
-        runtime.process_line("EVENT:test,CROSS_ID:cross'X9999")
 
 
 def test_stable_derived_px_and_ids_make_replay_observable():

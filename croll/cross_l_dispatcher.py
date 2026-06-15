@@ -118,7 +118,6 @@ def dispatch_cross_code(
     event_id: str,
     paper_context: Optional[Mapping[str, Any]] = None,
     enable_box_suggestion: bool = False,
-    active: bool = True,
 ) -> CrossCodeEnvelope:
     """Bind a Cross-L plan to one E-CS event without executing CrossCode.
 
@@ -129,26 +128,6 @@ def dispatch_cross_code(
 
     if not chain_id.strip() or not event_id.strip():
         raise ValueError("CrossCode dispatch requires non-empty chain_id and event_id")
-    if not active:
-        return {
-            "contract_version": "1.0",
-            "kind": "cross-code-dispatch",
-            "chain_id": chain_id,
-            "event_id": event_id,
-            "state": "inactive",
-            "reason": "cross_code_not_in_use",
-            "cross_l_plan": None,
-            "handoff": None,
-            "return_value": {
-                "state": "inactive",
-                "handled": True,
-                "execution_allowed": False,
-                "mutated": False,
-            },
-            "execution_allowed": False,
-            "mutated": False,
-            "review": False,
-        }
     plan = dispatch_workset(
         px,
         paper_context=paper_context,
