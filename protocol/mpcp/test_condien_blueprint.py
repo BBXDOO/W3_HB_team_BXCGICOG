@@ -30,8 +30,9 @@ import sys
 import os
 
 # Resolve repo root so `src.*` imports work from any cwd.
+# __file__ = <repo>/protocol/mpcp/test_condien_blueprint.py
 _REPO_ROOT = os.path.dirname(
-    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 )
 if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
@@ -138,461 +139,224 @@ expect_raise(
 
 # Invalid meaning_mode must be rejected
 expect_raise(
-    "Condien with invalid meaning_mode raises ValueError",
-    lambda: Condien("X", meaning_mode="unknown-mode"),
+    "invalid meaning_mode raises ValueError",
+    lambda: Condien("X", meaning_mode="wild"),
     ValueError,
     "meaning_mode",
 )
 
-# Invalid continuity must be rejected
+# Invalid context_mode must be rejected
 expect_raise(
-    "Condien with invalid continuity raises ValueError",
-    lambda: Condien("X", continuity="infinite"),
+    "invalid context_mode raises ValueError",
+    lambda: Condien("X", context_mode="random"),
     ValueError,
-    "continuity",
+    "context_mode",
 )
 
 
 # ===========================================================================
-# 2. Condien — layer-aware access (READ / DENY)
+# 2. CondienLayer — access and boundary
 # ===========================================================================
 
-print("\n=== 2. Condien layer-aware access ===")
+print("\n=== 2. CondienLayer access and boundary ===")
 
-# Default: all layers readable
-c_all = Condien("ALL", layers=["A", "B", "C"])
-check("can_read A (no restriction)", c_all.can_read("A"))
-check("can_read B (no restriction)", c_all.can_read("B"))
-check("can_read C (no restriction)", c_all.can_read("C"))
-check("can_read X (not declared) returns False", not c_all.can_read("X"))
-
-# READ list restricts access
-c_read = Condien("READ_RESTRICTED", layers=["A", "B", "C"], read_layers=["A", "C"])
-check("can_read A (in READ list)", c_read.can_read("A"))
-check("can_read B (not in READ list) returns False", not c_read.can_read("B"))
-check("can_read C (in READ list)", c_read.can_read("C"))
-
-# DENY overrides READ
-c_deny = Condien("DENY_TEST", layers=["A", "B", "C"], deny_layers=["B"])
-check("can_read A with DENY=[B]", c_deny.can_read("A"))
-check("can_read B with DENY=[B] returns False", not c_deny.can_read("B"))
-check("can_read C with DENY=[B]", c_deny.can_read("C"))
-
-# DENY overrides explicit READ
-c_both = Condien(
-    "BOTH_TEST",
-    layers=["A", "B", "C"],
-    read_layers=["A", "B"],
-    deny_layers=["B"],
+layer = CondienLayer(
+    name="A",
+    data={"allowed": 1, "secret": 2},
+    read={"allowed"},
+    deny={"secret"},
 )
-check("DENY takes precedence over READ for B", not c_both.can_read("B"))
-check("A still readable when A in READ and not in DENY", c_both.can_read("A"))
 
-# get_layer raises PermissionError for denied layer
+check("layer name A", layer.name == "A")
+check("layer can_read allowed", layer.can_read("allowed"))
+check("layer cannot read secret", not layer.can_read("secret"))
+check("layer read_key allowed returns value", layer.read_key("allowed") == 1)
 expect_raise(
-    "get_layer raises PermissionError for denied layer",
-    lambda: c_deny.get_layer("B"),
-    PermissionError,
-    "denied",
+    "layer read_key secret denied",
+    lambda: layer.read_key("secret"),
+    KeyError,
 )
 
-# write_layer works for any declared layer (write access is not restricted by READ/DENY)
-expect_no_raise(
-    "write_layer on declared layer does not raise",
-    lambda: c_all.write_layer("A", "key", "value"),
-)
-check("write_layer stores value", c_all.get_layer("A").data.get("key") == "value")
+layer2 = CondienLayer("B", data={"x": 10})
+check("layer with no READ/DENY can read x", layer2.can_read("x"))
 
-# write_layer on undeclared layer raises KeyError
+
+# ===========================================================================
+# 3. Condien — active layer cursor and carry-forward
+# ===========================================================================
+
+print("\n=== 3. Condien active layer cursor and carry-forward ===")
+
+c2 = Condien("CTX", layers=["A", "B"])
+check("default active_layer is A", c2.active_layer == "A")
+c2.set_active_layer("B")
+check("active_layer changed to B", c2.active_layer == "B")
 expect_raise(
-    "write_layer on undeclared layer raises KeyError",
-    lambda: c_all.write_layer("Z", "k", "v"),
+    "set_active_layer unknown raises KeyError",
+    lambda: c2.set_active_layer("Z"),
+    KeyError,
+)
+
+c2.add_layer("C", data={"v": 3})
+check("add_layer includes C", "C" in c2.layers())
+check("read_from_layer C.v == 3", c2.read_from_layer("C", "v") == 3)
+
+c3 = Condien("NEXT", layers=["A"])
+c3.carry_forward_from(c2)
+check("carry_forward stores previous CONDIEN", c3.previous is c2)
+check("carry_forward history includes CTX", c3.history[-1] == "CTX")
+
+
+# ===========================================================================
+# 4. Condien — bounded rebase
+# ===========================================================================
+
+print("\n=== 4. Condien bounded rebase ===")
+
+c4 = Condien("REB", layers=["A"])
+c4.add_layer("A", data={"old": 1})
+c4.rebase_layer("A", {"new": 2})
+check("rebase_layer replaces old key", "old" not in c4.get_layer("A").data)
+check("rebase_layer adds new key", c4.read_from_layer("A", "new") == 2)
+expect_raise(
+    "rebase_layer missing raises KeyError",
+    lambda: c4.rebase_layer("Z", {}),
     KeyError,
 )
 
 
 # ===========================================================================
-# 3. Condien — active layer cursor
+# 5. Condien — W3Lgu serialisation
 # ===========================================================================
 
-print("\n=== 3. Condien active layer cursor ===")
+print("\n=== 5. Condien W3Lgu serialisation ===")
 
-c_cur = Condien("CURSOR", layers=["A", "B", "C"])
-check("active_layer initially None", c_cur.active_layer() is None)
+w3_text = c.to_w3lgu()
+check("W3Lgu contains CONDIEN:CORE", "CONDIEN:CORE" in w3_text)
+check("W3Lgu contains ROLE:meaning_state_layer", "ROLE:meaning_state_layer" in w3_text)
+check("W3Lgu contains BOUNDARY:rot-governed", "BOUNDARY:rot-governed" in w3_text)
 
-c_cur.set_active_layer("B")
-check("active_layer is B after set", c_cur.active_layer() == "B")
 
-# set_active_layer on undeclared layer raises KeyError
-expect_raise(
-    "set_active_layer on undeclared layer raises KeyError",
-    lambda: c_cur.set_active_layer("Z"),
-    KeyError,
+# ===========================================================================
+# 6. Blueprint — creation and dict behaviour
+# ===========================================================================
+
+print("\n=== 6. Blueprint creation and dict behaviour ===")
+
+bp = Blueprint(
+    name="REPORT",
+    target="daily_summary",
+    mode="observe",
+    inputs={"source": "logs"},
+    outputs={"format": "md"},
+    constraints={"no_mutate": True},
 )
 
-# set_active_layer on denied layer raises PermissionError
-c_deny_cur = Condien("DENY_CUR", layers=["A", "B"], deny_layers=["B"])
+check("Blueprint name REPORT", bp.name == "REPORT")
+check("Blueprint target daily_summary", bp.target == "daily_summary")
+check("Blueprint mode observe", bp.mode == "observe")
+check("Blueprint inputs.source logs", bp.inputs["source"] == "logs")
+check("Blueprint outputs.format md", bp.outputs["format"] == "md")
+check("Blueprint constraints.no_mutate true", bp.constraints["no_mutate"] is True)
+
+bp_dict = bp.to_dict()
+check("Blueprint to_dict has BLUEPRINT", bp_dict["BLUEPRINT"] == "REPORT")
+check("Blueprint to_dict has TARGET", bp_dict["TARGET"] == "daily_summary")
+check("Blueprint to_dict has MODE", bp_dict["MODE"] == "observe")
+
+
+# ===========================================================================
+# 7. Blueprint — required field validation
+# ===========================================================================
+
+print("\n=== 7. Blueprint required field validation ===")
+
 expect_raise(
-    "set_active_layer on denied layer raises PermissionError",
-    lambda: c_deny_cur.set_active_layer("B"),
-    PermissionError,
-)
-
-
-# ===========================================================================
-# 4. Condien — carry-forward (continuity)
-# ===========================================================================
-
-print("\n=== 4. Condien carry-forward (continuity) ===")
-
-c_carry = Condien("CARRY", continuity="carry-forward")
-c_carry.carry("task_id", "TASK-001")
-c_carry.carry("context_mode", "active")
-check("recall task_id", c_carry.recall("task_id") == "TASK-001")
-check("recall context_mode", c_carry.recall("context_mode") == "active")
-check("recall missing key returns default", c_carry.recall("missing", "N/A") == "N/A")
-
-# continuity=none blocks carry
-c_none = Condien("NO_CARRY", continuity="none")
-expect_raise(
-    "carry on continuity=none raises RuntimeError",
-    lambda: c_none.carry("k", "v"),
-    RuntimeError,
-    "continuity=none",
-)
-
-
-# ===========================================================================
-# 5. Condien — bounded rebase
-# ===========================================================================
-
-print("\n=== 5. Condien rebase (continuity) ===")
-
-# Source Condien with carry state
-src = Condien("SRC", continuity="carry-forward")
-src.carry("ctx", "from_src")
-src.carry("extra", "extra_val")
-
-# Bounded rebase: only keys already in target are updated
-tgt_bounded = Condien("TGT_BOUNDED", continuity="bounded-carry", rebase="bounded")
-tgt_bounded.carry("ctx", "old_ctx")   # pre-existing key
-# "extra" is NOT in tgt_bounded._carry → should NOT be imported
-
-tgt_bounded.rebase_from(src)
-check("bounded rebase updates existing key", tgt_bounded.recall("ctx") == "from_src")
-check("bounded rebase does NOT import new key", tgt_bounded.recall("extra") is None)
-
-# Enabled rebase: all source keys imported
-tgt_enabled = Condien("TGT_ENABLED", continuity="carry-forward", rebase="enabled")
-tgt_enabled.rebase_from(src)
-check("enabled rebase imports ctx", tgt_enabled.recall("ctx") == "from_src")
-check("enabled rebase imports extra", tgt_enabled.recall("extra") == "extra_val")
-
-# Disabled rebase raises
-c_dis = Condien("DIS", continuity="bounded-carry", rebase="disabled")
-expect_raise(
-    "rebase_from on rebase=disabled raises RuntimeError",
-    lambda: c_dis.rebase_from(src),
-    RuntimeError,
-    "disabled",
-)
-
-
-# ===========================================================================
-# 6. Condien — W3Lgu serialisation
-# ===========================================================================
-
-print("\n=== 6. Condien W3Lgu serialisation ===")
-
-c_ser = Condien(
-    "SERIALISE",
-    role="meaning_state_layer",
-    layers=["A", "B"],
-    read_layers=["A"],
-    deny_layers=["B"],
-    continuity="carry-forward",
-    rebase="bounded",
-    boundary="rot-governed",
-    env="preserve",
-    modew="CHECK",
-    paper="rules",
-)
-w3 = c_ser.to_w3lgu()
-check("to_w3lgu contains CONDIEN:SERIALISE", "CONDIEN:SERIALISE" in w3)
-check("to_w3lgu contains ROLE:meaning_state_layer", "ROLE:meaning_state_layer" in w3)
-check("to_w3lgu contains LAYERS:", "LAYERS:" in w3)
-check("to_w3lgu contains READ:", "READ:" in w3)
-check("to_w3lgu contains DENY:", "DENY:" in w3)
-check("to_w3lgu contains CONTINUITY:carry-forward", "CONTINUITY:carry-forward" in w3)
-check("to_w3lgu contains REBASE:bounded", "REBASE:bounded" in w3)
-check("to_w3lgu contains BOUNDARY:rot-governed", "BOUNDARY:rot-governed" in w3)
-check("to_w3lgu contains ENV:preserve", "ENV:preserve" in w3)
-check("to_w3lgu contains MODEW:CHECK", "MODEW:CHECK" in w3)
-check("to_w3lgu contains PAPER:rules", "PAPER:rules" in w3)
-
-# Condien with no modew/paper does not emit those fields
-c_no_bind = Condien("NO_BIND")
-w3_no_bind = c_no_bind.to_w3lgu()
-check("to_w3lgu omits MODEW when not set", "MODEW:" not in w3_no_bind)
-check("to_w3lgu omits PAPER when not set", "PAPER:" not in w3_no_bind)
-
-
-# ===========================================================================
-# 7. Blueprint — creation from dict
-# ===========================================================================
-
-print("\n=== 7. Blueprint creation from dict ===")
-
-bp = Blueprint({
-    "NAME": "CONDIEN_RUNTIME",
-    "TARGET": "linux",
-    "MODE": "full",
-    "LIB": "file,event,storage",   # string → parsed as list
-    "ROLE": "meaning_state_layer",
-    "BOUNDARY": "rot-governed",
-    "TRACE": "cause-action-result",
-    "ENV": "preserve",
-})
-
-check("Blueprint has NAME field", bp.has("NAME"))
-check("Blueprint get NAME", bp.get("NAME") == "CONDIEN_RUNTIME")
-check("Blueprint get TARGET", bp.get("TARGET") == "linux")
-check("Blueprint get MODE", bp.get("MODE") == "full")
-check("Blueprint get_list LIB has 3 items", len(bp.get_list("LIB")) == 3)
-check("Blueprint LIB includes 'file'", "file" in bp.get_list("LIB"))
-check("Blueprint get BOUNDARY", bp.get("BOUNDARY") == "rot-governed")
-check("Blueprint get missing field returns None", bp.get("MISSING") is None)
-check("Blueprint get missing field with default", bp.get("MISSING", "N/A") == "N/A")
-check("Blueprint has returns False for absent field", not bp.has("NONEXISTENT"))
-
-# to_dict contains expected keys
-d = bp.to_dict()
-check("to_dict has NAME", "NAME" in d)
-check("to_dict has BOUNDARY", "BOUNDARY" in d)
-
-# Blueprint with list value at construction time
-bp_list = Blueprint({"NAME": "BP_LIST", "LIB": ["fs", "net"]})
-check("Blueprint list LIB stored correctly", bp_list.get_list("LIB") == ["fs", "net"])
-
-# Validate passes
-expect_no_raise("Blueprint.validate() passes when NAME present", bp.validate)
-
-# Validate fails when NAME missing
-bp_no_name = Blueprint({"TARGET": "linux"})
-expect_raise(
-    "Blueprint.validate() raises BlueprintError when NAME missing",
-    bp_no_name.validate,
+    "Blueprint missing name raises BlueprintError",
+    lambda: Blueprint(name="", target="x"),
     BlueprintError,
-    "NAME",
 )
-
-
-# ===========================================================================
-# 8. Blueprint — parsing from W3Lgu KEY:VALUE text
-# ===========================================================================
-
-print("\n=== 8. Blueprint parsing from W3Lgu text ===")
-
-BLUEPRINT_TEXT = """\
-NAME:MPCP_CORE
-TARGET:android
-MODE:min
-LIB:fs,store,net
-BRIDGE:android
-PARTITION:A,B,C
-BOUNDARY:rot-governed
-TRACE:required
-ENV:preserve
-"""
-
-bp_parsed = parse_blueprint(BLUEPRINT_TEXT)
-check("parsed NAME == MPCP_CORE", bp_parsed.get("NAME") == "MPCP_CORE")
-check("parsed TARGET == android", bp_parsed.get("TARGET") == "android")
-check("parsed MODE == min", bp_parsed.get("MODE") == "min")
-check("parsed LIB is list", isinstance(bp_parsed.to_dict()["LIB"], list))
-check("parsed LIB has 3 items", len(bp_parsed.get_list("LIB")) == 3)
-check("parsed PARTITION has A,B,C", bp_parsed.get_list("PARTITION") == ["A", "B", "C"])
-check("parsed BOUNDARY == rot-governed", bp_parsed.get("BOUNDARY") == "rot-governed")
-check("parsed TRACE == required", bp_parsed.get("TRACE") == "required")
-check("parsed ENV == preserve", bp_parsed.get("ENV") == "preserve")
-
-# Condien-oriented blueprint
-CONDIEN_BP_TEXT = """\
-NAME:CONDIEN_RUNTIME
-TARGET:linux
-MODE:full
-LIB:file,event,storage
-BRIDGE:linux
-OPTIONAL:debug,merge-view
-ROLE:meaning_state_layer
-BOUNDARY:paper-strict
-TRACE:cause-action-result
-ENV:non-reduced
-"""
-bp_cond = parse_blueprint(CONDIEN_BP_TEXT)
-check("Condien bp NAME == CONDIEN_RUNTIME", bp_cond.get("NAME") == "CONDIEN_RUNTIME")
-check("Condien bp ROLE == meaning_state_layer", bp_cond.get("ROLE") == "meaning_state_layer")
-check("Condien bp OPTIONAL is list", isinstance(bp_cond.to_dict()["OPTIONAL"], list))
-check("Condien bp OPTIONAL includes debug", "debug" in bp_cond.get_list("OPTIONAL"))
-check("Condien bp BOUNDARY == paper-strict", bp_cond.get("BOUNDARY") == "paper-strict")
-
-# Inline (comma-separated multi-pair) parsing — validate=False since no NAME field
-# This mirrors the W3Lgu inspection/runtime exchange pattern (not a full blueprint)
-INLINE_TEXT = "CONDIEN:CORE,MODEW:REPORT,PAPER:daily_summary"
-bp_inline = parse_blueprint(INLINE_TEXT, validate=False)
-check("inline parsed CONDIEN == CORE", bp_inline.get("CONDIEN") == "CORE")
-check("inline parsed MODEW == REPORT", bp_inline.get("MODEW") == "REPORT")
-check("inline parsed PAPER == daily_summary", bp_inline.get("PAPER") == "daily_summary")
-
-# parse_blueprint raises TypeError on non-string input
 expect_raise(
-    "parse_blueprint(None) raises TypeError",
-    lambda: parse_blueprint(None),  # type: ignore[arg-type]
-    TypeError,
-)
-
-# parse_blueprint raises BlueprintError when NAME missing and validate=True
-expect_raise(
-    "parse_blueprint raises BlueprintError when NAME missing",
-    lambda: parse_blueprint("TARGET:linux\nMODE:min"),
+    "Blueprint missing target raises BlueprintError",
+    lambda: Blueprint(name="X", target=""),
     BlueprintError,
-    "NAME",
+)
+expect_raise(
+    "Blueprint invalid mode raises BlueprintError",
+    lambda: Blueprint(name="X", target="Y", mode="execute-now"),
+    BlueprintError,
 )
 
-# parse_blueprint with validate=False skips validation
-expect_no_raise(
-    "parse_blueprint validate=False does not raise even without NAME",
-    lambda: parse_blueprint("TARGET:linux", validate=False),
-)
-
-# Blank lines and missing ':' tokens are ignored
-MESSY_TEXT = "\n\nNAME:CLEAN\n\nnotafield\n\nTARGET:linux\n"
-bp_clean = parse_blueprint(MESSY_TEXT)
-check("messy text parsed NAME == CLEAN", bp_clean.get("NAME") == "CLEAN")
-check("messy text parsed TARGET == linux", bp_clean.get("TARGET") == "linux")
-
 
 # ===========================================================================
-# 9. Blueprint — validation behaviour
+# 8. Blueprint parser — single-line and multi-line W3Lgu
 # ===========================================================================
 
-print("\n=== 9. Blueprint validation ===")
+print("\n=== 8. Blueprint parser from W3Lgu text ===")
 
-# NAME is the only required field per W3Lgu-Blueprint profile
-minimal = Blueprint({"NAME": "MINIMAL"})
-expect_no_raise("Blueprint with only NAME passes validate", minimal.validate)
+single = "BLUEPRINT:REPORT TARGET:daily_summary MODE:observe INPUT:source=logs OUTPUT:format=md CONSTRAINT:no_mutate=true"
+parsed_single = parse_blueprint(single)
+check("single-line parse name", parsed_single.name == "REPORT")
+check("single-line parse target", parsed_single.target == "daily_summary")
+check("single-line parse mode", parsed_single.mode == "observe")
+check("single-line parse input source", parsed_single.inputs["source"] == "logs")
+check("single-line parse output format", parsed_single.outputs["format"] == "md")
+check("single-line parse constraint true", parsed_single.constraints["no_mutate"] == "true")
 
-# BlueprintError is a ValueError subclass (composable)
-check("BlueprintError is subclass of ValueError", issubclass(BlueprintError, ValueError))
-
-# to_dict after validate is unchanged
-minimal.validate()
-check("to_dict after validate still has NAME", minimal.to_dict().get("NAME") == "MINIMAL")
-
-
-# ===========================================================================
-# 10. Blueprint declarative separation — no runtime logic
-# ===========================================================================
-
-print("\n=== 10. Blueprint declarative separation ===")
-
-# Blueprint must not have execute/run methods (no imperative execution)
-check("Blueprint has no 'run' method", not hasattr(Blueprint, "run"))
-check("Blueprint has no 'execute' method", not hasattr(Blueprint, "execute"))
-
-# Blueprint is inert — calling validate() does not trigger any side effects
-side_effects = []
-bp_inert = Blueprint({"NAME": "INERT", "TARGET": "test"})
-expect_no_raise("Blueprint.validate() is side-effect-free", bp_inert.validate)
-check("No side effects from Blueprint.validate()", len(side_effects) == 0)
-
-# Blueprint instances are independent (no shared mutable state)
-bp_a = Blueprint({"NAME": "A", "MODE": "min"})
-bp_b = Blueprint({"NAME": "B", "MODE": "full"})
-check("Blueprint A and B are independent", bp_a.get("NAME") != bp_b.get("NAME"))
-check("Blueprint MODE difference preserved", bp_a.get("MODE") != bp_b.get("MODE"))
-
-
-# ===========================================================================
-# 11. Blueprint — W3Lgu re-serialisation round-trip
-# ===========================================================================
-
-print("\n=== 11. Blueprint W3Lgu round-trip ===")
-
-ORIGINAL = """\
-NAME:ROUND_TRIP
-TARGET:linux
-MODE:full
-LIB:fs,store,net
-BOUNDARY:rot-governed
-TRACE:cause-action-result
-ENV:preserve
+multi = """
+BLUEPRINT:CHECK
+TARGET:repo
+MODE:observe
+INPUT:path=src
+OUTPUT:format=json
+CONSTRAINT:no_write=true
 """
+parsed_multi = parse_blueprint(multi)
+check("multi-line parse name", parsed_multi.name == "CHECK")
+check("multi-line parse target", parsed_multi.target == "repo")
+check("multi-line parse input path", parsed_multi.inputs["path"] == "src")
 
-bp_rt = parse_blueprint(ORIGINAL)
-serialised = bp_rt.to_w3lgu()
-
-# Re-parse the serialised form
-bp_rt2 = parse_blueprint(serialised)
-check("round-trip NAME preserved", bp_rt2.get("NAME") == bp_rt.get("NAME"))
-check("round-trip TARGET preserved", bp_rt2.get("TARGET") == bp_rt.get("TARGET"))
-check("round-trip BOUNDARY preserved", bp_rt2.get("BOUNDARY") == bp_rt.get("BOUNDARY"))
-check("round-trip ENV preserved", bp_rt2.get("ENV") == bp_rt.get("ENV"))
-check("round-trip LIB preserved as list", bp_rt2.get_list("LIB") == bp_rt.get_list("LIB"))
-
-# NAME appears first in to_w3lgu output
-first_line = serialised.strip().splitlines()[0]
-check("to_w3lgu starts with NAME:", first_line.startswith("NAME:"))
+expect_raise(
+    "parse_blueprint missing target raises BlueprintError",
+    lambda: parse_blueprint("BLUEPRINT:X MODE:observe"),
+    BlueprintError,
+)
 
 
 # ===========================================================================
-# 12. Controlled vocabulary coverage
+# 9. Blueprint — declarative separation
 # ===========================================================================
 
-print("\n=== 12. Controlled vocabulary coverage ===")
+print("\n=== 9. Blueprint declarative separation ===")
 
-check("CONTINUITY_MODES is non-empty", len(CONTINUITY_MODES) > 0)
-check("REBASE_MODES is non-empty", len(REBASE_MODES) > 0)
-check("MEANING_MODES is non-empty", len(MEANING_MODES) > 0)
-check("CONTEXT_MODES is non-empty", len(CONTEXT_MODES) > 0)
+check("Blueprint has no execute method", not hasattr(bp, "execute"))
+check("Blueprint has no run method", not hasattr(bp, "run"))
+check("Blueprint has no mutate method", not hasattr(bp, "mutate"))
 
-# All vocab values accepted by Condien constructor
-for cm in CONTINUITY_MODES:
-    expect_no_raise(
-        f"Condien accepts continuity={cm!r}",
-        lambda m=cm: Condien("TEST", continuity=m),
-    )
-for rm in REBASE_MODES:
-    expect_no_raise(
-        f"Condien accepts rebase={rm!r}",
-        lambda m=rm: Condien("TEST", rebase=m),
-    )
-for mm in MEANING_MODES:
-    expect_no_raise(
-        f"Condien accepts meaning_mode={mm!r}",
-        lambda m=mm: Condien("TEST", meaning_mode=m),
-    )
-for ctm in CONTEXT_MODES:
-    expect_no_raise(
-        f"Condien accepts context_mode={ctm!r}",
-        lambda m=ctm: Condien("TEST", context_mode=m),
-    )
 
+# ===========================================================================
+# 10. Blueprint W3Lgu serialisation round-trip
+# ===========================================================================
+
+print("\n=== 10. Blueprint W3Lgu serialisation ===")
+
+bp_w3 = bp.to_w3lgu()
+check("Blueprint W3Lgu contains BLUEPRINT", "BLUEPRINT:REPORT" in bp_w3)
+check("Blueprint W3Lgu contains TARGET", "TARGET:daily_summary" in bp_w3)
+check("Blueprint W3Lgu contains MODE", "MODE:observe" in bp_w3)
+check("Blueprint W3Lgu contains INPUT", "INPUT:source=logs" in bp_w3)
+check("Blueprint W3Lgu contains OUTPUT", "OUTPUT:format=md" in bp_w3)
+check("Blueprint W3Lgu contains CONSTRAINT", "CONSTRAINT:no_mutate=True" in bp_w3)
 
 # ===========================================================================
 # Summary
 # ===========================================================================
 
-print("\n" + "=" * 60)
+passed = sum(1 for status, _ in _results if status == PASS)
 total = len(_results)
-passed = sum(1 for s, _ in _results if s == PASS)
-failed = total - passed
+print("\n" + "=" * 60)
 print(f"Condien & Blueprint Foundation Tests: {passed}/{total} passed")
-if failed:
-    print("\nFailed checks:")
-    for s, label in _results:
-        if s == FAIL:
-            print(f"  ✕ {label}")
 print("=" * 60)
 
-sys.exit(0 if failed == 0 else 1)
+if passed != total:
+    raise SystemExit(1)
