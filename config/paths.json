@@ -17,6 +17,9 @@
     "ep_signal": "protocol/EP_SIGNAL/",
     "iget": "iget/",
     "mpcp": "protocol/mpcp/",
+    "file_void_docs": "protocol/Files.void/",
+    "file_void_runtime": "protocol/files_void/",
+    "file_void_mpcp_adapter": "protocol/mpcp/adapter/file_void_tool.py",
     "integration_guide": "docs/integration_guide.md",
     "px_append_guide": "docs/px_w3db_append_flow.md",
     "master_map": "docs/W3_MASTER_MAP.md"
