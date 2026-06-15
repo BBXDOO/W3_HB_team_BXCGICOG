@@ -5,27 +5,23 @@ on:
     paths:
       - "croll/**"
       - "cross_x/**"
-      - "protocol/mpcp/**"
       - "docs/croll/**"
       - "wx/**"
       - "w3_api/**"
       - "config/**"
       - "tests/test_box_integration.py"
       - "tests/test_cross_x_config.py"
-      - "tests/test_cross_mpcp_adapter.py"
       - ".github/workflows/croll.yml"
   pull_request:
     paths:
       - "croll/**"
       - "cross_x/**"
-      - "protocol/mpcp/**"
       - "docs/croll/**"
       - "wx/**"
       - "w3_api/**"
       - "config/**"
       - "tests/test_box_integration.py"
       - "tests/test_cross_x_config.py"
-      - "tests/test_cross_mpcp_adapter.py"
       - ".github/workflows/croll.yml"
   workflow_dispatch:
 
@@ -57,8 +53,8 @@ jobs:
 
       - name: Check repository paths are cross-platform
         run: python tools/check_portable_paths.py
-      - name: Compile CROLL, Cross-X, MPCP and BOX
-        run: python -m compileall croll cross_x protocol/mpcp wx
+      - name: Compile CROLL and BOX
+        run: python -m compileall croll wx
 
       - name: Run CROLL tests
         run: python -m unittest discover -s croll -p "test_*.py" -v
@@ -107,4 +103,4 @@ jobs:
           PY
 
       - name: Test BOX and W3-API integration
-        run: python -m pytest tests/test_box_integration.py tests/test_w3_api_cross_plan.py tests/test_cross_x_config.py tests/test_cross_mpcp_adapter.py -q
+        run: python -m pytest tests/test_box_integration.py tests/test_w3_api_cross_plan.py tests/test_cross_x_config.py -q
