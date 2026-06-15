@@ -1,6 +1,6 @@
 # mpcp/kernel/contract.py
 
-from mpcp.kernel.system import SYSTEM_NAME
+from .system import SYSTEM_NAME
 
 
 # All runtime states allowed by spec (MODEW_PAPER + MPCP_RUNTIME_SANITY_SWEEP_v2)

@@ -16,7 +16,8 @@
     "diagnose": false,
     "execute": false,
     "requires_human_review": true,
-    "requires_governance_gate": true
+    "requires_governance_gate": true,
+    "event_chain_supervisor": "AI_SUPERVISOR"
   },
   "chain": [
     "W3-API",
