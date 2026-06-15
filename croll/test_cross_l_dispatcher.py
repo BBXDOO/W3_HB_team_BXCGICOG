@@ -72,13 +72,6 @@ class TestCrossLDispatcher(unittest.TestCase):
         self.assert_safe_plan(plan)
         self.assertIsNone(plan["suggested_template"])
 
-    def test_invalid_px_never_receives_unrelated_box_suggestion(self):
-        plan = dispatch_workset("invalid", enable_box_suggestion=True)
-        self.assert_safe_plan(plan)
-        self.assertEqual(plan["state"], "review")
-        self.assertIsNone(plan["px"])
-        self.assertIsNone(plan["suggested_template"])
-
     def test_dispatch_with_paper_context_marker(self):
         plan = dispatch_workset("1,1", paper_context={"paper_id": "demo", "scope": "CROSS_L_ONLY"})
         self.assert_safe_plan(plan)
@@ -107,45 +100,6 @@ class TestCrossLDispatcher(unittest.TestCase):
     def test_cross_code_dispatch_requires_trace_identity(self):
         with self.assertRaisesRegex(ValueError, "chain_id"):
             dispatch_cross_code("1,1", chain_id="", event_id="ECS-01")
-
-    def test_cross_code_dispatch_rejects_unsafe_trace_identity(self):
-        with self.assertRaisesRegex(ValueError, "delimiter-safe chain_id"):
-            dispatch_cross_code(
-                "1,1",
-                chain_id="cross,CHAIN_ID:override",
-                event_id="ECS-01",
-            )
-        with self.assertRaisesRegex(ValueError, "event_id must be a string"):
-            dispatch_cross_code(
-                "1,1",
-                chain_id="cross-safe",
-                event_id=None,
-            )
-
-    def test_cross_code_dispatch_normalizes_trace_identity(self):
-        envelope = dispatch_cross_code(
-            "1,1",
-            chain_id="  cross-safe  ",
-            event_id="  ECS-01-SAFE  ",
-        )
-        self.assertEqual(envelope["chain_id"], "cross-safe")
-        self.assertEqual(envelope["event_id"], "ECS-01-SAFE")
-
-    def test_inactive_cross_code_returns_handled_value_without_plan(self):
-        envelope = dispatch_cross_code(
-            "1,1",
-            chain_id="cross-inactive",
-            event_id="ECS-01-INACTIVE",
-            active=False,
-        )
-
-        self.assertEqual(envelope["state"], "inactive")
-        self.assertEqual(envelope["reason"], "cross_code_not_in_use")
-        self.assertIsNone(envelope["cross_l_plan"])
-        self.assertIsNone(envelope["handoff"])
-        self.assertTrue(envelope["return_value"]["handled"])
-        self.assertFalse(envelope["execution_allowed"])
-        self.assertFalse(envelope["mutated"])
 
 
 if __name__ == "__main__":

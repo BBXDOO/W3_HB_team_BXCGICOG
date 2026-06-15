@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated_at": "2026-06-12T00:00:00Z",
+  "updated_at": "2026-06-15T00:00:00Z",
   "templates": [
     {
       "template_id": "PAPER:FAST_PATCH_V1",
@@ -43,6 +43,20 @@
       "lang": "json",
       "boundary": "temp_patch",
       "deny": ["truth_mutation"],
+      "external_ref": null
+    },
+    {
+      "template_id": "BOX:WX_BOX_MINIMUM_V1",
+      "name": "wx BOX Minimum Template",
+      "path": "wx/templates/box/wx_box_minimum.md",
+      "version": "0.1.0",
+      "owner": "BBX19",
+      "status": "draft",
+      "work_type": "REFERENCE_CONTAINER",
+      "rytm": "BOX",
+      "px": ["3,1"],
+      "boundary": "reference_only",
+      "deny": ["truth_mutation", "runtime_execute", "source_write", "auto_copy"],
       "external_ref": null
     }
   ]

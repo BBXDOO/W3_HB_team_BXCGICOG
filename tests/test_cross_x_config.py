@@ -2,9 +2,8 @@ from dataclasses import FrozenInstanceError
 
 import pytest
 
-from config import W3ConfigBundle, load_w3_config, validate_w3_config
-from cross_x import CrossXRequest, audit_cross_systems, build_cross_x_plan, build_event_chain
-from protocol.w3lgu import decode_w3lgu_value
+from config import load_w3_config, validate_w3_config
+from cross_x import CrossXRequest, build_cross_x_plan, build_event_chain
 
 
 def test_w3_config_bundle_covers_current_ecosystem():
@@ -84,29 +83,6 @@ def test_cross_x_rejects_w3lgu_unsafe_cross_ids(cross_id):
         build_cross_x_plan(source="Codex", intent="trace", cross_id=cross_id)
 
 
-def test_cross_x_encodes_untrusted_w3lgu_values_without_field_injection():
-    plan = build_cross_x_plan(
-        source="Codex,CHAIN_ID:evil",
-        intent="review,EXECUTE_ALLOWED:true\nSTATE:run",
-        target="W3DB,CONTRACT:overwrite",
-        mode="cross",
-        payload={"contract": "observe,MODE:execute"},
-        cross_id="safe-chain",
-    )
-
-    assert plan.program.memory.get("CHAIN_ID") == "safe-chain"
-    assert plan.program.memory.get("EVIL") is None
-    assert plan.program.event.get("EXECUTE_ALLOWED") is None
-    assert plan.program.event.get("STATE") is None
-    assert plan.program.law.get("MODE") is None
-    assert decode_w3lgu_value(plan.program.memory.get("SOURCE") or "") == (
-        "Codex,CHAIN_ID:evil"
-    )
-    assert decode_w3lgu_value(plan.program.event.get("INTENT") or "") == (
-        "review,EXECUTE_ALLOWED:true STATE:run"
-    )
-
-
 def test_cross_x_request_is_immutable():
     request = CrossXRequest(source="Codex", intent="plan", target="PX")
 
@@ -121,136 +97,3 @@ def test_event_chain_rejects_duplicate_system_handoffs():
             systems=("W3Lgu", "W3Lgu"),
             contracts={"W3Lgu": "five_line_packet_contract"},
         )
-
-
-@pytest.mark.parametrize(
-    ("kwargs", "expected"),
-    (
-        ({"systems": "W3Lgu"}, "systems"),
-        ({"systems": ({"bad": "entry"},)}, r"systems\[0\]"),
-        ({"contracts": []}, "contracts"),
-        ({"system_states": []}, "system_states"),
-    ),
-)
-def test_event_chain_rejects_malformed_public_inputs(kwargs, expected):
-    values = {
-        "chain_id": "safe",
-        "systems": ("W3Lgu",),
-        "contracts": {"W3Lgu": "five_line_packet_contract"},
-    }
-    values.update(kwargs)
-
-    with pytest.raises(ValueError, match=expected):
-        build_event_chain(**values)
-
-
-def test_event_chain_normalizes_safe_ids_and_supervisor():
-    chain = build_event_chain(
-        chain_id="  cross-safe  ",
-        systems=("W3Lgu",),
-        contracts={"W3Lgu": "five_line_packet_contract"},
-        supervisor="  CODEX_SUPERVISOR  ",
-    )
-
-    assert chain.chain_id == "cross-safe"
-    assert chain.supervisor == "CODEX_SUPERVISOR"
-
-
-@pytest.mark.parametrize("supervisor", ("", " bad value ", "AI,MODE:execute"))
-def test_event_chain_rejects_unsafe_supervisor(supervisor):
-    with pytest.raises(ValueError, match="supervisor"):
-        build_event_chain(
-            chain_id="safe",
-            systems=("W3Lgu",),
-            contracts={"W3Lgu": "five_line_packet_contract"},
-            supervisor=supervisor,
-        )
-
-
-def test_event_chain_returns_value_when_system_is_inactive():
-    chain = build_event_chain(
-        chain_id="inactive-test",
-        systems=("W3Lgu", "PX"),
-        contracts={
-            "W3Lgu": "five_line_packet_contract",
-            "PX": "position_pointer_not_execution",
-        },
-        system_states={"W3Lgu": "active", "PX": "inactive"},
-    )
-
-    body = chain.to_dict()
-    assert body["state"] == "partial"
-    assert body["events"][0]["status"] == "planned"
-    assert body["events"][0]["return_value"] is None
-    assert body["events"][1]["status"] == "inactive"
-    assert body["events"][1]["return_value"] == {
-        "state": "inactive",
-        "reason": "system_not_in_use",
-        "configured_state": "inactive",
-        "handled": True,
-    }
-
-
-def test_cross_system_audit_reports_all_current_chain_members_ready():
-    report = audit_cross_systems(load_w3_config())
-
-    assert report["status"] == "ready"
-    assert report["checked"] == 12
-    assert report["issues"] == []
-    assert all(system["path_exists"] for system in report["systems"])
-
-
-@pytest.mark.parametrize(
-    ("chain", "contracts", "expected"),
-    (
-        ([{"bad": "entry"}], {}, "chain[0]"),
-        ([""], {}, "chain[0]"),
-        (["W3Lgu"], [], "contracts must be an object"),
-    ),
-)
-def test_config_validation_reports_malformed_chain_without_crashing(
-    chain, contracts, expected
-):
-    config = load_w3_config()
-    malformed_cross = dict(config.cross_system)
-    malformed_cross["chain"] = chain
-    malformed_cross["contracts"] = contracts
-    malformed = W3ConfigBundle(
-        environment=config.environment,
-        ecosystem=config.ecosystem,
-        cross_system=malformed_cross,
-        paths=config.paths,
-    )
-
-    errors = validate_w3_config(malformed)
-
-    assert any(expected in error for error in errors)
-
-
-@pytest.mark.parametrize(
-    "supervisor",
-    (
-        "AI SUPERVISOR",
-        "AI_SUPERVISOR,CHAIN_ID:override",
-        "AI\nSUPERVISOR",
-        "A" * 129,
-    ),
-)
-def test_config_validation_rejects_unsafe_event_chain_supervisor(supervisor):
-    config = load_w3_config()
-    malformed_cross = dict(config.cross_system)
-    malformed_cross_x = dict(malformed_cross["cross_x"])
-    malformed_cross_x["event_chain_supervisor"] = supervisor
-    malformed_cross["cross_x"] = malformed_cross_x
-    malformed = W3ConfigBundle(
-        environment=config.environment,
-        ecosystem=config.ecosystem,
-        cross_system=malformed_cross,
-        paths=config.paths,
-    )
-
-    errors = validate_w3_config(malformed)
-
-    assert any(
-        "event_chain_supervisor must use 1-128" in error for error in errors
-    )

@@ -29,26 +29,11 @@ except ImportError:  # Allows direct execution: python croll/cross_l_dispatcher.
 
 DispatchPlan = Dict[str, Any]
 CrossCodeEnvelope = Dict[str, Any]
-_ECS_IDENTIFIER = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
 
 
 def _unknown_workset(workset: Dict[str, Any]) -> bool:
     """Return True when Table-X returned fallback/unknown workset."""
     return workset.get("rytm") == "UNKNOWN" or workset.get("work_type") == "UNKNOWN"
-
-
-def _normalize_ecs_identifier(value: object, *, field: str) -> str:
-    """Apply the public E-CS identifier contract at the dispatch boundary."""
-
-    if not isinstance(value, str):
-        raise ValueError(f"CrossCode dispatch {field} must be a string")
-    normalized = value.strip()
-    if not _ECS_IDENTIFIER.fullmatch(normalized):
-        raise ValueError(
-            "CrossCode dispatch requires delimiter-safe "
-            f"{field} using 1-128 letters, digits, '.', '_' or '-'"
-        )
-    return normalized
 
 
 def dispatch_workset(
@@ -109,12 +94,7 @@ def dispatch_workset(
         # Lazy import keeps CROLL usable as a standalone planner when BOX is absent.
         from wx.engine_index import search_by_px
 
-        px_value = workset.get("px")
-        template = (
-            search_by_px(px_value)
-            if px_value is not None and not _unknown_workset(workset)
-            else None
-        )
+        template = search_by_px(workset.get("px"))
         plan["suggested_template"] = (
             {
                 "template_id": template["template_id"],
@@ -139,7 +119,6 @@ def dispatch_cross_code(
     event_id: str,
     paper_context: Optional[Mapping[str, Any]] = None,
     enable_box_suggestion: bool = False,
-    active: bool = True,
 ) -> CrossCodeEnvelope:
     """Bind a Cross-L plan to one E-CS event without executing CrossCode.
 
@@ -148,28 +127,8 @@ def dispatch_cross_code(
     target until human review and governance approve a separate execution step.
     """
 
-    chain_id = _normalize_ecs_identifier(chain_id, field="chain_id")
-    event_id = _normalize_ecs_identifier(event_id, field="event_id")
-    if not active:
-        return {
-            "contract_version": "1.0",
-            "kind": "cross-code-dispatch",
-            "chain_id": chain_id,
-            "event_id": event_id,
-            "state": "inactive",
-            "reason": "cross_code_not_in_use",
-            "cross_l_plan": None,
-            "handoff": None,
-            "return_value": {
-                "state": "inactive",
-                "handled": True,
-                "execution_allowed": False,
-                "mutated": False,
-            },
-            "execution_allowed": False,
-            "mutated": False,
-            "review": False,
-        }
+    if not chain_id.strip() or not event_id.strip():
+        raise ValueError("CrossCode dispatch requires non-empty chain_id and event_id")
     plan = dispatch_workset(
         px,
         paper_context=paper_context,
