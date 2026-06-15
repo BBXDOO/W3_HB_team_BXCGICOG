@@ -35,6 +35,7 @@ def audit_cross_systems(
             system_issues.append("component_not_registered")
             component = {}
         path_value = component.get("path")
+        path_exists = isinstance(path_value, str) and bool(path_value) and (root / path_value).exists()
         path_exists = False
         if isinstance(path_value, str) and path_value:
             path_obj = Path(path_value)

@@ -17,7 +17,7 @@ from config.loader import W3ConfigBundle, load_w3_config
 from protocol.EP_SIGNAL.ep_signal_adapter import to_ep_signal
 from core.runtime.process_layer import run_w3_process_layer
 from protocol.EP_SIGNAL.rytm import build_rytm_preview
-from protocol.w3lgu import W3LguFiveLineProgram, parse_five_line_program, px_from_five_line, px_to_append_envelope, validate_five_line
+from protocol.w3lgu import W3LguFiveLineProgram, encode_w3lgu_value, parse_five_line_program, px_from_five_line, px_to_append_envelope, validate_five_line
 from protocol.w3lgu.px import PXAnchor
 from src.w3db.append_flow import AppendEnvelope
 from cross_x.event_chain import EventChain, build_event_chain
@@ -53,7 +53,6 @@ def _build_cross_w3lgu_packet(
     mode: str,
     payload: Mapping[str, Any],
 ) -> W3LguFiveLineProgram:
-    _validate_cross_id(chain_id)
     target_value = target or "auto"
     contract = str(payload.get("contract", "observe_only"))
     text = "\n".join(
