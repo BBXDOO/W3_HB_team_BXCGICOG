@@ -1,4 +1,6 @@
-jsonschema>=4.10.3
+# Keep jsonschema below 4.18 on Termux/Android to avoid pulling rpds-py,
+# which may try to build through Rust/maturin on aarch64-linux-android.
+jsonschema>=4.10.3,<4.18
 requests>=2.31.0
 PyGithub==2.1.1
 pytest>=8.0,<9
