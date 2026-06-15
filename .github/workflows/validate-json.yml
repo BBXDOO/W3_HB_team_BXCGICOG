@@ -1,37 +1,71 @@
 name: JSON Validation Workflow
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+push:
+branches:
+- main
+- refactor/v0.2
+paths:
+- "/*.json"
+- "/*.schema.json"
+- ".github/workflows/validate_json.yml"
+
+pull_request:
+branches:
+- main
+- refactor/v0.2
+paths:
+- "/*.json"
+- "/*.schema.json"
+- ".github/workflows/validate_json.yml"
+
+workflow_dispatch:
 
 permissions:
-  contents: read
+contents: read
 
 jobs:
-  validate-json:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🚚 Checkout Code
-        uses: actions/checkout@v4
+validate-json:
+runs-on: ubuntu-latest
 
-      - name: ✨ Validate Data against Schemas
-        run: |
-          find . -name "*.schema.json" -type f -print0 | while IFS= read -r -d '' schema_file; do
-            data_file="${schema_file%.schema.json}.json"
-            
-            if [ -f "$data_file" ]; then
-              echo "--------------------------------------"
-              echo "🔍 Validating: $data_file"
-              echo "📄 Using Schema: $schema_file"
-              
-              # เรียกใช้ npx ajv-cli พร้อมระบุ draft2020 ตามที่ต้องการ
-              npx ajv-cli validate -s "$schema_file" -d "$data_file" --spec=draft2020 --strict=false || {
-                echo "❌ Schema Validation Failed for $data_file"
-                exit 1
-              }
-            else
-              echo "⚠️ Warning: No data file found for $schema_file"
-            fi
-          done
+steps:
+  - name: Checkout code
+    uses: actions/checkout@v4
+
+  - name: Set up Node.js
+    uses: actions/setup-node@v4
+    with:
+      node-version: "20"
+
+  - name: Install AJV CLI
+    run: npm install -g ajv-cli ajv-formats
+
+  - name: Validate JSON files against matching schemas
+    shell: bash
+    run: |
+      set -euo pipefail
+
+      found_schema=false
+
+      while IFS= read -r -d '' schema_file; do
+        found_schema=true
+        data_file="${schema_file%.schema.json}.json"
+
+        if [ -f "$data_file" ]; then
+          echo "--------------------------------------"
+          echo "Validating: $data_file"
+          echo "Using schema: $schema_file"
+
+          ajv validate \
+            -s "$schema_file" \
+            -d "$data_file" \
+            --spec=draft2020 \
+            --strict=false
+        else
+          echo "Warning: no data file found for $schema_file"
+        fi
+      done < <(find . -name "*.schema.json" -type f -print0)
+
+      if [ "$found_schema" = false ]; then
+        echo "No *.schema.json files found. Nothing to validate."
+      fi
