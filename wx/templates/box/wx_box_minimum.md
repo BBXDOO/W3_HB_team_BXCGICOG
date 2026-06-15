@@ -1,3 +1,14 @@
+---
+template_id: BOX:WX_BOX_MINIMUM_V1
+version: 0.1.0
+scope: reference_container
+boundary: reference_only
+deny: truth_mutation,runtime_execute,source_write,auto_copy
+owner: BBX19
+status: draft
+created_at: 2026-06-15
+---
+
 # wx:BOX Minimum Template
 
 > Template ID: `BOX:WX_BOX_MINIMUM_V1`  

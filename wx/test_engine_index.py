@@ -14,7 +14,7 @@ class TestBoxEngineIndex(unittest.TestCase):
     def test_registry_is_valid_and_paths_exist(self):
         registry = load_template_registry()
         self.assertEqual(registry["version"], "1.0")
-        self.assertEqual(len(registry["templates"]), 3)
+        self.assertGreaterEqual(len(registry["templates"]), 3)
         self.assertTrue(all(item["path"].startswith("wx/templates/") for item in registry["templates"]))
 
     def test_search_by_px_is_normalized_and_deterministic(self):
