@@ -44,6 +44,7 @@ CN-Fold concept = host + relation + boundary + status behavior inside BOX
 ## ไฟล์ในชุดนี้
 
 - `wx_box_minimum.md` — template ขั้นต่ำของ wx:BOX
+- `USAGE_TH.md` — คู่มือใช้งาน wx:BOX ภาษาไทย
 
 ## ความสัมพันธ์กับ CN-Fold
 
