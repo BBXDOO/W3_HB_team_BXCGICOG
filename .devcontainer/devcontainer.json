@@ -1,19 +1,15 @@
 {
   "name": "W3 Workspace",
-
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 
   "features": {
     "ghcr.io/devcontainers/features/python:1": {
       "version": "3.11"
     },
-
     "ghcr.io/devcontainers/features/node:1": {
       "version": "20"
     },
-
     "ghcr.io/devcontainers/features/git:1": {},
-
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
 
@@ -21,16 +17,11 @@
     "vscode": {
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash",
-
         "files.autoSave": "afterDelay",
-
         "editor.formatOnSave": true,
-
         "python.defaultInterpreterPath": "/usr/local/bin/python",
-
         "python.analysis.typeCheckingMode": "basic"
       },
-
       "extensions": [
         "ms-python.python",
         "ms-python.vscode-pylance",
@@ -43,7 +34,7 @@
     }
   },
 
-  "postCreateCommand": "pip install --upgrade pip && npm install -g pnpm",
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
 
   "remoteUser": "vscode",
 
