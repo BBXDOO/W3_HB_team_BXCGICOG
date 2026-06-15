@@ -19,42 +19,44 @@ Blueprint is NOT:
   - a one-time command script
   - an imperative execution plan
 
-Supported field groups (aligned with W3Lgu-MPCP-Blueprint Profile):
-  NAME, TARGET, MODE       — identity / scope
-  LIB, CORE, BRIDGE        — dependency declarations
-  OPTIONAL, PARTITION      — optional features and structural partitions
-  ROLE                     — semantic role in the system
-  BOUNDARY, TRACE, ENV     — governance and environment expectations
+Supported field groups:
+  BLUEPRINT / NAME, TARGET, MODE       — identity / scope
+  INPUT, OUTPUT, CONSTRAINT            — structured IO and boundary notes
+  LIB, CORE, BRIDGE                    — dependency declarations
+  OPTIONAL, PARTITION                  — optional features and structural partitions
+  ROLE                                 — semantic role in the system
+  BOUNDARY, TRACE, ENV                 — governance and environment expectations
 
 Parsing:
   Canonical format is KEY:VALUE per line (or comma-separated inline).
-  Multi-value fields use comma-separated values.
+  INPUT/OUTPUT/CONSTRAINT can use KEY:subkey=value.
 """
 
 from __future__ import annotations
 
-from typing import Dict, FrozenSet, List, Optional
+from typing import Dict, FrozenSet, List, Mapping, Optional
 
 
 # ---------------------------------------------------------------------------
 # Validation constants
 # ---------------------------------------------------------------------------
 
-#: Fields that MUST be present in every valid Blueprint.
-REQUIRED_FIELDS: FrozenSet[str] = frozenset({"NAME"})
-
 #: Fields whose values are treated as comma-separated lists.
 LIST_FIELDS: FrozenSet[str] = frozenset({
     "LIB", "OPTIONAL", "PARTITION", "LAYERS", "READ", "DENY",
 })
 
-#: Recognised blueprint field names (checked during validation — not exhaustive).
+#: Non-executing modes accepted by the foundation model.
+ALLOWED_MODES: FrozenSet[str] = frozenset({
+    "observe", "plan", "review", "cross", "reference", "draft", "template",
+})
+
+#: Recognised blueprint field names (checked during parsing — intentionally light).
 KNOWN_FIELDS: FrozenSet[str] = frozenset({
-    "NAME", "TARGET", "MODE", "LIB", "CORE", "BRIDGE",
-    "OPTIONAL", "PARTITION", "ROLE", "BOUNDARY", "TRACE", "ENV",
-    # Condien-oriented blueprint fields
-    "LAYERS", "READ", "DENY", "CONTINUITY", "REBASE", "MEANING_MODE",
-    "CONTEXT_MODE", "MODEW", "PAPER",
+    "BLUEPRINT", "NAME", "TARGET", "MODE", "INPUT", "OUTPUT", "CONSTRAINT",
+    "LIB", "CORE", "BRIDGE", "OPTIONAL", "PARTITION", "ROLE", "BOUNDARY",
+    "TRACE", "ENV", "LAYERS", "READ", "DENY", "CONTINUITY", "REBASE",
+    "MEANING_MODE", "CONTEXT_MODE", "MODEW", "PAPER",
 })
 
 
@@ -67,42 +69,134 @@ class BlueprintError(ValueError):
 
 
 # ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def _normalize_mapping(value: Optional[Mapping[str, object]]) -> Dict[str, object]:
+    return {str(key): item for key, item in dict(value or {}).items()}
+
+
+def _split_key_value(value: str) -> tuple[str, str]:
+    if "=" not in value:
+        return value.strip(), ""
+    left, right = value.split("=", 1)
+    return left.strip(), right.strip()
+
+
+# ---------------------------------------------------------------------------
 # Blueprint class
 # ---------------------------------------------------------------------------
 
 class Blueprint:
-    """
-    Declarative setup/plan model for MPCP / W3Lgu system units.
+    """Declarative setup/plan model for MPCP / W3Lgu system units.
 
-    Holds a KEY:VALUE field set parsed from a canonical Blueprint declaration.
-    The fields describe the desired shape of a system or execution context —
-    not the runtime steps to achieve it.
+    The class supports two compatible construction styles:
 
-    Parameters
-    ----------
-    fields : dict
-        Raw parsed fields from a Blueprint declaration.
-        Multi-value fields (LIB, PARTITION, etc.) are stored as lists.
+    - structured foundation style:
+      ``Blueprint(name="REPORT", target="daily_summary", mode="observe")``
+    - raw field style:
+      ``Blueprint({"BLUEPRINT": "REPORT", "TARGET": "daily_summary"})``
 
-    Usage
-    -----
-    >>> bp = Blueprint({"NAME": "CONDIEN_RUNTIME", "TARGET": "linux",
-    ...                 "MODE": "full", "LIB": ["file", "event"]})
-    >>> bp.get("NAME")
-    'CONDIEN_RUNTIME'
-    >>> bp.get_list("LIB")
-    ['file', 'event']
+    It remains declarative. It does not execute, run, or mutate runtime state.
     """
 
-    def __init__(self, fields: Dict[str, object]) -> None:
-        # Store a defensive copy; normalise list fields
+    def __init__(
+        self,
+        fields: Optional[Dict[str, object]] = None,
+        *,
+        name: Optional[str] = None,
+        target: Optional[str] = None,
+        mode: str = "observe",
+        inputs: Optional[Mapping[str, object]] = None,
+        outputs: Optional[Mapping[str, object]] = None,
+        constraints: Optional[Mapping[str, object]] = None,
+        **extra_fields: object,
+    ) -> None:
+        raw_fields: Dict[str, object] = {}
+
+        if fields is not None:
+            if not isinstance(fields, Mapping):
+                raise TypeError("Blueprint fields must be a mapping")
+            raw_fields.update(dict(fields))
+
+        if name is not None:
+            raw_fields["BLUEPRINT"] = name
+        if target is not None:
+            raw_fields["TARGET"] = target
+        if mode is not None:
+            raw_fields["MODE"] = mode
+        if inputs is not None:
+            raw_fields["INPUTS"] = _normalize_mapping(inputs)
+        if outputs is not None:
+            raw_fields["OUTPUTS"] = _normalize_mapping(outputs)
+        if constraints is not None:
+            raw_fields["CONSTRAINTS"] = _normalize_mapping(constraints)
+        raw_fields.update(extra_fields)
+
         self._fields: Dict[str, object] = {}
-        for k, v in fields.items():
-            key = k.strip().upper()
-            if key in LIST_FIELDS and isinstance(v, str):
-                self._fields[key] = [x.strip() for x in v.split(",") if x.strip()]
+        self.inputs: Dict[str, object] = {}
+        self.outputs: Dict[str, object] = {}
+        self.constraints: Dict[str, object] = {}
+
+        for key, value in raw_fields.items():
+            normalized = str(key).strip().upper()
+            if normalized == "NAME":
+                normalized = "BLUEPRINT"
+            if normalized == "INPUTS" and isinstance(value, Mapping):
+                self.inputs.update(_normalize_mapping(value))
+                continue
+            if normalized == "OUTPUTS" and isinstance(value, Mapping):
+                self.outputs.update(_normalize_mapping(value))
+                continue
+            if normalized == "CONSTRAINTS" and isinstance(value, Mapping):
+                self.constraints.update(_normalize_mapping(value))
+                continue
+            if normalized == "INPUT":
+                if isinstance(value, Mapping):
+                    self.inputs.update(_normalize_mapping(value))
+                else:
+                    subkey, subvalue = _split_key_value(str(value))
+                    if subkey:
+                        self.inputs[subkey] = subvalue
+                continue
+            if normalized == "OUTPUT":
+                if isinstance(value, Mapping):
+                    self.outputs.update(_normalize_mapping(value))
+                else:
+                    subkey, subvalue = _split_key_value(str(value))
+                    if subkey:
+                        self.outputs[subkey] = subvalue
+                continue
+            if normalized == "CONSTRAINT":
+                if isinstance(value, Mapping):
+                    self.constraints.update(_normalize_mapping(value))
+                else:
+                    subkey, subvalue = _split_key_value(str(value))
+                    if subkey:
+                        self.constraints[subkey] = subvalue
+                continue
+            if normalized in LIST_FIELDS and isinstance(value, str):
+                self._fields[normalized] = [item.strip() for item in value.split(",") if item.strip()]
             else:
-                self._fields[key] = v
+                self._fields[normalized] = value
+
+        self.validate()
+
+    # ------------------------------------------------------------------
+    # Structured properties
+    # ------------------------------------------------------------------
+
+    @property
+    def name(self) -> str:
+        return str(self._fields.get("BLUEPRINT", ""))
+
+    @property
+    def target(self) -> str:
+        return str(self._fields.get("TARGET", ""))
+
+    @property
+    def mode(self) -> str:
+        return str(self._fields.get("MODE", "observe"))
 
     # ------------------------------------------------------------------
     # Field access
@@ -110,7 +204,10 @@ class Blueprint:
 
     def get(self, key: str, default: Optional[str] = None) -> Optional[str]:
         """Return a single-value field (raw string or first list element)."""
-        val = self._fields.get(key.upper(), default)
+        normalized = key.upper()
+        if normalized == "NAME":
+            normalized = "BLUEPRINT"
+        val = self._fields.get(normalized, default)
         if isinstance(val, list):
             return val[0] if val else default
         return val  # type: ignore[return-value]
@@ -121,52 +218,70 @@ class Blueprint:
         if val is None:
             return []
         if isinstance(val, list):
-            return list(val)
+            return [str(item) for item in val]
         return [str(val)]
 
     def has(self, key: str) -> bool:
         """Return True if the field is present."""
-        return key.upper() in self._fields
+        normalized = key.upper()
+        if normalized == "NAME":
+            normalized = "BLUEPRINT"
+        return normalized in self._fields
 
     # ------------------------------------------------------------------
     # Validation
     # ------------------------------------------------------------------
 
     def validate(self) -> None:
-        """
-        Validate this Blueprint against REQUIRED_FIELDS.
+        """Validate identity and boundary fields without enforcing execution."""
 
-        Raises BlueprintError if any required field is missing.
-        This method does NOT enforce runtime constraints — it only checks
-        that the declarative plan is structurally complete.
-        """
-        missing = [f for f in sorted(REQUIRED_FIELDS) if not self.has(f)]
-        if missing:
-            raise BlueprintError(
-                f"Blueprint missing required field(s): {', '.join(missing)}"
-            )
+        if not str(self._fields.get("BLUEPRINT", "")).strip():
+            raise BlueprintError("Blueprint missing required field: name")
+        if "TARGET" in self._fields and not str(self._fields.get("TARGET", "")).strip():
+            raise BlueprintError("Blueprint missing required field: target")
+        mode = str(self._fields.get("MODE", "observe")).strip()
+        if not mode:
+            raise BlueprintError("Blueprint missing required field: mode")
+        if mode not in ALLOWED_MODES:
+            raise BlueprintError(f"Blueprint invalid mode: {mode}")
 
     # ------------------------------------------------------------------
     # Serialisation
     # ------------------------------------------------------------------
 
     def to_dict(self) -> dict:
-        """Return all fields as a plain dict."""
-        return dict(self._fields)
+        """Return all fields as a plain dict in the structured foundation shape."""
+
+        result = dict(self._fields)
+        result["BLUEPRINT"] = self.name
+        if self.target:
+            result["TARGET"] = self.target
+        result["MODE"] = self.mode
+        if self.inputs:
+            result["INPUTS"] = dict(self.inputs)
+        if self.outputs:
+            result["OUTPUTS"] = dict(self.outputs)
+        if self.constraints:
+            result["CONSTRAINTS"] = dict(self.constraints)
+        return result
 
     def to_w3lgu(self) -> str:
-        """
-        Serialize to W3Lgu-MPCP-Blueprint canonical KEY:VALUE format.
+        """Serialize to W3Lgu-MPCP-Blueprint canonical KEY:VALUE format."""
 
-        Multi-value fields are joined with commas.
-        The output is human-readable and suitable for logging / exchange.
-        """
-        lines: List[str] = []
-        # NAME first for readability
-        if "NAME" in self._fields:
-            lines.append(f"NAME:{self._fields['NAME']}")
+        lines: List[str] = [f"BLUEPRINT:{self.name}"]
+        if self.target:
+            lines.append(f"TARGET:{self.target}")
+        lines.append(f"MODE:{self.mode}")
+
+        for key, value in self.inputs.items():
+            lines.append(f"INPUT:{key}={value}")
+        for key, value in self.outputs.items():
+            lines.append(f"OUTPUT:{key}={value}")
+        for key, value in self.constraints.items():
+            lines.append(f"CONSTRAINT:{key}={value}")
+
         for key, val in self._fields.items():
-            if key == "NAME":
+            if key in {"BLUEPRINT", "TARGET", "MODE"}:
                 continue
             if isinstance(val, list):
                 lines.append(f"{key}:{','.join(str(x) for x in val)}")
@@ -175,8 +290,7 @@ class Blueprint:
         return "\n".join(lines)
 
     def __repr__(self) -> str:
-        name = self._fields.get("NAME", "<unnamed>")
-        return f"Blueprint(name={name!r}, fields={list(self._fields.keys())})"
+        return f"Blueprint(name={self.name!r}, target={self.target!r}, mode={self.mode!r})"
 
 
 # ---------------------------------------------------------------------------
@@ -184,35 +298,8 @@ class Blueprint:
 # ---------------------------------------------------------------------------
 
 def parse_blueprint(text: str, *, validate: bool = True) -> Blueprint:
-    """
-    Parse a W3Lgu-style KEY:VALUE Blueprint declaration.
+    """Parse a W3Lgu-style KEY:VALUE Blueprint declaration."""
 
-    Supports:
-      - One KEY:VALUE pair per line
-      - Inline comma-separated pairs: KEY:VALUE,KEY2:VALUE2
-      - Multi-value field values: LIB:fs,store,net  (treated as a list)
-      - Blank lines and lines without ':' are skipped
-
-    Parameters
-    ----------
-    text : str
-        Raw blueprint declaration string.
-    validate : bool
-        If True (default), calls Blueprint.validate() after parsing and
-        raises BlueprintError if required fields are missing.
-
-    Returns
-    -------
-    Blueprint
-        Parsed and (optionally) validated blueprint instance.
-
-    Raises
-    ------
-    BlueprintError
-        If validate=True and required fields are absent.
-    TypeError
-        If text is not a string.
-    """
     if not isinstance(text, str):
         raise TypeError(f"Blueprint text must be a str, got {type(text).__name__!r}")
 
@@ -224,26 +311,28 @@ def parse_blueprint(text: str, *, validate: bool = True) -> Blueprint:
             continue
         _parse_line_into(line, fields)
 
-    bp = Blueprint(fields)
     if validate:
-        bp.validate()
-    return bp
+        return Blueprint(fields)
+    try:
+        return Blueprint(fields)
+    except BlueprintError:
+        bp = object.__new__(Blueprint)
+        bp._fields = fields
+        bp.inputs = {}
+        bp.outputs = {}
+        bp.constraints = {}
+        return bp
 
 
 def _parse_line_into(line: str, fields: Dict[str, object]) -> None:
-    """
-    Parse a single Blueprint line (possibly containing multiple comma-separated
-    KEY:VALUE pairs) and merge the results into `fields`.
+    """Parse one Blueprint line and merge the results into `fields`."""
 
-    Supports two formats on the same line:
-      - Single pair:  ``NAME:CONDIEN_CORE``
-      - Multi-pair:   ``CONDIEN:CORE,MODEW:REPORT,PAPER:daily``
-      - Multi-value:  ``LIB:fs,store,net``  (treated as a list for LIST_FIELDS)
+    tokens = line.split()
+    if len(tokens) > 1 and all(":" in token for token in tokens):
+        for token in tokens:
+            _parse_line_into(token, fields)
+        return
 
-    A token opening a new field must satisfy ``_is_field_name`` (first character
-    alphabetic, remaining characters alpha/digit/_).  Non-conforming tokens are
-    treated as additional values for the most recent field key.
-    """
     parts = line.split(",")
     current_key: Optional[str] = None
     current_values: List[str] = []
@@ -252,39 +341,42 @@ def _parse_line_into(line: str, fields: Dict[str, object]) -> None:
         if ":" in part:
             left, right = part.split(":", 1)
             if _is_field_name(left.strip()):
-                # Flush the previous accumulated key/values
                 if current_key is not None:
                     _flush(current_key, current_values, fields)
                 current_key = left.strip().upper()
                 current_values = [right.strip()] if right.strip() else []
                 continue
-        # Not a new key — continuation value for the current key
         if current_key is not None:
             current_values.append(part.strip())
 
-    # Flush the last accumulated pair
     if current_key is not None:
         _flush(current_key, current_values, fields)
 
 
 def _flush(key: str, values: List[str], fields: Dict[str, object]) -> None:
     """Commit accumulated key/values to the fields dict."""
-    if key in LIST_FIELDS:
-        fields[key] = [v for v in values if v]
+
+    normalized = "BLUEPRINT" if key == "NAME" else key
+    if normalized in LIST_FIELDS:
+        fields[normalized] = [value for value in values if value]
+    elif normalized in {"INPUT", "OUTPUT", "CONSTRAINT"}:
+        value = ",".join(values)
+        if normalized in fields and isinstance(fields[normalized], dict):
+            subkey, subvalue = _split_key_value(value)
+            if subkey:
+                fields[normalized][subkey] = subvalue  # type: ignore[index]
+        else:
+            subkey, subvalue = _split_key_value(value)
+            fields[normalized] = {subkey: subvalue} if subkey else value
     else:
-        fields[key] = ",".join(values)
+        fields[normalized] = ",".join(values)
 
 
-def _is_field_name(s: str) -> bool:
-    """Return True if s looks like a Blueprint field name.
+def _is_field_name(value: str) -> bool:
+    """Return True if value looks like a Blueprint field name."""
 
-    Rules:
-      - Non-empty
-      - First character must be an uppercase ASCII letter (A-Z)
-      - Remaining characters may be uppercase letters, digits, or underscores
-    """
-    if not s:
+    if not value:
         return False
-    if not s[0].isalpha() or not s[0].isupper():
+    if not value[0].isalpha() or not value[0].isupper():
         return False
-    return all(c.isalpha() or c == "_" or c.isdigit() for c in s) and s == s.upper()
+    return all(char.isalpha() or char == "_" or char.isdigit() for char in value) and value == value.upper()
