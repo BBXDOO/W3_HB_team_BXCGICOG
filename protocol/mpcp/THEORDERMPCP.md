@@ -1,6 +1,6 @@
-ได้ครับ — **ตอนนี้ mpcp ยังไม่อยู่ในสภาพ “production baseline” ตามที่คุณต้องการ** และจุดที่ต้องปรับไม่ใช่แค่ test แต่คือ **runtime contract, orchestration, return-value model, environment preservation, และการ align กับ W3Lgu/E-CS ทั้งชั้น**  
+**ตอนนี้ mpcp ยังไม่อยู่ในสภาพ “production baseline”** และจุดที่ต้องปรับไม่ใช่แค่ test แต่คือ **runtime contract, orchestration, return-value model, environment preservation, และการ align กับ W3Lgu/E-CS ทั้งชั้น**  
 
-จากโค้ดที่มีอยู่ ผมสรุปตรง ๆ ว่า:
+จากโค้ดที่มีอยู่สรุปตรง ๆ ว่า:
 
 1. **MPCP มีแกนความคิด/เอกสารชัดมาก**
 2. **มี runtime พื้นฐานแล้ว**
@@ -144,7 +144,7 @@ def _run_flow(self, flow):
 
 ### 5) เอกสารเองยืนยันว่าหลายส่วน “planned / concept / ยังไม่ใช้จริง”
 ใน `docs/review/MPCP_STATUS_SSOT.md` มีบอกชัดว่าหลายอย่างยัง planned และ runtime ยังรับ text input ตรง ๆ อยู่  
-นั่นแปลว่า **สิ่งที่คุณขอคือการปิด gap ระหว่าง paper กับ runtime จริง**
+นั่นแปลว่า **คือการปิด gap ระหว่าง paper กับ runtime จริง**
 
 ---
 
@@ -170,17 +170,9 @@ class W3LguRuntimeResult:
         return "\n".join(lines)
 ```
 
-อันนี้สำคัญมาก เพราะแปลว่า:
-- W3Lgu เริ่มมี **result normalization**
-- มี **memory boundary**
-- มี **signal layer**
-- และสอดคล้องกับที่คุณบอกว่า W3Lgu ใช้ E-CS แล้วและ mpcp ต้องตามให้ทัน
-
----
-
 # ข้อเสนอ “แนวทางปรับ mpcp ทั้งหน่วย” แบบเป็นแกนมาตรฐานขั้นต่ำ
 
-ผมแนะนำให้ยกระดับ mpcp เป็น 6 แกนพร้อมกัน:
+ให้ยกระดับ mpcp เป็น 6 แกนพร้อมกัน:
 
 ## A. ตั้ง “Canonical MPCP Result Envelope”
 ทุก modew และ orchestrator ต้องคืนค่าในรูปเดียวกันขั้นต่ำ เช่น:
@@ -214,7 +206,7 @@ class W3LguRuntimeResult:
 }
 ```
 
-นี่คือคำตอบตรงกับที่คุณขอเรื่อง **“รวมถึงการคืนค่ากลับไปด้วย”**
+**“รวมถึงการคืนค่ากลับไปด้วย”**
 
 ---
 
@@ -335,7 +327,7 @@ class W3LguRuntimeResult:
 # ข้อสรุปเชิงสถาปัตยกรรม
 
 **คำตอบสั้นที่สุดคือ:**  
-ใช่ครับ, `mpcp` ตอนนี้ **ควรปรับทั้งระบบ ไม่ใช่เฉพาะ test** และจุดสำคัญที่สุดคือ:
+`mpcp` ตอนนี้ **ควรปรับทั้งระบบ ไม่ใช่เฉพาะ test** และจุดสำคัญที่สุดคือ:
 
 - ทำ **result envelope กลาง**
 - ทำ **env preservation / restore semantics**
@@ -345,16 +337,6 @@ class W3LguRuntimeResult:
 
 ---
 
-# ข้อเสนอถัดไปที่ผมทำให้คุณได้ทันที
-
-ผมช่วยต่อได้ 2 แบบ:
-
-### แบบ A — วิเคราะห์แล้วออก “แผนแก้ระดับไฟล์”
-ผมจะไล่ให้ว่า
-- ไฟล์ไหนต้องแก้อะไร
-- เพิ่ม field ไหน
-- เปลี่ยน function ไหน
-- อะไรเป็น breaking change / non-breaking change
 
 ### แบบ B — ลงมือทำ PR ให้เลย
 ผมสามารถเริ่ม agent session เพื่อแก้ repo นี้โดยตรงให้เป็นรอบแรก เช่น:
@@ -365,8 +347,4 @@ class W3LguRuntimeResult:
 - เพิ่ม restoration/env fields ขั้นต่ำ
 - เพิ่ม docs baseline ให้สอดคล้อง W3Lgu/E-CS
 
-ถ้าคุณต้องการ **ให้ผมลงมือแก้โค้ดจริงเลย** ผมแนะนำให้เริ่มจากรอบแรกนี้ก่อน:
 
-> “ยกระดับ MPCP runtime baseline ให้มี canonical result envelope, env preservation fields, restore metadata, และ align กับ W3Lgu runtime”
-
-ถ้าคุณโอเค ผมจะเริ่มทำ PR ให้ใน repo `BBXDOO/W3_HB_team_BXCGICOG` ได้เลยครับ
