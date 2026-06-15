@@ -19,7 +19,7 @@
         "terminal.integrated.defaultProfile.linux": "bash",
         "files.autoSave": "afterDelay",
         "editor.formatOnSave": true,
-        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.defaultInterpreterPath": "/usr/local/python/current/bin/python3",
         "python.analysis.typeCheckingMode": "basic"
       },
       "extensions": [
