@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from protocol.w3lgu import W3LguFiveLineProgram, parse_five_line_program, validate_five_line
+from protocol.w3lgu import W3LguFiveLineProgram, encode_w3lgu_value, parse_five_line_program, validate_five_line
 
 
 def build_cross_w3lgu_packet(
@@ -26,10 +26,10 @@ def build_cross_w3lgu_packet(
     contract = str(payload.get("contract", "observe_only"))
     text = "\n".join(
         (
-            f"MEM:SOURCE:{_clean(source)}",
-            f"PATCH:MODE:{_clean(mode)}",
-            f"LAW:TARGET:{_clean(target_value)},CONTRACT:{_clean(contract)}",
-            f"EVENT:INTENT:{_clean(intent)}",
+            f"MEM:SOURCE:{encode_w3lgu_value(source)}",
+            f"PATCH:MODE:{encode_w3lgu_value(mode)}",
+            f"LAW:TARGET:{encode_w3lgu_value(target_value)},CONTRACT:{encode_w3lgu_value(contract)}",
+            f"EVENT:INTENT:{encode_w3lgu_value(intent)}",
             "SIGNAL:STATUS:received,TRACEABLE:true",
         )
     )
@@ -38,9 +38,3 @@ def build_cross_w3lgu_packet(
     if not result.ok:
         raise ValueError(f"Invalid W3Lgu cross packet: {result.errors}")
     return program
-
-
-def _clean(value: str) -> str:
-    """Keep W3Lgu text single-line and packet-safe without changing meaning."""
-
-    return " ".join(str(value).replace("\n", " ").replace("\r", " ").split())
