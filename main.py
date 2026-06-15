@@ -1,20 +1,10 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
+"""Compatibility entrypoint for running the canonical W3-API app.
 
-app = FastAPI()
+This keeps `uvicorn main:app` and `uvicorn w3_api.main:app` on the same
+implementation so the `/w3/cross` contract and `/w3/cross/plan` route do not
+drift apart.
+"""
 
-class CrossRequest(BaseModel):
-    source: str
-    intent: str
-    target: str
-    mode: str
-    payload: dict
+from w3_api.main import app
 
-@app.post("/w3/cross")
-def w3_cross(req: CrossRequest):
-    return {
-        "ok": True,
-        "message": "W3-API received",
-        "px": req.payload.get("px"),
-        "planner": "preview-only"
-    }
+__all__ = ["app"]
