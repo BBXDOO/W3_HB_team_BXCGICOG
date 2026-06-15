@@ -80,16 +80,51 @@ class CondienLayer:
       name      — layer identifier (e.g. "A", "LAYER_B")
       readable  — True when this layer is readable in the current access scope
       data      — arbitrary key/value payload carried by the layer
+      read      — optional key whitelist inside this layer
+      deny      — key deny-list inside this layer; deny always wins
+
+    The `read` / `deny` keyword names are kept for compatibility with the
+    original MPCP Condien foundation tests.
     """
     name: str
     readable: bool = True
     data: Dict[str, object] = field(default_factory=dict)
+    read: Optional[Set[str]] = None
+    deny: Set[str] = field(default_factory=set)
+
+    def __post_init__(self) -> None:
+        if self.read is not None and not isinstance(self.read, set):
+            self.read = set(self.read)
+        if self.deny is None:
+            self.deny = set()
+        elif not isinstance(self.deny, set):
+            self.deny = set(self.deny)
+
+    def can_read(self, key: str) -> bool:
+        """Return True when `key` can be read from this layer."""
+
+        if not self.readable:
+            return False
+        if key in self.deny:
+            return False
+        if self.read is not None:
+            return key in self.read
+        return key in self.data
+
+    def read_key(self, key: str) -> object:
+        """Read a key from this layer or fail closed with KeyError."""
+
+        if key not in self.data or not self.can_read(key):
+            raise KeyError(key)
+        return self.data[key]
 
     def to_dict(self) -> dict:
         return {
             "name": self.name,
             "readable": self.readable,
             "data": dict(self.data),
+            "read": sorted(self.read) if self.read is not None else "all",
+            "deny": sorted(self.deny),
         }
 
 
@@ -106,35 +141,6 @@ class Condien:
 
     It is declarative at the identity level — its shape is defined up-front —
     but allows controlled updates through explicit access semantics.
-
-    Parameters
-    ----------
-    name : str
-        Canonical name / identity of this Condien instance (e.g. "CORE").
-    role : str
-        Semantic role (e.g. "meaning_state_layer").
-    layers : list[str], optional
-        Ordered layer names supported by this Condien.
-    read_layers : list[str], optional
-        Layers explicitly allowed for read access. Defaults to all layers.
-    deny_layers : list[str], optional
-        Layers explicitly denied for read access. Takes precedence over read_layers.
-    meaning_mode : str
-        One of MEANING_MODES. Default: "bounded-adaptive".
-    context_mode : str
-        One of CONTEXT_MODES. Default: "dynamic".
-    continuity : str
-        One of CONTINUITY_MODES. Default: "bounded-carry".
-    rebase : str
-        One of REBASE_MODES. Default: "bounded".
-    boundary : str
-        Governance boundary mode (one of BOUNDARY_MODES). Default: "rot-governed".
-    env : str
-        Environment preservation mode (one of ENV_MODES). Default: "preserve".
-    modew : str, optional
-        Name of the Modew this Condien is bound to.
-    paper : str, optional
-        Name of the Paper this Condien operates under.
     """
 
     def __init__(
@@ -191,23 +197,30 @@ class Condien:
         self.modew = modew
         self.paper = paper
 
-        # Build internal layer registry from declared names
+        # Build internal layer registry from declared names.
         _layer_names: List[str] = layers or []
         self._layers: Dict[str, CondienLayer] = {
             n: CondienLayer(name=n) for n in _layer_names
         }
 
-        # Access control sets (resolved against declared layers if provided)
+        # Access control sets (resolved against declared layers if provided).
         self._read_set: Optional[Set[str]] = (
             set(read_layers) if read_layers is not None else None
         )
         self._deny_set: Set[str] = set(deny_layers) if deny_layers else set()
 
-        # Active layer cursor (set by set_active_layer)
+        # Active layer cursor. The historical foundation test expects the first
+        # declared layer to be active by default when it is readable.
         self._active_layer: Optional[str] = None
+        for layer_name in self._layers:
+            if self.can_read(layer_name):
+                self._active_layer = layer_name
+                break
 
-        # Continuity carry-forward store (minimal: key→value pairs)
+        # Continuity carry-forward store (minimal: key→value pairs).
         self._carry: Dict[str, object] = {}
+        self.previous: Optional["Condien"] = None
+        self.history: List[str] = []
 
     # ------------------------------------------------------------------
     # Layer access
@@ -240,17 +253,33 @@ class Condien:
             raise PermissionError(f"Layer {layer_name!r} is not readable (DENY or READ restriction)")
         self._active_layer = layer_name
 
+    @property
     def active_layer(self) -> Optional[str]:
         """Return the name of the currently active layer, or None."""
         return self._active_layer
 
     def get_layer(self, layer_name: str) -> CondienLayer:
         """Return the CondienLayer object for the given name."""
-        if not self.can_read(layer_name):
-            raise PermissionError(f"Read access denied for layer {layer_name!r}")
         if layer_name not in self._layers:
             raise KeyError(f"Layer {layer_name!r} not found in Condien {self.name!r}")
+        if not self.can_read(layer_name):
+            raise PermissionError(f"Read access denied for layer {layer_name!r}")
         return self._layers[layer_name]
+
+    def add_layer(self, layer_name: str, data: Optional[Dict[str, object]] = None) -> None:
+        """Add or replace a layer slot with optional data."""
+
+        if not layer_name or not layer_name.strip():
+            raise ValueError("layer_name must be a non-empty string")
+        normalized = layer_name.strip()
+        self._layers[normalized] = CondienLayer(name=normalized, data=dict(data or {}))
+        if self._active_layer is None and self.can_read(normalized):
+            self._active_layer = normalized
+
+    def read_from_layer(self, layer_name: str, key: str) -> object:
+        """Read a key from a named layer."""
+
+        return self.get_layer(layer_name).read_key(key)
 
     def write_layer(self, layer_name: str, key: str, value: object) -> None:
         """Write a key/value pair into a layer's data store."""
@@ -281,6 +310,19 @@ class Condien:
         """Retrieve a value from the carry-forward store."""
         return self._carry.get(key, default)
 
+    def carry_forward_from(self, source: "Condien") -> None:
+        """Keep a bounded reference to the previous Condien context."""
+
+        if not isinstance(source, Condien):
+            raise TypeError("source must be a Condien")
+        if self.continuity == "none":
+            raise RuntimeError(
+                f"Condien {self.name!r} continuity=none — carry-forward not allowed"
+            )
+        self.previous = source
+        self.history.append(source.name)
+        self._carry.update(source._carry)
+
     def rebase_from(self, source: "Condien") -> None:
         """
         Import carry-forward values from another Condien (rebase).
@@ -295,13 +337,24 @@ class Condien:
                 f"Condien {self.name!r} rebase=disabled — rebase not allowed"
             )
         if self.rebase == "bounded":
-            # Bounded: only update keys already established in this Condien
+            # Bounded: only update keys already established in this Condien.
             for k in list(self._carry.keys()):
                 if k in source._carry:
                     self._carry[k] = source._carry[k]
         else:
-            # enabled: import all
+            # enabled: import all.
             self._carry.update(source._carry)
+
+    def rebase_layer(self, layer_name: str, data: Dict[str, object]) -> None:
+        """Replace one layer payload in bounded form."""
+
+        if self.rebase == "disabled":
+            raise RuntimeError(
+                f"Condien {self.name!r} rebase=disabled — layer rebase not allowed"
+            )
+        if layer_name not in self._layers:
+            raise KeyError(layer_name)
+        self._layers[layer_name].data = dict(data)
 
     # ------------------------------------------------------------------
     # Representation / inspection
