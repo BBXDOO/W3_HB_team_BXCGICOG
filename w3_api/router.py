@@ -58,7 +58,11 @@ def cross(req: W3CrossRequest) -> W3CrossResponse:
     )
 
 
-@router.post("/cross/plan", response_model=W3CrossPlanResponse)
+@router.post(
+    "/cross/plan",
+    response_model=W3CrossPlanResponse,
+    response_model_exclude_none=True,
+)
 def cross_plan(req: W3CrossPlanRequest) -> W3CrossPlanResponse:
     """Return a safe Cross-L dispatch plan from a PX reference.
 
@@ -66,5 +70,9 @@ def cross_plan(req: W3CrossPlanRequest) -> W3CrossPlanResponse:
     write repository files, merge changes, or call external systems.
     """
 
-    plan = dispatch_workset(req.px, paper_context=req.paper_context)
+    plan = dispatch_workset(
+        req.px,
+        paper_context=req.paper_context,
+        enable_box_suggestion=req.include_box_suggestion,
+    )
     return W3CrossPlanResponse(**plan)

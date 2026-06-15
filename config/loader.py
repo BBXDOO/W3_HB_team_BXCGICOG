@@ -8,11 +8,13 @@ runtime map for Cross-X coordination.
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Mapping, Union
 
 CONFIG_ROOT = Path(__file__).resolve().parent
+_ECS_IDENTIFIER = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
 
 
 @dataclass(frozen=True)
@@ -39,7 +41,7 @@ def _load_json(path: Path) -> Mapping[str, Any]:
         return json.load(handle)
 
 
-def load_w3_config(root: str | Path = CONFIG_ROOT) -> W3ConfigBundle:
+def load_w3_config(root: Union[str, Path] = CONFIG_ROOT) -> W3ConfigBundle:
     root_path = Path(root)
     bundle = W3ConfigBundle(
         environment=_load_json(root_path / "environment.json"),
@@ -83,6 +85,40 @@ def validate_w3_config(bundle: W3ConfigBundle) -> list[str]:
         errors.append("cross_system.cross_x.requires_human_review must be true")
     if cross_x.get("requires_governance_gate") is not True:
         errors.append("cross_system.cross_x.requires_governance_gate must be true")
+    supervisor = cross_x.get("event_chain_supervisor")
+    if not isinstance(supervisor, str) or not supervisor.strip():
+        errors.append(
+            "cross_system.cross_x.event_chain_supervisor must be a non-empty string"
+        )
+    elif not _ECS_IDENTIFIER.fullmatch(supervisor.strip()):
+        errors.append(
+            "cross_system.cross_x.event_chain_supervisor must use 1-128 letters, "
+            "digits, '.', '_' or '-'"
+        )
+
+    chain = cross.get("chain", ())
+    contracts = cross.get("contracts", {})
+    if not isinstance(chain, list) or not chain:
+        errors.append("cross_system.chain must be a non-empty array")
+        valid_chain: list[str] = []
+    else:
+        valid_chain = []
+        for index, system in enumerate(chain):
+            if not isinstance(system, str) or not system.strip():
+                errors.append(
+                    f"cross_system.chain[{index}] must be a non-empty string"
+                )
+            else:
+                valid_chain.append(system.strip())
+        if len(set(valid_chain)) != len(valid_chain):
+            errors.append("cross_system.chain entries must be unique")
+
+    if not isinstance(contracts, Mapping):
+        errors.append("cross_system.contracts must be an object")
+        contracts = {}
+    for system in valid_chain:
+        if system not in contracts:
+            errors.append(f"cross_system.contracts.{system} is required")
 
     for required_path in ("w3_api", "w3lgu", "px", "w3db_append_flow", "hospitication", "iget", "codex"):
         if required_path not in paths:
