@@ -10,36 +10,42 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Mapping
+from typing import Any, Mapping, Optional
 from uuid import uuid4
 
 from config.loader import W3ConfigBundle, load_w3_config
 from protocol.EP_SIGNAL.ep_signal_adapter import to_ep_signal
 from core.runtime.process_layer import run_w3_process_layer
 from protocol.EP_SIGNAL.rytm import build_rytm_preview
-from protocol.w3lgu import W3LguFiveLineProgram, parse_five_line_program, px_from_five_line, px_to_append_envelope, validate_five_line
+from protocol.w3lgu import W3LguFiveLineProgram, encode_w3lgu_value, parse_five_line_program, px_from_five_line, px_to_append_envelope, validate_five_line
 from protocol.w3lgu.px import PXAnchor
 from src.w3db.append_flow import AppendEnvelope
+from cross_x.event_chain import EventChain, build_event_chain, normalize_ecs_identifier
+from cross_x.audit import audit_cross_systems
 
 
 def _now_iso() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
-def _clean(value: object) -> str:
-    return " ".join(str(value).replace("\n", " ").replace("\r", " ").split())
-
-
-def _build_cross_w3lgu_packet(*, source: str, intent: str, target: str | None, mode: str, payload: Mapping[str, Any]) -> W3LguFiveLineProgram:
+def _build_cross_w3lgu_packet(
+    *,
+    chain_id: str,
+    source: str,
+    intent: str,
+    target: Optional[str],
+    mode: str,
+    payload: Mapping[str, Any],
+) -> W3LguFiveLineProgram:
     target_value = target or "auto"
     contract = str(payload.get("contract", "observe_only"))
     text = "\n".join(
         (
-            f"MEM:SOURCE:{_clean(source)}",
-            f"PATCH:MODE:{_clean(mode)}",
-            f"LAW:TARGET:{_clean(target_value)},CONTRACT:{_clean(contract)}",
-            f"EVENT:INTENT:{_clean(intent)}",
-            "SIGNAL:STATUS:received,TRACEABLE:true",
+            f"MEM:SOURCE:{encode_w3lgu_value(source)},CHAIN_ID:{chain_id}",
+            f"PATCH:MODE:{encode_w3lgu_value(mode)}",
+            f"LAW:TARGET:{encode_w3lgu_value(target_value)},CONTRACT:{encode_w3lgu_value(contract)}",
+            f"EVENT:INTENT:{encode_w3lgu_value(intent)},ECS_STATE:planned",
+            "SIGNAL:STATUS:received,TRACEABLE:true,EXECUTE_ALLOWED:false",
         )
     )
     program = parse_five_line_program(text)
@@ -67,7 +73,7 @@ class CrossXRequest:
 
     source: str
     intent: str
-    target: str | None = None
+    target: Optional[str] = None
     mode: str = "observe"
     payload: Mapping[str, Any] = field(default_factory=dict)
 
@@ -93,11 +99,13 @@ class CrossXPlan:
     timestamp: str
     request: CrossXRequest
     chain: tuple[str, ...]
+    event_chain: EventChain
     program: W3LguFiveLineProgram
     px: PXAnchor
     append_envelope: AppendEnvelope
     ep_signal: Mapping[str, Any]
     process_trace: Mapping[str, Any] = field(default_factory=dict)
+    system_audit: Mapping[str, Any] = field(default_factory=dict)
     status: str = "planned"
     mutated: bool = False
     governance: Mapping[str, bool] = field(
@@ -117,26 +125,28 @@ class CrossXPlan:
             "mutated": self.mutated,
             "request": self.request.to_dict(),
             "chain": list(self.chain),
+            "event_chain": self.event_chain.to_dict(),
             "w3lgu": self.program.to_text(),
             "px": self.px.to_dict(),
             "append_envelope": self.append_envelope.to_dict(),
             "ep_signal": dict(self.ep_signal),
             "process_trace": dict(self.process_trace),
+            "system_audit": dict(self.system_audit),
             "governance": dict(self.governance),
         }
 
 
 def build_cross_x_plan(
-    request: CrossXRequest | None = None,
+    request: Optional[CrossXRequest] = None,
     *,
-    source: str | None = None,
-    intent: str | None = None,
-    target: str | None = None,
-    mode: str | None = None,
-    payload: Mapping[str, Any] | None = None,
-    config: W3ConfigBundle | None = None,
-    cross_id: str | None = None,
-    timestamp: str | None = None,
+    source: Optional[str] = None,
+    intent: Optional[str] = None,
+    target: Optional[str] = None,
+    mode: Optional[str] = None,
+    payload: Optional[Mapping[str, Any]] = None,
+    config: Optional[W3ConfigBundle] = None,
+    cross_id: Optional[str] = None,
+    timestamp: Optional[str] = None,
 ) -> CrossXPlan:
     """Build a non-mutating Cross-X coordination plan."""
 
@@ -153,7 +163,12 @@ def build_cross_x_plan(
     if resolved_request.mode not in allowed_modes:
         raise ValueError(f"Cross-X mode {resolved_request.mode!r} is not allowed")
 
+    resolved_cross_id = normalize_ecs_identifier(
+        str(uuid4()) if cross_id is None else cross_id,
+        field="chain_id",
+    )
     program = _build_cross_w3lgu_packet(
+        chain_id=resolved_cross_id,
         source=resolved_request.source,
         intent=resolved_request.intent,
         target=resolved_request.target,
@@ -165,7 +180,7 @@ def build_cross_x_plan(
         relation="cross_x.workflow_improvement",
         mode=resolved_request.mode,
         extra_payload={
-            "cross_id": cross_id or "pending",
+            "cross_id": resolved_cross_id,
             "purpose": cross_x["purpose"],
             "truth_mutation": cross_x["truth_mutation"],
         },
@@ -177,17 +192,30 @@ def build_cross_x_plan(
         target=resolved_request.target,
         mode=resolved_request.mode,
         payload=resolved_request.payload,
-        process_id=cross_id,
+        process_id=resolved_cross_id,
         timestamp=timestamp,
     ).to_dict()
+    system_audit = audit_cross_systems(cfg)
+    component_states = {
+        system: str(cfg.ecosystem["components"].get(system, {}).get("status", "active"))
+        for system in cfg.cross_system["chain"]
+    }
     return CrossXPlan(
-        cross_id=cross_id or str(uuid4()),
+        cross_id=resolved_cross_id,
         timestamp=timestamp or _now_iso(),
         request=resolved_request,
         chain=tuple(cfg.cross_system["chain"]),
+        event_chain=build_event_chain(
+            chain_id=resolved_cross_id,
+            systems=tuple(cfg.cross_system["chain"]),
+            contracts=cfg.cross_system["contracts"],
+            system_states=component_states,
+            supervisor=str(cross_x.get("event_chain_supervisor", "AI_SUPERVISOR")),
+        ),
         program=program,
         px=px,
         append_envelope=append_envelope,
         ep_signal=_build_ep_signal_preview(program.to_text()),
         process_trace=process_trace,
+        system_audit=system_audit,
     )

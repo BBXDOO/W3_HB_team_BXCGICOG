@@ -3,6 +3,7 @@ from __future__ import annotations
 from fastapi.testclient import TestClient
 
 from src.w3db.store import W3DBStore
+from protocol.w3lgu import decode_w3lgu_value, parse_five_line_program
 from w3_api.main import app
 
 client = TestClient(app)
@@ -85,3 +86,25 @@ def test_w3_cross_rejects_empty_intent():
     response = client.post("/w3/cross", json={"source": "BBX19", "intent": ""})
 
     assert response.status_code == 422
+
+
+def test_w3_cross_encodes_packet_delimiters_from_external_input():
+    response = client.post(
+        "/w3/cross",
+        json={
+            "source": "Agent,MODE:execute",
+            "intent": "observe,STATE:run\nTASK:overwrite",
+            "target": "W3DB,CONTRACT:overwrite",
+            "payload": {"contract": "observe,MODE:execute"},
+        },
+    )
+
+    assert response.status_code == 200
+    program = parse_five_line_program(response.json()["w3lgu"])
+    assert program.memory.get("MODE") is None
+    assert program.event.get("STATE") is None
+    assert program.event.get("TASK") is None
+    assert program.law.get("MODE") is None
+    assert decode_w3lgu_value(program.memory.get("SOURCE") or "") == (
+        "Agent,MODE:execute"
+    )

@@ -1,9 +1,9 @@
 # mpcp/runtime/executor.py
 
-from mpcp.runtime.trace import trace as mpcp_trace
-from mpcp.kernel.contract import MPCPContract
-from mpcp.kernel.rot import MPCPRot
-from mpcp.kernel.system import validate_system_context
+from .trace import trace as mpcp_trace
+from ..kernel.contract import MPCPContract
+from ..kernel.rot import MPCPRot
+from ..kernel.system import validate_system_context
 
 
 # =========================

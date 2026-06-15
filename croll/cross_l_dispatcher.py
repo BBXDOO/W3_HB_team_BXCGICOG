@@ -19,6 +19,7 @@ Core law:
 from __future__ import annotations
 
 from collections.abc import Mapping
+import re
 from typing import Any, Dict, Optional
 
 try:
@@ -27,6 +28,8 @@ except ImportError:  # Allows direct execution: python croll/cross_l_dispatcher.
     from table_x import get_workset_from_px
 
 DispatchPlan = Dict[str, Any]
+CrossCodeEnvelope = Dict[str, Any]
+_ECS_IDENTIFIER = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
 
 
 def _unknown_workset(workset: Dict[str, Any]) -> bool:
@@ -34,7 +37,26 @@ def _unknown_workset(workset: Dict[str, Any]) -> bool:
     return workset.get("rytm") == "UNKNOWN" or workset.get("work_type") == "UNKNOWN"
 
 
-def dispatch_workset(px: Any, paper_context: Optional[Mapping[str, Any]] = None) -> DispatchPlan:
+def _normalize_ecs_identifier(value: object, *, field: str) -> str:
+    """Apply the public E-CS identifier contract at the dispatch boundary."""
+
+    if not isinstance(value, str):
+        raise ValueError(f"CrossCode dispatch {field} must be a string")
+    normalized = value.strip()
+    if not _ECS_IDENTIFIER.fullmatch(normalized):
+        raise ValueError(
+            "CrossCode dispatch requires delimiter-safe "
+            f"{field} using 1-128 letters, digits, '.', '_' or '-'"
+        )
+    return normalized
+
+
+def dispatch_workset(
+    px: Any,
+    paper_context: Optional[Mapping[str, Any]] = None,
+    *,
+    enable_box_suggestion: bool = False,
+) -> DispatchPlan:
     """
     Build a safe dispatch plan from a PX reference.
 
@@ -42,6 +64,8 @@ def dispatch_workset(px: Any, paper_context: Optional[Mapping[str, Any]] = None)
         px: PX reference, e.g. "1,1", "PX:[1,1]", [1, 1], or (1, 1).
         paper_context: Optional Cross-L paper context. This function only passes the
             context into Table-X lookup for trace markers. It does not execute anything.
+        enable_box_suggestion: When true, add one read-only BOX registry suggestion.
+            The lookup does not copy, write, execute, or grant new authority.
 
     Returns:
         A dispatch plan with execution_allowed=False and mutated=False always.
@@ -80,9 +104,95 @@ def dispatch_workset(px: Any, paper_context: Optional[Mapping[str, Any]] = None)
                 "action": "review_before_dispatch",
             }
         )
-        return plan
+
+    if enable_box_suggestion:
+        # Lazy import keeps CROLL usable as a standalone planner when BOX is absent.
+        from wx.engine_index import search_by_px
+
+        px_value = workset.get("px")
+        template = (
+            search_by_px(px_value)
+            if px_value is not None and not _unknown_workset(workset)
+            else None
+        )
+        plan["suggested_template"] = (
+            {
+                "template_id": template["template_id"],
+                "name": template["name"],
+                "path": template["path"],
+                "version": template["version"],
+                "boundary": template["boundary"],
+                "deny": list(template["deny"]),
+                "reference_only": True,
+            }
+            if template
+            else None
+        )
 
     return plan
+
+
+def dispatch_cross_code(
+    px: Any,
+    *,
+    chain_id: str,
+    event_id: str,
+    paper_context: Optional[Mapping[str, Any]] = None,
+    enable_box_suggestion: bool = False,
+    active: bool = True,
+) -> CrossCodeEnvelope:
+    """Bind a Cross-L plan to one E-CS event without executing CrossCode.
+
+    The envelope is the Cross-Series handoff contract: E-CS supplies trace
+    identity, Cross-L supplies bounded work logic, and Modew remains a stub
+    target until human review and governance approve a separate execution step.
+    """
+
+    chain_id = _normalize_ecs_identifier(chain_id, field="chain_id")
+    event_id = _normalize_ecs_identifier(event_id, field="event_id")
+    if not active:
+        return {
+            "contract_version": "1.0",
+            "kind": "cross-code-dispatch",
+            "chain_id": chain_id,
+            "event_id": event_id,
+            "state": "inactive",
+            "reason": "cross_code_not_in_use",
+            "cross_l_plan": None,
+            "handoff": None,
+            "return_value": {
+                "state": "inactive",
+                "handled": True,
+                "execution_allowed": False,
+                "mutated": False,
+            },
+            "execution_allowed": False,
+            "mutated": False,
+            "review": False,
+        }
+    plan = dispatch_workset(
+        px,
+        paper_context=paper_context,
+        enable_box_suggestion=enable_box_suggestion,
+    )
+    return {
+        "contract_version": "1.0",
+        "kind": "cross-code-dispatch",
+        "chain_id": chain_id,
+        "event_id": event_id,
+        "state": plan["state"],
+        "cross_l_plan": plan,
+        "handoff": {
+            "from": "Cross-L",
+            "to": "Modew",
+            "action": plan["action"],
+            "boundary": plan["workset"]["boundary"],
+            "return_contract": list(plan["workset"].get("return_contract", [])),
+        },
+        "execution_allowed": False,
+        "mutated": False,
+        "review": True,
+    }
 
 
 if __name__ == "__main__":
