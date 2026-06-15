@@ -444,15 +444,22 @@ W3Lgu คือ ภาษาที่ระบบใช้คิดกับต�
 
 ---
 
-สถานะปัจจุบัน
+## Operational Core 1.0
 
-Phase: Experimental / Living Language
+W3Lgu มี operational contract สำหรับใช้งานจริงแล้วใน
+[`operational.py`](operational.py) โดยครอบคลุม:
 
-Spec ยังไม่ตายตัว
+- 6 Rooms (`CA`, `CU`, `RE`, `SI`, `AP`, `EV`) แบบไม่บังคับลำดับ
+- PX notation `LN<ROOM>'<POSITION>` และ POC ของ Cross-X
+- 27 minimum laws ที่ตรวจสอบด้วยโค้ดได้
+- event chain `REDR → PSP2 → DTML → LRC2`
+- DTML decision `READY / REVIEW / STOP`
+- LRC2 append-only hash-linked ledger พร้อม idempotency และ verification
+- production template สำหรับระบบอื่นที่
+  [`docs/PRODUCTION_TEMPLATE.md`](docs/PRODUCTION_TEMPLATE.md)
 
-ทุกกฎต้องผ่านสนามจริง
-
-ความเรียบง่ายสำคัญกว่าความสมบูรณ์
+ตัว parser และ runtime เดิมยังคงใช้งานได้เพื่อรักษา compatibility ส่วนระบบที่
+ต้องการ operational behavior ให้ใช้ `W3LguOperationalRuntime`
 
 
 
