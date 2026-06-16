@@ -13,10 +13,13 @@ VALID_STATE_ALIASES = {
 
 # ROT รับข้อมูลที่ถูก normalize แล้วเท่านั้น
 # ภาษา / synonym / shorthand conversion เป็นหน้าที่ชั้น W3Lgu / Paper normalizer / adapter
+# ROT_TYPE เป็น marker เพื่อบอกว่ากติกาชุดไหนกำลังถูกใช้ ไม่ใช่ตัวตีความภาษา
 PAPER_COMMAND_REQUIRED = frozenset({"TASK", "INTENT", "SCOPE", "BOUNDARY"})
 PAPER_COMMAND_OPTIONAL = frozenset({
     "PAPER_ID",
     "PAPER_PACK_ID",
+    "ROT_TYPE",
+    "ROT_REF",
     "CATEGORY",
     "EVENT_ID",
     "EVENT_REF",
@@ -30,6 +33,8 @@ PAPER_COMMAND_OPTIONAL = frozenset({
     "ENV_REF",
     "STACK_REF",
     "KNOWLEDGE_BASE_REF",
+    "ADAPTIVE_BASELINE",
+    "TRAJECTORY_REF",
     "REDR_STATE",
     "PACKAGE_REF",
     "PSP2_STATE",
@@ -54,8 +59,9 @@ class MPCPRot:
     - กำหนด result envelope ขั้นต่ำให้ระบบอื่นใช้ตรงกัน
     - ไม่แปลภาษา ไม่ตีความ synonym และไม่ execute
 
-    ภาษาและ shorthand ต้องถูกแปลงเป็น key มาตรฐานก่อนถึง ROT
-    เช่น Paper / W3Lgu normalizer ส่งเข้ามาเป็น TASK, INTENT, SCOPE, BOUNDARY
+    ROT ไม่ใช่ตัวเดียวของทั้งระบบใหญ่
+    ROT เป็นตระกูลกติกาตาม type / context เช่น ROT:MPCP, ROT:Lgu, ROT:CR-L,X
+    ไฟล์นี้คือแกนตรวจขั้นต่ำของ MPCP-side ROT เท่านั้น
     """
 
     # =========================
@@ -79,6 +85,24 @@ class MPCPRot:
         return sorted(str(key) for key in data.keys() if str(key) not in allowed)
 
     # =========================
+    # ROT TYPE LAW
+    # =========================
+    @staticmethod
+    def validate_rot_type(marker: dict):
+        """
+        ตรวจ ROT_TYPE แบบ marker เท่านั้น
+
+        ROT_TYPE ไม่ใช่ enum ปิด เพราะระบบยังปรับตัวได้
+        เช่น ROT:MPCP, ROT:Lgu, ROT:CR-L,X สามารถเกิดตามบริบทระบบได้
+        """
+        marker = MPCPRot._require_dict(marker, "ROT_TYPE_MARKER")
+        if "ROT_TYPE" in marker:
+            MPCPRot._require_non_empty_string(marker, "ROT_TYPE")
+        if "ROT_REF" in marker:
+            MPCPRot._require_non_empty_string(marker, "ROT_REF")
+        return True
+
+    # =========================
     # ROT READER LAW
     # =========================
     @staticmethod
@@ -86,25 +110,37 @@ class MPCPRot:
         """
         ตรวจ request จากระบบที่เข้ามาอ่าน ROT
 
-        ระบบที่อ่าน ROT ต้องระบุหมวดกติกา (CATEGORY) และส่ง Paper หรือ Paper Pack
-        พร้อม event/context marker ได้ แต่ ROT จะไม่เลือกหน่วยปฏิบัติงานให้
-
-        Valid shape:
-        - CATEGORY
-        - PAPER หรือ PAPER_PACK
-        - EVENT / EVENT_REF เป็นข้อมูลประกอบได้
+        ระบบที่อ่าน ROT ต้องระบุหมวดกติกา (CATEGORY) และอาจระบุ ROT_TYPE
+        แล้วส่ง Paper หรือ Paper Pack พร้อม event/context marker ได้
+        แต่ ROT จะไม่เลือกหน่วยปฏิบัติงานให้
         """
         request = MPCPRot._require_dict(request, "ROT_READER_REQUEST")
         category = request.get("CATEGORY")
         if not isinstance(category, str) or not category.strip():
             raise ValueError("ROT_FAIL: READER_CATEGORY_MUST_BE_NON_EMPTY_STRING")
 
+        MPCPRot.validate_rot_type(request)
+
         has_paper = "PAPER" in request
         has_pack = "PAPER_PACK" in request
         if has_paper == has_pack:
             raise ValueError("ROT_FAIL: READER_REQUEST_MUST_HAVE_EXACTLY_ONE_OF_PAPER_OR_PAPER_PACK")
 
-        allowed = frozenset({"CATEGORY", "PAPER", "PAPER_PACK", "EVENT", "EVENT_REF", "CONTEXT_REF", "ENV_REF", "STACK_REF", "META"})
+        allowed = frozenset({
+            "ROT_TYPE",
+            "ROT_REF",
+            "CATEGORY",
+            "PAPER",
+            "PAPER_PACK",
+            "EVENT",
+            "EVENT_REF",
+            "CONTEXT_REF",
+            "ENV_REF",
+            "STACK_REF",
+            "ADAPTIVE_BASELINE",
+            "TRAJECTORY_REF",
+            "META",
+        })
         if not allow_extra:
             unknown = MPCPRot._unknown_keys(request, allowed)
             if unknown:
@@ -138,6 +174,7 @@ class MPCPRot:
         ROT ไม่แปลภาษา ไม่เดา key ให้เอง และไม่ระบุหน่วยที่ต้องทำงาน
         """
         command = MPCPRot._require_dict(command, "PAPER_COMMAND")
+        MPCPRot.validate_rot_type(command)
 
         missing = sorted(PAPER_COMMAND_REQUIRED - set(command.keys()))
         if missing:
@@ -173,10 +210,12 @@ class MPCPRot:
         - PAPER_PACK_ID
         - PAPERS: list[paper_command]
 
-        Pack สามารถส่ง SCOPE / BOUNDARY ระดับ pack ให้ paper ลูก inherit ได้
+        Pack สามารถส่ง ROT_TYPE / SCOPE / BOUNDARY ระดับ pack ให้ paper ลูก inherit ได้
         เพื่อรองรับอนาคตที่ยิงกำกับดูแลหลายแห่งพร้อมกัน
         """
         pack = MPCPRot._require_dict(pack, "PAPER_PACK")
+        MPCPRot.validate_rot_type(pack)
+
         pack_id = pack.get("PAPER_PACK_ID")
         if not isinstance(pack_id, str) or not pack_id.strip():
             raise ValueError("ROT_FAIL: PAPER_PACK_ID_MUST_BE_NON_EMPTY_STRING")
@@ -187,7 +226,19 @@ class MPCPRot:
 
         inherited = {
             key: pack[key]
-            for key in ("CATEGORY", "SCOPE", "BOUNDARY", "CONTEXT_REF", "ENV_REF", "STACK_REF", "KNOWLEDGE_BASE_REF")
+            for key in (
+                "ROT_TYPE",
+                "ROT_REF",
+                "CATEGORY",
+                "SCOPE",
+                "BOUNDARY",
+                "CONTEXT_REF",
+                "ENV_REF",
+                "STACK_REF",
+                "KNOWLEDGE_BASE_REF",
+                "ADAPTIVE_BASELINE",
+                "TRAJECTORY_REF",
+            )
             if key in pack
         }
 
@@ -278,6 +329,8 @@ class MPCPRot:
             "ENV_REF",
             "PAPER_ID",
             "PAPER_PACK_ID",
+            "ROT_TYPE",
+            "ROT_REF",
             "EVENT_ID",
             "EVENT_REF",
             "STACK_REF",
