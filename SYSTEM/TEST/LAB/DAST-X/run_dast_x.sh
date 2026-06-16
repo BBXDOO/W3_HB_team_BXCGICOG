@@ -13,7 +13,7 @@ if [ -z "${DASTX_REPO_ROOT:-}" ]; then
 fi
 
 export DASTX_HOST="${DASTX_HOST:-127.0.0.1}"
-export DASTX_PORT="${DASTX_PORT:-8080}"
+export DASTX_PORT="${DASTX_PORT:-8181}"
 export DASTX_DATA_DIR="${DASTX_DATA_DIR:-$APP_DIR/data}"
 
 mkdir -p "$DASTX_DATA_DIR"
