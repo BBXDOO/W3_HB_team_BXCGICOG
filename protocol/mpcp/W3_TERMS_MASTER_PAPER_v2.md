@@ -75,6 +75,20 @@ governance engine สำหรับ PR / repo decision
 
 packet signal encoding layer
 
+## Signal:Rytm
+
+รูปแบบจังหวะการคืน signal ให้อ่านง่าย  
+ใช้ทำให้สถานะและผลลัพธ์มี rhythm / readable preview
+
+## W3DB
+
+ฐานข้อมูลกลางของ W3 สำหรับ log / state / perception / law / relation trace
+
+## W3DB_APPEND
+
+กลไก append ข้อมูลเข้า W3DB แบบ traceable  
+ไม่ใช่การ mutate source truth โดยตรง
+
 ## W3-API
 
 external / AI agent gateway สำหรับส่ง intent เข้าสู่ W3 ecosystem
@@ -491,6 +505,100 @@ reserved internal modules
 
 ---
 
+# N. Data / Signal / Storage Terms
+
+## W3DB
+
+ฐานข้อมูลกลางของ W3 สำหรับ log / state / perception / law / relation trace
+
+## W3DB_APPEND
+
+กลไก append ข้อมูลเข้า W3DB แบบ traceable  
+ไม่ใช่การ mutate source truth โดยตรง
+
+## PX
+
+position pointer / event-position relation  
+ใช้ชี้ตำแหน่งหรือผูกตำแหน่งข้อมูลใน flow
+
+## Table-X
+
+table หรือ reference table ที่ PX หรือ logic ใช้อ้างอิงสำหรับคำนวณ / map / lookup
+
+## EP-Signal
+
+packet signal encoding layer  
+ใช้คืนสถานะให้อ่านเป็น signal ได้
+
+## Signal:Rytm
+
+จังหวะการคืน signal ให้อ่านง่าย  
+ใช้จัด rhythm ของผลลัพธ์ / preview / status
+
+## Rytm
+
+rhythm layer ของ signal  
+ใช้ทำให้ผลลัพธ์ไม่เป็นข้อมูลดิบอย่างเดียว
+
+## Signal Packet
+
+packet ที่บรรจุ signal / state / result / readable preview
+
+## Return Contract
+
+สัญญาคืนค่าจาก event หรือ runtime  
+ใช้ส่งต่อให้ MPCP / E-CS / Cross-X / Modew อ่านได้ตรงกัน
+
+---
+
+# O. W3Lgu Notation / Short Code Terms
+
+## Room
+
+ห้องตรรกะของ W3Lgu 6ROOM  
+ใช้แยกหน้าที่การอ่าน event เช่น Ev / Si / Ap / Ca / Cu / Re
+
+## Room Code
+
+รหัสห้อง เช่น Ev / Si / Ap / Ca / Cu / Re
+
+## Room Short Code
+
+ชื่อย่อของห้อง logic  
+ใช้ใน packet / sketch / runtime contract เพื่อประหยัดพื้นที่
+
+## Short Code
+
+ชื่อย่อของคำหรือระบบใน W3Lgu  
+ต้องมีนิยามเดียวใน glossary
+
+## 5-Line Short Code
+
+ชื่อย่อที่ใช้ในรูปแบบ W3Lgu 5-line packet  
+ต้องอ่านได้ใน context ของ packet นั้น
+
+## W3Lgu 5-Line Packet
+
+packet มาตรฐาน 5 บรรทัดของ W3Lgu  
+ใช้สื่อสาร intent / meaning / target / boundary / return แบบกระชับ
+
+## 6R
+
+short code ของ 6ROOM  
+ใช้บอกชุดห้องที่ active ใน event หนึ่งตัว
+
+## 6R Sketch
+
+รูปย่อของ 6ROOM event เช่น `6R'Ev,Si,Cu,Re:...`  
+ใช้ preview event logic โดยไม่ต้องเขียน packet เต็ม
+
+## Logic Code
+
+รหัส logic slot เช่น L2-C1 / L2-C3  
+ใช้เชื่อม Logic27 กับ 6ROOM
+
+---
+
 # P. Cross Terms
 
 ## Cross
@@ -607,6 +715,11 @@ event แม่ของ chain หรือ flow
 
 ชั้นเลือก logic room ของ W3Lgu  
 ใช้เปิดห้องที่จำเป็นต่อ event และ mark ห้องที่เหลือเป็น standby
+
+## Room
+
+ห้อง logic ภายใน 6ROOM  
+ไม่ใช่ layer อำนาจ แต่เป็นพื้นที่หน้าที่ของ event logic
 
 ## Ev
 
