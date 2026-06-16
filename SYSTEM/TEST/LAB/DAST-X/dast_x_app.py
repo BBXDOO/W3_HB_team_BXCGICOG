@@ -28,6 +28,7 @@ body{margin:0;background:#141414;color:#eee;font-family:system-ui,-apple-system,
     <h1>DAST-X</h1>
     <p class="muted">Termux Repo Desk / Local Web App</p>
     <p>สถานะ: v0.1 scaffold — read-only first</p>
+    <p class="muted">default port: 8181</p>
   </div>
   <div class="grid">
     <div class="card"><h2>WINDOW A — Repo Tree</h2><p>พื้นที่นี้จะใช้แสดง root-repo, folder tree และการเลือกไฟล์</p></div>
@@ -46,5 +47,5 @@ def index():
 if __name__ == "__main__":
     import uvicorn
     host = os.environ.get("DASTX_HOST", "127.0.0.1")
-    port = int(os.environ.get("DASTX_PORT", "8080"))
+    port = int(os.environ.get("DASTX_PORT", "8181"))
     uvicorn.run(app, host=host, port=port)
