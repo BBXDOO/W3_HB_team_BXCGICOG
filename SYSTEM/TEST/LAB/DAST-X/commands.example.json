@@ -1,0 +1,56 @@
+[
+  {
+    "group": "พื้นฐาน",
+    "name": "ดูตำแหน่งปัจจุบัน",
+    "command": "pwd",
+    "note": "ใช้ดูว่าตอนนี้อยู่ folder ไหน"
+  },
+  {
+    "group": "พื้นฐาน",
+    "name": "ดูไฟล์ใน folder",
+    "command": "ls -la",
+    "note": "ใช้ดูรายการไฟล์แบบละเอียด"
+  },
+  {
+    "group": "Repo",
+    "name": "ดูสถานะ git",
+    "command": "git status --short --branch",
+    "note": "อ่านสถานะ branch และไฟล์ที่เปลี่ยน"
+  },
+  {
+    "group": "Repo",
+    "name": "ดู commit ล่าสุด",
+    "command": "git log --oneline -n 20",
+    "note": "ดูประวัติ commit ล่าสุด 20 รายการ"
+  },
+  {
+    "group": "Repo",
+    "name": "ดู tree ระดับ 2",
+    "command": "tree -L 2",
+    "note": "ดูโครงสร้าง repo แบบไม่ลึกเกินไป"
+  },
+  {
+    "group": "Search",
+    "name": "ค้นหา TODO",
+    "command": "rg \"TODO\" .",
+    "note": "ค้นหางานค้างใน repo"
+  },
+  {
+    "group": "Runtime",
+    "name": "ดู Python version",
+    "command": "python --version",
+    "note": "ตรวจ runtime Python"
+  },
+  {
+    "group": "Runtime",
+    "name": "ดู Node version",
+    "command": "node --version",
+    "note": "ตรวจ runtime Node ถ้ามี"
+  },
+  {
+    "group": "Termux",
+    "name": "ดูข้อมูล Termux",
+    "command": "termux-info",
+    "note": "ตรวจข้อมูล environment ของ Termux"
+  }
+]
