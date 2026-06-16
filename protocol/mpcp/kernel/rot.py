@@ -17,14 +17,22 @@ PAPER_COMMAND_REQUIRED = frozenset({"TASK", "INTENT", "SCOPE", "BOUNDARY"})
 PAPER_COMMAND_OPTIONAL = frozenset({
     "PAPER_ID",
     "PAPER_PACK_ID",
+    "CATEGORY",
+    "EVENT_ID",
+    "EVENT_REF",
+    "CONTENT",
     "TARGET",
     "TARGETS",
     "PX",
     "MODEW",
     "ROLE",
     "CONTEXT_REF",
+    "ENV_REF",
     "STACK_REF",
     "KNOWLEDGE_BASE_REF",
+    "REDR_STATE",
+    "PACKAGE_REF",
+    "PSP2_STATE",
     "RETURN_CONTRACT",
     "REVIEW",
     "DENY",
@@ -71,6 +79,48 @@ class MPCPRot:
         return sorted(str(key) for key in data.keys() if str(key) not in allowed)
 
     # =========================
+    # ROT READER LAW
+    # =========================
+    @staticmethod
+    def validate_reader_request(request: dict, *, allow_extra: bool = False):
+        """
+        ตรวจ request จากระบบที่เข้ามาอ่าน ROT
+
+        ระบบที่อ่าน ROT ต้องระบุหมวดกติกา (CATEGORY) และส่ง Paper หรือ Paper Pack
+        พร้อม event/context marker ได้ แต่ ROT จะไม่เลือกหน่วยปฏิบัติงานให้
+
+        Valid shape:
+        - CATEGORY
+        - PAPER หรือ PAPER_PACK
+        - EVENT / EVENT_REF เป็นข้อมูลประกอบได้
+        """
+        request = MPCPRot._require_dict(request, "ROT_READER_REQUEST")
+        category = request.get("CATEGORY")
+        if not isinstance(category, str) or not category.strip():
+            raise ValueError("ROT_FAIL: READER_CATEGORY_MUST_BE_NON_EMPTY_STRING")
+
+        has_paper = "PAPER" in request
+        has_pack = "PAPER_PACK" in request
+        if has_paper == has_pack:
+            raise ValueError("ROT_FAIL: READER_REQUEST_MUST_HAVE_EXACTLY_ONE_OF_PAPER_OR_PAPER_PACK")
+
+        allowed = frozenset({"CATEGORY", "PAPER", "PAPER_PACK", "EVENT", "EVENT_REF", "CONTEXT_REF", "ENV_REF", "STACK_REF", "META"})
+        if not allow_extra:
+            unknown = MPCPRot._unknown_keys(request, allowed)
+            if unknown:
+                raise ValueError(f"ROT_FAIL: READER_REQUEST_UNKNOWN_KEYS:{','.join(unknown)}")
+
+        if has_paper:
+            MPCPRot.validate_paper_command(request["PAPER"], allow_extra=allow_extra)
+        else:
+            MPCPRot.validate_paper_pack(request["PAPER_PACK"], allow_extra=allow_extra)
+
+        if "EVENT" in request and not isinstance(request["EVENT"], dict):
+            raise ValueError("ROT_FAIL: READER_EVENT_MUST_BE_DICT")
+
+        return True
+
+    # =========================
     # PAPER COMMAND LAW
     # =========================
     @staticmethod
@@ -84,8 +134,8 @@ class MPCPRot:
         - SCOPE     : ขอบเขตที่อนุญาต
         - BOUNDARY  : boundary manifest id / inline boundary marker
 
-        Optional keys ถูกสงวนไว้สำหรับ Paper Pack, stack, PX, Modew และ return contract
-        ROT ไม่แปลภาษาและไม่เดา key ให้เอง
+        Optional keys ถูกสงวนไว้สำหรับ Paper Pack, event, stack, PX, Modew และ return contract
+        ROT ไม่แปลภาษา ไม่เดา key ให้เอง และไม่ระบุหน่วยที่ต้องทำงาน
         """
         command = MPCPRot._require_dict(command, "PAPER_COMMAND")
 
@@ -137,7 +187,7 @@ class MPCPRot:
 
         inherited = {
             key: pack[key]
-            for key in ("SCOPE", "BOUNDARY", "CONTEXT_REF", "STACK_REF", "KNOWLEDGE_BASE_REF")
+            for key in ("CATEGORY", "SCOPE", "BOUNDARY", "CONTEXT_REF", "ENV_REF", "STACK_REF", "KNOWLEDGE_BASE_REF")
             if key in pack
         }
 
@@ -225,8 +275,11 @@ class MPCPRot:
             "SCOPE",
             "CONTEXT",
             "CONTEXT_REF",
+            "ENV_REF",
             "PAPER_ID",
             "PAPER_PACK_ID",
+            "EVENT_ID",
+            "EVENT_REF",
             "STACK_REF",
         )
         if not any(marker in event for marker in boundary_markers):
