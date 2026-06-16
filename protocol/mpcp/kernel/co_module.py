@@ -22,6 +22,13 @@ OPTIONAL_CO_MODULE_KEYS = frozenset({
     "TEMP_AGREEMENT",
     "CAN_CHANGE_DIRECTION",
     "CAN_EXPAND",
+    "TRIGGER",
+    "EXPECTED_GAIN",
+    "RISK_FLAGS",
+    "DISTRIBUTION_MODE",
+    "MAX_ASSIST_ROUTES",
+    "REJOIN_STRATEGY",
+    "QUALITY_CHECK",
     "PAPERS",
     "TRACE",
     "ENV_REF",
@@ -31,6 +38,19 @@ OPTIONAL_CO_MODULE_KEYS = frozenset({
 })
 
 ALLOWED_CO_MODULE_KEYS = REQUIRED_CO_MODULE_KEYS | OPTIONAL_CO_MODULE_KEYS
+
+VALID_TRIGGERS = frozenset({
+    "uncertain",
+    "abnormal",
+    "malformed",
+    "incomplete",
+    "not_enough_confidence",
+    "needs_more_variables",
+    "other_path_faster",
+    "other_path_more_precise",
+    "risk_distribution_needed",
+    "parallel_check_needed",
+})
 
 
 class CoModuleLaw:
@@ -42,7 +62,7 @@ class CoModuleLaw:
     C = cross field / agreement point
 
     This validator does not execute work.
-    It only checks whether a cooperative relation is traceable.
+    It only checks whether a cooperative relation is traceable and necessary.
     """
 
     @staticmethod
@@ -71,6 +91,8 @@ class CoModuleLaw:
         - RETURN_TO
         - EVENT_ID
         - END_EVENT
+
+        This law is for necessary assist/cross work, not every task.
         """
         contract = CoModuleLaw._require_dict(contract, "CONTRACT")
 
@@ -110,6 +132,64 @@ class CoModuleLaw:
         for key in ("CAN_CHANGE_DIRECTION", "CAN_EXPAND"):
             if key in contract and not isinstance(contract[key], bool):
                 raise ValueError(f"CO_MODULE_FAIL: {key}_MUST_BE_BOOL")
+
+        if "MAX_ASSIST_ROUTES" in contract:
+            routes = contract["MAX_ASSIST_ROUTES"]
+            if not isinstance(routes, int) or routes < 1:
+                raise ValueError("CO_MODULE_FAIL: MAX_ASSIST_ROUTES_MUST_BE_POSITIVE_INT")
+            if routes < len(assists):
+                raise ValueError("CO_MODULE_FAIL: MAX_ASSIST_ROUTES_LESS_THAN_ASSIST_MODULES")
+
+        if "RISK_FLAGS" in contract:
+            flags = contract["RISK_FLAGS"]
+            if not isinstance(flags, list):
+                raise ValueError("CO_MODULE_FAIL: RISK_FLAGS_MUST_BE_LIST")
+
+        CoModuleLaw.validate_need_for_assist(contract)
+        return True
+
+    @staticmethod
+    def validate_need_for_assist(contract: dict):
+        """
+        Validate why assist is used.
+
+        Assist should be used only when it gives enough value:
+        uncertainty, abnormality, incomplete input, faster route, stronger route,
+        extra variables, parallel check, or risk distribution.
+        """
+        contract = CoModuleLaw._require_dict(contract, "CONTRACT")
+
+        trigger = contract.get("TRIGGER")
+        expected_gain = contract.get("EXPECTED_GAIN")
+
+        if trigger is None and expected_gain is None:
+            raise ValueError("CO_MODULE_FAIL: ASSIST_REQUIRES_TRIGGER_OR_EXPECTED_GAIN")
+
+        if trigger is not None:
+            if isinstance(trigger, str):
+                if not trigger.strip():
+                    raise ValueError("CO_MODULE_FAIL: TRIGGER_MUST_BE_NON_EMPTY")
+            elif isinstance(trigger, list):
+                if not trigger:
+                    raise ValueError("CO_MODULE_FAIL: TRIGGER_LIST_MUST_BE_NON_EMPTY")
+                for idx, item in enumerate(trigger):
+                    if not isinstance(item, str) or not item.strip():
+                        raise ValueError(f"CO_MODULE_FAIL: TRIGGER[{idx}]_MUST_BE_NON_EMPTY_STRING")
+            else:
+                raise ValueError("CO_MODULE_FAIL: TRIGGER_MUST_BE_STRING_OR_LIST")
+
+        if expected_gain is not None:
+            if isinstance(expected_gain, str):
+                if not expected_gain.strip():
+                    raise ValueError("CO_MODULE_FAIL: EXPECTED_GAIN_MUST_BE_NON_EMPTY")
+            elif isinstance(expected_gain, list):
+                if not expected_gain:
+                    raise ValueError("CO_MODULE_FAIL: EXPECTED_GAIN_LIST_MUST_BE_NON_EMPTY")
+                for idx, item in enumerate(expected_gain):
+                    if not isinstance(item, str) or not item.strip():
+                        raise ValueError(f"CO_MODULE_FAIL: EXPECTED_GAIN[{idx}]_MUST_BE_NON_EMPTY_STRING")
+            else:
+                raise ValueError("CO_MODULE_FAIL: EXPECTED_GAIN_MUST_BE_STRING_OR_LIST")
 
         return True
 
