@@ -23,6 +23,9 @@ C = shared cross field / agreement point
 The goal is not to make one module stronger than all others.
 The goal is to let modules request, assist, coordinate, and return trace.
 
+This law is for large or complex work.
+It is not a rule that every task must be split.
+
 ---
 
 ## 2. Culture law
@@ -43,6 +46,14 @@ No module should assume:
 I must do all work alone.
 I must replace the other module.
 I must own the whole result.
+```
+
+But no module should also assume:
+
+```text
+Every work must be distributed.
+Every uncertainty requires full cross-system routing.
+Every helper must become executor.
 ```
 
 ---
@@ -99,7 +110,71 @@ Crossing field is not system escape.
 
 ---
 
-## 5. Direction can change
+## 5. Necessity law
+
+Cooperative routing is used only when it creates enough value.
+
+Valid triggers:
+
+```text
+uncertain
+abnormal
+malformed
+incomplete
+not_enough_confidence
+needs_more_variables
+other_path_faster
+other_path_more_precise
+risk_distribution_needed
+parallel_check_needed
+```
+
+The system should not split work just because splitting is possible.
+
+```text
+Use assist when needed.
+Do not add coordination cost without reason.
+```
+
+A cooperative route must explain why the extra route is worth it.
+
+---
+
+## 6. Risk distribution law
+
+A large work item may remain one responsibility while distributing risk across multiple assist routes.
+
+This is allowed when:
+
+```text
+one route gives speed
+one route gives precision
+one route gives visual clarity
+one route checks abnormal structure
+one route preserves trace better
+```
+
+The aim is:
+
+```text
+Do one work, gain more than one useful output.
+ทำ 1 แต่ได้ 3
+```
+
+Examples of useful outputs:
+
+```text
+primary result
+comparison result
+risk signal
+fallback option
+trace explanation
+field visibility
+```
+
+---
+
+## 7. Direction can change
 
 A work path may change direction when the field shows a better path.
 
@@ -123,7 +198,7 @@ no execution authority is invented
 
 ---
 
-## 6. Cooperative contract
+## 8. Cooperative contract
 
 A cooperative module contract should carry:
 
@@ -135,6 +210,8 @@ REASON
 RETURN_TO
 EVENT_ID
 END_EVENT
+TRIGGER
+EXPECTED_GAIN
 PAPERS
 TRACE
 ```
@@ -148,6 +225,11 @@ FIELD_SELECTED
 TEMP_AGREEMENT
 CAN_CHANGE_DIRECTION
 CAN_EXPAND
+RISK_FLAGS
+DISTRIBUTION_MODE
+MAX_ASSIST_ROUTES
+REJOIN_STRATEGY
+QUALITY_CHECK
 ENV_REF
 STACK_REF
 LRC_REF
@@ -155,7 +237,7 @@ LRC_REF
 
 ---
 
-## 7. Paper Pack flow example
+## 9. Paper Pack flow example
 
 ```text
 EVENT-A01 : #MPCP/LIB'Blueprint
@@ -183,7 +265,7 @@ A01 is the event identity.
 
 ---
 
-## 8. Fail / stop condition
+## 10. Fail / stop condition
 
 The cooperative relation is invalid when:
 
@@ -194,15 +276,19 @@ C hides the trace
 field changes without reason
 result does not return to RETURN_TO
 source truth is mutated without permission
+assist is used without necessity
+coordination cost is higher than expected gain
 ```
 
 ---
 
-## 9. Final law
+## 11. Final law
 
 ```text
-No module works alone.
+No module works alone when the work is too large.
 No helper steals the work.
 No cross field hides the truth.
 Every assist returns trace.
+Assist only when needed.
+Do 1, gain 3 when the field allows it.
 ```
