@@ -1,2 +1,0 @@
-# DAST-X v0.1 uses Python standard library only.
-# No pip install is required.
