@@ -17,7 +17,7 @@ A module may hold responsibility, but it should not be forced to perform every m
 ```text
 A = responsible module
 B = assisting module
-C = shared cross field / agreement point
+C = shared assist field / many-hands crossing field
 ```
 
 The goal is not to make one module stronger than all others.
@@ -63,14 +63,31 @@ Every helper must become executor.
 ```text
 A = responsible module
 B = assist module
-C = cross field
+C = shared assist field
 ```
 
 A carries responsibility.
 B contributes capability.
 C keeps the relation visible and traceable.
 
-C may be:
+C is not the center of command.
+C is not a stone.
+C is not a hub that must carry every burden.
+
+C is many hands reaching in from different directions.
+C exists to help work happen, survive, adapt, and return trace.
+
+C should be:
+
+```text
+flexible
+humble
+lightweight
+temporary when needed
+traceable
+```
+
+C may appear as:
 
 ```text
 Cross-X
@@ -79,10 +96,11 @@ Paper Pack
 Event field
 Trace field
 Result tag layer
+temporary agreement field
 ```
 
 C is not always a third module.
-C may be the temporary shared field where two flows meet.
+C may be the temporary shared field where many flows meet.
 
 ---
 
@@ -180,7 +198,7 @@ A work path may change direction when the field shows a better path.
 
 ```text
 A line may meet another line.
-The crossing point may create temporary agreement.
+The crossing field may create temporary agreement.
 The work may expand.
 The work may shift field.
 The work must keep trace.
@@ -290,5 +308,6 @@ No helper steals the work.
 No cross field hides the truth.
 Every assist returns trace.
 Assist only when needed.
+C stays flexible, humble, and light.
 Do 1, gain 3 when the field allows it.
 ```
