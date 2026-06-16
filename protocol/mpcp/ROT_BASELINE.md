@@ -17,14 +17,41 @@ In W3 terms:
 
 ```text
 W3Lgu / Paper normalizer = convert language / shorthand / synonym
-ROT = verify relation and boundary
+ROT = verify rule shape, relation, and boundary
 CROLL / Cross-L = plan only, after ROT accepts the command shape
 Modew / executor = run only after review/authority
 ```
 
 ---
 
-## 2. Paper command minimum
+## 2. ROT as rule framework
+
+ROT is closer to a framework than a command runner.
+
+It does not order work.  
+It does not select language meaning.  
+It does not decide the user's intention.  
+It does not create execution authority.
+
+ROT only defines the rules that must be clear before another layer may continue.
+
+```text
+ROT says: this command shape is valid / invalid
+ROT says: this command has boundary / no boundary
+ROT says: this result envelope is valid / invalid
+ROT says: this Paper Pack can be traced / cannot be traced
+ROT does not say: run this now
+```
+
+The command language can evolve outside ROT.  
+The Paper format can evolve outside ROT.  
+Paper Pack can grow into multi-site / multi-agent governance outside ROT.
+
+ROT stays stable by enforcing only the minimum law surface.
+
+---
+
+## 3. Paper command minimum
 
 A short Paper command must be normalized before it reaches ROT.
 
@@ -60,7 +87,7 @@ ROT rejects unknown fields by default so Paper commands cannot drift into ambigu
 
 ---
 
-## 3. Paper Pack
+## 4. Paper Pack
 
 Paper Pack is a bundle of Paper commands controlled under one governance boundary.
 
@@ -93,7 +120,7 @@ This leaves room for future multi-site / multi-agent governance without turning 
 
 ---
 
-## 4. Result envelope
+## 5. Result envelope
 
 Canonical strict result shape:
 
@@ -136,7 +163,7 @@ block
 
 ---
 
-## 5. Stack baseline
+## 6. Stack baseline
 
 When a system can keep stack, each stack frame should have at least one trace marker:
 
@@ -152,7 +179,7 @@ ROT does not interpret the full stack yet. It only checks that frames are tracea
 
 ---
 
-## 6. Minimum knowledge baseline
+## 7. Minimum knowledge baseline
 
 ROT does not carry the full knowledge base.
 It only needs to know which baseline is being used.
@@ -169,7 +196,7 @@ Future systems may replace or extend the baseline without changing Paper command
 
 ---
 
-## 7. CROLL / Cross-L rule
+## 8. CROLL / Cross-L rule
 
 CROLL and Cross-L must stay plan-only until MPCP/ROT/Modew approve execution.
 
@@ -198,7 +225,7 @@ Default return for CROLL / Cross-L planning:
 
 ---
 
-## 8. Absolute rule
+## 9. Absolute rule
 
 ROT must make short Paper commands usable without interpretation.
 
@@ -207,6 +234,7 @@ That means:
 ```text
 No language conversion inside ROT
 No missing-intent guessing inside ROT
+No command issuing inside ROT
 No execution inside ROT
 No source-truth mutation inside ROT
 No environment mutation inside ROT
