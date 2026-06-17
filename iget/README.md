@@ -17,6 +17,44 @@ compatibility and runtime reliability fixes.
 
 Runtime version: `9.0`
 
+## v10 preview — Issue Dispatch Mode
+
+IGET v10 preview adds a Termux/Codespaces-friendly issue brief workflow. It does
+not replace the active v9 PR governance runtime.
+
+Purpose:
+
+- BBX19 writes a short brief from Termux.
+- IGET builds a W3 issue body.
+- IGET suggests related pseudo-modules such as `@module:IGET`, `@module:W3-API`, `@module:DTML`, `@module:W3DB`, `@module:MPCP`.
+- IGET creates a GitHub issue through the `gh` CLI after human confirmation or `--yes`.
+- Optional local trace is appended to `iget/memory/issues.jsonl` with `--record-memory`.
+
+Example:
+
+```bash
+python -m iget issue new \
+  --title "เพิ่ม IGET Issue Dispatch Mode" \
+  --brief "ให้ IGET อ่าน issue แล้วเรียก module ที่เกี่ยวข้องมาดูงาน ผ่าน approval จาก BBX19" \
+  --modules "IGET,W3-API,DTML,W3DB,MPCP" \
+  --yes \
+  --record-memory
+```
+
+Interactive mode:
+
+```bash
+python -m iget issue new
+```
+
+Boundary:
+
+- report only by default
+- no repo mutation without BBX19 approval
+- no module invocation without BBX19 approval
+- no direct merge
+- record trace before action
+
 ---
 
 IGET (v1) — W3 0.5 PR Flow Assistant
@@ -178,6 +216,8 @@ Current Structure
 iget/
 ├── README.md
 ├── SPEC_V1.md
+├── issue_mode.py
+├── memory/
 └── main.py
 
 ---
