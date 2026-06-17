@@ -1,249 +1,102 @@
-ปลายทาง:
-/iget/docs/
+# IGET Docs Center
 
-สร้างทันที ชุดเริ่มต้นพร้อมใช้งาน
+เอกสารศูนย์กลางของระบบ **IGET v9.0 — Reliable Semantic PR Governance Runtime**
 
-==================================================
-FILE: /iget/docs/INDEX.md
-==================================================
+IGET คือระบบช่วยอ่าน Pull Request แล้วแปลงสัญญาณที่กระจัดกระจายให้เป็นคะแนน สถานะ สี เหตุผล ความเสี่ยง และคำแนะนำสำหรับมนุษย์ตรวจ PR
 
-# IGET Documentation Center
+> IGET ไม่ได้แทน maintainer  
+> IGET ช่วยให้ maintainer เห็นความเสี่ยงเร็วขึ้นและตัดสินใจได้มีหลักฐานมากขึ้น
 
-IGET Internal Knowledge Layer
+---
 
-เอกสารทั้งหมดของระบบ IGET
+## สถานะ
 
-## Files
+| รายการ | ค่า |
+|---|---|
+| Runtime | v9.0 |
+| Scope | GitHub Pull Request governance |
+| Output หลัก | Summary comment แบบ idempotent |
+| Inline comment | opt-in |
+| Authority | Human final decision |
+| Safety | ใช้ trusted base code ผ่าน `pull_request_target` |
 
-- HOW_TO_USE.md
-- HOW_IT_WORKS.md
-- SCORING_RULES.md
-- SIGNAL_SYSTEM.md
-- PR_EXAMPLES.md
-- TROUBLESHOOT.md
-- CHANGELOG_IGET.md
+---
 
-## Status
+## เอกสารในโฟลเดอร์นี้
 
-IGET Production Active
+| ไฟล์ | ใช้ทำอะไร |
+|---|---|
+| [INDEX.md](INDEX.md) | ดัชนีเอกสาร IGET ทั้งหมด |
+| [HOW_TO_USE.md](HOW_TO_USE.md) | วิธีใช้งานและ flow หลัก |
+| [HOW_IT_WORKS.md](HOW_IT_WORKS.md) | อธิบาย runtime และโมดูลภายใน |
+| [SCORING_RULES.md](SCORING_RULES.md) | กติกาคะแนน penalty / bonus / state |
+| [SIGNAL_SYSTEM.md](SIGNAL_SYSTEM.md) | ระบบสี Green / Yellow / Red และ semantic state |
+| [PR_EXAMPLES.md](PR_EXAMPLES.md) | ตัวอย่าง PR และผลที่คาดว่าจะได้ |
+| [TROUBLESHOOT.md](TROUBLESHOOT.md) | วิธีตรวจเมื่อ comment ไม่ขึ้น คะแนนผิด หรือแจ้งเตือนเยอะ |
+| [CHANGELOG_IGET.md](CHANGELOG_IGET.md) | ประวัติการเปลี่ยนแปลงของ IGET |
 
+---
 
-==================================================
-FILE: /iget/docs/HOW_TO_USE.md
-==================================================
+## Flow ภาพรวม
 
-# How To Use IGET
+```text
+GitHub PR Event / Manual Dispatch
+→ resolve_runtime_context
+→ fetch PR files
+→ classify files
+→ build stats
+→ detect mode
+→ compute score
+→ map state + semantic state
+→ build summary comment
+→ upsert existing IGET comment
+```
 
-## Purpose
+---
 
-IGET ใช้ประเมิน Pull Request อัตโนมัติ
+## หลักการออกแบบ
 
-## Flow
+1. **มนุษย์เป็นผู้ตัดสินสุดท้าย** — IGET ให้สัญญาณ ไม่สั่ง merge
+2. **ไม่รันโค้ดจาก PR โดยตรง** — ลดความเสี่ยงจาก fork / untrusted code
+3. **สรุปต้องอ่านง่าย** — ใช้คะแนน สี เหตุผล และคำแนะนำ
+4. **ตรวจซ้ำได้** — ใช้ proof trace และ summary marker
+5. **ลด noise** — อัปเดต comment เดิมแทนการโพสต์ซ้ำ
 
-PR Open
-→ Workflow Run
-→ Analyze Files
-→ Score PR
-→ Post Comment
+---
 
-## Human Action
+## คำสั่งทดสอบหลัก
 
-- อ่านผลลัพธ์
-- ตรวจ Red Signal
-- Merge เมื่อเหมาะสม
+จาก root repo:
 
-## Best Practice
+```bash
+PYTHONPATH=. python -m pytest iget/tests -q
+```
 
-- PR เล็ก
-- มี test
-- แยกงานชัดเจน
-- หลีกเลี่ยงรวมหลาย feature
+รันแบบ dry-run ผ่าน runtime context:
 
+```bash
+REPO=OWNER/REPO PR=1 GITHUB_TOKEN=xxx IGET_DRY_RUN=1 \
+PYTHONPATH=. python -m iget.main
+```
 
-==================================================
-FILE: /iget/docs/HOW_IT_WORKS.md
-==================================================
+---
 
-# How IGET Works
+## หมายเหตุสำหรับ W3 / BOX ในอนาคต
 
-## Core Engine
+เอกสารชุดนี้ควรอยู่ใกล้ระบบ IGET ก่อน เพื่อให้เปิดดูโค้ดแล้วเข้าใจทันที
 
-main.py
-ศูนย์กลางระบบ
+อนาคตสามารถทำดัชนีรวมใน BOX ได้ เช่น:
 
-fetcher.py
-ดึงข้อมูล PR
+```text
+wx/index/iget_docs.md
+wx/index/test_manuals_by_system.md
+wx/index/governance_runtime_docs.md
+```
 
-scorer.py
-คำนวณคะแนน
+---
 
-reporter.py
-สร้างผลลัพธ์
+## สรุป
 
-benchmark.py
-จำลองเคสทดสอบ
+README นี้เป็นหน้าหลักของเอกสาร IGET docs ไม่ใช่ไฟล์รวม dump ของเอกสารหลายไฟล์
 
-## Runtime
-
-GitHub Event
-→ main.py
-→ modules
-→ comment output
-
-
-==================================================
-FILE: /iget/docs/SCORING_RULES.md
-==================================================
-
-# Scoring Rules
-
-Base Score: 100
-
-## Penalty
-
-- ไฟล์มากเกินกำหนด
-- lines changed สูง
-- code without test
-- risky files
-- workflow change
-
-## Bonus
-
-- docs only
-- small PR
-- test included
-- clear structure
-
-## Output
-
-85+   Green
-60-84 Yellow
-0-59  Red
-
-
-==================================================
-FILE: /iget/docs/SIGNAL_SYSTEM.md
-==================================================
-
-# Signal System
-
-## Green
-
-พร้อมตรวจขั้นสุดท้าย / merge ได้
-
-## Yellow
-
-มีความเสี่ยงบางส่วน
-ควร review เพิ่ม
-
-## Red
-
-หยุดก่อน
-ต้องตรวจละเอียด
-
-## Visual Flow
-
-🟩🟩🟨🟩
-Stable
-
-🟨🟥🟨
-Need Review
-
-
-==================================================
-FILE: /iget/docs/PR_EXAMPLES.md
-==================================================
-
-# PR Examples
-
-## Example A
-
-2 files
-20 lines
-docs only
-
-Result: Green
-
-## Example B
-
-5 files
-300 lines
-code no test
-
-Result: Yellow
-
-## Example C
-
-18 files
-1200 lines
-workflow + secret keyword
-
-Result: Red
-
-
-==================================================
-FILE: /iget/docs/TROUBLESHOOT.md
-==================================================
-
-# Troubleshoot
-
-## No Comment Posted
-
-- Check token
-- Check workflow permission
-- Check PR trigger
-
-## Wrong Score
-
-- Check file classify rules
-- Check changed lines source
-
-## Too Many Alerts
-
-- Tune threshold
-- Reduce duplicate comments
-
-
-==================================================
-FILE: /iget/docs/CHANGELOG_IGET.md
-==================================================
-
-# Changelog
-
-
-## v9.0 — Active Runtime
-
-- Idempotent summary comment updates with `<!-- iget:summary -->`
-- Fork-safe `pull_request_target` workflow using trusted base code only
-- Manual dispatch with explicit PR number
-- Event-payload runtime resolution and strict repository/PR validation
-- Shared retry-capable GitHub API session and actionable API errors
-- Inline comments opt-in; summary reporting remains the reliable default
-
-## v5
-
-- scoring improved
-- benchmark added
-- inline comment support
-- production stable
-
-## Next
-
-- EP signal export
-- trust signal
-- timeout retry
-- multi repo mode
-
-
-==================================================
-COMMIT
-==================================================
-
-docs(iget): add internal documentation center
-
-==================================================
-ผลลัพธ์
-==================================================
-
-IGET เปลี่ยนจาก script tool
-เป็น subsystem ที่มี knowledge layer สมบูรณ์
+รายละเอียดแยกอยู่ในไฟล์ย่อย เพื่อให้อ่านง่าย แก้ง่าย และใช้เป็น knowledge layer ต่อได้
