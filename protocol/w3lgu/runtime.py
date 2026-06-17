@@ -1,14 +1,18 @@
-"""Low-overhead W3Lgu runtime."""
+"""Enterprise-grade W3Lgu runtime (low-overhead)."""
 
 from __future__ import annotations
-
 from dataclasses import dataclass
-from typing import Mapping
+from typing import Mapping, Any
+from uuid import uuid4
+from datetime import datetime
 
 from protocol.w3lgu.core import W3LguFiveLineProgram, W3LguPacket, W3LguPair
 from protocol.w3lgu.parser import parse_line
 from protocol.w3lgu.signals import signal_for_state
 
+CONFIDENCE_LOW = 0.0
+CONFIDENCE_MID = 0.5
+CONFIDENCE_HIGH = 1.0
 
 @dataclass(frozen=True)
 class W3LguRuntimeResult:
@@ -16,9 +20,13 @@ class W3LguRuntimeResult:
     normalized_packet: W3LguPacket
     signal_packet: W3LguPacket
     memory_packet: W3LguPacket | None = None
+    trace_id: str = uuid4().hex
+    timestamp: str = datetime.utcnow().isoformat()
+    version: str = "W3Lgu-runtime-v1"
 
     def to_text(self) -> str:
         lines = [
+            f"TRACE:{self.trace_id}@{self.timestamp}",
             f"EVENT:runtime.receive,{self.input_packet.to_text()}",
             f"EVENT:runtime.normalized,{self.normalized_packet.to_text()}",
             self.signal_packet.to_text(),
@@ -27,13 +35,12 @@ class W3LguRuntimeResult:
             lines.append(f"EVENT:commit,{self.memory_packet.to_text()}")
         return "\n".join(lines)
 
-
 def run_packet(packet: W3LguPacket, *, context: Mapping[str, object] | None = None) -> W3LguRuntimeResult:
-    """Normalize and signal a packet without executing external side effects."""
-
+    """Normalize and signal a packet with enterprise-level metadata."""
     context = context or {}
     state = packet.get("STATE") or "ready"
     modew = packet.get("MODEW") or context.get("MODEW")
+
     normalized = packet
     if not packet.get("EVENT"):
         normalized = W3LguPacket((W3LguPair("EVENT", "runtime.receive"),) + packet.pairs, source=packet.source)
@@ -42,20 +49,21 @@ def run_packet(packet: W3LguPacket, *, context: Mapping[str, object] | None = No
 
     confidence = _confidence(packet.get("CONF"))
     signal = signal_for_state(str(state), confidence=confidence)
+
     memory = W3LguPacket((
         W3LguPair("LAST_STATE", signal.get("STATE") or str(state)),
         W3LguPair("LAST_EVENT", normalized.get("EVENT") or "runtime.receive"),
+        W3LguPair("CONFIDENCE", str(confidence or CONFIDENCE_LOW)),
+        W3LguPair("TIMESTAMP", datetime.utcnow().isoformat()),
     ))
-    return W3LguRuntimeResult(packet, normalized, signal, memory)
 
+    return W3LguRuntimeResult(packet, normalized, signal, memory)
 
 def run_line(text: str, *, context: Mapping[str, object] | None = None) -> W3LguRuntimeResult:
     return run_packet(parse_line(text), context=context)
 
-
 def run_five_line(program: W3LguFiveLineProgram) -> W3LguRuntimeResult:
     """Run the event line while preserving MEM/PATCH/LAW/SIGNAL boundaries."""
-
     context = {
         "MEM": program.memory.to_text(),
         "PATCH": program.patch.to_text(),
@@ -63,11 +71,13 @@ def run_five_line(program: W3LguFiveLineProgram) -> W3LguRuntimeResult:
     }
     return run_packet(program.event, context=context)
 
-
 def _confidence(value: str | None) -> float | None:
     if value is None:
         return None
     try:
-        return float(value)
+        val = float(value)
+        if val <= 0: return CONFIDENCE_LOW
+        if val < 1: return CONFIDENCE_MID
+        return CONFIDENCE_HIGH
     except ValueError:
-        return None
+        return CONFIDENCE_LOW
