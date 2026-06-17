@@ -34,6 +34,8 @@ OPTIONAL_CO_MODULE_KEYS = frozenset({
     "ENV_REF",
     "STACK_REF",
     "LRC_REF",
+    "TRACE_ID",
+    "TIMESTAMP",
     "META",
 })
 
@@ -59,7 +61,7 @@ class CoModuleLaw:
 
     A = responsible module
     B = assisting module(s)
-    C = cross field / agreement point
+    C = flexible cross / assist field, not command center
 
     This validator does not execute work.
     It only checks whether a cooperative relation is traceable and necessary.
@@ -126,8 +128,8 @@ class CoModuleLaw:
             if not isinstance(papers, list) or not papers:
                 raise ValueError("CO_MODULE_FAIL: PAPERS_MUST_BE_NON_EMPTY_LIST")
 
-        if "TRACE" in contract and not isinstance(contract["TRACE"], list):
-            raise ValueError("CO_MODULE_FAIL: TRACE_MUST_BE_LIST")
+        if "TRACE" in contract and not isinstance(contract["TRACE"], (dict, list)):
+            raise ValueError("CO_MODULE_FAIL: TRACE_MUST_BE_DICT_OR_LIST")
 
         for key in ("CAN_CHANGE_DIRECTION", "CAN_EXPAND"):
             if key in contract and not isinstance(contract[key], bool):
