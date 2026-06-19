@@ -11,6 +11,7 @@ TOOLS_DIR = Path(__file__).resolve().parent
 if str(TOOLS_DIR) not in sys.path:
     sys.path.insert(0, str(TOOLS_DIR))
 
+from approval_gate import build_approval_response, is_approval_comment
 from module_response_contract import render_module_response_contracts
 
 
@@ -36,7 +37,13 @@ def load_event():
 
 
 def get_issue_pr_info(event):
-    """Extract info and context from event. Supports issues and pull_request triggers."""
+    """Extract info and context from event.
+
+    Supports:
+    - issues
+    - pull_request / pull_request_target
+    - issue_comment
+    """
     context = {
         "number": None,
         "title": "",
@@ -44,6 +51,8 @@ def get_issue_pr_info(event):
         "url": "",
         "type": "",
         "labels": [],
+        "comment_body": "",
+        "comment_user": "",
     }
 
     if "issue" in event:
@@ -69,6 +78,18 @@ def get_issue_pr_info(event):
                 url=obj.get("issue_url", obj.get("url", "")),
                 type="pull_request",
                 labels=[label.get("name", "") for label in obj.get("labels", [])],
+            )
+        )
+
+    if "comment" in event:
+        comment = event["comment"]
+        user = comment.get("user") or {}
+
+        context.update(
+            dict(
+                comment_body=comment.get("body", ""),
+                comment_user=user.get("login", ""),
+                type="issue_comment",
             )
         )
 
@@ -194,6 +215,41 @@ def agent_comment_body(lang="en", modules=None):
     return comment
 
 
+def comment_issue(repo, issue_number, comment_body):
+    """Create a GitHub issue/PR comment."""
+    issue = repo.get_issue(number=issue_number)
+    issue.create_comment(comment_body)
+
+
+def handle_approval_comment(info, repo):
+    """Handle `/iget approve` style comments."""
+    comment = build_approval_response(
+        issue_number=info["number"],
+        issue_title=info["title"],
+        issue_body=info["body"],
+        comment_body=info.get("comment_body", ""),
+        actor=info.get("comment_user") or "unknown",
+    )
+
+    comment_issue(repo, info["number"], comment)
+    print(f"[auto_responder] Approval gate responded on: #{info['number']}")
+
+
+def handle_dispatch_preview(info, repo):
+    """Handle issue/PR opened/edited dispatch preview."""
+    modules = extract_module_tags(info["title"], info["body"], info.get("labels"))
+    lang = os.environ.get("W3_AGENT_LANG", "th")
+
+    comment = agent_comment_body(lang, modules)
+
+    checklist = generate_checklist(info["body"])
+    if checklist:
+        comment += "\n\n" + checklist
+
+    comment_issue(repo, info["number"], comment)
+    print(f"[auto_responder] Commented on: {info['type']} #{info['number']}")
+
+
 def main():
     print("[auto_responder] Started.")
 
@@ -211,41 +267,38 @@ def main():
         f"title='{info['title']}'"
     )
 
-    modules = extract_module_tags(info["title"], info["body"], info.get("labels"))
+    github_token = os.environ.get("GITHUB_TOKEN")
+    repo_name = os.environ.get("GITHUB_REPOSITORY")
 
-    if should_trigger(info["title"], info["body"], info.get("labels")):
-        github_token = os.environ.get("GITHUB_TOKEN")
-        repo_name = os.environ.get("GITHUB_REPOSITORY")
+    if not github_token or not repo_name:
+        print("[auto_responder] Missing GITHUB_TOKEN or GITHUB_REPOSITORY; aborting.")
+        sys.exit(1)
 
-        if not github_token or not repo_name:
-            print("[auto_responder] Missing GITHUB_TOKEN or GITHUB_REPOSITORY; aborting.")
-            sys.exit(1)
+    try:
+        gh = Github(github_token)
+        repo = gh.get_repo(repo_name)
 
-        try:
-            gh = Github(github_token)
-            repo = gh.get_repo(repo_name)
-            issue = repo.get_issue(number=info["number"])
+        if info["type"] == "issue_comment":
+            if is_approval_comment(info.get("comment_body")):
+                handle_approval_comment(info, repo)
+                return
 
-            lang = os.environ.get("W3_AGENT_LANG", "th")
-            comment = agent_comment_body(lang, modules)
+            print("[auto_responder] Issue comment is not an IGET approval command; no action taken.")
+            return
 
-            checklist = generate_checklist(info["body"])
-            if checklist:
-                comment += "\n\n" + checklist
+        if should_trigger(info["title"], info["body"], info.get("labels")):
+            handle_dispatch_preview(info, repo)
+            return
 
-            issue.create_comment(comment)
-            print(f"[auto_responder] Commented on: {info['type']} #{info['number']}")
-
-        except GithubException as err:
-            print(f"[auto_responder] GithubException: {err}")
-            sys.exit(1)
-
-        except Exception as e:
-            print(f"[auto_responder] ERROR: {e}")
-            sys.exit(1)
-
-    else:
         print("[auto_responder] No relevant keywords or module tags found; no action taken.")
+
+    except GithubException as err:
+        print(f"[auto_responder] GithubException: {err}")
+        sys.exit(1)
+
+    except Exception as e:
+        print(f"[auto_responder] ERROR: {e}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
