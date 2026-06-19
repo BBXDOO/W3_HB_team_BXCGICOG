@@ -1,0 +1,11 @@
+ID : RQ-a001
+TIMESTAMP : 22:29 / 19-06-2026
+TARGET : Update all the code sets in W3 with minimum baselines as the documentation structured.
+OBJECTIVE : To support the future WHUB and WHOME systems, and to structure data that can reduce
+document volume, reference, and application with the unique W3HBT format.
+PARTICIPANT : @All modules in Subsystem .
+BOUNDARY : Improving code sets, structure, and coordination within the scope of the system with
+the framework specified in each document folder.
+PLAN : Can be linked to the system. BOX ใน REPO-root : wx/...
+PROCESSING TIME : 5 week or Announcement on the repo page to the WH-2 project.
+PETITIONER : BBX19.
