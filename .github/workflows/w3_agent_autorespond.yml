@@ -1,10 +1,12 @@
-name: W3 Agent Auto-responder
+name: W3Agent Auto Responder
 
 on:
   issues:
-    types: [opened, edited, reopened, labeled]
-  pull_request:
-    types: [opened, edited, reopened, labeled]
+    types: [opened, edited, labeled]
+  pull_request_target:
+    types: [opened, edited, synchronize, reopened]
+  issue_comment:
+    types: [created]
 
 permissions:
   contents: read
@@ -14,19 +16,26 @@ permissions:
 jobs:
   respond:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout base repository
         uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install dependencies
-        run: python -m pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: Run W3 agent responder
+      - name: Run W3Agent auto responder
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python modules/W3Agent/tools/auto_responder.py
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+          W3_AGENT_LANG: th
+        run: |
+          python modules/W3Agent/tools/auto_responder.py
