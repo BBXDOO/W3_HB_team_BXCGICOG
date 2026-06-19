@@ -1,32 +1,23 @@
 from __future__ import annotations
 
-from typing import Any, Dict, Mapping
+import hashlib
+import json
+from typing import Any, Dict, Iterable, Mapping
 
 from .contracts import ACTIVE, REVIEW_REQUIRED, WAIT, make_result, normalize_text
 
 
 RISK_WORDS = {
-    "risk",
-    "error",
-    "fail",
-    "failed",
-    "failure",
-    "conflict",
-    "reject",
-    "rejected",
-    "blocked",
-    "unsafe",
-    "mutation",
-    "mutate",
-    "runtime",
-    "parser",
-    "source-truth",
-    "source_truth",
+    "risk", "error", "fail", "failed", "failure", "conflict",
+    "reject", "rejected", "blocked", "unsafe", "mutation", "mutate",
+    "runtime", "parser", "source-truth", "source_truth",
 }
 
 ROUTE_WORDS = {"route", "handoff", "dispatch", "transfer", "package", "stamp"}
 MEMORY_WORDS = {"memory", "checkpoint", "lifecycle", "record", "history", "continuity"}
 TRACE_WORDS = {"decision", "trace", "law", "verify", "review", "governance"}
+STRUCTURE_WORDS = {"module", "file", "folder", "path", "structure", "tree", "schema"}
+SIGNAL_WORDS = {"signal", "state", "color", "sym", "rytm", "rhythm"}
 
 
 def _as_payload(event: Any) -> Dict[str, Any]:
@@ -35,16 +26,68 @@ def _as_payload(event: Any) -> Dict[str, Any]:
     return {"text": normalize_text(event)}
 
 
-def classify_event(event: Any) -> object:
-    """Classify an incoming W3Lgu event into the next safe module path.
+def _payload_text(payload: Mapping[str, Any]) -> str:
+    text_value = payload.get("text")
+    if isinstance(text_value, str):
+        return normalize_text(text_value)
+    return normalize_text(payload)
 
-    REDR's minimum functional concept is not execution. It reads an event,
-    detects risk/route/memory/trace intent, and returns a non-mutating routing
-    decision.
-    """
 
+def _stable_package_id(payload: Mapping[str, Any]) -> str:
+    raw = json.dumps(payload, ensure_ascii=False, sort_keys=True, default=str)
+    digest = hashlib.sha1(raw.encode("utf-8")).hexdigest()[:12]
+    return f"REDR-PKG-{digest}"
+
+
+def _find_markers(text: str, words: Iterable[str]) -> list[str]:
+    lowered = text.lower()
+    return sorted(word for word in words if word in lowered)
+
+
+def _read_tags(payload: Mapping[str, Any]) -> Dict[str, list[str]]:
+    text = _payload_text(payload)
+    return {
+        "risk": _find_markers(text, RISK_WORDS),
+        "trace": _find_markers(text, TRACE_WORDS),
+        "route": _find_markers(text, ROUTE_WORDS),
+        "memory": _find_markers(text, MEMORY_WORDS),
+        "structure": _find_markers(text, STRUCTURE_WORDS),
+        "signal": _find_markers(text, SIGNAL_WORDS),
+    }
+
+
+def _compact_tags(tags: Mapping[str, list[str]]) -> list[str]:
+    return [name for name, values in tags.items() if values]
+
+
+def build_package(event: Any) -> Dict[str, Any]:
     payload = _as_payload(event)
-    text = normalize_text(payload).lower()
+    text = _payload_text(payload)
+    tags = _read_tags(payload)
+
+    return {
+        "schema": "w3.redr.package.v2",
+        "package_id": _stable_package_id(payload),
+        "reader": "REDR",
+        "source_payload": payload,
+        "normalized_text": text,
+        "tags": tags,
+        "tag_summary": _compact_tags(tags),
+        "copies": {
+            "psp2": {"enabled": True, "purpose": "route_or_handoff"},
+            "lrc2": {"enabled": True, "purpose": "record_and_future_pointer"},
+        },
+        "mutation": {
+            "source_payload": False,
+            "package_only": True,
+        },
+    }
+
+
+def classify_event(event: Any) -> object:
+    payload = _as_payload(event)
+    package = build_package(payload)
+    text = package["normalized_text"]
 
     if not text:
         return make_result(
@@ -56,74 +99,107 @@ def classify_event(event: Any) -> object:
             reason="no event text or payload was provided",
             next_modules=[],
             standby=["PSP2", "DTML", "LRC2"],
-            details={"payload": payload},
+            details={"payload": payload, "package": package},
         )
 
-    found_risk = sorted(word for word in RISK_WORDS if word in text)
-    found_route = sorted(word for word in ROUTE_WORDS if word in text)
-    found_memory = sorted(word for word in MEMORY_WORDS if word in text)
-    found_trace = sorted(word for word in TRACE_WORDS if word in text)
+    tags = package["tags"]
 
-    if found_risk:
+    if tags["risk"]:
+        package["redr_note"] = "risk markers found; REDR asks DTML to review before handoff"
         return make_result(
             module="REDR",
             status=REVIEW_REQUIRED,
-            confidence=0.9,
-            input_type="event:risk",
-            decision="route_to_dtml_review",
-            reason="risk markers detected before routing",
-            next_modules=["DTML"],
-            standby=["PSP2", "LRC2"],
-            details={"markers": found_risk, "payload": payload},
+            confidence=0.88,
+            input_type="package:risk",
+            decision="package_and_request_dtml_review",
+            reason="risk markers detected; REDR will not decide safety itself",
+            next_modules=["DTML", "LRC2"],
+            standby=["PSP2"],
+            details={"markers": tags["risk"], "payload": payload, "package": package},
         )
 
-    if found_trace:
+    if tags["trace"]:
+        package["redr_note"] = "trace/governance markers found; send package to DTML and PSP2, copy to LRC2"
         return make_result(
             module="REDR",
             status=ACTIVE,
-            confidence=0.75,
-            input_type="event:trace",
-            decision="route_to_dtml_trace",
+            confidence=0.76,
+            input_type="package:trace",
+            decision="package_for_trace_review_and_route",
             reason="decision or trace markers detected",
-            next_modules=["DTML", "PSP2"],
-            standby=["LRC2"],
-            details={"markers": found_trace, "payload": payload},
+            next_modules=["DTML", "PSP2", "LRC2"],
+            standby=[],
+            details={"markers": tags["trace"], "payload": payload, "package": package},
         )
 
-    if found_route:
+    if tags["route"]:
+        package["redr_note"] = "route markers found; send package to PSP2 and copy to LRC2"
         return make_result(
             module="REDR",
             status=ACTIVE,
-            confidence=0.75,
-            input_type="event:route",
-            decision="route_to_psp2_handoff",
+            confidence=0.74,
+            input_type="package:route",
+            decision="package_for_psp2_handoff",
             reason="route or handoff markers detected",
-            next_modules=["PSP2"],
-            standby=["DTML", "LRC2"],
-            details={"markers": found_route, "payload": payload},
+            next_modules=["PSP2", "LRC2"],
+            standby=["DTML"],
+            details={"markers": tags["route"], "payload": payload, "package": package},
         )
 
-    if found_memory:
+    if tags["memory"]:
+        package["redr_note"] = "memory markers found; LRC2 receives priority copy"
         return make_result(
             module="REDR",
             status=ACTIVE,
-            confidence=0.7,
-            input_type="event:memory",
-            decision="route_to_lrc2_checkpoint",
+            confidence=0.72,
+            input_type="package:memory",
+            decision="package_for_lrc2_checkpoint",
             reason="memory or lifecycle markers detected",
-            next_modules=["LRC2"],
-            standby=["PSP2", "DTML"],
-            details={"markers": found_memory, "payload": payload},
+            next_modules=["LRC2", "PSP2"],
+            standby=["DTML"],
+            details={"markers": tags["memory"], "payload": payload, "package": package},
         )
 
+    if tags["structure"]:
+        package["redr_note"] = "structure markers found; REDR keeps this as a structure-reading package"
+        return make_result(
+            module="REDR",
+            status=ACTIVE,
+            confidence=0.68,
+            input_type="package:structure",
+            decision="package_structure_map_for_route_selection",
+            reason="structure or file/path markers detected",
+            next_modules=["PSP2", "LRC2"],
+            standby=["DTML"],
+            details={"markers": tags["structure"], "payload": payload, "package": package},
+        )
+
+    if tags["signal"]:
+        package["redr_note"] = "signal markers found; package should preserve signal rhythm/state hints"
+        return make_result(
+            module="REDR",
+            status=ACTIVE,
+            confidence=0.66,
+            input_type="package:signal",
+            decision="package_signal_for_route_selection",
+            reason="signal/state/rhythm markers detected",
+            next_modules=["PSP2", "LRC2"],
+            standby=["DTML"],
+            details={"markers": tags["signal"], "payload": payload, "package": package},
+        )
+
+    package["redr_note"] = "general event accepted; REDR wraps package without forcing interpretation"
     return make_result(
         module="REDR",
         status=ACTIVE,
-        confidence=0.5,
-        input_type="event:general",
+        confidence=0.55,
+        input_type="package:general",
         decision="package_event_for_route_selection",
         reason="event accepted but no strong module marker detected",
-        next_modules=["PSP2"],
-        standby=["DTML", "LRC2"],
-        details={"payload": payload},
+        next_modules=["PSP2", "LRC2"],
+        standby=["DTML"],
+        details={"payload": payload, "package": package},
     )
+
+
+__all__ = ["build_package", "classify_event"]
