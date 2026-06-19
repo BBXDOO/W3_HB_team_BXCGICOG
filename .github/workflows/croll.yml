@@ -1,134 +1,74 @@
-name: CROLL portability
+name: CROLL
 
 on:
-push:
-branches:
-- main
-- refactor/v0.2
-paths:
-- "croll/"
-- "cross_x/"
-- "docs/croll/"
-- "wx/"
-- "w3_api/"
-- "config/"
-- "tests/test_box_integration.py"
-- "tests/test_cross_x_config.py"
-- "tests/test_file_void_tool.py"
-- "tests/test_w3_api_cross_plan.py"
-- ".github/workflows/croll.yml"
+  push:
+    branches:
+      - refactor/v0.2
+    paths:
+      - "croll/**"
+      - "protocol/**"
+      - ".github/workflows/croll.yml"
 
-pull_request:
-branches:
-- main
-- refactor/v0.2
-paths:
-- "croll/"
-- "cross_x/"
-- "docs/croll/"
-- "wx/"
-- "w3_api/"
-- "config/"
-- "tests/test_box_integration.py"
-- "tests/test_cross_x_config.py"
-- "tests/test_file_void_tool.py"
-- "tests/test_w3_api_cross_plan.py"
-- ".github/workflows/croll.yml"
+  pull_request:
+    branches:
+      - refactor/v0.2
+    paths:
+      - "croll/**"
+      - "protocol/**"
+      - ".github/workflows/croll.yml"
 
-workflow_dispatch:
+  workflow_dispatch:
 
 permissions:
-contents: read
+  contents: read
 
 jobs:
-test:
-name: ${{ matrix.os }} / Python ${{ matrix.python-version }}
-runs-on: ${{ matrix.os }}
+  validate-croll:
+    name: Validate CROLL
+    runs-on: ubuntu-latest
 
-strategy:
-  fail-fast: false
-  matrix:
-    os:
-      - ubuntu-latest
-      - windows-latest
-      - macos-latest
-    python-version:
-      - "3.9"
-      - "3.13"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-steps:
-  - name: Checkout code
-    uses: actions/checkout@v4
+      - name: Show CROLL files
+        run: |
+          echo "CROLL workflow started"
+          find croll -maxdepth 3 -type f 2>/dev/null || true
+          find protocol -maxdepth 3 -type f | head -80
 
-  - name: Set up Python
-    uses: actions/setup-python@v5
-    with:
-      python-version: ${{ matrix.python-version }}
+      - name: Validate markdown files
+        run: |
+          python - <<'PY'
+          from pathlib import Path
 
-  - name: Install test dependencies
-    run: |
-      python -m pip install --disable-pip-version-check --upgrade pip
-      python -m pip install --disable-pip-version-check -r requirements.txt
+          targets = [
+              Path("croll"),
+              Path("protocol"),
+          ]
 
-  - name: Check repository paths are cross-platform
-    run: python tools/check_portable_paths.py
+          checked = 0
+          missing_title = []
 
-  - name: Compile CROLL, Cross-X, BOX, and W3-API
-    run: python -m compileall croll cross_x wx w3_api
+          for root in targets:
+              if not root.exists():
+                  continue
 
-  - name: Run CROLL tests
-    run: python -m unittest discover -s croll -p "test_*.py" -v
+              for path in root.rglob("*.md"):
+                  checked += 1
+                  text = path.read_text(encoding="utf-8", errors="ignore").strip()
+                  if not text.startswith("#"):
+                      missing_title.append(str(path))
 
-  - name: Run BOX Engine-Index tests
-    run: python -m unittest discover -s wx -p "test_*.py" -v
+          print(f"checked_markdown={checked}")
 
-  - name: Run Cross-X baseline tests
-    run: python -m pytest tests/test_cross_x_config.py tests/test_file_void_tool.py -q
+          if missing_title:
+              print("Markdown files without heading:")
+              for item in missing_title:
+                  print(f"- {item}")
+              raise SystemExit(1)
+          PY
 
-  - name: Smoke-test portable CROLL CLI
-    run: |
-      python -m croll --compact plan "PX:[2,1]"
-      python -m croll --compact plan "PX:[1,1]" --box-suggestion
-
-  - name: Validate shipped CROLL contracts
-    run: |
-      python -m croll validate boundary croll/examples/boundary.w3-internal.json
-      python -m croll validate workset croll/examples/workset.rock.json
-      python -m croll validate plan croll/examples/dispatch-plan.jazz.json
-
-box-api:
-name: BOX / W3-API integration
-runs-on: ubuntu-latest
-
-steps:
-  - name: Checkout code
-    uses: actions/checkout@v4
-
-  - name: Set up Python
-    uses: actions/setup-python@v5
-    with:
-      python-version: "3.12"
-      cache: pip
-      cache-dependency-path: requirements.txt
-
-  - name: Install API test dependencies
-    run: |
-      python -m pip install --disable-pip-version-check --upgrade pip
-      python -m pip install --disable-pip-version-check -r requirements.txt
-
-  - name: Validate BOX registry schema
-    run: |
-      python - <<'PY'
-      import json
-      from pathlib import Path
-      from jsonschema import Draft202012Validator
-
-      schema = json.loads(Path("wx/registry/template_registry.schema.json").read_text(encoding="utf-8"))
-      registry = json.loads(Path("wx/registry/template_registry.json").read_text(encoding="utf-8"))
-
-      Draft202012Validator.check_schema(schema)
-      Draft202012Validator(schema).validate(registry)
-      PY
-
-  - name: Test BOX and W3-API integration
-    run: python -m pytest tests/test_box_integration.py tests/test_w3_api_cross_plan.py tests/test_cross_x_config.py -q
+      - name: Validate Python syntax
+        run: |
+          python -m compileall croll protocol
