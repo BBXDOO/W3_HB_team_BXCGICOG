@@ -56,18 +56,29 @@ jobs:
             found_schema=true
             data_file="${schema_file%.schema.json}.json"
 
-            if [ -f "$data_file" ]; then
-              echo "--------------------------------------"
-              echo "Validating: $data_file"
-              echo "Using schema: $schema_file"
+            if [ ! -f "$data_file" ]; then
+              echo "Warning: no data file found for $schema_file"
+              continue
+            fi
 
+            echo "--------------------------------------"
+            echo "Validating: $data_file"
+            echo "Using schema: $schema_file"
+
+            schema_text="$(cat "$schema_file")"
+
+            if echo "$schema_text" | grep -q "draft-07"; then
+              ajv validate \
+                -s "$schema_file" \
+                -d "$data_file" \
+                --spec=draft7 \
+                --strict=false
+            else
               ajv validate \
                 -s "$schema_file" \
                 -d "$data_file" \
                 --spec=draft2020 \
                 --strict=false
-            else
-              echo "Warning: no data file found for $schema_file"
             fi
           done < <(find . -name "*.schema.json" -type f -print0)
 
