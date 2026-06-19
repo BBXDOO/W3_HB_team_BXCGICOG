@@ -76,3 +76,28 @@ def test_module_response_contract_preview_for_unknown_module():
     assert "@module:UNKNOWN_MODULE" in body
     assert "STATUS: `needs_registry_review`" in body
     assert "READY_LEVEL: `0/5`" in body
+
+
+def test_issue_comment_context_extracts_comment_body():
+    responder = load_auto_responder()
+
+    event = {
+        "issue": {
+            "number": 264,
+            "title": "Test",
+            "body": "## Suggested modules\n\n- @module:IGET",
+            "url": "https://api.github.com/repos/x/y/issues/264",
+            "labels": [],
+        },
+        "comment": {
+            "body": "/iget approve",
+            "user": {"login": "BBXDOO"},
+        },
+    }
+
+    info = responder.get_issue_pr_info(event)
+
+    assert info["type"] == "issue_comment"
+    assert info["number"] == 264
+    assert info["comment_body"] == "/iget approve"
+    assert info["comment_user"] == "BBXDOO"
