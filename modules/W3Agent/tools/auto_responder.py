@@ -6,6 +6,14 @@ from pathlib import Path
 
 from github import Github, GithubException
 
+
+TOOLS_DIR = Path(__file__).resolve().parent
+if str(TOOLS_DIR) not in sys.path:
+    sys.path.insert(0, str(TOOLS_DIR))
+
+from module_response_contract import render_module_response_contracts
+
+
 DEFAULT_KEYWORDS = ("EP-Signal", "W3Lgu", "MPCP")
 MODULE_TAG_RE = re.compile(r"@module:([A-Za-z0-9_.:-]+)")
 
@@ -13,9 +21,11 @@ MODULE_TAG_RE = re.compile(r"@module:([A-Za-z0-9_.:-]+)")
 def load_event():
     """Load GitHub event JSON from env var."""
     event_path = os.environ.get("GITHUB_EVENT_PATH")
+
     if not event_path or not os.path.exists(event_path):
         print("[auto_responder] No event file found; aborting.")
         sys.exit(0)
+
     try:
         with open(event_path, "r", encoding="utf-8") as f:
             event = json.load(f)
@@ -26,108 +36,144 @@ def load_event():
 
 
 def get_issue_pr_info(event):
-    """Extract info and context from event (supports issues/pull_request triggers)."""
-    context = {"number": None, "title": "", "body": "", "url": "", "type": "", "labels": []}
+    """Extract info and context from event. Supports issues and pull_request triggers."""
+    context = {
+        "number": None,
+        "title": "",
+        "body": "",
+        "url": "",
+        "type": "",
+        "labels": [],
+    }
+
     if "issue" in event:
         obj = event["issue"]
-        context.update(dict(
-            number=obj.get("number"),
-            title=obj.get("title", ""),
-            body=obj.get("body", ""),
-            url=obj.get("url", ""),
-            type="issue",
-            labels=[lbl.get("name", "") for lbl in obj.get("labels", [])]
-        ))
+        context.update(
+            dict(
+                number=obj.get("number"),
+                title=obj.get("title", ""),
+                body=obj.get("body", ""),
+                url=obj.get("url", ""),
+                type="issue",
+                labels=[label.get("name", "") for label in obj.get("labels", [])],
+            )
+        )
+
     elif "pull_request" in event:
         obj = event["pull_request"]
-        context.update(dict(
-            number=obj.get("number"),
-            title=obj.get("title", ""),
-            body=obj.get("body", ""),
-            url=obj.get("issue_url", obj.get("url", "")),
-            type="pull_request",
-            labels=[lbl.get("name", "") for lbl in obj.get("labels", [])]
-        ))
+        context.update(
+            dict(
+                number=obj.get("number"),
+                title=obj.get("title", ""),
+                body=obj.get("body", ""),
+                url=obj.get("issue_url", obj.get("url", "")),
+                type="pull_request",
+                labels=[label.get("name", "") for label in obj.get("labels", [])],
+            )
+        )
+
     return context
 
 
 def load_keywords():
     """Load default and optional local responder keywords."""
     keywords = list(DEFAULT_KEYWORDS)
-    candidates = [Path("agent_keywords.json"), Path(__file__).resolve().parent / "agent_keywords.json"]
+    candidates = [
+        Path("agent_keywords.json"),
+        Path(__file__).resolve().parent / "agent_keywords.json",
+    ]
+
     for path in candidates:
         try:
             if path.exists():
                 with path.open(encoding="utf-8") as f:
                     extra = json.load(f)
                 if isinstance(extra, list):
-                    keywords.extend(str(item) for item in extra)
+                    keywords.extend(str(item) for item in extra if str(item).strip())
         except Exception:
             pass
+
     return keywords
 
 
 def _dedupe(items):
     ordered = []
+
     for item in items:
         clean = str(item).strip()
         if clean and clean not in ordered:
             ordered.append(clean)
+
     return ordered
 
 
 def extract_module_tags(*parts):
     """Extract @module:<name> tags from issue/PR title, body, labels, or generated brief."""
     found = []
+
     for part in parts:
         if isinstance(part, (list, tuple, set)):
             found.extend(extract_module_tags(*part))
             continue
+
         text = str(part or "")
         found.extend(match.group(1).strip() for match in MODULE_TAG_RE.finditer(text))
+
     return _dedupe(found)
 
 
 def should_trigger(title, body, labels=None):
     """Decide if agent should respond.
 
-    The responder now understands both legacy keyword triggers and IGET issue-dispatch
-    module tags such as @module:IGET, @module:W3-API, and @module:MPCP.
+    The responder understands both:
+    - legacy keyword triggers such as W3Lgu / MPCP / EP-Signal
+    - IGET issue-dispatch tags such as @module:IGET or @module:W3-API
     """
-    keywords = load_keywords()
     labels = labels or []
-    checktxt = f"{title or ''} {body or ''} {' '.join(labels)}"
-    lower_text = checktxt.lower()
+    keywords = load_keywords()
+
+    check_text = f"{title or ''} {body or ''} {' '.join(labels)}"
+    lower_text = check_text.lower()
+
     keyword_hit = any(str(word).lower() in lower_text for word in keywords)
     module_hit = bool(extract_module_tags(title, body, labels))
+
     return keyword_hit or module_hit
 
 
 def generate_checklist(body):
-    """สร้าง checklist auto จาก bullet ใน issue body (หรือ custom logic อื่น)"""
-    lines = [l.strip("- ").strip() for l in (body or "").split('\n') if l.strip().startswith('- ')]
+    """Generate checklist from bullet lines in issue body."""
+    lines = [
+        line.strip("- ").strip()
+        for line in (body or "").split("\n")
+        if line.strip().startswith("- ")
+    ]
+
     if not lines:
         return ""
-    checklist = "\n".join(f"- [ ] {l}" for l in lines)
+
+    checklist = "\n".join(f"- [ ] {line}" for line in lines)
     return "### 🚦 Checklist generated by bot\n" + checklist
 
 
 def build_module_ack(modules):
-    """Build a safe acknowledgement for IGET module-dispatch tags."""
+    """Build a safe acknowledgement and module response preview."""
     modules = _dedupe(modules)
+
     if not modules:
         return ""
-    lines = "\n".join(f"- @module:{module} — dispatch signal received; waiting for BBX19 approval." for module in modules)
+
     return (
         "### 🧭 IGET Module Dispatch Preview\n"
-        f"{lines}\n\n"
-        "Boundary: responder acknowledges module tags only; no repo mutation, no module invocation, and no direct merge."
+        "Dispatch signal received. The responder will report only.\n\n"
+        + render_module_response_contracts(modules)
     )
 
 
 def agent_comment_body(lang="en", modules=None):
     modules = modules or []
     module_ack = build_module_ack(modules)
+
     if lang == "th":
         comment = (
             "🤖 สวัสดีจาก W3Agent! ตรวจพบสัญญาณงานที่เกี่ยวข้องกับระบบ W3\n"
@@ -141,44 +187,63 @@ def agent_comment_body(lang="en", modules=None):
             "Automated agent has acknowledged the dispatch preview and will not invoke modules without BBX19 approval.\n"
             "— _W3 Auto-responder_"
         )
+
     if module_ack:
         comment += "\n\n" + module_ack
+
     return comment
 
 
 def main():
     print("[auto_responder] Started.")
+
     event = load_event()
     info = get_issue_pr_info(event)
+
     if not info["number"]:
         print("[auto_responder] No issue or PR context found in event.")
         sys.exit(0)
 
-    print(f"[auto_responder] Context: type={info['type']} number={info['number']} title='{info['title']}'")
+    print(
+        f"[auto_responder] Context: "
+        f"type={info['type']} "
+        f"number={info['number']} "
+        f"title='{info['title']}'"
+    )
+
     modules = extract_module_tags(info["title"], info["body"], info.get("labels"))
+
     if should_trigger(info["title"], info["body"], info.get("labels")):
         github_token = os.environ.get("GITHUB_TOKEN")
         repo_name = os.environ.get("GITHUB_REPOSITORY")
+
         if not github_token or not repo_name:
             print("[auto_responder] Missing GITHUB_TOKEN or GITHUB_REPOSITORY; aborting.")
             sys.exit(1)
+
         try:
             gh = Github(github_token)
             repo = gh.get_repo(repo_name)
             issue = repo.get_issue(number=info["number"])
+
             lang = os.environ.get("W3_AGENT_LANG", "th")
             comment = agent_comment_body(lang, modules)
+
             checklist = generate_checklist(info["body"])
             if checklist:
                 comment += "\n\n" + checklist
+
             issue.create_comment(comment)
             print(f"[auto_responder] Commented on: {info['type']} #{info['number']}")
+
         except GithubException as err:
             print(f"[auto_responder] GithubException: {err}")
             sys.exit(1)
+
         except Exception as e:
             print(f"[auto_responder] ERROR: {e}")
             sys.exit(1)
+
     else:
         print("[auto_responder] No relevant keywords or module tags found; no action taken.")
 
