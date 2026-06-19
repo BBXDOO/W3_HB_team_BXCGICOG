@@ -11,6 +11,7 @@ on:
       - "**/*.json"
       - "**/*.schema.json"
       - ".github/workflows/validate-json.yml"
+      - "requirements-dev.txt"
 
   pull_request:
     branches:
@@ -22,6 +23,7 @@ on:
       - "**/*.json"
       - "**/*.schema.json"
       - ".github/workflows/validate-json.yml"
+      - "requirements-dev.txt"
 
   workflow_dispatch:
 
@@ -37,51 +39,86 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: "20"
+          python-version: "3.11"
 
-      - name: Install AJV CLI
-        run: npm install -g ajv-cli ajv-formats
+      - name: Install validation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-dev.txt
 
       - name: Validate JSON files against matching schemas
         shell: bash
         run: |
           set -euo pipefail
 
-          found_schema=false
+          python - <<'PY'
+          import json
+          from pathlib import Path
 
-          while IFS= read -r -d '' schema_file; do
-            found_schema=true
-            data_file="${schema_file%.schema.json}.json"
+          from jsonschema import Draft7Validator, Draft202012Validator
+          from jsonschema.exceptions import SchemaError, ValidationError
 
-            if [ ! -f "$data_file" ]; then
-              echo "Warning: no data file found for $schema_file"
-              continue
-            fi
 
-            echo "--------------------------------------"
-            echo "Validating: $data_file"
-            echo "Using schema: $schema_file"
+          def choose_validator(schema: dict):
+              schema_uri = str(schema.get("$schema", "")).lower()
 
-            schema_text="$(cat "$schema_file")"
+              if "draft-07" in schema_uri or "draft7" in schema_uri:
+                  return Draft7Validator
 
-            if echo "$schema_text" | grep -q "draft-07"; then
-              ajv validate \
-                -s "$schema_file" \
-                -d "$data_file" \
-                --spec=draft7 \
-                --strict=false
-            else
-              ajv validate \
-                -s "$schema_file" \
-                -d "$data_file" \
-                --spec=draft2020 \
-                --strict=false
-            fi
-          done < <(find . -name "*.schema.json" -type f -print0)
+              if "2020-12" in schema_uri or "draft/2020" in schema_uri:
+                  return Draft202012Validator
 
-          if [ "$found_schema" = false ]; then
-            echo "No *.schema.json files found. Nothing to validate."
-          fi
+              # Default to Draft7 because several repo schemas are older/simple schemas.
+              return Draft7Validator
+
+
+          checked = 0
+          missing_data = []
+
+          for schema_file in sorted(Path(".").rglob("*.schema.json")):
+              data_file = Path(str(schema_file).replace(".schema.json", ".json"))
+
+              if not data_file.exists():
+                  missing_data.append(str(schema_file))
+                  print(f"Warning: no data file found for {schema_file}")
+                  continue
+
+              print("--------------------------------------")
+              print(f"Validating: {data_file}")
+              print(f"Using schema: {schema_file}")
+
+              try:
+                  schema = json.loads(schema_file.read_text(encoding="utf-8"))
+                  data = json.loads(data_file.read_text(encoding="utf-8"))
+
+                  validator_cls = choose_validator(schema)
+                  validator_cls.check_schema(schema)
+                  validator_cls(schema).validate(data)
+
+                  print(f"{data_file} valid")
+                  checked += 1
+
+              except json.JSONDecodeError as exc:
+                  print(f"JSON decode error in {schema_file if 'schema' in str(exc).lower() else data_file}: {exc}")
+                  raise SystemExit(1)
+
+              except SchemaError as exc:
+                  print(f"schema {schema_file} is invalid")
+                  print(exc)
+                  raise SystemExit(1)
+
+              except ValidationError as exc:
+                  print(f"{data_file} is invalid against {schema_file}")
+                  print(exc)
+                  raise SystemExit(1)
+
+          if checked == 0 and not missing_data:
+              print("No *.schema.json files found. Nothing to validate.")
+
+          print("--------------------------------------")
+          print(f"Validated JSON/schema pairs: {checked}")
+          print(f"Schemas without matching data file: {len(missing_data)}")
+          PY
