@@ -1,9 +1,12 @@
 """Module response contract helpers for W3Agent.
 
-This file is report-only.
-It does not execute modules.
-It does not mutate repository content.
-It only builds a response preview for IGET @module:<name> dispatch tags.
+Purpose:
+- Build report-only response previews for IGET @module:<name> dispatch tags.
+- Describe what a module can review, what it needs, and its current readiness.
+- Keep BBX19 approval as the boundary before any follow-up action.
+
+This file does not execute modules.
+This file does not mutate repository content.
 """
 
 from __future__ import annotations
@@ -93,6 +96,20 @@ MODULE_RESPONSE_PROFILES = {
         "need": "event id, trace target, and record boundary",
         "risk": "low-medium",
     },
+    "Codex": {
+        "status": "can_review_code_patch",
+        "ready_level": "2/5",
+        "capability": "code patch inspection and implementation support",
+        "need": "target files, expected behavior, tests, and no-mutation boundary",
+        "risk": "medium",
+    },
+    "Copilot-GM": {
+        "status": "can_review_code_assist",
+        "ready_level": "2/5",
+        "capability": "code assist, patch suggestion, and implementation comparison",
+        "need": "target scope, expected output, and review boundary",
+        "risk": "medium",
+    },
 }
 
 
@@ -117,12 +134,40 @@ def dedupe(items: Iterable[str]) -> list[str]:
     return ordered
 
 
+def normalize_module_name(module: str) -> str:
+    """Normalize common module spelling from IGET issue text."""
+    raw = str(module).strip()
+
+    aliases = {
+        "codex": "Codex",
+        "copilot-gm": "Copilot-GM",
+        "copilot_gm": "Copilot-GM",
+        "copilotgm": "Copilot-GM",
+        "w3api": "W3-API",
+        "w3-api": "W3-API",
+        "ep-signal": "EP_SIGNAL",
+        "ep_signal": "EP_SIGNAL",
+        "lrc2": "LRC2",
+        "redr": "REDR",
+        "psp2": "PSP2",
+        "w3lgu": "W3Lgu",
+        "iget": "IGET",
+        "mpcp": "MPCP",
+        "w3db": "W3DB",
+        "dtml": "DTML",
+        "croll": "CROLL",
+    }
+
+    return aliases.get(raw.lower(), raw)
+
+
 def module_response_contract(module: str) -> dict[str, object]:
     """Return one report-only response contract for a dispatched module tag."""
-    profile = MODULE_RESPONSE_PROFILES.get(module, DEFAULT_MODULE_RESPONSE)
+    normalized = normalize_module_name(module)
+    profile = MODULE_RESPONSE_PROFILES.get(normalized, DEFAULT_MODULE_RESPONSE)
 
     return {
-        "module": module,
+        "module": normalized,
         "status": profile["status"],
         "ready_level": profile["ready_level"],
         "capability": profile["capability"],
@@ -137,7 +182,8 @@ def module_response_contract(module: str) -> dict[str, object]:
 
 def build_module_response_contracts(modules: Iterable[str]) -> list[dict[str, object]]:
     """Build response contracts for all detected module tags."""
-    return [module_response_contract(module) for module in dedupe(modules)]
+    normalized = [normalize_module_name(module) for module in modules]
+    return [module_response_contract(module) for module in dedupe(normalized)]
 
 
 def render_module_response_contracts(modules: Iterable[str]) -> str:
