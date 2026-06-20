@@ -43,6 +43,36 @@ def _normalize_modules(value: Any) -> List[str]:
     return modules
 
 
+def validate_routing_path(route_plan: Any) -> bool:
+    """Validate the explicit handoff path used by :class:`PSP2Agent`.
+
+    PSP2 may stamp a package but must not hand it to itself, repeat a hop, or
+    route toward an unknown module.  An empty path is rejected because it does
+    not identify a next handoff target.
+    """
+    if isinstance(route_plan, (str, bytes)):
+        return False
+
+    try:
+        steps = list(route_plan)
+    except TypeError:
+        return False
+
+    if not steps:
+        return False
+
+    normalized = []
+    for step in steps:
+        if not isinstance(step, str):
+            return False
+        name = step.upper().strip()
+        if not name or name not in KNOWN_MODULES or name == "PSP2" or name in normalized:
+            return False
+        normalized.append(name)
+
+    return True
+
+
 def _detect_route(payload: Dict[str, Any], text: str) -> List[str]:
     route_path: List[str] = []
 
