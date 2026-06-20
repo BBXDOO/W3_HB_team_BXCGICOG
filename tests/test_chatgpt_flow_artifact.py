@@ -63,7 +63,9 @@ class TestChatGPTFlowArtifact(unittest.TestCase):
         )
 
     def test_engine_returns_artifact(self):
-        with patch("core.runtime.engine_v2.add_memory"):
+        with patch("core.runtime.engine_v2.search_memory", return_value=[]), patch(
+            "core.runtime.engine_v2.add_memory"
+        ):
             result = run(
                 "design",
                 request={
@@ -81,7 +83,9 @@ class TestChatGPTFlowArtifact(unittest.TestCase):
         self.assertTrue(Path(result["artifacts"][0]["path"]).exists())
 
     def test_unimplemented_module_is_not_completed(self):
-        with patch("core.runtime.engine_v2.add_memory"):
+        with patch("core.runtime.engine_v2.search_memory", return_value=[]), patch(
+            "core.runtime.engine_v2.add_memory"
+        ):
             result = run("verify")
 
         self.assertEqual(result["status"], "UNAVAILABLE")
