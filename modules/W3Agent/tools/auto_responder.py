@@ -11,7 +11,16 @@ TOOLS_DIR = Path(__file__).resolve().parent
 if str(TOOLS_DIR) not in sys.path:
     sys.path.insert(0, str(TOOLS_DIR))
 
-from approval_gate import build_approval_response, is_approval_comment
+from approval_gate import (
+    build_approval_response,
+    build_execution_plan,
+    extract_module_tags as gate_extract_module_tags,
+    is_approval_comment,
+    is_authorized_actor,
+    parse_approval_command,
+    resolve_approval_state,
+)
+from execution_worker import render_worker_comment, run_worker
 from module_response_contract import render_module_response_contracts
 
 
@@ -235,6 +244,58 @@ def handle_approval_comment(info, repo):
     print(f"[auto_responder] Approval gate responded on: #{info['number']}")
 
 
+def handle_execution_worker(info, repo):
+    """Draft worker output only after an authorized approved IGET command.
+
+    Boundary:
+    - the worker writes draft files only under ``worker_output/``
+    - it does not commit, push, merge, or mutate repository files
+    - BBX19/BBXDOO must review and place every draft manually
+    """
+    command = parse_approval_command(info.get("comment_body", ""))
+    if command is None:
+        print("[auto_responder] worker: no approval command; skip")
+        return
+
+    actor = info.get("comment_user") or ""
+    if not is_authorized_actor(actor):
+        print(
+            "[auto_responder] worker: unauthorized approval actor "
+            f"'{actor or 'unknown'}'; skip"
+        )
+        return
+
+    status, next_mode = resolve_approval_state(command.action)
+
+    # Only `/iget approve` and `/iget run` may produce a worker draft.
+    if next_mode != "prepare_execution_plan":
+        print(f"[auto_responder] worker: state '{status}' not executable; skip")
+        return
+
+    modules = gate_extract_module_tags(info.get("body", ""))
+    plan = build_execution_plan(
+        info.get("title", ""),
+        info.get("body", ""),
+        modules,
+    )
+
+    result = run_worker(
+        issue_number=info["number"],
+        issue_title=info["title"],
+        issue_body=info["body"],
+        approval_status=status,
+        plan=plan,
+        output_dir="worker_output",
+        write_files=True,
+    )
+
+    comment_issue(repo, info["number"], render_worker_comment(result))
+    print(
+        f"[auto_responder] worker: status={result.status} "
+        f"drafts={len(result.drafts)} on #{info['number']}"
+    )
+
+
 def handle_dispatch_preview(info, repo):
     """Handle issue/PR opened/edited dispatch preview."""
     modules = extract_module_tags(info["title"], info["body"], info.get("labels"))
@@ -281,6 +342,7 @@ def main():
         if info["type"] == "issue_comment":
             if is_approval_comment(info.get("comment_body")):
                 handle_approval_comment(info, repo)
+                handle_execution_worker(info, repo)
                 return
 
             print("[auto_responder] Issue comment is not an IGET approval command; no action taken.")
@@ -303,3 +365,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
