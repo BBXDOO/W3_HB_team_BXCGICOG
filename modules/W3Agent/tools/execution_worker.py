@@ -1,71 +1,67 @@
 """IGET Execution Worker for W3Agent.
 
-จุดประสงค์ (ภาษาคน):
 - รับงานที่ BBX19 "อนุมัติแล้ว" จาก approval_gate
-- แปลง execution plan → "ร่าง patch จริง" เป็นไฟล์ที่รันได้
-- เขียน patch ลง /worker_output/ ให้ BBX19 เปิดดูและวางเองผ่าน Termux
-- ไม่แตะ repo จริง ไม่ commit ไม่ push  (BBX19 คือคนกดวางเสมอ)
+- แปลง execution plan -> "ร่าง patch จริง" เป็นไฟล์
+- เขียน patch ลง worker_output/ ให้ BBX19 วางเองผ่าน Termux
+- ไม่แตะ repo จริง ไม่ commit ไม่ push (BBX19 คือคนกดวางเสมอ)
 
-หลักการ (ตรงกับ W3 ที่ BBX19 วางไว้):
-- No AI merge        → worker ร่างได้ แต่ไม่ commit
-- Human in the loop  → ทุก patch รอ BBX19 วางเอง
-- LINE_B             → ไม่ซ่อนความจริง ถ้าร่างไม่ได้ บอกตรงๆ
-- รันบน Termux + Python ล้วน  → ไม่ต้องพึ่ง AI ภายนอก
-
-ไฟล์นี้ไม่ import อะไรนอก standard library — รันได้บนมือถือเครื่องเดียว
+หลักการ: No AI merge / Human in loop / LINE_B / Python ล้วน รันบน Termux
 """
-
-from __future__ import annotations
 
 import json
 import os
 import re
-from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Callable, Dict, List, Optional
 
 
-# ───────────────────────────────────────────────────────────────────
-# ที่เก็บ patch ที่ร่างเสร็จ — BBX19 เปิดโฟลเดอร์นี้แล้ววางเอง
-# ───────────────────────────────────────────────────────────────────
 DEFAULT_OUTPUT_DIR = "worker_output"
 
-
-# สถานะที่อนุญาตให้ worker ทำงาน (ต้องผ่าน approval_gate มาก่อน)
 APPROVED_STATES = {
     "approved_by_bbx19",
     "approved_run_requested",
 }
 
 
-@dataclass
 class PatchDraft:
-    """patch หนึ่งชิ้นที่ worker ร่างขึ้น — ยังไม่ลง repo"""
+    """patch หนึ่งชิ้นที่ worker ร่างขึ้น — ยังไม่ลง repo
 
-    target_path: str                      # ไฟล์ปลายทางใน repo (เช่น core/runtime/agents/dtml.py)
-    content: str                          # เนื้อหาไฟล์ที่ร่าง
-    summary: str                          # สรุปสั้นว่า patch นี้ทำอะไร
-    module: str = "unknown"               # โมดูลที่รับผิดชอบ
-    mutation: bool = False                # worker ไม่ mutate เอง — เป็น False เสมอ
-    needs_human_review: bool = True       # ต้องให้ BBX19 ดูก่อนวางเสมอ
+    ใช้ class ธรรมดา (ไม่ใช่ @dataclass) เพื่อเลี่ยงปัญหา
+    type-hint resolution บน Python 3.13 — รันได้ทุกเวอร์ชัน
+    """
 
-    def filename(self) -> str:
-        """แปลง target path เป็นชื่อไฟล์ patch ที่ปลอดภัย"""
+    def __init__(
+        self,
+        target_path,
+        content,
+        summary,
+        module="unknown",
+        mutation=False,
+        needs_human_review=True,
+    ):
+        self.target_path = target_path
+        self.content = content
+        self.summary = summary
+        self.module = module
+        self.mutation = mutation
+        self.needs_human_review = needs_human_review
+
+    def filename(self):
         safe = re.sub(r"[^A-Za-z0-9_.-]", "__", self.target_path.strip("/"))
         return f"{safe}.patch.txt"
 
 
-@dataclass
 class WorkerResult:
     """ผลลัพธ์รวมของ worker หนึ่งรอบ"""
 
-    issue_number: str
-    status: str
-    drafts: List[PatchDraft] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
-    created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    def __init__(self, issue_number, status, drafts=None, notes=None):
+        self.issue_number = issue_number
+        self.status = status
+        self.drafts = drafts if drafts is not None else []
+        self.notes = notes if notes is not None else []
+        self.created_at = datetime.now(timezone.utc).isoformat()
 
-    def as_dict(self) -> Dict[str, Any]:
+    def as_dict(self):
         return {
             "issue_number": self.issue_number,
             "status": self.status,
@@ -88,62 +84,49 @@ class WorkerResult:
         }
 
 
-# ───────────────────────────────────────────────────────────────────
-# Patch builder registry
-#   แต่ละโมดูลลงทะเบียน "วิธีร่าง patch" ของตัวเองที่นี่
-#   ตอนเริ่ม มีตัวอย่าง builder กลางให้ก่อน — ขยายทีละโมดูลภายหลังได้
-# ───────────────────────────────────────────────────────────────────
-
-# signature ของ builder: (issue_title, brief, plan) -> PatchDraft | None
 PatchBuilder = Callable[[str, str, List[str]], Optional[PatchDraft]]
 
-_BUILDERS: Dict[str, PatchBuilder] = {}
+_BUILDERS = {}
 
 
-def register_builder(module: str) -> Callable[[PatchBuilder], PatchBuilder]:
+def register_builder(module):
     """decorator ให้แต่ละโมดูลลงทะเบียนวิธีร่าง patch ของตัวเอง"""
 
-    def wrap(fn: PatchBuilder) -> PatchBuilder:
+    def wrap(fn):
         _BUILDERS[module.strip().upper()] = fn
         return fn
 
     return wrap
 
 
-def has_builder(module: str) -> bool:
+def has_builder(module):
     return module.strip().upper() in _BUILDERS
 
 
-# ───────────────────────────────────────────────────────────────────
-# ตัวอย่าง builder กลาง — ร่าง "scaffold ไฟล์" ตาม brief
-#   นี่คือ builder เริ่มต้นที่ทำงานได้จริงทันที
-#   โมดูลเฉพาะทาง (DTML/REDR/...) ค่อย register ทับภายหลัง
-# ───────────────────────────────────────────────────────────────────
-
 @register_builder("GENERIC")
-def _generic_scaffold(issue_title: str, brief: str, plan: List[str]) -> Optional[PatchDraft]:
+def _generic_scaffold(issue_title, brief, plan):
     """ร่างไฟล์ scaffold กลางจาก brief — ปลอดภัย ใช้ได้กับทุกงาน"""
     target = _guess_target_path(brief) or "worker_output/DRAFT_README.md"
 
     plan_lines = "\n".join(f"# - {step}" for step in plan) if plan else "# (no plan steps)"
 
     content = (
-        f"# ─────────────────────────────────────────────\n"
-        f"# DRAFT generated by IGET execution_worker\n"
+        "# -------------------------------------------\n"
+        "# DRAFT generated by IGET execution_worker\n"
         f"# Issue: {issue_title}\n"
         f"# Generated: {datetime.now(timezone.utc).isoformat()}\n"
-        f"# STATUS: draft — BBX19 must review before placing into repo\n"
-        f"# MUTATION: false\n"
-        f"# ─────────────────────────────────────────────\n"
-        f"#\n"
-        f"# Brief:\n"
+        "# STATUS: draft - BBX19 must review before placing into repo\n"
+        "# MUTATION: false\n"
+        "# -------------------------------------------\n"
+        "#\n"
+        "# Brief:\n"
         f"# {brief or '(no brief provided)'}\n"
-        f"#\n"
-        f"# Plan:\n"
+        "#\n"
+        "# Plan:\n"
         f"{plan_lines}\n"
-        f"#\n"
-        f"# ── implementation goes below this line ──\n"
-        f"\n"
+        "#\n"
+        "# -- implementation goes below this line --\n"
+        "\n"
     )
 
     return PatchDraft(
@@ -154,17 +137,12 @@ def _generic_scaffold(issue_title: str, brief: str, plan: List[str]) -> Optional
     )
 
 
-# ───────────────────────────────────────────────────────────────────
-# Helpers
-# ───────────────────────────────────────────────────────────────────
-
-def _guess_target_path(brief: str) -> str:
-    """พยายามเดา target path จาก brief (หา pattern แบบ path/to/file.py)"""
+def _guess_target_path(brief):
     match = re.search(r"[A-Za-z0-9_./-]+\.(py|md|json|txt|yml|yaml)", brief or "")
     return match.group(0) if match else ""
 
 
-def _extract_section(body: str, heading: str) -> str:
+def _extract_section(body, heading):
     pattern = re.compile(
         rf"^##\s+{re.escape(heading)}\s*$\n(?P<body>.*?)(?=^##\s+|\Z)",
         re.IGNORECASE | re.MULTILINE | re.DOTALL,
@@ -173,56 +151,43 @@ def _extract_section(body: str, heading: str) -> str:
     return match.group("body").strip() if match else ""
 
 
-def _extract_module_tags(text: str) -> List[str]:
+def _extract_module_tags(text):
     return [m.group(1) for m in re.finditer(r"@module:([A-Za-z0-9_.:-]+)", text or "")]
 
 
-# ───────────────────────────────────────────────────────────────────
-# Worker หลัก
-# ───────────────────────────────────────────────────────────────────
-
 def run_worker(
-    *,
-    issue_number: str | int,
-    issue_title: str,
-    issue_body: str,
-    approval_status: str,
-    plan: Optional[List[str]] = None,
-    output_dir: str = DEFAULT_OUTPUT_DIR,
-    write_files: bool = True,
-) -> WorkerResult:
-    """รับงานที่อนุมัติแล้ว → ร่าง patch → เขียนลง output_dir
-
-    คืน WorkerResult ที่บอกว่าร่างอะไรไปบ้าง
-    ถ้า approval_status ไม่ใช่สถานะอนุมัติ → ไม่ทำอะไร (ตาม boundary)
-    """
+    issue_number,
+    issue_title,
+    issue_body,
+    approval_status,
+    plan=None,
+    output_dir=DEFAULT_OUTPUT_DIR,
+    write_files=True,
+):
+    """รับงานที่อนุมัติแล้ว -> ร่าง patch -> เขียนลง output_dir"""
     result = WorkerResult(issue_number=str(issue_number), status="idle")
 
-    # ── ด่านที่ 1: ต้องผ่าน approval ก่อนเท่านั้น ──
     if approval_status not in APPROVED_STATES:
         result.status = "blocked_not_approved"
         result.notes.append(
             f"approval_status '{approval_status}' is not in approved states; "
-            f"worker will not draft. BBX19 approval required first."
+            "worker will not draft. BBX19 approval required first."
         )
         return result
 
     brief = _extract_section(issue_body, "Brief") or (issue_body or "").strip()
     modules = _extract_module_tags(issue_body)
-    plan = plan or []
+    plan = plan if plan is not None else []
 
-    # ── ด่านที่ 2: เลือก builder ตามโมดูลที่ @ ──
     targeted = [m.upper() for m in modules if has_builder(m.upper())]
 
     if not targeted:
-        # ไม่มีโมดูลเฉพาะทาง → ใช้ generic scaffold
         targeted = ["GENERIC"]
         result.notes.append(
             "no module-specific builder matched; using GENERIC scaffold. "
             f"(detected modules: {modules or 'none'})"
         )
 
-    # ── ด่านที่ 3: ร่าง patch ──
     for module in targeted:
         builder = _BUILDERS.get(module)
         if builder is None:
@@ -231,7 +196,7 @@ def run_worker(
 
         try:
             draft = builder(issue_title, brief, plan)
-        except Exception as exc:  # LINE_B: ไม่ซ่อน error
+        except Exception as exc:
             result.notes.append(f"builder '{module}' raised: {exc!r}")
             continue
 
@@ -241,7 +206,6 @@ def run_worker(
 
         result.drafts.append(draft)
 
-    # ── ด่านที่ 4: เขียนไฟล์ออก (ไม่แตะ repo จริง) ──
     if write_files and result.drafts:
         _write_drafts(output_dir, result)
 
@@ -249,11 +213,7 @@ def run_worker(
     return result
 
 
-def _write_drafts(output_dir: str, result: WorkerResult) -> None:
-    """เขียน patch แต่ละชิ้นลงโฟลเดอร์ output + ไฟล์สรุป
-
-    เขียนเฉพาะใน output_dir เท่านั้น — ไม่แตะที่อื่นในรีโป
-    """
+def _write_drafts(output_dir, result):
     os.makedirs(output_dir, exist_ok=True)
 
     for draft in result.drafts:
@@ -261,26 +221,24 @@ def _write_drafts(output_dir: str, result: WorkerResult) -> None:
         with open(path, "w", encoding="utf-8") as fh:
             fh.write(draft.content)
 
-    # ไฟล์สรุปให้ BBX19 อ่านก่อนวาง
     summary_path = os.path.join(output_dir, f"_SUMMARY_issue_{result.issue_number}.json")
     with open(summary_path, "w", encoding="utf-8") as fh:
         json.dump(result.as_dict(), fh, ensure_ascii=False, indent=2)
 
 
-def render_worker_comment(result: WorkerResult) -> str:
-    """สร้างคอมเมนต์สรุปสำหรับ GitHub issue (รูปแบบเดียวกับ gate)"""
+def render_worker_comment(result):
     if result.status == "blocked_not_approved":
         return (
-            "## 🔒 IGET Execution Worker\n\n"
+            "## IGET Execution Worker\n\n"
             f"Issue: #{result.issue_number}\n"
-            f"Status: `blocked_not_approved`\n\n"
+            "Status: `blocked_not_approved`\n\n"
             "Worker did not draft anything because BBX19 approval was not detected.\n\n"
             "RETURN_TO: `IGET`\nMUTATION: `false`\n"
         )
 
     if not result.drafts:
         return (
-            "## ⚠️ IGET Execution Worker\n\n"
+            "## IGET Execution Worker\n\n"
             f"Issue: #{result.issue_number}\n"
             f"Status: `{result.status}`\n\n"
             "Worker ran but produced no draft. See notes:\n"
@@ -289,13 +247,13 @@ def render_worker_comment(result: WorkerResult) -> str:
         )
 
     draft_lines = "\n".join(
-        f"- `{d.filename()}` → target: `{d.target_path}` ({d.summary})"
+        f"- `{d.filename()}` -> target: `{d.target_path}` ({d.summary})"
         for d in result.drafts
     )
     note_lines = "\n".join(f"- {n}" for n in result.notes) if result.notes else "- none"
 
     return (
-        "## 🛠️ IGET Execution Worker\n\n"
+        "## IGET Execution Worker\n\n"
         f"Issue: #{result.issue_number}\n"
         f"Status: `{result.status}`\n"
         f"Drafts produced: {len(result.drafts)}\n\n"
