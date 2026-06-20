@@ -1,0 +1,54 @@
+name: Runtime Artifact Checks
+
+on:
+  push:
+    branches:
+      - refactor/v0.2
+    paths:
+      - "core/runtime/**"
+      - "core/module_loader/**"
+      - "core/memory/**"
+      - "modules/ChatGPT/**"
+      - "tools/w3run.py"
+      - "tests/test_chatgpt_flow_artifact.py"
+      - ".github/workflows/runtime-artifact.yml"
+  pull_request:
+    branches:
+      - refactor/v0.2
+    paths:
+      - "core/runtime/**"
+      - "core/module_loader/**"
+      - "core/memory/**"
+      - "modules/ChatGPT/**"
+      - "tools/w3run.py"
+      - "tests/test_chatgpt_flow_artifact.py"
+      - ".github/workflows/runtime-artifact.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-local-artifact:
+    name: Verify local ChatGPT flow artifact
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run artifact-level tests
+        run: python -m unittest discover -s tests -p "test_chatgpt_flow_artifact.py" -v
+
+      - name: Run the CLI example
+        run: python tools/w3run.py flow --request-file modules/ChatGPT/requests/flow_request.example.json
+
+      - name: Confirm generated flow artifact exists
+        run: |
+          test -d modules/ChatGPT/flows
+          find modules/ChatGPT/flows -maxdepth 1 -type f -name "*.md" -print -quit | grep -q .
