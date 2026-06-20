@@ -11,7 +11,6 @@ on:
 permissions:
   contents: read
   issues: write
-  pull-requests: write
 
 jobs:
   respond:
@@ -39,3 +38,12 @@ jobs:
           W3_AGENT_LANG: th
         run: |
           python modules/W3Agent/tools/auto_responder.py
+
+      - name: Upload worker drafts
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3-worker-output-${{ github.run_id }}-${{ github.run_attempt }}
+          path: worker_output/
+          if-no-files-found: ignore
+          retention-days: 7
