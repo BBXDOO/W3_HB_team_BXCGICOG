@@ -3,6 +3,7 @@ import os
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from core.runtime.agents.chatgpt import ChatGPTAgent
 from core.runtime.engine_v2 import run
@@ -62,15 +63,16 @@ class TestChatGPTFlowArtifact(unittest.TestCase):
         )
 
     def test_engine_returns_artifact(self):
-        result = run(
-            "design",
-            request={
-                "source": "BBX19",
-                "intent": "Design a local review-first flow",
-                "target": "W3",
-                "payload": {"requirements": ["artifact path", "trace id"]},
-            },
-        )
+        with patch("core.runtime.engine_v2.add_memory"):
+            result = run(
+                "design",
+                request={
+                    "source": "BBX19",
+                    "intent": "Design a local review-first flow",
+                    "target": "W3",
+                    "payload": {"requirements": ["artifact path", "trace id"]},
+                },
+            )
 
         self.assertEqual(result["status"], "COMPLETED")
         self.assertEqual(result["module"], "ChatGPT")
@@ -79,7 +81,8 @@ class TestChatGPTFlowArtifact(unittest.TestCase):
         self.assertTrue(Path(result["artifacts"][0]["path"]).exists())
 
     def test_unimplemented_module_is_not_completed(self):
-        result = run("verify")
+        with patch("core.runtime.engine_v2.add_memory"):
+            result = run("verify")
 
         self.assertEqual(result["status"], "UNAVAILABLE")
         self.assertEqual(result["module"], "Gemini")
