@@ -54,6 +54,7 @@ class RuntimeAgent:
         )
 
     def run(self, task: str, plan: Dict[str, Any], context: Dict[str, Any]) -> str:
+        """Legacy text summary retained for compatibility with existing callers."""
         role = plan.get("role", "—")
         responsibilities = self._responsibilities(plan)
         main_duty = responsibilities[0] if responsibilities else "execute assigned task"
@@ -65,6 +66,29 @@ class RuntimeAgent:
             f"{self.module_name} ({role}) {self.action_label}: {task} | "
             f"target: {target} | duty: {main_duty} | experience: {experience}"
         )
+
+    def execute(self, task: str, plan: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
+        """Return an explicit non-success result until a real executor exists.
+
+        A module may be registered and routable without having an executable
+        local capability.  Returning this contract prevents the runtime from
+        reporting a fabricated successful completion.
+        """
+        return {
+            "contract_version": "1.0",
+            "status": "UNAVAILABLE",
+            "module": self.module_name,
+            "task": task,
+            "action": "no_local_executor",
+            "summary": (
+                f"{self.module_name} has no local executor registered for '{task}'. "
+                "No task was completed and no artifact was created."
+            ),
+            "reason": "Implement a module-specific execute() method before this task can report COMPLETED.",
+            "artifacts": [],
+            "mutated": False,
+            "review": True,
+        }
 
 
 class FallbackAgent(RuntimeAgent):

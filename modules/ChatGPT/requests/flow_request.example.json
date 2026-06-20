@@ -1,0 +1,20 @@
+{
+  "source": "BBX19",
+  "intent": "Design a review-first flow for a W3 work request",
+  "target": "W3",
+  "mode": "local_flow_artifact",
+  "payload": {
+    "requirements": [
+      "create a traceable artifact",
+      "show review points",
+      "do not perform external execution"
+    ],
+    "constraints": [
+      "human approval is required before merge or deploy"
+    ],
+    "expected_outputs": [
+      "Markdown flow artifact",
+      "artifact path and SHA-256"
+    ]
+  }
+}
