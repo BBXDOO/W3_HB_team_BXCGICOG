@@ -43,7 +43,23 @@ jobs:
           python-version: "3.11"
 
       - name: Run artifact-level tests
-        run: python -m unittest discover -s tests -p "test_chatgpt_flow_artifact.py" -v
+        id: artifact_tests
+        continue-on-error: true
+        run: python -m unittest discover -s tests -p "test_chatgpt_flow_artifact.py" -v > runtime-artifact-test.log 2>&1
+
+      - name: Upload artifact test log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: runtime-artifact-test-log
+          path: runtime-artifact-test.log
+          if-no-files-found: error
+
+      - name: Stop when artifact tests fail
+        if: steps.artifact_tests.outcome == 'failure'
+        run: |
+          cat runtime-artifact-test.log
+          exit 1
 
       - name: Run the CLI example
         run: python tools/w3run.py flow --request-file modules/ChatGPT/requests/flow_request.example.json
