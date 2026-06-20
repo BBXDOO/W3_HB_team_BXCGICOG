@@ -1,125 +1,333 @@
-"""Tests for IGET execution_worker.
+"""IGET Execution Worker for W3Agent.
 
-รันแบบเดียวกับ test อื่นในรีโป:
-    PYTHONPATH=. python -m pytest modules/W3Agent/tools/test_execution_worker.py -q
+จุดประสงค์ (ภาษาคน):
+- รับงานที่ BBX19 "อนุมัติแล้ว" จาก approval_gate
+- แปลง execution plan → "ร่าง patch จริง" เป็นไฟล์ที่รันได้
+- เขียน patch ลง /worker_output/ ให้ BBX19 เปิดดูและวางเองผ่าน Termux
+- ไม่แตะ repo จริง ไม่ commit ไม่ push  (BBX19 คือคนกดวางเสมอ)
 
-ไม่ต้องมี github หรือ AI — Python ล้วน รันบน Termux ได้
+หลักการ (ตรงกับ W3 ที่ BBX19 วางไว้):
+- No AI merge        → worker ร่างได้ แต่ไม่ commit
+- Human in the loop  → ทุก patch รอ BBX19 วางเอง
+- LINE_B             → ไม่ซ่อนความจริง ถ้าร่างไม่ได้ บอกตรงๆ
+- รันบน Termux + Python ล้วน  → ไม่ต้องพึ่ง AI ภายนอก
+
+ไฟล์นี้ไม่ import อะไรนอก standard library — รันได้บนมือถือเครื่องเดียว
 """
 
-import importlib.util
-import sys
-from pathlib import Path
+import json
+import os
+import re
+from datetime import datetime, timezone
+from typing import Any, Callable, Dict, List, Optional
 
 
-def load_worker():
-    tools_dir = Path(__file__).resolve().parent
-    if str(tools_dir) not in sys.path:
-        sys.path.insert(0, str(tools_dir))
-
-    path = tools_dir / "execution_worker.py"
-    spec = importlib.util.spec_from_file_location("w3_execution_worker", path)
-    module = importlib.util.module_from_spec(spec)
-
-    assert spec and spec.loader
-    spec.loader.exec_module(module)
-
-    return module
+# ───────────────────────────────────────────────────────────────────
+# ที่เก็บ patch ที่ร่างเสร็จ — BBX19 เปิดโฟลเดอร์นี้แล้ววางเอง
+# ───────────────────────────────────────────────────────────────────
+DEFAULT_OUTPUT_DIR = "worker_output"
 
 
-def test_worker_blocks_when_not_approved():
-    worker = load_worker()
+# สถานะที่อนุญาตให้ worker ทำงาน (ต้องผ่าน approval_gate มาก่อน)
+APPROVED_STATES = {
+    "approved_by_bbx19",
+    "approved_run_requested",
+}
 
-    result = worker.run_worker(
-        issue_number=300,
-        issue_title="test",
-        issue_body="## Brief\nfix something",
-        approval_status="held_by_bbx19",      # ไม่ใช่สถานะอนุมัติ
-        write_files=False,
+
+class PatchDraft:
+    """patch หนึ่งชิ้นที่ worker ร่างขึ้น — ยังไม่ลง repo
+
+    เขียนเป็น class ธรรมดา (ไม่ใช้ @dataclass) เพื่อเลี่ยงปัญหา
+    type-hint resolution บน Python รุ่นใหม่ — รันได้ทุกเวอร์ชัน
+    """
+
+    def __init__(
+        self,
+        target_path: str,
+        content: str,
+        summary: str,
+        module: str = "unknown",
+        mutation: bool = False,
+        needs_human_review: bool = True,
+    ) -> None:
+        self.target_path = target_path        # ไฟล์ปลายทางใน repo
+        self.content = content                # เนื้อหาไฟล์ที่ร่าง
+        self.summary = summary                # สรุปสั้นว่า patch นี้ทำอะไร
+        self.module = module                  # โมดูลที่รับผิดชอบ
+        self.mutation = mutation              # worker ไม่ mutate เอง = False เสมอ
+        self.needs_human_review = needs_human_review  # ต้องให้ BBX19 ดูก่อนวาง
+
+    def filename(self) -> str:
+        """แปลง target path เป็นชื่อไฟล์ patch ที่ปลอดภัย"""
+        safe = re.sub(r"[^A-Za-z0-9_.-]", "__", self.target_path.strip("/"))
+        return f"{safe}.patch.txt"
+
+
+class WorkerResult:
+    """ผลลัพธ์รวมของ worker หนึ่งรอบ"""
+
+    def __init__(
+        self,
+        issue_number: str,
+        status: str,
+        drafts: Optional[List[PatchDraft]] = None,
+        notes: Optional[List[str]] = None,
+    ) -> None:
+        self.issue_number = issue_number
+        self.status = status
+        self.drafts: List[PatchDraft] = drafts if drafts is not None else []
+        self.notes: List[str] = notes if notes is not None else []
+        self.created_at = datetime.now(timezone.utc).isoformat()
+
+    def as_dict(self) -> Dict[str, Any]:
+        return {
+            "issue_number": self.issue_number,
+            "status": self.status,
+            "created_at": self.created_at,
+            "draft_count": len(self.drafts),
+            "drafts": [
+                {
+                    "target_path": d.target_path,
+                    "summary": d.summary,
+                    "module": d.module,
+                    "mutation": d.mutation,
+                    "needs_human_review": d.needs_human_review,
+                    "filename": d.filename(),
+                }
+                for d in self.drafts
+            ],
+            "notes": self.notes,
+            "mutation": False,
+            "return_to": "IGET",
+        }
+
+
+# ───────────────────────────────────────────────────────────────────
+# Patch builder registry
+#   แต่ละโมดูลลงทะเบียน "วิธีร่าง patch" ของตัวเองที่นี่
+# ───────────────────────────────────────────────────────────────────
+
+# signature ของ builder: (issue_title, brief, plan) -> PatchDraft | None
+PatchBuilder = Callable[[str, str, List[str]], Optional[PatchDraft]]
+
+_BUILDERS: Dict[str, PatchBuilder] = {}
+
+
+def register_builder(module: str) -> Callable[[PatchBuilder], PatchBuilder]:
+    """decorator ให้แต่ละโมดูลลงทะเบียนวิธีร่าง patch ของตัวเอง"""
+
+    def wrap(fn: PatchBuilder) -> PatchBuilder:
+        _BUILDERS[module.strip().upper()] = fn
+        return fn
+
+    return wrap
+
+
+def has_builder(module: str) -> bool:
+    return module.strip().upper() in _BUILDERS
+
+
+# ───────────────────────────────────────────────────────────────────
+# ตัวอย่าง builder กลาง — ร่าง "scaffold ไฟล์" ตาม brief
+# ───────────────────────────────────────────────────────────────────
+
+@register_builder("GENERIC")
+def _generic_scaffold(issue_title: str, brief: str, plan: List[str]) -> Optional[PatchDraft]:
+    """ร่างไฟล์ scaffold กลางจาก brief — ปลอดภัย ใช้ได้กับทุกงาน"""
+    target = _guess_target_path(brief) or "worker_output/DRAFT_README.md"
+
+    plan_lines = "\n".join(f"# - {step}" for step in plan) if plan else "# (no plan steps)"
+
+    content = (
+        f"# ─────────────────────────────────────────────\n"
+        f"# DRAFT generated by IGET execution_worker\n"
+        f"# Issue: {issue_title}\n"
+        f"# Generated: {datetime.now(timezone.utc).isoformat()}\n"
+        f"# STATUS: draft — BBX19 must review before placing into repo\n"
+        f"# MUTATION: false\n"
+        f"# ─────────────────────────────────────────────\n"
+        f"#\n"
+        f"# Brief:\n"
+        f"# {brief or '(no brief provided)'}\n"
+        f"#\n"
+        f"# Plan:\n"
+        f"{plan_lines}\n"
+        f"#\n"
+        f"# ── implementation goes below this line ──\n"
+        f"\n"
     )
 
-    assert result.status == "blocked_not_approved"
-    assert result.drafts == []
-    assert any("approval required" in n.lower() for n in result.notes)
-
-
-def test_worker_drafts_generic_scaffold_when_approved():
-    worker = load_worker()
-
-    result = worker.run_worker(
-        issue_number=301,
-        issue_title="add helper to core/utils.py",
-        issue_body="## Brief\ncreate core/utils.py with a helper",
-        approval_status="approved_by_bbx19",
-        write_files=False,
+    return PatchDraft(
+        target_path=target,
+        content=content,
+        summary=f"scaffold draft for: {issue_title[:60]}",
+        module="GENERIC",
     )
 
-    assert result.status == "drafted"
-    assert len(result.drafts) == 1
-    draft = result.drafts[0]
-    assert draft.mutation is False
-    assert draft.needs_human_review is True
-    assert "core/utils.py" in draft.target_path
+
+# ───────────────────────────────────────────────────────────────────
+# Helpers
+# ───────────────────────────────────────────────────────────────────
+
+def _guess_target_path(brief: str) -> str:
+    """พยายามเดา target path จาก brief (หา pattern แบบ path/to/file.py)"""
+    match = re.search(r"[A-Za-z0-9_./-]+\.(py|md|json|txt|yml|yaml)", brief or "")
+    return match.group(0) if match else ""
 
 
-def test_worker_result_never_reports_mutation():
-    worker = load_worker()
-
-    result = worker.run_worker(
-        issue_number=302,
-        issue_title="anything",
-        issue_body="## Brief\nanything at all",
-        approval_status="approved_run_requested",
-        write_files=False,
+def _extract_section(body: str, heading: str) -> str:
+    pattern = re.compile(
+        rf"^##\s+{re.escape(heading)}\s*$\n(?P<body>.*?)(?=^##\s+|\Z)",
+        re.IGNORECASE | re.MULTILINE | re.DOTALL,
     )
-
-    payload = result.as_dict()
-    assert payload["mutation"] is False
-    assert payload["return_to"] == "IGET"
-    for d in payload["drafts"]:
-        assert d["mutation"] is False
-        assert d["needs_human_review"] is True
+    match = pattern.search(body or "")
+    return match.group("body").strip() if match else ""
 
 
-def test_register_custom_builder():
-    worker = load_worker()
+def _extract_module_tags(text: str) -> List[str]:
+    return [m.group(1) for m in re.finditer(r"@module:([A-Za-z0-9_.:-]+)", text or "")]
 
-    @worker.register_builder("TESTMOD")
-    def _build(issue_title, brief, plan):
-        return worker.PatchDraft(
-            target_path="test/output.py",
-            content="# test",
-            summary="test draft",
-            module="TESTMOD",
+
+# ───────────────────────────────────────────────────────────────────
+# Worker หลัก
+# ───────────────────────────────────────────────────────────────────
+
+def run_worker(
+    issue_number,
+    issue_title: str,
+    issue_body: str,
+    approval_status: str,
+    plan: Optional[List[str]] = None,
+    output_dir: str = DEFAULT_OUTPUT_DIR,
+    write_files: bool = True,
+) -> WorkerResult:
+    """รับงานที่อนุมัติแล้ว → ร่าง patch → เขียนลง output_dir
+
+    คืน WorkerResult ที่บอกว่าร่างอะไรไปบ้าง
+    ถ้า approval_status ไม่ใช่สถานะอนุมัติ → ไม่ทำอะไร (ตาม boundary)
+    """
+    result = WorkerResult(issue_number=str(issue_number), status="idle")
+
+    # ── ด่านที่ 1: ต้องผ่าน approval ก่อนเท่านั้น ──
+    if approval_status not in APPROVED_STATES:
+        result.status = "blocked_not_approved"
+        result.notes.append(
+            f"approval_status '{approval_status}' is not in approved states; "
+            f"worker will not draft. BBX19 approval required first."
+        )
+        return result
+
+    brief = _extract_section(issue_body, "Brief") or (issue_body or "").strip()
+    modules = _extract_module_tags(issue_body)
+    plan = plan if plan is not None else []
+
+    # ── ด่านที่ 2: เลือก builder ตามโมดูลที่ @ ──
+    targeted = [m.upper() for m in modules if has_builder(m.upper())]
+
+    if not targeted:
+        targeted = ["GENERIC"]
+        result.notes.append(
+            "no module-specific builder matched; using GENERIC scaffold. "
+            f"(detected modules: {modules or 'none'})"
         )
 
-    assert worker.has_builder("TESTMOD")
+    # ── ด่านที่ 3: ร่าง patch ──
+    for module in targeted:
+        builder = _BUILDERS.get(module)
+        if builder is None:
+            result.notes.append(f"module '{module}' has no builder; skipped")
+            continue
 
-    result = worker.run_worker(
-        issue_number=303,
-        issue_title="test custom",
-        issue_body="## Brief\nuse @module:TESTMOD here",
-        approval_status="approved_by_bbx19",
-        write_files=False,
+        try:
+            draft = builder(issue_title, brief, plan)
+        except Exception as exc:  # LINE_B: ไม่ซ่อน error
+            result.notes.append(f"builder '{module}' raised: {exc!r}")
+            continue
+
+        if draft is None:
+            result.notes.append(f"builder '{module}' produced no draft")
+            continue
+
+        result.drafts.append(draft)
+
+    # ── ด่านที่ 4: เขียนไฟล์ออก (ไม่แตะ repo จริง) ──
+    if write_files and result.drafts:
+        _write_drafts(output_dir, result)
+
+    result.status = "drafted" if result.drafts else "no_draft_produced"
+    return result
+
+
+def _write_drafts(output_dir: str, result: WorkerResult) -> None:
+    """เขียน patch แต่ละชิ้นลงโฟลเดอร์ output + ไฟล์สรุป
+
+    เขียนเฉพาะใน output_dir เท่านั้น — ไม่แตะที่อื่นในรีโป
+    """
+    os.makedirs(output_dir, exist_ok=True)
+
+    for draft in result.drafts:
+        path = os.path.join(output_dir, draft.filename())
+        with open(path, "w", encoding="utf-8") as fh:
+            fh.write(draft.content)
+
+    summary_path = os.path.join(output_dir, f"_SUMMARY_issue_{result.issue_number}.json")
+    with open(summary_path, "w", encoding="utf-8") as fh:
+        json.dump(result.as_dict(), fh, ensure_ascii=False, indent=2)
+
+
+def render_worker_comment(result: WorkerResult) -> str:
+    """สร้างคอมเมนต์สรุปสำหรับ GitHub issue (รูปแบบเดียวกับ gate)"""
+    if result.status == "blocked_not_approved":
+        return (
+            "## 🔒 IGET Execution Worker\n\n"
+            f"Issue: #{result.issue_number}\n"
+            f"Status: `blocked_not_approved`\n\n"
+            "Worker did not draft anything because BBX19 approval was not detected.\n\n"
+            "RETURN_TO: `IGET`\nMUTATION: `false`\n"
+        )
+
+    if not result.drafts:
+        return (
+            "## ⚠️ IGET Execution Worker\n\n"
+            f"Issue: #{result.issue_number}\n"
+            f"Status: `{result.status}`\n\n"
+            "Worker ran but produced no draft. See notes:\n"
+            + "\n".join(f"- {n}" for n in result.notes)
+            + "\n\nRETURN_TO: `IGET`\nMUTATION: `false`\n"
+        )
+
+    draft_lines = "\n".join(
+        f"- `{d.filename()}` → target: `{d.target_path}` ({d.summary})"
+        for d in result.drafts
+    )
+    note_lines = "\n".join(f"- {n}" for n in result.notes) if result.notes else "- none"
+
+    return (
+        "## 🛠️ IGET Execution Worker\n\n"
+        f"Issue: #{result.issue_number}\n"
+        f"Status: `{result.status}`\n"
+        f"Drafts produced: {len(result.drafts)}\n\n"
+        "### Drafted patches (review before placing)\n"
+        f"{draft_lines}\n\n"
+        "### Notes\n"
+        f"{note_lines}\n\n"
+        "### Boundary\n"
+        "- patches are DRAFTS only, written to `worker_output/`\n"
+        "- repo is NOT mutated by the worker\n"
+        "- BBX19 reviews and places each patch manually via Termux\n\n"
+        "RETURN_TO: `IGET`\n"
+        "APPROVAL_REQUIRED: `true` (for placement)\n"
+        "MUTATION: `false`\n"
+        "TRACE: `execution_worker`\n"
     )
 
-    assert result.status == "drafted"
-    assert any(d.module == "TESTMOD" for d in result.drafts)
 
-
-def test_render_worker_comment_keeps_boundary():
-    worker = load_worker()
-
-    result = worker.run_worker(
-        issue_number=304,
-        issue_title="x",
-        issue_body="## Brief\nx",
-        approval_status="approved_by_bbx19",
-        write_files=False,
-    )
-
-    comment = worker.render_worker_comment(result)
-
-    assert "MUTATION: `false`" in comment
-    assert "RETURN_TO: `IGET`" in comment
-    assert "BBX19 reviews and places" in comment
-
+__all__ = [
+    "PatchDraft",
+    "WorkerResult",
+    "register_builder",
+    "has_builder",
+    "run_worker",
+    "render_worker_comment",
+]
