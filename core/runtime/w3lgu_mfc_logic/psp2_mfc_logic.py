@@ -1,141 +1,75 @@
+"""
+PSP2 MFC Logic — PX stamp generation + Node registry
+
+PSP2 ไม่ทำ routing, ไม่ infer, ไม่ validate content
+หน้าที่: generate PX stamp + resolve node address สำหรับ forward
+"""
+
 from __future__ import annotations
 
 from hashlib import sha1
-from typing import Any, Dict, Iterable, List, Mapping
+from typing import Any, Dict
 
-from .contracts import ACTIVE, REVIEW_REQUIRED, WAIT, make_result, normalize_text
+# ------------------------------------------------------------------
+# Node Registry
+# แต่ละปลายทางมี node address ของตัวเอง
+# ni: = node in, no: = node out (เผื่ออนาคต)
+# ------------------------------------------------------------------
 
-KNOWN_MODULES = ["REDR", "PSP2", "DTML", "LRC2"]
-ROUTE_MARKERS = {
-    "DTML": {"dtml", "decision", "trace", "review", "law", "governance"},
-    "LRC2": {"lrc2", "memory", "checkpoint", "record", "history", "lifecycle", "continuity"},
-    "REDR": {"redr", "risk", "event", "classify", "triage"},
+NODE_REGISTRY: Dict[str, str] = {
+    "REDR": "ni:redr",
+    "DTML": "ni:dtml",
+    "LRC2": "ni:lrc2",
+    "MNPS": "ni:mnps",
+    "TL-S": "ni:tls",
 }
 
-
-def _as_payload(package: Any) -> Dict[str, Any]:
-    if isinstance(package, Mapping):
-        return dict(package)
-    return {"text": normalize_text(package)}
+# Cross-system prefix สำหรับ WHUB อนาคต
+CROSS_PREFIX = "xs:"
 
 
-def _stable_stamp(payload: Dict[str, Any]) -> str:
-    raw = normalize_text(payload)
-    return sha1(raw.encode("utf-8")).hexdigest()[:12]
+def register_node(target: str, address: str) -> None:
+    """ลงทะเบียน node ใหม่ (สำหรับขยายระบบ หรือ cross-system)"""
+    NODE_REGISTRY[target.upper().strip()] = address
 
 
-def _normalize_modules(value: Any) -> List[str]:
-    if value is None:
-        return []
-    if isinstance(value, str):
-        values: Iterable[Any] = [value]
-    else:
-        try:
-            values = list(value)
-        except TypeError:
-            values = [value]
+# ------------------------------------------------------------------
+# PX Stamp
+# รูปแบบ: LN{room}'{seq:04d}
+#    เช่น  LNCU'0001, LNCA'0042
+# สำหรับ cross-system: {system_id}/LN{room}'{seq:04d}
+# ------------------------------------------------------------------
 
-    modules = []
-    for item in values:
-        name = str(item).upper().strip()
-        if name in KNOWN_MODULES and name not in modules:
-            modules.append(name)
-    return modules
+ROOM_ORDER = ["CA", "CU", "RE", "SI", "AP", "EV"]
 
 
-def validate_routing_path(route_plan: Any) -> bool:
-    """Validate the explicit handoff path used by :class:`PSP2Agent`.
-
-    PSP2 may stamp a package but must not hand it to itself, repeat a hop, or
-    route toward an unknown module.  An empty path is rejected because it does
-    not identify a next handoff target.
-    """
-    if isinstance(route_plan, (str, bytes)):
-        return False
-
-    try:
-        steps = list(route_plan)
-    except TypeError:
-        return False
-
-    if not steps:
-        return False
-
-    normalized = []
-    for step in steps:
-        if not isinstance(step, str):
-            return False
-        name = step.upper().strip()
-        if not name or name not in KNOWN_MODULES or name == "PSP2" or name in normalized:
-            return False
-        normalized.append(name)
-
-    return True
+def generate_px_stamp(package: Dict[str, Any], system_id: str = "") -> str:
+    """สร้าง PX stamp แบบกำหนดเอง รองรับ cross-series"""
+    raw = package.get("package_id") or package.get("_px") or str(package)
+    digest = sha1(raw.encode("utf-8")).hexdigest()
+    seq = int(digest[:4], 16) % 9999 + 1
+    room = _resolve_room(package)
+    px = f"LN{room}'{seq:04d}"
+    if system_id:
+        px = f"{system_id}/{px}"
+    return f"PX:{px}"
 
 
-def _detect_route(payload: Dict[str, Any], text: str) -> List[str]:
-    route_path: List[str] = []
-
-    requested = _normalize_modules(payload.get("next") or payload.get("next_modules"))
-    for module in requested:
-        if module != "PSP2" and module not in route_path:
-            route_path.append(module)
-
-    for module, markers in ROUTE_MARKERS.items():
-        if module == "PSP2":
-            continue
-        if any(marker in text for marker in markers) and module not in route_path:
-            route_path.append(module)
-
-    if not route_path:
-        route_path.append("DTML")
-    return route_path
+def _resolve_room(package: Dict[str, Any]) -> str:
+    room = package.get("_room", "CU").upper().strip()
+    if room in ROOM_ORDER:
+        return room
+    return "CU"
 
 
-def route_package(package: Any) -> object:
-    """Create a route stamp and handoff preview for a W3Lgu package.
+# ------------------------------------------------------------------
+# Node resolution
+# ------------------------------------------------------------------
 
-    PSP2's standard MFC role is:
-    package in -> route stamp -> next module list -> standby list.
-    It does not execute the target module.
-    """
-
-    payload = _as_payload(package)
-    text = normalize_text(payload).lower()
-
-    if not text:
-        return make_result(
-            module="PSP2",
-            status=WAIT,
-            confidence=0.0,
-            input_type="empty",
-            decision="wait_for_package",
-            reason="no package data was provided",
-            next_modules=[],
-            standby=["REDR", "DTML", "LRC2"],
-            details={"payload": payload, "route_quality": "none"},
-        )
-
-    route_path = _detect_route(payload, text)
-    route_quality = "explicit" if payload.get("next") or payload.get("next_modules") else "inferred"
-    status = REVIEW_REQUIRED if payload.get("status") == REVIEW_REQUIRED and "LRC2" in route_path else ACTIVE
-    confidence = 0.9 if route_quality == "explicit" else 0.7
-    stamp = _stable_stamp(payload)
-    standby = [name for name in KNOWN_MODULES if name not in route_path and name != "PSP2"]
-
-    return make_result(
-        module="PSP2",
-        status=status,
-        confidence=confidence,
-        input_type="package:route",
-        decision="handoff_path_prepared",
-        reason="package was stamped and assigned to a preview route",
-        next_modules=route_path,
-        standby=standby,
-        details={
-            "route_stamp": f"PSP2-{stamp}",
-            "route_path": route_path,
-            "route_quality": route_quality,
-            "payload": payload,
-        },
-    )
+def resolve_node(target: str) -> str:
+    """แปลงชื่อปลายทาง -> node address"""
+    t = target.upper().strip()
+    node = NODE_REGISTRY.get(t)
+    if node:
+        return node
+    return f"{CROSS_PREFIX}{t.lower()}"
