@@ -10,8 +10,9 @@ WAIT = "WAIT"
 STOP = "STOP"
 REVIEW_REQUIRED = "REVIEW_REQUIRED"
 ERROR = "ERROR"
+UNAVAILABLE = "UNAVAILABLE"
 
-VALID_STATUSES = {ACTIVE, STANDBY, WAIT, STOP, REVIEW_REQUIRED, ERROR}
+VALID_STATUSES = {ACTIVE, STANDBY, WAIT, STOP, REVIEW_REQUIRED, ERROR, UNAVAILABLE}
 
 
 @dataclass(frozen=True)
@@ -33,6 +34,7 @@ class W3LguLogicResult:
     standby: List[str] = field(default_factory=list)
     mutated: bool = False
     traceable: bool = True
+    review: bool = False
     details: Dict[str, Any] = field(default_factory=dict)
 
     def as_dict(self) -> Dict[str, Any]:
@@ -47,6 +49,7 @@ class W3LguLogicResult:
             "standby": list(self.standby),
             "mutated": self.mutated,
             "traceable": self.traceable,
+            "review": self.review,
             "details": dict(self.details),
         }
 
@@ -103,11 +106,13 @@ def make_result(
     standby: Optional[Iterable[str]] = None,
     mutated: bool = False,
     traceable: bool = True,
+    review: Optional[bool] = None,
     details: Optional[Dict[str, Any]] = None,
 ) -> W3LguLogicResult:
+    normalized_status = normalize_status(status)
     return W3LguLogicResult(
         module=str(module),
-        status=normalize_status(status),
+        status=normalized_status,
         confidence=clamp_confidence(confidence),
         input_type=str(input_type or "unknown"),
         decision=str(decision or "none"),
@@ -116,5 +121,6 @@ def make_result(
         standby=list(standby or []),
         mutated=bool(mutated),
         traceable=bool(traceable),
+        review=bool(review) if review is not None else normalized_status in {REVIEW_REQUIRED, WAIT, ERROR},
         details=dict(details or {}),
     )
