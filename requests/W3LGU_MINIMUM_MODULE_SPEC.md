@@ -7,6 +7,10 @@ STATUS: draft / request / minimum-baseline
 SCOPE: W3Lgu modules, `core/runtime`, `core/runtime/agents/base.py`, `core/runtime/engine_v2.py`
 MUTATION: false for this document; this request only defines minimum spec and gap notes.
 
+IMPLEMENTATION NOTE: 2026-07-07 alignment pass added minimum route preservation,
+review flags, runtime validation summaries, and no-fake-success behavior for the
+core surfaces listed in this request.
+
 ---
 
 ## 1. Purpose
@@ -125,8 +129,8 @@ Minimum responsibilities:
 
 Current status:
 
-- **Partial pass.** `redr_mfc_logic.py` builds a package, tags input, creates copies for PSP2/LRC2, and marks source mutation as false.
-- Gap: cross-system identity fields such as `chain_id`, `event_id`, and `route_scope` are not yet a required package shape.
+- **Partial pass, improved 2026-07-07.** `redr_mfc_logic.py` builds a package, tags input, creates copies for PSP2/LRC2, marks source mutation as false, and now preserves shared identity fields when present.
+- Remaining gap: REDR still needs broader integration tests for every identity field and upstream UI/API package shapes.
 
 Minimum next step:
 
@@ -162,15 +166,14 @@ unknown
 
 Current status:
 
-- **Fail for cross-system minimum / partial pass for local MFC proof.** `psp2_mfc_logic.py` currently recognizes only `REDR`, `PSP2`, `DTML`, and `LRC2` as known modules.
-- It can stamp a package and prepare local route previews.
-- Gap: cross-system destinations such as `PX`, `W3DB_APPEND`, `EP_SIGNAL`, `EP_SIGNAL_RYTM`, `Hospitication`, `IGET`, `WHUB`, or `W3-API` are not preserved as known cross routes.
-- Gap: unknown requested modules are filtered out instead of being preserved for review.
+- **Partial pass, improved 2026-07-07.** `psp2_mfc_logic.py` now separates local W3Lgu routes, cross-series systems, and unknown routes.
+- It can stamp a package, preserve unknown/cross destinations, classify `route_scope`, and return `REVIEW_REQUIRED` when a cross or unknown route lacks a bridge contract.
+- Remaining gap: WHUB/W3-API adapter execution is still not connected; PSP2 remains route/stamp/review-only.
 
 Minimum next step:
 
-- Replace local-only route validation with a route registry that separates local modules, cross-series systems, external routes, and unknown routes.
-- Add tests proving that PSP2 preserves unknown/cross destinations instead of dropping them.
+- Continue expanding the route registry as WHUB/W3-API adapters become concrete.
+- Keep tests proving that PSP2 preserves unknown/cross destinations instead of dropping them.
 
 ---
 
@@ -189,8 +192,8 @@ Minimum responsibilities:
 
 Current status:
 
-- **Partial pass.** Current MFC logic can build decision traces and review state.
-- Gap: DTML should explicitly inspect route scope and unknown/cross destination risks once PSP2 preserves them.
+- **Partial pass, improved 2026-07-07.** Current MFC logic can build decision traces and review state, and now reviews unknown/cross route metadata emitted by PSP2.
+- Remaining gap: DTML still needs full bridge-contract policy rules before any execution adapter is allowed.
 
 Minimum next step:
 
@@ -214,8 +217,8 @@ Minimum responsibilities:
 
 Current status:
 
-- **Partial pass.** Current MFC logic creates a checkpoint preview and stable key.
-- Gap: immutable append behavior and cross-chain identity are not yet enforced at the W3Lgu MFC result level.
+- **Partial pass, improved 2026-07-07.** Current MFC logic creates a checkpoint preview, stable key, route stamp reference, prior stage summary, and preserved identity when available.
+- Remaining gap: immutable append behavior is still a preview and requires an approved append adapter.
 
 Minimum next step:
 
@@ -281,12 +284,12 @@ Minimum responsibilities:
 
 Current status:
 
-- **Partial pass.** `engine_v2.py` builds trace IDs, dispatches to agents, requires dict results, and treats only `COMPLETED` as successful.
+- **Partial pass, improved 2026-07-07.** `engine_v2.py` builds trace IDs, dispatches to agents, requires dict results, treats only `COMPLETED` as successful, and now returns a non-mutating result validation summary.
 
 Gap:
 
-- It does not yet enforce W3Lgu-specific fields such as `chain_id`, `event_id`, `package_id`, `route_scope`, `mutated`, `traceable`, and `review`.
-- It should validate module results against the W3Lgu minimum contract before saving memory.
+- It does not yet block execution on every missing W3Lgu-specific identity field; current behavior reports `review_required` validation metadata for incomplete W3Lgu module results.
+- It should grow from validation summary to strict adapter boundary before WHUB/cross execution.
 
 Minimum next step:
 
@@ -302,7 +305,7 @@ Minimum responsibilities:
 
 Current status:
 
-- **Fail for no-fake-success baseline.** `engine.py` still uses `simulate_agent()` and returns `status: SUCCESS` even though it is a placeholder.
+- **Pass for no-fake-success baseline, improved 2026-07-07.** `engine.py` remains legacy/demo-style but no longer reports placeholder `SUCCESS`; it returns `UNAVAILABLE`, `mutated: false`, and `review: true`.
 
 Minimum next step:
 
@@ -321,12 +324,12 @@ Minimum responsibilities:
 
 Current status:
 
-- **Partial pass.** It defines immutable package and stage records, marks default output as plan-only, and avoids automatic persistence.
+- **Partial pass, improved 2026-07-07.** It defines immutable package and stage records, marks default output as plan-only, avoids automatic persistence, and now carries route-scope/cross-route metadata in stage records.
 
 Gap:
 
-- `PROCESS_STAGES` is still local-only: `REDR`, `PSP2`, `DTML`, `LRC2`.
-- Cross-system route scope is not yet represented in stage records.
+- `PROCESS_STAGES` remains the local plan-only trace (`REDR`, `PSP2`, `DTML`, `LRC2`) by design.
+- Cross-system execution is intentionally not connected; only route metadata is preserved.
 
 Minimum next step:
 
@@ -339,13 +342,13 @@ Minimum next step:
 | Surface | Status | Reason |
 | --- | --- | --- |
 | `core/runtime/agents/base.py` | PASS | Safe fallback prevents fabricated completion. |
-| `core/runtime/engine_v2.py` | PARTIAL | Traceable dispatch exists, but W3Lgu result validation is missing. |
-| `core/runtime/engine.py` | FAIL | Placeholder simulation can still return `SUCCESS`. |
-| `core/runtime/process_layer.py` | PARTIAL | Plan-only flow exists, but local-only stage model lacks cross-route preservation. |
-| `redr_mfc_logic.py` | PARTIAL | Package/tag/copy behavior exists; chain identity contract missing. |
-| `psp2_mfc_logic.py` | FAIL for cross minimum | Local stamp/route exists, but unknown/cross routes are filtered out. |
-| `dtml_mfc_logic.py` | PARTIAL | Review trace exists; cross-route decision rules missing. |
-| `lrc2_mfc_logic.py` | PARTIAL | Checkpoint preview exists; immutable cross-chain identity enforcement missing. |
+| `core/runtime/engine_v2.py` | PARTIAL | Traceable dispatch exists and result validation summary was added; strict W3Lgu adapter boundary remains future work. |
+| `core/runtime/engine.py` | PASS for no-fake-success | Legacy placeholder no longer reports `SUCCESS`; it returns `UNAVAILABLE`. |
+| `core/runtime/process_layer.py` | PARTIAL | Plan-only flow now carries route scope/cross-route metadata; no external execution is connected. |
+| `redr_mfc_logic.py` | PARTIAL | Package/tag/copy behavior and identity preservation exist; broader package-source coverage remains. |
+| `psp2_mfc_logic.py` | PARTIAL | Local/cross/unknown routes are preserved; adapter execution remains intentionally disconnected. |
+| `dtml_mfc_logic.py` | PARTIAL | Review trace covers unknown/cross route metadata; bridge-contract policy needs deeper rules. |
+| `lrc2_mfc_logic.py` | PARTIAL | Checkpoint preview preserves route stamp/identity; immutable append adapter remains future work. |
 | `logic27_selector.py` | PARTIAL | Event identity preserved; advisory-only authority needs explicit guard test/doc. |
 
 ---
@@ -402,4 +405,3 @@ This request is accepted when:
 - Future W3Lgu patches can cite this document as baseline.
 - PSP2 work is not considered complete until unknown/cross routes are preserved.
 - `base.py`, `engine_v2.py`, and `core/runtime` changes are reviewed against this spec before implementation.
-

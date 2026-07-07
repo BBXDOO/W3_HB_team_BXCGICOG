@@ -6,7 +6,8 @@ from pathlib import Path
 from unittest.mock import patch
 
 from core.runtime.agents.chatgpt import ChatGPTAgent
-from core.runtime.engine_v2 import run
+from core.runtime import engine as legacy_engine
+from core.runtime.engine_v2 import run, validate_agent_result
 
 
 class TestChatGPTFlowArtifact(unittest.TestCase):
@@ -91,6 +92,24 @@ class TestChatGPTFlowArtifact(unittest.TestCase):
         self.assertEqual(result["status"], "UNAVAILABLE")
         self.assertEqual(result["module"], "Gemini")
         self.assertEqual(result["artifacts"], [])
+        self.assertTrue(result["agent_result"]["traceable"])
+
+    def test_engine_v2_flags_incomplete_w3lgu_result_contract(self):
+        validation = validate_agent_result("PSP2", {"status": "ACTIVE", "module": "PSP2"})
+
+        self.assertEqual(validation["status"], "review_required")
+        self.assertIn("mutated", validation["missing_fields"])
+        self.assertTrue(validation["review"])
+
+    def test_legacy_engine_does_not_fabricate_success(self):
+        with patch("core.runtime.engine.search_memory", return_value=[]), patch(
+            "core.runtime.engine.add_memory"
+        ):
+            result = legacy_engine.run("verify")
+
+        self.assertEqual(result["status"], "UNAVAILABLE")
+        self.assertTrue(result["output"]["review"])
+        self.assertFalse(result["output"]["mutated"])
 
 
 if __name__ == "__main__":

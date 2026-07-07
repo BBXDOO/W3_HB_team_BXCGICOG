@@ -87,6 +87,7 @@ class RuntimeAgent:
             "reason": "Implement a module-specific execute() method before this task can report COMPLETED.",
             "artifacts": [],
             "mutated": False,
+            "traceable": True,
             "review": True,
         }
 
