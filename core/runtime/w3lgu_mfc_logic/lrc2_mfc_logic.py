@@ -33,6 +33,23 @@ def _record_phase(text: str) -> str:
     return "general"
 
 
+def _extract_identity(payload: Mapping[str, Any]) -> Dict[str, Any]:
+    details = payload.get("details") if isinstance(payload.get("details"), Mapping) else {}
+    identity = details.get("identity") if isinstance(details.get("identity"), Mapping) else {}
+    package = details.get("package") if isinstance(details.get("package"), Mapping) else payload.get("package", {})
+    package_identity = package.get("identity") if isinstance(package, Mapping) and isinstance(package.get("identity"), Mapping) else {}
+
+    merged: Dict[str, Any] = {}
+    for source in (package_identity, identity, payload):
+        if isinstance(source, Mapping):
+            for key in ("chain_id", "event_id", "package_id", "route_stamp", "route_scope", "source", "target"):
+                if key in source and source[key] not in (None, ""):
+                    merged[key] = source[key]
+    merged["mutated"] = False
+    merged["traceable"] = True
+    return merged
+
+
 def checkpoint_lifecycle(record: Any) -> object:
     """Create a lifecycle checkpoint preview for W3Lgu module flow.
 
@@ -59,6 +76,8 @@ def checkpoint_lifecycle(record: Any) -> object:
     checkpoint_key = f"LRC2-{_stable_key(payload)}"
     record_phase = _record_phase(text)
     confidence = 0.85 if record_phase != "general" else 0.65
+    identity = _extract_identity(payload)
+    details = payload.get("details") if isinstance(payload.get("details"), Mapping) else {}
 
     return make_result(
         module="LRC2",
@@ -73,6 +92,9 @@ def checkpoint_lifecycle(record: Any) -> object:
             "checkpoint_key": checkpoint_key,
             "record_length": len(text),
             "record_phase": record_phase,
+            "identity": identity,
+            "route_stamp": identity.get("route_stamp") or details.get("route_stamp"),
+            "prior_stage_summary": payload.get("reason") or payload.get("summary"),
             "payload": payload,
         },
     )

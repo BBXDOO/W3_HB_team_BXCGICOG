@@ -9,6 +9,14 @@ from core.memory.memory_bus import add_memory, search_memory, get_memory
 from core.runtime.agents import get_agent
 
 MAX_WORKERS = 3
+W3LGU_RUNTIME_MODULES = {"REDR", "PSP2", "DTML", "LRC2"}
+W3LGU_REQUIRED_RESULT_FIELDS = {
+    "status",
+    "module",
+    "mutated",
+    "traceable",
+    "review",
+}
 
 
 class EngineError(Exception):
@@ -57,6 +65,23 @@ def _memory_content(agent_result: Dict[str, Any]) -> str:
     return json.dumps(agent_result, ensure_ascii=False, sort_keys=True)
 
 
+def validate_agent_result(module_name: str, agent_result: Dict[str, Any]) -> Dict[str, Any]:
+    """Return a non-mutating validation summary for engine result contracts."""
+    missing = []
+    if module_name in W3LGU_RUNTIME_MODULES:
+        missing = sorted(field for field in W3LGU_REQUIRED_RESULT_FIELDS if field not in agent_result)
+
+    status = "valid" if not missing else "review_required"
+    return {
+        "status": status,
+        "module": module_name,
+        "missing_fields": missing,
+        "mutated": bool(agent_result.get("mutated", False)),
+        "traceable": bool(agent_result.get("traceable", True)) and not missing,
+        "review": bool(agent_result.get("review", False)) or bool(missing),
+    }
+
+
 # -------------------------------------------------
 # SINGLE RUN
 # -------------------------------------------------
@@ -73,6 +98,7 @@ def run(task, request=None):
 
         status = str(agent_result.get("status") or "FAILED")
         summary = str(agent_result.get("summary") or "No result summary provided.")
+        result_validation = validate_agent_result(plan["run_with"], agent_result)
         successful = status == "COMPLETED"
 
         result = {
@@ -81,6 +107,7 @@ def run(task, request=None):
             "module": plan["run_with"],
             "output": summary,
             "agent_result": agent_result,
+            "result_validation": result_validation,
             "artifacts": agent_result.get("artifacts", []),
             "latency_ms": int((time.time() - started) * 1000),
             "time": now(),
