@@ -98,6 +98,32 @@ class TestW3LguMFCLogic(unittest.TestCase):
         self.assertEqual(data["details"]["unknown_routes"], ["NEW_SYSTEM"])
         self.assertEqual(data["details"]["route_scope"], "unknown")
 
+    def test_psp2_preserves_cross_route_for_review(self):
+        result = route_package(
+            {
+                "package_id": "PKG-CROSS",
+                "source": "W3-API",
+                "target": "PX",
+                "next": ["PX", "W3DB_APPEND", "LRC2"],
+                "text": "cross route package",
+            }
+        )
+        data = result.as_dict()
+        self.assertEqual(data["status"], "REVIEW_REQUIRED")
+        self.assertTrue(data["review"])
+        self.assertIn("PX", data["next"])
+        self.assertIn("W3DB_APPEND", data["details"]["cross_routes"])
+        self.assertEqual(data["details"]["route_scope"], "mixed")
+        self.assertFalse(data["mutated"])
+
+    def test_psp2_preserves_unknown_route_for_review(self):
+        result = route_package({"next": ["NEW_SYSTEM"], "text": "handoff"})
+        data = result.as_dict()
+        self.assertEqual(data["status"], "REVIEW_REQUIRED")
+        self.assertIn("NEW_SYSTEM", data["next"])
+        self.assertEqual(data["details"]["unknown_routes"], ["NEW_SYSTEM"])
+        self.assertEqual(data["details"]["route_scope"], "unknown")
+
     def test_dtml_builds_review_trace(self):
         result = trace_decision({"text": "runtime review", "review_required": True})
         data = result.as_dict()

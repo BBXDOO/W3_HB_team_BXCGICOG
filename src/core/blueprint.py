@@ -237,7 +237,7 @@ class Blueprint:
 
         if not str(self._fields.get("BLUEPRINT", "")).strip():
             raise BlueprintError("Blueprint missing required field: name")
-        if "TARGET" in self._fields and not str(self._fields.get("TARGET", "")).strip():
+        if not str(self._fields.get("TARGET", "")).strip():
             raise BlueprintError("Blueprint missing required field: target")
         mode = str(self._fields.get("MODE", "observe")).strip()
         if not mode:

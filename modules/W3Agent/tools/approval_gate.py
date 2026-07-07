@@ -10,8 +10,6 @@ This file does not mutate repo content.
 It does not execute module work by itself.
 """
 
-from __future__ import annotations
-
 import re
 from dataclasses import dataclass
 from datetime import datetime, timezone
