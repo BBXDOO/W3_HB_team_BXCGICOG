@@ -116,8 +116,12 @@ def _identity(payload: Mapping[str, Any], stamp: str, route_scope: str) -> Dict[
     package_identity = package.get("identity") if isinstance(package.get("identity"), Mapping) else {}
     identity: Dict[str, Any] = {}
     unknown = []
-    for field in IDENTITY_FIELDS:
-        value = payload.get(field, package_identity.get(field, package.get(field)))
+for field in IDENTITY_FIELDS:
+        value = payload.get(field)
+        if value in (None, ""):
+            value = package_identity.get(field)
+        if value in (None, ""):
+            value = package.get(field)
         if value in (None, ""):
             unknown.append(field)
         else:
