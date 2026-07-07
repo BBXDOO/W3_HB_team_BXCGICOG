@@ -36,6 +36,19 @@ IDENTITY_FIELDS = (
     "successor",
     "owner_scope",
 )
+NODE_REGISTRY: Dict[str, str] = {
+    "REDR": "ni:redr",
+    "DTML": "ni:dtml",
+    "LRC2": "ni:lrc2",
+    "MNPS": "ni:mnps",
+    "TL-S": "ni:tls",
+}
+CROSS_PREFIX = "xs:"
+ROOM_ORDER = ["CA", "CU", "RE", "SI", "AP", "EV"]
+
+
+def register_node(target: str, address: str) -> None:
+    NODE_REGISTRY[target.upper().strip()] = address
 
 
 def _as_payload(package: Any) -> Dict[str, Any]:
@@ -47,6 +60,32 @@ def _as_payload(package: Any) -> Dict[str, Any]:
 def _stable_stamp(payload: Dict[str, Any]) -> str:
     raw = normalize_text(payload)
     return sha1(raw.encode("utf-8")).hexdigest()[:12]
+
+
+def generate_px_stamp(package: Dict[str, Any], system_id: str = "") -> str:
+    raw = package.get("package_id") or package.get("_px") or str(package)
+    digest = sha1(raw.encode("utf-8")).hexdigest()
+    seq = int(digest[:4], 16) % 9999 + 1
+    room = _resolve_room(package)
+    px = f"LN{room}'{seq:04d}"
+    if system_id:
+        px = f"{system_id}/{px}"
+    return f"PX:{px}"
+
+
+def _resolve_room(package: Dict[str, Any]) -> str:
+    room = package.get("_room", "CU").upper().strip()
+    if room in ROOM_ORDER:
+        return room
+    return "CU"
+
+
+def resolve_node(target: str) -> str:
+    t = target.upper().strip()
+    node = NODE_REGISTRY.get(t)
+    if node:
+        return node
+    return f"{CROSS_PREFIX}{t.lower()}"
 
 
 def _normalize_name(value: Any) -> str:
@@ -117,7 +156,11 @@ def _identity(payload: Mapping[str, Any], stamp: str, route_scope: str) -> Dict[
     identity: Dict[str, Any] = {}
     unknown = []
     for field in IDENTITY_FIELDS:
-        value = payload.get(field, package_identity.get(field, package.get(field)))
+        value = payload.get(field)
+        if value in (None, ""):
+            value = package_identity.get(field)
+        if value in (None, ""):
+            value = package.get(field)
         if value in (None, ""):
             unknown.append(field)
         else:
@@ -132,12 +175,7 @@ def _identity(payload: Mapping[str, Any], stamp: str, route_scope: str) -> Dict[
 
 
 def validate_routing_path(route_plan: Any) -> bool:
-    """Validate the explicit handoff path used by :class:`PSP2Agent`.
-
-    PSP2 may stamp a package but must not hand it to itself or repeat a hop.
-    Unknown destinations are allowed only as preserved review routes; callers
-    must not silently drop them.
-    """
+    """Validate the explicit handoff path used by :class:`PSP2Agent`."""
     if isinstance(route_plan, (str, bytes)):
         return False
 
@@ -181,12 +219,7 @@ def _detect_route(payload: Dict[str, Any], text: str) -> List[str]:
 
 
 def route_package(package: Any) -> object:
-    """Create a route stamp and handoff preview for a W3Lgu package.
-
-    PSP2's standard MFC role is:
-    package in -> route stamp -> next module list -> standby list.
-    It does not execute the target module.
-    """
+    """Create a route stamp and handoff preview for a W3Lgu package."""
 
     payload = _as_payload(package)
     text = normalize_text(payload).lower()

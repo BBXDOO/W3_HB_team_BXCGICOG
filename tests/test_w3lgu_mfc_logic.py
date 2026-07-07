@@ -1,9 +1,15 @@
 import unittest
 
 from core.runtime.w3lgu_mfc_logic.redr_mfc_logic import classify_event
-from core.runtime.w3lgu_mfc_logic.psp2_mfc_logic import route_package
+from core.runtime.w3lgu_mfc_logic.psp2_mfc_logic import (
+    generate_px_stamp,
+    register_node,
+    resolve_node,
+    route_package,
+)
 from core.runtime.w3lgu_mfc_logic.dtml_mfc_logic import trace_decision
 from core.runtime.w3lgu_mfc_logic.lrc2_mfc_logic import checkpoint_lifecycle
+from core.runtime.agents.psp2 import PSP2Agent
 
 
 class TestW3LguMFCLogic(unittest.TestCase):
@@ -20,23 +26,77 @@ class TestW3LguMFCLogic(unittest.TestCase):
         data = result.as_dict()
         self.assertEqual(data["input_type"], "event:memory")
         self.assertIn("LRC2", data["next"])
-        self.assertIn("PSP2", data["standby"])
 
-    def test_psp2_creates_route_stamp(self):
-        result = route_package({"target": "DTML", "next": ["DTML"], "text": "trace route"})
-        data = result.as_dict()
-        self.assertEqual(data["module"], "PSP2")
-        self.assertEqual(data["status"], "ACTIVE")
-        self.assertIn("DTML", data["next"])
-        self.assertIn("route_stamp", data["details"])
-        self.assertEqual(data["details"]["route_quality"], "explicit")
+    def test_psp2_generates_px_stamp(self):
+        pkg = {"package_id": "PKG-001"}
+        stamp = generate_px_stamp(pkg)
+        self.assertTrue(stamp.startswith("PX:LN"))
+        self.assertIn("'", stamp)
 
-    def test_psp2_infers_lrc2_route_from_memory(self):
-        result = route_package("memory checkpoint package")
+    def test_psp2_stamp_with_system_id(self):
+        pkg = {"package_id": "XS-042", "_room": "CA"}
+        stamp = generate_px_stamp(pkg, system_id="HBISOCITY")
+        self.assertTrue(stamp.startswith("PX:HBISOCITY/"))
+        self.assertIn("LNCA", stamp)
+
+    def test_psp2_resolves_known_node(self):
+        node = resolve_node("DTML")
+        self.assertEqual(node, "ni:dtml")
+
+    def test_psp2_resolves_unknown_node_as_cross_system(self):
+        node = resolve_node("UNKNOWN_SYS")
+        self.assertTrue(node.startswith("xs:"))
+
+    def test_psp2_can_register_new_node(self):
+        register_node("WHUB", "ni:whub_main")
+        node = resolve_node("WHUB")
+        self.assertEqual(node, "ni:whub_main")
+
+    def test_psp2_agent_stamp(self):
+        agent = PSP2Agent()
+        pkg = {"package_id": "PKG-099"}
+        stamp = agent.stamp(pkg)
+        self.assertTrue(stamp.startswith("PX:"))
+
+    def test_psp2_agent_run(self):
+        agent = PSP2Agent()
+        result = agent.run("forward", {"package": {"package_id": "PKG-001"}}, {})
+        self.assertIn("PSP2", result)
+        self.assertIn("forwarded", result)
+
+    def test_psp2_agent_execute(self):
+        agent = PSP2Agent()
+        result = agent.execute("forward", {"package": {"package_id": "PKG-001"}}, {})
+        self.assertEqual(result["status"], "DISPATCHED")
+        self.assertFalse(result["mutated"])
+        self.assertIn("stamp", result)
+        self.assertIn("node", result)
+
+    def test_psp2_preserves_cross_route_for_review(self):
+        result = route_package(
+            {
+                "package_id": "PKG-CROSS",
+                "source": "W3-API",
+                "target": "PX",
+                "next": ["PX", "W3DB_APPEND", "LRC2"],
+                "text": "cross route package",
+            }
+        )
         data = result.as_dict()
-        self.assertEqual(data["module"], "PSP2")
-        self.assertIn("LRC2", data["next"])
-        self.assertEqual(data["details"]["route_quality"], "inferred")
+        self.assertEqual(data["status"], "REVIEW_REQUIRED")
+        self.assertTrue(data["review"])
+        self.assertIn("PX", data["next"])
+        self.assertIn("W3DB_APPEND", data["details"]["cross_routes"])
+        self.assertEqual(data["details"]["route_scope"], "mixed")
+        self.assertFalse(data["mutated"])
+
+    def test_psp2_preserves_unknown_route_for_review(self):
+        result = route_package({"next": ["NEW_SYSTEM"], "text": "handoff"})
+        data = result.as_dict()
+        self.assertEqual(data["status"], "REVIEW_REQUIRED")
+        self.assertIn("NEW_SYSTEM", data["next"])
+        self.assertEqual(data["details"]["unknown_routes"], ["NEW_SYSTEM"])
+        self.assertEqual(data["details"]["route_scope"], "unknown")
 
     def test_psp2_preserves_cross_route_for_review(self):
         result = route_package(
@@ -113,12 +173,14 @@ class TestW3LguMFCLogic(unittest.TestCase):
 
     def test_minimum_chain(self):
         redr = classify_event("route package to decision trace")
-        psp2 = route_package(redr.as_dict())
-        dtml = trace_decision(psp2.as_dict())
+        # PSP2 now stamps + forwards via node (not W3LguLogicResult)
+        psp2_result = generate_px_stamp({"package_id": "chain-001"})
+        self.assertTrue(psp2_result.startswith("PX:"))
+
+        dtml = trace_decision({"text": "decision trace", "review_required": True})
         lrc2 = checkpoint_lifecycle(dtml.as_dict())
 
         self.assertEqual(redr.as_dict()["module"], "REDR")
-        self.assertEqual(psp2.as_dict()["module"], "PSP2")
         self.assertEqual(dtml.as_dict()["module"], "DTML")
         self.assertEqual(lrc2.as_dict()["module"], "LRC2")
         self.assertTrue(lrc2.as_dict()["traceable"])
