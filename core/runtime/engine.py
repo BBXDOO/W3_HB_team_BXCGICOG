@@ -42,8 +42,10 @@ def build_context(task):
 
 def simulate_agent(task, plan, context):
     """
-    Placeholder executor.
-    Future = real AI dispatch layer
+    Legacy placeholder executor.
+
+    It must not fabricate success. Use ``engine_v2.run`` with a module-specific
+    ``execute()`` implementation when a task needs to report completion.
     """
 
     return {
@@ -51,7 +53,14 @@ def simulate_agent(task, plan, context):
         "module": plan["run_with"],
         "role": plan["role"],
         "memory_matches": context["matches"],
-        "result": f"{plan['run_with']} processed task '{task}'"
+        "status": "UNAVAILABLE",
+        "result": (
+            f"{plan['run_with']} has no legacy executor for task '{task}'. "
+            "No task was completed and no artifact was created."
+        ),
+        "mutated": False,
+        "traceable": True,
+        "review": True,
     }
 
 
@@ -74,12 +83,12 @@ def run(task):
         source=plan["run_with"],
         topic=task,
         content=result["result"],
-        tags=["runtime", "task"],
-        score=5
+        tags=["runtime", "unavailable", "legacy"],
+        score=1
     )
 
     return {
-        "status": "SUCCESS",
+        "status": result["status"],
         "plan": plan,
         "context": context,
         "output": result

@@ -12,6 +12,16 @@ PHASE_MARKERS = {
     "memory": {"memory", "checkpoint", "record", "history", "continuity"},
     "trace": {"trace", "decision", "timeline", "verify"},
 }
+EXPECTED_IDENTITY_FIELDS = (
+    "chain_id",
+    "event_id",
+    "package_id",
+    "route_stamp",
+    "prior_stage_summary",
+    "route_scope",
+    "source",
+    "target",
+)
 
 
 def _as_payload(record: Any) -> Dict[str, Any]:
@@ -31,6 +41,37 @@ def _record_phase(text: str) -> str:
         if any(marker in lowered for marker in markers):
             return phase
     return "general"
+
+
+def _extract_identity(payload: Mapping[str, Any]) -> Dict[str, Any]:
+    details = payload.get("details") if isinstance(payload.get("details"), Mapping) else {}
+    identity = details.get("identity") if isinstance(details.get("identity"), Mapping) else {}
+    package = details.get("package") if isinstance(details.get("package"), Mapping) else payload.get("package", {})
+    package_identity = package.get("identity") if isinstance(package, Mapping) and isinstance(package.get("identity"), Mapping) else {}
+
+    merged: Dict[str, Any] = {}
+    details_summary = details.get("handoff_summary") or details.get("prior_stage_summary")
+    payload_summary = payload.get("reason") or payload.get("summary")
+
+    for source in (package_identity, identity, payload, details):
+        if isinstance(source, Mapping):
+            for key in EXPECTED_IDENTITY_FIELDS:
+                if key in source and source[key] not in (None, ""):
+                    merged[key] = source[key]
+    if "prior_stage_summary" not in merged and (details_summary or payload_summary):
+        merged["prior_stage_summary"] = payload_summary or details_summary
+
+    missing = [field for field in EXPECTED_IDENTITY_FIELDS if not merged.get(field)]
+    merged["mutated"] = False
+    merged["traceable"] = True
+    if missing:
+        merged["unknown"] = {
+            "unknown": True,
+            "fields": missing,
+            "reason": "missing_from_input",
+            "review": True,
+        }
+    return merged
 
 
 def checkpoint_lifecycle(record: Any) -> object:
@@ -59,6 +100,8 @@ def checkpoint_lifecycle(record: Any) -> object:
     checkpoint_key = f"LRC2-{_stable_key(payload)}"
     record_phase = _record_phase(text)
     confidence = 0.85 if record_phase != "general" else 0.65
+    identity = _extract_identity(payload)
+    details = payload.get("details") if isinstance(payload.get("details"), Mapping) else {}
 
     return make_result(
         module="LRC2",
@@ -73,6 +116,14 @@ def checkpoint_lifecycle(record: Any) -> object:
             "checkpoint_key": checkpoint_key,
             "record_length": len(text),
             "record_phase": record_phase,
+            "identity": identity,
+            "route_stamp": identity.get("route_stamp") or details.get("route_stamp"),
+            "prior_stage_summary": identity.get("prior_stage_summary"),
+            "persistence": {
+                "mode": "preview_only",
+                "persisted": False,
+                "overwrite_historical_truth": False,
+            },
             "payload": payload,
         },
     )

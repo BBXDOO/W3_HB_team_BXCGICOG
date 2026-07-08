@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 from .base import RuntimeAgent
-from ..w3lgu_mfc_logic.psp2_mfc_logic import validate_routing_path
+from ..w3lgu_mfc_logic.psp2_mfc_logic import route_package
 
 class PSP2Agent(RuntimeAgent):
     module_name = "PSP2"
@@ -33,20 +33,36 @@ class PSP2Agent(RuntimeAgent):
         PSP2 ไม่ดัดแปลงเนื้อหา แต่จะประทับตรา PX และส่งต่อตามแผน.
         """
         package_id = package.get("package_id", "UNKNOWN")
-        
-        # ลอจิกแกร่ง: ตรวจสอบเส้นทางก่อนเคลื่อนย้าย
-        if not validate_routing_path(route_plan):
-            return {"status": "FAILED", "reason": "INVALID_ROUTE"}
+        payload = dict(package)
+        payload["next"] = list(route_plan or payload.get("next") or [])
 
-        # ประทับตราการขนส่ง (Non-mutation of payload)
+        routed = route_package(payload).as_dict()
+        details = routed.get("details", {})
+        if routed.get("status") == "REVIEW_REQUIRED":
+            return {
+                "status": "REVIEW_REQUIRED",
+                "reason": routed.get("reason", "route requires review"),
+                "package": package,
+                "next_stops": routed.get("next", []),
+                "stamped": False,
+                "review": True,
+                "details": details,
+            }
+
+        if routed.get("status") != "ACTIVE":
+            return {"status": "FAILED", "reason": "INVALID_ROUTE", "details": details}
+
+        # ประทับตราการขนส่ง (Non-mutation of payload content; wrapper metadata only)
         package["_psp2_stamp"] = self._generate_stamp(package_id)
         package["_last_hop"] = self.module_name
 
         return {
             "status": "DISPATCHED",
             "package": package,
-            "next_stops": route_plan,
-            "stamped": True
+            "next_stops": routed.get("next", route_plan),
+            "stamped": True,
+            "review": False,
+            "details": details,
         }
 
     def run(

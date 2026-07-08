@@ -66,6 +66,37 @@ def test_w3api_tool_render_markdown_preserves_gateway_boundaries():
     assert "gateway-only" in markdown
 
 
+def test_w3api_write_md_uses_build_payload_and_render_markdown(tmp_path, monkeypatch):
+    tool = load_tool()
+    out = tmp_path / "out.md"
+    captured = {}
+
+    def fake_post_json(url, payload):
+        captured["payload"] = payload
+        return {
+            "id": "demo",
+            "status": "accepted",
+            "w3lgu": "ok",
+            "signal": {"mutated": False, "w3db": {"mode": "append_plan_only"}, "ep_signal": {"mode": "preview_only"}},
+        }
+
+    monkeypatch.setattr(tool, "post_json", fake_post_json)
+    monkeypatch.setattr(sys, "argv", [
+        "tools/w3api.py",
+        "--source", "termux",
+        "--intent", "review",
+        "--target", "W3",
+        "--mode", "cross",
+        "--write-md", str(out),
+    ])
+
+    assert tool.main() == 0
+    assert captured["payload"]["source"] == "termux"
+    assert captured["payload"]["intent"] == "review"
+    assert out.exists()
+    assert "# W3-API Cross Gateway Result" in out.read_text(encoding="utf-8")
+
+
 def test_w3api_tool_help_is_callable():
     result = subprocess.run(
         [sys.executable, "tools/w3api.py", "--help"],

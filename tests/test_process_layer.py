@@ -25,10 +25,28 @@ def test_process_layer_runs_four_stages_without_mutation():
     assert body["package"]["package_id"].startswith("PKG-")
     assert [stage["stage"] for stage in body["stages"]] == ["REDR", "PSP2", "DTML", "LRC2"]
     assert body["stages"][0]["data"]["duplicate_to"] == ["PSP2", "LRC2"]
+    assert body["stages"][0]["data"]["route_scope"] == "cross_series"
+    assert "W3DB" in body["stages"][0]["data"]["cross_routes"]
+    assert body["stages"][0]["data"]["unknown_routes"] == []
+    assert body["stages"][0]["data"]["execute_allowed"] is False
     assert body["stages"][1]["action"] == "stamp_route_only"
+    assert body["stages"][1]["data"]["route_scope"] == "cross_series"
+    assert "PX" in body["stages"][1]["data"]["cross_routes"]
     assert body["stages"][2]["data"]["execute_allowed"] is False
+    assert body["stages"][2]["data"]["route_scope"] == "cross_series"
     assert body["memory_preview"]["mutated"] is False
     assert body["w3db_status"]["stats"] == {"xiz": 0, "tuf": 0, "fbd": 0, "whb": 0, "prx": 0}
+
+
+def test_process_layer_reviews_stamped_cross_hop_for_local_target():
+    result = run_w3_process_layer(source="REDR", intent="handoff locally", target="REDR")
+    psp2 = result.to_dict()["stages"][1]
+
+    assert psp2["status"] == "review_required"
+    assert psp2["data"]["route_scope"] == "cross_series"
+    assert "PX" in psp2["data"]["cross_routes"]
+    assert psp2["data"]["unknown_routes"] == []
+    assert psp2["data"]["execute_allowed"] is False
 
 
 def test_process_layer_marks_risky_intent_for_review():

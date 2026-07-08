@@ -18,6 +18,19 @@ MEMORY_WORDS = {"memory", "checkpoint", "lifecycle", "record", "history", "conti
 TRACE_WORDS = {"decision", "trace", "law", "verify", "review", "governance"}
 STRUCTURE_WORDS = {"module", "file", "folder", "path", "structure", "tree", "schema"}
 SIGNAL_WORDS = {"signal", "state", "color", "sym", "rytm", "rhythm"}
+IDENTITY_FIELDS = (
+    "chain_id",
+    "process_id",
+    "event_id",
+    "package_id",
+    "sequence",
+    "source",
+    "target",
+    "route_scope",
+    "predecessor",
+    "successor",
+    "owner_scope",
+)
 
 
 def _as_payload(event: Any) -> Dict[str, Any]:
@@ -37,6 +50,52 @@ def _stable_package_id(payload: Mapping[str, Any]) -> str:
     raw = json.dumps(payload, ensure_ascii=False, sort_keys=True, default=str)
     digest = hashlib.sha1(raw.encode("utf-8")).hexdigest()[:12]
     return f"REDR-PKG-{digest}"
+
+
+def _nested_mapping(value: Any, key: str) -> Mapping[str, Any]:
+    if not isinstance(value, Mapping):
+        return {}
+    nested = value.get(key)
+    return nested if isinstance(nested, Mapping) else {}
+
+
+def _identity_sources(payload: Mapping[str, Any]) -> list[Mapping[str, Any]]:
+    request = _nested_mapping(payload, "request")
+    request_payload = _nested_mapping(request, "payload")
+    payload_payload = _nested_mapping(payload, "payload")
+    package = _nested_mapping(payload, "package")
+    package_identity = _nested_mapping(package, "identity")
+    return [payload, request_payload, payload_payload, package_identity, package]
+
+
+def _identity_value(payload: Mapping[str, Any], field: str) -> Any:
+    for source in _identity_sources(payload):
+        value = source.get(field)
+        if value not in (None, ""):
+            return value
+    return None
+
+
+def _identity_map(payload: Mapping[str, Any]) -> Dict[str, Any]:
+    identity: Dict[str, Any] = {}
+    unknown = []
+    for field in IDENTITY_FIELDS:
+        value = _identity_value(payload, field)
+        if value in (None, ""):
+            unknown.append(field)
+        else:
+            identity[field] = value
+
+    identity.setdefault("package_id", _identity_value(payload, "package_id") or _stable_package_id(payload))
+    identity["mutated"] = False
+    identity["traceable"] = True
+    if unknown:
+        identity["unknown"] = {
+            "fields": unknown,
+            "reason": "missing_from_input",
+            "review": True,
+        }
+    return identity
 
 
 def _find_markers(text: str, words: Iterable[str]) -> list[str]:
@@ -67,8 +126,9 @@ def build_package(event: Any) -> Dict[str, Any]:
 
     return {
         "schema": "w3.redr.package.v2",
-        "package_id": _stable_package_id(payload),
+        "package_id": _identity_map(payload)["package_id"],
         "reader": "REDR",
+        "identity": _identity_map(payload),
         "source_payload": payload,
         "normalized_text": text,
         "tags": tags,
@@ -152,11 +212,11 @@ def classify_event(event: Any) -> object:
             module="REDR",
             status=ACTIVE,
             confidence=0.72,
-            input_type="package:memory",
+            input_type="event:memory",
             decision="package_for_lrc2_checkpoint",
             reason="memory or lifecycle markers detected",
-            next_modules=["LRC2", "PSP2"],
-            standby=["DTML"],
+            next_modules=["LRC2"],
+            standby=["PSP2", "DTML"],
             details={"markers": tags["memory"], "payload": payload, "package": package},
         )
 

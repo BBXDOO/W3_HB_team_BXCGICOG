@@ -6,6 +6,7 @@ from .contracts import ACTIVE, REVIEW_REQUIRED, WAIT, make_result, normalize_tex
 
 REVIEW_MARKERS = {"risk", "conflict", "review", "governance", "law"}
 CONTINUE_MARKERS = {"ready", "ok", "accepted", "trace", "route", "handoff", "checkpoint"}
+REVIEW_SCOPES = {"cross_series", "external", "mixed", "unknown"}
 
 
 def _as_payload(decision_input: Any) -> Dict[str, Any]:
@@ -15,6 +16,18 @@ def _as_payload(decision_input: Any) -> Dict[str, Any]:
 
 
 def _review_state(payload: Dict[str, Any], text: str) -> str:
+    details = payload.get("details") if isinstance(payload.get("details"), Mapping) else {}
+    route_scope = payload.get("route_scope") or details.get("route_scope")
+    unknown_routes = payload.get("unknown_routes") or details.get("unknown_routes") or []
+    cross_routes = payload.get("cross_routes") or details.get("cross_routes") or []
+    bridge_contract = bool(payload.get("bridge_contract") or details.get("bridge_contract"))
+
+    if route_scope in REVIEW_SCOPES:
+        return "review_required"
+    if unknown_routes:
+        return "review_required"
+    if cross_routes and not bridge_contract:
+        return "review_required"
     if payload.get("review_required"):
         return "review_required"
     if payload.get("status") == REVIEW_REQUIRED:
@@ -47,10 +60,15 @@ def trace_decision(decision_input: Any) -> object:
 
     markers = sorted(marker for marker in REVIEW_MARKERS if marker in text)
     review_state = _review_state(payload, text)
+    details = payload.get("details") if isinstance(payload.get("details"), Mapping) else {}
+    route_scope = payload.get("route_scope") or details.get("route_scope", "local_w3lgu")
+    unknown_routes = payload.get("unknown_routes") or details.get("unknown_routes") or []
+    cross_routes = payload.get("cross_routes") or details.get("cross_routes") or []
     trace = [
         "input_received",
         "context_checked",
         "markers_scanned",
+        f"route_scope:{route_scope}",
         f"review_state:{review_state}",
     ]
 
@@ -65,7 +83,16 @@ def trace_decision(decision_input: Any) -> object:
             reason="decision input requires review before continuing",
             next_modules=["LRC2"],
             standby=["REDR", "PSP2"],
-            details={"trace": trace, "markers": markers, "review_state": review_state, "payload": payload},
+            review=True,
+            details={
+                "trace": trace,
+                "markers": markers,
+                "review_state": review_state,
+                "route_scope": route_scope,
+                "unknown_routes": list(unknown_routes),
+                "cross_routes": list(cross_routes),
+                "payload": payload,
+            },
         )
 
     if review_state == "continue":
@@ -79,7 +106,15 @@ def trace_decision(decision_input: Any) -> object:
             reason="decision input is traceable and can continue",
             next_modules=["PSP2", "LRC2"],
             standby=["REDR"],
-            details={"trace": trace, "markers": markers, "review_state": review_state, "payload": payload},
+            details={
+                "trace": trace,
+                "markers": markers,
+                "review_state": review_state,
+                "route_scope": route_scope,
+                "unknown_routes": list(unknown_routes),
+                "cross_routes": list(cross_routes),
+                "payload": payload,
+            },
         )
 
     trace.append("clarify_before_route")
@@ -92,5 +127,14 @@ def trace_decision(decision_input: Any) -> object:
         reason="decision input is traceable but route intent is unclear",
         next_modules=[],
         standby=["REDR", "PSP2", "LRC2"],
-        details={"trace": trace, "markers": markers, "review_state": review_state, "payload": payload},
+        review=True,
+        details={
+            "trace": trace,
+            "markers": markers,
+            "review_state": review_state,
+            "route_scope": route_scope,
+            "unknown_routes": list(unknown_routes),
+            "cross_routes": list(cross_routes),
+            "payload": payload,
+        },
     )
