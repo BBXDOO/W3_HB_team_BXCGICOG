@@ -7,6 +7,7 @@ import json
 import sys
 import urllib.error
 import urllib.request
+from argparse import Namespace
 from typing import Any
 
 API_URL = "http://127.0.0.1:8000/w3/cross"
@@ -32,6 +33,63 @@ def get_json(url: str) -> dict[str, Any]:
 
 def _print_json(payload: Any) -> None:
     print(json.dumps(payload, indent=2, ensure_ascii=False))
+
+
+def build_payload(args: Namespace) -> dict[str, Any]:
+    """Build a W3-API cross payload from CLI/test args without network access."""
+    payload: dict[str, Any] = {}
+    raw_payload_json = getattr(args, "payload_json", None)
+    if raw_payload_json:
+        loaded = json.loads(raw_payload_json)
+        if not isinstance(loaded, dict):
+            raise ValueError("payload_json must decode to an object")
+        payload.update(loaded)
+
+    focus = getattr(args, "focus", None)
+    contract = getattr(args, "contract", None)
+    data = getattr(args, "data", None)
+    if focus:
+        payload["focus"] = focus
+    if contract:
+        payload["contract"] = contract
+    if data:
+        payload["data"] = data if isinstance(data, str) else " ".join(str(item) for item in data)
+
+    return {
+        "source": getattr(args, "source", "BBX19"),
+        "intent": getattr(args, "intent", "review"),
+        "target": getattr(args, "target", "W3"),
+        "mode": getattr(args, "mode", "cross"),
+        "payload": payload,
+    }
+
+
+def render_markdown(result: dict[str, Any]) -> str:
+    """Render a gateway-only markdown summary without mutating repo files."""
+    signal = result.get("signal", {}) or {}
+    w3db = signal.get("w3db", {}) or {}
+    ep_signal = signal.get("ep_signal", {}) or {}
+    mutated = str(signal.get("mutated", result.get("mutated", False))).lower()
+
+    return "\n".join(
+        [
+            "# W3-API Cross Gateway Result",
+            "",
+            f"ID: `{result.get('id', '-')}`",
+            f"Status: `{result.get('status', '-')}`",
+            "Boundary: `gateway-only`",
+            f"Mutated: `{mutated}`",
+            "",
+            "## W3Lgu",
+            "```text",
+            str(result.get("w3lgu", "-")),
+            "```",
+            "",
+            "## Signal",
+            f"- W3DB mode: `{w3db.get('mode', '-')}`",
+            f"- EP_SIGNAL mode: `{ep_signal.get('mode', '-')}`",
+        ]
+    )
 
 
 def pretty(result: dict[str, Any], *, intent: str, target: str, focus: str) -> None:
@@ -77,9 +135,11 @@ Usage:
   python tools/w3api.py review DTML law
   python tools/w3api.py review W3 system
   python tools/w3api.py design W3 general
+  python tools/w3api.py --health
+  python tools/w3api.py review W3 system --write-md out.md
 
 Format:
-  python tools/w3api.py <intent> <target> <focus> [data...]
+  python tools/w3api.py <intent> <target> <focus> [data...] [--source BBX19] [--mode cross] [--contract observe_only] [--payload-json '{}']
 
 Server:
   python -m uvicorn w3_api.main:app --host 127.0.0.1 --port 8000
@@ -103,7 +163,7 @@ def main() -> int:
         usage()
         return 0
 
-    if sys.argv[1] == "health":
+    if sys.argv[1] in ("health", "--health"):
         try:
             _print_json(get_json(HEALTH_URL))
             return 0

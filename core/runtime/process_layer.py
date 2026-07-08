@@ -29,6 +29,8 @@ PROCESS_REFERENCES = (
     "core/runtime/process_layer.py",
 )
 PROCESS_STAGES = ("REDR", "PSP2", "DTML", "LRC2")
+LOCAL_W3LGU_TARGETS = {"REDR", "PSP2", "DTML", "LRC2", "W3LGU"}
+CROSS_SERIES_TARGETS = {"PX", "W3DB", "W3DB_APPEND", "EP_SIGNAL", "EP_SIGNAL_RYTM", "HOSPITICATION", "IGET", "WHUB", "WHOME", "W3-API"}
 
 
 def _now_iso() -> str:
@@ -57,6 +59,7 @@ class ProcessPackage:
     timestamp: str = field(default_factory=_now_iso)
     tags: tuple[str, ...] = ()
     duplicate_to: tuple[str, ...] = ("PSP2", "LRC2")
+    route_scope: str = "unknown"
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -69,6 +72,7 @@ class ProcessPackage:
             "timestamp": self.timestamp,
             "tags": list(self.tags),
             "duplicate_to": list(self.duplicate_to),
+            "route_scope": self.route_scope,
         }
 
 
@@ -137,6 +141,7 @@ def build_process_package(
         "payload": dict(payload or {}),
     }
     tags = _derive_tags(intent=intent, target=target or "auto", payload=dict(payload or {}))
+    route_scope = _route_scope(target or "auto", payload=dict(payload or {}))
     return ProcessPackage(
         package_id=_stable_id("PKG", body),
         source=source,
@@ -146,6 +151,7 @@ def build_process_package(
         payload=dict(payload or {}),
         timestamp=timestamp or _now_iso(),
         tags=tags,
+        route_scope=route_scope,
     )
 
 
@@ -212,35 +218,53 @@ def inspect_memory_status() -> dict[str, Any]:
 
 
 def _redr_stage(package: ProcessPackage) -> StageRecord:
+    inventory = _route_inventory(package)
     return StageRecord(
         stage="REDR",
         action="read_classify_package",
         status="packaged",
         summary="REDR classified intent, applied tags, and duplicated package pointers to PSP2 and LRC2.",
-        data={"tags": list(package.tags), "duplicate_to": list(package.duplicate_to)},
+        data={
+            "tags": list(package.tags),
+            "duplicate_to": list(package.duplicate_to),
+            "route_scope": package.route_scope,
+            "cross_routes": inventory["cross_routes"],
+            "unknown_routes": inventory["unknown_routes"],
+            "execute_allowed": False,
+        },
     )
 
 
 def _psp2_stage(package: ProcessPackage) -> StageRecord:
     route = ["W3Lgu", "PX", package.target, "LRC2"]
+    inventory = _route_inventory(package, route=route)
     return StageRecord(
         stage="PSP2",
         action="stamp_route_only",
-        status="routed",
+        status="review_required" if package.route_scope in {"cross_series", "mixed", "unknown"} else "routed",
         summary="PSP2 stamped the package and produced a route-only handoff trace.",
-        data={"stamp": f"PSP2:{package.package_id}", "route": route},
+        data={
+            "stamp": f"PSP2:{package.package_id}",
+            "route": route,
+            "route_scope": package.route_scope,
+            "cross_routes": inventory["cross_routes"],
+            "unknown_routes": inventory["unknown_routes"],
+            "execute_allowed": False,
+        },
     )
 
 
 def _dtml_stage(package: ProcessPackage) -> StageRecord:
     risk = _risk_level(package.intent, package.payload)
     status = "review_required" if risk in {"yellow", "red"} else "approved_for_plan"
+    if package.route_scope in {"cross_series", "mixed", "unknown"}:
+        status = "review_required"
     return StageRecord(
         stage="DTML",
         action="inspect_destination_and_signal",
         status=status,
         summary="DTML inspected destination, signal, and intent; no execution authority was granted.",
-        data={"risk": risk, "target": package.target, "execute_allowed": False},
+        data={"risk": risk, "target": package.target, "route_scope": package.route_scope, "execute_allowed": False},
     )
 
 
@@ -250,7 +274,13 @@ def _lrc2_stage(package: ProcessPackage, *, process_id: str, decision: StageReco
         action="memory_log_preview",
         status="ready_to_append",
         summary="LRC2 prepared an immutable memory/log preview; no memory or W3DB write was performed.",
-        data={"process_id": process_id, "package_id": package.package_id, "decision": decision.status},
+        data={
+            "process_id": process_id,
+            "package_id": package.package_id,
+            "route_scope": package.route_scope,
+            "route_stamp": f"PSP2:{package.package_id}",
+            "decision": decision.status,
+        },
     )
 
 
@@ -282,3 +312,59 @@ def _risk_level(intent: str, payload: Mapping[str, Any]) -> str:
     if any(word in text for word in ("mutate", "execute", "deploy", "merge", "public")):
         return "yellow"
     return "green"
+
+
+def _normalize_target(value: str) -> str:
+    return str(value or "").upper().strip().replace(" ", "_")
+
+
+def _route_inventory(package: ProcessPackage, *, route: list[str] | None = None) -> dict[str, list[str]]:
+    candidates = [_normalize_target(package.target)]
+    explicit = package.payload.get("next") or package.payload.get("next_modules") or []
+    if isinstance(explicit, str):
+        candidates.append(_normalize_target(explicit))
+    else:
+        try:
+            candidates.extend(_normalize_target(item) for item in explicit)
+        except TypeError:
+            candidates.append(_normalize_target(explicit))
+    if route:
+        candidates.extend(_normalize_target(item) for item in route)
+
+    cross = []
+    unknown = []
+    for candidate in candidates:
+        if not candidate or candidate in {"AUTO", "W3", "MAIN"}:
+            continue
+        if candidate in CROSS_SERIES_TARGETS:
+            if candidate not in cross:
+                cross.append(candidate)
+        elif candidate not in LOCAL_W3LGU_TARGETS and candidate not in unknown:
+            unknown.append(candidate)
+    return {"cross_routes": cross, "unknown_routes": unknown}
+
+
+def _route_scope(target: str, payload: Mapping[str, Any]) -> str:
+    candidates = {_normalize_target(target)}
+    explicit = payload.get("next") or payload.get("next_modules") or []
+    if isinstance(explicit, str):
+        candidates.add(_normalize_target(explicit))
+    else:
+        try:
+            candidates.update(_normalize_target(item) for item in explicit)
+        except TypeError:
+            candidates.add(_normalize_target(explicit))
+
+    candidates.discard("")
+    local = bool(candidates & LOCAL_W3LGU_TARGETS)
+    cross = bool(candidates & CROSS_SERIES_TARGETS)
+    unknown = bool(candidates - LOCAL_W3LGU_TARGETS - CROSS_SERIES_TARGETS - {"AUTO", "W3", "MAIN"})
+    if sum(bool(item) for item in (local, cross, unknown)) > 1:
+        return "mixed"
+    if cross:
+        return "cross_series"
+    if local:
+        return "local_w3lgu"
+    if unknown:
+        return "unknown"
+    return "local_w3lgu"
