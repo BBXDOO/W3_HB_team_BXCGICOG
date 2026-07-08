@@ -237,19 +237,27 @@ def _redr_stage(package: ProcessPackage) -> StageRecord:
 
 def _psp2_stage(package: ProcessPackage) -> StageRecord:
     route = ["W3Lgu", "PX", package.target, "LRC2"]
-    cross_routes = [name for name in route if _normalize_target(name) in CROSS_SERIES_TARGETS]
-    unknown_routes = [] if package.route_scope != "unknown" else [package.target]
+    inventory = _route_inventory(package, route=route)
+    stamped_scope = _inventory_scope(inventory)
+    bridge_contract = bool(
+        package.payload.get("bridge_contract")
+        or package.payload.get("adapter_contract")
+        or package.payload.get("bridge")
+        or package.payload.get("adapter")
+    )
+    needs_review = bool(inventory["unknown_routes"]) or (bool(inventory["cross_routes"]) and not bridge_contract)
     return StageRecord(
         stage="PSP2",
         action="stamp_route_only",
-        status="review_required" if package.route_scope in {"cross_series", "mixed", "unknown"} else "routed",
+        status="review_required" if needs_review else "routed",
         summary="PSP2 stamped the package and produced a route-only handoff trace.",
         data={
             "stamp": f"PSP2:{package.package_id}",
             "route": route,
-            "route_scope": package.route_scope,
-            "cross_routes": cross_routes,
-            "unknown_routes": unknown_routes,
+            "route_scope": stamped_scope,
+            "cross_routes": inventory["cross_routes"],
+            "unknown_routes": inventory["unknown_routes"],
+            "bridge_contract": bridge_contract,
             "execute_allowed": False,
         },
     )
@@ -317,6 +325,44 @@ def _risk_level(intent: str, payload: Mapping[str, Any]) -> str:
 
 def _normalize_target(value: str) -> str:
     return str(value or "").upper().strip().replace(" ", "_")
+
+
+def _route_inventory(package: ProcessPackage, *, route: list[str] | None = None) -> dict[str, list[str]]:
+    candidates = [_normalize_target(package.target)]
+    explicit = package.payload.get("next") or package.payload.get("next_modules") or []
+    if isinstance(explicit, str):
+        candidates.append(_normalize_target(explicit))
+    else:
+        try:
+            candidates.extend(_normalize_target(item) for item in explicit)
+        except TypeError:
+            candidates.append(_normalize_target(explicit))
+    if route:
+        candidates.extend(_normalize_target(item) for item in route)
+
+    cross = []
+    unknown = []
+    for candidate in candidates:
+        if not candidate or candidate in {"AUTO", "W3", "MAIN"}:
+            continue
+        if candidate in CROSS_SERIES_TARGETS:
+            if candidate not in cross:
+                cross.append(candidate)
+        elif candidate not in LOCAL_W3LGU_TARGETS and candidate not in unknown:
+            unknown.append(candidate)
+    return {"cross_routes": cross, "unknown_routes": unknown}
+
+
+def _inventory_scope(inventory: Mapping[str, list[str]]) -> str:
+    cross = bool(inventory.get("cross_routes"))
+    unknown = bool(inventory.get("unknown_routes"))
+    if cross and unknown:
+        return "mixed"
+    if cross:
+        return "cross_series"
+    if unknown:
+        return "unknown"
+    return "local_w3lgu"
 
 
 def _route_scope(target: str, payload: Mapping[str, Any]) -> str:

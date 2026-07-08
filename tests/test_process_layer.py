@@ -38,6 +38,17 @@ def test_process_layer_runs_four_stages_without_mutation():
     assert body["w3db_status"]["stats"] == {"xiz": 0, "tuf": 0, "fbd": 0, "whb": 0, "prx": 0}
 
 
+def test_process_layer_reviews_stamped_cross_hop_for_local_target():
+    result = run_w3_process_layer(source="REDR", intent="handoff locally", target="REDR")
+    psp2 = result.to_dict()["stages"][1]
+
+    assert psp2["status"] == "review_required"
+    assert psp2["data"]["route_scope"] == "cross_series"
+    assert "PX" in psp2["data"]["cross_routes"]
+    assert psp2["data"]["unknown_routes"] == []
+    assert psp2["data"]["execute_allowed"] is False
+
+
 def test_process_layer_marks_risky_intent_for_review():
     result = run_w3_process_layer(source="Codex", intent="delete public token", target="main")
 

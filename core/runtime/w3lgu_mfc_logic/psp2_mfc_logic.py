@@ -5,11 +5,11 @@ from typing import Any, Dict, Iterable, List, Mapping
 
 from .contracts import ACTIVE, REVIEW_REQUIRED, WAIT, make_result, normalize_text
 
-LOCAL_W3LGU_MODULES = ["REDR", "PSP2", "DTML", "LRC2"]
+LOCAL_W3LGU_MODULES = ["REDR", "PSP2", "DTML", "LRC2", "W3LGU"]
 CROSS_SERIES_SYSTEMS = [
     "W3-API",
-    "W3LGU",
     "PX",
+    "W3DB",
     "W3DB_APPEND",
     "EP_SIGNAL",
     "EP_SIGNAL_RYTM",
@@ -36,56 +36,26 @@ IDENTITY_FIELDS = (
     "successor",
     "owner_scope",
 )
-NODE_REGISTRY: Dict[str, str] = {
-    "REDR": "ni:redr",
-    "DTML": "ni:dtml",
-    "LRC2": "ni:lrc2",
-    "MNPS": "ni:mnps",
-    "TL-S": "ni:tls",
-}
-CROSS_PREFIX = "xs:"
-ROOM_ORDER = ["CA", "CU", "RE", "SI", "AP", "EV"]
-
-
-def register_node(target: str, address: str) -> None:
-    NODE_REGISTRY[target.upper().strip()] = address
 
 
 def _as_payload(package: Any) -> Dict[str, Any]:
     if isinstance(package, Mapping):
-        return dict(package)
+        payload = dict(package)
+        details = payload.get("details") if isinstance(payload.get("details"), Mapping) else {}
+        nested_package = details.get("package") if isinstance(details.get("package"), Mapping) else {}
+        source_payload = nested_package.get("source_payload") if isinstance(nested_package.get("source_payload"), Mapping) else {}
+        if nested_package:
+            merged = dict(source_payload)
+            merged.update(nested_package)
+            merged.update(payload)
+            payload = merged
+        return payload
     return {"text": normalize_text(package)}
 
 
 def _stable_stamp(payload: Dict[str, Any]) -> str:
     raw = normalize_text(payload)
     return sha1(raw.encode("utf-8")).hexdigest()[:12]
-
-
-def generate_px_stamp(package: Dict[str, Any], system_id: str = "") -> str:
-    raw = package.get("package_id") or package.get("_px") or str(package)
-    digest = sha1(raw.encode("utf-8")).hexdigest()
-    seq = int(digest[:4], 16) % 9999 + 1
-    room = _resolve_room(package)
-    px = f"LN{room}'{seq:04d}"
-    if system_id:
-        px = f"{system_id}/{px}"
-    return f"PX:{px}"
-
-
-def _resolve_room(package: Dict[str, Any]) -> str:
-    room = package.get("_room", "CU").upper().strip()
-    if room in ROOM_ORDER:
-        return room
-    return "CU"
-
-
-def resolve_node(target: str) -> str:
-    t = target.upper().strip()
-    node = NODE_REGISTRY.get(t)
-    if node:
-        return node
-    return f"{CROSS_PREFIX}{t.lower()}"
 
 
 def _normalize_name(value: Any) -> str:
@@ -110,6 +80,27 @@ def _normalize_modules(value: Any) -> List[str]:
         if name in KNOWN_MODULES and name not in modules:
             modules.append(name)
     return modules
+
+
+def _route_candidates(payload: Mapping[str, Any]) -> List[Any]:
+    candidates: List[Any] = []
+    for key in ("next", "next_modules", "target"):
+        candidates.extend(_iter_values(payload.get(key)))
+
+    details = payload.get("details") if isinstance(payload.get("details"), Mapping) else {}
+    package = details.get("package") if isinstance(details.get("package"), Mapping) else payload.get("package")
+    package = package if isinstance(package, Mapping) else {}
+    source_payload = package.get("source_payload") if isinstance(package.get("source_payload"), Mapping) else {}
+    for source in (package, source_payload):
+        for key in ("next", "next_modules", "target"):
+            candidates.extend(_iter_values(source.get(key)))
+
+    deduped: List[Any] = []
+    for item in candidates:
+        name = _normalize_name(item)
+        if name and name not in {_normalize_name(existing) for existing in deduped}:
+            deduped.append(item)
+    return deduped
 
 
 def _route_inventory(value: Any) -> Dict[str, List[str]]:
@@ -156,11 +147,7 @@ def _identity(payload: Mapping[str, Any], stamp: str, route_scope: str) -> Dict[
     identity: Dict[str, Any] = {}
     unknown = []
     for field in IDENTITY_FIELDS:
-        value = payload.get(field)
-        if value in (None, ""):
-            value = package_identity.get(field)
-        if value in (None, ""):
-            value = package.get(field)
+        value = payload.get(field, package_identity.get(field, package.get(field)))
         if value in (None, ""):
             unknown.append(field)
         else:
@@ -175,7 +162,12 @@ def _identity(payload: Mapping[str, Any], stamp: str, route_scope: str) -> Dict[
 
 
 def validate_routing_path(route_plan: Any) -> bool:
-    """Validate the explicit handoff path used by :class:`PSP2Agent`."""
+    """Validate the explicit handoff path used by :class:`PSP2Agent`.
+
+    PSP2 may stamp a package but must not hand it to itself or repeat a hop.
+    Unknown destinations are allowed only as preserved review routes; callers
+    must not silently drop them.
+    """
     if isinstance(route_plan, (str, bytes)):
         return False
 
@@ -202,7 +194,7 @@ def validate_routing_path(route_plan: Any) -> bool:
 def _detect_route(payload: Dict[str, Any], text: str) -> List[str]:
     route_path: List[str] = []
 
-    inventory = _route_inventory(payload.get("next") or payload.get("next_modules") or payload.get("target"))
+    inventory = _route_inventory(_route_candidates(payload))
     for module in [*inventory["local"], *inventory["cross"], *inventory["unknown"]]:
         if module != "PSP2" and module not in route_path:
             route_path.append(module)
@@ -219,7 +211,12 @@ def _detect_route(payload: Dict[str, Any], text: str) -> List[str]:
 
 
 def route_package(package: Any) -> object:
-    """Create a route stamp and handoff preview for a W3Lgu package."""
+    """Create a route stamp and handoff preview for a W3Lgu package.
+
+    PSP2's standard MFC role is:
+    package in -> route stamp -> next module list -> standby list.
+    It does not execute the target module.
+    """
 
     payload = _as_payload(package)
     text = normalize_text(payload).lower()
@@ -237,13 +234,18 @@ def route_package(package: Any) -> object:
             details={"payload": payload, "route_quality": "none"},
         )
 
-    explicit_value = payload.get("next") or payload.get("next_modules") or payload.get("target")
+    explicit_value = _route_candidates(payload)
     inventory = _route_inventory(explicit_value)
     route_path = _detect_route(payload, text)
     route_quality = "explicit" if explicit_value else "inferred"
     stamp = _stable_stamp(payload)
     route_scope = _route_scope(inventory["local"], inventory["cross"], inventory["unknown"])
-    bridge_contract = bool(payload.get("bridge_contract") or payload.get("adapter_contract"))
+    bridge_contract = bool(
+        payload.get("bridge_contract")
+        or payload.get("adapter_contract")
+        or payload.get("bridge")
+        or payload.get("adapter")
+    )
     review_required = (
         payload.get("status") == REVIEW_REQUIRED
         or bool(inventory["unknown"])

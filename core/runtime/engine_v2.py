@@ -11,12 +11,19 @@ from core.runtime.agents import get_agent
 MAX_WORKERS = 3
 W3LGU_RUNTIME_MODULES = {"REDR", "PSP2", "DTML", "LRC2"}
 W3LGU_REQUIRED_RESULT_FIELDS = {
-    "status",
+    "confidence",
+    "decision",
+    "details",
+    "input_type",
     "module",
     "mutated",
+    "next",
+    "reason",
+    "standby",
+    "status",
     "traceable",
-    "review",
 }
+W3LGU_REQUIRED_IDENTITY_FIELDS = {"chain_id", "event_id", "package_id"}
 
 
 class EngineError(Exception):
@@ -68,17 +75,34 @@ def _memory_content(agent_result: Dict[str, Any]) -> str:
 def validate_agent_result(module_name: str, agent_result: Dict[str, Any]) -> Dict[str, Any]:
     """Return a non-mutating validation summary for engine result contracts."""
     missing = []
+    identity_missing = []
+    blocking_status = None
     if module_name in W3LGU_RUNTIME_MODULES:
         missing = sorted(field for field in W3LGU_REQUIRED_RESULT_FIELDS if field not in agent_result)
+        details = agent_result.get("details") if isinstance(agent_result.get("details"), dict) else {}
+        identity = details.get("identity") if isinstance(details.get("identity"), dict) else {}
+        identity_expected = bool(
+            details.get("route_scope")
+            or details.get("route_stamp")
+            or details.get("cross_routes")
+            or details.get("unknown_routes")
+            or agent_result.get("status") == "COMPLETED"
+        )
+        if identity_expected:
+            identity_missing = sorted(field for field in W3LGU_REQUIRED_IDENTITY_FIELDS if not identity.get(field))
+        if identity_missing:
+            blocking_status = "REVIEW_REQUIRED"
 
-    status = "valid" if not missing else "review_required"
+    status = "valid" if not missing and not identity_missing else "review_required"
     return {
         "status": status,
         "module": module_name,
         "missing_fields": missing,
+        "identity_missing_fields": identity_missing,
+        "blocking_status": blocking_status,
         "mutated": bool(agent_result.get("mutated", False)),
-        "traceable": bool(agent_result.get("traceable", True)) and not missing,
-        "review": bool(agent_result.get("review", False)) or bool(missing),
+        "traceable": bool(agent_result.get("traceable", True)) and not missing and not identity_missing,
+        "review": bool(agent_result.get("review", False)) or bool(missing) or bool(identity_missing),
     }
 
 

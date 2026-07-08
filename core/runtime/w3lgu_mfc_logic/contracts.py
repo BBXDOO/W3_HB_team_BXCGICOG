@@ -121,6 +121,6 @@ def make_result(
         standby=list(standby or []),
         mutated=bool(mutated),
         traceable=bool(traceable),
-        review=bool(review) if review is not None else normalized_status in {REVIEW_REQUIRED, WAIT, ERROR},
+        review=bool(review) if review is not None else normalized_status in {REVIEW_REQUIRED, WAIT, ERROR, UNAVAILABLE},
         details=dict(details or {}),
     )

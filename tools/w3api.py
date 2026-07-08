@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 import urllib.error
@@ -158,6 +159,23 @@ def _print_http_error(prefix: str, err: urllib.error.HTTPError) -> None:
         print("body:", body)
 
 
+def _parse_args(argv: list[str]) -> Namespace:
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("intent_pos", nargs="?")
+    parser.add_argument("target_pos", nargs="?")
+    parser.add_argument("focus_pos", nargs="?")
+    parser.add_argument("data", nargs="*")
+    parser.add_argument("--source", default="BBX19")
+    parser.add_argument("--intent", dest="intent_opt")
+    parser.add_argument("--target", dest="target_opt")
+    parser.add_argument("--mode", default="cross")
+    parser.add_argument("--focus")
+    parser.add_argument("--contract")
+    parser.add_argument("--payload-json", dest="payload_json")
+    parser.add_argument("--write-md")
+    return parser.parse_args(argv)
+
+
 def main() -> int:
     if len(sys.argv) == 1 or sys.argv[1] in ("help", "-h", "--help"):
         usage()
@@ -176,25 +194,19 @@ def main() -> int:
             print("  python -m uvicorn w3_api.main:app --host 127.0.0.1 --port 8000")
             return 1
 
-    intent = sys.argv[1]
-    target = sys.argv[2] if len(sys.argv) >= 3 else "W3"
-    focus = sys.argv[3] if len(sys.argv) >= 4 else "general"
-    data = " ".join(sys.argv[4:])
-
-    payload = {
-        "source": "BBX19",
-        "intent": intent,
-        "target": target,
-        "mode": "cross",
-        "payload": {
-            "focus": focus,
-            "data": data,
-        },
-    }
+    args = _parse_args(sys.argv[1:])
+    args.intent = args.intent_opt or args.intent_pos or "review"
+    args.target = args.target_opt or args.target_pos or "W3"
+    args.focus = args.focus or args.focus_pos or "general"
+    payload = build_payload(args)
 
     try:
         result = post_json(API_URL, payload)
-        pretty(result, intent=intent, target=target, focus=focus)
+        pretty(result, intent=payload["intent"], target=payload["target"], focus=payload["payload"].get("focus", "general"))
+        if args.write_md:
+            from pathlib import Path
+
+            Path(args.write_md).write_text(render_markdown(result), encoding="utf-8")
         return 0
     except urllib.error.HTTPError as err:
         _print_http_error("ERROR: API request failed", err)

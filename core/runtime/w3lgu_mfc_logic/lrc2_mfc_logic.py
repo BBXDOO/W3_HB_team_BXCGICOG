@@ -50,13 +50,27 @@ def _extract_identity(payload: Mapping[str, Any]) -> Dict[str, Any]:
     package_identity = package.get("identity") if isinstance(package, Mapping) and isinstance(package.get("identity"), Mapping) else {}
 
     merged: Dict[str, Any] = {}
-    for source in (package_identity, identity, payload):
+    details_summary = details.get("handoff_summary") or details.get("prior_stage_summary")
+    payload_summary = payload.get("reason") or payload.get("summary")
+
+    for source in (package_identity, identity, payload, details):
         if isinstance(source, Mapping):
-            for key in ("chain_id", "event_id", "package_id", "route_stamp", "route_scope", "source", "target"):
+            for key in EXPECTED_IDENTITY_FIELDS:
                 if key in source and source[key] not in (None, ""):
                     merged[key] = source[key]
+    if "prior_stage_summary" not in merged and (details_summary or payload_summary):
+        merged["prior_stage_summary"] = payload_summary or details_summary
+
+    missing = [field for field in EXPECTED_IDENTITY_FIELDS if not merged.get(field)]
     merged["mutated"] = False
     merged["traceable"] = True
+    if missing:
+        merged["unknown"] = {
+            "unknown": True,
+            "fields": missing,
+            "reason": "missing_from_input",
+            "review": True,
+        }
     return merged
 
 
@@ -104,7 +118,12 @@ def checkpoint_lifecycle(record: Any) -> object:
             "record_phase": record_phase,
             "identity": identity,
             "route_stamp": identity.get("route_stamp") or details.get("route_stamp"),
-            "prior_stage_summary": payload.get("reason") or payload.get("summary"),
+            "prior_stage_summary": identity.get("prior_stage_summary"),
+            "persistence": {
+                "mode": "preview_only",
+                "persisted": False,
+                "overwrite_historical_truth": False,
+            },
             "payload": payload,
         },
     )
