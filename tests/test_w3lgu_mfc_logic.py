@@ -1,7 +1,7 @@
 import unittest
 
 from core.runtime.w3lgu_mfc_logic.redr_mfc_logic import classify_event
-from core.runtime.w3lgu_mfc_logic.psp2_mfc_logic import route_package
+from core.runtime.w3lgu_mfc_logic.psp2_mfc_logic import generate_px_stamp, resolve_node, route_package
 from core.runtime.w3lgu_mfc_logic.dtml_mfc_logic import trace_decision
 from core.runtime.w3lgu_mfc_logic.lrc2_mfc_logic import checkpoint_lifecycle
 
@@ -30,6 +30,14 @@ class TestW3LguMFCLogic(unittest.TestCase):
         self.assertIn("DTML", data["next"])
         self.assertIn("route_stamp", data["details"])
         self.assertEqual(data["details"]["route_quality"], "explicit")
+
+    def test_psp2_generate_px_stamp_matches_route_package(self):
+        package = {"target": "DTML", "next": ["DTML"], "text": "trace route"}
+        result = route_package(package).as_dict()
+        self.assertEqual(generate_px_stamp(package), result["details"]["route_stamp"])
+
+    def test_psp2_resolve_node_returns_first_route_target(self):
+        self.assertEqual(resolve_node({"target": "PX", "next": ["PX"], "text": "cross route"}), "PX")
 
     def test_psp2_infers_lrc2_route_from_memory(self):
         result = route_package("memory checkpoint package")

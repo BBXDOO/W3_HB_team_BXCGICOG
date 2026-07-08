@@ -210,6 +210,19 @@ def _detect_route(payload: Dict[str, Any], text: str) -> List[str]:
     return route_path
 
 
+def generate_px_stamp(package: Any) -> str:
+    """Return the stable PSP2 route stamp for a package preview."""
+    payload = _as_payload(package)
+    return f"PSP2-{_stable_stamp(payload)}"
+
+
+def resolve_node(package: Any) -> str:
+    """Resolve the next node PSP2 would preview-route a package toward."""
+    payload = _as_payload(package)
+    text = normalize_text(payload).lower()
+    return _detect_route(payload, text)[0]
+
+
 def route_package(package: Any) -> object:
     """Create a route stamp and handoff preview for a W3Lgu package.
 
@@ -238,7 +251,7 @@ def route_package(package: Any) -> object:
     inventory = _route_inventory(explicit_value)
     route_path = _detect_route(payload, text)
     route_quality = "explicit" if explicit_value else "inferred"
-    stamp = _stable_stamp(payload)
+    stamp = generate_px_stamp(payload).removeprefix("PSP2-")
     route_scope = _route_scope(inventory["local"], inventory["cross"], inventory["unknown"])
     bridge_contract = bool(
         payload.get("bridge_contract")
