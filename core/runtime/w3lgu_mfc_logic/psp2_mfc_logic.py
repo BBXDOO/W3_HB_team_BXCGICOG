@@ -5,10 +5,9 @@ from typing import Any, Dict, Iterable, List, Mapping
 
 from .contracts import ACTIVE, REVIEW_REQUIRED, WAIT, make_result, normalize_text
 
-LOCAL_W3LGU_MODULES = ["REDR", "PSP2", "DTML", "LRC2"]
+LOCAL_W3LGU_MODULES = ["REDR", "PSP2", "DTML", "LRC2", "W3LGU"]
 CROSS_SERIES_SYSTEMS = [
     "W3-API",
-    "W3LGU",
     "PX",
     "W3DB",
     "W3DB_APPEND",
