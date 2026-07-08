@@ -70,6 +70,20 @@ class TestW3LguEventFieldLogic27(unittest.TestCase):
         self.assertTrue(result["details"]["proposal_only"])
         self.assertTrue(result["details"]["reference_only"])
 
+    def test_logic27_cannot_approve_execution(self):
+        field = build_event_field(
+            chain_id="chain-advisory",
+            event_id="event-advisory",
+            intent="route handoff ready",
+            confidence=0.9,
+        )
+        result = select_logic27(field).as_dict()
+        self.assertTrue(result["details"]["proposal_only"])
+        self.assertTrue(result["details"]["advisory_only"])
+        self.assertFalse(result["details"]["execution_allowed"])
+        self.assertFalse(result["details"]["approval_authority"])
+        self.assertFalse(result["mutated"])
+
 
 if __name__ == "__main__":
     unittest.main()

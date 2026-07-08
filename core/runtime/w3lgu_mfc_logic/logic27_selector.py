@@ -51,6 +51,7 @@ def select_logic27(value: EventField | dict[str, Any]) -> object:
 
     This selector is a W3Lgu MFC reference proof. It keeps cross/event identity
     in the return details and does not claim authority over other systems.
+    Logic27 is advisory/proposal-only and can never approve execution by itself.
     """
 
     field = _as_field(value)
@@ -86,7 +87,11 @@ def select_logic27(value: EventField | dict[str, Any]) -> object:
             "logic_slot": slot.to_dict(),
             "event_identity": event_identity,
             "event_field": field.to_dict(),
-            "proposal_only": slot.proposal_only,
+            "proposal_only": True,
+            "slot_proposal_only": slot.proposal_only,
             "reference_only": True,
+            "advisory_only": True,
+            "execution_allowed": False,
+            "approval_authority": False,
         },
     )

@@ -67,6 +67,7 @@ def _identity_map(payload: Mapping[str, Any]) -> Dict[str, Any]:
     identity["traceable"] = True
     if unknown:
         identity["unknown"] = {
+            "unknown": True,
             "fields": unknown,
             "reason": "missing_from_input",
             "review": True,

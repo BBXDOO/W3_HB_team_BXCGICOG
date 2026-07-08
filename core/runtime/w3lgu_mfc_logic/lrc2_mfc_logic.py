@@ -12,6 +12,16 @@ PHASE_MARKERS = {
     "memory": {"memory", "checkpoint", "record", "history", "continuity"},
     "trace": {"trace", "decision", "timeline", "verify"},
 }
+EXPECTED_IDENTITY_FIELDS = (
+    "chain_id",
+    "event_id",
+    "package_id",
+    "route_stamp",
+    "prior_stage_summary",
+    "route_scope",
+    "source",
+    "target",
+)
 
 
 def _as_payload(record: Any) -> Dict[str, Any]:

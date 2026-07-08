@@ -94,7 +94,20 @@ def run(task, request=None):
     try:
         agent_result = dispatch(plan["run_with"], task, plan, context)
         if not isinstance(agent_result, dict):
-            raise EngineError("Agent execute() must return a result dictionary.")
+            agent_result = {
+                "contract_version": "1.0",
+                "status": "UNAVAILABLE",
+                "module": plan["run_with"],
+                "task": task,
+                "action": "invalid_agent_result",
+                "summary": "Agent execute() returned a non-dictionary result; no task was completed.",
+                "reason": "Agent execute() must return a result dictionary.",
+                "artifacts": [],
+                "mutated": False,
+                "traceable": True,
+                "review": True,
+                "details": {"invalid_result_type": type(agent_result).__name__},
+            }
 
         status = str(agent_result.get("status") or "FAILED")
         summary = str(agent_result.get("summary") or "No result summary provided.")

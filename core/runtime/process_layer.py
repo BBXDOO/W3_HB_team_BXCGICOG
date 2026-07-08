@@ -218,12 +218,20 @@ def inspect_memory_status() -> dict[str, Any]:
 
 
 def _redr_stage(package: ProcessPackage) -> StageRecord:
+    inventory = _route_inventory(package)
     return StageRecord(
         stage="REDR",
         action="read_classify_package",
         status="packaged",
         summary="REDR classified intent, applied tags, and duplicated package pointers to PSP2 and LRC2.",
-        data={"tags": list(package.tags), "duplicate_to": list(package.duplicate_to)},
+        data={
+            "tags": list(package.tags),
+            "duplicate_to": list(package.duplicate_to),
+            "route_scope": package.route_scope,
+            "cross_routes": inventory["cross_routes"],
+            "unknown_routes": inventory["unknown_routes"],
+            "execute_allowed": False,
+        },
     )
 
 

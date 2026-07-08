@@ -25,6 +25,10 @@ def test_process_layer_runs_four_stages_without_mutation():
     assert body["package"]["package_id"].startswith("PKG-")
     assert [stage["stage"] for stage in body["stages"]] == ["REDR", "PSP2", "DTML", "LRC2"]
     assert body["stages"][0]["data"]["duplicate_to"] == ["PSP2", "LRC2"]
+    assert body["stages"][0]["data"]["route_scope"] == "cross_series"
+    assert "W3DB" in body["stages"][0]["data"]["cross_routes"]
+    assert body["stages"][0]["data"]["unknown_routes"] == []
+    assert body["stages"][0]["data"]["execute_allowed"] is False
     assert body["stages"][1]["action"] == "stamp_route_only"
     assert body["stages"][1]["data"]["route_scope"] == "cross_series"
     assert "PX" in body["stages"][1]["data"]["cross_routes"]
