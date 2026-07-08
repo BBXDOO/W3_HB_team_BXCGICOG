@@ -237,7 +237,8 @@ def _redr_stage(package: ProcessPackage) -> StageRecord:
 
 def _psp2_stage(package: ProcessPackage) -> StageRecord:
     route = ["W3Lgu", "PX", package.target, "LRC2"]
-    inventory = _route_inventory(package, route=route)
+    cross_routes = [name for name in route if _normalize_target(name) in CROSS_SERIES_TARGETS]
+    unknown_routes = [] if package.route_scope != "unknown" else [package.target]
     return StageRecord(
         stage="PSP2",
         action="stamp_route_only",
@@ -247,8 +248,8 @@ def _psp2_stage(package: ProcessPackage) -> StageRecord:
             "stamp": f"PSP2:{package.package_id}",
             "route": route,
             "route_scope": package.route_scope,
-            "cross_routes": inventory["cross_routes"],
-            "unknown_routes": inventory["unknown_routes"],
+            "cross_routes": cross_routes,
+            "unknown_routes": unknown_routes,
             "execute_allowed": False,
         },
     )
@@ -316,32 +317,6 @@ def _risk_level(intent: str, payload: Mapping[str, Any]) -> str:
 
 def _normalize_target(value: str) -> str:
     return str(value or "").upper().strip().replace(" ", "_")
-
-
-def _route_inventory(package: ProcessPackage, *, route: list[str] | None = None) -> dict[str, list[str]]:
-    candidates = [_normalize_target(package.target)]
-    explicit = package.payload.get("next") or package.payload.get("next_modules") or []
-    if isinstance(explicit, str):
-        candidates.append(_normalize_target(explicit))
-    else:
-        try:
-            candidates.extend(_normalize_target(item) for item in explicit)
-        except TypeError:
-            candidates.append(_normalize_target(explicit))
-    if route:
-        candidates.extend(_normalize_target(item) for item in route)
-
-    cross = []
-    unknown = []
-    for candidate in candidates:
-        if not candidate or candidate in {"AUTO", "W3", "MAIN"}:
-            continue
-        if candidate in CROSS_SERIES_TARGETS:
-            if candidate not in cross:
-                cross.append(candidate)
-        elif candidate not in LOCAL_W3LGU_TARGETS and candidate not in unknown:
-            unknown.append(candidate)
-    return {"cross_routes": cross, "unknown_routes": unknown}
 
 
 def _route_scope(target: str, payload: Mapping[str, Any]) -> str:

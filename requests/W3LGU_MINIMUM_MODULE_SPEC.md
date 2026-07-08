@@ -11,10 +11,6 @@ IMPLEMENTATION NOTE: 2026-07-07 alignment pass added minimum route preservation,
 review flags, runtime validation summaries, and no-fake-success behavior for the
 core surfaces listed in this request.
 
-IMPLEMENTATION NOTE: 2026-07-08 checklist closure pass made W3Lgu runtime
-validation strict, added explicit LRC2 unknown identity objects, carried route
-metadata through REDR stage records, and documented Logic27 as advisory-only.
-
 ---
 
 ## 1. Purpose
@@ -346,14 +342,14 @@ Minimum next step:
 | Surface | Status | Reason |
 | --- | --- | --- |
 | `core/runtime/agents/base.py` | PASS | Safe fallback prevents fabricated completion. |
-| `core/runtime/engine_v2.py` | PASS for minimum checklist | Strict W3Lgu field validation exists; non-dict agent outputs become non-success review results; success remains `COMPLETED` only. |
+| `core/runtime/engine_v2.py` | PARTIAL | Traceable dispatch exists and result validation summary was added; strict W3Lgu adapter boundary remains future work. |
 | `core/runtime/engine.py` | PASS for no-fake-success | Legacy placeholder no longer reports `SUCCESS`; it returns `UNAVAILABLE`. |
-| `core/runtime/process_layer.py` | PASS for plan-only route metadata | REDR/PSP2/DTML/LRC2 stages preserve route scope/cross/unknown metadata without external execution. |
+| `core/runtime/process_layer.py` | PARTIAL | Plan-only flow now carries route scope/cross-route metadata; no external execution is connected. |
 | `redr_mfc_logic.py` | PARTIAL | Package/tag/copy behavior and identity preservation exist; broader package-source coverage remains. |
 | `psp2_mfc_logic.py` | PARTIAL | Local/cross/unknown routes are preserved; adapter execution remains intentionally disconnected. |
 | `dtml_mfc_logic.py` | PARTIAL | Review trace covers unknown/cross route metadata; bridge-contract policy needs deeper rules. |
-| `lrc2_mfc_logic.py` | PASS for preview identity checklist | Checkpoint preview preserves route stamp/prior summary/identity and emits explicit unknown objects for missing identity fields. |
-| `logic27_selector.py` | PASS for advisory guard | Event identity is preserved and Logic27 is explicitly advisory/proposal-only with no execution approval authority. |
+| `lrc2_mfc_logic.py` | PARTIAL | Checkpoint preview preserves route stamp/identity; immutable append adapter remains future work. |
+| `logic27_selector.py` | PARTIAL | Event identity preserved; advisory-only authority needs explicit guard test/doc. |
 
 ---
 

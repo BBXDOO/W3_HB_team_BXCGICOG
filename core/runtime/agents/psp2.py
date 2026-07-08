@@ -1,76 +1,99 @@
+"""
+PSP2 (Pointer Stamp) — สถานีขนส่งพัสดุดิจิทัล
+
+หัวใจ: รับ package -> ประทับตรา PX -> ส่งต่อผ่าน Nodes
+ไม่ตรวจสอบเนื้อหา, ไม่แก้ไข payload, ไม่ infer
+ออกแบบเผื่อ cross-system และ WHUB ในอนาคต
+
+Event Chain: REDR -> PSP2 -> DTML -> LRC2
+"""
+
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict
 from .base import RuntimeAgent
-from ..w3lgu_mfc_logic.psp2_mfc_logic import validate_routing_path
+from ..w3lgu_mfc_logic.psp2_mfc_logic import generate_px_stamp, resolve_node
+
 
 class PSP2Agent(RuntimeAgent):
     module_name = "PSP2"
-    action_label = "stamped, routed, and dispatched event"
-    mpcp_role = "pointer_stamp_dispatcher"
+    action_label = "stamped and forwarded"
+    mpcp_role = "pointer_stamp"
     mpcp_concepts = [
-        "pointer",
-        "stamp",
-        "route",
-        "dispatch",
-        "validate",
-        "log",
-        "handoff",
-        "px_anchor",
-        "no_mutation"
+        "pointer", "stamp", "forward", "node",
+        "dispatch", "px", "no_mutation", "cross_system",
+        "ni", "no",
     ]
 
-    def _generate_stamp(self, package_id: str) -> str:
-        """สร้างร่องรอยการขนส่งพัสดุในพื้นที่."""
-        return f"STAMP-{self.module_name}-{package_id}"
+    # ------------------------------------------------------------------
+    # PSP2 specific API
+    # ------------------------------------------------------------------
 
-    def dispatch(
-        self,
-        package: Dict[str, Any],
-        route_plan: List[str]
-    ) -> Dict[str, Any]:
-        """
-        PSP2 ไม่ดัดแปลงเนื้อหา แต่จะประทับตรา PX และส่งต่อตามแผน.
-        """
-        package_id = package.get("package_id", "UNKNOWN")
-        
-        # ลอจิกแกร่ง: ตรวจสอบเส้นทางก่อนเคลื่อนย้าย
-        if not validate_routing_path(route_plan):
-            return {"status": "FAILED", "reason": "INVALID_ROUTE"}
+    @staticmethod
+    def stamp(package: Dict[str, Any], system_id: str = "") -> str:
+        """สร้าง PX stamp จากพิกัด package
 
-        # ประทับตราการขนส่ง (Non-mutation of payload)
-        package["_psp2_stamp"] = self._generate_stamp(package_id)
-        package["_last_hop"] = self.module_name
-
-        return {
-            "status": "DISPATCHED",
-            "package": package,
-            "next_stops": route_plan,
-            "stamped": True
-        }
-
-    def run(
-        self,
-        package: Dict[str, Any],
-        route_plan: Optional[List[str]] = None
-    ) -> str:
+        ไม่แก้ไข package เดิม, ไม่ inspect เนื้อหา
         """
-        ทำงานตามวงจรของ Event Chain: รับพัสดุ -> Stamp -> ส่งต่อ.
+        px = package.get("_px", "")
+        if not px:
+            px = generate_px_stamp(package, system_id)
+        return px
+
+    @staticmethod
+    def _select_node(package: Dict[str, Any]) -> str:
+        """เลือก node ปลายทางจากข้อมูลใน package
+
+        ถ้ามี 'to' ใช้ resolve node ตามนั้น
+        ถ้าไม่มี ส่งไป LRC2 ตาม Event Chain ปกติ
         """
-        route_plan = route_plan or []
-        result = self.dispatch(package, route_plan)
-        
-        status = result.get("status", "UNKNOWN")
-        stamped = result.get("stamped", False)
-        
+        target = package.get("to", "LRC2")
+        return resolve_node(target)
+
+    # ------------------------------------------------------------------
+    # RuntimeAgent interface
+    # ------------------------------------------------------------------
+
+    def run(self, task: str, plan: Dict[str, Any], context: Dict[str, Any]) -> str:
+        """รับ task -> stamp -> forward -> สรุปผล"""
+        package = plan.get("package", {})
+        system_id = context.get("system_id", "")
+        px_stamp = self.stamp(package, system_id)
+        node = self._select_node(package)
+
         return (
             f"{self.module_name} ({self.mpcp_role}) "
             f"{self.action_label} | "
-            f"status: {status} | "
-            f"stamp: {stamped} | "
-            f"trace: {package.get('package_id')} | "
-            f"next: {route_plan} | "
+            f"task: {task} | "
+            f"stamp: {px_stamp} | "
+            f"via: {node} | "
             f"mutated: False"
         )
+
+    def execute(self, task: str, plan: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
+        """Return structured result สำหรับ cross-system chain"""
+        package = plan.get("package", {})
+        system_id = context.get("system_id", "")
+        px_stamp = self.stamp(package, system_id)
+        node = self._select_node(package)
+
+        return {
+            "contract_version": "1.0",
+            "module": self.module_name,
+            "status": "DISPATCHED",
+            "task": task,
+            "action": "stamp_and_forward",
+            "stamp": px_stamp,
+            "node": node,
+            "mutated": False,
+            "traceable": True,
+            "package_id": package.get("package_id", "UNKNOWN"),
+            "summary": (
+                f"PSP2 stamped {px_stamp} and forwarded via {node}"
+            ),
+            "artifacts": [{"type": "stamp", "value": px_stamp}],
+            "review": False,
+        }
+
 
 __all__ = ["PSP2Agent"]

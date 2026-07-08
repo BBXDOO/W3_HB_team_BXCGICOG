@@ -1,0 +1,11 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "autoupdate": false,
+  "snapshot": true,
+  "compaction": {
+    "auto": true,
+    "tail_turns": 15
+  },
+  "formatter": false,
+  "lsp": false
+}

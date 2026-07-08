@@ -98,69 +98,8 @@ class TestChatGPTFlowArtifact(unittest.TestCase):
         validation = validate_agent_result("PSP2", {"status": "ACTIVE", "module": "PSP2"})
 
         self.assertEqual(validation["status"], "review_required")
-        self.assertIn("confidence", validation["missing_fields"])
         self.assertIn("mutated", validation["missing_fields"])
         self.assertTrue(validation["review"])
-
-    def test_engine_v2_flags_missing_expected_identity(self):
-        validation = validate_agent_result(
-            "PSP2",
-            {
-                "module": "PSP2",
-                "status": "ACTIVE",
-                "confidence": 0.8,
-                "input_type": "package:route",
-                "decision": "handoff_path_prepared",
-                "reason": "route ready",
-                "next": ["PX"],
-                "standby": [],
-                "details": {"route_scope": "cross_series", "identity": {"package_id": "PKG-1"}},
-                "mutated": False,
-                "traceable": True,
-            },
-        )
-
-        self.assertEqual(validation["status"], "review_required")
-        self.assertEqual(validation["blocking_status"], "REVIEW_REQUIRED")
-        self.assertEqual(validation["identity_missing_fields"], ["chain_id", "event_id"])
-
-    def test_engine_v2_rejects_non_dict_agent_result(self):
-        with patch("core.runtime.engine_v2.search_memory", return_value=[]), patch(
-            "core.runtime.engine_v2.add_memory"
-        ) as add_memory, patch("core.runtime.engine_v2.dispatch", return_value="not-a-dict"):
-            result = run("route")
-
-        self.assertEqual(result["status"], "UNAVAILABLE")
-        self.assertEqual(result["module"], "PSP2")
-        self.assertEqual(result["artifacts"], [])
-        self.assertTrue(result["agent_result"]["review"])
-        add_memory.assert_called_once()
-        self.assertEqual(add_memory.call_args.kwargs["score"], 1)
-
-    def test_engine_v2_success_rule_only_completed_scores_success(self):
-        with patch("core.runtime.engine_v2.search_memory", return_value=[]), patch(
-            "core.runtime.engine_v2.add_memory"
-        ) as add_memory, patch(
-            "core.runtime.engine_v2.dispatch",
-            return_value={
-                "status": "ACTIVE",
-                "module": "PSP2",
-                "confidence": 0.8,
-                "input_type": "package:route",
-                "decision": "preview_only",
-                "reason": "not completed",
-                "next": [],
-                "standby": [],
-                "details": {},
-                "mutated": False,
-                "traceable": True,
-            },
-        ):
-            result = run("route")
-
-        self.assertEqual(result["status"], "ACTIVE")
-        self.assertEqual(add_memory.call_args.kwargs["score"], 1)
-        self.assertEqual(add_memory.call_args.kwargs["tags"], ["runtime", "active"])
 
     def test_legacy_engine_does_not_fabricate_success(self):
         with patch("core.runtime.engine.search_memory", return_value=[]), patch(

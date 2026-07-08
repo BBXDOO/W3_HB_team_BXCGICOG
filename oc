@@ -1,0 +1,5 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# opencode wrapper — optimized for Termux
+exec env \
+  OPENCODE_DISABLE_DEFAULT_PLUGINS=1 \
+  opencode "$@"
