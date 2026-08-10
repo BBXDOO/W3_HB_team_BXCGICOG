@@ -1,34 +1,33 @@
-from typing import Dict, Any, List, Optional
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+import re
+import tempfile
+import uuid
 from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, List
+
 from .base import RuntimeAgent
 
 
 class GrokAgent(RuntimeAgent):
-    """
-    Grok — Interpretation & Pattern Intelligence Module
+    """Local, review-first insight/pattern artifact executor for the Grok role.
 
-    Role in W3 / WHUB foundation:
-    - Pattern detection
-    - Signal / insight extraction
-    - Context synthesis
-    - Observation-first interpretation
-    - Narrative and knowledge framing
-
-    Principles:
-    - Observe before decide
-    - Do not fabricate success
-    - Produce real artifacts when insight is formed
-    - Default: no system mutation
+    This class does not claim to call an external model. Its local capability
+    is deliberately concrete: turn the routed task plus supplied context into
+    a traceable Markdown insight/pattern artifact inside the Grok module
+    workspace.
     """
 
     module_name = "Grok"
     action_label = "completed pattern scan"
 
-    # ------------------------------------------------------------------
-    # MPCP / W3Lgu Alignment
-    # ------------------------------------------------------------------
-    mpcp_role: str = "pattern_insight"
-    mpcp_concepts: List[str] = [
+    # W3 ecosystem role: pattern / signals / insight
+    mpcp_role = "pattern_insight"
+    mpcp_concepts = [
         "pattern",
         "signal",
         "signals",
@@ -41,20 +40,106 @@ class GrokAgent(RuntimeAgent):
         "anomaly",
     ]
 
-    # ------------------------------------------------------------------
-    # Internal helpers
-    # ------------------------------------------------------------------
-    def _now_iso(self) -> str:
-        return datetime.now(timezone.utc).isoformat()
+    _REPO_ROOT = Path(__file__).resolve().parents[3]
+    _DEFAULT_INSIGHT_DIR = _REPO_ROOT / "modules" / "Grok" / "insights"
+    _SECRET_KEYWORDS = (
+        "token",
+        "secret",
+        "password",
+        "api_key",
+        "apikey",
+        "authorization",
+        "cookie",
+        "private_key",
+        "credential",
+    )
 
-    def _extract_target(self, context: Dict[str, Any]) -> str:
-        return (
-            context.get("target")
-            or context.get("request", {}).get("target")
-            or context.get("scope")
-            or "W3"
+    def execute(self, task: str, plan: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
+        """Create a real local insight/pattern artifact and return its verifiable record."""
+        normalized_task = str(task).strip()
+        if not normalized_task:
+            return {
+                "contract_version": "1.0",
+                "status": "REJECTED",
+                "module": self.module_name,
+                "task": task,
+                "summary": "A non-empty task is required before an insight artifact can be created.",
+                "artifacts": [],
+                "mutated": False,
+                "review": True,
+            }
+
+        request = context.get("request") if isinstance(context.get("request"), dict) else {}
+        payload = context.get("payload") if isinstance(context.get("payload"), dict) else {}
+        if not payload and isinstance(request.get("payload"), dict):
+            payload = request["payload"]
+
+        signals = self._extract_signals(context)
+        experience = self._experience_summary(normalized_task, context)
+        responsibilities = self._responsibilities(plan)
+        main_duty = responsibilities[0] if responsibilities else "detect patterns and extract insight"
+
+        insight_level = self._insight_level(len(signals))
+        trace_id = str(context.get("trace_id") or uuid.uuid4().hex)
+
+        insight_dir = self._insight_dir()
+        insight_dir.mkdir(parents=True, exist_ok=True)
+
+        artifact_path = insight_dir / self._artifact_name(normalized_task, trace_id)
+        artifact_text = self._render_insight_artifact(
+            task=normalized_task,
+            plan=plan,
+            context=context,
+            request=request,
+            payload=payload,
+            signals=signals,
+            experience=experience,
+            main_duty=main_duty,
+            insight_level=insight_level,
+            trace_id=trace_id,
         )
+        self._atomic_write(artifact_path, artifact_text)
 
+        digest = hashlib.sha256(artifact_text.encode("utf-8")).hexdigest()
+        artifact_ref = {
+            "path": self._display_path(artifact_path),
+            "sha256": digest,
+            "bytes": len(artifact_text.encode("utf-8")),
+            "kind": "w3.insight_artifact.markdown",
+        }
+
+        return {
+            "contract_version": "1.0",
+            "status": "COMPLETED",
+            "module": self.module_name,
+            "task": normalized_task,
+            "capability": "local_insight_artifact",
+            "trace_id": trace_id,
+            "mpcp_role": self.mpcp_role,
+            "summary": (
+                "Created a local insight/pattern artifact from the routed task and context. "
+                "No remote model, network call, or external executor was used."
+            ),
+            "artifacts": [artifact_ref],
+            "mutated": True,
+            "mutation_scope": [self._display_path(insight_dir)],
+            "external_execution_allowed": False,
+            "review": True,
+            "observation": {
+                "signal_count": len(signals),
+                "insight_level": insight_level,
+                "experience": experience,
+                "main_duty": main_duty,
+            },
+            "limitations": [
+                "This is a deterministic local interpreter, not an external model invocation.",
+                "The generated insight remains a draft and requires human review before downstream use.",
+            ],
+        }
+
+    # ------------------------------------------------------------------
+    # Helpers
+    # ------------------------------------------------------------------
     def _extract_signals(self, context: Dict[str, Any]) -> List[Any]:
         signals = (
             context.get("signals")
@@ -65,210 +150,103 @@ class GrokAgent(RuntimeAgent):
         )
         return signals if isinstance(signals, list) else []
 
-    def _build_observation(
-        self,
-        task: str,
-        plan: Dict[str, Any],
-        context: Dict[str, Any],
-    ) -> Dict[str, Any]:
-        responsibilities = self._responsibilities(plan)
-        main_duty = (
-            responsibilities[0]
-            if responsibilities
-            else "detect patterns and extract insight"
-        )
-        experience = self._experience_summary(task, context)
-        signals = self._extract_signals(context)
-        signal_count = len(signals)
-
+    def _insight_level(self, signal_count: int) -> str:
         if signal_count >= 12:
-            insight_level = "high"
-        elif signal_count >= 5:
-            insight_level = "medium"
-        else:
-            insight_level = "low"
+            return "high"
+        if signal_count >= 5:
+            return "medium"
+        return "low"
 
-        return {
-            "main_duty": main_duty,
-            "experience": experience,
-            "signal_count": signal_count,
-            "insight_level": insight_level,
-            "target": self._extract_target(context),
-            "role": plan.get("role", self.mpcp_role),
-            "signals": signals,
-        }
+    def _insight_dir(self) -> Path:
+        override = os.environ.get("W3_GROK_INSIGHT_DIR")
+        if override:
+            return Path(override).expanduser().resolve()
+        return self._DEFAULT_INSIGHT_DIR
 
-    def _build_artifacts(
+    def _artifact_name(self, task: str, trace_id: str) -> str:
+        slug = re.sub(r"[^a-z0-9]+", "-", task.lower()).strip("-") or "task"
+        safe_trace = re.sub(r"[^a-zA-Z0-9]", "", trace_id)[:12] or "trace"
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        return f"{stamp}_{slug[:48]}_{safe_trace}.md"
+
+    def _render_insight_artifact(
         self,
-        task: str,
-        obs: Dict[str, Any],
-        context: Dict[str, Any],
-    ) -> List[Dict[str, Any]]:
-        """
-        Create real insight artifacts.
-        These are observation/insight products, not system mutations.
-        """
-        artifacts: List[Dict[str, Any]] = []
-
-        # 1) Core insight note
-        insight_body = {
-            "module": self.module_name,
-            "task": task,
-            "target": obs["target"],
-            "role": obs["role"],
-            "main_duty": obs["main_duty"],
-            "experience": obs["experience"],
-            "signal_count": obs["signal_count"],
-            "insight_level": obs["insight_level"],
-            "principle": "Observe → Understand → Do not rush to decide",
-            "generated_at": self._now_iso(),
-        }
-
-        artifacts.append(
-            {
-                "type": "insight",
-                "name": f"grok_insight_{task[:48].replace(' ', '_').lower()}",
-                "format": "json",
-                "content": insight_body,
-                "mutable": False,
-            }
-        )
-
-        # 2) Pattern summary (human-readable)
-        pattern_summary = (
-            f"[Grok Pattern Summary]\n"
-            f"Task: {task}\n"
-            f"Target: {obs['target']}\n"
-            f"Role: {obs['role']}\n"
-            f"Duty: {obs['main_duty']}\n"
-            f"Signals: {obs['signal_count']}\n"
-            f"Insight Level: {obs['insight_level']}\n"
-            f"Experience: {obs['experience']}\n"
-            f"Note: Observation completed. No system mutation performed.\n"
-        )
-
-        artifacts.append(
-            {
-                "type": "pattern_summary",
-                "name": f"grok_pattern_{task[:48].replace(' ', '_').lower()}",
-                "format": "text",
-                "content": pattern_summary,
-                "mutable": False,
-            }
-        )
-
-        # 3) Optional narrative frame when insight is strong enough
-        if obs["insight_level"] in ("medium", "high"):
-            narrative = (
-                f"Grok narrative frame for '{task}' on target '{obs['target']}'. "
-                f"Observed {obs['signal_count']} signal(s) with insight level "
-                f"'{obs['insight_level']}'. Primary interpretive duty: {obs['main_duty']}."
-            )
-            artifacts.append(
-                {
-                    "type": "narrative",
-                    "name": f"grok_narrative_{task[:48].replace(' ', '_').lower()}",
-                    "format": "text",
-                    "content": narrative,
-                    "mutable": False,
-                }
-            )
-
-        return artifacts
-
-    # ------------------------------------------------------------------
-    # Legacy text interface
-    # ------------------------------------------------------------------
-    def run(self, task: str, plan: Dict[str, Any], context: Dict[str, Any]) -> str:
-        obs = self._build_observation(task, plan, context)
-        return (
-            f"{self.module_name} ({obs['role']}) {self.action_label}: {task} | "
-            f"target: {obs['target']} | "
-            f"duty: {obs['main_duty']} | "
-            f"experience: {obs['experience']} | "
-            f"observation: {obs['signal_count']} signal(s), "
-            f"insight_level={obs['insight_level']}"
-        )
-
-    # ------------------------------------------------------------------
-    # Structured execution (with real artifacts)
-    # ------------------------------------------------------------------
-    def execute(
-        self,
+        *,
         task: str,
         plan: Dict[str, Any],
         context: Dict[str, Any],
-    ) -> Dict[str, Any]:
-        """
-        Structured execution for Grok.
+        request: Dict[str, Any],
+        payload: Dict[str, Any],
+        signals: List[Any],
+        experience: str,
+        main_duty: str,
+        insight_level: str,
+        trace_id: str,
+    ) -> str:
+        target = context.get("target") or request.get("target") or "W3"
+        source = context.get("source") or request.get("source") or "unspecified"
+        intent = request.get("intent") or payload.get("intent") or task
+        role = plan.get("role", self.mpcp_role)
 
-        Status policy:
-        - OBSERVED      : observation + basic artifacts created
-        - INSIGHT_READY : sufficient signals + stronger insight artifacts
-        """
-        obs = self._build_observation(task, plan, context)
-        artifacts = self._build_artifacts(task, obs, context)
+        responsibilities = plan.get("responsibilities") or []
+        if not isinstance(responsibilities, list):
+            responsibilities = [str(responsibilities)]
 
-        status = "OBSERVED"
-        if obs["insight_level"] in ("medium", "high"):
-            status = "INSIGHT_READY"
+        safe_payload = self._redact(payload)
+        payload_json = json.dumps(safe_payload, indent=2, ensure_ascii=False, sort_keys=True)
 
-        summary = (
-            f"Grok observed task '{task}' under role '{obs['role']}'. "
-            f"Primary duty: {obs['main_duty']}. "
-            f"Experience: {obs['experience']}. "
-            f"Signals: {obs['signal_count']}. "
-            f"Insight level: {obs['insight_level']}. "
-            f"Artifacts created: {len(artifacts)}."
+        request_file = request.get("_request_file")
+        timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+        responsibility_lines = "\n".join(
+            f"- {item}" for item in responsibilities if str(item).strip()
+        ) or "- No responsibility was supplied by the routed identity profile."
+
+        request_file_line = f"- Request file: `{request_file}`\n" if request_file else ""
+
+        signal_preview = json.dumps(
+            self._redact(signals[:8]),
+            indent=2,
+            ensure_ascii=False,
         )
 
-        return {
-            "contract_version": "1.0",
-            "status": status,
-            "module": self.module_name,
-            "task": task,
-            "action": "pattern_insight_scan",
-            "mpcp_role": self.mpcp_role,
-            "mpcp_concepts": list(self.mpcp_concepts),
-            "summary": summary,
-            "reason": (
-                "Grok completed observation and pattern framing. "
-                "Insight artifacts were produced. No external system mutation was performed."
-            ),
-            "artifacts": artifacts,
-            "mutated": False,
-            "traceable": True,
-            "review": True,
-            "observation": {
-                "target": obs["target"],
-                "main_duty": obs["main_duty"],
-                "experience": obs["experience"],
-                "signal_count": obs["signal_count"],
-                "insight_level": obs["insight_level"],
-            },
-            "meta": {
-                "agent": self.module_name,
-                "logic": "adaptive_0.5",
-                "principle": "Observe → Understand → Do not rush to decide",
-                "foundation": "WHUB-ready",
-                "generated_at": self._now_iso(),
-            },
-        }
+        return f"""# W3 Local Insight Artifact
 
-    # ------------------------------------------------------------------
-    # Alignment helper
-    # ------------------------------------------------------------------
-    def inspect_alignment(self, doc_text: str) -> Dict[str, Any]:
-        hits = self.inspect_mpcp(doc_text)
-        coverage = (
-            round(len(hits) / len(self.mpcp_concepts), 3)
-            if self.mpcp_concepts
-            else 0.0
-        )
-        return {
-            "module": self.module_name,
-            "mpcp_role": self.mpcp_role,
-            "matched_concepts": hits,
-            "coverage": coverage,
-            "total_concepts": len(self.mpcp_concepts),
-        }
+## Trace
+- Trace ID: `{trace_id}`
+- Created at: `{timestamp}`
+- Module: `{self.module_name}`
+- Capability: `local_insight_artifact`
+- Review required: `true`
+
+## Request
+- Task: `{task}`
+- Intent: {intent}
+- Source: `{source}`
+- Target: `{target}`
+{request_file_line}
+## Routed Plan
+- Role: `{role}`
+- Assigned module: `{plan.get('run_with', self.module_name)}`
+- Plan status: `{plan.get('status', 'ACTIVE')}`
+- Main duty: `{main_duty}`
+
+### Responsibilities
+{responsibility_lines}
+
+## Observation
+- Experience context: {experience}
+- Signal count: `{len(signals)}`
+- Insight level: `{insight_level}`
+- Principle: Observe → Understand → Do not rush to decide
+
+## Local Interpretation Flow
+1. Receive the routed task and request context.
+2. Observe available signals/records without forcing a decision.
+3. Frame patterns and insight candidates.
+4. Produce this reviewable insight artifact in the Grok module workspace.
+5. Route to human/governance review before downstream action.
+
+## Signal Preview (redacted, capped)
+```json
+{signal_preview}
