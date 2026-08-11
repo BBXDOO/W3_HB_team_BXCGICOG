@@ -1,0 +1,106 @@
+name: W3 Ambiguous Structure Check
+
+on:
+  pull_request:
+    branches:
+      - refactor/v0.2
+    paths:
+      - "core/**"
+      - "protocol/**"
+      - "wx/**"
+      - "docs/**"
+      - ".github/workflows/w3-structure-check.yml"
+
+  push:
+    branches:
+      - refactor/v0.2
+    paths:
+      - "core/**"
+      - "protocol/**"
+      - "wx/**"
+      - "docs/**"
+      - ".github/workflows/w3-structure-check.yml"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  observe-structure:
+    name: Observe structure and preserve evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Create observation area
+        run: |
+          mkdir -p .w3_observe
+          echo "state:observe" > .w3_observe/summary.txt
+          echo "mutated:false" >> .w3_observe/summary.txt
+          echo "review:true" >> .w3_observe/summary.txt
+
+      - name: Record changed paths
+        run: |
+          git status --short > .w3_observe/git_status.txt
+          git diff --name-only HEAD^ HEAD > .w3_observe/changed_paths.txt || true
+
+      - name: Run minimum structure checks
+        id: structure_check
+        continue-on-error: true
+        run: |
+          python - << 'PY'
+          from pathlib import Path
+
+          required_roots = [
+              "core",
+              "protocol",
+              "wx",
+              "docs",
+          ]
+
+          failures = []
+
+          for root in required_roots:
+              if not Path(root).exists():
+                  failures.append(f"missing_root:{root}")
+
+          report = Path(".w3_observe/structure_check.txt")
+
+          if failures:
+              report.write_text(
+                  "status:review_required\n"
+                  + "\n".join(failures)
+                  + "\n",
+                  encoding="utf-8",
+              )
+              raise SystemExit(1)
+
+          report.write_text(
+              "status:completed\n"
+              "observation:minimum structure present\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Upload observation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3-structure-observation
+          path: .w3_observe/
+          if-no-files-found: error
+
+      - name: Stop when structure check fails
+        if: steps.structure_check.outcome == 'failure'
+        run: |
+          cat .w3_observe/structure_check.txt
+          exit 1
