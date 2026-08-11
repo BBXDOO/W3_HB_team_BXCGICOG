@@ -145,6 +145,7 @@ jobs:
         with:
           name: w3-structure-observation
           path: ${{ github.workspace }}/.w3_observe/
+          include-hidden-files: true
           if-no-files-found: error
 
       - name: Stop when structure check fails
