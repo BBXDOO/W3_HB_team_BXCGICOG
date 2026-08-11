@@ -43,15 +43,25 @@ jobs:
 
       - name: Create observation area
         run: |
-          mkdir -p .w3_observe
-          echo "state:observe" > .w3_observe/summary.txt
-          echo "mutated:false" >> .w3_observe/summary.txt
-          echo "review:true" >> .w3_observe/summary.txt
+          mkdir -p "${GITHUB_WORKSPACE}/.w3_observe"
+
+          echo "state:observe" \
+            > "${GITHUB_WORKSPACE}/.w3_observe/summary.txt"
+
+          echo "mutated:false" \
+            >> "${GITHUB_WORKSPACE}/.w3_observe/summary.txt"
+
+          echo "review:true" \
+            >> "${GITHUB_WORKSPACE}/.w3_observe/summary.txt"
 
       - name: Record changed paths
         run: |
-          git status --short > .w3_observe/git_status.txt
-          git diff --name-only HEAD^ HEAD > .w3_observe/changed_paths.txt || true
+          git status --short \
+            > "${GITHUB_WORKSPACE}/.w3_observe/git_status.txt"
+
+          git diff --name-only HEAD^ HEAD \
+            > "${GITHUB_WORKSPACE}/.w3_observe/changed_paths.txt" \
+            || true
 
       - name: Run minimum structure checks
         id: structure_check
@@ -59,6 +69,10 @@ jobs:
         run: |
           python - << 'PY'
           from pathlib import Path
+          import os
+
+          workspace = Path(os.environ["GITHUB_WORKSPACE"])
+          observation_dir = workspace / ".w3_observe"
 
           required_roots = [
               "core",
@@ -70,10 +84,10 @@ jobs:
           failures = []
 
           for root in required_roots:
-              if not Path(root).exists():
+              if not (workspace / root).exists():
                   failures.append(f"missing_root:{root}")
 
-          report = Path(".w3_observe/structure_check.txt")
+          report = observation_dir / "structure_check.txt"
 
           if failures:
               report.write_text(
@@ -86,21 +100,56 @@ jobs:
 
           report.write_text(
               "status:completed\n"
-              "observation:minimum structure present\n",
+              "observation:minimum structure present\n"
+              "mutated:false\n"
+              "review:false\n",
               encoding="utf-8",
           )
           PY
+
+      - name: Verify observation evidence
+        if: always()
+        run: |
+          echo "=== CURRENT DIRECTORY ==="
+          pwd
+
+          echo "=== GITHUB WORKSPACE ==="
+          echo "${GITHUB_WORKSPACE}"
+
+          echo "=== OBSERVATION DIRECTORY ==="
+          ls -la "${GITHUB_WORKSPACE}/.w3_observe"
+
+          echo "=== OBSERVATION FILES ==="
+          find "${GITHUB_WORKSPACE}/.w3_observe" \
+            -maxdepth 2 \
+            -type f \
+            -print
+
+          echo "=== SUMMARY ==="
+          cat "${GITHUB_WORKSPACE}/.w3_observe/summary.txt"
+
+          echo "=== STRUCTURE CHECK ==="
+          cat "${GITHUB_WORKSPACE}/.w3_observe/structure_check.txt" || true
+
+          test -d "${GITHUB_WORKSPACE}/.w3_observe"
+          test -n "$(
+            find "${GITHUB_WORKSPACE}/.w3_observe" \
+              -type f \
+              -print \
+              -quit
+          )"
 
       - name: Upload observation evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: w3-structure-observation
-          path: .w3_observe/
+          path: ${{ github.workspace }}/.w3_observe/
           if-no-files-found: error
 
       - name: Stop when structure check fails
         if: steps.structure_check.outcome == 'failure'
         run: |
-          cat .w3_observe/structure_check.txt
+          echo "Structure check failed."
+          cat "${GITHUB_WORKSPACE}/.w3_observe/structure_check.txt"
           exit 1
