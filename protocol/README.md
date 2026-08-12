@@ -1,4 +1,4 @@
-## Protocal 
+## NAME : Protocal /F
 ## AM - Ⅰ BUILD : Sub System
 ## 13:22 - 110869TH. ; IDC - RT100A9
 ## USE : FOR W3HBT
@@ -32,6 +32,19 @@
 - หลัง refactor ทุก import/path/config/test ที่เคยอ้าง root หรือ SYSTEM/TESTS/ ต้องอัปเดต path ใหม่เป็น protocol/
 
 ---
+
+## รายการใน Protocal
+F/: ..
+- [EP_SIGNAL](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor%2Fv0.2/protocol%2FEP_SIGNAL)
+- [Files.void](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor%2Fv0.2/protocol%2FFiles.void)
+- [ecs](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor%2Fv0.2/protocol%2Fecs)
+- [files_void](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor%2Fv0.2/protocol%2Ffiles_void)
+- [mpcp](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor%2Fv0.2/protocol%2Fmpcp)
+- [w3db](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor%2Fv0.2/protocol%2Fw3db)
+- [w3lgu](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor%2Fv0.2/protocol%2Fw3lgu)
+
+D/: ..
+README.md
 
 _ปรับปรุงล่าสุด: 2026-05-25_
     - 13:22 - 110869TH .
