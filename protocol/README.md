@@ -6,7 +6,7 @@
 ​# Protocol Subsystem
 
 โครงสร้างใหม่สำหรับโมดูลมาตรฐานกลางของระบบ W3 (version 2026)
-    Protocal : ในบริบทนี้มิได้มีความตามสากลหากแต่ใช้อ้างถึง ความเป็นคอนเซบของระบบที่ได้ถูกออกแบบมาอย่างเฉพาะเจาะจงโดยใช้ชื่อนี้เป็นศูนย์กลางของ prototype ของระบบย่อยใน W3 
+    Protocal : ในบริบทนี้มิได้มีความหมายตามสากลหากแต่ใช้อ้างถึง ความเป็นคอนเซบของระบบที่ได้ถูกออกแบบมาอย่างเฉพาะเจาะจงโดยใช้ชื่อนี้เป็นศูนย์กลางของ prototype ของระบบย่อยใน W3 
 
 ## Directory Structure
 
@@ -34,17 +34,25 @@
 ---
 
 ## รายการใน Protocal
-F/: ..
+F/: ..  📂
 - [EP_SIGNAL](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/protocol/EP_SIGNAL)
 - [Files.void](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/protocol/Files.void)
 - [ecs](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/protocol/ecs)
 - [files_void](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/protocol/files_void)
 - [mpcp](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/protocol/mpcp)
 - [w3db](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/protocol/w3db)
-- [w3lgu](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/3bbd838f233485a1d2ea3b0ccb1b43d4083012bc/protocol/w3lgu)
+- [w3lgu](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/protocol/w3lgu)
 
-D/: ..
-README.md
+D/: ..  📑
+README.md 
+    
+---
+## แหล่งอ้างอิงอื่นๆที่เกี่ยวข้อง
+    MPCP
+    - MPCP Architecture : https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/refactor/v0.2/docs/MPCP_architecture
+    
+OWNER : BBX19
+MAKER : BBX19
 
 _ปรับปรุงล่าสุด: 2026-05-25_
     - 13:22 - 110869TH .
