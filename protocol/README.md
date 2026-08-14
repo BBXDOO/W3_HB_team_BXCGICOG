@@ -49,7 +49,7 @@ README.md
 ---
 ## แหล่งอ้างอิงอื่นๆที่เกี่ยวข้อง
     MPCP
-    - MPCP Architecture : https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/refactor/v0.2/docs/MPCP_architecture
+    - [MPCP_Architecture](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/refactor/v0.2/docs/MPCP_architecture).
     
 OWNER : BBX19
 MAKER : BBX19
