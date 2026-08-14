@@ -50,9 +50,9 @@ README.md
 ## แหล่งอ้างอิงอื่นๆที่เกี่ยวข้อง
     MPCP
     - [MPCP_Architecture](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/refactor/v0.2/docs/MPCP_architecture).
-    
-OWNER : BBX19
-MAKER : BBX19
+  ---  
+- OWNER : BBX19.
+- MAKER : BBX19.
 
 _ปรับปรุงล่าสุด: 2026-05-25_
     - 13:22 - 110869TH .
