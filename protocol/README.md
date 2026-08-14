@@ -41,7 +41,7 @@ F/: ..
 - [files_void](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/protocol/files_void)
 - [mpcp](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/protocol/mpcp)
 - [w3db](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/protocol/w3db)
-- [w3lgu](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/protocol/w3lgu)
+- [w3lgu](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/3bbd838f233485a1d2ea3b0ccb1b43d4083012bc/protocol/w3lgu)
 
 D/: ..
 README.md
