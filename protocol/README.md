@@ -1,4 +1,4 @@
-## NAME : Protocal /F
+## NAME : protocal 
 ## AM - Ⅰ BUILD : Sub System
 ## 13:22 - 110869TH. ; IDC - RT100A9
 ## USE : FOR W3HBT
