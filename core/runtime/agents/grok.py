@@ -54,8 +54,13 @@ class GrokAgent(RuntimeAgent):
         "credential",
     )
 
-    def execute(self, task: str, plan: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
-        """Create a real local insight/pattern artifact and return its verifiable record."""
+    def execute(
+        self,
+        task: str,
+        plan: Dict[str, Any],
+        context: Dict[str, Any],
+    ) -> Dict[str, Any]:
+        """Create a real local insight/pattern artifact and return its record."""
         normalized_task = str(task).strip()
         if not normalized_task:
             return {
@@ -63,21 +68,36 @@ class GrokAgent(RuntimeAgent):
                 "status": "REJECTED",
                 "module": self.module_name,
                 "task": task,
-                "summary": "A non-empty task is required before an insight artifact can be created.",
+                "summary": (
+                    "A non-empty task is required before an insight artifact "
+                    "can be created."
+                ),
                 "artifacts": [],
                 "mutated": False,
                 "review": True,
             }
 
-        request = context.get("request") if isinstance(context.get("request"), dict) else {}
-        payload = context.get("payload") if isinstance(context.get("payload"), dict) else {}
+        request = (
+            context.get("request")
+            if isinstance(context.get("request"), dict)
+            else {}
+        )
+        payload = (
+            context.get("payload")
+            if isinstance(context.get("payload"), dict)
+            else {}
+        )
         if not payload and isinstance(request.get("payload"), dict):
             payload = request["payload"]
 
         signals = self._extract_signals(context)
         experience = self._experience_summary(normalized_task, context)
         responsibilities = self._responsibilities(plan)
-        main_duty = responsibilities[0] if responsibilities else "detect patterns and extract insight"
+        main_duty = (
+            responsibilities[0]
+            if responsibilities
+            else "detect patterns and extract insight"
+        )
 
         insight_level = self._insight_level(len(signals))
         trace_id = str(context.get("trace_id") or uuid.uuid4().hex)
@@ -85,7 +105,10 @@ class GrokAgent(RuntimeAgent):
         insight_dir = self._insight_dir()
         insight_dir.mkdir(parents=True, exist_ok=True)
 
-        artifact_path = insight_dir / self._artifact_name(normalized_task, trace_id)
+        artifact_path = insight_dir / self._artifact_name(
+            normalized_task,
+            trace_id,
+        )
         artifact_text = self._render_insight_artifact(
             task=normalized_task,
             plan=plan,
@@ -100,7 +123,9 @@ class GrokAgent(RuntimeAgent):
         )
         self._atomic_write(artifact_path, artifact_text)
 
-        digest = hashlib.sha256(artifact_text.encode("utf-8")).hexdigest()
+        digest = hashlib.sha256(
+            artifact_text.encode("utf-8")
+        ).hexdigest()
         artifact_ref = {
             "path": self._display_path(artifact_path),
             "sha256": digest,
@@ -117,8 +142,9 @@ class GrokAgent(RuntimeAgent):
             "trace_id": trace_id,
             "mpcp_role": self.mpcp_role,
             "summary": (
-                "Created a local insight/pattern artifact from the routed task and context. "
-                "No remote model, network call, or external executor was used."
+                "Created a local insight/pattern artifact from the routed "
+                "task and context. No remote model, network call, or external "
+                "executor was used."
             ),
             "artifacts": [artifact_ref],
             "mutated": True,
@@ -132,15 +158,24 @@ class GrokAgent(RuntimeAgent):
                 "main_duty": main_duty,
             },
             "limitations": [
-                "This is a deterministic local interpreter, not an external model invocation.",
-                "The generated insight remains a draft and requires human review before downstream use.",
+                (
+                    "This is a deterministic local interpreter, not an "
+                    "external model invocation."
+                ),
+                (
+                    "The generated insight remains a draft and requires "
+                    "human review before downstream use."
+                ),
             ],
         }
 
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
-    def _extract_signals(self, context: Dict[str, Any]) -> List[Any]:
+    def _extract_signals(
+        self,
+        context: Dict[str, Any],
+    ) -> List[Any]:
         signals = (
             context.get("signals")
             or context.get("records")
@@ -164,8 +199,14 @@ class GrokAgent(RuntimeAgent):
         return self._DEFAULT_INSIGHT_DIR
 
     def _artifact_name(self, task: str, trace_id: str) -> str:
-        slug = re.sub(r"[^a-z0-9]+", "-", task.lower()).strip("-") or "task"
-        safe_trace = re.sub(r"[^a-zA-Z0-9]", "", trace_id)[:12] or "trace"
+        slug = (
+            re.sub(r"[^a-z0-9]+", "-", task.lower()).strip("-")
+            or "task"
+        )
+        safe_trace = (
+            re.sub(r"[^a-zA-Z0-9]", "", trace_id)[:12]
+            or "trace"
+        )
         stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
         return f"{stamp}_{slug[:48]}_{safe_trace}.md"
 
@@ -183,8 +224,16 @@ class GrokAgent(RuntimeAgent):
         insight_level: str,
         trace_id: str,
     ) -> str:
-        target = context.get("target") or request.get("target") or "W3"
-        source = context.get("source") or request.get("source") or "unspecified"
+        target = (
+            context.get("target")
+            or request.get("target")
+            or "W3"
+        )
+        source = (
+            context.get("source")
+            or request.get("source")
+            or "unspecified"
+        )
         intent = request.get("intent") or payload.get("intent") or task
         role = plan.get("role", self.mpcp_role)
 
@@ -193,16 +242,31 @@ class GrokAgent(RuntimeAgent):
             responsibilities = [str(responsibilities)]
 
         safe_payload = self._redact(payload)
-        payload_json = json.dumps(safe_payload, indent=2, ensure_ascii=False, sort_keys=True)
+        payload_json = json.dumps(
+            safe_payload,
+            indent=2,
+            ensure_ascii=False,
+            sort_keys=True,
+        )
 
         request_file = request.get("_request_file")
-        timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+        timestamp = (
+            datetime.now(timezone.utc)
+            .isoformat()
+            .replace("+00:00", "Z")
+        )
 
         responsibility_lines = "\n".join(
-            f"- {item}" for item in responsibilities if str(item).strip()
+            f"- {item}"
+            for item in responsibilities
+            if str(item).strip()
         ) or "- No responsibility was supplied by the routed identity profile."
 
-        request_file_line = f"- Request file: `{request_file}`\n" if request_file else ""
+        request_file_line = (
+            f"- Request file: `{request_file}`\n"
+            if request_file
+            else ""
+        )
 
         signal_preview = json.dumps(
             self._redact(signals[:8]),
@@ -250,3 +314,58 @@ class GrokAgent(RuntimeAgent):
 ## Signal Preview (redacted, capped)
 ```json
 {signal_preview}
+```
+
+## Request Payload (redacted)
+```json
+{payload_json}
+```
+
+## Boundary
+- Observation does not become final truth.
+- No external model, network call, merge, or deployment was executed.
+- Human/governance review remains required.
+"""
+
+    def _redact(self, value: Any) -> Any:
+        if isinstance(value, dict):
+            cleaned = {}
+            for key, child in value.items():
+                key_text = str(key)
+                if any(
+                    keyword in key_text.lower()
+                    for keyword in self._SECRET_KEYWORDS
+                ):
+                    cleaned[key_text] = "[REDACTED]"
+                else:
+                    cleaned[key_text] = self._redact(child)
+            return cleaned
+
+        if isinstance(value, list):
+            return [self._redact(item) for item in value]
+
+        return value
+
+    @staticmethod
+    def _atomic_write(path: Path, content: str) -> None:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            delete=False,
+            dir=path.parent,
+        ) as handle:
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+            temporary_path = Path(handle.name)
+
+        temporary_path.replace(path)
+
+    def _display_path(self, path: Path) -> str:
+        try:
+            return str(path.relative_to(self._REPO_ROOT))
+        except ValueError:
+            return str(path)
+
+
+__all__ = ["GrokAgent"]
