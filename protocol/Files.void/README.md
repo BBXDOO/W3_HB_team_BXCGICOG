@@ -53,11 +53,11 @@ result = file_void_tool(
 MPCP or Blueprint-style contexts can call File.void through:
 
 ```python
-from protocol.mpcp.adapter.file_void_tool import call_file_void_tool, build_file_void_stage
+from protocol.mpcp.adapter.file_void_tool import call_file_void_tool, build_file_void_operation
 ```
 
 - `call_file_void_tool(context)` accepts KEY:VALUE-style context dictionaries.
-- `build_file_void_stage(action)` returns a stage function compatible with `protocol.mpcp.lib.Pillar`.
+- `build_file_void_operation(action)` returns an operation callback compatible with `protocol.mpcp.lib.Pillar`.
 
 ## Boundary contract
 

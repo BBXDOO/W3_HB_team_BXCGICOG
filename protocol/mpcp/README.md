@@ -103,6 +103,39 @@ Paper must be:
 - specific
 - bounded
 
+---
+
+5. ENV Boundary
+
+`env/` is the full Cross-L-facing boundary before data enters or leaves MPCP.
+
+It:
+
+- observes platform capability without exposing secret values
+- consumes Cross-L language tags and worksets
+- resolves available runtime/library bindings in the current ENV
+- scopes Condien reads before Modew receives context
+- converts accepted work into an MPCP packet
+- returns an MPCP/Cross-L result contract and W3DB evidence candidate
+
+Cross-L classifies and governs the inserted language role. MPCP does not own
+the Cross-L language table and does not allow a language or library to become
+authority over execution.
+
+```text
+Cross-L declaration
+→ MPCP ENV inspection
+→ library/runtime resolution
+→ Condien scoped context
+→ Modew boundary
+→ ROT validation
+→ Cross-L return contract
+→ W3DB evidence candidate
+```
+
+Execution still requires authority outside Cross-L. Cross-L may prepare work;
+it cannot approve its own execution.
+
 Examples:
 
 AUTH check login
@@ -151,21 +184,22 @@ Designed for:
 
 ---
 
-Repository Structure
+Runtime Structure
 
-README.md
-ROT_PAPER.md
-MODEW.md
-CONDIEN.md
-papers/
-modews/
-condiens/
+config/      runtime policy and portable capability mapping
+env/         Cross-L ingress, ENV probe, Condien scope, MPCP egress
+lib/         core/bridge/optional library registry and Pillar
+modew/       bounded execution unit base
+kernel/      contract, ROT, module relation and validation
+runtime/     execution and causal trace
+orchestrator/ composed Modew flow
+adapter/     external system bridges
 
 ---
 
 Status
 
-Active Experimental Build
+Active Runtime Foundation
 
 ---
 

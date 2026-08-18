@@ -1,0 +1,45 @@
+{
+  "schema": "mpcp.config.1",
+  "system": "mpcp",
+  "environment": {
+    "preserve_meaning": true,
+    "secret_policy": "names_only",
+    "allowed_variable_names": [
+      "LANG",
+      "LC_ALL",
+      "PATH",
+      "PREFIX",
+      "TERM",
+      "TMPDIR"
+    ],
+    "cross_l_scope": "CROSS_L_ONLY"
+  },
+  "libraries": {
+    "core": ["memory", "parser", "file", "time", "string", "math", "event", "storage"],
+    "bridge": ["cross-l", "w3lgu", "ecs", "w3db"],
+    "optional": ["network", "process", "shell", "wasm", "container"]
+  },
+  "language_runtime": {
+    "PY": ["python3", "python"],
+    "LUA": ["lua", "luajit"],
+    "CPP": ["c++", "g++", "clang++"],
+    "C": ["cc", "gcc", "clang"],
+    "RS": ["rustc"],
+    "GO": ["go"],
+    "JS": ["node"],
+    "TS": ["tsc", "deno", "bun"],
+    "BASH": ["bash"],
+    "SH": ["sh"],
+    "SQL": ["sqlite3", "psql", "mysql"],
+    "WASM": ["wasmtime", "wasmer"],
+    "DOCKER": ["docker", "podman"]
+  },
+  "language_aliases": {
+    "PYTHON": "PY", "LUA": "LUA", "C++": "CPP", "CPP": "CPP", "C": "C",
+    "RUST": "RS", "RS": "RS", "GO": "GO", "JAVASCRIPT": "JS", "JS": "JS",
+    "TYPESCRIPT": "TS", "TS": "TS", "BASH": "BASH", "SHELL": "SH", "SH": "SH",
+    "SQL": "SQL", "WEBASSEMBLY": "WASM", "WASM": "WASM", "DOCKERFILE": "DOCKER"
+  },
+  "data_formats": ["JSON", "YML", "YAML", "TOML", "XML", "CSV", "ENV", "MD", "TXT"],
+  "tag_families": ["GEN", "SCRIPT", "CONFIG", "DOC", "QUERY", "LOW", "FAST", "WEB", "MOBILE", "BUILD", "ENV", "AI", "CHAIN", "GPU", "FORMAL"]
+}

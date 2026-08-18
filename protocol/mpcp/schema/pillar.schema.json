@@ -1,18 +1,29 @@
 {
   "type": "object",
-  "required": ["name", "stages"],
+  "required": ["name", "phase", "construction_order", "construction_trace", "semantic_layers", "operations"],
   "properties": {
     "name": { "type": "string" },
-    "stages": {
+    "phase": { "enum": ["construction", "operational"] },
+    "construction_order": {
+      "type": "array",
+      "const": ["A", "B", "C", "D", "E", "F"]
+    },
+    "construction_trace": {
+      "type": "array",
+      "items": { "enum": ["A", "B", "C", "D", "E", "F"] },
+      "uniqueItems": true
+    },
+    "semantic_layers": {
       "type": "object",
+      "required": ["A", "B", "C", "D", "E", "F"],
+      "additionalProperties": false,
       "properties": {
-        "A": { "type": "string" },
-        "B": { "type": "string" },
-        "C": { "type": "string" },
-        "D": { "type": "string" },
-        "E": { "type": "string" },
-        "F": { "type": "string" }
+        "A": {}, "B": {}, "C": {}, "D": {}, "E": {}, "F": {}
       }
+    },
+    "operations": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
     },
     "context": { "type": "object" }
   }

@@ -7,9 +7,12 @@ from typing import Dict, List, Optional
 
 
 DEFAULT_MODULE_REGISTRY: Dict[str, List[str]] = {
-    "MPCP": ["Cross-X", "W3Lgu", "Table-X", "Modew-dynamic", "file.void"],
-    "W3Lgu": ["MPCP", "Cross-X", "Table-X"],
-    "Cross-X": ["MPCP", "W3Lgu", "Table-X", "Modew-dynamic"],
+    "MPCP": ["Cross-X", "Cross-L", "W3Lgu", "ECS", "W3DB", "Table-X", "Modew-dynamic", "file.void"],
+    "Cross-L": ["MPCP", "Cross-X", "W3Lgu", "ECS", "Table-X", "Modew-dynamic"],
+    "W3Lgu": ["MPCP", "Cross-X", "Cross-L", "Table-X"],
+    "Cross-X": ["MPCP", "Cross-L", "W3Lgu", "ECS", "Table-X", "Modew-dynamic"],
+    "ECS": ["MPCP", "Cross-X", "Cross-L", "W3DB"],
+    "W3DB": ["MPCP", "ECS"],
     "Table-X": ["MPCP", "W3Lgu", "Cross-X"],
     "Modew-dynamic": ["MPCP", "Cross-X"],
     "file.void": ["MPCP", "Cross-X"],
