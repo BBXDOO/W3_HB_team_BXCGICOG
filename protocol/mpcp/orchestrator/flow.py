@@ -1,12 +1,9 @@
-from mpcp.orchestrator.manager import MPCPManager
+"""Reusable MPCP flow composition without import-time execution."""
 
-m = MPCPManager()
+from .manager import MPCPManager
 
-# Steps must use MPCP format (KEY:VALUE) so that executor.run() can parse them.
-m.add_flow("main_pipeline", [
-    "TASK:design",
-    "TASK:analysis",
-    "TASK:deploy"
-])
 
-print(m.execute())
+def build_manager(flow_name: str, steps: list[str]) -> MPCPManager:
+    manager = MPCPManager()
+    manager.add_flow(flow_name, list(steps))
+    return manager

@@ -1,4 +1,4 @@
-"""MPCP cooperative contract sketch.
+"""MPCP cooperative contract.
 
 This module mirrors the W3 cooperative-module picture:
 A = responsible module, B = assist modules, C = cross / assist field.
@@ -126,8 +126,8 @@ class CooperativeContract:
         return data
 
 
-def build_mpcp_lib_blueprint_example() -> CooperativeContract:
-    """Build the EVENT-A01 sketch as a cooperative contract."""
+def build_mpcp_lib_blueprint_contract() -> CooperativeContract:
+    """Build the registered EVENT-A01 cooperative contract."""
     return CooperativeContract(
         responsible_module="MPCP",
         assist_modules=["Table-X", "file.void", "Modew-dynamic"],

@@ -1,6 +1,6 @@
 # mpcp/kernel/contract.py
 
-from mpcp.kernel.system import SYSTEM_NAME
+from .system import SYSTEM_NAME
 
 
 # All runtime states allowed by spec (MODEW_PAPER + MPCP_RUNTIME_SANITY_SWEEP_v2)
@@ -15,7 +15,10 @@ VALID_STATES = frozenset({
 
 HALT_STATES = frozenset({"STOP", "fail", "block"})
 PAPER_COMMAND_REQUIRED = frozenset({"TASK", "INTENT", "SCOPE", "BOUNDARY"})
-RESULT_ENVELOPE_REQUIRED = frozenset({"schema", "state", "cause", "action", "result", "law", "restore", "meta"})
+RESULT_ENVELOPE_REQUIRED = frozenset({
+    "schema", "state", "cause", "action", "modew", "result", "trace",
+    "env", "law", "restore", "meta",
+})
 
 
 class MPCPContract:
@@ -92,6 +95,85 @@ class MPCPContract:
     # OUTPUT VALIDATION
     # =========================
     @staticmethod
+    def build_result_envelope(
+        result: dict,
+        *,
+        cause=None,
+        action: str,
+        modew: str,
+        role: str = "default",
+        env_before: dict | None = None,
+    ) -> dict:
+        """Normalize a Modew result into the canonical MPCP return envelope."""
+        if not isinstance(result, dict):
+            raise ValueError("Result must be dict")
+        if str(result.get("schema", "")).startswith("mpcp.result."):
+            return dict(result)
+
+        state = result.get("state")
+        before = dict(env_before or {})
+        after_value = result.get("env_after", before)
+        after = dict(after_value) if isinstance(after_value, dict) else before
+        changed = sorted(
+            key for key in set(before) | set(after)
+            if before.get(key) != after.get(key)
+        )
+        source_truth_mutated = bool(result.get("source_truth_mutated", False))
+        env_mutated = bool(result.get("env_mutated", bool(changed)))
+        event_container_mutated = bool(result.get("event_container_mutated", False))
+        mutated = bool(
+            result.get("mutated", False)
+            or source_truth_mutated
+            or env_mutated
+            or event_container_mutated
+        )
+        error = result.get("error")
+        envelope = {
+            "schema": "mpcp.result.1",
+            "state": state,
+            "cause": result.get("cause", cause),
+            "action": result.get("action", action),
+            "modew": result.get("modew", modew),
+            "role": result.get("role", role),
+            "result": result.get("result"),
+            "reason": result.get("reason") or error or "modew_return",
+            "trace": list(result.get("trace", [])),
+            "mutated": mutated,
+            "source_truth_mutated": source_truth_mutated,
+            "env_mutated": env_mutated,
+            "event_container_mutated": event_container_mutated,
+            "review": bool(result.get("review", False)),
+            "env": {
+                "before": before,
+                "after": after,
+                "delta_keys": changed,
+                "preserved": not changed,
+            },
+            "law": {
+                "validated": False,
+                "validator": "ROT:MPCP",
+                "blocked_by": None,
+            },
+            "restore": {
+                "required": source_truth_mutated or env_mutated,
+                "supported": bool(result.get("restore_token")),
+                "token": result.get("restore_token"),
+                "state_preserved": not changed,
+            },
+            "meta": {
+                "return_code": 0 if state in {"SUCCESS", "done"} else 1,
+                "format": "dict",
+                "version": 1,
+                "source_result_keys": sorted(str(key) for key in result),
+            },
+        }
+        if error is not None:
+            envelope["error"] = error
+        if "semantic_layers" in result:
+            envelope["semantic_layers"] = dict(result["semantic_layers"])
+        return envelope
+
+    @staticmethod
     def validate_output(result: dict):
         """
         ตรวจ output ขั้นต่ำ
@@ -137,5 +219,13 @@ class MPCPContract:
         for key in ("law", "restore", "meta"):
             if not isinstance(result.get(key), dict):
                 raise ValueError(f"{key} must be dict")
+
+        if not isinstance(result.get("trace"), list):
+            raise ValueError("trace must be list")
+        if not isinstance(result.get("env"), dict):
+            raise ValueError("env must be dict")
+        for key in ("action", "modew"):
+            if not isinstance(result.get(key), str) or not result[key].strip():
+                raise ValueError(f"{key} must be non-empty string")
 
         return True

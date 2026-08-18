@@ -1,9 +1,11 @@
 # mpcp/modew/base_modew.py
 
+from ..kernel.contract import MPCPContract
+
 class BaseModew:
     """
     Base Modew (Pillar)
-    Implements A–F execution flow aligned with MPCP + ROT
+    Executes named operations while preserving A–F as semantic layers.
     """
 
     def __init__(self):
@@ -18,6 +20,9 @@ class BaseModew:
         self.skills = {}
         self.capabilities = set()
         self.max_history = 50
+        self.semantic_layers = {name: None for name in ("A", "B", "C", "D", "E", "F")}
+        self.pillar_phase = "operational"
+        self.construction_order = ("A", "B", "C", "D", "E", "F")
 
     # =========================
     # CONTEXT
@@ -27,6 +32,19 @@ class BaseModew:
 
     def set_role(self, role: str):
         self.set_context("ROLE", role)
+
+    def set_semantic_layer(self, layer: str, value):
+        key = str(layer).upper()
+        if key not in self.semantic_layers:
+            raise ValueError(f"MODEW_SEMANTIC_LAYER_INVALID:{layer}")
+        self.semantic_layers[key] = value
+
+    def get_semantic_layer(self, layer: str, default=None):
+        key = str(layer).upper()
+        if key not in self.semantic_layers:
+            raise ValueError(f"MODEW_SEMANTIC_LAYER_INVALID:{layer}")
+        value = self.semantic_layers[key]
+        return default if value is None else value
 
     # =========================
     # MEMORY
@@ -74,11 +92,11 @@ class BaseModew:
         })
 
     # =========================
-    # A–F PIPELINE
+    # OPERATION PIPELINE
     # =========================
     def run(self):
         """
-        Execute the A–F pillar pipeline.
+        Execute the Modew operation pipeline.
 
         Prerequisites: call set_context("TASK", ...) before run() so that
         'cause' is captured correctly for CAUSE→ACTION→RESULT traceability.
@@ -87,42 +105,61 @@ class BaseModew:
         role = self.context.get("ROLE", "default")
         try:
             a = self.stage_A_input()
-            self.log("A", a)
+            self.log("receive", a)
 
             b = self.stage_B_validate(a)
-            self.log("B", b)
+            self.log("validate", b)
 
             c = self.stage_C_route(b)
-            self.log("C", c)
+            self.log("route", c)
 
             d = self.stage_D_process(c)
-            self.log("D", d)
+            self.log("process", d)
 
             e = self.stage_E_transition(d)
-            self.log("E", e)
+            self.log("transition", e)
 
             f = self.stage_F_output(e)
-            self.log("F", f)
+            self.log("output", f)
 
             # CAUSE → ACTION → RESULT: include cause so trace is complete
-            result = {
+            raw_result = {
                 "state": "SUCCESS",
                 "cause": cause,
                 "result": f,
                 "trace": self.trace,
                 "role": role,
+                "semantic_layers": dict(self.semantic_layers),
             }
+            result = MPCPContract.build_result_envelope(
+                raw_result,
+                cause=cause,
+                action="modew_operation_pipeline",
+                modew=self.__class__.__name__,
+                role=role,
+                env_before=self.context,
+            )
             self._remember_run(cause, role, result["state"])
             return result
 
         except Exception as e:
-            result = {
+            raw_result = {
                 "state": "STOP",
                 "cause": cause,
                 "error": str(e),
+                "reason": str(e),
                 "trace": self.trace,
                 "role": role,
+                "semantic_layers": dict(self.semantic_layers),
             }
+            result = MPCPContract.build_result_envelope(
+                raw_result,
+                cause=cause,
+                action="modew_operation_pipeline",
+                modew=self.__class__.__name__,
+                role=role,
+                env_before=self.context,
+            )
             self._remember_run(cause, role, result["state"], error=str(e))
             return result
 
@@ -157,7 +194,7 @@ class BaseModew:
             self.remember("last_error", error)
 
     # =========================
-    # STAGES (OVERRIDE REQUIRED)
+    # OPERATION HOOKS (legacy method names retained for existing Modew classes)
     # =========================
     def stage_A_input(self):
         return self.context

@@ -25,6 +25,26 @@
 
 ## 1) เสร็จแล้ว (Implemented + Applied)
 
+### [FACT] MPCP runtime รองรับ canonical result envelope และ packet input
+- `status: applied`
+- `evidence:`
+  - `protocol/mpcp/kernel/contract.py` (`build_result_envelope`, strict validation)
+  - `protocol/mpcp/runtime/executor.py` (`run_packet`)
+  - `protocol/mpcp/modew/base_modew.py`
+- `runtime_usage: ใช้จริง`
+- `last_verified: 2026-08-18`
+- `owner: BBX19`
+
+### [FACT] A–F ถูกแยกจาก runtime operation order ตาม MPCP Origin
+- `status: applied`
+- `evidence:`
+  - `protocol/mpcp/lib/pillar.py`
+  - `protocol/mpcp/modew/base_modew.py`
+  - `protocol/mpcp/mpcp_pillar.md`
+- `runtime_usage: ใช้จริง; runtime trace ใช้ชื่อ operation แทน A–F`
+- `last_verified: 2026-08-18`
+- `owner: BBX19`
+
 ### [FACT] ROT ถูกบังคับใช้ใน runtime executor จริง
 - `status: applied`
 - `evidence:`
@@ -37,6 +57,29 @@
 ---
 
 ## 2) เสร็จแต่ยังไม่ถูกใช้จริง (Implemented, Not Applied)
+
+### [FACT] Cross-L / ENV / MPCP runtime boundary พร้อมเรียกใช้ แต่ยังไม่ผูกเข้า W3-API
+- `status: implemented`
+- `evidence:`
+  - `protocol/mpcp/env/boundary.py`
+  - `protocol/mpcp/env/gateway.py`
+  - `protocol/mpcp/env/models.py`
+  - `protocol/mpcp/env/probe.py`
+  - `protocol/mpcp/config/default.json`
+  - `protocol/mpcp/lib/registry.py`
+- `runtime_usage: ยังไม่ใช้จริงใน W3-API; public API พร้อมใช้งานและไม่ execute หากไม่มี ExecutionAgreement`
+- `last_verified: 2026-08-18`
+- `owner: BBX19`
+
+### [FACT] Condien มี implementation และ MPCP ENV ใช้ scoped-read ได้แล้ว
+- `status: implemented`
+- `evidence:`
+  - `src/core/condien.py`
+  - `protocol/mpcp/env/boundary.py` (`scope_condien`)
+  - `protocol/mpcp/test_condien_blueprint.py`
+- `runtime_usage: ใช้ได้เมื่อ caller ส่ง Condien object เข้า ENV boundary; ยังไม่ auto-load จาก Paper file`
+- `last_verified: 2026-08-18`
+- `owner: BBX19`
 
 ### [FACT] Paper documentation มีอยู่ แต่ runtime ยังไม่พบ document-loader ที่ผูกไฟล์ Paper เข้าการรันโดยตรง
 - `status: implemented`
@@ -84,21 +127,4 @@
 
 ## 4) แนวคิดสำคัญ (Concept Only)
 
-### [FACT] Condien ถูกนิยามเชิงแนวคิด/เอกสารอย่างชัดเจน
-- `status: concept`
-- `evidence:`
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/W3_TERMS_MASTER_PAPER_v2.md` (นิยาม Condien)
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/README.md` (ระบุบทบาท Condien)
-- `runtime_usage: ยังไม่ใช้จริง`
-- `last_verified: 2026-05-09`
-- `owner: BBX19`
-
-### [FACT] โครงไฟล์ที่ README ระบุ (`CONDIEN.md`, `condiens/`, `papers/`) ยังไม่พบในโฟลเดอร์ MPCP ปัจจุบัน
-- `status: concept`
-- `evidence:`
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/README.md` (ระบุโครงสร้างที่คาดหวัง)
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/` (ไม่พบไฟล์/โฟลเดอร์ตามที่ระบุ)
-- `runtime_usage: ยังไม่ใช้จริง`
-- `last_verified: 2026-05-09`
-- `owner: BBX19`
-
+ยังไม่มีรายการ Concept-only ที่ตรวจยืนยันใหม่ในรอบ 2026-08-18

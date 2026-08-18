@@ -1,15 +1,25 @@
 # mpcp/runtime/executor.py
 
-from mpcp.runtime.trace import trace as mpcp_trace
-from mpcp.kernel.contract import MPCPContract
-from mpcp.kernel.rot import MPCPRot
-from mpcp.kernel.system import validate_system_context
+from .trace import trace as mpcp_trace
+from ..kernel.contract import MPCPContract
+from ..kernel.rot import MPCPRot
+from ..kernel.system import validate_system_context
 
 
 # =========================
 # SIMPLE REGISTRY
 # =========================
 PILLAR_REGISTRY = {}
+
+
+def _stop_envelope(cause, reason: str, *, action: str, modew: str, env: dict | None = None) -> dict:
+    return MPCPContract.build_result_envelope(
+        {"state": "STOP", "cause": cause, "reason": reason, "error": reason},
+        cause=cause,
+        action=action,
+        modew=modew,
+        env_before=env,
+    )
 
 
 def register(name, builder_fn):
@@ -78,94 +88,81 @@ def to_mpcp_output(result: dict) -> str:
 # CORE EXECUTOR (ROT aligned)
 # =========================
 def run(text: str) -> dict:
-    """
-    Execute an MPCP task string.
+    """Parse MPCP text, then pass the normalized packet to ``run_packet``."""
 
-    Flow:  A (parse) → ROT input check → B (resolve) → C (inject) →
-           D (execute) → ROT output check → E (return)
+    try:
+        return run_packet(parse_mpcp(text))
+    except Exception as exc:
+        mpcp_trace("FAIL_SAFE", str(exc), env={})
+        return _stop_envelope(None, str(exc), action="parse", modew="unresolved")
 
-    Returns a result dict: {"state": ..., "cause": ..., ...}
-    Use to_mpcp_output(result) to convert to the external MPCP string format.
+
+def run_packet(packet: dict) -> dict:
+    """Execute a packet after its language and ENV boundary was resolved.
+
+    A–F are semantic layers in a Pillar, not executor step numbers. Runtime
+    operations therefore use descriptive trace names.
     """
+
     data = {}
     try:
-        # -------------------------
-        # A: INPUT → PARSE
-        # -------------------------
-        # `data` is pre-initialised so the FAIL_SAFE block can always read
-        # data.get("TASK") for cause — even if parse_mpcp() itself raises
-        # (cause will be None in that case, which is the correct behaviour).
-        # -------------------------
-        data = parse_mpcp(text)
-        mpcp_trace("A:INPUT", data, env=data)
+        if not isinstance(packet, dict):
+            raise TypeError("MPCP packet must be dict")
+        data = dict(packet)
+        mpcp_trace("INPUT:ACCEPTED", data, env=data)
 
-        # -------------------------
-        # ROT VALIDATION (INPUT)
-        # Checks: system name (optional), contract structure (TASK required).
-        # Also runs validate_core with a synthetic STOP result to confirm
-        # the CAUSE (event with TASK) is traceable before execution begins.
-        # -------------------------
         validate_system_context(data)
         MPCPContract.validate_input(data)
-        MPCPRot.validate_core(data, {"state": "STOP"})  # verify CAUSE linkage pre-execution
+        MPCPRot.validate_core(data, {"state": "STOP"})
         mpcp_trace("ROT:INPUT_VALID", {"TASK": data.get("TASK")}, env=data)
 
-        # -------------------------
-        # B: RESOLVE MODEW
-        # -------------------------
         task = data.get("TASK")
-        builder = PILLAR_REGISTRY.get(task)
-
+        modew_name = data.get("MODEW") or task
+        builder = PILLAR_REGISTRY.get(modew_name)
         if not builder:
-            result = {
-                "state": "STOP",
-                "cause": task,
-                "error": f"MODEW_NOT_FOUND:{task}",
-            }
-            mpcp_trace("B:STOP", result, env=data)
+            result = _stop_envelope(
+                task,
+                f"MODEW_NOT_FOUND:{modew_name}",
+                action="modew_resolve",
+                modew=str(modew_name),
+                env=data,
+            )
+            mpcp_trace("MODEW:NOT_FOUND", result, env=data)
             return result
 
         pillar = builder()
-        mpcp_trace("B:MODEW_RESOLVED", {"task": task}, env=data)
+        mpcp_trace("MODEW:RESOLVED", {"task": task, "modew": modew_name}, env=data)
 
-        # -------------------------
-        # C: INJECT CONTEXT
-        # -------------------------
         for k, v in data.items():
             pillar.set_context(k, v)
-        mpcp_trace("C:CONTEXT_INJECTED", data, env=data)
+        mpcp_trace("CONTEXT:INJECTED", data, env=data)
 
-        # -------------------------
-        # D: EXECUTE
-        # -------------------------
         result = pillar.run()
-        mpcp_trace("D:EXECUTED", {"state": result.get("state")}, env=data)
+        mpcp_trace("MODEW:EXECUTED", {"state": result.get("state")}, env=data)
 
-        # -------------------------
-        # ROT VALIDATION (OUTPUT)
-        # Checks: result structure and CAUSE→RESULT traceability.
-        # -------------------------
-        MPCPContract.validate_output(result)
+        result = MPCPContract.build_result_envelope(
+            result,
+            cause=task,
+            action="modew_execute",
+            modew=str(modew_name),
+            role=str(data.get("ROLE", "default")),
+            env_before=data,
+        )
+        MPCPContract.validate_result_envelope(result, strict=True)
         MPCPRot.validate_core(data, result)
         MPCPRot.validate_fail_condition(data, result)
+        result["law"]["validated"] = True
         mpcp_trace("ROT:OUTPUT_VALID", {"state": result.get("state")}, env=data)
-
-        # -------------------------
-        # E: RETURN (internal dict)
-        # Use to_mpcp_output(result) for external MPCP string format.
-        # -------------------------
-        mpcp_trace("E:RETURN", result.get("state"), env=data)
+        mpcp_trace("RESULT:RETURN", result.get("state"), env=data)
         return result
 
-    except Exception as e:
-        # -------------------------
-        # FAIL SAFE (ROT compliant)
-        # Includes cause so CAUSE→ACTION→RESULT chain is preserved.
-        # -------------------------
-        err_result = {
-            "state": "STOP",
-            "cause": data.get("TASK") if data else None,
-            "error": str(e),
-        }
-        mpcp_trace("FAIL_SAFE", str(e), env=data)
+    except Exception as exc:
+        err_result = _stop_envelope(
+            data.get("TASK") if data else None,
+            str(exc),
+            action="runtime_fail_safe",
+            modew=str(data.get("MODEW") or data.get("TASK") or "unresolved"),
+            env=data,
+        )
+        mpcp_trace("FAIL_SAFE", str(exc), env=data)
         return err_result

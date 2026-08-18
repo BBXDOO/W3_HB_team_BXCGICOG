@@ -10,6 +10,17 @@ import datetime
 _trace_log: list = []
 
 
+def _console_preview(data) -> str:
+    """Keep console output useful without dumping payload or ENV values."""
+    if isinstance(data, dict):
+        visible = {}
+        for key in ("schema", "state", "TASK", "MODEW", "EVENT_ID", "CHAIN_ID"):
+            if key in data:
+                visible[key] = data[key]
+        return str(visible or {"keys": sorted(str(key) for key in data)})
+    return repr(data)[:240]
+
+
 def trace(stage: str, data, env: dict = None) -> dict:
     """
     Record one trace entry.
@@ -17,7 +28,7 @@ def trace(stage: str, data, env: dict = None) -> dict:
     Parameters
     ----------
     stage : str
-        Execution stage label (e.g. "A:INPUT", "ROT:INPUT_VALID", "D:EXECUTE").
+        Runtime operation label (e.g. "INPUT:ACCEPTED", "ROT:INPUT_VALID").
     data  : any
         Payload to record (kept as-is — no reduction per ENV LAW).
     env   : dict, optional
@@ -35,7 +46,7 @@ def trace(stage: str, data, env: dict = None) -> dict:
         "time": datetime.datetime.now(datetime.timezone.utc).isoformat(),
     }
     _trace_log.append(entry)
-    print(f"[MPCP][{stage}] {data}")
+    print(f"[MPCP][{stage}] {_console_preview(data)}")
     return entry
 
 

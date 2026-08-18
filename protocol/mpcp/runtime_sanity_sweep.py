@@ -83,7 +83,7 @@ def expect_raise(label, fn, substring=None):
 print("\n=== 1. VALID_STATES contract coverage ===")
 # Import VALID_STATES directly — single source of truth
 for s in VALID_STATES:
-    if s in ("block", "fail"):
+    if s in ("STOP", "block", "fail"):
         # these require error field
         expect_no_raise(
             f"validate_output accepts state='{s}' with error",
@@ -154,11 +154,11 @@ check("executor result has 'state'", "state" in result)
 check("executor result has 'cause'", "cause" in result)
 check("executor result cause == '_pass'", result.get("cause") == "_pass")
 
-# Trace must contain at least A:INPUT and E:RETURN
+# Trace operations must be explicit and must not reuse A–F semantic-layer names.
 log = get_trace_log()
 stages = [e["stage"] for e in log]
-check("trace contains A:INPUT", "A:INPUT" in stages)
-check("trace contains E:RETURN", "E:RETURN" in stages)
+check("trace contains INPUT:ACCEPTED", "INPUT:ACCEPTED" in stages)
+check("trace contains RESULT:RETURN", "RESULT:RETURN" in stages)
 
 # Every trace entry with env data must carry TASK (env is passed at all stages)
 for entry in log:

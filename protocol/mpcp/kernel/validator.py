@@ -1,8 +1,8 @@
 # mpcp/kernel/validator.py
 
-from mpcp.kernel.contract import MPCPContract
-from mpcp.kernel.system import validate_system_context
-from mpcp.kernel.rot import MPCPRot
+from .contract import MPCPContract
+from .system import validate_system_context
+from .rot import MPCPRot
 
 
 class MPCPValidator:

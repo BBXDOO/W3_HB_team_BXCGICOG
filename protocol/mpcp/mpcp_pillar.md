@@ -29,22 +29,28 @@ This model separates:
 
 ---
 
-## 3. Execution Flow (A → F)
+## 3. Construction Order and Semantic Layers (A–F)
 
-Each pillar processes tasks through fixed stages:
+A–F are six named meaning layers inside the same pillar. During construction,
+they are placed in architectural order A→F so the structure becomes complete.
+This order grants no layer higher authority or special importance; every layer
+exists because its capability and meaning are required by the structure.
 
-| Stage | Role |
-|------|------|
-| A | Input / Entry |
-| B | Validation |
-| C | Routing / Flow selection |
-| D | Core processing |
-| E | Transition / Preparation |
-| F | Output |
+After construction reaches the operational phase, A–F are not a mandatory data
+pipeline. Work may enter, read, update, or leave through the layer related to
+its present meaning, Paper, boundary and ENV.
 
-Pipeline:
+Runtime work uses separately named operations such as receive, validate,
+route, process and return. A Paper/Modew may select the operations needed for
+the current ENV without changing the identity of the A–F layers.
 
-A → B → C → D → E → F
+Canonical rule:
+
+```text
+construction: A → B → C → D → E → F
+operation: select related layer(s) by meaning / task / ENV
+authority: no layer is inherently special
+```
 
 ---
 
@@ -131,7 +137,7 @@ This enables:
 |--------|----------------|
 | Pillar | Modew |
 | Marble pattern | Condien |
-| A–F flow | Execution pipeline |
+| A–F | Semantic layers in one pillar |
 | Wall lamp | Optional module |
 | Merging | System composition |
 
@@ -143,7 +149,7 @@ This architecture enables:
 
 - Modular execution units
 - Context-aware processing
-- Clear execution tracing (A–F)
+- Clear operation tracing without turning A–F into step numbers
 - Memory-aware execution continuity (history + task/role stats)
 - Skill-based extension per modew role
 - Capability-gated execution boundaries
@@ -159,7 +165,7 @@ The pillar model defines a complete execution structure where:
 
 - Structure = stable (concrete)
 - Meaning = adaptive (marble)
-- Flow = explicit (A–F)
+- Operations = explicit and independent from A–F identity
 - Extension = external (lamp)
 
 This forms the foundation for mpcp runtime and W3Lgu mapping.

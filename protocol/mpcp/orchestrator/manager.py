@@ -1,5 +1,5 @@
-from mpcp.runtime.executor import run
-from mpcp.kernel.contract import VALID_STATES
+from ..runtime.executor import run
+from ..kernel.contract import VALID_STATES
 
 
 # States that mean "continue to next step"

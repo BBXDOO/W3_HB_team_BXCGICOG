@@ -10,7 +10,10 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any, Callable
 
-from protocol.files_void.tool import file_void_tool
+try:
+    from protocol.files_void.tool import file_void_tool
+except ModuleNotFoundError:  # ``mpcp`` imported with ``protocol/`` as package root
+    from files_void.tool import file_void_tool
 
 
 def call_file_void_tool(context: Mapping[str, Any]) -> dict[str, Any]:
@@ -30,18 +33,19 @@ def call_file_void_tool(context: Mapping[str, Any]) -> dict[str, Any]:
     )
 
 
-def build_file_void_stage(action: str = "manifest") -> Callable[[Any, dict[str, Any]], dict[str, Any]]:
-    """Return an A-F stage function usable by ``protocol.mpcp.lib.Pillar``.
+def build_file_void_operation(action: str = "manifest") -> Callable[[Any, dict[str, Any]], dict[str, Any]]:
+    """Return a named-operation callback usable by ``protocol.mpcp.lib.Pillar``."""
 
-    Example:
-        pillar.set_stage("D", build_file_void_stage("manifest"))
-    """
-
-    def _stage(previous: Any, context: dict[str, Any]) -> dict[str, Any]:
-        stage_context = dict(context)
-        stage_context.setdefault("ACTION", action)
+    def _operation(previous: Any, context: dict[str, Any]) -> dict[str, Any]:
+        operation_context = dict(context)
+        operation_context.setdefault("ACTION", action)
         if previous is not None:
-            stage_context["PREVIOUS_STAGE_RESULT"] = previous
-        return call_file_void_tool(stage_context)
+            operation_context["PREVIOUS_OPERATION_RESULT"] = previous
+        return call_file_void_tool(operation_context)
 
-    return _stage
+    return _operation
+
+
+def build_file_void_stage(action: str = "manifest") -> Callable[[Any, dict[str, Any]], dict[str, Any]]:
+    """Compatibility alias for callers created before A–F semantic alignment."""
+    return build_file_void_operation(action)
