@@ -106,6 +106,30 @@ class REDRAgent(RuntimeAgent):
 
         return result.as_dict()
 
+    def execute(
+        self,
+        task: str,
+        plan: Dict[str, Any],
+        context: Dict[str, Any],
+    ) -> Dict[str, Any]:
+        """Read, classify, tag, and package one event without changing input."""
+        result = self.inspect_event(task, plan, context)
+        details = result.get("details", {})
+        package = details.get("package", {})
+        result.update(
+            {
+                "contract_version": "1.0",
+                "task": task,
+                "action": "read_classify_package",
+                "summary": (
+                    f"REDR created package {package.get('package_id', 'UNKNOWN')} "
+                    f"and prepared routes {result.get('next', [])}."
+                ),
+                "artifacts": [],
+            }
+        )
+        return result
+
     def run(
         self,
         task: str,

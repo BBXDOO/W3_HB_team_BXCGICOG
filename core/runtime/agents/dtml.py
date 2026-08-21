@@ -169,6 +169,33 @@ class DTMLAgent(RuntimeAgent):
         """เส้นทางหลักของ DTML — decision trace ปกติ"""
         return trace_decision(decision_input).as_dict()
 
+    def execute(
+        self,
+        task: str,
+        plan: Dict[str, Any],
+        context: Dict[str, Any],
+    ) -> Dict[str, Any]:
+        """Inspect a decision boundary and return a traceable continuation state."""
+        decision_input: Dict[str, Any] = {"text": task}
+        if isinstance(context, Mapping):
+            request = context.get("request")
+            if isinstance(request, Mapping):
+                decision_input.update(request)
+            decision_input.update({key: value for key, value in context.items() if key != "request"})
+        result = self.inspect(decision_input)
+        result.update(
+            {
+                "contract_version": "1.0", "task": task,
+                "action": "inspect_decision_trace",
+                "summary": (
+                    f"DTML decision={result.get('decision')} "
+                    f"status={result.get('status')} next={result.get('next', [])}."
+                ),
+                "artifacts": [],
+            }
+        )
+        return result
+
     # --- โหมดพิเศษ: เปิดเมื่อพบความผิดปกติ/ข้อสงสัย ---
 
     def inspect(self, decision_input: Any) -> Dict[str, Any]:
@@ -290,4 +317,3 @@ __all__ = [
     "ChaosAreaResolver",
     "MatrixLayerResolver",
 ]
-

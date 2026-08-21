@@ -7,6 +7,7 @@ from uuid import uuid4
 
 from fastapi import APIRouter
 
+from core.runtime.process_layer import run_w3lgu_packet_process_layer
 from croll.cross_l_dispatcher import dispatch_workset
 from w3_api.adapters.ep_signal_adapter import build_ep_signal_preview
 from w3_api.adapters.w3db_adapter import build_w3db_trace_plan
@@ -34,6 +35,12 @@ def cross(req: W3CrossRequest) -> W3CrossResponse:
         payload=req.payload,
     )
     w3lgu_text = program.to_text()
+    runtime_trace = run_w3lgu_packet_process_layer(
+        program,
+        payload=req.payload,
+        process_id=event_id,
+        timestamp=now,
+    )
     signal = {
         "type": "W3_API_CROSS",
         "source": req.source,
@@ -43,6 +50,7 @@ def cross(req: W3CrossRequest) -> W3CrossResponse:
         "mutated": False,
         "w3db": build_w3db_trace_plan(event_id, program),
         "ep_signal": build_ep_signal_preview(w3lgu_text),
+        "runtime": runtime_trace.to_dict(),
         "references": [
             "protocol/w3lgu/RML01.md",
             "docs/integration_guide.md",
