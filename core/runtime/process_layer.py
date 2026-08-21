@@ -370,7 +370,8 @@ def _stage_from_agent_result(
             }
         )
     elif stage == "DTML":
-        data.setdefault("risk", _risk_level(package.intent, package.payload))
+        # DTML/MFC owns risk and continuation policy.  This layer only keeps
+        # stable projection fields and must not manufacture a second verdict.
         data.setdefault("target", package.target)
         data.setdefault("route_scope", package.route_scope)
 
@@ -417,15 +418,6 @@ def _derive_tags(*, intent: str, target: str, payload: Mapping[str, Any]) -> tup
         if token in lower:
             tags.add(token)
     return tuple(sorted(tags))
-
-
-def _risk_level(intent: str, payload: Mapping[str, Any]) -> str:
-    text = f"{intent} {_canonical(dict(payload))}".lower()
-    if any(word in text for word in ("delete", "overwrite", "secret", "credential", "token")):
-        return "red"
-    if any(word in text for word in ("mutate", "execute", "deploy", "merge", "public")):
-        return "yellow"
-    return "green"
 
 
 def _normalize_target(value: str) -> str:
