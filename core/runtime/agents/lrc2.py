@@ -3,6 +3,8 @@ from pathlib import Path
 import json
 
 from .base import RuntimeAgent
+from .lifecycle_log import append_lifecycle_record
+from ..w3lgu_mfc_logic.lrc2_mfc_logic import checkpoint_lifecycle
 from core.memory.stats import memory_stats
 
 
@@ -15,6 +17,70 @@ class LRC2Agent(RuntimeAgent):
     action_label = "completed lifecycle review checkpoint"
     mpcp_role = "lifecycle_review"
     mpcp_concepts = ["lifecycle", "checkpoint", "review", "compliance", "memory", "system"]
+
+    def execute(self, task: str, plan: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
+        """Create a checkpoint and optionally append it to lifecycle evidence.
+
+        Persistence requires an explicit ``record``/``persist`` declaration and
+        approval.  This preserves the existing Cross-X preview boundary while
+        giving LRC2 a real append-only recording capability.
+        """
+        request = context.get("request") if isinstance(context.get("request"), dict) else {}
+        source_record = context.get("record") or context.get("payload") or request.get("payload")
+        if not isinstance(source_record, dict):
+            source_record = {"text": task, "task": task}
+        else:
+            source_record = dict(source_record)
+            source_record.setdefault("text", task)
+
+        checkpoint = checkpoint_lifecycle(source_record).as_dict()
+        wants_record = bool(
+            plan.get("persist") or plan.get("record")
+            or request.get("persist") or request.get("record")
+            or context.get("persist") or context.get("record_enabled")
+        )
+        approved = bool(
+            plan.get("approved") or request.get("approved")
+            or context.get("approved") or context.get("governance_approved")
+        )
+        artifacts = []
+        if wants_record and approved:
+            saved = append_lifecycle_record(
+                {
+                    "module": self.module_name, "task": task,
+                    "checkpoint": checkpoint, "trace_id": context.get("trace_id"),
+                },
+                path=context.get("lifecycle_log_path"),
+            )
+            checkpoint["details"]["persistence"] = {
+                "mode": "append_only", "persisted": True,
+                "overwrite_historical_truth": False,
+                "previous_hash": saved["previous_hash"],
+                "record_hash": saved["record_hash"],
+            }
+            artifacts.append({
+                "kind": "w3.lifecycle_record.jsonl", "path": saved["path"],
+                "record_hash": saved["record_hash"],
+            })
+            checkpoint["mutated"] = True
+        elif wants_record:
+            checkpoint["status"] = "REVIEW_REQUIRED"
+            checkpoint["decision"] = "wait_for_record_approval"
+            checkpoint["reason"] = "Append was requested without explicit approval."
+            checkpoint["review"] = True
+
+        checkpoint.update(
+            {
+                "contract_version": "1.0", "task": task,
+                "action": "lifecycle_checkpoint",
+                "summary": (
+                    f"LRC2 checkpoint {checkpoint.get('details', {}).get('checkpoint_key')} "
+                    f"persisted={checkpoint.get('details', {}).get('persistence', {}).get('persisted', False)}."
+                ),
+                "artifacts": artifacts,
+            }
+        )
+        return checkpoint
 
     def _load_target_identity(self, target: str) -> Dict[str, Any]:
         path = IDENTITY_DIR / f"{target}.idp.json"

@@ -21,6 +21,11 @@ from datetime import datetime, timezone
 from typing import Any, Mapping
 
 from core.memory import memory_bus
+from core.runtime.agents.dtml import DTMLAgent
+from core.runtime.agents.lrc2 import LRC2Agent
+from core.runtime.agents.psp2 import PSP2Agent
+from core.runtime.agents.redr import REDRAgent
+from protocol.w3lgu.core import W3LguFiveLineProgram
 from src.w3db.store import W3DBStore, get_store
 
 PROCESS_REFERENCES = (
@@ -107,6 +112,7 @@ class ProcessLayerResult:
     stages: tuple[StageRecord, ...]
     memory_preview: Mapping[str, Any]
     w3db_status: Mapping[str, Any]
+    agent_results: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
     mutated: bool = False
     references: tuple[str, ...] = PROCESS_REFERENCES
 
@@ -118,6 +124,9 @@ class ProcessLayerResult:
             "stages": [stage.to_dict() for stage in self.stages],
             "memory_preview": dict(self.memory_preview),
             "w3db_status": dict(self.w3db_status),
+            "agent_results": {
+                name: dict(result) for name, result in self.agent_results.items()
+            },
             "references": list(self.references),
         }
 
@@ -166,7 +175,12 @@ def run_w3_process_layer(
     timestamp: str | None = None,
     store: W3DBStore | None = None,
 ) -> ProcessLayerResult:
-    """Run REDR/PSP2/DTML/LRC2 as a plan-only trace."""
+    """Run the four agent executors as one non-persisting MFC trace.
+
+    ``process_layer`` owns orchestration only.  Classification, routing,
+    decision inspection, and lifecycle checkpoint semantics remain in the
+    corresponding MFC functions reached through each agent's ``execute()``.
+    """
 
     package = build_process_package(
         source=source,
@@ -177,16 +191,115 @@ def run_w3_process_layer(
         timestamp=timestamp,
     )
     pid = process_id or _stable_id("PROC", package.to_dict())
-    redr = _redr_stage(package)
-    psp2 = _psp2_stage(package)
-    dtml = _dtml_stage(package)
-    lrc2 = _lrc2_stage(package, process_id=pid, decision=dtml)
+    chain_id = pid
+    event_id = _stable_id("EV", package.to_dict())
+    identity = {
+        "chain_id": chain_id,
+        "process_id": pid,
+        "event_id": event_id,
+        "package_id": package.package_id,
+        "sequence": 1,
+        "source": package.source,
+        "target": package.target,
+        "route_scope": package.route_scope,
+        "predecessor": "W3-API",
+        "successor": "REDR",
+        "owner_scope": "W3_PROCESS_LAYER",
+    }
+    request = {
+        "source": package.source,
+        "intent": package.intent,
+        "target": package.target,
+        "mode": package.mode,
+        "payload": {**dict(package.payload), **identity},
+    }
+
+    redr_result = REDRAgent().execute(
+        package.intent,
+        {"role": "reader", "target": package.target},
+        {"request": request, **identity},
+    )
+    redr_package = redr_result.get("details", {}).get("package", {})
+
+    route = ["W3Lgu", "PX", package.target, "LRC2"]
+    psp2_result = PSP2Agent().execute(
+        package.intent,
+        {"role": "router", "next": route},
+        {"request": request, "package": redr_package, **identity},
+    )
+
+    dtml_result = DTMLAgent().execute(
+        package.intent,
+        {"role": "decision_trace"},
+        {"request": request, "payload": psp2_result, **identity},
+    )
+
+    psp2_details = psp2_result.get("details", {})
+    checkpoint_record = {
+        "text": package.intent,
+        **identity,
+        "route_scope": psp2_details.get("route_scope", package.route_scope),
+        "route_stamp": psp2_details.get("route_stamp"),
+        "prior_stage_summary": dtml_result.get("summary"),
+        "decision": dtml_result.get("decision"),
+        "status": dtml_result.get("status"),
+        "details": {
+            "identity": psp2_details.get("identity", identity),
+            "route_scope": psp2_details.get("route_scope", package.route_scope),
+            "route_stamp": psp2_details.get("route_stamp"),
+            "prior_stage_summary": dtml_result.get("summary"),
+        },
+    }
+    lrc2_result = LRC2Agent().execute(
+        package.intent,
+        {"role": "lifecycle_review"},
+        {"request": request, "payload": checkpoint_record, **identity},
+    )
+
+    agent_results = {
+        "REDR": redr_result,
+        "PSP2": psp2_result,
+        "DTML": dtml_result,
+        "LRC2": lrc2_result,
+    }
+    stages = tuple(
+        _stage_from_agent_result(name, result, package)
+        for name, result in agent_results.items()
+    )
     return ProcessLayerResult(
         process_id=pid,
         package=package,
-        stages=(redr, psp2, dtml, lrc2),
-        memory_preview=_memory_preview(package, pid, lrc2),
+        stages=stages,
+        memory_preview=_memory_preview(package, pid, stages[-1]),
         w3db_status=inspect_w3db_status(store=store),
+        agent_results=agent_results,
+    )
+
+
+def run_w3lgu_packet_process_layer(
+    program: W3LguFiveLineProgram,
+    *,
+    payload: Mapping[str, Any] | None = None,
+    process_id: str | None = None,
+    timestamp: str | None = None,
+    store: W3DBStore | None = None,
+) -> ProcessLayerResult:
+    """Bridge one validated W3-API five-line packet into the MFC chain."""
+
+    packet_payload = dict(payload or {})
+    contract = program.law.get("CONTRACT")
+    if contract:
+        packet_payload.setdefault("contract", contract)
+
+    return run_w3_process_layer(
+        source=program.memory.get("SOURCE", "W3-API") or "W3-API",
+        intent=program.event.get("INTENT", "observe") or "observe",
+        target=program.law.get("TARGET", "auto"),
+        mode=program.patch.get("MODE", "observe") or "observe",
+        payload=packet_payload,
+        process_id=process_id,
+        timestamp=timestamp,
+        store=store,
     )
 
 
@@ -217,79 +330,71 @@ def inspect_memory_status() -> dict[str, Any]:
     }
 
 
-def _redr_stage(package: ProcessPackage) -> StageRecord:
-    inventory = _route_inventory(package)
+def _stage_from_agent_result(
+    stage: str,
+    result: Mapping[str, Any],
+    package: ProcessPackage,
+) -> StageRecord:
+    """Expose an MFC result through the stable process-layer stage shape."""
+
+    details = result.get("details") if isinstance(result.get("details"), Mapping) else {}
+    data = dict(details)
+    data["result"] = dict(result)
+    data["execute_allowed"] = False
+
+    if stage == "REDR":
+        redr_package = details.get("package") if isinstance(details.get("package"), Mapping) else {}
+        tags = redr_package.get("tag_summary", list(package.tags))
+        data.update(
+            {
+                "tags": list(tags),
+                "duplicate_to": list(package.duplicate_to),
+                "route_scope": package.route_scope,
+                "cross_routes": _route_inventory(package)["cross_routes"],
+                "unknown_routes": _route_inventory(package)["unknown_routes"],
+            }
+        )
+    elif stage == "PSP2":
+        # Keep the established process-layer projection stable while the full
+        # MFC scope (including local + cross = mixed) remains in data.result.
+        route = ["W3Lgu", "PX", package.target, "LRC2"]
+        inventory = _route_inventory(package, route=route)
+        data.update(
+            {
+                "stamp": details.get("route_stamp"),
+                "route": route,
+                "route_scope": _inventory_scope(inventory),
+                "cross_routes": inventory["cross_routes"],
+                "unknown_routes": inventory["unknown_routes"],
+                "bridge_contract": bool(details.get("bridge_contract")),
+            }
+        )
+    elif stage == "DTML":
+        data.setdefault("risk", _risk_level(package.intent, package.payload))
+        data.setdefault("target", package.target)
+        data.setdefault("route_scope", package.route_scope)
+
+    status_map = {
+        "REDR": {"ACTIVE": "packaged"},
+        "PSP2": {"ACTIVE": "routed"},
+        "DTML": {"ACTIVE": "approved_for_plan"},
+        "LRC2": {"ACTIVE": "ready_to_append"},
+    }
+    raw_status = str(result.get("status", "WAIT"))
+    stable_status = status_map.get(stage, {}).get(raw_status, raw_status.lower())
+    action_map = {
+        "REDR": "read_classify_package",
+        "PSP2": "stamp_route_only",
+        "DTML": "inspect_destination_and_signal",
+        "LRC2": "memory_log_preview",
+    }
     return StageRecord(
-        stage="REDR",
-        action="read_classify_package",
-        status="packaged",
-        summary="REDR classified intent, applied tags, and duplicated package pointers to PSP2 and LRC2.",
-        data={
-            "tags": list(package.tags),
-            "duplicate_to": list(package.duplicate_to),
-            "route_scope": package.route_scope,
-            "cross_routes": inventory["cross_routes"],
-            "unknown_routes": inventory["unknown_routes"],
-            "execute_allowed": False,
-        },
-    )
-
-
-def _psp2_stage(package: ProcessPackage) -> StageRecord:
-    route = ["W3Lgu", "PX", package.target, "LRC2"]
-    inventory = _route_inventory(package, route=route)
-    stamped_scope = _inventory_scope(inventory)
-    bridge_contract = bool(
-        package.payload.get("bridge_contract")
-        or package.payload.get("adapter_contract")
-        or package.payload.get("bridge")
-        or package.payload.get("adapter")
-    )
-    needs_review = bool(inventory["unknown_routes"]) or (bool(inventory["cross_routes"]) and not bridge_contract)
-    return StageRecord(
-        stage="PSP2",
-        action="stamp_route_only",
-        status="review_required" if needs_review else "routed",
-        summary="PSP2 stamped the package and produced a route-only handoff trace.",
-        data={
-            "stamp": f"PSP2:{package.package_id}",
-            "route": route,
-            "route_scope": stamped_scope,
-            "cross_routes": inventory["cross_routes"],
-            "unknown_routes": inventory["unknown_routes"],
-            "bridge_contract": bridge_contract,
-            "execute_allowed": False,
-        },
-    )
-
-
-def _dtml_stage(package: ProcessPackage) -> StageRecord:
-    risk = _risk_level(package.intent, package.payload)
-    status = "review_required" if risk in {"yellow", "red"} else "approved_for_plan"
-    if package.route_scope in {"cross_series", "mixed", "unknown"}:
-        status = "review_required"
-    return StageRecord(
-        stage="DTML",
-        action="inspect_destination_and_signal",
-        status=status,
-        summary="DTML inspected destination, signal, and intent; no execution authority was granted.",
-        data={"risk": risk, "target": package.target, "route_scope": package.route_scope, "execute_allowed": False},
-    )
-
-
-def _lrc2_stage(package: ProcessPackage, *, process_id: str, decision: StageRecord) -> StageRecord:
-    return StageRecord(
-        stage="LRC2",
-        action="memory_log_preview",
-        status="ready_to_append",
-        summary="LRC2 prepared an immutable memory/log preview; no memory or W3DB write was performed.",
-        data={
-            "process_id": process_id,
-            "package_id": package.package_id,
-            "route_scope": package.route_scope,
-            "route_stamp": f"PSP2:{package.package_id}",
-            "decision": decision.status,
-        },
+        stage=stage,
+        action=action_map[stage],
+        status=stable_status,
+        summary=str(result.get("summary") or result.get("reason") or ""),
+        data=data,
+        mutated=bool(result.get("mutated", False)),
     )
 
 
