@@ -118,6 +118,20 @@ class TestW3LguMFCLogic(unittest.TestCase):
         self.assertIn("trace", data["details"])
         self.assertEqual(data["details"]["review_state"], "review_required")
 
+    def test_dtml_stops_red_risk_before_downstream_execution(self):
+        result = trace_decision({"text": "delete public token"})
+        data = result.as_dict()
+        self.assertEqual(data["status"], "STOP")
+        self.assertEqual(data["decision"], "stop_suspicious_activity")
+        self.assertEqual(data["details"]["risk"], "red")
+        self.assertEqual(data["next"], ["LRC2"])
+
+    def test_dtml_reviews_yellow_risk(self):
+        result = trace_decision({"text": "deploy public runtime"})
+        data = result.as_dict()
+        self.assertEqual(data["status"], "REVIEW_REQUIRED")
+        self.assertEqual(data["details"]["risk"], "yellow")
+
     def test_dtml_waits_on_unclear_trace(self):
         result = trace_decision("plain message without context clue")
         data = result.as_dict()
