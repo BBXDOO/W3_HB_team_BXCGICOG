@@ -54,8 +54,9 @@ def test_process_layer_marks_risky_intent_for_review():
 
     dtml = result.to_dict()["stages"][2]
     assert dtml["stage"] == "DTML"
-    assert dtml["status"] == "review_required"
+    assert dtml["status"] == "stop"
     assert dtml["data"]["risk"] == "red"
+    assert dtml["data"]["result"]["decision"] == "stop_suspicious_activity"
 
 
 def test_process_package_is_immutable():
