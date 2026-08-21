@@ -26,7 +26,6 @@ from ..w3lgu_mfc_logic.dtml_mfc_logic import trace_decision
 from ..w3lgu_mfc_logic.contracts import (
     ACTIVE,
     REVIEW_REQUIRED,
-    STOP,
     WAIT,
     make_result,
     normalize_text,
@@ -182,6 +181,30 @@ class DTMLAgent(RuntimeAgent):
             if isinstance(request, Mapping):
                 decision_input.update(request)
             decision_input.update({key: value for key, value in context.items() if key != "request"})
+
+            # Promote routing evidence from the previous MFC stage so the
+            # authoritative DTML core receives the same decision context no
+            # matter which runtime entry invoked this agent.
+            upstream = context.get("payload")
+            if isinstance(upstream, Mapping):
+                upstream_details = (
+                    upstream.get("details")
+                    if isinstance(upstream.get("details"), Mapping)
+                    else {}
+                )
+                for key in (
+                    "route_scope",
+                    "unknown_routes",
+                    "cross_routes",
+                    "bridge_contract",
+                    "review_required",
+                    "status",
+                    "risk",
+                    "stop_required",
+                ):
+                    value = upstream.get(key, upstream_details.get(key))
+                    if value not in (None, "", [], {}):
+                        decision_input.setdefault(key, value)
         result = self.inspect(decision_input)
         result.update(
             {
@@ -237,48 +260,12 @@ class DTMLAgent(RuntimeAgent):
         if multidim:
             modes["matrix_layer"] = self._matrix_layer.project(payload, multidim)
 
-        # พบทั้งสอง = สถานการณ์ที่ DTML ต้องชะลอเพื่อ review
-        if anomaly and multidim:
-            status, decision, reason, conf = (
-                REVIEW_REQUIRED,
-                "engage_chaos_and_matrix_review",
-                "anomaly + multi-dimensional signals; DTML opens both inspection modes",
-                0.8,
-            )
-            nxt, standby = ["LRC2"], ["REDR", "PSP2"]
-        elif anomaly:
-            status, decision, reason, conf = (
-                REVIEW_REQUIRED,
-                "engage_chaos_area",
-                "anomaly detected; DTML opens chaos area for non-linear inspection",
-                0.78,
-            )
-            nxt, standby = ["LRC2"], ["PSP2"]
-        else:  # multidim only
-            status, decision, reason, conf = (
-                ACTIVE,
-                "engage_matrix_layer",
-                "multi-dimensional signals; DTML projects event onto matrix layer",
-                0.72,
-            )
-            nxt, standby = ["PSP2", "LRC2"], ["REDR"]
-
-        return make_result(
-            module=self.module_name,
-            status=status,
-            confidence=conf,
-            input_type="inspect:special_mode",
-            decision=decision,
-            reason=reason,
-            next_modules=nxt,
-            standby=standby,
-            details={
-                "payload": payload,
-                "anomaly_markers": anomaly,
-                "multidim_markers": multidim,
-                "modes": modes,
-            },
-        ).as_dict()
+        # Chaos/Matrix are observation providers only.  They never make the
+        # final continuation decision; every path returns to the MFC core.
+        payload["inspection"] = modes
+        payload["anomaly_markers"] = anomaly
+        payload["multidim_markers"] = multidim
+        return self.trace(payload)
 
     # --- run(): entry point ของ agent ในเชน ---
 
