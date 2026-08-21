@@ -83,16 +83,18 @@ class TestChatGPTFlowArtifact(unittest.TestCase):
         self.assertEqual(len(result["artifacts"]), 1)
         self.assertTrue(Path(result["artifacts"][0]["path"]).exists())
 
-    def test_unimplemented_module_is_not_completed(self):
+    def test_gemini_verification_is_completed(self):
         with patch("core.runtime.engine_v2.search_memory", return_value=[]), patch(
             "core.runtime.engine_v2.add_memory"
         ):
             result = run("verify")
 
-        self.assertEqual(result["status"], "UNAVAILABLE")
+        self.assertEqual(result["status"], "COMPLETED")
         self.assertEqual(result["module"], "Gemini")
-        self.assertEqual(result["artifacts"], [])
+        self.assertEqual(len(result["artifacts"]), 1)
+        self.assertEqual(result["artifacts"][0]["type"], "verification_stamp")
         self.assertTrue(result["agent_result"]["traceable"])
+        self.assertFalse(result["agent_result"]["mutated"])
 
     def test_engine_v2_flags_incomplete_w3lgu_result_contract(self):
         validation = validate_agent_result("PSP2", {"status": "ACTIVE", "module": "PSP2"})
