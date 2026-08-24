@@ -1,6 +1,7 @@
 import json
 import time
 import uuid
+from collections.abc import Mapping
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any, Dict
 
@@ -44,7 +45,7 @@ def trace_id():
 
 def build_context(task, request=None):
     hits = search_memory(task)
-    request = request or {}
+    request = dict(request) if isinstance(request, Mapping) else {}
 
     return {
         "trace_id": trace_id(),
