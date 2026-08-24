@@ -113,7 +113,7 @@ class BBX19Agent(RuntimeAgent):
                 "state": intent_state,
                 "alignment_state": alignment_state,
                 "source_module": _text(intent_record.get("module")),
-                "override_applied": bool(intent_blockers and override_intent_review),
+                "override_applied": bool(review_intent_blockers and override_intent_review),
             }
 
         unresolved_intent_blockers = non_overridable_intent_blockers + (
