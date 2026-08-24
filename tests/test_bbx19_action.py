@@ -121,6 +121,7 @@ class TestBBX19Action(unittest.TestCase):
         self.assertEqual(result["status"], "REVIEW_REQUIRED")
         self.assertIn("invalid_intent_record_type", result["missing"])
         self.assertIn("invalid_intent_source_module", result["missing"])
+        self.assertFalse(result["intent_link"]["override_applied"])
 
 
 if __name__ == "__main__":
