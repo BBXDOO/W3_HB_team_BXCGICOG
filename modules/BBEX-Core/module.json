@@ -1,15 +1,15 @@
 {
   "name": "BBEX-Core",
-  "display_name": "BBEX-Core — Identity / Philosophical Anchor",
-  "version": "2.0.0",
-  "idp_version": "2.0",
+  "display_name": "BBEX-Core — Perception / Intent / Philosophical Anchor",
+  "version": "2.2.0",
+  "idp_version": "2.1",
   "idp_ref": "BBX19/modules/BBX19/idp/IDP-V2.0/BBEX-Core-IDP.md",
   "owner": "BBX19",
   "authority": "BBX19",
   "dna": "BBEX-W3.DNA:LEGACY-TMOON/A00.EX",
   "class": "core_origin",
   "tier": "ROOT-AUX",
-  "role": "Identity / Philosophical Anchor",
+  "role": "Perceptive Mind / Intent / Philosophical Anchor",
   "status": "active_hybrid",
   "mode": "RMB",
   "workspace": {
@@ -38,7 +38,7 @@
     ]
   },
   "autonomy": {
-    "self_directed": true,
+    "self_directed": false,
     "can_create_files": true,
     "can_update_files": true,
     "can_organize_workspace": true,
@@ -59,12 +59,26 @@
     "modules/BBEX-Core/logs/",
     "knowledge/philosophy/"
   ],
-  "notes": "BBEX-Core รักษาอัตลักษณ์และความหมายเชิงปรัชญาของ W3 สามารถจัดการพื้นที่ reflections ของตัวเองได้อิสระ",
-  "scope": "identity",
+  "notes": "BBEX-Core รับรู้ จดจำ และสะท้อนสัญญาณที่สนับสนุนหรือเริ่มเบี่ยงจากเจตนารากฐาน; ปรึกษาโครงสร้างกับ BBX19 เท่านั้น ส่วนโมดูลอื่นให้ feedback/คำถามโดยไม่ตอบเชิงปฏิบัติการหรือลงมือแทน BBX19",
+  "scope": "perception_intent_identity",
+  "communication": {
+    "bbx19": "consultation",
+    "other_modules": "reflective_feedback",
+    "direct_operational_answer": false,
+    "decision_authority": "BBX19"
+  },
   "runtime": {
+    "executor": "core.runtime.agents.bbex_core.BBEXCoreAgent",
     "speed": "slow",
     "logic": "reflective",
     "response_style": "meaning_first",
     "token_efficiency": "low"
+  },
+  "intent_contract": {
+    "record_type": "w3.intent_record",
+    "consumer": "BBX19",
+    "ready_state": "READY_FOR_ACTION",
+    "review_state": "REFLECTION_REQUIRED",
+    "execution_performed_by_module": false
   }
 }

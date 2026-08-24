@@ -83,16 +83,15 @@ class TestChatGPTFlowArtifact(unittest.TestCase):
         self.assertEqual(len(result["artifacts"]), 1)
         self.assertTrue(Path(result["artifacts"][0]["path"]).exists())
 
-    def test_gemini_verification_is_completed(self):
+    def test_verifier_without_evidence_requires_review(self):
         with patch("core.runtime.engine_v2.search_memory", return_value=[]), patch(
             "core.runtime.engine_v2.add_memory"
         ):
             result = run("verify")
 
-        self.assertEqual(result["status"], "COMPLETED")
+        self.assertEqual(result["status"], "REVIEW_REQUIRED")
         self.assertEqual(result["module"], "Gemini")
-        self.assertEqual(len(result["artifacts"]), 1)
-        self.assertEqual(result["artifacts"][0]["type"], "verification_stamp")
+        self.assertEqual(result["agent_result"]["decision"], "UNRESOLVED")
         self.assertTrue(result["agent_result"]["traceable"])
         self.assertFalse(result["agent_result"]["mutated"])
 
