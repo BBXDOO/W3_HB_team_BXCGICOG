@@ -1,115 +1,75 @@
 #!/usr/bin/env python3
-"""
-BBEX CORE - Philosophical Anchor
-Role: Philosophical Anchor
-Priority: PASSIVE / ON-DEMAND
+"""Capture a BBEX perception record without executing the requested action."""
 
-Function:
-- Does not provide ready-made answers
-- Reflects questions back to Root
-- Anchors system philosophy
-"""
+from __future__ import annotations
 
-from datetime import datetime
+import argparse
+import json
+import sys
 from pathlib import Path
 
 
-class BBEXCore:
-    def __init__(self, repo_path):
-        self.repo_path = Path(repo_path)
-        self.reflection = None
-    
-    def generate_reflection(self):
-        """Generate philosophical reflection (≤ 10 lines)"""
-        print("🧩 BBEX CORE Philosophical Anchor Starting...")
-        print(f"📂 Repository: {self.repo_path}")
-        print()
-        
-        print("🤔 Generating reflection...")
-        
-        # The core question from the problem statement
-        core_question = "What is the core that must not break, if W3 is to truly grow?"
-        
-        # Reflection (≤ 10 lines)
-        self.reflection = {
-            'question': core_question,
-            'reflection': [
-                "The question returns to you, Root:",
-                "",
-                "Is it the code? No — code can be rewritten.",
-                "Is it the structure? No — structure can evolve.",
-                "Is it the team? Partly — but teams shift.",
-                "",
-                "What remains when everything else changes?",
-                "",
-                "The INTENT. The WHY behind every decision.",
-                "The commitment to build WITH understanding, not FROM assumption."
-            ],
-            'timestamp': datetime.now().isoformat()
-        }
-        
-        print()
-        print("✅ Reflection generated")
-    
-    def save_reflection(self, output_path):
-        """Save philosophical reflection"""
-        lines = []
-        lines.append("# BBEX CORE — Philosophical Reflection")
-        lines.append("")
-        lines.append(f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        lines.append("")
-        lines.append("---")
-        lines.append("")
-        lines.append("## 🧩 The Core Question")
-        lines.append("")
-        lines.append(f"> \"{self.reflection['question']}\"")
-        lines.append("")
-        lines.append("---")
-        lines.append("")
-        lines.append("## 💭 Reflection")
-        lines.append("")
-        for line in self.reflection['reflection']:
-            if line:
-                lines.append(line)
-            else:
-                lines.append("")
-        lines.append("")
-        lines.append("---")
-        lines.append("")
-        lines.append("## 🎯 Essence")
-        lines.append("")
-        lines.append("BBEX CORE does not give answers.")
-        lines.append("It holds space for the right questions.")
-        lines.append("")
-        lines.append("Every system needs an anchor — not to restrict,")
-        lines.append("but to ensure that when storms come,")
-        lines.append("you remember why you set sail.")
-        lines.append("")
-        lines.append("---")
-        lines.append("")
-        lines.append("**Role:** Passive / On-Demand  ")
-        lines.append("**Function:** Philosophical Anchor  ")
-        lines.append("**Authority:** BBX19 — Root Authority  ")
-        lines.append("**System:** W3 Security & Structural Audit")
-        
-        with open(output_path, 'w', encoding='utf-8') as f:
-            f.write('\n'.join(lines))
-        
-        print(f"📄 Reflection saved to: {output_path}")
+REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from core.runtime.agents.bbex_core import BBEXCore
 
 
-def main():
-    """Main execution"""
-    repo_path = Path(__file__).parent.parent
-    core = BBEXCore(repo_path)
-    
-    # Generate reflection
-    core.generate_reflection()
-    
-    # Save reflection
-    output_path = repo_path / 'BBEX_Reflection.md'
-    core.save_reflection(output_path)
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Record BBEX intent, observations, and alignment signals without execution.",
+    )
+    parser.add_argument("intent", help="Intent or task to preserve")
+    parser.add_argument("--outcome", help="Observable desired outcome")
+    parser.add_argument("--source", default="BBX19")
+    parser.add_argument("--target", default="W3")
+    parser.add_argument("--constraint", action="append", default=[])
+    parser.add_argument("--non-goal", action="append", default=[])
+    parser.add_argument("--evidence", action="append", default=[])
+    parser.add_argument("--observation", action="append", default=[])
+    parser.add_argument("--support-signal", action="append", default=[])
+    parser.add_argument("--drift-signal", action="append", default=[])
+    parser.add_argument(
+        "--structural-option",
+        action="append",
+        default=[],
+        help="Consultation option retained only when --source is BBX19",
+    )
+    parser.add_argument("--output", type=Path, help="Explicit Markdown output path")
+    parser.add_argument("--json", action="store_true", help="Print the record as JSON")
+    return parser
 
 
-if __name__ == '__main__':
-    main()
+def main(argv=None) -> int:
+    args = build_parser().parse_args(argv)
+    core = BBEXCore(REPO_ROOT)
+    record = core.capture(
+        args.intent,
+        source=args.source,
+        target=args.target,
+        intent=args.intent,
+        desired_outcome=args.outcome,
+        constraints=args.constraint,
+        non_goals=args.non_goal,
+        evidence=args.evidence,
+        observations=args.observation,
+        support_signals=args.support_signal,
+        drift_signals=args.drift_signal,
+        structural_options=args.structural_option,
+    )
+
+    if args.output:
+        saved = core.save(record, args.output)
+        print(f"Saved: {saved}", file=sys.stderr)
+
+    if args.json:
+        print(json.dumps(record, ensure_ascii=False, indent=2))
+    else:
+        print(core.render_markdown(record))
+
+    return 0 if record["state"] == "READY_FOR_ACTION" else 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -37,7 +37,9 @@ class CastAgent(RuntimeAgent):
                 "task": task,
                 "action": "log_assignment",
                 "record": record,
-                "mutated": False,
+                "artifacts": [{"type": "main_activity_record", "record": record}],
+                "mutated": True,
+                "traceable": True,
                 "review": False,
             }
 
@@ -55,7 +57,9 @@ class CastAgent(RuntimeAgent):
                 "task": task,
                 "action": "log_subsystem_report",
                 "record": record,
-                "mutated": False,
+                "artifacts": [{"type": "main_activity_record", "record": record}],
+                "mutated": True,
+                "traceable": True,
                 "review": False,
             }
 
@@ -69,7 +73,47 @@ class CastAgent(RuntimeAgent):
                 "action": "summarize_subsystem_health",
                 "summary": summary,
                 "mutated": False,
+                "traceable": True,
                 "review": False,
+            }
+
+        if kind in {"interpretation", "reasoning", "structural_review"}:
+            request = context.get("request") if isinstance(context.get("request"), dict) else {}
+            source = context.get("source") or request.get("source") or "unknown"
+            observations = context.get("observations") or context.get("evidence") or []
+            if not isinstance(observations, list):
+                observations = [observations]
+            observations = [item for item in observations if item not in (None, "")]
+            assumptions = context.get("assumptions") or []
+            if not isinstance(assumptions, list):
+                assumptions = [assumptions]
+            questions = context.get("questions") or []
+            if not isinstance(questions, list):
+                questions = [questions]
+
+            return {
+                "contract_version": "1.0",
+                "status": "COMPLETED" if observations else "REVIEW_REQUIRED",
+                "module": self.module_name,
+                "task": task,
+                "action": "structure_context",
+                "summary": "Structured supplied observations without changing source truth.",
+                "reason": (
+                    "At least one supplied observation was structured for decision support."
+                    if observations
+                    else "Interpretation requires at least one explicit observation or evidence item."
+                ),
+                "details": {
+                    "source": source,
+                    "observations": observations,
+                    "assumptions": assumptions,
+                    "open_questions": questions,
+                },
+                "artifacts": [],
+                "mutated": False,
+                "traceable": True,
+                "review": True,
+                "authority": {"decision_allowed": False, "truth_mutation_allowed": False},
             }
 
         # ไม่ตรง plan ที่รู้จัก — คืน UNAVAILABLE ตาม contract เดิมของ base.py

@@ -4,6 +4,7 @@ from .bbx19 import BBX19Agent
 from .cast import CastAgent
 from .chatgpt import ChatGPTAgent
 from .copilot_gm import CopilotGmAgent
+from .codex import CodexAgent
 from .deepseek import DeepSeekAgent
 from .dtml import DTMLAgent
 from .gemini import GeminiAgent
@@ -17,6 +18,7 @@ AGENT_TABLE = {
     "ChatGPT": ChatGPTAgent,
     "Gemini": GeminiAgent,
     "Copilot-Gm": CopilotGmAgent,
+    "Codex": CodexAgent,
     "DeepSeek": DeepSeekAgent,
     "Grok": GrokAgent,
     "Cast": CastAgent,
