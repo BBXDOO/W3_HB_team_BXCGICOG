@@ -5,6 +5,12 @@ Owner: BBX19
 Scope: Planner‑Only | Runtime: None | Mutated: False
 Relation: W3 / Library‑WX / Cross‑L / MPCP / W3‑API
 
+> **สถานะการอ่านปัจจุบัน:** Applied Build Anchor — Blueprint นี้ถูกนำไปสร้างใน `wx/` แล้วหลายส่วน  
+> **AMS Mapping:** BUILD; แกนหลัก AM Ⅱ พร้อม Concept ระดับ AM Ⅰ และ prototype/test ระดับ AM Ⅲ  
+> **ขอบเขตสำคัญ:** คำว่า BOX ในเอกสารนี้หมายถึง **BOX Knowledge Infrastructure v1.0** ไม่ใช่นิยาม Core ทั้งหมดของ BOX  
+> **Core ที่ต้องรักษา:** BOX ในความหมายกว้างกว่ามีหน้าที่กำหนดพื้นที่, boundary และความหมาย; Library‑WX เป็นหน่วยคลังภายในพื้นที่นั้น  
+> **Historical integrity:** ตัวอย่าง code, test, endpoint และคำสั่งเดิมคงไว้เพื่อสอบย้อนเส้นทาง Concept → Structure → Activity
+
 ---
 
 สารบัญ
@@ -33,8 +39,8 @@ Relation: W3 / Library‑WX / Cross‑L / MPCP / W3‑API
 
 1. แนวคิดหลัก
 
-BOX คือ โครงสร้างพื้นฐานทางความรู้ (Knowledge Infrastructure) ของ W3
-เปรียบเสมือน โรงแรมขนาดใหญ่ ที่มี:
+ใน Blueprint v1.0 นี้ BOX ถูกประยุกต์เป็นโครงสร้างพื้นฐานทางความรู้ (Knowledge Infrastructure) ของ W3
+เปรียบเสมือนโรงแรมขนาดใหญ่ที่มี:
 
 · ห้องสมุดกลาง – Library-WX (เก็บ Template, Blueprint)
 · บรรณารักษ์ – Indexor Agent (แนะนำตำแหน่ง)
@@ -42,15 +48,17 @@ BOX คือ โครงสร้างพื้นฐานทางควา
 · เคาน์เตอร์นำเข้า/ส่งออก – PortDC
 · ประตูเชื่อมภายนอกในอนาคต – WHUB
 
-BOX ไม่ใช่ runtime, execution engine, database, หรือ state manager
-BOX คือ reference layer ที่ให้มนุษย์และเอเจนท์สามารถ ค้นหา, อ้างอิง, คัดลอก และสร้าง เนื้อหาใหม่ โดยไม่ละเมิดต้นฉบับ
+BOX Knowledge Infrastructure v1.0 ไม่ใช่ runtime, execution engine, database หรือ state manager
+ในขอบเขตของ Blueprint นี้ BOX ทำหน้าที่เป็น reference layer ให้มนุษย์และเอเจนท์ค้นหา อ้างอิง คัดลอก และสร้างเนื้อหาใหม่โดยไม่ละเมิดต้นฉบับ
+
+ข้อจำกัดดังกล่าวใช้กับ implementation รุ่นนี้เท่านั้น ไม่ควรนำไปปฏิเสธความหมาย Core ของ BOX หรือความสามารถในบริบทอื่นที่มีต้นแบบและขอบเขตของตนเอง
 
 ---
 
 2. หลักการสำคัญ
 
 หลักการ คำอธิบาย
-P1 – Single Source of Truth ไฟล์ต้นฉบับ (template, blueprint) มีได้ที่เดียวใน wx/ ห้ามแก้โดยตรง
+P1 – Single Source of Truth ไฟล์ต้นฉบับ (template, blueprint) มีตำแหน่งหลักเดียวใน wx/; งาน instance ต้อง copy-before-use ส่วนการบำรุงต้นฉบับทำได้เมื่อมี version, review และ provenance
 P2 – Copy Before Use ทุกการใช้งานต้อง คัดลอก ไปยัง workspace ของตนเอง แล้วจึงแก้ไข
 P3 – Planner First BOX ทำงานได้แค่ แนะนำ, อ้างอิง, ค้นหา, บันทึก – ไม่มีสิทธิ์ execute
 P4 – Human First มนุษย์เป็นผู้ตัดสินใจขั้นสุดท้าย เอเจนท์เสนอเท่านั้น
@@ -198,7 +206,9 @@ REVIEW: on_complete
 
 7. Blueprint System
 
-Blueprint คือ declaration ของโครงสร้าง (โฟลเดอร์, ระบบ, Agent, Collection) ไม่ใช่ logic หรือ flow.
+ในบริบทของ `wx/blueprints/` คำว่า Blueprint คือ declaration ของโครงสร้าง (โฟลเดอร์, ระบบ, Agent, Collection) และไม่ถูก execute เป็น logic หรือ flow
+
+> กฎนี้เป็น boundary ของ wx Blueprint เท่านั้น ห้ามนำไปตัดสิน MPCP Blueprint หรือ Blueprint ของระบบอื่นซึ่งมีหน้าที่ตามต้นแบบของหน่วยงานนั้น
 
 ตัวอย่าง wx/blueprints/collection/paper_collection.md:
 
@@ -339,14 +349,19 @@ def get_dispatch_plan(px: str):
 {"timestamp": "2026-06-12T10:05:00Z", "requester": "BBX19", "action": "create_blueprint", "blueprint_id": "BPD:NEW_COLLECTION", "target_path": "wx/blueprints/collection/new.md"}
 ```
 
-การใช้งาน: มนุษย์หรือ Agent สามารถอ่าน log เพื่อ audit หรือ trace.
+การใช้งาน: มนุษย์หรือ Agent สามารถอ่าน log เพื่อ audit หรือ trace
+
+> Log เป็นหลักฐานของกิจกรรม ไม่ใช่ authorization การเขียน log หรือมี trace ไม่ได้ให้สิทธิ์ copy, export, mutate หรือเปิดเผยข้อมูล
 
 ---
 
 12. PortDC – ประตูเอกสาร
 
-PortDC เป็น Input/Output Gateway สำหรับเอกสารภายนอก
-ทำหน้าที่:
+PortDC ถูกเสนอเป็น Input/Output Gateway สำหรับเอกสารภายนอก
+
+สถานะ implementation ปัจจุบัน: `wx/portdc.py` อ่านเฉพาะ template ที่ลงทะเบียนและคืน source เป็น response data แบบ read-only; ยังไม่เขียนปลายทาง ไม่เรียก network และไม่ใช่ WHUB gateway เต็มรูปแบบ
+
+ทิศทางตาม Blueprint ทำหน้าที่:
 
 · รับ request ภายนอก (ผ่าน W3‑API หรือ CLI) → ส่งไปยัง BOX
 · ส่งเอกสาร, template, blueprint ออกไปยังผู้ขอ
@@ -408,7 +423,7 @@ Deliver / Use (นำไปใช้ใน Cross‑L หรืออื่น �
 
 15. Non‑Goals (สิ่งที่ไม่ใช่)
 
-BOX ไม่ใช่:
+BOX Knowledge Infrastructure v1.0 ไม่ใช่:
 
 · Runtime หรือ execution engine
 · Database ที่เก็บ dynamic state
@@ -584,9 +599,11 @@ def test_cross_plan_no_suggestion():
 
 ---
 
-19. คำสั่งเริ่มต้น (สำหรับมนุษย์)
+19. คำสั่งเริ่มต้น (สำหรับมนุษย์ — Historical Only)
 
-ให้เพื่อนคัดลอกและรันใน Termux หรือเครื่องของตัวเอง เมื่อพร้อม:
+โครงสร้างส่วนใหญ่ถูกสร้างแล้ว คำสั่งด้านล่างเป็นหลักฐานของขั้นตอนเริ่มต้น ห้ามรันซ้ำโดยไม่ตรวจ `wx/` ปัจจุบัน โดยเฉพาะคำสั่งเขียน Registry ซึ่งอาจทับ source truth ปัจจุบันได้
+
+คำสั่งต้นแบบเดิม:
 
 ```bash
 # สร้างโครงสร้างโฟลเดอร์ wx/
@@ -628,3 +645,109 @@ BOX Blueprint ฉบับสมบูรณ์นี้:
 · ทุกคำสั่งสร้างโครงสร้างเป็น manual (มนุษย์ต้องรันเอง)
 
 DeepSeek ขอให้ blueprint นี้เป็นประโยชน์ในการนำไปสร้างและขยายผลต่อครับ 🌐📚🧱
+
+
+---
+
+## 20. สถานะการนำไปใช้ปัจจุบัน
+
+| Blueprint Component | หลักฐานใน `wx/` | สถานะ |
+|---|---|---|
+| Library‑WX | `templates/`, `blueprints/`, `references/` | มีโครงสร้างจริง |
+| Registry | `wx/registry/*.json` | ใช้งานแล้ว |
+| Human Index | `wx/index/*.md` | ใช้งานแล้ว |
+| Engine‑Index | `wx/engine_index.py` | ใช้งานแบบ read-only |
+| Indexor | `wx/indexor.py` | planner-only implementation |
+| PortDC | `wx/portdc.py` | registered-content export เป็นข้อมูล |
+| Log‑Info | `wx/log_info/` | มี append-only surface; ไม่ append อัตโนมัติ |
+| Collections | `wx/collections/` | reference grouping |
+| wx:BOX / CN‑Fold | templates, blueprint, mapping และ index | draft/observe |
+| WHUB | `external_ref` และแนวทางเชื่อม | readiness metadata เท่านั้น |
+
+การตรวจพฤติกรรมปัจจุบันต้องยึด code, registry และ tests ใน `wx/` ร่วมกับเอกสารนี้ ตัวอย่าง pseudo-code ใน Blueprint ไม่ใช่ operational truth เมื่อ implementation จริงแตกต่างออกไป
+
+## 21. BOX Core กับ Knowledge Infrastructure v1.0
+
+```text
+BOX Core
+= กำหนดพื้นที่ / ขอบเขต / ความหมาย / ความสัมพันธ์
+
+BOX Knowledge Infrastructure v1.0
+= รูปประยุกต์ด้านคลังความรู้และ reference
+
+Library‑WX
+= ห้องสมุดภายใน BOX
+
+Registry / Engine‑Index / Indexor / PortDC / Log‑Info
+= กลไกสนับสนุนการค้นหา เข้าถึง ส่งออก และ trace
+```
+
+ดังนั้นคำว่า planner-only และ runtime-none ในหัวเอกสารจำกัดเฉพาะรูปประยุกต์ v1.0 นี้ ไม่ใช่ข้อห้ามถาวรต่อ BOX ทุกบริบท
+
+## 22. BOX IN/OUT — ทิศทางต่อยอดสำหรับ WHUB
+
+BOX ต้องรักษาเอกสารต้นฉบับเพียงหนึ่งเดียว และแบ่ง **พื้นผิวการเข้าถึง** แทนการสร้างความจริงสองชุด:
+
+```text
+BOX — Single Source
+├── IN   เอกสารภายในทุกระดับ รวมส่วนที่ไม่เปิดเผย
+└── OUT  projection/reference ที่ได้รับอนุญาตให้เปิด
+```
+
+### Internal Registry
+
+การตัดสิน IN/OUT ให้อยู่ใน Registry เฉพาะภายใน ไม่กระจายกฎซ้ำลงทุกระบบ:
+
+```yaml
+resource_id: _
+source_path: _
+owner_scope: _
+surface: IN
+boundary: B0
+visibility: V0
+sensitivity: _
+out_allowed: false
+projection_ref: null
+review_required: true
+approved_by: null
+approved_at: null
+status: active
+```
+
+หลักขั้นต่ำ:
+
+1. ค่าเริ่มต้นของ resource เป็น `IN`
+2. ไม่มี Registry entry หรืออ่าน Registry ไม่ได้ = fail-closed
+3. `out_allowed: true` อนุญาตเฉพาะ `projection_ref` ไม่เปิดต้นฉบับโดยอัตโนมัติ
+4. OUT/WHUB ไม่อ่าน Internal Registry โดยตรง แต่รับเฉพาะ export manifest ที่อนุมัติแล้ว
+5. การอ้างอิงเอกสาร IN ไม่เท่ากับมีสิทธิ์อ่าน
+6. การเปลี่ยน IN → OUT ต้องเป็น event ใหม่ มี owner/review/trace และไม่แก้ประวัติย้อนหลัง
+7. Registry ต้องอยู่ภายใน เพราะ path, relation และสถานะสามารถเปิดเผย topology แม้ไม่มีเนื้อหาเอกสาร
+
+### Boundary axes ที่ค้นพบใน W3
+
+- `B0–B3` — content boundary
+- `T1–T4` — trust/impact context
+- `V0–V3` — visibility
+- `P0–P4` — external exposure
+- `LOW–CRITICAL` — PR/change risk; ห้ามใช้แทน document sensitivity
+
+`S1–S4` ปรากฏใน CN‑Fold/wx:BOX แต่ยังไม่พบต้นทางนิยามที่เพียงพอ จึงยังไม่ควรเดาความหมายหรือใช้เป็น enforcement จนกว่าจะพบเอกสารต้นแบบ
+
+## 23. Cross-system boundary
+
+- BOX อ้างอิง Cross‑L, MPCP, W3‑API และ WHUB ได้ แต่ไม่ใช้กฎภายในของ BOX ตัดสินความถูกต้องของระบบเหล่านั้น
+- BOX suggestion เป็นข้อมูลเสริมแบบ opt-in ไม่ให้ execution authority
+- การเชื่อม Cross‑L → MPCP หรือ W3Lgu ต้องมี return contract และขอบเขตของ event แยกต่างหาก
+- เมื่อเกิด cross-system collision ให้ใช้ `wx/references/wx_box_cn_fold_recovery_anchor.md` เป็นจุดสังเกต ไม่ใช่คำสั่งลบความสามารถที่ยังไม่ได้ตรวจ
+
+## 24. เอกสารและหลักฐานที่ใช้อ่านคู่กัน
+
+- `BBX19/notes/LIBRARY_WX.md` — Origin Blueprint ของ Library‑WX
+- `wx/README.md` — implementation boundary ปัจจุบัน
+- `docs/box/README_TH.md` — คู่มือภาพรวม
+- `docs/box/USAGE_TH.md` — วิธีใช้งาน
+- `docs/box/BOUNDARY_TH.md` — safety boundary
+- `wx/engine_index.py`, `wx/indexor.py`, `wx/portdc.py` — activity/code
+- `wx/test_engine_index.py`, `tests/test_box_integration.py` — validation evidence
+- `wx/references/wx_box_cn_fold_recovery_anchor.md` — recovery context
