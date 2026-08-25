@@ -3,6 +3,11 @@
 รากฐานของระบบคลังเทมเพลตและองค์ความรู้สำหรับ W3 / Cross‑L / เอเจนท์
 ฉบับเสนอเพื่อนำไปสร้างโครงสร้างจริง (Blueprint ก่อนลงมือ)
 
+> **สถานะการอ่านปัจจุบัน:** Historical Build Anchor — โครงสร้างหลายส่วนถูกนำไปสร้างจริงแล้วใน `wx/`  
+> **AMS Mapping:** BUILD โดยมี AM Ⅰ (แนวคิดต้นทาง), AM Ⅱ (วิธีประยุกต์) และตัวอย่าง AM Ⅲ  
+> **ขอบเขต:** เอกสารนี้อธิบายหน่วย Library‑WX ไม่ใช่นิยาม BOX ทั้งระบบ และไม่มี Runtime authority  
+> **หลักการรักษาต้นกำเนิด:** เนื้อหา Roadmap และตัวอย่างเดิมคงไว้เพื่อสอบย้อน Concept → Structure → Activity
+
 ---
 
 1. แนวคิดหลัก (Core Concept)
@@ -142,8 +147,9 @@ Index นี้ใช้สำหรับมนุษย์และ (อนา
 
 6. กฎการใช้งาน (Rules of Engagement)
 
-1. ห้ามแก้ไขต้นฉบับใน wx/templates/ โดยเด็ดขาด
-   · เทมเพลตเป็นต้นแบบ (source of truth) เปลี่ยนแปลงได้ผ่าน PR เท่านั้น
+1. ห้ามแก้ไขต้นฉบับใน wx/templates/ เพื่อรองรับงาน instance โดยตรง
+   · การใช้งานทั่วไปต้อง copy-before-use แล้วแก้สำเนาใน workspace
+   · การบำรุง Library ต้นฉบับยังทำได้เมื่อเป็นการเปลี่ยนแปลงโดยตั้งใจ มี version, review และ provenance ที่ชัดเจน
 2. การใช้งานเทมเพลตต้องทำสำเนา
    · คัดลอกเทมเพลตไปยังโฟลเดอร์ workspace ของตนเอง (เช่น agents/<agent>/work/)
    · แล้วแก้ไขสำเนานั้นตามความต้องการ
@@ -158,9 +164,11 @@ Index นี้ใช้สำหรับมนุษย์และ (อนา
 
 7. บทบาทของบรรณารักษ์ (Indexor Agent)
 
-ในระยะแรก Indexor Agent ยังไม่ต้อง implement หน้าที่ “แนะนำเทมเพลต” ให้มนุษย์เป็นคนทำผ่าน index/by_px.md
+ใน Roadmap เดิม Indexor Agent ยังไม่ต้อง implement และให้มนุษย์ใช้ `index/by_px.md` ก่อน
 
-ระยะต่อไป (Phase 2+) อาจสร้าง Modew ชื่อ Indexor ที่:
+สถานะปัจจุบัน: มี `wx/indexor.py` และ `wx/engine_index.py` สำหรับการแนะนำและค้นหาแบบ planner-only แล้ว เนื้อหาด้านล่างจึงเป็นต้นแบบที่อธิบายที่มาของบทบาทดังกล่าว
+
+ระยะต่อไปตามแนวคิดเดิมอาจพัฒนา Modew ชื่อ Indexor ที่:
 
 · อ่าน index/by_px.md และ index/by_work_type.md
 · รับ PX หรือ Work Type → คืน path template ที่แนะนำ
@@ -188,10 +196,12 @@ Index นี้ใช้สำหรับมนุษย์และ (อนา
 9. แผนพัฒนาระยะ (Roadmap)
 
 Phase สิ่งที่ทำ สถานะ
-Phase 0 สร้างโครงสร้างโฟลเดอร์ wx/, wx/README.md, ตัวอย่าง index/by_px.md ✏️ เสนอ
-Phase 1 ย้ายเทมเพลตที่มีอยู่ (จาก croll/) เข้า wx/templates/ ถัดไป
-Phase 2 เพิ่ม Log‑info และเขียนกฎการบันทึก ถัดไป
-Phase 3 สร้าง Indexor Agent ต้นแบบ (Modew แบบ Binder) อนาคต
+Phase 0 สร้างโครงสร้างโฟลเดอร์ wx/, wx/README.md, ตัวอย่าง index/by_px.md — **เกิดขึ้นแล้ว**
+Phase 1 นำ template ที่เหมาะสมเข้า wx/templates/ — **เกิดขึ้นบางส่วนและมี Registry กำกับ**
+Phase 2 เพิ่ม Log‑Info และกฎ append-only — **มีโครงสร้างแล้ว; การเขียนยังต้องได้รับอนุญาต**
+Phase 3 สร้าง Indexor แบบ Binder — **มี planner-only implementation แล้ว; Modew/runtime evolution ยังเป็นอนาคต**
+
+> สถานะข้างต้นเป็นบันทึกการเคลื่อนจาก Blueprint ไปสู่โครงสร้างปัจจุบัน ไม่ได้ลบสถานะเดิม ณ เวลาที่เอกสารนี้ถูกสร้าง
 
 ---
 
@@ -200,11 +210,14 @@ Phase 3 สร้าง Indexor Agent ต้นแบบ (Modew แบบ Binder
 · ไม่ใช่ execution engine
 · ไม่ใช่ database สำหรับ runtime data (ไม่เก็บ state ที่เปลี่ยนแปลงบ่อย)
 · ไม่ใช่ที่เก็บ source code ของระบบ (เก็บแค่เทมเพลตและ blueprint)
-· ไม่ใช่ระบบ authorization แทน W3‑API หรือ Cross‑X (แต่ใช้ Log แทน)
+· ไม่ใช่ระบบ authorization แทน W3‑API, Cross‑X หรือ Internal Registry
+· Log ใช้ยืนยันกิจกรรมย้อนหลัง แต่ไม่ให้สิทธิ์และไม่สามารถใช้แทน authorization ได้
 
 ---
 
-11. คำสั่งเริ่มต้น (สำหรับเพื่อนนำไปสร้าง)
+11. คำสั่งเริ่มต้น (สำหรับเพื่อนนำไปสร้าง — Historical Only)
+
+> โครงสร้างส่วนใหญ่มีอยู่จริงแล้ว ห้ามรันคำสั่งชุดนี้ซ้ำโดยไม่ตรวจ `wx/` ปัจจุบัน เพราะอาจสร้างของซ้ำหรือทำให้ผู้ใช้เข้าใจว่าไฟล์ตัวอย่างคือ source truth ปัจจุบัน
 
 ```bash
 mkdir -p wx/templates/{paper,modew,cross_l}
@@ -225,3 +238,62 @@ Library‑WX จะเป็น คลังเทมเพลตกลาง �
 ---
 
 พร้อมให้เพื่อนเริ่มสร้างโฟลเดอร์และไฟล์ตาม blueprint นี้ได้เลยครับ
+
+
+---
+
+## 13. ความสัมพันธ์กับ BOX และโครงสร้างปัจจุบัน
+
+```text
+Library‑WX
+= หน่วยคลัง Template / Blueprint / Reference
+
+BOX
+= พื้นที่และขอบเขตความหมายที่กว้างกว่า Library‑WX
+
+wx/
+= รูปที่ถูกนำไปสร้างจริงของ Knowledge Infrastructure รุ่นปัจจุบัน
+```
+
+สิ่งที่มีใช้งานแล้วใน `wx/` ได้แก่ Registry, Human Index, Engine‑Index, Indexor, PortDC, Log‑Info surface, Templates, Blueprints, References และ Collections การตัดสินพฤติกรรมปัจจุบันต้องตรวจโค้ด/registry/test ที่ใช้งานจริงควบคู่กับเอกสารนี้
+
+## 14. ขอบเขต Log และ Authorization
+
+```text
+Log = evidence / trace
+Authorization = permission to act
+```
+
+การมี Log ไม่ได้ให้สิทธิ์ copy, export, mutate หรือเปิดเผยข้อมูล ผู้ทำกิจกรรมต้องมีขอบเขตจาก owner, unit context หรือสัญญาชั่วคราวที่เกี่ยวข้องก่อนเสมอ
+
+## 15. ทิศทาง BOX IN/OUT และ Internal Registry
+
+Library‑WX สามารถรองรับ BOX IN/OUT โดยไม่เพิ่มกฎลงในทุกไฟล์ ให้ Internal Registry เป็นผู้ถือ metadata ด้านการเปิดเผย เช่น:
+
+```yaml
+resource_id: _
+source_path: _
+owner_scope: _
+surface: IN
+boundary: B0
+visibility: V0
+out_allowed: false
+projection_ref: null
+review_required: true
+```
+
+กฎขั้นต่ำ:
+
+- ค่าเริ่มต้นเป็น `IN`
+- ไม่มี Registry entry หรืออ่าน Registry ไม่ได้ = ไม่อนุญาตให้ออก
+- OUT รับเฉพาะ projection/export manifest ที่ได้รับอนุญาต ไม่อ่าน Internal Registry โดยตรง
+- การอ้างอิงเอกสาร IN ไม่เท่ากับได้รับสิทธิ์อ่าน
+- Registry นี้ต้องอยู่ภายใน เพราะ metadata เพียงอย่างเดียวอาจเปิดเผย topology ของ W3
+
+## 16. เอกสารที่ใช้อ่านคู่กัน
+
+- `BBX19/notes/BOX.md` — Applied Blueprint ของ BOX Knowledge Infrastructure v1.0
+- `wx/README.md` — ขอบเขต implementation ปัจจุบัน
+- `docs/box/README_TH.md` — คู่มือภาพรวม
+- `docs/box/BOUNDARY_TH.md` — safety boundary
+- `wx/references/wx_box_cn_fold_recovery_anchor.md` — จุดถอยกลับเมื่อเกิด cross-system collision
