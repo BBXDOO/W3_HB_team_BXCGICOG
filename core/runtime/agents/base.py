@@ -1,3 +1,5 @@
+import json
+from collections.abc import Mapping
 from typing import Dict, Any, List
 
 from .mpcp_reader import scan_terms
@@ -14,6 +16,46 @@ class RuntimeAgent:
     #                 used by inspect_mpcp() to verify concept-document coverage
     mpcp_role: str = "operational"
     mpcp_concepts: List[str] = []
+
+    @staticmethod
+    def _mapping(value: Any) -> Dict[str, Any]:
+        """Return a shallow mapping copy or an empty fail-safe container."""
+        return dict(value) if isinstance(value, Mapping) else {}
+
+    @classmethod
+    def resolve_context_value(cls, context: Any, *names: str) -> Any:
+        """Resolve a field without forcing every ENV to use one nesting shape.
+
+        Direct context has precedence, followed by payload, request, and a
+        payload nested under request.  This resolves transport shape only; it
+        does not grant authority or reinterpret the field's meaning.
+        """
+        direct = cls._mapping(context)
+        request = cls._mapping(direct.get("request"))
+        payload = cls._mapping(direct.get("payload"))
+        request_payload = cls._mapping(request.get("payload"))
+        for container in (direct, payload, request, request_payload):
+            for name in names:
+                if name in container:
+                    return container[name]
+        return None
+
+    @staticmethod
+    def normalize_review_text(value: Any) -> str:
+        """Create deterministic review text from scalar or structured input."""
+        if value is None:
+            return ""
+        if isinstance(value, str):
+            return value.strip()
+        if isinstance(value, bytes):
+            return value.decode("utf-8", errors="replace").strip()
+        if isinstance(value, (Mapping, list, tuple, set)):
+            serializable = sorted(value, key=str) if isinstance(value, set) else value
+            try:
+                return json.dumps(serializable, ensure_ascii=False, sort_keys=True, default=str)
+            except (TypeError, ValueError):
+                return str(value).strip()
+        return str(value).strip()
 
     def inspect_mpcp(self, doc_text: str) -> List[str]:
         """
@@ -100,10 +142,11 @@ class RuntimeAgent:
         Pull lightweight memory from context if available.
         Runtime/dispatcher can inject these fields from notes/progress later.
         """
-        notes = context.get("notes") or []
-        decisions = context.get("decisions") or []
-        expectations = context.get("expectations") or []
-        progress = context.get("progress") or {}
+        valid_context = isinstance(context, Mapping)
+        notes = self.resolve_context_value(context, "notes") or []
+        decisions = self.resolve_context_value(context, "decisions") or []
+        expectations = self.resolve_context_value(context, "expectations") or []
+        progress = self.resolve_context_value(context, "progress") or {}
 
         if not isinstance(notes, list):
             notes = [notes]
@@ -115,6 +158,7 @@ class RuntimeAgent:
             progress = {"raw": progress}
 
         return {
+            "context_valid": valid_context,
             "notes_count": len(notes),
             "decisions_count": len(decisions),
             "expectations_count": len(expectations),
@@ -130,13 +174,15 @@ class RuntimeAgent:
     ) -> List[Dict[str, Any]]:
         """
         Evidence-first hook:
-        Gather minimal trace evidence from execution result.
+        Gather execution trace. Input evidence must remain separately labeled
+        by the module so a self-generated status is never treated as proof.
         """
         evidence: List[Dict[str, Any]] = []
         if result.get("summary"):
             evidence.append(
                 {
                     "type": "summary",
+                    "evidence_class": "execution_trace",
                     "label": f"{self.module_name} summary",
                     "value": result["summary"],
                 }
@@ -145,6 +191,7 @@ class RuntimeAgent:
             evidence.append(
                 {
                     "type": "status",
+                    "evidence_class": "execution_trace",
                     "label": f"{self.module_name} status",
                     "value": result["status"],
                 }
@@ -180,10 +227,12 @@ class RuntimeAgent:
     ) -> Dict[str, Any]:
         """
         Continue hook:
-        Return a normalized continuity packet for runtime to persist.
-        (File I/O can be added by dispatcher/storage layer.)
+        Build a normalized continuity packet for a storage layer to persist.
+        This method does not claim that persistence already occurred.
         """
         return {
+            "persisted": False,
+            "persistence_owner": "dispatcher_or_storage_layer",
             "progress_entry": {
                 "module": self.module_name,
                 "task": task,
