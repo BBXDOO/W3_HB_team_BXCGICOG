@@ -19,6 +19,10 @@ class RuntimeAgent:
         """
         Return the subset of this agent's *mpcp_concepts* that appear in
         *doc_text* (case-insensitive substring match).
+
+        Agents call this against MPCP concept documents to verify that the
+        documents mention their responsibilities — a lightweight alignment
+        check without heavy schema machinery.
         """
         if not self.mpcp_concepts:
             return []
@@ -64,7 +68,12 @@ class RuntimeAgent:
         )
 
     def execute(self, task: str, plan: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
-        """Return an explicit non-success result until a real executor exists."""
+        """Return an explicit non-success result until a real executor exists.
+
+        A module may be registered and routable without having an executable
+        local capability. Returning this contract prevents the runtime from
+        reporting a fabricated successful completion.
+        """
         return {
             "contract_version": "1.0",
             "status": "UNAVAILABLE",
@@ -86,6 +95,11 @@ class RuntimeAgent:
     # Continuity hooks (MVP)
     # -----------------------------
     def preload_context(self, task: str, plan: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Read-before-guess hook:
+        Pull lightweight memory from context if available.
+        Runtime/dispatcher can inject these fields from notes/progress later.
+        """
         notes = context.get("notes") or []
         decisions = context.get("decisions") or []
         expectations = context.get("expectations") or []
@@ -114,6 +128,10 @@ class RuntimeAgent:
         context: Dict[str, Any],
         result: Dict[str, Any],
     ) -> List[Dict[str, Any]]:
+        """
+        Evidence-first hook:
+        Gather minimal trace evidence from execution result.
+        """
         evidence: List[Dict[str, Any]] = []
         if result.get("summary"):
             evidence.append(
@@ -140,6 +158,10 @@ class RuntimeAgent:
         context: Dict[str, Any],
         result: Dict[str, Any],
     ) -> Dict[str, Any]:
+        """
+        Learn hook:
+        Produce compact reflection payload for notes/reflections.
+        """
         return {
             "module": self.module_name,
             "task": task,
@@ -156,6 +178,11 @@ class RuntimeAgent:
         result: Dict[str, Any],
         reflection: Dict[str, Any],
     ) -> Dict[str, Any]:
+        """
+        Continue hook:
+        Return a normalized continuity packet for runtime to persist.
+        (File I/O can be added by dispatcher/storage layer.)
+        """
         return {
             "progress_entry": {
                 "module": self.module_name,
