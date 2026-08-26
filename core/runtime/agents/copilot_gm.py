@@ -1,133 +1,85 @@
-from __future__ import annotations
-
-import json
-from collections.abc import Mapping
-from typing import Any, Dict
-
-from .base import RuntimeAgent
-
-
-class CopilotGmAgent(RuntimeAgent):
-    """Deterministic governance reviewer; never merges or grants authority."""
-
-    module_name = "Copilot-Gm"
-    action_label = "completed governance review"
-    mpcp_role = "governance"
-    mpcp_concepts = [
-        "governance",
-        "policy",
-        "compliance",
-        "structural consistency",
-    ]
-
-    def execute(
-        self,
-        task: str,
-        plan: Dict[str, Any],
-        context: Dict[str, Any],
-    ) -> Dict[str, Any]:
-        if not isinstance(plan, Mapping) or not isinstance(context, Mapping):
-            return {
-                "contract_version": "1.1",
-                "status": "REVIEW_REQUIRED",
-                "module": self.module_name,
-                "task": str(task or ""),
-                "role": self.mpcp_role,
-                "action": "validate_governance_review_input",
-                "decision": "invalid_review_input",
-                "reason": "plan and context must be mappings",
-                "summary": "Governance review did not run because its input contract was invalid.",
-                "details": {"merge_performed": False, "authority_granted": False},
-                "artifacts": [],
-                "mutated": False,
-                "traceable": True,
-                "review": True,
-            }
-        request = (
-            context.get("request")
-            if isinstance(context.get("request"), Mapping)
-            else {}
-        )
-        payload = context.get("payload") if isinstance(context.get("payload"), Mapping) else {}
-        if not payload and isinstance(request.get("payload"), Mapping):
-            payload = request["payload"]
-        evidence = (
-            context.get("doc_text")
-            or request.get("doc_text")
-            or context.get("text")
-            or request.get("text")
-            or context.get("evidence")
-            or request.get("evidence")
-            or payload.get("doc_text")
-            or payload.get("text")
-            or payload.get("evidence")
-            or ""
-        )
-        target = context.get("target") or request.get("target") or "W3"
-        required = list(self.mpcp_concepts)
-        if isinstance(evidence, str):
-            evidence_text = evidence
-        elif evidence:
-            try:
-                evidence_text = json.dumps(evidence, ensure_ascii=False, sort_keys=True)
-            except (TypeError, ValueError):
-                evidence_text = str(evidence)
-        else:
-            evidence_text = ""
-        found = self.inspect_mpcp(evidence_text) if evidence_text else []
-        missing = [term for term in required if term not in found]
-        coverage = len(found) / len(required) if required else 1.0
-
-        if not evidence_text.strip():
-            status = "REVIEW_REQUIRED"
-            decision = "wait_for_governance_evidence"
-            reason = (
-                "No document or repository evidence was supplied "
-                "for inspection."
-            )
-        elif coverage >= 0.5:
-            status = "COMPLETED"
-            decision = "governance_evidence_reviewed"
-            reason = (
-                "Minimum declared governance concept coverage was found."
-            )
-        else:
-            status = "REVIEW_REQUIRED"
-            decision = "governance_revision_required"
-            reason = (
-                "Evidence does not cover the minimum declared "
-                "governance concepts."
-            )
-
-        return {
-            "contract_version": "1.1",
-            "status": status,
-            "module": self.module_name,
-            "task": task,
-            "role": self.mpcp_role,
-            "action": "governance_review",
-            "decision": decision,
-            "reason": reason,
-            "summary": (
-                f"Governance review for {target}: "
-                f"{len(found)}/{len(required)} declared concepts found."
-            ),
-            "target": target,
-            "details": {
-                "required_terms": required,
-                "found_terms": found,
-                "missing_terms": missing,
-                "coverage_ratio": coverage,
-                "merge_performed": False,
-                "authority_granted": False,
-                "evidence_supplied": bool(evidence_text.strip()),
-                "evidence_type": type(evidence).__name__,
-            },
-            "artifacts": [],
-            "mutated": False,
-            "traceable": True,
-            "review": status != "COMPLETED",
-        }
-
-
-__all__ = ["CopilotGmAgent"]
+    @@
+ from .base import RuntimeAgent
+ 
+ 
+ class CopilotGmAgent(RuntimeAgent):
+@@
+     action_label = "completed governance review"
+@@
+     mpcp_role = "governance"
+     mpcp_concepts = ["governance", "policy", "compliance", "structural consistency"]
++
++    def execute(self, task, plan, context):
++        """
++        Governance executor (MVP):
++        - checks concept coverage in doc_text
++        - returns traceable, non-fabricated status
++        - includes reflection + continuity packet
++        """
++        preload = self.preload_context(task, plan, context)
++        request = context.get("request") or {}
++        doc_text = (
++            context.get("doc_text")
++            or request.get("doc_text")
++            or context.get("text")
++            or ""
++        )
++        target = context.get("target") or request.get("target") or "W3"
++        responsibilities = self._responsibilities(plan)
++
++        required_terms = list(self.mpcp_concepts)
++        found_terms = self.inspect_mpcp(doc_text)
++        missing_terms = [t for t in required_terms if t not in found_terms]
++
++        min_coverage = float(plan.get("min_coverage", 0.5))
++        coverage_ratio = (len(found_terms) / len(required_terms)) if required_terms else 1.0
++        status = "COMPLETED" if coverage_ratio >= min_coverage else "NEEDS_REVISION"
++
++        summary = (
++            f"{self.module_name} governance review on {target}: "
++            f"{len(found_terms)}/{len(required_terms)} concept coverage "
++            f"({coverage_ratio:.0%}, threshold={min_coverage:.0%})"
++        )
++
++        result = {
++            "contract_version": "1.2",
++            "status": status,
++            "module": self.module_name,
++            "task": task,
++            "role": self.mpcp_role,
++            "action": "governance_review",
++            "summary": summary,
++            "target": target,
++            "responsibilities": responsibilities,
++            "preload": preload,
++            "result": {
++                "required_terms": required_terms,
++                "found_terms": found_terms,
++                "missing_terms": missing_terms,
++                "coverage_ratio": coverage_ratio,
++                "min_coverage": min_coverage,
++            },
++            "artifacts": [
++                {
++                    "type": "governance_review",
++                    "label": f"{self.module_name} concept coverage",
++                    "evidence": {
++                        "terms_scanned": required_terms,
++                        "terms_found": found_terms,
++                        "terms_missing": missing_terms,
++                    },
++                }
++            ],
++            "mutated": False,
++            "traceable": True,
++            "review": True,
++        }
++
++        evidence = self.collect_evidence(task, plan, context, result)
++        reflection = self.reflect(task, plan, context, result)
++        continuity = self.persist_continuity(task, plan, context, result, reflection)
++
++        result["evidence"] = evidence
++        result["reflection"] = reflection
++        result["continuity"] = continuity
++        return result
