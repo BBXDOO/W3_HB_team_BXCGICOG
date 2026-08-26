@@ -9,7 +9,7 @@
      mpcp_role = "governance"
      mpcp_concepts = ["governance", "policy", "compliance", "structural consistency"]
 
-def execute(self, task, plan, context):
+    def execute(self, task, plan, context):
     plan = plan or {}
     context = context or {}
 
