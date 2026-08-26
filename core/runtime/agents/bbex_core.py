@@ -99,6 +99,20 @@ class BBEXCore:
             sort_keys=True,
         )
         intent_id = "BBEX-" + hashlib.sha256(identity_seed.encode("utf-8")).hexdigest()[:12]
+        revision_seed = json.dumps(
+            {
+                "intent_id": intent_id,
+                "evidence": _as_list(evidence),
+                "observations": _as_list(observations),
+                "support_signals": support,
+                "drift_signals": drift,
+                "structural_options": _as_list(structural_options),
+                "created_at": created_at,
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+        )
+        record_id = intent_id + "-R" + hashlib.sha256(revision_seed.encode("utf-8")).hexdigest()[:8]
 
         question = (
             "What outcome would show that this intent was preserved?"
@@ -110,6 +124,7 @@ class BBEXCore:
             "record_type": "w3.intent_record",
             "record_profile": "perception_memory_alignment",
             "intent_id": intent_id,
+            "record_id": record_id,
             "module": self.module_name,
             "role": self.role,
             "state": state,
@@ -232,7 +247,13 @@ grants approval, or replaces BBX19's contextual decision.
                 handle.write(text)
                 handle.flush()
                 os.fsync(handle.fileno())
-            os.replace(temporary_name, target)
+            if target.exists():
+                if target.read_text(encoding="utf-8") == text:
+                    os.unlink(temporary_name)
+                    return target
+                raise FileExistsError(f"append-only BBEX record already exists: {target}")
+            os.link(temporary_name, target)
+            os.unlink(temporary_name)
         except BaseException:
             try:
                 os.unlink(temporary_name)
@@ -273,8 +294,13 @@ class BBEXCoreAgent(RuntimeAgent):
 
         artifacts: List[Dict[str, Any]] = []
         mutated = False
-        if context.get("persist_intent") is True:
-            relative = Path("modules/BBEX-Core/reflections") / f"{record['intent_id']}.md"
+        persist_intent = (
+            context.get("persist_intent") is True
+            or payload.get("persist_intent") is True
+            or request.get("persist_intent") is True
+        )
+        if persist_intent:
+            relative = Path("modules/BBEX-Core/reflections") / f"{record['record_id']}.md"
             saved = core.save(record, relative)
             artifacts.append({"kind": "w3.intent_record.markdown", "path": str(saved.relative_to(repo_path))})
             mutated = True

@@ -67,6 +67,34 @@ class TestOriginAgentRuntimeContracts(unittest.TestCase):
         self.assertEqual(verified["status"], "COMPLETED")
         self.assertEqual(verified["decision"], "VERIFIED")
 
+    def test_gemini_reads_runtime_payload_checks_and_evidence(self):
+        context = build_context("verify", {"payload": {
+            "checks": [{"name": "contract", "passed": True}],
+            "evidence": [{"path": "tests/result.txt"}],
+        }})
+        result = GeminiAgent().execute("verify", execution_plan("verify"), context)
+
+        self.assertEqual(result["status"], "COMPLETED")
+        self.assertEqual(result["decision"], "VERIFIED")
+
+    def test_gemini_keeps_malformed_checks_unresolved(self):
+        result = GeminiAgent().execute(
+            "verify", {}, {
+                "checks": [
+                    {"name": "valid", "passed": True},
+                    {"name": "missing-result"},
+                    "invalid-shape",
+                ],
+                "evidence": ["result"],
+            },
+        )
+
+        self.assertEqual(result["status"], "REVIEW_REQUIRED")
+        self.assertEqual(
+            result["details"]["unresolved_checks"],
+            ["missing-result", "check_3"],
+        )
+
     def test_cast_structures_only_supplied_observations(self):
         missing = CastAgent().execute("interpret", {"kind": "interpretation"}, {})
         structured = CastAgent().execute(

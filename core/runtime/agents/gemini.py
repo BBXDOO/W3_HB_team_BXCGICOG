@@ -19,21 +19,38 @@ class GeminiAgent(RuntimeAgent):
     ]
 
     @staticmethod
-    def _normalize_checks(context: Dict[str, Any]) -> List[Dict[str, Any]]:
-        raw_checks = context.get("checks") or context.get("verification") or []
+    def _context_value(context: Mapping[str, Any], *names: str) -> Any:
+        request = context.get("request") if isinstance(context.get("request"), Mapping) else {}
+        payload = context.get("payload") if isinstance(context.get("payload"), Mapping) else {}
+        if not payload and isinstance(request.get("payload"), Mapping):
+            payload = request["payload"]
+        for container in (context, payload, request):
+            for name in names:
+                if name in container:
+                    return container[name]
+        return None
+
+    @classmethod
+    def _normalize_checks(cls, context: Dict[str, Any]) -> List[Dict[str, Any]]:
+        raw_checks = cls._context_value(context, "checks", "verification")
+        raw_checks = [] if raw_checks is None else raw_checks
         if isinstance(raw_checks, Mapping):
             raw_checks = [raw_checks]
         if not isinstance(raw_checks, list):
-            return []
+            return [{"name": "check_set", "passed": None, "state": "UNRESOLVED"}]
 
         checks: List[Dict[str, Any]] = []
         for index, item in enumerate(raw_checks, start=1):
             if isinstance(item, bool):
-                checks.append({"name": f"check_{index}", "passed": item})
+                checks.append({"name": f"check_{index}", "passed": item, "state": "PASS" if item else "FAIL"})
             elif isinstance(item, Mapping):
                 passed = item.get("passed", item.get("ok"))
                 if isinstance(passed, bool):
-                    checks.append({"name": str(item.get("name") or f"check_{index}"), "passed": passed})
+                    checks.append({"name": str(item.get("name") or f"check_{index}"), "passed": passed, "state": "PASS" if passed else "FAIL"})
+                else:
+                    checks.append({"name": str(item.get("name") or f"check_{index}"), "passed": None, "state": "UNRESOLVED"})
+            else:
+                checks.append({"name": f"check_{index}", "passed": None, "state": "UNRESOLVED"})
         return checks
 
     def execute(self, task: str, plan: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
@@ -59,10 +76,11 @@ class GeminiAgent(RuntimeAgent):
         }
 
         checks = self._normalize_checks(context)
-        evidence = context.get("evidence") or context.get("artifacts") or []
+        evidence = self._context_value(context, "evidence", "artifacts") or []
         evidence_supplied = bool(evidence)
-        failed = [check["name"] for check in checks if not check["passed"]]
-        completed = bool(checks) and not failed and evidence_supplied
+        failed = [check["name"] for check in checks if check["state"] == "FAIL"]
+        unresolved = [check["name"] for check in checks if check["state"] == "UNRESOLVED"]
+        completed = bool(checks) and not failed and not unresolved and evidence_supplied
         status = "COMPLETED" if completed else "REVIEW_REQUIRED"
 
         # ประมวลผลผลลัพธ์การตรวจสอบ (Verification Contract Result)
@@ -93,6 +111,7 @@ class GeminiAgent(RuntimeAgent):
                 "experience": exp_summary,
                 "checks": checks,
                 "failed_checks": failed,
+                "unresolved_checks": unresolved,
                 "evidence_supplied": evidence_supplied,
                 "identity_supplied": supplied_identity is not None,
             },

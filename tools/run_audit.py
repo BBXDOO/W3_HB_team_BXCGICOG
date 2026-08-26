@@ -37,7 +37,7 @@ class AuditOrchestrator:
         print("=" * 70)
         print()
     
-    def run_agent(self, name, script_name, priority):
+    def run_agent(self, name, script_name, priority, arguments=None):
         """Run an individual agent"""
         print(f"\n{'=' * 70}")
         print(f"AGENT: {name}")
@@ -48,7 +48,7 @@ class AuditOrchestrator:
         
         try:
             result = subprocess.run(
-                [sys.executable, str(script_path)],
+                [sys.executable, str(script_path), *(arguments or [])],
                 cwd=self.repo_path,
                 capture_output=False,
                 text=True
@@ -150,7 +150,14 @@ class AuditOrchestrator:
         self.run_agent(
             "BBEX CORE (Philosophical Anchor)",
             "bbex_core_anchor.py",
-            "PASSIVE"
+            "PASSIVE",
+            [
+                "Preserve the intent of the complete W3 audit",
+                "--outcome", "A current, traceable BBEX audit reflection is produced",
+                "--source", "BBX19",
+                "--target", "W3 Audit",
+                "--output", "BBEX_Reflection.md",
+            ],
         )
         
         # Print summary

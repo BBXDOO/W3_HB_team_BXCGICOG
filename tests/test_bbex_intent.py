@@ -1,6 +1,7 @@
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from core.runtime.agents.bbex_core import BBEXCore, BBEXCoreAgent
 
@@ -53,6 +54,42 @@ class TestBBEXIntent(unittest.TestCase):
         text = saved.read_text(encoding="utf-8")
         self.assertIn("# BBEX Perception Record", text)
         self.assertIn("BBEX perceives, remembers, and reflects intent", text)
+
+    def test_revisions_keep_one_intent_without_overwriting_history(self):
+        first = self.core.capture(
+            "retain purpose", desired_outcome="purpose is reviewable",
+            observations=["first observation"],
+        )
+        second = self.core.capture(
+            "retain purpose", desired_outcome="purpose is reviewable",
+            observations=["second observation"], drift_signals=["possible drift"],
+        )
+
+        self.assertEqual(first["intent_id"], second["intent_id"])
+        self.assertNotEqual(first["record_id"], second["record_id"])
+        first_path = self.core.save(first, f"reflections/{first['record_id']}.md")
+        second_path = self.core.save(second, f"reflections/{second['record_id']}.md")
+        self.assertTrue(first_path.exists())
+        self.assertTrue(second_path.exists())
+        self.assertIn("first observation", first_path.read_text(encoding="utf-8"))
+        self.assertIn("second observation", second_path.read_text(encoding="utf-8"))
+
+    def test_runtime_payload_can_explicitly_persist_intent(self):
+        repo_path = Path(__file__).resolve().parents[1]
+        saved_path = repo_path / "modules/BBEX-Core/reflections/test-record.md"
+        with patch.object(BBEXCore, "save", return_value=saved_path) as save:
+            result = BBEXCoreAgent().execute(
+                "preserve intent", {},
+                {"payload": {
+                    "desired_outcome": "intent is recorded",
+                    "persist_intent": True,
+                }},
+            )
+
+        self.assertEqual(result["status"], "COMPLETED")
+        self.assertTrue(result["mutated"])
+        self.assertEqual(len(result["artifacts"]), 1)
+        save.assert_called_once()
 
     def test_declared_drift_requires_reflection_without_deciding(self):
         record = self.core.capture(

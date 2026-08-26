@@ -38,6 +38,9 @@ def _first(*values: Any) -> Any:
     return next((value for value in values if value not in (None, "")), None)
 
 
+_MISSING = object()
+
+
 class BBX19Agent(RuntimeAgent):
     """Record a BBX19 decision without executing its downstream action."""
 
@@ -57,10 +60,13 @@ class BBX19Agent(RuntimeAgent):
         reason = _text(_first(payload.get("reason"), request.get("reason")))
         evidence = _items(_first(payload.get("evidence"), request.get("evidence")))
         annotations = _items(_first(payload.get("annotations"), payload.get("annotation"), request.get("annotations"), request.get("annotation")))
-        intent_record = _first(
-            payload.get("intent_record"), request.get("intent_record"), context.get("intent_record")
+        raw_intent_record = _first(
+            payload.get("intent_record", _MISSING),
+            request.get("intent_record", _MISSING),
+            context.get("intent_record", _MISSING),
         )
-        intent_record = intent_record if isinstance(intent_record, Mapping) else None
+        intent_supplied = raw_intent_record is not _MISSING
+        intent_record = raw_intent_record if isinstance(raw_intent_record, Mapping) else None
         override_intent_review = (
             payload.get("override_intent_review") is True
             or request.get("override_intent_review") is True
@@ -68,7 +74,24 @@ class BBX19Agent(RuntimeAgent):
         source = _text(_first(context.get("source"), request.get("source")))
         decided_by = _text(_first(payload.get("decided_by"), payload.get("approved_by"), request.get("decided_by"), request.get("approved_by")))
         confirmed = payload.get("confirmed") is True or request.get("confirmed") is True
-        authenticated = decided_by.upper() == "BBX19" or (source.upper() == "BBX19" and confirmed)
+        authority_context = context.get("authority_context")
+        authority_context = authority_context if isinstance(authority_context, Mapping) else {}
+        authority_class = _text(authority_context.get("authority_class")).upper()
+        creator_authority = (
+            authority_class in {"CREATOR_ORIGIN", "DELEGATED_CREATOR"}
+            and _text(authority_context.get("authority")).upper() == "BBX19"
+            and authority_context.get("verified") is True
+            and bool(_text(authority_context.get("verified_by")))
+        )
+        # Direct adapter use is an upper-layer Creator/Origin invocation. Requests
+        # entering through engine_v2 are untrusted until their ENV supplies the
+        # out-of-band authority_context above.
+        direct_creator_invocation = (
+            context.get("request_boundary") != "UNTRUSTED_INPUT"
+            and source.upper() == "BBX19"
+            and confirmed
+        )
+        authenticated = creator_authority or direct_creator_invocation
 
         missing: List[str] = []
         if not decision:
@@ -86,6 +109,8 @@ class BBX19Agent(RuntimeAgent):
         intent_blockers: List[str] = []
         non_overridable_intent_blockers: List[str] = []
         review_intent_blockers: List[str] = []
+        if intent_supplied and intent_record is None:
+            non_overridable_intent_blockers.append("invalid_intent_record_shape")
         if intent_record is not None:
             record_type = _text(intent_record.get("record_type"))
             intent_id = _text(intent_record.get("intent_id"))
@@ -149,6 +174,11 @@ class BBX19Agent(RuntimeAgent):
             "target": target, "reason": reason, "evidence": evidence,
             "annotations": annotations, "trace_id": _text(context.get("trace_id")),
             "intent_link": intent_link,
+            "authority_context": {
+                "authority_class": authority_class,
+                "authority": "BBX19" if authenticated else "",
+                "verified_by": _text(authority_context.get("verified_by")),
+            },
             "recorded_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
         allows_execution = decision == "APPROVE"

@@ -2,6 +2,7 @@ import unittest
 
 from core.runtime.agents.bbex_core import BBEXCore
 from core.runtime.agents.bbx19 import BBX19Agent
+from core.runtime.engine_v2 import build_context
 
 
 class TestBBX19Action(unittest.TestCase):
@@ -38,8 +39,8 @@ class TestBBX19Action(unittest.TestCase):
         self.assertIn("explicit_bbx19_confirmation", result["missing"])
 
     def test_repeated_decision_has_stable_identity(self):
-        context = {"source": "SYSTEM", "payload": {
-            "decision": "hold", "approved_by": "BBX19",
+        context = {"source": "BBX19", "payload": {
+            "decision": "hold", "confirmed": True,
             "reason": "Await external evidence.", "evidence": ["audit-01"],
             "annotations": ["Recheck after evidence arrives."],
         }}
@@ -47,6 +48,51 @@ class TestBBX19Action(unittest.TestCase):
         second = self.agent.execute("release", self.plan, context)
         self.assertEqual(first["decision_record"]["decision_id"], second["decision_record"]["decision_id"])
         self.assertFalse(first["execution"]["allowed"])
+
+    def test_untrusted_request_cannot_self_declare_bbx19_authority(self):
+        context = build_context("approve release", {
+            "source": "SYSTEM",
+            "payload": {
+                "decision": "approve", "approved_by": "BBX19",
+                "reason": "Self-declared authority.", "evidence": ["claim"],
+                "annotation": "Must not pass the boundary.",
+            },
+        })
+        result = self.agent.execute("approve release", self.plan, context)
+
+        self.assertEqual(result["status"], "REVIEW_REQUIRED")
+        self.assertIn("explicit_bbx19_confirmation", result["missing"])
+
+    def test_verified_creator_origin_context_authorizes_bbx19(self):
+        context = build_context(
+            "approve release",
+            {"payload": {
+                "decision": "approve", "reason": "Creator review completed.",
+                "evidence": ["review"], "annotation": "Current task only.",
+            }},
+            authority_context={
+                "authority_class": "CREATOR_ORIGIN", "authority": "BBX19",
+                "verified": True, "verified_by": "trusted_env_boundary",
+            },
+        )
+        result = self.agent.execute("approve release", self.plan, context)
+
+        self.assertEqual(result["status"], "COMPLETED")
+        self.assertEqual(result["decision_record"]["decided_by"], "BBX19")
+
+    def test_supplied_non_object_intent_record_requires_review(self):
+        result = self.agent.execute("approve release", self.plan, {
+            "source": "BBX19",
+            "payload": {
+                "decision": "approve", "confirmed": True,
+                "reason": "Reviewed.", "evidence": ["review"],
+                "annotation": "Intent must remain traceable.",
+                "intent_record": ["not", "a", "record"],
+            },
+        })
+
+        self.assertEqual(result["status"], "REVIEW_REQUIRED")
+        self.assertIn("invalid_intent_record_shape", result["missing"])
 
     def test_ready_bbex_intent_is_linked_to_bbx19_decision(self):
         intent = BBEXCore(".", clock=lambda: "2026-08-24T00:00:00Z").capture(

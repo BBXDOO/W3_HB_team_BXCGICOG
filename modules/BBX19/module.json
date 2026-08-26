@@ -1,6 +1,7 @@
 {
   "name": "BBX19",
-  "display_name": "BBX19 — Final Authority / Vision Keeper",
+  "display_name": "BBX19 — Final Human Decision / Action Authority",
+  "aliases": ["Vision Keeper", "Root Authority"],
   "version": "2.1.0",
   "idp_version": "2.0",
   "idp_ref": "BBX19/modules/BBX19/idp/IDP-V2.0/BBX19-IDP.md",

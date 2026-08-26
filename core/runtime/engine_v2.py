@@ -43,9 +43,11 @@ def trace_id():
 # CONTEXT
 # -------------------------------------------------
 
-def build_context(task, request=None):
+def build_context(task, request=None, *, authority_context=None):
     hits = search_memory(task)
     request = dict(request) if isinstance(request, Mapping) else {}
+
+    trusted_authority = dict(authority_context) if isinstance(authority_context, Mapping) else {}
 
     return {
         "trace_id": trace_id(),
@@ -56,6 +58,10 @@ def build_context(task, request=None):
         "target": request.get("target"),
         "mode": request.get("mode"),
         "payload": request.get("payload", {}),
+        # This field is deliberately supplied out-of-band by the calling ENV.
+        # Values inside request/payload can never create Creator/Origin authority.
+        "authority_context": trusted_authority,
+        "request_boundary": "UNTRUSTED_INPUT",
         "timestamp": now(),
     }
 
@@ -111,10 +117,10 @@ def validate_agent_result(module_name: str, agent_result: Dict[str, Any]) -> Dic
 # SINGLE RUN
 # -------------------------------------------------
 
-def run(task, request=None):
+def run(task, request=None, *, authority_context=None):
     started = time.time()
     plan = execution_plan(task)
-    context = build_context(task, request)
+    context = build_context(task, request, authority_context=authority_context)
 
     try:
         agent_result = dispatch(plan["run_with"], task, plan, context)
