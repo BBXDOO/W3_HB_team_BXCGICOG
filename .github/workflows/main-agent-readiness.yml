@@ -1,0 +1,60 @@
+name: MAIN Agent Readiness
+
+on:
+  push:
+    branches:
+      - refactor/v0.2
+    paths:
+      - "core/runtime/agents/**"
+      - "core/module-loader/**"
+      - "modules/*/module.json"
+      - "tests/test_main_agent_readiness.py"
+      - "tests/test_bbx19_action.py"
+      - "tests/test_bbex_intent.py"
+      - "tests/test_chatgpt_flow_artifact.py"
+      - "tests/test_origin_agent_runtime_contracts.py"
+      - ".github/workflows/main-agent-readiness.yml"
+  pull_request:
+    branches:
+      - refactor/v0.2
+    paths:
+      - "core/runtime/agents/**"
+      - "core/module-loader/**"
+      - "modules/*/module.json"
+      - "tests/test_main_agent_readiness.py"
+      - "tests/test_bbx19_action.py"
+      - "tests/test_bbex_intent.py"
+      - "tests/test_chatgpt_flow_artifact.py"
+      - "tests/test_origin_agent_runtime_contracts.py"
+      - ".github/workflows/main-agent-readiness.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-main-agents:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+
+      - name: Run MAIN agent readiness contracts
+        run: |
+          python tests/test_main_agent_readiness.py
+          python tests/test_bbx19_action.py
+          python tests/test_bbex_intent.py
+          python tests/test_chatgpt_flow_artifact.py
+          python tests/test_origin_agent_runtime_contracts.py
