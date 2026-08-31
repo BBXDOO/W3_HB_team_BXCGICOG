@@ -7,8 +7,12 @@ import sys
 from core.semantic_router import interpret_hospitication_report
 from hospitication.cli import build_report
 from hospitication.core.config import HospiticationConfig
+from hospitication.core.types import NodeRef, SignalEnvelope
 from hospitication.reporter.json_report import render_json
-from hospitication.w3db_adapter import store_hospitication_report_to_w3db
+from hospitication.w3db_adapter import (
+    store_hospitication_report_to_w3db,
+    store_hospitication_signal_to_w3db,
+)
 from integrations.ep_signal_w3db import store_ep_signal_to_w3db
 from protocol.EP_SIGNAL.ep_signal_adapter import from_ep_signal, to_ep_signal
 from scripts.enforce_layer_separation import evaluate_paths, load_hospitication_signals
@@ -42,6 +46,29 @@ def test_hospitication_report_signals_append_to_w3db(tmp_path):
     assert len(results) == len(report.signals)
     assert len(store.list_xiz()) == len(report.signals)
     assert all(store.read_prx(result.prx_id) is not None for result in results)
+
+
+def test_hospitication_w3db_bridge_translates_detection_to_stability():
+    store = W3DBStore()
+    signal = SignalEnvelope(
+        signal_id="sig_critical",
+        timestamp="2026-08-31T00:00:00Z",
+        origin_node=NodeRef(0, 0),
+        detector_type="spike",
+        pressure="critical_collapse_risk",
+        confidence=1.0,
+        retention="critical",
+        persistence="permanent",
+    )
+
+    result = store_hospitication_signal_to_w3db(signal, store=store)
+
+    assert result.source_detection_confidence == 1.0
+    assert result.translated_stability_confidence == 0.0
+    assert result.translation_contract == "inverse_detection_to_stability_v1"
+    assert result.output["tuf"]["confidence"] == 0.0
+    assert result.output["fbd"]["failure"] == "Red"
+    assert "ESCALATE" in result.output["whb"]["action"]
 
 
 def test_layer_enforcement_signal_bridge_downgrades_red_to_yellow(tmp_path):
