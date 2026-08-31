@@ -262,7 +262,38 @@ review: true
 
 ---
 
-## 10. สรุป
+## 10. ความสัมพันธ์กับ Hospitication Report
+
+เอกสารอ้างอิงภายใน:
+
+- `BBX19/directives/HOSPITICATION_FULL_REPORT_TH_20260825T025330Z.md`
+- ตรวจเมื่อ: `2026-08-25T02:53:30Z`
+- Observation surface: 1,136 files
+- Compile check: return code 0
+- Hospitication tests: 7 passed
+- Source mutation: false
+- Auto-recovery: false
+- BOX surface: IN
+
+ขอบเขตหลักฐาน:
+
+| รายงาน | พิสูจน์อะไร | ไม่ได้พิสูจน์อะไร |
+|---|---|---|
+| Hospitication | structural pressure, file surface, replay/cognitive/semantic signals, non-mutating observation | domain action และอัตลักษณ์การทำงานของแต่ละ agent |
+| Capability Report | route, execute contract, mutation boundary, test definitions และข้อจำกัดรายโมดูล | สุขภาพ repository ทั้งพื้นที่และผล CI suite ล่าสุด |
+
+จึงต้องใช้สองรายงานร่วมกัน ห้ามนำคะแนน pressure ไปสรุปว่าโมดูลใดทำงานได้ และห้ามนำการมี `execute()` ไปสรุปว่าโครงสร้างรวมไม่มีแรงกดดัน
+
+ข้อสังเกตเพื่อศึกษาต่อ:
+
+- Hospitication พบ `cognitive_cost=1.0` และ `replay_complexity=1.0`
+- recovery proposals เป็นข้อเสนอ ไม่ใช่คำอนุมัติ
+- W3DB append ในรายงานเป็น derived observation และ W3DBStore รอบนั้นเป็น in-memory
+- รายงานมี internal Termux path จึงคงสถานะ BOX IN
+
+---
+
+## 11. สรุป
 
 W3 ไม่ได้อยู่ในสภาพ “มีแต่ stub” อีกแล้ว
 
@@ -285,6 +316,13 @@ W3 ไม่ได้อยู่ในสภาพ “มีแต่ stub” �
 ---
 
 ## Revision Record
+
+### v2.0.1 — 2026-08-31
+
+- เชื่อมหลักฐาน Hospitication แบบ BOX IN
+- แยก structural health ออกจาก module capability
+- ผู้แก้: Codex
+- Authority: BBX19
 
 ### v2.0.0 — 2026-08-31
 
