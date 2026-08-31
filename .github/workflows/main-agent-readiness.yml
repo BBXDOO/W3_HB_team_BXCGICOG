@@ -52,9 +52,11 @@ jobs:
           if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
 
       - name: Run MAIN agent readiness contracts
+        env:
+          PYTHONPATH: .
         run: |
-          python tests/test_main_agent_readiness.py
-          python tests/test_bbx19_action.py
-          python tests/test_bbex_intent.py
-          python tests/test_chatgpt_flow_artifact.py
-          python tests/test_origin_agent_runtime_contracts.py
+          python -m unittest tests.test_main_agent_readiness -v
+          python -m unittest tests.test_bbx19_action -v
+          python -m unittest tests.test_bbex_intent -v
+          python -m unittest tests.test_chatgpt_flow_artifact -v
+          python -m unittest tests.test_origin_agent_runtime_contracts -v
