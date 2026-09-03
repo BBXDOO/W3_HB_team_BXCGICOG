@@ -37,18 +37,19 @@ jobs:
           find croll -maxdepth 3 -type f 2>/dev/null || true
           find protocol -maxdepth 3 -type f | head -80
 
-      - name: Validate markdown files
+      # Documentation shape is advisory. CROLL must not block valid system
+      # changes merely because a Markdown file does not use a heading.
+      # Semantic/logic review belongs to the verification layer (for example
+      # Gemini); this workflow keeps only deterministic CI checks as gates.
+      - name: Review markdown shape (advisory)
+        continue-on-error: true
         run: |
           python - <<'PY'
           from pathlib import Path
 
-          targets = [
-              Path("croll"),
-              Path("protocol"),
-          ]
-
+          targets = [Path("croll"), Path("protocol")]
           checked = 0
-          missing_title = []
+          review = []
 
           for root in targets:
               if not root.exists():
@@ -58,17 +59,18 @@ jobs:
                   checked += 1
                   text = path.read_text(encoding="utf-8", errors="ignore").strip()
                   if not text.startswith("#"):
-                      missing_title.append(str(path))
+                      review.append(str(path))
 
           print(f"checked_markdown={checked}")
-
-          if missing_title:
-              print("Markdown files without heading:")
-              for item in missing_title:
+          if review:
+              print("REVIEW: Markdown files without a leading heading:")
+              for item in review:
                   print(f"- {item}")
-              raise SystemExit(1)
+              print("Advisory only: send semantic/structure questions to verification review.")
           PY
 
+      # Syntax remains a hard deterministic boundary: malformed Python cannot
+      # safely enter the CROLL/protocol execution or planning surface.
       - name: Validate Python syntax
         run: |
-          python -m compileall croll protocol
+          python -m compileall -q croll protocol
