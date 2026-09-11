@@ -2,6 +2,24 @@
 
 ประวัติการเปลี่ยนแปลงของระบบ IGET
 
+## v9.1 — Active Runtime
+
+สถานะ: Reliability patch
+
+### แก้ไข
+
+- แก้ `test_only` ให้เกิดขึ้นเมื่อไฟล์ที่เปลี่ยนทุกไฟล์เป็น Test เท่านั้น
+- PR ที่มี Production Code และ Test จำนวนเท่ากันจะไม่ถูกระบุผิดเป็น `test_only`
+- จำกัดความหมาย Green/Safe ให้อยู่ในขอบเขตสัญญาณที่ IGET ตรวจได้
+- ย้ำว่า Green ไม่ใช่ Merge approval; required checks และ Human Review ยังเป็นผู้ตัดสิน
+- เพิ่ม regression tests สำหรับ Test-only และ Code-with-test
+
+### ขอบเขตเวอร์ชัน
+
+แพตช์นี้เป็น v9.1 ของ PR governance runtime ส่วน v10 preview ยังคงเป็นสาย Issue Dispatch ตาม README และไม่ถูกนำมาปะปนกับการแก้ครั้งนี้
+
+---
+
 ## v9.0 — Active Runtime
 
 สถานะ: Active runtime
