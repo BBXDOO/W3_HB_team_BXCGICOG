@@ -1,5 +1,5 @@
 # ==========================================
-# IGET v9 — Scoring Engine
+# IGET v9.1 — Scoring Engine
 # Semantic state + causal proof annotation
 # Ontology tag: iget:module = "scorer"
 # ==========================================
@@ -139,7 +139,7 @@ def detect_mode(
         mode = "empty"
     elif stats["doc_count"] == total:
         mode = "docs_only"
-    elif stats["test_count"] > 0 and stats["code_count"] == stats["test_count"]:
+    elif stats["test_count"] == total:
         mode = "test_only"
     elif stats["doc_count"] > 0 and stats["code_count"] > 0:
         mode = "mixed"
@@ -315,7 +315,7 @@ def get_semantic_state(
         proof.append(f"คะแนนอยู่ในโซนระวัง (score={score})")
     elif state == "green":
         semantic_key = "safe"
-        proof.append(f"คะแนนผ่านเกณฑ์ (score={score})")
+        proof.append(f"คะแนน IGET ผ่านเกณฑ์จากสัญญาณที่ตรวจได้ (score={score})")
     else:
         semantic_key = "unknown"
         proof.append("ไม่สามารถจำแนกได้")

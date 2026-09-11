@@ -1,6 +1,6 @@
-# IGET v9.0 — Reliable Semantic PR Governance Runtime
+# IGET v9.1 — Reliable Semantic PR Governance Runtime
 
-IGET v9.0 is the active CI/runtime version. It preserves the base branch's
+IGET v9.1 is the active CI/runtime version. It preserves the base branch's
 semantic state, proof trace, replay, and MPCP-compatible output while adding
 compatibility and runtime reliability fixes.
 
@@ -14,8 +14,10 @@ compatibility and runtime reliability fixes.
 - Legacy IGET bot comments are upgraded in place using `<!-- iget:summary -->`
 - Semantic/proof modules from v8 remain available and are included in reports
 - Inline comments remain opt-in; required checks and humans retain merge authority
+- Green means no important risk signal was found within IGET's detectable scope; it is not merge approval
+- `test_only` is used only when every changed file is classified as a test
 
-Runtime version: `9.0`
+Runtime version: `9.1`
 
 ## v10 preview — Issue Dispatch Mode
 
@@ -60,7 +62,7 @@ Boundary:
 IGET (v1) — W3 0.5 PR Flow Assistant
 
 Historical specification: v1
-Active runtime: v9.0
+Active runtime: v9.1
 Status: Historical foundation; v9 is active
 Owner: BBX19
 Environment: W3 / GitHub Pull Request Workflow
@@ -100,7 +102,7 @@ W3 Color Trigger System
 IGET uses visual status layers for fast understanding.
 
 Color| Meaning
-🟩 Green| Ready / Safe / Low Risk
+🟩 Green| No important detected risk / Low Risk signal
 🟨 Yellow| Caution / Needs Review
 🟥 Red| High Risk / Hold / Inspect
 
@@ -162,7 +164,7 @@ FLOW
 🟩🟩🟩🟩🟩🟩 (100%)
 
 IMPACT
-Safe level. Ready to merge.
+Low-risk signal in IGET's detectable scope. Required checks and human review still decide merge.
 
 ---
 

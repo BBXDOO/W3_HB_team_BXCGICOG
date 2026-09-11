@@ -1,5 +1,5 @@
 """
-Tests for iget/scorer.py — IGET v9 Scoring Engine
+Tests for iget/scorer.py — IGET v9.1 Scoring Engine
 """
 import pytest
 import sys
@@ -80,6 +80,22 @@ class TestDetectMode:
 
     def test_code_mode(self):
         files = [{"filename": "src/app.py", "changes": 50}]
+        c = classify_files(files)
+        assert detect_mode(files, c) == "code"
+
+    def test_test_only_requires_every_changed_file_to_be_a_test(self):
+        files = [
+            {"filename": "tests/test_app.py", "changes": 20},
+            {"filename": "src/app_test.go", "changes": 10},
+        ]
+        c = classify_files(files)
+        assert detect_mode(files, c) == "test_only"
+
+    def test_code_and_test_is_not_test_only(self):
+        files = [
+            {"filename": "src/app.py", "changes": 50},
+            {"filename": "tests/test_app.py", "changes": 20},
+        ]
         c = classify_files(files)
         assert detect_mode(files, c) == "code"
 
