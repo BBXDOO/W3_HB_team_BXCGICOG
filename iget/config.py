@@ -1,8 +1,8 @@
-"""IGET v9 runtime, scoring, semantic, and proof configuration."""
+"""IGET v9.1 runtime, scoring, semantic, and proof configuration."""
 
 from __future__ import annotations
 
-VERSION = "9.0"
+VERSION = "9.1"
 COMMENT_MARKER = "<!-- iget:summary -->"
 DEFAULT_API_URL = "https://api.github.com"
 DEFAULT_TIMEOUT = 20.0
@@ -30,7 +30,7 @@ GITHUB_PAGE_SIZE = 100
 
 # Semantic/proof contracts introduced on the base branch are preserved in v9.
 SEMANTIC_STATES = {
-    "safe": "PR พร้อม merge ไม่มีความเสี่ยงสำคัญ",
+    "safe": "ไม่พบสัญญาณความเสี่ยงสำคัญในขอบเขตที่ IGET ตรวจได้",
     "caution": "PR มีจุดที่ควรตรวจสอบก่อน merge",
     "critical": "PR มีความเสี่ยงสูง ต้องการ review เชิงลึก",
     "unknown": "ไม่สามารถประเมิน semantic state ได้",
