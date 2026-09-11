@@ -125,8 +125,8 @@ section("§3 detect_mode")
 
 c = classify_files(FILES_CLEAN)
 s = build_stats(FILES_CLEAN, c)
-# FILES_CLEAN has 1 code + 1 test (equal) → test_only per scorer logic
-check("clean → mode=test_only (1 code == 1 test)", detect_mode(FILES_CLEAN, c, s) == "test_only")
+# FILES_CLEAN has production code plus its test, so it remains a code PR.
+check("clean code + test → mode=code", detect_mode(FILES_CLEAN, c, s) == "code")
 
 cd = classify_files(FILES_DOCS_ONLY)
 sd = build_stats(FILES_DOCS_ONLY, cd)
