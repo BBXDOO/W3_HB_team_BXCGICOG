@@ -1,28 +1,62 @@
+"""Command-line entry point for adding tasks to the W3 task queue."""
+
 import argparse
-from agents.task_agent import create_task   # โมดูลจริงที่คุณต้องมีในโปรเจกต์
+import sys
+from typing import Any, Dict
 
-def submit_task(name, desc):
+from agents_externalagents.task_agent import create_task
+
+
+def non_empty(value: str) -> str:
+    """Return a trimmed CLI value, rejecting empty input."""
+    value = value.strip()
+    if not value:
+        raise argparse.ArgumentTypeError("must not be empty")
+    return value
+
+
+def submit_task(name: str, desc: str, agent: str, module: str) -> int:
+    """Create one queued task and return a process exit code."""
     try:
-        task_id = create_task(name, desc)   # เรียกใช้ฟังก์ชันจาก agent/module จริง
-        print(f"✅ ส่ง task สำเร็จ: {task_id}")
-    except Exception as e:
-        print(f"❌ เกิดข้อผิดพลาดในการส่ง task: {e}")
+        task: Dict[str, Any] = create_task(
+            name,
+            desc,
+            agent=agent,
+            module=module,
+        )
+        if not isinstance(task, dict) or not task.get("task_id"):
+            raise RuntimeError("task agent returned no task_id")
+    except Exception as exc:
+        print(f"❌ สร้าง task ไม่สำเร็จ: {exc}", file=sys.stderr)
+        return 1
 
-def main():
-    parser = argparse.ArgumentParser(description="Task CLI Entrypoint")
+    print(f"✅ สร้าง task เข้าคิวแล้ว: {task['task_id']}")
+    print(f"   Agent: {task.get('agent', agent)} | Module: {task.get('module', module)}")
+    return 0
+
+
+def build_parser() -> argparse.ArgumentParser:
+    """Build the parser separately so its contract can be tested."""
+    parser = argparse.ArgumentParser(description="W3 Task CLI")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    # คำสั่ง submit-task
-    submit_parser = subparsers.add_parser("submit-task", help="ส่ง task ใหม่")
-    submit_parser.add_argument("--name", required=True, help="ชื่อของ task")
-    submit_parser.add_argument("--desc", required=True, help="รายละเอียดของ task")
+    submit_parser = subparsers.add_parser(
+        "submit-task",
+        help="สร้าง task ใหม่เข้าคิว",
+    )
+    submit_parser.add_argument("--name", required=True, type=non_empty, help="ชื่อ task")
+    submit_parser.add_argument("--desc", required=True, type=non_empty, help="รายละเอียด task")
+    submit_parser.add_argument("--agent", default="copilot-gm", type=non_empty)
+    submit_parser.add_argument("--module", default="W3Lgu", type=non_empty)
+    return parser
 
-    args = parser.parse_args()
 
+def main() -> int:
+    args = build_parser().parse_args()
     if args.command == "submit-task":
-        submit_task(args.name, args.desc)
-    else:
-        parser.print_help()
+        return submit_task(args.name, args.desc, args.agent, args.module)
+    return 2
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
