@@ -1,0 +1,9 @@
+{
+  "keyword": "REBOOT_WORK",
+  "task_id": "W3-PR-30",
+  "repo": "W3_HB_team_BXCGICOG",
+  "state": "closed",
+  "next_action": "use current IDP for identity restore; retain PR-30 as historical origin/reference",
+  "contact": "BBXDOO",
+  "timestamp": "2025-12-01T14:30:00Z"
+}
