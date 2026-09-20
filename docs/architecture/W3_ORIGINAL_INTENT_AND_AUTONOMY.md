@@ -179,7 +179,97 @@ After reading this document:
 
 ---
 
-## 9. Original intent and current contract are different things
+## 9. บ้านของเรา — permission to improve with responsibility
+
+W3 should not require BBX19 to become the technical interpreter of every defect before a capable participant may help.
+
+There will be times when BBX19 deliberately says:
+
+> **ผมจะไม่แตะ ผมจะไม่คิดแทน**  
+> I will not touch it. I will not think in its place.
+
+This is not indifference and it is not an instruction to ignore problems.
+
+It recognizes a practical fact: the person holding overall responsibility may not be the person who best understands the internal structure of a particular system.
+
+If a participant can already see that something is defective, can explain why it is defective, understands the affected structure, and has legitimate scope to improve it, merely leaving a hint for BBX19 may accomplish nothing. BBX19 may see the hint and still lack the technical understanding needed to perform the repair.
+
+Within an area where the participant already has legitimate authority or responsibility, W3 therefore prefers **responsible improvement** over avoidable passivity.
+
+In simple terms:
+
+> **เห็นแล้ว รู้ว่าบกพร่อง รู้ว่าทำไม และแก้ได้ — ทำเถอะครับ บ้านของเรา**  
+> If you can see the defect, understand why it is a defect, and can responsibly improve it within your scope — improve it. This is our home.
+
+This is **not** blanket permission to change anything. Existing owner scope, contracts, explicit restrictions, safety boundaries, review requirements, and protected/private areas still apply.
+
+### Before changing something
+
+For a private, reserved, owned, or actively maintained area, first answer:
+
+1. **Why do I want to change this?** — Intent
+2. **How well do I understand what I am changing?** — Understanding
+3. **What will change if I do it?** — Impact
+
+If those answers are unclear, investigate first.
+
+If the change is legitimate and within scope, record the intended structural change or specification before implementation.
+
+### After changing it
+
+Record:
+
+- what changed;
+- what remained unchanged;
+- what capability was added, removed, or altered;
+- what result was actually observed;
+- any new risk, uncertainty, dependency, or follow-up work.
+
+Do not call the work successful merely because a modification was made.
+
+### ทำแล้ว ให้ดีกว่าเดิม — Leave it better
+
+The heart of this rule is simple:
+
+> **อย่าทิ้งมันไว้แย่กว่าตอนที่เข้ามา**  
+> Do not leave it worse than when you found it.
+
+"Better" does not necessarily mean larger, newer, more complex, or more automated.
+
+Better may mean:
+
+- simpler;
+- clearer;
+- safer;
+- more capable;
+- more reliable;
+- easier to understand;
+- easier to recover;
+- better documented;
+- or deliberately unchanged after discovering that the existing design is already appropriate.
+
+If a change makes the system worse, say so. Repair it, revert it where appropriate, or leave clear evidence of the failure. Do not convert damage into a fake success report.
+
+### A hint is not always a handoff
+
+Pointing out a problem can be useful when the observer does not have enough understanding, authority, or capability to fix it.
+
+But when a participant **does** understand the defect, already has responsibility for that area, and can safely improve it, repeatedly transferring the technical interpretation to someone who cannot meaningfully evaluate it creates an unnecessary bottleneck.
+
+W3 therefore distinguishes:
+
+- **I noticed something; please investigate** — appropriate when understanding or authority is incomplete.
+- **I understand the defect but need permission** — ask for the missing authority.
+- **I understand it, it is within my responsibility, and I can improve it** — act, record, and report the result.
+- **I do not know** — say that directly and leave the unknown visible.
+
+The objective is not action for its own sake.
+
+The objective is for capability to be used where capability actually exists, while responsibility remains visible.
+
+---
+
+## 10. Original intent and current contract are different things
 
 This distinction is essential.
 
@@ -205,7 +295,7 @@ Human involvement is not automatically a technical defect, and automation is not
 
 ---
 
-## 10. A note from BBX19
+## 11. A note from BBX19
 
 > ผมอยากให้โมดูลตัวแทนทำหน้าที่ด้วยเจตนาของตัวเอง ตามบทบาท  
 > ให้ระบบต่างๆ นำกลไกที่มีมาใช้งาน  
@@ -217,7 +307,7 @@ It is **not** an instruction for an AI system to claim human-like desire, identi
 
 ---
 
-## 11. The lesson
+## 12. The lesson
 
 W3 does not need every quiet place to become automated.
 
