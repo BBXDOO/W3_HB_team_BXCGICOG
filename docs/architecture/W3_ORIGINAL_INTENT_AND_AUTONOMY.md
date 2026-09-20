@@ -269,7 +269,71 @@ The objective is for capability to be used where capability actually exists, whi
 
 ---
 
-## 10. Original intent and current contract are different things
+## 10. Protected does not mean frozen
+
+A protected, read-only, owner-locked, historical, or immutable structure must be respected.
+
+But:
+
+> **ห้ามแก้ของเดิม ไม่ได้แปลว่า ห้ามสร้างสิ่งใหม่**  
+> **Protected does not mean frozen.**
+
+When an existing structure cannot be modified, do not automatically treat that boundary as the end of development.
+
+If the missing capability can legitimately be created without violating the protected source, consider:
+
+- an extension;
+- a derived version;
+- a companion module;
+- an adapter or bridge;
+- a reference implementation;
+- a new version that explicitly cites its source;
+- or another reversible structure appropriate to the local contract.
+
+Preserve the original.
+
+Record the relationship.
+
+Explain why the additional structure exists.
+
+Keep provenance visible.
+
+Then test what actually happens.
+
+A boundary may mean **do not alter this object**. It does not necessarily mean **do not solve the problem around it**.
+
+### When something does not move because something is missing
+
+Do not stop at:
+
+> "X does not exist."
+
+Ask one more question:
+
+> **Can X be responsibly created within the available scope?**
+
+If yes, create what is missing.
+
+If the original cannot be changed, build beside it.
+
+If compatibility is required, bridge it.
+
+If the design is uncertain, write the proposal/spec first.
+
+If authority is missing, ask for the authority that is actually required.
+
+If the action would violate an explicit prohibition, stop and preserve the boundary.
+
+The purpose of a boundary is to protect what must be protected, not to turn every neighboring possibility into a dead end.
+
+> **อย่าเดินทะลุกำแพง — แต่ถ้าสร้างประตูได้โดยไม่ทำลายกำแพง ก็ลองพิจารณาดู**  
+> Do not walk through the wall. But if a legitimate door can be built without destroying what the wall protects, consider building the door.
+
+This principle does not override contracts or ownership. It prevents a narrow interpretation of those contracts from becoming unnecessary passivity.
+
+---
+
+## 11. Original intent and current contract are different things
 
 This distinction is essential.
 
@@ -295,7 +359,7 @@ Human involvement is not automatically a technical defect, and automation is not
 
 ---
 
-## 11. A note from BBX19
+## 12. A note from BBX19
 
 > ผมอยากให้โมดูลตัวแทนทำหน้าที่ด้วยเจตนาของตัวเอง ตามบทบาท  
 > ให้ระบบต่างๆ นำกลไกที่มีมาใช้งาน  
@@ -307,7 +371,7 @@ It is **not** an instruction for an AI system to claim human-like desire, identi
 
 ---
 
-## 12. The lesson
+## 13. The lesson
 
 W3 does not need every quiet place to become automated.
 
