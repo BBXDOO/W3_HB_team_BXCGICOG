@@ -40,6 +40,6 @@ jobs:
           fi
           git config user.name "w3-request-cycle"
           git config user.email "w3-request-cycle@users.noreply.github.com"
-          git add --ignore-unmatch modules/*/flows modules/*/reports modules/*/artifacts core/memory/memory_store.json requests/results repo_events\n          # Module log directories are intentionally ignored by .gitignore.\n          # Do not force-add runtime-local logs as repository artifacts.
+          git add --ignore-errors modules/*/flows modules/*/reports modules/*/artifacts core/memory/memory_store.json requests/results repo_events\n          # Module log directories are intentionally ignored by .gitignore.\n          # Do not force-add runtime-local logs as repository artifacts.
           git commit -m "runtime: process pending W3 requests"
           git push origin HEAD:refactor/v0.2
