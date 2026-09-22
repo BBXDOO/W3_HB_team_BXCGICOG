@@ -9,10 +9,12 @@ from __future__ import annotations
 import argparse, json, re
 from pathlib import Path
 from typing import Any
+import sys
+ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT))
 from core.module_loader.router import route_task
 from core.runtime.engine_v2 import run
 
-ROOT=Path(__file__).resolve().parents[1]
 REQUESTS=ROOT/"requests"
 RESULTS=REQUESTS/"results"
 EVENTS=ROOT/"repo_events"
