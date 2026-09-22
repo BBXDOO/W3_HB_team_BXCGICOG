@@ -41,7 +41,15 @@ def safe_id(value:str)->str:
     return re.sub(r"[^A-Za-z0-9_.-]+","-",value).strip("-")
 
 def already_done(rid:str)->bool:
-    return (RESULTS/f"{safe_id(rid)}_RESULT.json").exists()
+    path=RESULTS/f"{safe_id(rid)}_RESULT.json"
+    if not path.exists():
+        return False
+    try:
+        envelope=json.loads(path.read_text(encoding="utf-8"))
+    except (OSError,json.JSONDecodeError):
+        return False
+    status=str(envelope.get("runtime_result",{}).get("status") or "").upper()
+    return status == "COMPLETED"
 
 def process(path:Path)->dict:
     req=parse_request(path)
@@ -86,6 +94,7 @@ def process(path:Path)->dict:
     }
     plan={
       "task":task,
+      "kind":task,
       "run_with":target,
       "role":manifest.get("role") or manifest.get("display_name","—"),
       "status":manifest.get("status","unknown"),
