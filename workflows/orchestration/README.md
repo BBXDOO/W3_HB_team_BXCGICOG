@@ -28,3 +28,14 @@
 - **Owner:** BBX19
 - **Maker:** W3 Human-AI Team
 - **Log:** Git history
+
+
+## Request Routing Baseline
+
+คำร้องจาก `requests/` สามารถถูกประสานไปยัง Primary, Partner และ Observer หลายระบบโดยรักษา `request_id` และ source เดิม เพื่อสร้างประวัติการร่วมงานที่ตรวจย้อนกลับได้
+
+- Route definition: `definitions/REQUEST_ROUTING.md`
+- Collaboration assignment: `assignments/REQUEST_COLLABORATION.md`
+- Handoff template: `templates/REQUEST_HANDOFF.md`
+
+Baseline นี้กำหนด contract และเส้นทางเท่านั้น ยังไม่เปิด automatic runtime dispatcher.
