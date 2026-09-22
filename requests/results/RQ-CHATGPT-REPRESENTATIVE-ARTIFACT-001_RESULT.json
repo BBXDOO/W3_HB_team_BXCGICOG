@@ -1,0 +1,72 @@
+{
+  "request_id": "RQ-CHATGPT-REPRESENTATIVE-ARTIFACT-001",
+  "source_request": "requests/RQ-CHATGPT-REPRESENTATIVE-ARTIFACT-001.md",
+  "target_module": "ChatGPT",
+  "task_keyword": "design",
+  "runtime_result": {
+    "status": "COMPLETED",
+    "task": "design",
+    "module": "ChatGPT",
+    "output": "Created a local flow artifact from the routed task and request context. No remote model, network call, or external executor was used.",
+    "agent_result": {
+      "contract_version": "1.0",
+      "status": "COMPLETED",
+      "module": "ChatGPT",
+      "task": "design",
+      "capability": "local_flow_artifact",
+      "trace_id": "ca97820658fe41bba34b7a3262a38764",
+      "summary": "Created a local flow artifact from the routed task and request context. No remote model, network call, or external executor was used.",
+      "artifacts": [
+        {
+          "path": "modules/ChatGPT/flows/20260922T095257Z_design_ca97820658fe.md",
+          "sha256": "8d0c27f5fd4829538e7bdd7a3bddff55881c2c2ad79fb7883f76556870b66d8d",
+          "bytes": 1714,
+          "kind": "w3.flow_artifact.markdown"
+        }
+      ],
+      "mutated": true,
+      "mutation_scope": [
+        "modules/ChatGPT/flows"
+      ],
+      "external_execution_allowed": false,
+      "review": true,
+      "limitations": [
+        "This is a deterministic local planner, not an OpenAI API invocation.",
+        "The generated flow remains a draft and requires human review before downstream execution."
+      ]
+    },
+    "result_validation": {
+      "status": "valid",
+      "module": "ChatGPT",
+      "missing_fields": [],
+      "identity_missing_fields": [],
+      "blocking_status": null,
+      "mutated": true,
+      "traceable": true,
+      "review": true
+    },
+    "artifacts": [
+      {
+        "path": "modules/ChatGPT/flows/20260922T095257Z_design_ca97820658fe.md",
+        "sha256": "8d0c27f5fd4829538e7bdd7a3bddff55881c2c2ad79fb7883f76556870b66d8d",
+        "bytes": 1714,
+        "kind": "w3.flow_artifact.markdown"
+      }
+    ],
+    "latency_ms": 1,
+    "time": "2026-09-22T09:52:57Z",
+    "trace_id": "ca97820658fe41bba34b7a3262a38764"
+  },
+  "artifact_paths": [
+    {
+      "path": "modules/ChatGPT/flows/20260922T095257Z_design_ca97820658fe.md",
+      "sha256": "8d0c27f5fd4829538e7bdd7a3bddff55881c2c2ad79fb7883f76556870b66d8d",
+      "bytes": 1714,
+      "kind": "w3.flow_artifact.markdown"
+    }
+  ],
+  "final_signoff_required": true,
+  "closed": false,
+  "mutated": true,
+  "review": true
+}
