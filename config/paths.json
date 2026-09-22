@@ -6,7 +6,6 @@
     "config_ecosystem": "config/ecosystem.json",
     "config_cross_system": "config/cross_system.json",
     "module_registry": "modules/registry.json",
-    "module_loader_registry": "core/module-loader/module-registry.json",
     "codex": "codex/",
     "hospitication": "hospitication/",
     "w3_api": "w3_api/",
@@ -22,6 +21,7 @@
     "file_void_mpcp_adapter": "protocol/mpcp/adapter/file_void_tool.py",
     "integration_guide": "docs/integration_guide.md",
     "px_append_guide": "docs/px_w3db_append_flow.md",
-    "master_map": "docs/W3_MASTER_MAP.md"
+    "master_map": "docs/W3_MASTER_MAP.md",
+    "module_router": "core/module_loader/router.py"
   }
 }
