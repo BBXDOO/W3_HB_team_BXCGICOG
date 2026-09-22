@@ -12,7 +12,8 @@ from typing import Any
 import sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
-from core.module_loader.router import load_identity, route_task\nfrom core.runtime.engine_v2 import build_context, dispatch, validate_agent_result, now
+from core.module_loader.router import load_identity, route_task
+from core.runtime.engine_v2 import build_context, dispatch, validate_agent_result, now
 
 REQUESTS=ROOT/"requests"
 RESULTS=REQUESTS/"results"
