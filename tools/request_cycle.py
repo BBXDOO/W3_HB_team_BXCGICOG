@@ -77,6 +77,8 @@ def process(path:Path)->dict:
         "preferred_module": preferred,
         "executed_by": target,
         "substitution": bool(preferred and preferred != target),
+        "request_text": req["_request_text"],
+        "observations": [req["_request_text"]],
       },
       "_request_file": req["_request_file"],
       "request_text": req["_request_text"],
