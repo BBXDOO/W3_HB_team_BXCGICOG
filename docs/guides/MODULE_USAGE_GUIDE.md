@@ -21,7 +21,7 @@
 
 ## 1. ภาพรวม — โมดูลที่มีใน Registry
 
-ระบบ W3 มีโมดูลทั้งหมด **8 ตัว** ที่ลงทะเบียนใน `src/modules/registry/registry.json`:
+ระบบ W3 มีโมดูลทั้งหมด **8 ตัว** ที่ลงทะเบียนใน `modules/registry.json`:
 
 | ID | ชื่อโมดูล | ประเภท | Tier | สิทธิ์ | บทบาทหลัก |
 |----|-----------|--------|------|--------|-----------|
@@ -34,7 +34,7 @@
 | `cast` | **Cast** | reasoning-core | L1 | analysis | Document Architecture & Context |
 | `bbex-core` | **BBEX-Core** | legacy-core | ROOT-AUX | symbolic | Philosophical Anchor & Identity |
 
-**Task Routing Table** (จาก `core/module-loader/module-registry.json`):
+**Task Routing Table** (จาก `modules/registry.json`):
 
 | คำสั่ง (task keyword) | โมดูลที่รับผิดชอบ |
 |----------------------|------------------|
