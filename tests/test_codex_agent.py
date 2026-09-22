@@ -48,7 +48,7 @@ def test_codex_execution_packet_is_five_line_w3lgu_and_immutable():
 
 
 def test_codex_registered_in_module_loader_and_central_registry():
-    loader_path = Path("core/module-loader/router.py")
+    loader_path = Path("core/module_loader/router.py")
     spec = importlib.util.spec_from_file_location("w3_module_loader_router", loader_path)
     assert spec is not None and spec.loader is not None
     router = importlib.util.module_from_spec(spec)
@@ -56,8 +56,8 @@ def test_codex_registered_in_module_loader_and_central_registry():
 
     plan = router.execution_plan("implementation")
     assert plan["run_with"] == "Codex"
-    assert plan["role"] == "Implementation Agent / Repo Executor"
-    assert plan["status"] == "ACTIVE"
+    assert plan["role"] == "Implementation / Tests / PR Execution"
+    assert plan["status"] == "ready"
 
     central = json.loads(Path("modules/registry.json").read_text(encoding="utf-8"))
     assert central["routing"]["implementation"] == "Codex"
@@ -65,7 +65,7 @@ def test_codex_registered_in_module_loader_and_central_registry():
 
 
 def test_codex_idp_and_module_json_reference_each_other():
-    idp = json.loads(Path("core/module-loader/identity/Codex.idp.json").read_text(encoding="utf-8"))
+    idp = json.loads(Path("modules/Codex/module.json").read_text(encoding="utf-8"))
     module = json.loads(Path("modules/Codex/module.json").read_text(encoding="utf-8"))
     manifest = json.loads(Path("codex/modules.json").read_text(encoding="utf-8"))
 
