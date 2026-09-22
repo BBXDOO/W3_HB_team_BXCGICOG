@@ -325,6 +325,8 @@ def main() -> int:
             has_errors = True
 
         print(status.upper())
+        if status in {"fail", "warn"} and detail:
+            print(detail)
 
         results.append(
             {
