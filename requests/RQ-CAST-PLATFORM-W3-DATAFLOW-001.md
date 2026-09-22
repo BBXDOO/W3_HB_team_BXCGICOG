@@ -1,7 +1,7 @@
 ---
 request_id: RQ-CAST-PLATFORM-W3-DATAFLOW-001
 task_keyword: structural_review
-target_module: Cast
+target_module: Copilot-Gm
 requester: BBX19
 language: th
 request_type: paired_module_flow_study
@@ -15,7 +15,7 @@ review: true
 
 ## Intent
 
-ทดสอบวงจร Request จริง โดยให้ `Cast` เป็นคู่โมดูลสำหรับตรวจและจัดรูปความสัมพันธ์ของข้อมูลระหว่าง Platform กับ W3 ว่าแต่ละส่วนรับอะไร ส่งอะไร และส่งต่อไปยังส่วนใด โดยยึดโครงสร้างที่มีอยู่ใน repository ก่อน
+ทดสอบวงจร Request จริง โดยให้ `Copilot-Gm` เป็นคู่โมดูลสำหรับตรวจและจัดรูปความสัมพันธ์ของข้อมูลระหว่าง Platform กับ W3 ว่าแต่ละส่วนรับอะไร ส่งอะไร และส่งต่อไปยังส่วนใด โดยยึดโครงสร้างที่มีอยู่ใน repository ก่อน
 
 งานนี้ต้องสร้างผลลัพธ์แยก 2 ชนิด:
 1. **Report** — รายงานสำหรับการตรวจ/review
@@ -23,10 +23,10 @@ review: true
 
 ## Pair Module
 
-- Primary/paired module: `Cast`
-- Requested workspace: `modules/Cast/`
+- Primary/paired module: `Copilot-Gm`
+- Requested workspace: `modules/Copilot-Gm/`
 - ใช้ความสามารถขั้นต่ำของโมดูล: read / reason / structural adaptation / document / report
-- Specialty เป็นเหตุผลในการเลือก Cast ไม่ใช่ข้อห้ามความสามารถอื่น
+- Specialty เป็นเหตุผลในการเลือก Copilot-Gm ไม่ใช่ข้อห้ามความสามารถอื่น
 
 ## Source / Evidence First
 
