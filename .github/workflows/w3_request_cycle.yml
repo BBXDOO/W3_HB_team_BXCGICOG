@@ -1,0 +1,45 @@
+name: W3 Request Cycle
+
+on:
+  push:
+    branches: [refactor/v0.2]
+    paths:
+      - "requests/*.md"
+      - "tools/request_cycle.py"
+      - "modules/registry.json"
+      - "modules/*/module.json"
+      - "core/module_loader/**"
+      - "core/runtime/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: w3-request-cycle-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  request-cycle:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/v0.2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Process pending requests
+        run: python tools/request_cycle.py --pending
+      - name: Commit generated artifacts and traces
+        run: |
+          if git diff --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
+            echo "No request-cycle changes."
+            exit 0
+          fi
+          git config user.name "w3-request-cycle"
+          git config user.email "w3-request-cycle@users.noreply.github.com"
+          git add modules/*/flows requests/results repo_events
+          git commit -m "runtime: process pending W3 requests"
+          git push origin HEAD:refactor/v0.2
