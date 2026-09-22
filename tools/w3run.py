@@ -9,7 +9,7 @@ Usage:
     python tools/w3run.py --heartbeat
     python tools/w3run.py --list-tasks
 
-Supported task keywords (from core/module-loader/module-registry.json):
+Supported task keywords (from modules/registry.json):
     design, architecture, flow, simulation   -> ChatGPT
     verify, verification, audit, security    -> Gemini
     pattern, signals, insight                -> Grok
@@ -29,32 +29,9 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-TASK_ROUTING = {
-    "design": "ChatGPT",
-    "architecture": "ChatGPT",
-    "flow": "ChatGPT",
-    "simulation": "ChatGPT",
-    "verify": "Gemini",
-    "verification": "Gemini",
-    "audit": "Gemini",
-    "security": "Gemini",
-    "pattern": "Grok",
-    "signals": "Grok",
-    "insight": "Grok",
-    "research": "DeepSeek",
-    "scale": "DeepSeek",
-    "planning": "DeepSeek",
-    "governance": "Copilot-Gm",
-    "policy": "Copilot-Gm",
-    "compliance": "Copilot-Gm",
-    "reason": "Cast",
-    "critical_reasoning": "Cast",
-    "interpret": "Cast",
-    "document": "Cast",
-    "identity": "BBEX-Core",
-    "philosophy": "BBEX-Core",
-    "vision": "BBX19",
-}
+def task_routing():
+    from core.module_loader.router import load_registry
+    return load_registry()
 
 
 def print_json(data):
@@ -65,7 +42,7 @@ def cmd_list_tasks():
     """Print all available task keywords grouped by module."""
     print("\nAvailable Task Keywords (W3 Routing Table)\n")
     by_module = {}
-    for task, module in TASK_ROUTING.items():
+    for task, module in task_routing().items():
         by_module.setdefault(module, []).append(task)
     for module, tasks in by_module.items():
         print(f"  {module:15s}: {', '.join(tasks)}")
@@ -135,7 +112,7 @@ def main():
         parser.print_help()
         return
 
-    unknown = [task for task in args.tasks if task not in TASK_ROUTING]
+    routing = task_routing()\n    unknown = [task for task in args.tasks if task not in routing]
     if unknown:
         parser.error(f"Unknown task(s): {unknown}. Use --list-tasks to see valid keywords.")
 
