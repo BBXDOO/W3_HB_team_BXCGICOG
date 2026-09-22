@@ -14,6 +14,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from core.module_loader.router import load_identity, route_task
 from core.runtime.engine_v2 import build_context, dispatch, validate_agent_result, now
+from core.memory.memory_bus import add_memory
 
 REQUESTS=ROOT/"requests"
 RESULTS=REQUESTS/"results"
@@ -78,6 +79,8 @@ def process(path:Path)->dict:
         "substitution": bool(preferred and preferred != target),
       },
       "_request_file": req["_request_file"],
+      "request_text": req["_request_text"],
+      "observations": [req["_request_text"]],
     }
     plan={
       "task":task,
@@ -103,6 +106,20 @@ def process(path:Path)->dict:
         }
     except Exception as exc:
         result={"status":"FAILED","task":task,"module":target,"error":str(exc),"artifacts":[],"time":now(),"trace_id":context["trace_id"]}
+
+    # Direct dispatch preserves an explicit target_module, so mirror engine_v2.run()
+    # memory persistence here instead of routing through execution_plan(task).
+    try:
+        add_memory(
+            source=target if result.get("status") != "FAILED" else "runtime",
+            topic=task,
+            content=json.dumps(result.get("agent_result", result), ensure_ascii=False, sort_keys=True),
+            tags=["runtime", "request_cycle", str(result.get("status", "unknown")).lower()],
+            score=5 if result.get("status") == "COMPLETED" else 1,
+            record_type="runtime_result",
+        )
+    except Exception as memory_exc:
+        result["memory_warning"] = str(memory_exc)
 
     RESULTS.mkdir(parents=True,exist_ok=True); EVENTS.mkdir(parents=True,exist_ok=True)
     envelope={
