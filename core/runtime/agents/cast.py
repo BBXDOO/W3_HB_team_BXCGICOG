@@ -62,7 +62,7 @@ class CastAgent(RuntimeAgent):
         task_name = str(task or "").strip().lower()
         inferred_kind = (
             "reasoning"
-            if task_name in {"reason", "reasoning", "interpret", "interpretation"}
+            if task_name in {"reason", "reasoning", "interpret", "interpretation", "structural_review"}
             else ""
         )
         kind = str(plan.get("kind") or inferred_kind).strip()
