@@ -1,0 +1,46 @@
+{
+  "request_id": "RQ-CAST-PLATFORM-W3-DATAFLOW-001",
+  "source_request": "requests/RQ-CAST-PLATFORM-W3-DATAFLOW-001.md",
+  "target_module": "Cast",
+  "preferred_module": null,
+  "executed_by": "Cast",
+  "substitution": false,
+  "task_keyword": "structural_review",
+  "runtime_result": {
+    "status": "UNAVAILABLE",
+    "task": "structural_review",
+    "module": "Cast",
+    "output": "Cast has no local executor registered for 'structural_review'. No task was completed and no artifact was created.",
+    "agent_result": {
+      "contract_version": "1.0",
+      "status": "UNAVAILABLE",
+      "module": "Cast",
+      "task": "structural_review",
+      "action": "no_local_executor",
+      "summary": "Cast has no local executor registered for 'structural_review'. No task was completed and no artifact was created.",
+      "reason": "Implement a module-specific execute() method before this task can report COMPLETED.",
+      "artifacts": [],
+      "mutated": false,
+      "traceable": true,
+      "review": true
+    },
+    "result_validation": {
+      "status": "valid",
+      "module": "Cast",
+      "missing_fields": [],
+      "identity_missing_fields": [],
+      "blocking_status": null,
+      "mutated": false,
+      "traceable": true,
+      "review": true
+    },
+    "artifacts": [],
+    "time": "2026-09-22T15:32:11Z",
+    "trace_id": "14fe9e2487ff4b0ba3e87f753397ae90"
+  },
+  "artifact_paths": [],
+  "final_signoff_required": true,
+  "closed": false,
+  "mutated": false,
+  "review": true
+}
