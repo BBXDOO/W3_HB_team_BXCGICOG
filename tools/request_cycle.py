@@ -94,7 +94,17 @@ def main():
     ap.add_argument("--request",help="process one request path")
     ap.add_argument("--pending",action="store_true",help="process pending root request markdown files")
     args=ap.parse_args()
-    paths=[ROOT/args.request] if args.request else sorted(REQUESTS.glob("*.md"))
+    if args.request:
+        paths=[ROOT/args.request]
+    else:
+        paths=[]
+        for candidate in sorted(REQUESTS.glob("*.md")):
+            try:
+                probe=parse_request(candidate)
+            except ValueError:
+                continue
+            if probe.get("request_id") and probe.get("task_keyword") and probe.get("target_module"):
+                paths.append(candidate)
     if not args.pending and not args.request: ap.error("use --request or --pending")
     rc=0
     for p in paths:
