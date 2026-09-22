@@ -40,6 +40,6 @@ jobs:
           fi
           git config user.name "w3-request-cycle"
           git config user.email "w3-request-cycle@users.noreply.github.com"
-          git add modules/*/flows requests/results repo_events
+          git add modules/*/flows modules/*/reports modules/*/artifacts modules/*/logs core/memory/memory_store.json requests/results repo_events
           git commit -m "runtime: process pending W3 requests"
           git push origin HEAD:refactor/v0.2
