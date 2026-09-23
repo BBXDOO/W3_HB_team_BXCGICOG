@@ -172,7 +172,10 @@ def parse_request(path:Path)->dict:
     for line in parts[1].splitlines():
         if ":" in line:
             k,v=line.split(":",1); meta[k.strip()]=scalar(v)
-    meta["_request_file"]=str(path.relative_to(ROOT))
+    try:
+        meta["_request_file"]=str(path.relative_to(ROOT))
+    except ValueError:
+        meta["_request_file"]=str(path)
     meta["_request_text"]=text
     return meta
 
@@ -310,13 +313,13 @@ def process(path:Path)->dict:
     rp.write_text(json.dumps(envelope,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     ep=EVENTS/f"{safe_id(rid)}_EXECUTION.md"
     ep.write_text(
-      f"# Request Execution Event\n\n- request_id: \`{rid}\`\n- source: \`{req['_request_file']}\`\n"
-      f"- requested/executed_by: \`{target}\`\n- preferred route: \`{preferred or 'none'}\`\n"
-      f"- substitution: \`{str(bool(preferred and preferred != target)).lower()}\`\n"
-      f"- task: \`{task}\`\n- status: \`{result.get('status')}\`\n"
-      f"- trace_id: \`{result.get('trace_id')}\`\n- result: \`{rp.relative_to(ROOT)}\`\n"
-      f"- final_signoff_required: \`{str(bool(req.get('final_signoff_required',True))).lower()}\`\n"
-      "- closed: \`false\`\n",
+      f"# Request Execution Event\n\n- request_id: `{rid}`\n- source: `{req['_request_file']}`\n"
+      f"- requested/executed_by: `{target}`\n- preferred route: `{preferred or 'none'}`\n"
+      f"- substitution: `{str(bool(preferred and preferred != target)).lower()}`\n"
+      f"- task: `{task}`\n- status: `{result.get('status')}`\n"
+      f"- trace_id: `{result.get('trace_id')}`\n- result: `{rp.relative_to(ROOT)}`\n"
+      f"- final_signoff_required: `{str(bool(req.get('final_signoff_required',True))).lower()}`\n"
+      "- closed: `false`\n",
       encoding="utf-8")
     return envelope
 
