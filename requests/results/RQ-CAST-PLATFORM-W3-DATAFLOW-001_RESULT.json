@@ -2,6 +2,8 @@
   "request_id": "RQ-CAST-PLATFORM-W3-DATAFLOW-001",
   "source_request": "requests/RQ-CAST-PLATFORM-W3-DATAFLOW-001.md",
   "target_module": "Copilot-Gm",
+  "target_module_requested": "Copilot-Gm",
+  "target_resolution_warning": null,
   "preferred_module": null,
   "executed_by": "Copilot-Gm",
   "substitution": false,
@@ -112,10 +114,16 @@
       "review": true
     },
     "artifacts": [],
-    "time": "2026-09-22T18:00:45Z",
-    "trace_id": "15b063672b2d4ec6bf12f0c97e29622e"
+    "time": "2026-09-23T03:12:44Z",
+    "trace_id": "79c02d13b18c4a5da1510a2c94e04b3d"
   },
   "artifact_paths": [],
+  "checkin": {
+    "doc_id": "CID_@R000A1",
+    "entry_no": 2,
+    "path": "logs/check-in/CID_@R000A1.md"
+  },
+  "request_log": "logs/request_cycle/RQ-CAST-PLATFORM-W3-DATAFLOW-001.md",
   "final_signoff_required": true,
   "closed": false,
   "mutated": false,
