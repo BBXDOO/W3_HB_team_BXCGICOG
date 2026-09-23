@@ -243,7 +243,13 @@ def process(path:Path)->dict:
         )
         effective_target=str(envelope.get("target_module") or target or requested_target or "").strip()
         if not effective_target:
-            return {"status":"FAILED","request_id":rid,"reason":"completed result missing target_module for evidence backfill"}
+            return {
+                "status":"SKIPPED",
+                "request_id":rid,
+                "reason":"result already exists",
+                "evidence_backfilled":False,
+                "evidence_warning":"completed result missing target_module for evidence backfill",
+            }
         request_log_path=write_request_log(
             request_id=rid,
             target_module=effective_target,
