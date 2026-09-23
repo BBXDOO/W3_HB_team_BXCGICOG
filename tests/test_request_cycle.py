@@ -1,5 +1,3 @@
-import json
-from pathlib import Path
 import tools.request_cycle as rc
 
 def test_parse_request_frontmatter(tmp_path):
@@ -21,3 +19,49 @@ def test_parse_request_preserves_body(tmp_path):
     data=rc.parse_request(p)
     assert "# Flow Study" in data["_request_text"]
     assert "Platform -> W3" in data["_request_text"]
+
+
+def test_resolve_module_name_normalizes_symbols():
+    resolved, warning = rc.resolve_module_name("<copilot_gm>")
+    assert resolved == "Copilot-Gm"
+    assert warning is not None
+
+
+def test_next_doc_id_rollover():
+    assert rc._next_doc_id("A", 1) == ("A", 2)
+    assert rc._next_doc_id("A", 50) == ("B", 1)
+    assert rc._next_doc_id("Z", 50) == ("AA", 1)
+
+
+def test_append_checkin_entry_rotates_after_50(monkeypatch, tmp_path):
+    monkeypatch.setattr(rc, "ROOT", tmp_path)
+    monkeypatch.setattr(rc, "CHECKIN_DIR", tmp_path / "logs" / "check-in")
+    monkeypatch.setattr(rc, "REQUEST_LOG_DIR", tmp_path / "logs" / "request_cycle")
+
+    first_doc = rc.CHECKIN_DIR / "CID_@R000A1.md"
+    rows = ["DOCS - ID : CID_@R000A1", "", "DOCS - REQUEST CHECK-IN SHEET", "---"]
+    for idx in range(1, 51):
+        rows.extend(
+            [
+                f"• NO.{idx} : RQ-{idx}",
+                "• DATE : 2026-01-01T00:00:00Z",
+                "• Person : BBXDOO",
+                "• Operation : ทรู",
+                "• Suggestions : ok",
+                "---",
+            ]
+        )
+    first_doc.parent.mkdir(parents=True, exist_ok=True)
+    first_doc.write_text("\n".join(rows) + "\n", encoding="utf-8")
+
+    checkin = rc.append_checkin_entry(
+        request_name="RQ-51",
+        person="BBXDOO",
+        operation=False,
+        suggestions="fallback",
+        timestamp="2026-01-02T00:00:00Z",
+    )
+    assert checkin["doc_id"] == "CID_@R000A2"
+    rotated_doc = rc.CHECKIN_DIR / "CID_@R000A2.md"
+    assert rotated_doc.exists()
+    assert "• NO.1 : RQ-51" in rotated_doc.read_text(encoding="utf-8")

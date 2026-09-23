@@ -39,6 +39,16 @@ Status: minimum baseline / non-executing
 ผลการส่งต่อ/รับทราบควรมี trace ใน `repo_events/` หรือ evidence surface ที่ระบบนั้นกำหนด
 ผลลัพธ์ของคำร้องเก็บ/อ้างกลับผ่าน `requests/results/` เมื่อเหมาะสม
 
+## Check-in
+
+ทุก request ต้องมีการลงชื่อรับงานในเอกสาร Check-in ที่ `logs/check-in/`
+
+- รูปแบบเอกสาร: `DOCS - ID : CID_@R000A1`
+- 1 เอกสารรองรับ 50 request (`NO.1` ถึง `NO.50`)
+- เมื่อครบ 50 รายการ ให้เปิดเอกสารใหม่โดยเพิ่มเลขท้าย ID (`A1 -> A2 ... -> A50`)
+- เมื่อครบ `A50` ให้เปลี่ยน prefix ตัวอักษรเป็นลำดับถัดไปและเริ่มเลขใหม่ (`B1`, `B2`, ...)
+- หลังจบงานต้องมี request log แยกใน `logs/request_cycle/`
+
 ## Boundary
 
 Router ส่งงาน ไม่ใช่ executor

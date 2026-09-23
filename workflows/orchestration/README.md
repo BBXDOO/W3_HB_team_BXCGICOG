@@ -38,4 +38,8 @@
 - Collaboration assignment: `assignments/REQUEST_COLLABORATION.md`
 - Handoff template: `templates/REQUEST_HANDOFF.md`
 
-Baseline นี้กำหนด contract และเส้นทางเท่านั้น ยังไม่เปิด automatic runtime dispatcher.
+Baseline นี้กำหนด contract และเส้นทาง โดย runtime bridge ใช้งานผ่าน `tools/request_cycle.py` เพื่อ:
+
+- ส่งต่อคำร้องไปยัง module ปลายทางที่ระบุ (พร้อม normalize ชื่อโมดูลที่มีสัญลักษณ์ต่างรูปแบบ)
+- สร้างผลลัพธ์ที่ `requests/results/` และ trace event ที่ `repo_events/`
+- บันทึก Check-in ทุกคำร้องที่ `logs/check-in/` และเขียน request log ที่ `logs/request_cycle/`
