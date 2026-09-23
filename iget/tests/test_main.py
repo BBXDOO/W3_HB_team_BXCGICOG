@@ -71,7 +71,7 @@ def test_run_updates_one_summary_and_uses_v9_marker():
     assert operation == "updated"
     assert len(api.upserts) == 1
     assert "<!-- iget:summary -->" in api.upserts[0][2]
-    assert "IGET v9.0" in api.upserts[0][2]
+    assert "IGET v9.1" in api.upserts[0][2]
     assert api.inline == []
 
 
@@ -80,4 +80,4 @@ def test_dry_run_does_not_write_comment(capsys):
     operation = run(RuntimeContext("owner/repo", 8, "token", dry_run=True), api)
     assert operation == "dry-run"
     assert api.upserts == []
-    assert "IGET v9.0" in capsys.readouterr().out
+    assert "IGET v9.1" in capsys.readouterr().out
