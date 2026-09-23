@@ -119,7 +119,7 @@ def _select_checkin_doc(base_dir:Path)->tuple[Path,str,int,int]:
     return path,doc_id,row,row+1
 
 
-def append_checkin_entry(*,request_name:str,person:str,operation:bool,suggestions:str,timestamp:str)->dict:
+def append_checkin_entry(*,request_name:str,person:str,operation:bool,suggestions:Any,timestamp:str)->dict:
     doc_path,doc_id,last_no,next_no=_select_checkin_doc(CHECKIN_DIR)
     if not doc_path.exists():
         header=(
@@ -131,7 +131,7 @@ def append_checkin_entry(*,request_name:str,person:str,operation:bool,suggestion
     content=doc_path.read_text(encoding="utf-8")
     if not content.endswith("\n"):
         content+="\n"
-    suggestions_text=json.dumps(str(suggestions),ensure_ascii=False)
+    suggestions_text=json.dumps(suggestions,ensure_ascii=False)
     block=(
         f"• NO.{next_no} : {request_name}\n"
         f"• DATE : {timestamp}\n"
@@ -233,14 +233,6 @@ def process(path:Path)->dict:
         runtime_result=envelope.get("runtime_result") if isinstance(envelope.get("runtime_result"),dict) else {}
         status=str(runtime_result.get("status") or "COMPLETED")
         suggestion=runtime_result.get("output") or runtime_result.get("error") or "already completed"
-        person=_clean_module_name(str(req.get("requester") or "BBXDOO")) or "BBXDOO"
-        checkin=append_checkin_entry(
-            request_name=rid,
-            person=person,
-            operation=status.upper()=="COMPLETED",
-            suggestions=str(suggestion).strip(),
-            timestamp=runtime_result.get("time") or now(),
-        )
         effective_target=str(envelope.get("target_module") or target or requested_target or "").strip()
         if not effective_target:
             return {
@@ -250,6 +242,14 @@ def process(path:Path)->dict:
                 "evidence_backfilled":False,
                 "evidence_warning":"completed result missing target_module for evidence backfill",
             }
+        person=_clean_module_name(str(req.get("requester") or "BBXDOO")) or "BBXDOO"
+        checkin=append_checkin_entry(
+            request_name=rid,
+            person=person,
+            operation=status.upper()=="COMPLETED",
+            suggestions=str(suggestion).strip(),
+            timestamp=runtime_result.get("time") or now(),
+        )
         request_log_path=write_request_log(
             request_id=rid,
             target_module=effective_target,
