@@ -241,9 +241,12 @@ def process(path:Path)->dict:
             suggestions=str(suggestion).strip(),
             timestamp=runtime_result.get("time") or now(),
         )
+        effective_target=str(envelope.get("target_module") or target or requested_target or "").strip()
+        if not effective_target:
+            return {"status":"FAILED","request_id":rid,"reason":"completed result missing target_module for evidence backfill"}
         request_log_path=write_request_log(
             request_id=rid,
-            target_module=str(envelope.get("target_module") or target),
+            target_module=effective_target,
             status=status,
             checkin=checkin,
             suggestion=str(suggestion).strip(),
