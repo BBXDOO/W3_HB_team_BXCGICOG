@@ -2,6 +2,8 @@
   "request_id": "RQ-BBX19-VISION-002",
   "source_request": "requests/RQ-BBX19-VISION-002.md",
   "target_module": "BBX19",
+  "target_module_requested": "BBX19",
+  "target_resolution_warning": null,
   "preferred_module": "BBX19",
   "executed_by": "BBX19",
   "substitution": false,
@@ -49,10 +51,16 @@
       "review": true
     },
     "artifacts": [],
-    "time": "2026-09-22T18:00:45Z",
-    "trace_id": "a89746da596c44a48e478adf1548123a"
+    "time": "2026-09-23T03:54:56Z",
+    "trace_id": "1f267eae5e674be4a677e59496675f9a"
   },
   "artifact_paths": [],
+  "checkin": {
+    "doc_id": "CID_@R000A1",
+    "entry_no": 1,
+    "path": "logs/check-in/CID_@R000A1.md"
+  },
+  "request_log": "logs/request_cycle/RQ-BBX19-VISION-002.md",
   "final_signoff_required": true,
   "closed": false,
   "mutated": false,

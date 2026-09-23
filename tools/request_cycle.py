@@ -131,7 +131,7 @@ def _next_doc_id(letter:str,number:int)->tuple[str,int]:
 
 
 def _extract_last_entry_no(content:str)->int:
-    matches=[int(no) for no in re.findall(r"•\s*NO\.(\d+)\s*:",content)]
+    matches=[int(no) for no in re.findall(r"^•\s*NO\.(\d+)\s*:",content,flags=re.MULTILINE)]
     return max(matches) if matches else 0
 
 
@@ -159,7 +159,7 @@ def _select_checkin_doc(base_dir:Path)->tuple[Path,str,int]:
     return path,doc_id,row+1
 
 
-def append_checkin_entry(*,request_name:str,person:str,operation:bool,suggestions:str,timestamp:str)->dict:
+def append_checkin_entry(*,request_name:str,person:str,operation:bool,suggestions:Any,timestamp:str)->dict:
     CHECKIN_DIR.mkdir(parents=True,exist_ok=True)
     lock_path=CHECKIN_DIR/".checkin.lock"
     with _file_lock(lock_path):
@@ -174,21 +174,23 @@ def append_checkin_entry(*,request_name:str,person:str,operation:bool,suggestion
         content=doc_path.read_text(encoding="utf-8")
         if not content.endswith("\n"):
             content+="\n"
+        suggestions_text=json.dumps(suggestions,ensure_ascii=False)
         block=(
             f"• NO.{next_no} : {request_name}\n"
             f"• DATE : {timestamp}\n"
             f"• Person : {person}\n"
             f"• Operation : {'ทรู' if operation else 'เฟล'}\n"
-            f"• Suggestions : {suggestions}\n"
+            f"• Suggestions : {suggestions_text}\n"
             "---\n"
         )
         doc_path.write_text(content+block,encoding="utf-8")
     return {"doc_id":doc_id,"entry_no":next_no,"path":str(doc_path.relative_to(ROOT))}
 
 
-def write_request_log(*,request_id:str,target_module:str,status:str,checkin:dict,suggestion:str)->str:
+def write_request_log(*,request_id:str,target_module:str,status:str,checkin:dict,suggestion:Any)->str:
     REQUEST_LOG_DIR.mkdir(parents=True,exist_ok=True)
     path=REQUEST_LOG_DIR/f"{safe_id(request_id)}.md"
+    suggestion_text=suggestion.strip() if isinstance(suggestion,str) else json.dumps(suggestion,ensure_ascii=False)
     path.write_text(
         "# Request Cycle Log\n\n"
         f"- request_id: `{request_id}`\n"
@@ -199,7 +201,7 @@ def write_request_log(*,request_id:str,target_module:str,status:str,checkin:dict
         f"- checkin_path: `{checkin['path']}`\n"
         "- suggestion:\n\n"
         "```text\n"
-        f"{suggestion}\n"
+        f"{suggestion_text}\n"
         "```\n",
         encoding="utf-8",
     )
@@ -260,7 +262,50 @@ def process(path:Path)->dict:
     except Exception:
         preferred=None
 
-    if already_done(rid): return {"status":"SKIPPED","request_id":rid,"reason":"result already exists"}
+    if already_done(rid):
+        result_path=RESULTS/f"{safe_id(rid)}_RESULT.json"
+        try:
+            envelope=json.loads(result_path.read_text(encoding="utf-8"))
+        except (OSError,json.JSONDecodeError):
+            return {"status":"SKIPPED","request_id":rid,"reason":"result already exists"}
+        existing_checkin=envelope.get("checkin") if isinstance(envelope.get("checkin"),dict) else {}
+        existing_checkin_path=existing_checkin.get("path")
+        existing_request_log=envelope.get("request_log")
+        if existing_checkin_path and existing_request_log:
+            if (ROOT/existing_checkin_path).exists() and (ROOT/existing_request_log).exists():
+                return {"status":"SKIPPED","request_id":rid,"reason":"result already exists"}
+        runtime_result=envelope.get("runtime_result") if isinstance(envelope.get("runtime_result"),dict) else {}
+        status=str(runtime_result.get("status") or "COMPLETED")
+        suggestion=runtime_result.get("output") or runtime_result.get("error") or "already completed"
+        suggestion=suggestion.strip() if isinstance(suggestion,str) else suggestion
+        effective_target=str(envelope.get("target_module") or target or requested_target or "").strip()
+        if not effective_target:
+            return {
+                "status":"SKIPPED",
+                "request_id":rid,
+                "reason":"result already exists",
+                "evidence_backfilled":False,
+                "evidence_warning":"completed result missing target_module for evidence backfill",
+            }
+        person=_clean_module_name(str(req.get("requester") or "BBXDOO")) or "BBXDOO"
+        checkin=append_checkin_entry(
+            request_name=rid,
+            person=person,
+            operation=status.upper()=="COMPLETED",
+            suggestions=suggestion,
+            timestamp=runtime_result.get("time") or now(),
+        )
+        request_log_path=write_request_log(
+            request_id=rid,
+            target_module=effective_target,
+            status=status,
+            checkin=checkin,
+            suggestion=suggestion,
+        )
+        envelope["checkin"]=checkin
+        envelope["request_log"]=request_log_path
+        result_path.write_text(json.dumps(envelope,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+        return {"status":"SKIPPED","request_id":rid,"reason":"result already exists","evidence_backfilled":True}
 
     request_context={
       "source": req.get("requester","requests/"),
@@ -310,12 +355,13 @@ def process(path:Path)->dict:
         result={"status":"FAILED","task":task,"module":target,"error":str(exc),"artifacts":[],"time":now(),"trace_id":context["trace_id"]}
     operation=bool(result.get("status")=="COMPLETED")
     suggestion=result.get("output") or result.get("error") or "processed"
+    suggestion=suggestion.strip() if isinstance(suggestion,str) else suggestion
     person=_clean_module_name(str(req.get("requester") or "BBXDOO")) or "BBXDOO"
     checkin=append_checkin_entry(
         request_name=rid,
         person=person,
         operation=operation,
-        suggestions=str(suggestion).strip(),
+        suggestions=suggestion,
         timestamp=result.get("time") or now(),
     )
     request_log_path=write_request_log(
@@ -323,7 +369,7 @@ def process(path:Path)->dict:
         target_module=target,
         status=str(result.get("status") or "FAILED"),
         checkin=checkin,
-        suggestion=str(suggestion).strip(),
+        suggestion=suggestion,
     )
 
     # Direct dispatch preserves an explicit target_module, so mirror engine_v2.run()
@@ -360,6 +406,7 @@ def process(path:Path)->dict:
     ep=EVENTS/f"{safe_id(rid)}_EXECUTION.md"
     ep.write_text(
       f"# Request Execution Event\n\n- request_id: `{rid}`\n- source: `{req['_request_file']}`\n"
+      f"- target_module: `{target}`\n"
       f"- requested_target_module: `{requested_target or 'none'}`\n"
       f"- executed_by: `{target}`\n- preferred route: `{preferred or 'none'}`\n"
       f"- substitution: `{str(bool(preferred and preferred != target)).lower()}`\n"
@@ -384,7 +431,7 @@ def main():
                 probe=parse_request(candidate)
             except ValueError:
                 continue
-            if probe.get("request_id") and probe.get("task_keyword"):
+            if probe.get("request_id") and probe.get("task_keyword") and str(probe.get("target_module") or "").strip():
                 paths.append(candidate)
     if not args.pending and not args.request: ap.error("use --request or --pending")
     rc=0
