@@ -84,6 +84,13 @@ def _next_alpha(value:str)->str:
     return "".join(chars)
 
 
+def _alpha_index(value:str)->int:
+    score=0
+    for char in value:
+        score=score*26+(ord(char)-ord("A")+1)
+    return score
+
+
 def _next_doc_id(letter:str,number:int)->tuple[str,int]:
     if number<50:
         return letter,number+1
@@ -95,7 +102,7 @@ def _extract_last_entry_no(content:str)->int:
     return max(matches) if matches else 0
 
 
-def _select_checkin_doc(base_dir:Path)->tuple[Path,str,int,int]:
+def _select_checkin_doc(base_dir:Path)->tuple[Path,str,int]:
     base_dir.mkdir(parents=True,exist_ok=True)
     docs=[]
     for path in sorted(base_dir.glob("CID_@R000*.md")):
@@ -104,23 +111,23 @@ def _select_checkin_doc(base_dir:Path)->tuple[Path,str,int,int]:
             continue
         letter,number=match.group(1),int(match.group(2))
         row=_extract_last_entry_no(path.read_text(encoding="utf-8"))
-        docs.append((letter,number,row,path))
+        docs.append((_alpha_index(letter),letter,number,row,path))
     if not docs:
         doc_id="CID_@R000A1"
         path=base_dir/f"{doc_id}.md"
-        return path,doc_id,0,1
-    docs.sort(key=lambda item:(len(item[0]),item[0],item[1]))
-    letter,number,row,path=docs[-1]
+        return path,doc_id,1
+    docs.sort(key=lambda item:(item[0],item[2]))
+    _,letter,number,row,path=docs[-1]
     if row>=MAX_CHECKIN_ROWS:
         n_letter,n_number=_next_doc_id(letter,number)
         doc_id=f"CID_@R000{n_letter}{n_number}"
-        return base_dir/f"{doc_id}.md",doc_id,0,1
+        return base_dir/f"{doc_id}.md",doc_id,1
     doc_id=f"CID_@R000{letter}{number}"
-    return path,doc_id,row,row+1
+    return path,doc_id,row+1
 
 
 def append_checkin_entry(*,request_name:str,person:str,operation:bool,suggestions:str,timestamp:str)->dict:
-    doc_path,doc_id,last_no,next_no=_select_checkin_doc(CHECKIN_DIR)
+    doc_path,doc_id,next_no=_select_checkin_doc(CHECKIN_DIR)
     if not doc_path.exists():
         header=(
             f"DOCS - ID : {doc_id}\n\n"

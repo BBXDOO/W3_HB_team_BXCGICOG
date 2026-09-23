@@ -77,3 +77,22 @@ def test_append_checkin_entry_rotates_after_50(monkeypatch, tmp_path):
     rotated_doc = rc.CHECKIN_DIR / "CID_@R000A2.md"
     assert rotated_doc.exists()
     assert "• NO.1 : RQ-51" in rotated_doc.read_text(encoding="utf-8")
+
+
+def test_select_checkin_doc_prefers_newer_series(monkeypatch, tmp_path):
+    monkeypatch.setattr(rc, "ROOT", tmp_path)
+    monkeypatch.setattr(rc, "CHECKIN_DIR", tmp_path / "logs" / "check-in")
+
+    rc.CHECKIN_DIR.mkdir(parents=True, exist_ok=True)
+    (rc.CHECKIN_DIR / "CID_@R000Z50.md").write_text(
+        "DOCS - ID : CID_@R000Z50\n---\n• NO.1 : OLD\n---\n",
+        encoding="utf-8",
+    )
+    (rc.CHECKIN_DIR / "CID_@R000AA1.md").write_text(
+        "DOCS - ID : CID_@R000AA1\n---\n• NO.1 : NEW\n---\n",
+        encoding="utf-8",
+    )
+
+    _, doc_id, next_no = rc._select_checkin_doc(rc.CHECKIN_DIR)
+    assert doc_id == "CID_@R000AA1"
+    assert next_no == 2
