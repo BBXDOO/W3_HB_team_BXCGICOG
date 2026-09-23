@@ -1104,6 +1104,34 @@
         "review_required"
       ],
       "score": 1
+    },
+    {
+      "id": "e102272f-6061-4711-8b7a-7d2d254580e8",
+      "timestamp": "2026-09-23T17:28:54.520905Z",
+      "type": "runtime_result",
+      "source": "BBX19",
+      "topic": "vision",
+      "content": "{\"action\": \"await_bbx19_decision\", \"artifacts\": [], \"contract_version\": \"1.0\", \"decision_state\": \"AWAITING_BBX19_DECISION\", \"execution\": {\"allowed\": false, \"performed\": false}, \"intent_blockers\": [], \"intent_link\": null, \"missing\": [\"decision\", \"reason\", \"evidence\", \"annotation\", \"explicit_bbx19_confirmation\"], \"module\": \"BBX19\", \"mutated\": false, \"reason\": \"Missing: decision, reason, evidence, annotation, explicit_bbx19_confirmation\", \"review\": true, \"status\": \"REVIEW_REQUIRED\", \"summary\": \"No final action was authorized; an explicit, evidenced BBX19 decision is required.\", \"task\": \"vision\", \"traceable\": true}",
+      "tags": [
+        "runtime",
+        "request_cycle",
+        "review_required"
+      ],
+      "score": 1
+    },
+    {
+      "id": "a5d60bdf-996c-46ed-b897-f1308b3423c9",
+      "timestamp": "2026-09-23T17:28:54.537011Z",
+      "type": "runtime_result",
+      "source": "Copilot-Gm",
+      "topic": "structural_review",
+      "content": "{\"action\": \"governance_concept_coverage_review\", \"artifacts\": [], \"authority\": {\"decision_allowed\": false, \"merge_allowed\": false, \"truth_mutation_allowed\": false}, \"continuity\": {\"next_step\": \"Governance review requires explicit document text or supporting evidence.\", \"persisted\": false, \"persistence_owner\": \"dispatcher_or_storage_layer\", \"progress_entry\": {\"module\": \"Copilot-Gm\", \"mutated\": false, \"status\": \"REVIEW_REQUIRED\", \"task\": \"structural_review\"}, \"reflection_entry\": {\"insight\": \"Copilot-Gm did not complete the governance coverage review.\", \"module\": \"Copilot-Gm\", \"next_attention\": \"verify missing evidence and continue iteration\", \"status\": \"REVIEW_REQUIRED\", \"task\": \"structural_review\"}}, \"contract_version\": \"1.2\", \"decision\": \"missing_governance_evidence\", \"details\": {\"authority_granted\": false, \"evidence_supplied\": false, \"evidence_type\": \"none\", \"governance_scope\": \"concept_coverage_only\", \"merge_performed\": false}, \"evidence\": [{\"evidence_class\": \"execution_trace\", \"label\": \"Copilot-Gm summary\", \"type\": \"summary\", \"value\": \"Copilot-Gm did not complete the governance coverage review.\"}, {\"evidence_class\": \"execution_trace\", \"label\": \"Copilot-Gm status\", \"type\": \"status\", \"value\": \"REVIEW_REQUIRED\"}], \"module\": \"Copilot-Gm\", \"mutated\": false, \"preload\": {\"context_valid\": true, \"decisions_count\": 0, \"expectations_count\": 0, \"has_progress\": false, \"notes_count\": 0}, \"reason\": \"Governance review requires explicit document text or supporting evidence.\", \"reflection\": {\"insight\": \"Copilot-Gm did not complete the governance coverage review.\", \"module\": \"Copilot-Gm\", \"next_attention\": \"verify missing evidence and continue iteration\", \"status\": \"REVIEW_REQUIRED\", \"task\": \"structural_review\"}, \"result\": {\"coverage_ratio\": 0.0, \"found_terms\": [], \"min_coverage\": 0.5, \"missing_terms\": [\"governance\", \"policy\", \"compliance\", \"structural consistency\"], \"required_terms\": [\"governance\", \"policy\", \"compliance\", \"structural consistency\"]}, \"review\": true, \"role\": \"governance\", \"status\": \"REVIEW_REQUIRED\", \"summary\": \"Copilot-Gm did not complete the governance coverage review.\", \"task\": \"structural_review\", \"traceable\": true}",
+      "tags": [
+        "runtime",
+        "request_cycle",
+        "review_required"
+      ],
+      "score": 1
     }
   ],
   "runtime": {
