@@ -154,7 +154,10 @@ def write_request_log(*,request_id:str,target_module:str,status:str,checkin:dict
         f"- checkin_doc: `{checkin['doc_id']}`\n"
         f"- checkin_entry: `{checkin['entry_no']}`\n"
         f"- checkin_path: `{checkin['path']}`\n"
-        f"- suggestion: {suggestion}\n",
+        "- suggestion:\n\n"
+        "```text\n"
+        f"{suggestion}\n"
+        "```\n",
         encoding="utf-8",
     )
     return str(path.relative_to(ROOT))

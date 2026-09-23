@@ -27,6 +27,12 @@ def test_resolve_module_name_normalizes_symbols():
     assert warning is not None
 
 
+def test_resolve_module_name_unknown_returns_fallback_warning():
+    resolved, warning = rc.resolve_module_name("module-loader")
+    assert resolved == "module-loader"
+    assert "fallback runtime contract" in str(warning)
+
+
 def test_next_doc_id_rollover():
     assert rc._next_doc_id("A", 1) == ("A", 2)
     assert rc._next_doc_id("A", 50) == ("B", 1)
