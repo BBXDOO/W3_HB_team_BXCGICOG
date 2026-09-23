@@ -1,4 +1,5 @@
 import tools.request_cycle as rc
+import json
 
 def test_parse_request_frontmatter(tmp_path):
     p=tmp_path/"r.md"
@@ -77,3 +78,106 @@ def test_append_checkin_entry_rotates_after_50(monkeypatch, tmp_path):
     rotated_doc = rc.CHECKIN_DIR / "CID_@R000A2.md"
     assert rotated_doc.exists()
     assert "• NO.1 : RQ-51" in rotated_doc.read_text(encoding="utf-8")
+
+
+def test_append_checkin_entry_serializes_suggestions_and_keeps_entry_numbers(monkeypatch, tmp_path):
+    monkeypatch.setattr(rc, "ROOT", tmp_path)
+    monkeypatch.setattr(rc, "CHECKIN_DIR", tmp_path / "logs" / "check-in")
+    monkeypatch.setattr(rc, "REQUEST_LOG_DIR", tmp_path / "logs" / "request_cycle")
+
+    first = rc.append_checkin_entry(
+        request_name="RQ-1",
+        person="BBXDOO",
+        operation=True,
+        suggestions="line1\n• NO.99 : fake",
+        timestamp="2026-01-01T00:00:00Z",
+    )
+    second = rc.append_checkin_entry(
+        request_name="RQ-2",
+        person="BBXDOO",
+        operation=True,
+        suggestions="ok",
+        timestamp="2026-01-01T00:10:00Z",
+    )
+
+    assert first["entry_no"] == 1
+    assert second["entry_no"] == 2
+    content = (rc.CHECKIN_DIR / "CID_@R000A1.md").read_text(encoding="utf-8")
+    assert "• Suggestions : \"line1\\n• NO.99 : fake\"" in content
+
+
+def test_process_backfills_evidence_for_existing_completed_result(monkeypatch, tmp_path):
+    monkeypatch.setattr(rc, "ROOT", tmp_path)
+    monkeypatch.setattr(rc, "REQUESTS", tmp_path / "requests")
+    monkeypatch.setattr(rc, "RESULTS", tmp_path / "requests" / "results")
+    monkeypatch.setattr(rc, "EVENTS", tmp_path / "repo_events")
+    monkeypatch.setattr(rc, "CHECKIN_DIR", tmp_path / "logs" / "check-in")
+    monkeypatch.setattr(rc, "REQUEST_LOG_DIR", tmp_path / "logs" / "request_cycle")
+    monkeypatch.setattr(rc, "resolve_module_name", lambda target: ("ChatGPT", None))
+    monkeypatch.setattr(rc, "_identity_or_none", lambda _: {"display_name": "ChatGPT", "status": "active", "responsibilities": []})
+
+    request_path = tmp_path / "requests" / "RQ-100.md"
+    request_path.parent.mkdir(parents=True, exist_ok=True)
+    request_path.write_text(
+        "---\nrequest_id: RQ-100\ntask_keyword: design\ntarget_module: ChatGPT\nrequester: BBXDOO\n---\n# x\n",
+        encoding="utf-8",
+    )
+    rc.RESULTS.mkdir(parents=True, exist_ok=True)
+    result_path = rc.RESULTS / "RQ-100_RESULT.json"
+    result_path.write_text(
+        json.dumps(
+            {
+                "request_id": "RQ-100",
+                "runtime_result": {"status": "COMPLETED", "output": {"summary": "done"}, "time": "2026-01-01T00:00:00Z"},
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    response = rc.process(request_path)
+    assert response["status"] == "SKIPPED"
+    assert response["evidence_backfilled"] is True
+
+    saved = json.loads(result_path.read_text(encoding="utf-8"))
+    assert saved["checkin"]["path"].startswith("logs/check-in/")
+    assert saved["request_log"].startswith("logs/request_cycle/")
+    assert (tmp_path / saved["checkin"]["path"]).exists()
+    assert (tmp_path / saved["request_log"]).exists()
+    request_log_content = (tmp_path / saved["request_log"]).read_text(encoding="utf-8")
+    assert "- target_module: `ChatGPT`" in request_log_content
+    assert '{"summary": "done"}' in request_log_content
+
+
+def test_pending_requires_target_module(monkeypatch, tmp_path, capsys):
+    monkeypatch.setattr(rc, "ROOT", tmp_path)
+    monkeypatch.setattr(rc, "REQUESTS", tmp_path / "requests")
+
+    rc.REQUESTS.mkdir(parents=True, exist_ok=True)
+    valid = rc.REQUESTS / "valid.md"
+    invalid = rc.REQUESTS / "invalid.md"
+    valid.write_text(
+        "---\nrequest_id: RQ-OK\ntask_keyword: design\ntarget_module: ChatGPT\n---\n",
+        encoding="utf-8",
+    )
+    invalid.write_text(
+        "---\nrequest_id: RQ-BAD\ntask_keyword: design\n---\n",
+        encoding="utf-8",
+    )
+
+    processed = []
+
+    def fake_process(path):
+        processed.append(path.name)
+        return {"status": "COMPLETED", "request": path.name}
+
+    monkeypatch.setattr(rc, "process", fake_process)
+    monkeypatch.setattr("sys.argv", ["request_cycle.py", "--pending"])
+
+    try:
+        rc.main()
+    except SystemExit as exc:
+        assert exc.code == 0
+
+    capsys.readouterr()
+    assert processed == ["valid.md"]
