@@ -41,7 +41,7 @@ class TestBuildComment:
 
     def test_comment_contains_version(self):
         body = self._make_comment()
-        assert VERSION == "9.0"
+        assert VERSION == "9.1"
         assert f"v{VERSION}" in body
         assert body.startswith(COMMENT_MARKER)
 

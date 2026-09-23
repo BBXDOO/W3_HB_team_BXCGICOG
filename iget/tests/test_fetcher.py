@@ -34,7 +34,7 @@ def client(responses):
 
 def test_headers_report_v9_user_agent_and_api_version():
     headers = build_headers("secret")
-    assert headers["User-Agent"] == "W3-IGET/9.0"
+    assert headers["User-Agent"] == "W3-IGET/9.1"
     assert headers["X-GitHub-Api-Version"] == "2022-11-28"
     assert headers["Authorization"] == "Bearer secret"
 
