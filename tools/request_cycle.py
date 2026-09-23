@@ -7,10 +7,19 @@ module as its task keyword in modules/registry.json.
 """
 from __future__ import annotations
 import argparse, json, re
-import fcntl
 from pathlib import Path
 from typing import Any
 import sys
+from contextlib import contextmanager
+
+try:
+    import fcntl  # type: ignore
+except ImportError:  # pragma: no cover - non-Unix runtime
+    fcntl = None
+try:
+    import msvcrt  # type: ignore
+except ImportError:  # pragma: no cover - non-Windows runtime
+    msvcrt = None
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from core.module_loader.router import load_identity, load_registry, route_task
@@ -25,6 +34,29 @@ CHECKIN_DIR=LOGS/"check-in"
 REQUEST_LOG_DIR=LOGS/"request_cycle"
 CHECKIN_DOC_RE=re.compile(r"^CID_@R000([A-Z]+)(\d+)\.md$")
 MAX_CHECKIN_ROWS=50
+
+
+@contextmanager
+def _file_lock(lock_path:Path):
+    lock_path.parent.mkdir(parents=True,exist_ok=True)
+    with lock_path.open("a+b") as lock_file:
+        lock_file.seek(0)
+        if fcntl is not None:
+            fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
+            return
+        if msvcrt is not None:  # pragma: no cover - Windows runtime
+            msvcrt.locking(lock_file.fileno(), msvcrt.LK_LOCK, 1)
+            try:
+                yield
+            finally:
+                lock_file.seek(0)
+                msvcrt.locking(lock_file.fileno(), msvcrt.LK_UNLCK, 1)
+            return
+        yield
 
 
 def _module_key(value:str)->str:
@@ -130,8 +162,7 @@ def _select_checkin_doc(base_dir:Path)->tuple[Path,str,int]:
 def append_checkin_entry(*,request_name:str,person:str,operation:bool,suggestions:str,timestamp:str)->dict:
     CHECKIN_DIR.mkdir(parents=True,exist_ok=True)
     lock_path=CHECKIN_DIR/".checkin.lock"
-    with lock_path.open("a+",encoding="utf-8") as lock_file:
-        fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
+    with _file_lock(lock_path):
         doc_path,doc_id,next_no=_select_checkin_doc(CHECKIN_DIR)
         if not doc_path.exists():
             header=(
@@ -152,7 +183,6 @@ def append_checkin_entry(*,request_name:str,person:str,operation:bool,suggestion
             "---\n"
         )
         doc_path.write_text(content+block,encoding="utf-8")
-        fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
     return {"doc_id":doc_id,"entry_no":next_no,"path":str(doc_path.relative_to(ROOT))}
 
 
@@ -330,7 +360,8 @@ def process(path:Path)->dict:
     ep=EVENTS/f"{safe_id(rid)}_EXECUTION.md"
     ep.write_text(
       f"# Request Execution Event\n\n- request_id: `{rid}`\n- source: `{req['_request_file']}`\n"
-      f"- requested/executed_by: `{target}`\n- preferred route: `{preferred or 'none'}`\n"
+      f"- requested_target_module: `{requested_target or 'none'}`\n"
+      f"- executed_by: `{target}`\n- preferred route: `{preferred or 'none'}`\n"
       f"- substitution: `{str(bool(preferred and preferred != target)).lower()}`\n"
       f"- task: `{task}`\n- status: `{result.get('status')}`\n"
       f"- trace_id: `{result.get('trace_id')}`\n- result: `{rp.relative_to(ROOT)}`\n"

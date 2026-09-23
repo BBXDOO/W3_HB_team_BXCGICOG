@@ -1,4 +1,5 @@
 import tools.request_cycle as rc
+from concurrent.futures import ThreadPoolExecutor
 
 def test_parse_request_frontmatter(tmp_path):
     p=tmp_path/"r.md"
@@ -96,3 +97,24 @@ def test_select_checkin_doc_prefers_newer_series(monkeypatch, tmp_path):
     _, doc_id, next_no = rc._select_checkin_doc(rc.CHECKIN_DIR)
     assert doc_id == "CID_@R000AA1"
     assert next_no == 2
+
+
+def test_append_checkin_entry_concurrent_unique_rows(monkeypatch, tmp_path):
+    monkeypatch.setattr(rc, "ROOT", tmp_path)
+    monkeypatch.setattr(rc, "CHECKIN_DIR", tmp_path / "logs" / "check-in")
+    monkeypatch.setattr(rc, "REQUEST_LOG_DIR", tmp_path / "logs" / "request_cycle")
+
+    def _run(index: int):
+        return rc.append_checkin_entry(
+            request_name=f"RQ-{index}",
+            person="BBXDOO",
+            operation=True,
+            suggestions="ok",
+            timestamp="2026-01-02T00:00:00Z",
+        )
+
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        entries = list(pool.map(_run, range(1, 9)))
+
+    row_numbers = sorted(entry["entry_no"] for entry in entries)
+    assert row_numbers == list(range(1, 9))
