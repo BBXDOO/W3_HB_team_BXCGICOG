@@ -24,7 +24,7 @@ def test_parse_request_preserves_body(tmp_path):
 def test_resolve_module_name_normalizes_symbols():
     resolved, warning = rc.resolve_module_name("<copilot_gm>")
     assert resolved == "Copilot-Gm"
-    assert warning is not None
+    assert warning == "normalized target_module '<copilot_gm>' -> 'Copilot-Gm'"
 
 
 def test_resolve_module_name_exact_keeps_identity():

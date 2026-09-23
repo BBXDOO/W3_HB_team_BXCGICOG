@@ -7,6 +7,7 @@ module as its task keyword in modules/registry.json.
 """
 from __future__ import annotations
 import argparse, json, re
+import fcntl
 from pathlib import Path
 from typing import Any
 import sys
@@ -116,8 +117,8 @@ def _select_checkin_doc(base_dir:Path)->tuple[Path,str,int]:
         doc_id="CID_@R000A1"
         path=base_dir/f"{doc_id}.md"
         return path,doc_id,1
-    docs.sort(key=lambda item:(item[0],item[2]))
-    _,letter,number,row,path=docs[-1]
+    latest=max(docs,key=lambda item:(item[0],item[2]))
+    _,letter,number,row,path=latest
     if row>=MAX_CHECKIN_ROWS:
         n_letter,n_number=_next_doc_id(letter,number)
         doc_id=f"CID_@R000{n_letter}{n_number}"
@@ -127,26 +128,31 @@ def _select_checkin_doc(base_dir:Path)->tuple[Path,str,int]:
 
 
 def append_checkin_entry(*,request_name:str,person:str,operation:bool,suggestions:str,timestamp:str)->dict:
-    doc_path,doc_id,next_no=_select_checkin_doc(CHECKIN_DIR)
-    if not doc_path.exists():
-        header=(
-            f"DOCS - ID : {doc_id}\n\n"
-            "DOCS - REQUEST CHECK-IN SHEET\n"
+    CHECKIN_DIR.mkdir(parents=True,exist_ok=True)
+    lock_path=CHECKIN_DIR/".checkin.lock"
+    with lock_path.open("a+",encoding="utf-8") as lock_file:
+        fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
+        doc_path,doc_id,next_no=_select_checkin_doc(CHECKIN_DIR)
+        if not doc_path.exists():
+            header=(
+                f"DOCS - ID : {doc_id}\n\n"
+                "DOCS - REQUEST CHECK-IN SHEET\n"
+                "---\n"
+            )
+            doc_path.write_text(header,encoding="utf-8")
+        content=doc_path.read_text(encoding="utf-8")
+        if not content.endswith("\n"):
+            content+="\n"
+        block=(
+            f"• NO.{next_no} : {request_name}\n"
+            f"• DATE : {timestamp}\n"
+            f"• Person : {person}\n"
+            f"• Operation : {'ทรู' if operation else 'เฟล'}\n"
+            f"• Suggestions : {suggestions}\n"
             "---\n"
         )
-        doc_path.write_text(header,encoding="utf-8")
-    content=doc_path.read_text(encoding="utf-8")
-    if not content.endswith("\n"):
-        content+="\n"
-    block=(
-        f"• NO.{next_no} : {request_name}\n"
-        f"• DATE : {timestamp}\n"
-        f"• Person : {person}\n"
-        f"• Operation : {'ทรู' if operation else 'เฟล'}\n"
-        f"• Suggestions : {suggestions}\n"
-        "---\n"
-    )
-    doc_path.write_text(content+block,encoding="utf-8")
+        doc_path.write_text(content+block,encoding="utf-8")
+        fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
     return {"doc_id":doc_id,"entry_no":next_no,"path":str(doc_path.relative_to(ROOT))}
 
 
