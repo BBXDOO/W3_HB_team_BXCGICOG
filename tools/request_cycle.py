@@ -12,13 +12,155 @@ from typing import Any
 import sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
-from core.module_loader.router import load_identity, route_task
+from core.module_loader.router import load_identity, load_registry, route_task
 from core.runtime.engine_v2 import build_context, dispatch, validate_agent_result, now
 from core.memory.memory_bus import add_memory
 
 REQUESTS=ROOT/"requests"
 RESULTS=REQUESTS/"results"
 EVENTS=ROOT/"repo_events"
+LOGS=ROOT/"logs"
+CHECKIN_DIR=LOGS/"check-in"
+REQUEST_LOG_DIR=LOGS/"request_cycle"
+CHECKIN_DOC_RE=re.compile(r"^CID_@R000([A-Z]+)(\d+)\.md$")
+MAX_CHECKIN_ROWS=50
+
+
+def _module_key(value:str)->str:
+    return re.sub(r"[^a-z0-9]+","",value.lower())
+
+
+def _clean_module_name(value:str)->str:
+    return value.strip().strip("<>").strip("`").strip()
+
+
+def _identity_or_none(module_name:str)->dict|None:
+    try:
+        return load_identity(module_name)
+    except Exception:
+        return None
+
+
+def _build_module_aliases()->dict[str,str]:
+    aliases={}
+    modules_dir=ROOT/"modules"
+    if modules_dir.exists():
+        for entry in modules_dir.iterdir():
+            if entry.is_dir():
+                aliases[_module_key(entry.name)]=entry.name
+    try:
+        routing=load_registry()
+        for module_name in routing.values():
+            if isinstance(module_name,str):
+                aliases[_module_key(module_name)]=module_name
+    except Exception:
+        pass
+    return aliases
+
+
+def resolve_module_name(target:str|None)->tuple[str|None,str|None]:
+    if not target:
+        return None,None
+    cleaned=_clean_module_name(target)
+    if not cleaned:
+        return None,None
+    if _identity_or_none(cleaned):
+        return cleaned,None
+    aliases=_build_module_aliases()
+    mapped=aliases.get(_module_key(cleaned))
+    if mapped and _identity_or_none(mapped):
+        return mapped, f"normalized target_module '{target}' -> '{mapped}'"
+    return cleaned, f"target_module '{target}' has no known identity manifest; fallback runtime contract will be used"
+
+
+def _next_alpha(value:str)->str:
+    chars=list(value)
+    i=len(chars)-1
+    while i>=0 and chars[i]=="Z":
+        chars[i]="A"; i-=1
+    if i<0:
+        return "A"*(len(value)+1)
+    chars[i]=chr(ord(chars[i])+1)
+    return "".join(chars)
+
+
+def _next_doc_id(letter:str,number:int)->tuple[str,int]:
+    if number<50:
+        return letter,number+1
+    return _next_alpha(letter),1
+
+
+def _extract_last_entry_no(content:str)->int:
+    matches=[int(no) for no in re.findall(r"•\s*NO\.(\d+)\s*:",content)]
+    return max(matches) if matches else 0
+
+
+def _select_checkin_doc(base_dir:Path)->tuple[Path,str,int,int]:
+    base_dir.mkdir(parents=True,exist_ok=True)
+    docs=[]
+    for path in sorted(base_dir.glob("CID_@R000*.md")):
+        match=CHECKIN_DOC_RE.match(path.name)
+        if not match:
+            continue
+        letter,number=match.group(1),int(match.group(2))
+        row=_extract_last_entry_no(path.read_text(encoding="utf-8"))
+        docs.append((letter,number,row,path))
+    if not docs:
+        doc_id="CID_@R000A1"
+        path=base_dir/f"{doc_id}.md"
+        return path,doc_id,0,1
+    docs.sort(key=lambda item:(len(item[0]),item[0],item[1]))
+    letter,number,row,path=docs[-1]
+    if row>=MAX_CHECKIN_ROWS:
+        n_letter,n_number=_next_doc_id(letter,number)
+        doc_id=f"CID_@R000{n_letter}{n_number}"
+        return base_dir/f"{doc_id}.md",doc_id,0,1
+    doc_id=f"CID_@R000{letter}{number}"
+    return path,doc_id,row,row+1
+
+
+def append_checkin_entry(*,request_name:str,person:str,operation:bool,suggestions:str,timestamp:str)->dict:
+    doc_path,doc_id,last_no,next_no=_select_checkin_doc(CHECKIN_DIR)
+    if not doc_path.exists():
+        header=(
+            f"DOCS - ID : {doc_id}\n\n"
+            "DOCS - REQUEST CHECK-IN SHEET\n"
+            "---\n"
+        )
+        doc_path.write_text(header,encoding="utf-8")
+    content=doc_path.read_text(encoding="utf-8")
+    if not content.endswith("\n"):
+        content+="\n"
+    block=(
+        f"• NO.{next_no} : {request_name}\n"
+        f"• DATE : {timestamp}\n"
+        f"• Person : {person}\n"
+        f"• Operation : {'ทรู' if operation else 'เฟล'}\n"
+        f"• Suggestions : {suggestions}\n"
+        "---\n"
+    )
+    doc_path.write_text(content+block,encoding="utf-8")
+    return {"doc_id":doc_id,"entry_no":next_no,"path":str(doc_path.relative_to(ROOT))}
+
+
+def write_request_log(*,request_id:str,target_module:str,status:str,checkin:dict,suggestion:str)->str:
+    REQUEST_LOG_DIR.mkdir(parents=True,exist_ok=True)
+    path=REQUEST_LOG_DIR/f"{safe_id(request_id)}.md"
+    path.write_text(
+        "# Request Cycle Log\n\n"
+        f"- request_id: `{request_id}`\n"
+        f"- target_module: `{target_module}`\n"
+        f"- status: `{status}`\n"
+        f"- checkin_doc: `{checkin['doc_id']}`\n"
+        f"- checkin_entry: `{checkin['entry_no']}`\n"
+        f"- checkin_path: `{checkin['path']}`\n"
+        "- suggestion:\n\n"
+        "```text\n"
+        f"{suggestion}\n"
+        "```\n",
+        encoding="utf-8",
+    )
+    return str(path.relative_to(ROOT))
 
 def scalar(v:str)->Any:
     v=v.strip()
@@ -33,7 +175,10 @@ def parse_request(path:Path)->dict:
     for line in parts[1].splitlines():
         if ":" in line:
             k,v=line.split(":",1); meta[k.strip()]=scalar(v)
-    meta["_request_file"]=str(path.relative_to(ROOT))
+    try:
+        meta["_request_file"]=str(path.relative_to(ROOT))
+    except ValueError:
+        meta["_request_file"]=str(path)
     meta["_request_text"]=text
     return meta
 
@@ -55,14 +200,17 @@ def process(path:Path)->dict:
     req=parse_request(path)
     rid=str(req.get("request_id") or path.stem)
     task=str(req.get("task_keyword") or "general").strip()
-    target=str(req.get("target_module") or "").strip()
+    requested_target=str(req.get("target_module") or "").strip()
+    target, target_warning=resolve_module_name(requested_target)
     if not target:
-        # Routing is discovery/fallback only when the request does not name a module.
-        target=route_task(task)["assigned_module"]
+        try:
+            target=route_task(task)["assigned_module"]
+        except Exception:
+            target="Fallback"
 
     # A named target is not rejected because another module is the preferred route.
     # Identity/capability stays with the executing module; substitution is traceable.
-    manifest=load_identity(target)
+    manifest=_identity_or_none(target) or {"display_name":target,"status":"unknown","responsibilities":[]}
     preferred=None
     try:
         preferred=route_task(task)["assigned_module"]
@@ -117,6 +265,23 @@ def process(path:Path)->dict:
         }
     except Exception as exc:
         result={"status":"FAILED","task":task,"module":target,"error":str(exc),"artifacts":[],"time":now(),"trace_id":context["trace_id"]}
+    operation=bool(result.get("status")=="COMPLETED")
+    suggestion=result.get("output") or result.get("error") or "processed"
+    person=_clean_module_name(str(req.get("requester") or "BBXDOO")) or "BBXDOO"
+    checkin=append_checkin_entry(
+        request_name=rid,
+        person=person,
+        operation=operation,
+        suggestions=str(suggestion).strip(),
+        timestamp=result.get("time") or now(),
+    )
+    request_log_path=write_request_log(
+        request_id=rid,
+        target_module=target,
+        status=str(result.get("status") or "FAILED"),
+        checkin=checkin,
+        suggestion=str(suggestion).strip(),
+    )
 
     # Direct dispatch preserves an explicit target_module, so mirror engine_v2.run()
     # memory persistence here instead of routing through execution_plan(task).
@@ -135,10 +300,14 @@ def process(path:Path)->dict:
     RESULTS.mkdir(parents=True,exist_ok=True); EVENTS.mkdir(parents=True,exist_ok=True)
     envelope={
       "request_id":rid,"source_request":req["_request_file"],"target_module":target,
+      "target_module_requested":requested_target or None,
+      "target_resolution_warning":target_warning,
       "preferred_module":preferred,"executed_by":target,
       "substitution":bool(preferred and preferred != target),
       "task_keyword":task,"runtime_result":result,
       "artifact_paths":result.get("artifacts",[]),
+      "checkin":checkin,
+      "request_log":request_log_path,
       "final_signoff_required":bool(req.get("final_signoff_required",True)),
       "closed":False,"mutated":bool(result.get("agent_result",{}).get("mutated",False)),
       "review":True,
@@ -147,13 +316,13 @@ def process(path:Path)->dict:
     rp.write_text(json.dumps(envelope,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     ep=EVENTS/f"{safe_id(rid)}_EXECUTION.md"
     ep.write_text(
-      f"# Request Execution Event\n\n- request_id: \`{rid}\`\n- source: \`{req['_request_file']}\`\n"
-      f"- requested/executed_by: \`{target}\`\n- preferred route: \`{preferred or 'none'}\`\n"
-      f"- substitution: \`{str(bool(preferred and preferred != target)).lower()}\`\n"
-      f"- task: \`{task}\`\n- status: \`{result.get('status')}\`\n"
-      f"- trace_id: \`{result.get('trace_id')}\`\n- result: \`{rp.relative_to(ROOT)}\`\n"
-      f"- final_signoff_required: \`{str(bool(req.get('final_signoff_required',True))).lower()}\`\n"
-      "- closed: \`false\`\n",
+      f"# Request Execution Event\n\n- request_id: `{rid}`\n- source: `{req['_request_file']}`\n"
+      f"- requested/executed_by: `{target}`\n- preferred route: `{preferred or 'none'}`\n"
+      f"- substitution: `{str(bool(preferred and preferred != target)).lower()}`\n"
+      f"- task: `{task}`\n- status: `{result.get('status')}`\n"
+      f"- trace_id: `{result.get('trace_id')}`\n- result: `{rp.relative_to(ROOT)}`\n"
+      f"- final_signoff_required: `{str(bool(req.get('final_signoff_required',True))).lower()}`\n"
+      "- closed: `false`\n",
       encoding="utf-8")
     return envelope
 
@@ -171,7 +340,7 @@ def main():
                 probe=parse_request(candidate)
             except ValueError:
                 continue
-            if probe.get("request_id") and probe.get("task_keyword") and probe.get("target_module"):
+            if probe.get("request_id") and probe.get("task_keyword"):
                 paths.append(candidate)
     if not args.pending and not args.request: ap.error("use --request or --pending")
     rc=0
