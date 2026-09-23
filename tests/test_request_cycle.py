@@ -128,7 +128,7 @@ def test_process_backfills_evidence_for_existing_completed_result(monkeypatch, t
         json.dumps(
             {
                 "request_id": "RQ-100",
-                "runtime_result": {"status": "COMPLETED", "output": "done", "time": "2026-01-01T00:00:00Z"},
+                "runtime_result": {"status": "COMPLETED", "output": {"summary": "done"}, "time": "2026-01-01T00:00:00Z"},
             },
             ensure_ascii=False,
         ),
@@ -144,7 +144,9 @@ def test_process_backfills_evidence_for_existing_completed_result(monkeypatch, t
     assert saved["request_log"].startswith("logs/request_cycle/")
     assert (tmp_path / saved["checkin"]["path"]).exists()
     assert (tmp_path / saved["request_log"]).exists()
-    assert "- target_module: `ChatGPT`" in (tmp_path / saved["request_log"]).read_text(encoding="utf-8")
+    request_log_content = (tmp_path / saved["request_log"]).read_text(encoding="utf-8")
+    assert "- target_module: `ChatGPT`" in request_log_content
+    assert '{"summary": "done"}' in request_log_content
 
 
 def test_pending_requires_target_module(monkeypatch, tmp_path, capsys):
