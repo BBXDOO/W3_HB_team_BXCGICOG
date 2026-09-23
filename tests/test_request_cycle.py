@@ -27,6 +27,12 @@ def test_resolve_module_name_normalizes_symbols():
     assert warning is not None
 
 
+def test_resolve_module_name_exact_keeps_identity():
+    resolved, warning = rc.resolve_module_name("ChatGPT")
+    assert resolved == "ChatGPT"
+    assert warning is None
+
+
 def test_resolve_module_name_unknown_returns_fallback_warning():
     resolved, warning = rc.resolve_module_name("module-loader")
     assert resolved == "module-loader"
