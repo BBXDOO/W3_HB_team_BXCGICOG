@@ -10,6 +10,16 @@ import argparse, json, re
 from pathlib import Path
 from typing import Any
 import sys
+from contextlib import contextmanager
+
+try:
+    import fcntl  # type: ignore
+except ImportError:  # pragma: no cover - non-Unix runtime
+    fcntl = None
+try:
+    import msvcrt  # type: ignore
+except ImportError:  # pragma: no cover - non-Windows runtime
+    msvcrt = None
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from core.module_loader.router import load_identity, load_registry, route_task
@@ -24,6 +34,29 @@ CHECKIN_DIR=LOGS/"check-in"
 REQUEST_LOG_DIR=LOGS/"request_cycle"
 CHECKIN_DOC_RE=re.compile(r"^CID_@R000([A-Z]+)(\d+)\.md$")
 MAX_CHECKIN_ROWS=50
+
+
+@contextmanager
+def _file_lock(lock_path:Path):
+    lock_path.parent.mkdir(parents=True,exist_ok=True)
+    with lock_path.open("a+b") as lock_file:
+        lock_file.seek(0)
+        if fcntl is not None:
+            fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
+            return
+        if msvcrt is not None:  # pragma: no cover - Windows runtime
+            msvcrt.locking(lock_file.fileno(), msvcrt.LK_LOCK, 1)
+            try:
+                yield
+            finally:
+                lock_file.seek(0)
+                msvcrt.locking(lock_file.fileno(), msvcrt.LK_UNLCK, 1)
+            return
+        yield
 
 
 def _module_key(value:str)->str:
@@ -84,6 +117,13 @@ def _next_alpha(value:str)->str:
     return "".join(chars)
 
 
+def _alpha_index(value:str)->int:
+    score=0
+    for char in value:
+        score=score*26+(ord(char)-ord("A")+1)
+    return score
+
+
 def _next_doc_id(letter:str,number:int)->tuple[str,int]:
     if number<50:
         return letter,number+1
@@ -95,7 +135,7 @@ def _extract_last_entry_no(content:str)->int:
     return max(matches) if matches else 0
 
 
-def _select_checkin_doc(base_dir:Path)->tuple[Path,str,int,int]:
+def _select_checkin_doc(base_dir:Path)->tuple[Path,str,int]:
     base_dir.mkdir(parents=True,exist_ok=True)
     docs=[]
     for path in sorted(base_dir.glob("CID_@R000*.md")):
@@ -104,43 +144,46 @@ def _select_checkin_doc(base_dir:Path)->tuple[Path,str,int,int]:
             continue
         letter,number=match.group(1),int(match.group(2))
         row=_extract_last_entry_no(path.read_text(encoding="utf-8"))
-        docs.append((letter,number,row,path))
+        docs.append((_alpha_index(letter),letter,number,row,path))
     if not docs:
         doc_id="CID_@R000A1"
         path=base_dir/f"{doc_id}.md"
-        return path,doc_id,0,1
-    docs.sort(key=lambda item:(len(item[0]),item[0],item[1]))
-    letter,number,row,path=docs[-1]
+        return path,doc_id,1
+    latest=max(docs,key=lambda item:(item[0],item[2]))
+    _,letter,number,row,path=latest
     if row>=MAX_CHECKIN_ROWS:
         n_letter,n_number=_next_doc_id(letter,number)
         doc_id=f"CID_@R000{n_letter}{n_number}"
-        return base_dir/f"{doc_id}.md",doc_id,0,1
+        return base_dir/f"{doc_id}.md",doc_id,1
     doc_id=f"CID_@R000{letter}{number}"
-    return path,doc_id,row,row+1
+    return path,doc_id,row+1
 
 
 def append_checkin_entry(*,request_name:str,person:str,operation:bool,suggestions:Any,timestamp:str)->dict:
-    doc_path,doc_id,last_no,next_no=_select_checkin_doc(CHECKIN_DIR)
-    if not doc_path.exists():
-        header=(
-            f"DOCS - ID : {doc_id}\n\n"
-            "DOCS - REQUEST CHECK-IN SHEET\n"
+    CHECKIN_DIR.mkdir(parents=True,exist_ok=True)
+    lock_path=CHECKIN_DIR/".checkin.lock"
+    with _file_lock(lock_path):
+        doc_path,doc_id,next_no=_select_checkin_doc(CHECKIN_DIR)
+        if not doc_path.exists():
+            header=(
+                f"DOCS - ID : {doc_id}\n\n"
+                "DOCS - REQUEST CHECK-IN SHEET\n"
+                "---\n"
+            )
+            doc_path.write_text(header,encoding="utf-8")
+        content=doc_path.read_text(encoding="utf-8")
+        if not content.endswith("\n"):
+            content+="\n"
+        suggestions_text=json.dumps(suggestions,ensure_ascii=False)
+        block=(
+            f"• NO.{next_no} : {request_name}\n"
+            f"• DATE : {timestamp}\n"
+            f"• Person : {person}\n"
+            f"• Operation : {'ทรู' if operation else 'เฟล'}\n"
+            f"• Suggestions : {suggestions_text}\n"
             "---\n"
         )
-        doc_path.write_text(header,encoding="utf-8")
-    content=doc_path.read_text(encoding="utf-8")
-    if not content.endswith("\n"):
-        content+="\n"
-    suggestions_text=json.dumps(suggestions,ensure_ascii=False)
-    block=(
-        f"• NO.{next_no} : {request_name}\n"
-        f"• DATE : {timestamp}\n"
-        f"• Person : {person}\n"
-        f"• Operation : {'ทรู' if operation else 'เฟล'}\n"
-        f"• Suggestions : {suggestions_text}\n"
-        "---\n"
-    )
-    doc_path.write_text(content+block,encoding="utf-8")
+        doc_path.write_text(content+block,encoding="utf-8")
     return {"doc_id":doc_id,"entry_no":next_no,"path":str(doc_path.relative_to(ROOT))}
 
 
@@ -221,48 +264,57 @@ def process(path:Path)->dict:
 
     if already_done(rid):
         result_path=RESULTS/f"{safe_id(rid)}_RESULT.json"
-        try:
-            envelope=json.loads(result_path.read_text(encoding="utf-8"))
-        except (OSError,json.JSONDecodeError):
-            return {"status":"SKIPPED","request_id":rid,"reason":"result already exists"}
-        existing_checkin=envelope.get("checkin") if isinstance(envelope.get("checkin"),dict) else {}
-        existing_checkin_path=existing_checkin.get("path")
-        existing_request_log=envelope.get("request_log")
-        if existing_checkin_path and existing_request_log:
-            if (ROOT/existing_checkin_path).exists() and (ROOT/existing_request_log).exists():
+        lock_path=RESULTS/f".{safe_id(rid)}.result.lock"
+        with _file_lock(lock_path):
+            try:
+                envelope=json.loads(result_path.read_text(encoding="utf-8"))
+            except (OSError,json.JSONDecodeError):
                 return {"status":"SKIPPED","request_id":rid,"reason":"result already exists"}
-        runtime_result=envelope.get("runtime_result") if isinstance(envelope.get("runtime_result"),dict) else {}
-        status=str(runtime_result.get("status") or "COMPLETED")
-        suggestion=runtime_result.get("output") or runtime_result.get("error") or "already completed"
-        suggestion=suggestion.strip() if isinstance(suggestion,str) else suggestion
-        effective_target=str(envelope.get("target_module") or target or requested_target or "").strip()
-        if not effective_target:
-            return {
-                "status":"SKIPPED",
-                "request_id":rid,
-                "reason":"result already exists",
-                "evidence_backfilled":False,
-                "evidence_warning":"completed result missing target_module for evidence backfill",
-            }
-        person=_clean_module_name(str(req.get("requester") or "BBXDOO")) or "BBXDOO"
-        checkin=append_checkin_entry(
-            request_name=rid,
-            person=person,
-            operation=status.upper()=="COMPLETED",
-            suggestions=suggestion,
-            timestamp=runtime_result.get("time") or now(),
-        )
-        request_log_path=write_request_log(
-            request_id=rid,
-            target_module=effective_target,
-            status=status,
-            checkin=checkin,
-            suggestion=suggestion,
-        )
-        envelope["checkin"]=checkin
-        envelope["request_log"]=request_log_path
-        result_path.write_text(json.dumps(envelope,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-        return {"status":"SKIPPED","request_id":rid,"reason":"result already exists","evidence_backfilled":True}
+            existing_checkin=envelope.get("checkin") if isinstance(envelope.get("checkin"),dict) else {}
+            existing_checkin_path=existing_checkin.get("path")
+            existing_request_log=envelope.get("request_log")
+            if existing_checkin_path and existing_request_log:
+                if (ROOT/existing_checkin_path).exists() and (ROOT/existing_request_log).exists():
+                    return {"status":"SKIPPED","request_id":rid,"reason":"result already exists"}
+            runtime_result=envelope.get("runtime_result") if isinstance(envelope.get("runtime_result"),dict) else {}
+            status=str(runtime_result.get("status") or "COMPLETED")
+            if status.upper() != "COMPLETED":
+                return {
+                    "status":"SKIPPED",
+                    "request_id":rid,
+                    "reason":"result already exists",
+                    "evidence_backfilled":False,
+                }
+            suggestion=runtime_result.get("output") or runtime_result.get("error") or "already completed"
+            suggestion=suggestion.strip() if isinstance(suggestion,str) else suggestion
+            effective_target=str(envelope.get("target_module") or requested_target or target or "").strip()
+            if not effective_target:
+                return {
+                    "status":"SKIPPED",
+                    "request_id":rid,
+                    "reason":"result already exists",
+                    "evidence_backfilled":False,
+                    "evidence_warning":"completed result missing target_module for evidence backfill",
+                }
+            person=_clean_module_name(str(req.get("requester") or "BBXDOO")) or "BBXDOO"
+            checkin=append_checkin_entry(
+                request_name=rid,
+                person=person,
+                operation=status.upper()=="COMPLETED",
+                suggestions=suggestion,
+                timestamp=runtime_result.get("time") or now(),
+            )
+            request_log_path=write_request_log(
+                request_id=rid,
+                target_module=effective_target,
+                status=status,
+                checkin=checkin,
+                suggestion=suggestion,
+            )
+            envelope["checkin"]=checkin
+            envelope["request_log"]=request_log_path
+            result_path.write_text(json.dumps(envelope,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+            return {"status":"SKIPPED","request_id":rid,"reason":"result already exists","evidence_backfilled":True}
 
     request_context={
       "source": req.get("requester","requests/"),
@@ -363,7 +415,9 @@ def process(path:Path)->dict:
     ep=EVENTS/f"{safe_id(rid)}_EXECUTION.md"
     ep.write_text(
       f"# Request Execution Event\n\n- request_id: `{rid}`\n- source: `{req['_request_file']}`\n"
-      f"- requested/executed_by: `{target}`\n- preferred route: `{preferred or 'none'}`\n"
+      f"- target_module: `{target}`\n"
+      f"- requested_target_module: `{requested_target or 'none'}`\n"
+      f"- executed_by: `{target}`\n- preferred route: `{preferred or 'none'}`\n"
       f"- substitution: `{str(bool(preferred and preferred != target)).lower()}`\n"
       f"- task: `{task}`\n- status: `{result.get('status')}`\n"
       f"- trace_id: `{result.get('trace_id')}`\n- result: `{rp.relative_to(ROOT)}`\n"
@@ -386,7 +440,7 @@ def main():
                 probe=parse_request(candidate)
             except ValueError:
                 continue
-            if probe.get("request_id") and probe.get("task_keyword") and str(probe.get("target_module") or "").strip():
+            if probe.get("request_id") and probe.get("task_keyword"):
                 paths.append(candidate)
     if not args.pending and not args.request: ap.error("use --request or --pending")
     rc=0
