@@ -193,7 +193,117 @@ def test_process_backfills_evidence_for_existing_completed_result(monkeypatch, t
     assert '{"summary": "done"}' in request_log_content
 
 
-def test_pending_requires_target_module(monkeypatch, tmp_path, capsys):
+def test_process_backfill_is_single_writer_under_concurrency(monkeypatch, tmp_path):
+    monkeypatch.setattr(rc, "ROOT", tmp_path)
+    monkeypatch.setattr(rc, "REQUESTS", tmp_path / "requests")
+    monkeypatch.setattr(rc, "RESULTS", tmp_path / "requests" / "results")
+    monkeypatch.setattr(rc, "EVENTS", tmp_path / "repo_events")
+    monkeypatch.setattr(rc, "CHECKIN_DIR", tmp_path / "logs" / "check-in")
+    monkeypatch.setattr(rc, "REQUEST_LOG_DIR", tmp_path / "logs" / "request_cycle")
+    monkeypatch.setattr(rc, "resolve_module_name", lambda target: ("ChatGPT", None))
+    monkeypatch.setattr(rc, "_identity_or_none", lambda _: {"display_name": "ChatGPT", "status": "active", "responsibilities": []})
+
+    request_path = tmp_path / "requests" / "RQ-101.md"
+    request_path.parent.mkdir(parents=True, exist_ok=True)
+    request_path.write_text(
+        "---\nrequest_id: RQ-101\ntask_keyword: design\ntarget_module: ChatGPT\nrequester: BBXDOO\n---\n# x\n",
+        encoding="utf-8",
+    )
+    rc.RESULTS.mkdir(parents=True, exist_ok=True)
+    result_path = rc.RESULTS / "RQ-101_RESULT.json"
+    result_path.write_text(
+        json.dumps(
+            {
+                "request_id": "RQ-101",
+                "runtime_result": {"status": "COMPLETED", "output": {"summary": "done"}, "time": "2026-01-01T00:00:00Z"},
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        responses = list(pool.map(lambda _: rc.process(request_path), range(2)))
+
+    assert sum(1 for item in responses if item.get("evidence_backfilled") is True) == 1
+
+    saved = json.loads(result_path.read_text(encoding="utf-8"))
+    checkin_path = tmp_path / saved["checkin"]["path"]
+    request_log_path = tmp_path / saved["request_log"]
+    assert checkin_path.exists()
+    assert request_log_path.exists()
+    checkin_content = checkin_path.read_text(encoding="utf-8")
+    assert checkin_content.count("• NO.") == 1
+
+
+def test_process_backfill_skips_when_status_not_completed(monkeypatch, tmp_path):
+    monkeypatch.setattr(rc, "ROOT", tmp_path)
+    monkeypatch.setattr(rc, "REQUESTS", tmp_path / "requests")
+    monkeypatch.setattr(rc, "RESULTS", tmp_path / "requests" / "results")
+    monkeypatch.setattr(rc, "EVENTS", tmp_path / "repo_events")
+    monkeypatch.setattr(rc, "CHECKIN_DIR", tmp_path / "logs" / "check-in")
+    monkeypatch.setattr(rc, "REQUEST_LOG_DIR", tmp_path / "logs" / "request_cycle")
+    monkeypatch.setattr(rc, "resolve_module_name", lambda target: ("ChatGPT", None))
+    monkeypatch.setattr(rc, "_identity_or_none", lambda _: {"display_name": "ChatGPT", "status": "active", "responsibilities": []})
+    monkeypatch.setattr(rc, "already_done", lambda _rid: True)
+
+    request_path = tmp_path / "requests" / "RQ-102.md"
+    request_path.parent.mkdir(parents=True, exist_ok=True)
+    request_path.write_text(
+        "---\nrequest_id: RQ-102\ntask_keyword: design\ntarget_module: ChatGPT\nrequester: BBXDOO\n---\n# x\n",
+        encoding="utf-8",
+    )
+    rc.RESULTS.mkdir(parents=True, exist_ok=True)
+    result_path = rc.RESULTS / "RQ-102_RESULT.json"
+    result_path.write_text(
+        json.dumps(
+            {
+                "request_id": "RQ-102",
+                "runtime_result": {"status": "FAILED", "error": "boom", "time": "2026-01-01T00:00:00Z"},
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    response = rc.process(request_path)
+    assert response["status"] == "SKIPPED"
+    assert response["evidence_backfilled"] is False
+    assert not list((tmp_path / "logs" / "check-in").glob("*.md"))
+
+
+def test_process_event_uses_target_module_and_executed_by(monkeypatch, tmp_path):
+    monkeypatch.setattr(rc, "ROOT", tmp_path)
+    monkeypatch.setattr(rc, "REQUESTS", tmp_path / "requests")
+    monkeypatch.setattr(rc, "RESULTS", tmp_path / "requests" / "results")
+    monkeypatch.setattr(rc, "EVENTS", tmp_path / "repo_events")
+    monkeypatch.setattr(rc, "CHECKIN_DIR", tmp_path / "logs" / "check-in")
+    monkeypatch.setattr(rc, "REQUEST_LOG_DIR", tmp_path / "logs" / "request_cycle")
+    monkeypatch.setattr(rc, "resolve_module_name", lambda target: ("ChatGPT", None))
+    monkeypatch.setattr(rc, "_identity_or_none", lambda _: {"display_name": "ChatGPT", "status": "active", "responsibilities": []})
+    monkeypatch.setattr(rc, "route_task", lambda _: {"assigned_module": "ChatGPT"})
+    monkeypatch.setattr(rc, "build_context", lambda *_args, **_kwargs: {"trace_id": "trace-1"})
+    monkeypatch.setattr(rc, "dispatch", lambda *_args, **_kwargs: {"status": "COMPLETED", "summary": "done", "mutated": False, "artifacts": []})
+    monkeypatch.setattr(rc, "validate_agent_result", lambda *_args, **_kwargs: {"ok": True})
+    monkeypatch.setattr(rc, "add_memory", lambda **_kwargs: None)
+
+    request_path = tmp_path / "requests" / "RQ-200.md"
+    request_path.parent.mkdir(parents=True, exist_ok=True)
+    request_path.write_text(
+        "---\nrequest_id: RQ-200\ntask_keyword: design\ntarget_module: ChatGPT\nrequester: BBXDOO\n---\n# x\n",
+        encoding="utf-8",
+    )
+
+    rc.process(request_path)
+
+    event_path = tmp_path / "repo_events" / "RQ-200_EXECUTION.md"
+    event_content = event_path.read_text(encoding="utf-8")
+    assert "- target_module: `ChatGPT`" in event_content
+    assert "- requested_target_module: `ChatGPT`" in event_content
+    assert "- executed_by: `ChatGPT`" in event_content
+
+
+def test_pending_allows_routing_without_target_module(monkeypatch, tmp_path, capsys):
     monkeypatch.setattr(rc, "ROOT", tmp_path)
     monkeypatch.setattr(rc, "REQUESTS", tmp_path / "requests")
 
@@ -224,4 +334,4 @@ def test_pending_requires_target_module(monkeypatch, tmp_path, capsys):
         assert exc.code == 0
 
     capsys.readouterr()
-    assert processed == ["valid.md"]
+    assert processed == ["invalid.md", "valid.md"]
