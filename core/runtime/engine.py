@@ -16,7 +16,7 @@ import json
 from pathlib import Path
 
 # import internal systems
-from core.module_loader.router import execution_plan
+from core.modules_loader.router import execution_plan
 from core.memory.memory_bus import (
     add_memory,
     search_memory,

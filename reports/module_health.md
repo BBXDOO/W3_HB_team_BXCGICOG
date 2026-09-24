@@ -31,7 +31,7 @@
 | Input paths valid | ✅ PASS | `modules/registry.json`, `knowledge/`, `core/governance/`, `logs/` all exist |
 | Daily log dir | ❌ FAIL | `BBX19/logs/daily/` declared but not found |
 | Directives dir | ✅ PASS | `BBX19/directives/` exists |
-| IDP file | ✅ PASS | `core/module-loader/identity/BBX19-IDP.json` |
+| IDP file | ✅ PASS | `core/modules_loader/identity/BBX19-IDP.json` |
 
 **Overall:** ⚠️ WARNING — module.json mislocated, log path missing
 
@@ -51,7 +51,7 @@
 | Output paths valid | ⚠️ WARN | `modules/ChatGPT/flows/`, `modules/ChatGPT/scenarios/`, `modules/ChatGPT/reports/` exist (placeholder only) |
 | Input paths valid | ✅ PASS | `modules/ChatGPT/requests/` exists (placeholder); `knowledge/`, `docs/`, `core/`, `blueprints/` all exist |
 | Daily log dir | ❌ FAIL | `modules/ChatGPT/logs/daily/` declared in module.json but not found |
-| IDP file | ✅ PASS | `core/module-loader/identity/ChatGPT-IDP.json` |
+| IDP file | ✅ PASS | `core/modules_loader/identity/ChatGPT-IDP.json` |
 | Typo in requests | ⚠️ WARN | `modules/ChatGPT/requests/requsts.md` — typo in filename |
 
 **Overall:** ⚠️ WARNING — module.json mislocated, log path missing, typo file
@@ -72,7 +72,7 @@
 | Output paths valid | ⚠️ WARN | `modules/Gemini/reports/` exists (placeholder); `results/structural_blueprints` not found |
 | Input paths valid | ⚠️ WARN | `requests/intent`, `docs/MPCP_architecture`, `knowledge/universal_truth` declared — none are real paths |
 | Daily log dir | ❌ FAIL | Not found; `modules/Gemini/reports/` exists but no logs dir |
-| IDP file | ✅ PASS | `core/module-loader/identity/Gemini-IDP.json` |
+| IDP file | ✅ PASS | `core/modules_loader/identity/Gemini-IDP.json` |
 | Nested self-dir | ❌ FAIL | `Gemini/Gemini/` — empty nested directory (structural ghost) |
 
 **Overall:** ⚠️ WARNING — module.json mislocated, input/output paths symbolic only
@@ -93,7 +93,7 @@
 | Output paths valid | ❌ FAIL | `narrative_reports/`, `system_observations/`, `connection_maps/`, `full_moon_analysis/`, `gatekeeping_logs/` — none exist |
 | Input paths valid | ⚠️ WARN | `decision_trace/`, `tuf_snapshots/`, `fbd_reports/` declared — not found |
 | Daily log dir | ❌ FAIL | No log directory found |
-| IDP file | ✅ PASS | `core/module-loader/identity/Grok-IDP.json` |
+| IDP file | ✅ PASS | `core/modules_loader/identity/Grok-IDP.json` |
 | Requests folder | ✅ PASS | `Grok/modules/Grok/requests/` with README |
 
 **Overall:** ❌ CRITICAL — output paths all missing, input paths symbolic
@@ -114,7 +114,7 @@
 | Output paths valid | ⚠️ WARN | `reports/`, `logs/`, `outcomes/` — top-level dirs exist but module-specific sub-paths not created |
 | Input paths valid | ✅ PASS | `docs/`, `knowledge/`, `tools/` exist |
 | Daily log dir | ❌ FAIL | `logs/modules/DeepSeek/` exists (placeholder only) |
-| IDP file | ✅ PASS | `core/module-loader/identity/DeepSeek-IDP.json` |
+| IDP file | ✅ PASS | `core/modules_loader/identity/DeepSeek-IDP.json` |
 
 **Overall:** ⚠️ WARNING — module.json mislocated, log paths placeholder-only
 
@@ -135,7 +135,7 @@
 | repo-lock.md | ✅ PASS | `Copilot-Gm/repo-lock.md` |
 | Output paths valid | ⚠️ WARN | `reports/`, `logs/`, `results/` — top-level generic paths, no Copilot-Gm specific dirs |
 | Input paths valid | ✅ PASS | `docs/`, `knowledge/` exist |
-| IDP file | ✅ PASS | `core/module-loader/identity/Copilot-Gm-IDP.json` |
+| IDP file | ✅ PASS | `core/modules_loader/identity/Copilot-Gm-IDP.json` |
 | Module version | ⚠️ WARN | `version: 1.0.0` while most other modules are `3.0.0` |
 
 **Overall:** ✅ HEALTHY — only minor output path vagueness; best-placed module.json in repo
@@ -156,7 +156,7 @@
 | Output paths valid | ⚠️ WARN | `reports/`, `artifacts/`, `context/` exist at Cast root level |
 | Input paths valid | ✅ PASS | `requests/`, `docs/`, `knowledge/` exist |
 | Daily log dir | ❌ FAIL | Not found |
-| IDP file | ✅ PASS | `Cast/idp/Cast.idp.json` AND `core/module-loader/identity/Cast-IDP.json` |
+| IDP file | ✅ PASS | `Cast/idp/Cast.idp.json` AND `core/modules_loader/identity/Cast-IDP.json` |
 | Lifecycle stage | ⚠️ WARN | `trial` — not yet `stable`; requires 3 trial tasks per notes |
 
 **Overall:** ❌ CRITICAL — module.json wrong filename, wrong path, trial stage incomplete
@@ -177,7 +177,7 @@
 | Output paths valid | ⚠️ WARN | `BBEX-Core/public/` exists; `outcomes/append_only_ledger/` not found (only `outcomes/ledger/`) |
 | Input paths valid | ✅ PASS | `knowledge/`, `logs/`, `core/governance/`, `BBEX-Core/private/`, `BBEX-Core/public/` all exist |
 | Daily log dir | ❌ FAIL | `BBEX-Core/logs/` not found |
-| IDP file | ✅ PASS | `BBEX-Core/public/BBEX_CORE_IDP.md` AND `core/module-loader/identity/BBEX-IDP.json` |
+| IDP file | ✅ PASS | `BBEX-Core/public/BBEX_CORE_IDP.md` AND `core/modules_loader/identity/BBEX-IDP.json` |
 | Private zone | ✅ PASS | `BBEX-Core/private/` exists with `ESSENCE.md` |
 | PROTOCOL_HYBRID | ✅ PASS | `BBEX-Core/PROTOCOL_HYBRID.md` |
 

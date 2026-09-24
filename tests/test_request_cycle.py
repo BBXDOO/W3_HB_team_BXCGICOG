@@ -39,8 +39,8 @@ def test_resolve_module_name_exact_keeps_identity():
 
 
 def test_resolve_module_name_unknown_returns_fallback_warning():
-    resolved, warning = rc.resolve_module_name("module-loader")
-    assert resolved == "module-loader"
+    resolved, warning = rc.resolve_module_name("modules_loader")
+    assert resolved == "modules_loader"
     assert "fallback runtime contract" in str(warning)
 
 

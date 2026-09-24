@@ -22,6 +22,6 @@
     "integration_guide": "docs/integration_guide.md",
     "px_append_guide": "docs/px_w3db_append_flow.md",
     "master_map": "docs/W3_MASTER_MAP.md",
-    "module_router": "core/module_loader/router.py"
+    "module_router": "core/modules_loader/router.py"
   }
 }
