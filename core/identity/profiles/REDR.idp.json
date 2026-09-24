@@ -1,0 +1,12 @@
+{
+  "identity": {
+    "name": "REDR",
+    "designation": "Risk Escalation Decision Router",
+    "status": "ACTIVE"
+  },
+  "primary_responsibilities": [
+    "risk triage",
+    "escalation routing",
+    "decision gate recommendation"
+  ]
+}

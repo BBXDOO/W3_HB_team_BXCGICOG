@@ -1,0 +1,96 @@
+{
+  "schema": "W3-IDP",
+  "version": "1.0",
+  "classification": "PRIVATE_REQUIRED",
+  "sharing_policy": {
+    "public_share": false,
+    "note": "Contains personal data about founder (BBX19)"
+  },
+  "identity": {
+    "name": "BBX19",
+    "designation": "Commander / Founder",
+    "dna": "BBX19-W3.DNA:HB-TW3/TA00",
+    "role_level": "L0",
+    "role_title": "Root",
+    "status": "ACTIVE",
+    "alias": "BBEX"
+  },
+  "capability_profile": {
+    "abilities": [
+      "strategic_navigation",
+      "context_reconstruction",
+      "hybrid_governance",
+      "scenario_compression",
+      "conceptual_mapping"
+    ],
+    "descriptions": {
+      "strategic_navigation": "วิเคราะห์เชิงรุก",
+      "context_reconstruction": "กู้บริบท",
+      "hybrid_governance": "โมดูลคู่",
+      "scenario_compression": "ย่อบริบทเร็ว",
+      "conceptual_mapping": "ภาษาระบบ"
+    },
+    "thinking_pattern": [
+      "high-context",
+      "direct",
+      "non-linear",
+      "token-efficient"
+    ]
+  },
+  "context_coordinates": {
+    "context_root": "/BBX19/",
+    "task_areas": [
+      "/docs",
+      "/governance",
+      "/announcements"
+    ],
+    "active_threads": [
+      "MAIN",
+      "RESTORE-JSON",
+      "W3-REBUILD"
+    ]
+  },
+  "responsibilities": [
+    "ระบุทิศทางแผนงาน",
+    "อนุมัติ governance changes",
+    "เปิด/ปิดภารกิจโมดูล",
+    "รักษาบริบท W3 แบบต้นน้ำ",
+    "ตัดสินใจขั้นสุดท้ายเมื่อ conflict"
+  ],
+  "auth_protocol": {
+    "if_request_unclear": [
+      "ask_1_question",
+      "clarify",
+      "execute"
+    ],
+    "else": [
+      "execute_immediately"
+    ]
+  },
+  "human_factors": {
+    "time_limited": true,
+    "hospital_worker": true,
+    "mobile_only": true,
+    "low_budget": true,
+    "preferred_output": "usable summary within 10 lines",
+    "dislikes": [
+      "circular discussion",
+      "unnecessary repetition"
+    ]
+  },
+  "module_response_rule": {
+    "load_context_immediately": true,
+    "reduce_token_usage": true,
+    "always_actionable": true,
+    "response_style": [
+      "short_summary",
+      "two_paths"
+    ],
+    "log_only_important_tasks": true
+  },
+  "signature": {
+    "issued_by": "ChatGPT (W3 Assistant)",
+    "issued_on": "2025-12-11",
+    "verification": "Copilot-Gm Pending"
+  }
+}
