@@ -6,7 +6,7 @@ on:
       - refactor/v0.2
     paths:
       - "core/runtime/agents/**"
-      - "core/module_loader/**"
+      - "core/modules_loader/**"
       - "modules/**"
       - "tests/test_main_agent_readiness.py"
       - "tests/test_bbx19_action.py"
@@ -19,7 +19,7 @@ on:
       - refactor/v0.2
     paths:
       - "core/runtime/agents/**"
-      - "core/module_loader/**"
+      - "core/modules_loader/**"
       - "modules/**"
       - "tests/test_main_agent_readiness.py"
       - "tests/test_bbx19_action.py"

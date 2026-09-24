@@ -175,7 +175,7 @@ boundary:
 
 ```yaml
 refs:
-  identity: core/module-loader/identity/ChatGPT.idp.json
+  identity: core/modules_loader/identity/ChatGPT.idp.json
   registry: wx/registry/agent_registry.json
   source_truth: GitHub
   template: wx/templates/box/wx_box_minimum.md

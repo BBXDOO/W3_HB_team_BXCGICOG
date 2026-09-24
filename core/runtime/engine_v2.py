@@ -5,7 +5,7 @@ from collections.abc import Mapping
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any, Dict
 
-from core.module_loader.router import execution_plan
+from core.modules_loader.router import execution_plan
 from core.memory.memory_bus import add_memory, search_memory, get_memory
 from core.runtime.agents import get_agent
 

@@ -57,8 +57,7 @@
       "w3_api/",
       "integrations/",
       "tests/",
-      "modules/registry.json",
-      "core/module-loader/module-registry.json"
+      "modules/registry.json"
     ],
     "write": [
       "codex/",
@@ -93,7 +92,7 @@
   },
   "references": [
     "BBX19/modules/BBX19/idp/IDP-V2.0/Codex-IDP.md",
-    "core/module-loader/identity/Codex.idp.json",
+    "core/modules_loader/identity/Codex.idp.json",
     "modules/Codex/module.json",
     "protocol/w3lgu/RML01.md",
     "docs/standards/referencing_standard.md"
