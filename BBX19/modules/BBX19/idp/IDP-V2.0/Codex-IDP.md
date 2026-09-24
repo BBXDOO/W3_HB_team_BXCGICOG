@@ -76,7 +76,7 @@ W3_HB_team_BXCGICOG
 Key Paths:
 - /codex
 - /modules/Codex
-- /core/identity/profiles/Codex.idp.json
+- /core/modules_loader/identity/Codex.idp.json
 - /protocol
 - /hospitication
 - /w3_api

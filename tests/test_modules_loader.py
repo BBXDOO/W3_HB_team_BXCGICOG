@@ -11,15 +11,10 @@ def test_modules_loader_uses_canonical_registry():
     assert router.load_registry() == registry["routing"]
 
 
-def test_every_routed_module_has_separately_owned_manifest_and_identity():
+def test_modules_loader_has_every_routed_manifest_and_identity():
     for module_name in set(router.load_registry().values()):
         assert Path(f"modules/{module_name}/module.json").is_file()
-        assert Path(f"core/identity/profiles/{module_name}.idp.json").is_file()
-
-
-def test_modules_loader_does_not_own_registry_or_identity_data():
-    assert not (Path("core/modules_loader") / "identity").exists()
-    assert not (Path("core/modules_loader") / "idp-schema.json").exists()
+        assert Path(f"core/modules_loader/identity/{module_name}.idp.json").is_file()
 
 
 def test_legacy_loader_directories_are_retired():

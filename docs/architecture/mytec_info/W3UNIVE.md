@@ -510,7 +510,7 @@ Path หลัก:
 - [codex/agent.py](../../../codex/agent.py)
 - [codex/modules.json](../../../codex/modules.json)
 - [modules/Codex/module.json](../../../modules/Codex/module.json)
-- [core/identity/profiles/Codex.idp.json](../../../core/identity/profiles/Codex.idp.json)
+- [core/modules_loader/identity/Codex.idp.json](../../../core/modules_loader/identity/Codex.idp.json)
 
 directories ที่พบ:
 

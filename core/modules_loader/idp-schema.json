@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "W3-IDP Schema v1.0",
+  "description": "Standard Identity Pack format for W3 module system",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "module",
+    "status",
+    "identity",
+    "responsibilities"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "enum": ["W3-IDP"]
+    },
+    "version": {
+      "type": "string"
+    },
+    "module": {
+      "type": "string"
+    },
+    "abbreviation": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "INACTIVE",
+        "LEGACY",
+        "PAUSED",
+        "EXPERIMENTAL"
+      ]
+    },
+    "classification": {
+      "type": "string"
+    },
+    "identity": {
+      "type": "object",
+      "required": [
+        "name",
+        "designation"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "designation": {
+          "type": "string"
+        },
+        "role_level": {
+          "type": "string"
+        },
+        "role_title": {
+          "type": "string"
+        },
+        "dna": {
+          "type": "string"
+        },
+        "holder_of_request": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string"
+        }
+      }
+    },
+    "capability_profile": {
+      "type": "object",
+      "properties": {
+        "abilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "thinking_pattern": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "context_coordinates": {
+      "type": "object"
+    },
+    "responsibilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "auth_protocol": {
+      "type": "object"
+    },
+    "module_response_rule": {
+      "type": "object"
+    },
+    "runtime_preferences": {
+      "type": "object"
+    },
+    "integration": {
+      "type": "object"
+    },
+    "signature": {
+      "type": "object"
+    }
+  }
+}

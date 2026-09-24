@@ -66,7 +66,7 @@ def test_codex_registered_in_modules_loader_and_central_registry():
 
 def test_codex_idp_and_module_json_reference_each_other():
     idp = json.loads(
-        Path("core/identity/profiles/Codex.idp.json").read_text(encoding="utf-8")
+        Path("core/modules_loader/identity/Codex.idp.json").read_text(encoding="utf-8")
     )
     module = json.loads(Path("modules/Codex/module.json").read_text(encoding="utf-8"))
     manifest = json.loads(Path("codex/modules.json").read_text(encoding="utf-8"))
