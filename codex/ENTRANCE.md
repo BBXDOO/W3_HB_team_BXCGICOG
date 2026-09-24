@@ -32,5 +32,5 @@ Codex ไม่ใช่ผู้อนุมัติ truth และไม่ 
 
 - `codex/` — identity, manifest, helper code, local notes
 - `modules/Codex/` — W3 central module workspace
-- `core/module-loader/identity/Codex.idp.json` — runtime identity profile
+- `core/identity/profiles/Codex.idp.json` — runtime identity profile
 - `BBX19/modules/BBX19/idp/IDP-V2.0/Codex-IDP.md` — IDP v2.0 capsule

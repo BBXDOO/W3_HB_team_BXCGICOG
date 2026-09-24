@@ -17,7 +17,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
 def task_routing():
-    from core.module_loader.router import load_registry
+    from core.modules_loader.router import load_registry
     return load_registry()
 
 def print_json(data):

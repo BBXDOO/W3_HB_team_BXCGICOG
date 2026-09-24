@@ -4,8 +4,9 @@ Canonical module data lives under `modules/`:
 - `modules/registry.json` provides task -> module routing.
 - `modules/<name>/module.json` provides the module manifest.
 
-The importable runtime adapter remains here so existing
-`core.module_loader.router` imports continue to work.
+The importable runtime adapter lives in ``core.modules_loader``.  Registry
+and manifest ownership remains under ``modules/``; this package only adapts
+that canonical data for the Python runtime.
 """
 
 import json

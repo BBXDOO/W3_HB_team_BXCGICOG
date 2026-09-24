@@ -230,7 +230,7 @@ boundary ควรถูกมองคู่กับ trust และ visibilit
 | หมวด | Boundary ที่แนะนำ |
 |---|---|
 | `core/memory`, `logs`, `outcomes` | B0 |
-| `core/runtime`, `core/module-loader`, `core/governance` | B0 / B1 |
+| `core/runtime`, `core/modules_loader`, `core/governance` | B0 / B1 |
 | `modules/*` | B1 โดยค่าเริ่มต้น |
 | `protocol/*`, `w3lgu/*` | B1 / B2 แล้วแต่ส่วน |
 | `docs/` | B1 / B2 / B3 ปะปนกัน ต้องคัด |
@@ -255,7 +255,7 @@ boundary ควรถูกมองคู่กับ trust และ visibilit
 | `core/memory/` | B0 | เป็นความจำภายใน |
 | `core/logs/` | B0 | มี evidence ภายในและ trace |
 | `core/runtime/` | B0/B1 | แกนการทำงานจริง ยังไม่ควรเปิดตรง |
-| `core/module-loader/` | B0/B1 | มีข้อมูล identity และ routing |
+| `core/modules_loader/` | B0/B1 | มีข้อมูล identity และ routing |
 | `core/governance/` | B0/B1 | กฎภายในบางส่วนยังไม่ควร externalize |
 | `core/events/` | B1/B2 | บางส่วนอาจกลายเป็น public contract ได้ |
 | `core/adapters/` | B1 | อาจกลายเป็น bridge layer แต่ยังไม่ควรเปิดทั้งชุด |
@@ -555,7 +555,7 @@ boundary ควรถูกมองคู่กับ trust และ visibilit
 | `outcomes/` | B0/B1 | T1/T2 | V0/V1 | result records |
 | `core/runtime/` | B0/B1 | T1 | V0/V1 | sensitive runtime |
 | `core/governance/` | B0/B1 | T1 | V0/V1 | policy core |
-| `core/module-loader/` | B0/B1 | T1 | V0/V1 | identity/routing |
+| `core/modules_loader/` | B0/B1 | T1 | V0/V1 | identity/routing |
 | `protocol/mpcp/` | B1 | T1/T2 | V1 | protocol core |
 | `protocol/EP_SIGNAL/` | B1 | T1/T2 | V1 | semantic signaling |
 | `w3lgu/` | B1/B2 | T1/T2 | V1/V2 | potential future public layer |

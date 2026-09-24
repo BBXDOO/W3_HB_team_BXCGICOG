@@ -124,7 +124,7 @@
 | `core/runtime` | Core |
 | `core/memory` | Memory |
 | `core/governance` | Governance |
-| `core/module-loader` | Core |
+| `core/modules_loader` | Core |
 | `core/events` | Core/Event |
 | `core/logs` | Evidence |
 | `core/adapters` | Interface |
@@ -168,21 +168,21 @@
 
 | Source Node | Relation | Target Node | Strength | ความหมาย |
 |---|---|---|---|---|
-| `core/runtime` | `depends_on` | `core/module-loader` | H | runtime ต้องรู้จัก module และวิธีโหลด |
+| `core/runtime` | `depends_on` | `core/modules_loader` | H | runtime ต้องรู้จัก module และวิธีโหลด |
 | `core/runtime` | `depends_on` | `core/events` | H | runtime พึ่งระบบ event |
 | `core/runtime` | `logs_to` | `core/logs` | H | runtime ต้องบันทึกเหตุการณ์ภายใน |
 | `core/runtime` | `stores_in` | `core/memory` | M/H | state หรือ context อาจถูกเก็บใน memory |
-| `core/module-loader` | `loads` | `modules/*` | H | module-loader โหลด registry และ module |
-| `core/module-loader` | `depends_on` | `core/vault / identity data` | M | identity/registry อาจต้องใช้ข้อมูลกำกับ |
+| `core/modules_loader` | `loads` | `modules/*` | H | modules_loader โหลด registry และ module |
+| `core/modules_loader` | `depends_on` | `core/vault / identity data` | M | identity/registry อาจต้องใช้ข้อมูลกำกับ |
 | `core/events` | `feeds` | `core/runtime` | H | events เป็น input flow ของ runtime |
 | `core/governance` | `governs` | `core/runtime` | H | runtime ต้องอยู่ภายใต้กฎ |
-| `core/governance` | `governs` | `core/module-loader` | H | module loading อาจถูกจำกัดด้วย policy |
+| `core/governance` | `governs` | `core/modules_loader` | H | module loading อาจถูกจำกัดด้วย policy |
 | `core/logs` | `stores_in` | `evidence trail` | H | logs คือหลักฐานการทำงาน |
 | `core/memory` | `supports` | `modules/*` | H | modules พึ่ง memory เพื่อบริบทต่อเนื่อง |
 | `core/adapters` | `routes_to` | `external-facing candidates` | M | adapters อาจเป็น bridge layer ในอนาคต |
 
 ## 8.2 core relation ที่สำคัญมาก
-- `core/runtime -> core/module-loader`
+- `core/runtime -> core/modules_loader`
 - `core/runtime -> core/events`
 - `core/runtime -> core/logs`
 - `core/governance -> core/runtime`
@@ -222,7 +222,7 @@
 | Source Node | Relation | Target Node | Strength | ความหมาย |
 |---|---|---|---|---|
 | `modules/*` | `depends_on` | `core/runtime` | H | โมดูลต้องพึ่ง runtime หรือ execution orchestration |
-| `modules/*` | `depends_on` | `core/module-loader` | H | โมดูลต้องอยู่ใน registry/load structure |
+| `modules/*` | `depends_on` | `core/modules_loader` | H | โมดูลต้องอยู่ใน registry/load structure |
 | `modules/*` | `logs_to` | `core/logs` | M/H | ผลการทำงานบางส่วนควรเข้าสู่ระบบ log กลาง |
 | `modules/*` | `stores_in` | `core/memory` | M | context / state / summaries อาจถูกเก็บใน memory |
 | `modules/*` | `governed_by` | `core/governance` | H | การทำงานต้องอยู่ภายใต้ policy |
@@ -320,7 +320,7 @@
 
 | Source Node | Relation | Target Node | เหตุผล |
 |---|---|---|---|
-| `core/runtime` | `depends_on` | `core/module-loader` | สำคัญต่อการรันระบบ |
+| `core/runtime` | `depends_on` | `core/modules_loader` | สำคัญต่อการรันระบบ |
 | `core/runtime` | `depends_on` | `core/events` | สำคัญต่อ flow |
 | `core/governance` | `governs` | `core/runtime` | สำคัญต่อความปลอดภัยและทิศทาง |
 | `protocol/mpcp` | `coordinates` | `modules/*` | สำคัญต่อ orchestration |
@@ -336,7 +336,7 @@
 
 - `core/runtime -> core/memory`
 - `core/runtime -> core/logs`
-- `core/module-loader -> identity/registry internals`
+- `core/modules_loader -> identity/registry internals`
 - `modules/* -> internal logs/outcomes`
 - `governance -> internal enforcement flows`
 - `review/report -> internal operational evidence`
@@ -460,7 +460,7 @@
 
 ## ภาคผนวก A: relation สำคัญ 10 อันดับแรก
 
-1. `core/runtime -> depends_on -> core/module-loader`
+1. `core/runtime -> depends_on -> core/modules_loader`
 2. `core/runtime -> depends_on -> core/events`
 3. `core/runtime -> logs_to -> core/logs`
 4. `core/governance -> governs -> core/runtime`

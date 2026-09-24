@@ -8,7 +8,7 @@ on:
       - "tools/request_cycle.py"
       - "modules/registry.json"
       - "modules/*/module.json"
-      - "core/module_loader/**"
+      - "core/modules_loader/**"
       - "core/runtime/**"
   workflow_dispatch:
 

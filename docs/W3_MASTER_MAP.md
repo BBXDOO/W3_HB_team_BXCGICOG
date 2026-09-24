@@ -196,9 +196,9 @@ Codex is registered as the W3 implementation executor, not a truth authority:
 - Agent workspace: `codex/`
 - Central module workspace: `modules/Codex/`
 - Module manifest: `codex/modules.json`, `modules/Codex/module.json`
-- Runtime identity: `core/module-loader/identity/Codex.idp.json`
+- Runtime identity: `core/identity/profiles/Codex.idp.json`
 - IDP v2.0 capsule: `BBX19/modules/BBX19/idp/IDP-V2.0/Codex-IDP.md`
-- Loader routing: `core/module-loader/module-registry.json`
+- Loader routing: `modules/registry.json`
 
 Codex may transform approved intent and architecture into code, tests,
 documentation, commits, and PR-ready changes. It must hand off every result to

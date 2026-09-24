@@ -294,7 +294,7 @@ W3 มีทั้ง:
 - governance
 - logs
 - memory
-- module-loader
+- modules_loader
 - runtime
 - vault
 - hybrid-model
@@ -309,7 +309,7 @@ W3 มีทั้ง:
 | `core/governance` | กรอบนโยบาย กฎ และมาตรฐาน |
 | `core/logs` | การบันทึกและการจัดระเบียบ log |
 | `core/memory` | หน่วยความจำของระบบและ queue |
-| `core/module-loader` | โหลดข้อมูล module, identity และ registry |
+| `core/modules_loader` | โหลดข้อมูล module, identity และ registry |
 | `core/runtime` | แกนการทำงานจริงของระบบ |
 | `core/vault` | บันทึกภายในหรือ ledger |
 | `core/hybrid-model` | เอกสารแนวคิดของระบบผสมคนและระบบอัตโนมัติ |
@@ -358,7 +358,7 @@ W3 มีความพิเศษตรงที่ไม่ได้พึ�
 - `core/runtime/`
 - `protocol/mpcp/orchestrator/`
 - `protocol/mpcp/runtime/`
-- `core/module-loader/`
+- `core/modules_loader/`
 - `core/events/`
 - `tools/w3run.py`
 - `workflows/orchestration/`
@@ -672,12 +672,12 @@ W3 เป็นระบบที่มีความซับซ้อนใ�
 ### ถ้าต้องการเข้าใจแกนระบบ
 - `core/governance/README.md`
 - `core/runtime/runtime.md`
-- `core/module-loader/module-loader.md`
+- `core/modules_loader/modules-loader.md`
 - `core/events/event-protocol.md`
 
 ### ถ้าต้องการเข้าใจ ecosystem ของโมดูล
 - `modules/*/module.json`
-- `core/module-loader/module-registry.json`
+- `modules/registry.json`
 - `docs/reports/AGENT_MODULE_CAPABILITY_REPORT.md`
 
 ### ถ้าต้องการเข้าใจสถาปัตยกรรม

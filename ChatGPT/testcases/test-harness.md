@@ -37,7 +37,7 @@ Target: subsystem
 
 - `config loader`
 - `logger`
-- `module_loader` (Gemini, Copilot-Gm, Grok, DeepSeek, ChatGPT)
+- `modules_loader` (Gemini, Copilot-Gm, Grok, DeepSeek, ChatGPT)
 
 ### 1.3 T2 – Integration Test
 Target: เส้นเชื่อมระหว่าง modules
@@ -198,7 +198,7 @@ log:
 ```yaml
 id: T2-modules-load-001
 level: T2
-target: module_loader
+target: modules_loader
 title: "All declared modules are logged as loaded"
 
 precondition:

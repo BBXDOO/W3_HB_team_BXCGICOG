@@ -8,7 +8,7 @@ from core.runtime.agents.copilot_gm import CopilotGmAgent
 from core.runtime.agents.gemini import GeminiAgent
 from core.runtime.agents.registry import AGENT_TABLE, get_agent
 from core.runtime.engine_v2 import build_context
-from core.module_loader.router import execution_plan
+from core.modules_loader.router import execution_plan
 
 
 class TestOriginAgentRuntimeContracts(unittest.TestCase):

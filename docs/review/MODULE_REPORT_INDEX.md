@@ -98,7 +98,7 @@ For context / continuity issues:
 
 ## 8. Evidence Base
 - `modules/ChatGPT/reports/2026-05-09_w3_mpcp_operational_structure_report.md`
-- `core/module-loader/module-registry.json`
+- `modules/registry.json`
 - `modules/*/module.json`
 - `*/ENTRANCE.md`
 - `Cast/context/protocol.md`

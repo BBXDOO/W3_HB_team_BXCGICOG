@@ -9,7 +9,7 @@ from core.memory.stats import memory_stats
 
 
 ROOT = Path(__file__).resolve().parents[3]
-IDENTITY_DIR = ROOT / "core" / "module-loader" / "identity"
+IDENTITY_DIR = ROOT / "core" / "identity" / "profiles"
 
 
 class LRC2Agent(RuntimeAgent):

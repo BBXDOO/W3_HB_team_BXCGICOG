@@ -100,7 +100,7 @@
 - `core/runtime`
 - `protocol/mpcp`
 - `tools/w3run.py`
-- `core/module-loader`
+- `core/modules_loader`
 - `core/events`
 
 ## 4.3 ชั้นกฎ ระเบียบ และการกำกับดูแล (Governance Layer)
@@ -170,7 +170,7 @@
 - `core/governance`
 - `core/logs`
 - `core/memory`
-- `core/module-loader`
+- `core/modules_loader`
 - `core/runtime`
 - `core/vault`
 - `core/hybrid-model`
@@ -187,7 +187,7 @@
 | `core/governance` | นโยบาย กฎ และแนวปฏิบัติ |
 | `core/memory` | หน่วยความจำและ task queue |
 | `core/runtime` | การทำงานจริงของระบบและ agent |
-| `core/module-loader` | โหลด/ระบุตัวตน/จัดการ registry ของ module |
+| `core/modules_loader` | โหลด/ระบุตัวตน/จัดการ registry ของ module |
 | `core/logs` | กลไก logging และ schema ของ log |
 | `core/vault` | ledger และข้อมูลภายในระบบ |
 | `core/hybrid-model` | เอกสารแนวคิดของโมเดลคน+ระบบ |
@@ -435,7 +435,7 @@
 - `protocol/mpcp/runtime/`
 - `tools/w3run.py`
 - `core/events/`
-- `core/module-loader/`
+- `core/modules_loader/`
 - `workflows/orchestration/`
 
 ## ความหมายเชิงโครงการ
@@ -687,7 +687,7 @@ W3 เป็นโครงสร้างระบบที่มีลัก�
 
 ## หมวดที่ควรอ่านต่อสำหรับงานเทคนิค
 - `core/runtime/`
-- `core/module-loader/`
+- `core/modules_loader/`
 - `protocol/mpcp/`
 - `w3lgu/`
 - `tools/`

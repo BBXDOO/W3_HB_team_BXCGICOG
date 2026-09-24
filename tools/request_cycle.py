@@ -22,7 +22,7 @@ except ImportError:  # pragma: no cover - non-Windows runtime
     msvcrt = None
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
-from core.module_loader.router import load_identity, load_registry, route_task
+from core.modules_loader.router import load_identity, load_registry, route_task
 from core.runtime.engine_v2 import build_context, dispatch, validate_agent_result, now
 from core.memory.memory_bus import add_memory
 

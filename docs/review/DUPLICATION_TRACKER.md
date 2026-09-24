@@ -4,7 +4,7 @@
 
 | Area | Duplicate/Overlap | Decision | Owner | Status |
 |---|---|---|---|---|
-| `core/module_loader/router.py` vs `core/module-loader/router.py` | Similar router behavior under different paths | Keep `core/module_loader/router.py` as canonical for runtime imports; legacy path to be deprecated in follow-up PR | platform | tracked |
+| Module loader runtime adapters | The hyphenated and singular-underscore loaders duplicated routing behavior | Consolidated into `core/modules_loader/router.py`; routing data remains canonical in `modules/registry.json` | platform | resolved |
 | P1-P3 plan references in architecture + roadmap | Architectural summary and detailed plan overlap by design | Keep both; architecture links to roadmap detail | governance | resolved |
 
 ## Notes

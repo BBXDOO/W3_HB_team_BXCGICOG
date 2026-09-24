@@ -189,7 +189,7 @@ Core Nodes คือโหนดที่ทำหน้าที่เป็น
 - `core/runtime`
 - `core/memory`
 - `core/events`
-- `core/module-loader`
+- `core/modules_loader`
 - `core/logs`
 - `core/vault`
 - `src/core`
@@ -202,7 +202,7 @@ Core Nodes คือโหนดที่ทำหน้าที่เป็น
 | `core/runtime` | Core | รันการทำงานของระบบ | สูงมาก | สูง |
 | `core/memory` | Core | เก็บหน่วยความจำ/queue | สูงมาก | สูง |
 | `core/events` | Core | นิยามเหตุการณ์ | สูง | กลาง-สูง |
-| `core/module-loader` | Core | โหลดและเชื่อมโมดูล | สูงมาก | สูง |
+| `core/modules_loader` | Core | โหลดและเชื่อมโมดูล | สูงมาก | สูง |
 | `core/logs` | Core/Evidence | บันทึกระบบ | สูง | กลาง-สูง |
 | `core/vault` | Core/Protected | ข้อมูลภายใน/ledger | สูง | สูงมาก |
 | `src/core` | Core/Implementation | โค้ดแกนฝั่ง implementation | สูง | กลาง-สูง |
@@ -211,7 +211,7 @@ Core Nodes คือโหนดที่ทำหน้าที่เป็น
 ```text
 core/events
    ↓
-core/module-loader
+core/modules_loader
    ↓
 core/runtime
    ↔ core/memory
@@ -301,7 +301,7 @@ Protocol Nodes เป็นโหนดที่ “ทรงพลังแต�
 ## 10.3 ความสัมพันธ์
 Agent Nodes ควรถูกมองเป็น **operational nodes** ที่เชื่อมกับ:
 - core/runtime
-- module-loader
+- modules_loader
 - memory
 - logs
 - reports
