@@ -4,9 +4,12 @@ Canonical module data lives under `modules/`:
 - `modules/registry.json` provides task -> module routing.
 - `modules/<name>/module.json` provides the module manifest.
 
-The importable runtime adapter lives in ``core.modules_loader``.  Registry
+The importable runtime adapter lives in ``core.modules_loader``. Registry
 and manifest ownership remains under ``modules/``; this package only adapts
 that canonical data for the Python runtime.
+
+W3-IDP profiles are a separate identity/context concern and are not loaded by
+this router.
 """
 
 import json
@@ -37,10 +40,15 @@ def load_registry():
     return routing
 
 
-def load_identity(module_name):
-    """Load the canonical module manifest used as runtime identity metadata."""
+def load_manifest(module_name):
+    """Load the canonical runtime manifest for a routed module."""
     path = MODULES_DIR / module_name / "module.json"
     return load_json(path)
+
+
+# Temporary compatibility alias for callers that still use the old API name.
+# The returned object is a module manifest, not a W3-IDP profile.
+load_identity = load_manifest
 
 
 def route_task(task_name):
@@ -52,18 +60,19 @@ def route_task(task_name):
         )
 
     module_name = registry[task_name]
-    identity = load_identity(module_name)
+    manifest = load_manifest(module_name)
 
     return {
         "task": task_name,
         "assigned_module": module_name,
-        "identity": identity,
+        "manifest": manifest,
+        "identity": manifest,  # deprecated compatibility key
     }
 
 
 def execution_plan(task_name):
     routed = route_task(task_name)
-    manifest = routed["identity"]
+    manifest = routed["manifest"]
 
     return {
         "task": routed["task"],
