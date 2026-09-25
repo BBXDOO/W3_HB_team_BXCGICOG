@@ -41,7 +41,7 @@ Codex treats W3 cross-system work as adapter/gateway work by default:
 - `codex/modules.json` — Codex workspace manifest and boundaries
 - `codex/agent.py` — importable helper for deterministic execution packets
 - `modules/Codex/module.json` — central module registry entry format
-- `core/modules_loader/identity/Codex.idp.json` — loader identity profile
+- `core/identity/profiles/Codex.idp.json` — runtime identity profile
 - `BBX19/modules/BBX19/idp/IDP-V2.0/Codex-IDP.md` — IDP v2.0 orientation capsule
 
 ## Example
