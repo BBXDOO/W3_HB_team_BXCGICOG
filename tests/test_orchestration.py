@@ -49,3 +49,47 @@ def test_failed_support_keeps_blocked_state():
     orc.assist(t, kind="SPECIALIST", name="expert", actor="orchestrator", handler=broken)
     assert t["status"] == "BLOCKED"
     assert not t["support"]
+
+
+def test_route_validates_before_delivery_and_preserves_snapshot():
+    t = task()
+    orc.advance(t, "INSPECTING", actor="orchestrator", detail="checked")
+    orc.advance(t, "QUEUED", actor="orchestrator", detail="ready")
+    deliveries = []
+    destination = {"module": "owner"}
+    def notify(payload):
+        deliveries.append(payload)
+        payload["destination"]["module"] = "adapter changed"
+        return {"delivered": True, "evidence": "receipt"}
+    with pytest.raises(ValueError):
+        orc.route(t, destination, actor=" ", notify=notify)
+    assert not deliveries and t["destination"] is None
+    orc.route(t, destination, actor="orchestrator", notify=notify)
+    destination["module"] = "caller changed"
+    assert t["route"][0]["destination"]["module"] == "owner"
+    assert t["destination"]["module"] == "owner"
+
+
+def test_verification_requires_current_result_and_fresh_approval():
+    t = task()
+    t["status"] = "IN_PROGRESS"
+    t["evidence"].append({"at": orc.timestamp(), "actor": "owner", "ref": "old handoff"})
+    with pytest.raises(ValueError, match="verification evidence"):
+        orc.advance(t, "VERIFYING", actor="owner", detail="done")
+    orc.advance(t, "VERIFYING", actor="owner", detail="done", evidence="result-1")
+    with pytest.raises(ValueError, match="identity"):
+        orc.approve(t, human="   ", evidence="   ")
+    orc.approve(t, human="BBX19", evidence="review-1")
+    orc.advance(t, "IN_PROGRESS", actor="owner", detail="revised")
+    assert t["human_approval"] is None
+    orc.advance(t, "VERIFYING", actor="owner", detail="revised result", evidence="result-2")
+    with pytest.raises(ValueError, match="human approval"):
+        orc.advance(t, "COMPLETED", actor="owner", detail="close")
+
+
+@pytest.mark.parametrize("field", ["updated_at", "route", "support", "mutated", "human_review_required"])
+def test_save_rejects_missing_required_snapshot_fields(tmp_path, field):
+    t = task()
+    del t[field]
+    with pytest.raises(ValueError):
+        orc.save(t, tmp_path)
