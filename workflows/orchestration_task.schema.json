@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "w3/workflows/orchestration_task.schema.json",
+  "title": "W3 Orchestration Task",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "type", "priority", "origin", "payload", "created_at", "updated_at", "status", "history", "evidence", "route", "support", "mutated", "human_review_required"],
+  "properties": {
+    "task_id": {"type": "string", "pattern": "^W3-ORC-[0-9]+-[0-9]+$"},
+    "type": {"enum": ["REQUEST", "REPORT", "ISSUE", "SIGNAL", "INTERNAL"]},
+    "priority": {"enum": ["CRITICAL", "HIGH", "NORMAL", "LOW"]},
+    "origin": {"$ref": "#/$defs/location"},
+    "destination": {"oneOf": [{"$ref": "#/$defs/location"}, {"type": "null"}]},
+    "source_id": {"type": ["string", "null"]},
+    "payload": {"type": "object"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "updated_at": {"type": "string", "format": "date-time"},
+    "completed_at": {"type": ["string", "null"], "format": "date-time"},
+    "status": {"enum": ["RECEIVED", "INSPECTING", "QUEUED", "ROUTED", "ACKNOWLEDGED", "IN_PROGRESS", "BLOCKED", "ASSISTING", "RETURNED", "VERIFYING", "WAITING_HUMAN", "COMPLETED", "REJECTED", "CANCELLED", "FAILED"]},
+    "route": {"type": "array", "items": {"type": "object"}},
+    "history": {"type": "array", "items": {"type": "object", "required": ["at", "event", "actor", "detail"]}},
+    "evidence": {"type": "array", "items": {"type": "object", "required": ["at", "actor", "ref"]}},
+    "blocker": {"type": ["object", "null"]},
+    "support": {"type": "array", "items": {"type": "object", "required": ["kind", "name", "result", "at"]}},
+    "human_review_required": {"type": "boolean"},
+    "human_approval": {"type": ["object", "null"]},
+    "mutated": {"type": "boolean"}
+  },
+  "$defs": {
+    "location": {
+      "type": "object", "required": ["module"],
+      "properties": {
+        "module": {"type": "string", "minLength": 1},
+        "tier": {"type": "integer", "minimum": 0, "maximum": 7},
+        "agent": {"type": "string"}, "path": {"type": "string"}
+      }
+    }
+  }
+}
