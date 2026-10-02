@@ -243,8 +243,11 @@ class SemanticRouter:
                 f"source={report_path} references=hospitication/docs/ARCHITECTURE.md "
                 "policy=do_not_overwrite_signal_or_report"
             ),
+            # Keep Hospitication interpretation inside the declared
+            # Gemini/Cast capability boundary. Generic "interpretation" and
+            # "context" also match Grok and can route outside that contract.
             concept_keywords=[
-                "validation", "interpretation", "context", "reasoning",
+                "validation", "verification", "continuity", "reasoning",
             ],
             fallback_agent=fallback_agent,
         )
