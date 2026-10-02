@@ -56,3 +56,24 @@ Intent -> Cross-X -> W3Lgu -> PX -> W3DB append envelope -> EP_SIGNAL preview
 Cross-X plans do not persist records by default. They describe what should cross
 what, why, and which append envelope can be used after Human Review and
 Governance Gate.
+
+
+## บันทึกการใช้งานบน Termux / Android
+
+การบันทึก intent ของ `BBEX-Core` ใช้การสร้างไฟล์แบบ exclusive
+(`O_CREAT | O_EXCL`) เพื่อรักษากฎ append-only โดยไม่พึ่ง `os.link()`
+ซึ่งอาจไม่มีให้ใช้ใน Python บน Android/Termux บางชุด
+
+หลักการยังเหมือนเดิม:
+
+- ถ้าไฟล์เดิมมีเนื้อหาเดียวกัน ให้คืน path เดิมโดยไม่เขียนทับ
+- ถ้าไฟล์เดิมมีเนื้อหาต่างกัน ให้หยุดด้วย `FileExistsError`
+- การแก้ไขนี้เป็น portability fix ไม่ได้เพิ่มสิทธิ execution ให้ BBEX
+
+สำหรับ Hospitication Semantic Router การเลือก agent ถูกจำกัดกลับเข้า
+ขอบเขตที่ประกาศไว้คือ Gemini/Cast โดยใช้ concept ของ validation/verification
+และ continuity/reasoning แทนคำกว้างอย่าง interpretation/context ซึ่งสามารถ
+ไปตรงกับ Grok ได้
+
+ผลที่ต้องการคือ report จาก Hospitication จะไม่หลุดไปยัง Grok เพียงเพราะ
+concept overlap ขณะที่ source signal/report ยังคงไม่ถูกแก้ไขตาม boundary เดิม
