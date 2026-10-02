@@ -307,3 +307,89 @@ INDEX:W3_INTERNAL_NODE_MAP_TH.md,W3_BOUNDARY_MODEL_TH.md,W3_NODE_RELATIONS_TABLE
 ```text
 wx:BOX ใช้ทำให้ folder หรือกลุ่มเอกสารกลายเป็นกล่องอ้างอิงที่มีบริบท โดยใช้ reference แทนการล็อกข้อมูลหนักลงไฟล์เดียว
 ```
+
+
+---
+
+## 10. การเชื่อม BOX กับ CN-Fold
+
+สถานะปัจจุบันของแบบออกแบบคือ **เชื่อมได้ และมีทางเชื่อมเชิงโครงสร้างอยู่แล้ว** โดยไม่จำเป็นต้องรวม CN-Fold ให้กลายเป็น runtime หรือ protocol ใหม่
+
+แนวทางที่ใช้:
+
+```text
+CN-Fold = พฤติกรรม folder-as-node
+wx:BOX  = รูปแบบใช้งานจริง / reference container
+
+CN-Fold
+  ├── identity
+  ├── host
+  ├── parent / child relation
+  ├── boundary
+  ├── status
+  └── index
+        │
+        ▼
+wx:BOX manifest
+  ├── box.*
+  ├── host.*
+  ├── relations.*
+  ├── boundary.*
+  ├── index.*
+  └── refs.*
+```
+
+หลักสำคัญคือ **ไม่ยุบความหมายของสองส่วนจนเป็นสิ่งเดียวกัน** แต่ให้ BOX รับพฤติกรรมที่จำเป็นจาก CN-Fold ผ่าน manifest/reference
+
+ตารางเชื่อมหลัก:
+
+| CN-Fold | wx:BOX |
+|---|---|
+| identity | `box.id`, `box.name` |
+| host scope | `host.path`, `host.scope` |
+| parent / child | `relations.parent`, `relations.children` |
+| boundary | `boundary.*` |
+| status | `box.status` |
+| index | `index.files`, `index.folders` |
+| source truth | `refs.source_truth` |
+| registry | `refs.registry` |
+
+เอกสารออกแบบและแผ่นเทียบที่ใช้ร่วมกัน:
+
+```text
+wx/blueprints/system/wx_box_cn_fold_integration.md
+wx/references/cn_fold_to_wx_box_mapping.md
+BBX19/status/CN-Fold/README.md
+```
+
+### ตัวอย่างการใช้งาน
+
+เมื่อพบ CN-Fold candidate:
+
+```text
+folder/document group
+→ ตรวจ identity / host / relation / boundary / status / index
+→ สร้าง BOX manifest จาก wx_box_minimum.md
+→ ใส่ refs ชี้กลับ source truth
+→ ลง registry เฉพาะเมื่อจำเป็น
+→ ระบบภายนอกอ่าน relation/reference จาก BOX
+```
+
+### สิ่งที่ทางเชื่อมนี้ไม่ทำ
+
+```text
+- ไม่ให้ CN-Fold หรือ BOX execute งานเอง
+- ไม่ให้ BOX แก้ source truth
+- ไม่บังคับทุก folder ให้เป็น BOX
+- ไม่แทน MPCP Blueprint, IDP หรือ Paper
+- ไม่สร้างสำเนาเนื้อหาหนักเมื่อใช้ reference ได้
+```
+
+ดังนั้นความสัมพันธ์ที่ควรจำคือ:
+
+```text
+CN-Fold บอกพฤติกรรมและความสัมพันธ์ของ folder/node
+BOX ทำให้พฤติกรรมนั้นมีรูปแบบอ้างอิงที่ระบบอื่นอ่านและใช้งานร่วมกันได้
+```
+
+> สถานะ: draft / observe — เป็นทางเชื่อมเชิง reference/structure; ยังไม่ประกาศเป็น runtime execution path
