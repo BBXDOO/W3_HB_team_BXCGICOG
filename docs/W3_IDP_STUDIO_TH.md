@@ -135,3 +135,143 @@ Environment ที่ใช้ตรวจ:
 - dependency vulnerabilities ได้รับการแก้แล้ว
 
 Baseline ปัจจุบันจึงยืนยันได้ว่า **source ติดตั้งได้, TypeScript ผ่าน, production build ได้ และ basic runtime/UI เปิดใช้งานจริงบน Android + Termux ได้**
+
+
+## 13. คู่มือใช้งานผ่าน Termux (Android)
+
+ส่วนนี้เป็นวิธีใช้งาน W3.IDP Studio ผ่าน Termux โดยตรง โดยไม่ต้องติดตั้ง PWA
+
+### 13.1 เตรียมเครื่องครั้งแรก
+
+ติดตั้ง Git และ Node.js:
+
+```bash
+pkg update
+pkg install git nodejs -y
+```
+
+Clone repository โดยใช้ branch ของ W3:
+
+```bash
+cd ~
+git clone -b refactor/v0.2 https://github.com/BBXDOO/W3_HB_team_BXCGICOG.git
+```
+
+เข้าโฟลเดอร์ W3.IDP Studio:
+
+```bash
+cd ~/W3_HB_team_BXCGICOG/blueprints/GGinventory/w3openland
+```
+
+ติดตั้ง dependencies:
+
+```bash
+npm install
+```
+
+ขั้นตอน `npm install` ใช้หลัก ๆ ในการเตรียมครั้งแรก หรือเมื่อ dependencies ใน `package.json` / lockfile เปลี่ยน
+
+### 13.2 เปิดใช้งานตามปกติ
+
+ครั้งต่อ ๆ ไปไม่ต้อง clone และไม่ต้อง `npm install` ใหม่ทุกครั้ง
+
+เปิด Termux แล้วรัน:
+
+```bash
+cd ~/W3_HB_team_BXCGICOG/blueprints/GGinventory/w3openland
+npm run dev
+```
+
+เมื่อ Vite แสดง:
+
+```text
+Local: http://localhost:3000/
+```
+
+ให้เปิด browser บนโทรศัพท์แล้วเข้า:
+
+`http://localhost:3000/`
+
+ระหว่างใช้งาน **อย่าปิด process ของ Termux ที่กำลังรัน Vite** เพราะ browser ใช้ server ตัวนี้อยู่
+
+### 13.3 หยุดระบบ
+
+กลับมาที่ Termux แล้วกด:
+
+```text
+Ctrl + C
+```
+
+เมื่อ prompt ของ shell กลับมา แปลว่า dev server หยุดแล้ว
+
+### 13.4 อัปเดต source จาก GitHub
+
+ก่อนเริ่มงานในวันที่ต้องการ source ล่าสุด:
+
+```bash
+cd ~/W3_HB_team_BXCGICOG
+git switch refactor/v0.2
+git pull
+```
+
+จากนั้นกลับเข้า Studio:
+
+```bash
+cd blueprints/GGinventory/w3openland
+```
+
+ถ้า `package.json` หรือ `package-lock.json` เปลี่ยน ให้รัน:
+
+```bash
+npm install
+```
+
+แล้วเปิดระบบ:
+
+```bash
+npm run dev
+```
+
+### 13.5 ตรวจ source ก่อนใช้งานหรือหลังอัปเดต
+
+ตรวจ TypeScript:
+
+```bash
+npm run lint
+```
+
+ตรวจ production build:
+
+```bash
+npm run build
+```
+
+ทั้งสองคำสั่งไม่จำเป็นต้องรันทุกครั้งที่เปิด Studio แต่เหมาะสำหรับตรวจหลัง source/dependency มีการเปลี่ยนแปลง
+
+### 13.6 คำสั่งใช้งานประจำแบบสั้น
+
+```bash
+cd ~/W3_HB_team_BXCGICOG/blueprints/GGinventory/w3openland
+npm run dev
+```
+
+Browser:
+
+```text
+http://localhost:3000/
+```
+
+หยุด:
+
+```text
+Ctrl + C
+```
+
+### 13.7 ข้อควรระวัง
+
+- ไม่ต้อง `git clone` ใหม่ทุกครั้ง
+- ไม่ต้อง `npm install` ใหม่ทุกครั้ง
+- อย่ารัน `npm audit fix` โดยอัตโนมัติเพียงเพราะ npm แสดง vulnerability; ให้ตรวจผลกระทบและ dependency ก่อน
+- อย่า commit API key, credential หรือไฟล์ environment ที่มี secret
+- หาก `npm run dev` ยังทำงานอยู่ การปิด/kill Termux process จะทำให้ `localhost:3000` หยุดตาม
+- คู่มือนี้เป็นการใช้งานผ่าน Termux + browser และไม่พึ่งการติดตั้ง PWA
