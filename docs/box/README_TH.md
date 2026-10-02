@@ -102,3 +102,57 @@ python -m croll --compact plan "PX:[1,1]" --box-suggestion
 
 อ่านขั้นตอนใช้งานจริงที่ [USAGE_TH.md](USAGE_TH.md) และข้อจำกัดด้านความปลอดภัยที่
 [BOUNDARY_TH.md](BOUNDARY_TH.md)
+
+
+## การเชื่อม BOX กับ CN-Fold
+
+จากโครงสร้างปัจจุบัน **ไม่จำเป็นต้องรวม BOX และ CN-Fold ให้กลายเป็นระบบเดียวกันทั้งหมด**
+เพราะทั้งสองมีบทบาทต่างกัน แต่สามารถเชื่อมกันได้โดยให้ `wx:BOX` เป็นรูปแบบใช้งาน และรับ
+พฤติกรรมที่จำเป็นของ CN-Fold เข้ามา
+
+```text
+BOX / Library-WX
+  = พื้นที่อ้างอิง + registry + boundary + ต้นฉบับ
+
+CN-Fold
+  = folder-as-node + host + relation + status + index
+
+ทางเชื่อม
+  = wx:BOX manifest / refs / registry
+```
+
+แนวทางนี้มีอยู่แล้วใน repository ผ่าน:
+
+- `wx/blueprints/system/wx_box_cn_fold_integration.md` — blueprint การเชื่อม
+- `wx/references/cn_fold_to_wx_box_mapping.md` — ตารางเทียบความหมาย
+- `wx/templates/box/wx_box_minimum.md` — template ขั้นต่ำ
+- `wx/templates/box/USAGE_TH.md` — คู่มือ wx:BOX
+- `wx/index/by_box.md` — human-readable index
+- `BOX:WX_BOX_MINIMUM_V1` ใน `wx/registry/template_registry.json`
+
+หลักสำคัญคือ **เชื่อมโดย reference ไม่ใช่ย้ายหรือทำสำเนาต้นฉบับทั้งหมด** และไม่เพิ่ม runtime
+authority ให้ CN-Fold หรือ BOX
+
+```text
+CN-Fold บอกว่า folder/node นี้คืออะไรและสัมพันธ์กับอะไร
+        ↓
+wx:BOX เก็บ manifest + refs + boundary + status
+        ↓
+BOX Registry / Engine-Index ช่วยค้นและอ้างอิง
+        ↓
+PortDC อ่าน registered source เป็นข้อมูลเมื่อได้รับการเรียก
+        ↓
+มนุษย์หรือ flow ที่ได้รับอนุญาตเป็นผู้ตัดสินใจใช้งานต่อ
+```
+
+### สิ่งที่ยังไม่ควรทำ
+
+- ไม่ย้าย CN-Fold ทั้งระบบเข้า `wx/`
+- ไม่ทำให้ทุก folder ต้องเป็น CN-Fold หรือ wx:BOX
+- ไม่ให้ CN-Fold กลายเป็น runtime/authority
+- ไม่ให้ BOX แก้ source truth ตาม relation ที่พบ
+- ไม่สร้าง registry ซ้ำอีกชุดถ้า `wx/registry/` รองรับข้อมูลนั้นอยู่แล้ว
+- ไม่ถือ external surface เป็น source truth แทน GitHub
+
+สถานะของการเชื่อมนี้ยังเป็น **draft / observe** ตาม blueprint ปัจจุบัน จึงควรขยายจาก use case
+จริงและผลทดสอบ มากกว่าล็อก schema เพิ่มล่วงหน้า
