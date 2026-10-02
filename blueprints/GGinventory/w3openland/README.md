@@ -1,151 +1,185 @@
-# W3.IDP Studio - Physical & Digital Ecosystem Boardgame Editor
+# W3.IDP Studio — W3 Openland
 
-ระบบจัดการและสร้างสตอรี่/บอร์ดเกม (Story & Boardgame Ecosystem Engine) ระดับ Professional รองรับการสร้างตัวละคร (Characters), กระดานและสถานที่ (Boards & Locations), การ์ดและไอเทม (Cards & Items), กฎกติกา (Rulesets), และ Story Flow Nodes พร้อมระบบ Playtest และ Dark Neumorphic UI
+> **Path:** `blueprints/GGinventory/w3openland/`  
+> **Branch:** `refactor/v0.2`  
+> **Status:** Source imported / validation pending  
+> **Origin:** Google AI Studio export supplied by BBX19
+
+W3.IDP Studio เป็นโปรเจกต์ React + TypeScript + Vite สำหรับสร้างและจัดการ Story / Boardgame Ecosystem โดย source ปัจจุบันมีส่วนของ Characters, Boards & Locations, Cards & Items, Rules, Story Flow และ Playtest
+
+README นี้อธิบาย **source ที่อยู่ใน repository ปัจจุบัน** และวิธีเรียกใช้งานเบื้องต้น โดยไม่ถือว่ารายละเอียดของ implementation ปัจจุบันเป็นนิยามถาวรของ W3 Openland
 
 ---
 
-## 🚀 วิธีการติดตั้งและรันโปรเจกต์บนเครื่องของคุณ (Local Development)
+## Quick Start
 
-### 1. ความต้องการของระบบ (Prerequisites)
-- [Node.js](https://nodejs.org/) เวอร์ชัน 18 ขึ้นไป (แนะนำ v20 LTS)
-- npm หรือ yarn หรือ pnpm หรือ bun
+ต้องมี Node.js และ npm ก่อนใช้งาน
 
-### 2. แตกไฟล์ ZIP และเปิด Terminal
 ```bash
-# แตกไฟล์ zip แล้วเข้าไปในโฟลเดอร์โปรเจกต์
-cd w3-idp-studio
-```
-
-### 3. ติดตั้ง Dependencies
-```bash
+cd blueprints/GGinventory/w3openland
 npm install
-```
-
-### 4. รันโปรเจกต์ในโหมด Development
-```bash
 npm run dev
 ```
-เปิดเบราว์เซอร์ไปที่ `http://localhost:3000` (หรือ URL ที่แสดงใน Terminal)
 
-### 5. บิลด์สำหรับ Production
+Vite ถูกกำหนดให้ใช้ port `3000` และ host `0.0.0.0`
+
+### ตรวจ TypeScript
+
+```bash
+npm run lint
+```
+
+คำสั่ง `lint` ใน source ปัจจุบันคือ `tsc --noEmit`
+
+### Build
+
 ```bash
 npm run build
 ```
-ไฟล์ Production จะอยู่ที่โฟลเดอร์ `dist/` สามารถนำไป Deploy บน Vercel, Netlify, Cloudflare Pages, หรือ Web Server ใดๆ ได้ทันที
+
+ผลลัพธ์ของ Vite จะถูกสร้างใน `dist/`
+
+> **หมายเหตุสถานะ:** การมี source อยู่ใน repository ไม่ได้หมายความว่า build ผ่านแล้ว การตรวจ build/typecheck ต้องบันทึกตามผลที่เกิดขึ้นจริง
 
 ---
 
-## 📱 วิธีแปลงเป็นแอปมือถือ (Android / iOS) ด้วย Capacitor
+## Project Structure
 
-คุณสามารถเปลี่ยนโปรเจกต์นี้เป็น Native Mobile App สำหรับ Android และ iOS ได้อย่างง่ายดายด้วย **Capacitor**:
-
-1. **ติดตั้ง Capacitor:**
-   ```bash
-   npm install @capacitor/core @capacitor/cli
-   npx cap init "W3 IDP Studio" "com.w3.idpstudio" --web-dir dist
-   ```
-
-2. **บิลด์เว็บก่อน:**
-   ```bash
-   npm run build
-   ```
-
-3. **เพิ่มแพลตฟอร์ม Android / iOS:**
-   ```bash
-   # สำหรับ Android
-   npm install @capacitor/android
-   npx cap add android
-   npx cap open android   # เปิดใน Android Studio เพื่อบิลด์เป็น APK / AAB
-
-   # สำหรับ iOS (ต้องทำบน macOS ที่มี Xcode)
-   npm install @capacitor/ios
-   npx cap add ios
-   npx cap open ios       # เปิดใน Xcode เพื่อรันบน iPhone หรือปล่อย App Store
-   ```
-
-4. **อัปเดตโค้ดเมื่อแก้ไข:**
-   ```bash
-   npm run build
-   npx cap sync
-   ```
-
----
-
-## 💻 วิธีแปลงเป็น Desktop App (Windows .exe / macOS / Linux) ด้วย Electron
-
-1. **ติดตั้ง Electron:**
-   ```bash
-   npm install --save-dev electron electron-builder concurrently wait-on
-   ```
-
-2. **สร้างไฟล์ `electron/main.js`:**
-   ```javascript
-   const { app, BrowserWindow } = require('electron');
-   const path = require('path');
-
-   function createWindow() {
-     const win = new BrowserWindow({
-       width: 1400,
-       height: 900,
-       backgroundColor: '#121214',
-       webPreferences: {
-         nodeIntegration: false,
-         contextIsolation: true,
-       }
-     });
-
-     if (process.env.NODE_ENV === 'development') {
-       win.loadURL('http://localhost:3000');
-     } else {
-       win.loadFile(path.join(__dirname, '../dist/index.html'));
-     }
-   }
-
-   app.whenReady().then(createWindow);
-   ```
-
-3. **บิลด์ไฟล์ติดตั้ง (.exe / .dmg):**
-   ```bash
-   npx electron-builder
-   ```
-
----
-
-## 🌐 ใช้งานเป็น PWA (Progressive Web App) ติดตั้งได้ทันทีไม่ต้องแปลง
-
-โปรเจกต์นี้มี `manifest.json` และ `sw.js` (Service Worker) พร้อมใช้งาน:
-- **บนโทรศัพท์ (Android / Chrome):** กดปุ่มเมนู 3 จุดของเบราว์เซอร์ -> เลือก **"เพิ่มลงในหน้าจอหลัก" (Add to Home Screen)** หรือ **"ติดตั้งแอป" (Install App)**
-- **บนคอมพิวเตอร์ (Chrome / Edge):** กดไอคอนรูปคอมพิวเตอร์/หน้าจอที่แถบ Address bar ด้านขวาบน -> เลือก **"ติดตั้ง W3.IDP Studio"**
-- รองรับการทำงานแบบ Offline และ Fullscreen Mode เหมือนแอปจริง 100%
-
----
-
-## 📂 โครงสร้างโปรเจกต์ (Project Structure)
-
-```
-├── App.tsx                     # Main Application Controller & State
-├── index.html                  # HTML Entry Point
-├── index.tsx                   # React Root Mounting
-├── index.css                   # Global Tailwind & Custom Styles
-├── types.ts                    # Core TypeScript Definitions & Models
+```text
+w3openland/
+├── App.tsx
+├── index.html
+├── index.tsx
+├── index.css
+├── types.ts
 ├── core/
-│   ├── engine.ts               # Logic Engine & State Evaluator
-│   ├── storage.ts              # LocalStorage & Repository IO
-│   └── utils.ts                # Utility functions & ID Generator
+│   ├── engine.ts
+│   ├── storage.ts
+│   └── utils.ts
 ├── features/
-│   ├── library/LibraryPage.tsx # Story Repository & Project Hub
-│   ├── editor/                 # Story & Boardgame Editor Modules
-│   ├── characters/             # Character Attributes & Lore Manager
-│   ├── board/                  # Interactive Board Simulation
-│   ├── location/               # Location Sheets & Nodes
-│   ├── cards/                  # Action & Trait Card Designer
-│   ├── item/                   # Item & Relic Attributes
-│   ├── rules/                  # Ecosystem Rules & Constraints
-│   ├── story/                  # Story Flow Nodes & Graph
-│   └── play/                   # Real-time Playtesting Sandbox
-└── ui/
-    ├── components/             # Neumorphic Buttons, Cards, Inputs, Modals
-    └── layout/                 # Responsive Split-Screen Layouts
+│   ├── agent/
+│   ├── board/
+│   ├── cards/
+│   ├── characters/
+│   ├── dashboard/
+│   ├── editor/
+│   ├── event/
+│   ├── events/
+│   ├── item/
+│   ├── library/
+│   ├── location/
+│   ├── play/
+│   ├── rules/
+│   └── story/
+├── reports/
+├── ui/
+├── manifest.json
+├── sw.js
+├── package.json
+├── package-lock.json
+├── tsconfig.json
+└── vite.config.ts
 ```
 
-ขอให้สนุกกับการสร้างสรรค์และพัฒนาแอปครับ! 🚀
+### Runtime / package ที่ยืนยันจาก `package.json`
+
+- React `^19.2.3`
+- React DOM `^19.2.3`
+- Vite `^6.2.0`
+- TypeScript `~5.8.2`
+- Tailwind CSS `^4.3.0`
+- `@google/genai` `^1.38.0`
+
+Scripts:
+
+```text
+npm run dev      -> vite
+npm run build    -> vite build
+npm run preview  -> vite preview
+npm run lint     -> tsc --noEmit
+npm run pack:zip -> python3 build_zip.py
+```
+
+---
+
+## Gemini API configuration
+
+`vite.config.ts` อ่านค่า `GEMINI_API_KEY` จาก environment แล้วส่งให้ application ผ่าน `process.env.API_KEY` และ `process.env.GEMINI_API_KEY`
+
+ห้าม commit API key จริงลง repository
+
+ตัวอย่าง local environment:
+
+```bash
+export GEMINI_API_KEY="YOUR_KEY"
+npm run dev
+```
+
+หรือใช้ไฟล์ environment สำหรับเครื่อง local โดยต้องตรวจว่าไฟล์ดังกล่าวถูก ignore และไม่มี secret ถูก commit
+
+---
+
+## PWA
+
+Source มี `manifest.json` และ `sw.js` อยู่แล้ว จึงมีองค์ประกอบสำหรับ PWA
+
+อย่างไรก็ตาม การมี manifest/service worker **ไม่ใช่หลักฐานเพียงพอว่า offline/PWA install ทำงานครบทุกกรณี** ต้องตรวจจาก build และ browser จริงก่อนรายงานสถานะว่า ready
+
+---
+
+## Mobile / Desktop
+
+Capacitor และ Electron **ไม่ได้เป็น dependency ของ source ปัจจุบัน** ดังนั้น Android/iOS/Desktop packaging ถือเป็นขั้นตอนต่อยอด ไม่ใช่ runtime ที่ยืนยันแล้วของ repository ชุดนี้
+
+หากจะเพิ่มในภายหลัง ควรทำเป็นงานแยกและบันทึก dependency/config ที่เพิ่มเข้ามาให้ตรวจสอบได้
+
+---
+
+## Import Boundary
+
+การนำ source จาก AI Studio รอบนี้ตั้งใจไม่นำรายการต่อไปนี้เข้ามา:
+
+- `migrated_prompt_history/` — ประวัติ prompt ไม่ใช่ runtime source
+- `public/` จาก export ชุดนี้ — มีเพียง source ZIP ซ้อน
+- `bun.lock` — ไฟล์ export เป็น 0 byte
+- `node_modules/`, `dist/`, cache — generated/dependency output
+- secret, API key, credential และ local environment files
+
+การตัดรายการเหล่านี้ออกไม่เปลี่ยน application source ที่ใช้ใน runtime ตามโครงสร้างที่ตรวจพบ
+
+---
+
+## Source / Evidence Rule
+
+สำหรับพื้นที่นี้ให้แยกสถานะออกจากกัน:
+
+```text
+Source present != Typecheck passed
+Typecheck passed != Build passed
+Build passed != Runtime verified
+Runtime verified != W3 integration completed
+```
+
+เมื่อมีการเปลี่ยนแปลง source, dependency, build process หรือขอบเขตของ W3.IDP Studio ให้ปรับ README และคู่มือที่เกี่ยวข้องตามหลักฐานล่าสุด
+
+---
+
+## เอกสารภาษาไทย
+
+คู่มือการติดตั้ง/ใช้งานและขอบเขตการนำเข้า:
+
+`docs/W3_IDP_STUDIO_TH.md`
+
+---
+
+## Current checkpoint
+
+- Source export: **received**
+- Source placement: **imported into `w3openland/`**
+- Import exclusions: **applied by upload selection**
+- Secret value committed: **ยังไม่พบจากไฟล์ config ที่ตรวจ**
+- TypeScript check: **pending verification**
+- Production build: **pending verification**
+- Runtime/browser verification: **pending verification**
+
+ขั้นถัดไปคือการตรวจ source tree ที่อัปโหลดจริง จากนั้นจึงรัน typecheck/build และบันทึกผลตามจริง
