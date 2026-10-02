@@ -14,7 +14,6 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional
@@ -239,24 +238,24 @@ grants approval, or replaces BBX19's contextual decision.
         target.parent.mkdir(parents=True, exist_ok=True)
         text = self.render_markdown(record)
 
-        descriptor, temporary_name = tempfile.mkstemp(
-            dir=str(target.parent), prefix=f".{target.name}.", suffix=".tmp"
-        )
+        # Use exclusive creation instead of hard-linking a temporary file.
+        # Android/Termux may not expose os.link(), while O_EXCL preserves the
+        # append-only rule by refusing to replace an existing record.
+        if target.exists():
+            if target.read_text(encoding="utf-8") == text:
+                return target
+            raise FileExistsError(f"append-only BBEX record already exists: {target}")
+
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
         try:
+            descriptor = os.open(target, flags, 0o644)
             with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
                 handle.write(text)
                 handle.flush()
                 os.fsync(handle.fileno())
-            if target.exists():
-                if target.read_text(encoding="utf-8") == text:
-                    os.unlink(temporary_name)
-                    return target
-                raise FileExistsError(f"append-only BBEX record already exists: {target}")
-            os.link(temporary_name, target)
-            os.unlink(temporary_name)
         except BaseException:
             try:
-                os.unlink(temporary_name)
+                target.unlink()
             except FileNotFoundError:
                 pass
             raise
