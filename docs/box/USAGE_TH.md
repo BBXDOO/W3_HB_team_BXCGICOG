@@ -311,3 +311,99 @@ Library-WX ยังทำได้ แต่ต้องเป็นการ�
 - ตรวจว่า entry มี `status: active`
 - ตรวจว่า PX อยู่ใน array `px`
 - PX ที่ไม่รู้จักจะคืน review plan และ suggestion เป็น `null`/ไม่มีค่า
+
+
+## 12. ใช้ BOX ร่วมกับ CN-Fold
+
+CN-Fold ไม่จำเป็นต้องถูกยุบเข้า BOX ทั้งหมด ให้ใช้เป็น **พฤติกรรมของ folder/node** และใช้
+`wx:BOX` เป็น manifest/reference container สำหรับเชื่อมเข้าสู่ BOX
+
+### 12.1 ตรวจว่า folder เหมาะกับ CN-Fold หรือไม่
+
+ถาม 6 ข้อ:
+
+```text
+1. folder นี้คืออะไร
+2. เป็น host ของอะไร
+3. มีไฟล์ลูกอะไรบ้าง
+4. ขอบเขตเปิดเผยแค่ไหน
+5. status ล่าสุดคืออะไร
+6. ต้องลง registry หรือ graph ไหม
+```
+
+ถ้ายังตอบไม่ได้ ให้คงเป็น folder ปกติหรือใช้สถานะ `observe` ก่อน ไม่ต้องสร้างโครงเพิ่ม
+
+### 12.2 สร้างทางเชื่อมด้วย wx:BOX
+
+ใช้ต้นแบบ:
+
+```text
+wx/templates/box/wx_box_minimum.md
+```
+
+จากนั้นเติมเฉพาะข้อมูลที่จำเป็น เช่น:
+
+```yaml
+box:
+  id: BOX.EXAMPLE.NODE
+  name: example-node
+  status: observe
+
+host:
+  path: some/path
+  parent: some
+
+relations:
+  parent: some
+  children: []
+
+refs:
+  source_truth: GitHub
+  registry: wx/registry/template_registry.json
+
+boundary:
+  can_execute: false
+  can_mutate_source: false
+  requires_review: true
+```
+
+หลักคือให้ manifest **ชี้กลับต้นฉบับ** ไม่ย้าย source truth เข้า manifest
+
+### 12.3 ลง registry เมื่อมีเหตุผลในการ lookup
+
+เพิ่ม registry เฉพาะกรณีที่ node/template ต้องถูกค้นผ่าน Engine-Index, ใช้ซ้ำ หรือเป็นจุดอ้างอิง
+ร่วมของหลาย flow เท่านั้น
+
+หลังแก้ registry ให้ตรวจ:
+
+```bash
+python -m unittest discover -s wx -p "test_*.py" -v
+python tools/check_portable_paths.py
+```
+
+### 12.4 อ่าน relation โดยไม่เพิ่มอำนาจ
+
+CN-Fold relation ใช้ตอบคำถามว่า parent/child/host/linked node คืออะไร แต่ relation ไม่ได้ให้สิทธิ์
+แก้ source truth โดยอัตโนมัติ
+
+```text
+relation = ข้อมูลการเชื่อมโยง
+authority = สิทธิ์ดำเนินการ
+
+relation != authority
+```
+
+### 12.5 จุดอ้างอิงเมื่อเกิดความสับสน
+
+อ่านตามลำดับ:
+
+```text
+docs/box/README_TH.md
+→ wx/blueprints/system/wx_box_cn_fold_integration.md
+→ wx/references/cn_fold_to_wx_box_mapping.md
+→ wx/templates/box/wx_box_minimum.md
+→ wx/references/wx_box_cn_fold_recovery_anchor.md
+```
+
+ไฟล์ recovery anchor ใช้เป็นจุดถอยกลับเพื่อทบทวนขอบเขต ไม่ใช่คำสั่งให้ลบความสามารถหรือ
+ย้อนระบบอัตโนมัติ
