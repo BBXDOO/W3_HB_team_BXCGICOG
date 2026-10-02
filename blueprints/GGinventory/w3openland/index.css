@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+:root { 
+  --bg: #121214; 
+  --surface: #1c1c1f; 
+  --surface-2: #161618;
+  --border: rgba(255,255,255,0.05); 
+  --text: #ffffff; 
+  --text-dim: #e4e4e7;
+  --accent: #ea580c; 
+  --success: #16a34a; 
+  
+  --shadow-raised: 
+    -6px -6px 14px rgba(255,255,255,0.02),
+    6px 6px 20px rgba(0,0,0,0.7),
+    0 0 1px rgba(255,255,255,0.15);
+  --shadow-inset: 
+    inset 4px 4px 8px rgba(0,0,0,0.6),
+    inset -1px -1px 4px rgba(255,255,255,0.02);
+  --shadow-pressed:
+    inset 6px 6px 12px rgba(0,0,0,0.8),
+    inset -2px -2px 12px rgba(255,255,255,0.02);
+}
+
+.theme-light {
+  --bg: #f0f2f5;
+  --surface: #ffffff;
+  --surface-2: #e4e7eb;
+  --border: rgba(0,0,0,0.06);
+  --text: #0f172a;
+  --text-dim: #475569;
+  --accent: #c2410c;
+  --shadow-raised: 
+    -8px -8px 16px rgba(255,255,255,1),
+    8px 8px 16px rgba(0,0,0,0.08);
+  --shadow-inset: 
+    inset 4px 4px 8px rgba(0,0,0,0.04),
+    inset -4px -4px 8px rgba(255,255,255,1);
+  --shadow-pressed:
+    inset 6px 6px 12px rgba(0,0,0,0.1),
+    inset -3px -3px 10px rgba(255,255,255,1);
+}
+
+@theme {
+  --font-sans: "Anuphan", ui-sans-serif, system-ui, sans-serif;
+}
+
+body { 
+  font-family: var(--font-sans); 
+  background-color: var(--bg); 
+  color: var(--text); 
+  margin: 0; 
+  overflow: hidden; 
+  height: 100vh; 
+  width: 100vw; 
+  position: fixed;
+  overscroll-behavior-y: none;
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+  opacity: 0.04; 
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: soft-light;
+}
+
+.tactile-raised { 
+  background: var(--surface); 
+  box-shadow: var(--shadow-raised);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.tactile-inset { 
+  background: var(--surface-2); 
+  box-shadow: var(--shadow-inset);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.scroll-container::-webkit-scrollbar { width: 5px; background: transparent; }
+.scroll-container::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 10px; }
+
+.glow-text {
+  text-shadow: 0 0 12px var(--accent);
+}
+
+.clickable {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.clickable:active {
+  transform: scale(0.98);
+  box-shadow: var(--shadow-pressed) !important;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.animate-save { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }

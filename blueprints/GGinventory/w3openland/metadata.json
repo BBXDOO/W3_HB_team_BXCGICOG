@@ -1,0 +1,11 @@
+{
+  "name": "W3.IDP Studio",
+  "description": "A world-class boardgame and story ecosystem editor featuring dynamic locations, items, characters, and events with a dark neumorphic UI.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
