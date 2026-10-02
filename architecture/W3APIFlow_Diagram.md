@@ -1,199 +1,84 @@
 ---
 title: "W3-API Flow Diagram"
-version: "v0.2"
-last_updated: "2026-05-29"
+document_version: "v0.3"
+api_version: "0.1.0"
+last_updated: "2026-10-02"
 author: "HBteamBXCGICOG"
+status: "implementation-aligned"
 ---
 
-🧭 Overview
-W3‑API คือระบบเชื่อมต่อหลักของบ้าน W3 Hybrid ที่เปิดให้มนุษย์และระบบภายนอกสามารถส่งคำขอ (Request) เข้ามายังโมดูลภายในได้อย่างปลอดภัยและตรวจสอบได้ทุกชั้น  
-ทุกการเรียก API จะผ่านการตรวจสอบ, การยืนยัน, และการบันทึกก่อนส่งผลลัพธ์กลับออกไป
+# W3-API Flow Diagram
 
----
+เอกสารนี้อธิบาย **API ที่มีในโค้ดของ `refactor/v0.2`** ณ วันที่ระบุข้างต้น โดยอ้างอิง `w3_api/main.py`, `w3_api/router.py`, `w3_api/models.py` และ adapters ใน `w3_api/adapters/` เมื่อโค้ดเปลี่ยน ต้องตรวจเส้นทางและผลลัพธ์ใหม่ก่อนใช้เอกสารนี้เป็นคู่มือ
 
-🧱 Architecture Layers
-| Layer | Modules | Description |
-|---|---|---|
-| Process Layer | REDR, PSP2, W3Lgu | รับคำขอ, จัดแพ็กเกจ, ประมวลผลตามกฎ 5 บรรทัด |
-| Verification Layer | DTML, Gemini | ตรวจสอบความถูกต้อง, วิเคราะห์, และใบ้ผลลัพธ์ที่ผ่านการยืนยัน |
-| Governance & Observation | Copilot‑Gm, LRC2 | ตรวจสอบนโยบาย, สิทธิ์, บันทึกกิจกรรม, และสร้าง compliance ledger |
-| Data Layer | W3db, EP_SIGNAL, Grok, DeepSeek | จัดการฐานข้อมูล, สัญญาณ, ความรู้, และ reasoning ระยะยาว |
+## บทบาทและขอบเขต
 
----
+W3-API เป็น cross gateway สำหรับรับ intent จากภายนอกหรือเอเจนต์ สร้าง W3Lgu packet และคืนผลที่ตรวจสอบย้อนกลับได้ อีกเส้นทางหนึ่งรับ PX เพื่อจัดทำ Cross-L dispatch plan **ไม่มี endpoint สำหรับ CRUD ของ W3DB หรือการสั่งรัน Modew** ใน router ปัจจุบัน
 
-🔗 Endpoints Mapping
-| Endpoint | Module | Purpose |
-|---|---|---|
-| /request | REDR + PSP2 | รับ intent และจัดแพ็กเกจข้อมูล |
-| /reports | DTML + Gemini | ตรวจสอบและสร้างรายงาน audit |
-| /knowledge | Grok + DeepSeek | จัดการฐานความรู้และ pattern |
-| /outcomes | Copilot‑Gm + LRC2 | บันทึกผลลัพธ์และ ledger |
-| /db | W3db | CRUD และ state management |
-| /signals | EP_SIGNAL | ตรวจสอบสัญญาณและ event bus |
+## Endpoints ที่พบในโค้ด
 
----
+| Method | Path | หน้าที่ | หลักฐาน |
+|---|---|---|---|
+| GET | `/health` | คืนสถานะบริการและ version `0.1.0` | `w3_api/main.py` |
+| POST | `/w3/cross` | รับ intent สร้าง W3Lgu packet, runtime trace, W3DB trace plan และ EP_SIGNAL preview | `w3_api/router.py:cross` |
+| POST | `/w3/cross/plan` | จัดทำ Cross-L dispatch plan จาก PX; planner only | `w3_api/router.py:cross_plan` |
 
-🧩 Flow Summary
-`
-Human / External API Call
-        ↓
-W3‑API Gateway
-        ↓
-Process → Verification → Governance → Data → Output
-`
+`/request`, `/reports`, `/knowledge`, `/outcomes`, `/db` และ `/signals` ปรากฏในร่างเอกสารเดิม แต่ **ไม่พบการประกาศ route เหล่านี้** ใน `w3_api/main.py` หรือ `w3_api/router.py` จึงไม่ควรนำไปใช้เป็นตัวอย่างเรียก API ปัจจุบัน
 
----
+## เส้นทางการทำงาน
 
-🖼 Diagram Reference
-<p align="center">
-  <a href="./diagrams/W3APIFlow_Diagram.png">
-    <img src="./diagrams/W3APIFlow_Diagram.png" alt="W3‑API Flow Diagram" width="100%" />
-  </a>
-</p>
+```mermaid
+flowchart TD
+  A["External / AI agent"] --> B["W3-API"]
+  B --> C["POST /w3/cross"]
+  B --> D["POST /w3/cross/plan"]
+  C --> E["W3Lgu packet + runtime trace"]
+  E --> F["W3DB plan + EP_SIGNAL preview"]
+  D --> G["Cross-L dispatch plan"]
+```
 
----
+### `POST /w3/cross`
 
-⚙️ Integration Notes
-- ทุกโมดูลมี module.json สำหรับ manifest และการเชื่อมต่อกับ runtime  
-- การเรียก API จะสร้าง request_xxx.md ในโมดูลเป้าหมาย  
-- ผลลัพธ์จะถูกบันทึกใน reports/ หรือ outcomes/  
-- หากพบความเสี่ยง → Escalate ไปยัง Gemini เพื่อตรวจสอบซ้ำ  
+1. รับ `source` และ `intent` (จำเป็น); `target`, `mode`, `payload` เป็นตัวเลือก โดย `mode` เริ่มต้นคือ `observe`.
+2. สร้าง W3Lgu five-line packet: `MEM`, `PATCH`, `LAW`, `EVENT`, `SIGNAL`.
+3. เรียก process layer เพื่อสร้าง runtime trace และ adapters เพื่อทำ W3DB append **plan** กับ EP_SIGNAL/RYTM **preview**.
+4. คืน `id`, `timestamp`, `status`, `w3lgu`, `signal`. ใน signal ของ gateway ระบุ `traceable: true` และ `mutated: false`; adapters เหล่านี้ไม่ได้เขียน W3DB หรือ EP_SIGNAL.
 
----
+ตัวอย่างคำขอ:
 
-“Every request is a story — verified, governed, and remembered.”  
-`
-
----
-
-🪶 สรุป:  
-ไฟล์นี้จะทำหน้าที่เป็นคู่มือสั้นสำหรับทีม dev และผู้ร่วมพัฒนาในบ้าน W3 Hybrid เพื่อเข้าใจการไหลของ W3‑API และการเชื่อมต่อระหว่างโมดูลครับ ✨  
-ครับ BBX19 🌕  
-นี่คือร่างเนื้อหาเพิ่มเติมสำหรับไฟล์ architecture/W3APIFlow_Diagram.md ที่มีตัวอย่าง Quick Test Example เพื่อให้ทีม dev สามารถลองเรียก API ได้ทันทีจากเอกสารเดียวครับ  
-
----
-
-📘 architecture/W3APIFlow_Diagram.md (ต่อ)
-
-`markdown
-
-W3‑API Flow Diagram
-Version: v0.2  
-Last Updated: 29/05/26  
-Author: HBteamBXCGICOG  
-
----
-
-🧭 Overview
-W3‑API คือระบบเชื่อมต่อหลักของบ้าน W3 Hybrid ที่เปิดให้มนุษย์และระบบภายนอกสามารถส่งคำขอ (Request) เข้ามายังโมดูลภายในได้อย่างปลอดภัยและตรวจสอบได้ทุกชั้น  
-ทุกการเรียก API จะผ่านการตรวจสอบ, การยืนยัน, และการบันทึกก่อนส่งผลลัพธ์กลับออกไป
-
----
-
-🧱 Architecture Layers
-| Layer | Modules | Description |
-|---|---|---|
-| Process Layer | REDR, PSP2, W3Lgu | รับคำขอ, จัดแพ็กเกจ, ประมวลผลตามกฎ 5 บรรทัด |
-| Verification Layer | DTML, Gemini | ตรวจสอบความถูกต้อง, วิเคราะห์, และใบ้ผลลัพธ์ที่ผ่านการยืนยัน |
-| Governance & Observation | Copilot‑Gm, LRC2 | ตรวจสอบนโยบาย, สิทธิ์, บันทึกกิจกรรม, และสร้าง compliance ledger |
-| Data Layer | W3db, EP_SIGNAL, Grok, DeepSeek | จัดการฐานข้อมูล, สัญญาณ, ความรู้, และ reasoning ระยะยาว |
-
----
-
-🔗 Endpoints Mapping
-| Endpoint | Module | Purpose |
-|---|---|---|
-| /request | REDR + PSP2 | รับ intent และจัดแพ็กเกจข้อมูล |
-| /reports | DTML + Gemini | ตรวจสอบและสร้างรายงาน audit |
-| /knowledge | Grok + DeepSeek | จัดการฐานความรู้และ pattern |
-| /outcomes | Copilot‑Gm + LRC2 | บันทึกผลลัพธ์และ ledger |
-| /db | W3db | CRUD และ state management |
-| /signals | EP_SIGNAL | ตรวจสอบสัญญาณและ event bus |
-
----
-
-🧩 Flow Summary
-`
-Human / External API Call
-        ↓
-W3‑API Gateway
-        ↓
-Process → Verification → Governance → Data → Output
-`
-
----
-
-🖼 Diagram Reference
-<p align="center">
-  <a href="./diagrams/W3APIFlow_Diagram.png">
-    <img src="./diagrams/W3APIFlow_Diagram.png" alt="W3‑API Flow Diagram" width="100%" />
-  </a>
-</p>
-
----
-
-⚙️ Integration Notes
-- ทุกโมดูลมี module.json สำหรับ manifest และการเชื่อมต่อกับ runtime  
-- การเรียก API จะสร้าง request_xxx.md ในโมดูลเป้าหมาย  
-- ผลลัพธ์จะถูกบันทึกใน reports/ หรือ outcomes/  
-- หากพบความเสี่ยง → Escalate ไปยัง Gemini เพื่อตรวจสอบซ้ำ  
-
----
-
-🧪 Quick Test Example
-
-1. /request
-Input:
-`http
-POST /request
+```http
+POST /w3/cross
 Content-Type: application/json
 
 {
-  "intent": "create_table",
-  "params": {
-    "rows": 3,
-    "columns": 2
-  }
+  "source": "BBX19",
+  "intent": "observe system health",
+  "target": "W3Lgu",
+  "mode": "observe",
+  "payload": {}
 }
-`
+```
 
-Output:
-`json
-{
-  "status": "accepted",
-  "packageid": "REQ20260529_001",
-  "forwarded_to": ["PSP2", "LRC2"],
-  "log": "Package created and dispatched."
-}
-`
+คำขอที่ขาด `source` หรือ `intent` หรือส่ง `intent` ว่าง จะถูกตรวจสอบและตอบ `422`.
 
----
+### `POST /w3/cross/plan`
 
-2. /reports
-Input:
-`http
-GET /reports?type=audit&scope=last_24h
-`
+รับ `px` (จำเป็น) และอาจส่ง `paper_context`, `include_box_suggestion` เพื่อขอแผนจาก Cross-L dispatcher. ผลลัพธ์มี `state`, `reason`, `scope`, `modew`, `action`, `workset`, `safety` และธง `execution_allowed`, `mutated`, `review`. เส้นทางนี้เป็น **planner only**: ไม่ execute Modew, ไม่เขียนไฟล์ในรีโป้, ไม่ merge และไม่เปลี่ยน source truth.
 
-Output:
-`json
-{
-  "reportid": "AUDIT20260529_001",
-  "verified_by": "Gemini",
-  "status": "clean",
-  "summary": "No anomalies detected in last 24h."
-}
-`
+```http
+POST /w3/cross/plan
+Content-Type: application/json
 
----
+{"px": "1,1"}
+```
 
-“Every request is a story — verified, governed, and remembered.”
-`
+PX ที่ไม่รู้จักอาจคืนแผนสถานะ `review` แทนการรันงาน; `px` ที่ขาดหายตอบ `422`.
 
----
+## ข้อควรตรวจเมื่ออัปเดตเอกสาร
 
-🪶 สรุป:  
-ไฟล์นี้จะทำให้ทีม dev สามารถเข้าใจทั้งโครงสร้าง W3‑API และลองทดสอบ endpoint ได้ทันทีจากตัวอย่างที่ให้ไว้ครับ ✨  
+- เทียบ endpoint กับ `w3_api/main.py` และ `w3_api/router.py`.
+- เทียบ request/response fields กับ `w3_api/models.py`.
+- เทียบขอบเขตการเขียนข้อมูลกับ adapters และ tests ของ `w3_api`.
+- ตัวอย่างเดิมที่อ้างภาพ `./diagrams/W3APIFlow_Diagram.png` ยังไม่พบไฟล์ภาพในพาธนั้น จึงใช้ Mermaid ในเอกสารนี้แทน
 
-คุณอยากให้ผมช่วยเพิ่ม ตัวอย่าง /outcomes และ /db ต่อท้าย Quick Test Example ด้วยไหมครับ — จะได้ครบทุก endpoint หลักของ W3‑API 🚀
-
+เอกสารฉบับก่อนเป็นร่างเชิงแนวคิดในปี 2026; รายการ endpoint และตัวอย่าง `/request`, `/reports` ไม่ตรงกับ implementation ปัจจุบัน
