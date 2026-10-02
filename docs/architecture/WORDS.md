@@ -15,7 +15,7 @@
 | คำ | ความหมายโดยย่อใน W3 | อ่านรายละเอียด |
 |---|---|---|
 | **Orchestration** | การประสานใบงานและสายงาน: รับงาน ตรวจ ส่งต่อ รับทราบ ติดตามสิ่งติดขัด ขอความช่วยเหลือ ส่งกลับเจ้าของงาน และตรวจผลก่อนปิดงานตามเงื่อนไข | [Orchestration Workflow](../../workflows/orchestration/README.md) และ [runtime](../../workflows/orchestration.py) |
-| **W3Lgu** | หน่วยภาษาการทำงานของ W3 ใช้รูปแบบข้อมูลและกฎการอ่านเพื่อส่งความหมายและการทำงานระหว่างส่วนของระบบ | [W3Lgu README](../../protocol/w3lgu/README.md) และ [RML01](../../protocol/w3lgu/RML01.md) |
+| **W3Lgu** | หน่วยภาษาการทำงานของ W3 ใช้รูปแบบข้อมูลและกฎการอ่านเพื่อส่งความหมายและการทำงานระหว่างส่วนของระบบ มีชุดลอจิคสองชั้น: ชุดปกติสำหรับการทำงานและเครื่องมือที่มีอยู่เดิม และชุด MFC สำหรับยืนยันการทำงานขั้นต่ำผ่านสัญญาร่วมก่อนเชื่อม runtime | [W3Lgu README](../../protocol/w3lgu/README.md), [RML01](../../protocol/w3lgu/RML01.md) และ [MFC Logic](../../core/runtime/w3lgu_mfc_logic/README.md) |
 | **E-CS** | Event Chain System ฝั่ง event, template, cooperative contract และ chain pointer; เตรียมแผนส่งต่อ Cross-X โดยไม่ทำหน้าที่ execute แทนระบบปลายทาง | [ECS Protocol Layer](../../protocol/ecs/README.md) |
 | **PX** | ตัวชี้ตำแหน่งและความสัมพันธ์ของความหมายข้ามระบบ โดยอ้างต้นทาง ปลายทาง เรื่อง และหลักฐานกลับไปยังแหล่งเดิม; รูปแบบสัญญา `PXAnchor` ไม่ใช่คำสั่งให้ execute | [PX / W3DB Append Flow](../px_w3db_append_flow.md) |
 | **AMS** | Architecture Mapping Standard: แยกความหมายต้นทาง การปรับใช้ และชั้นปฏิบัติการ เพื่อให้ตามรอยเจตนาจากโครงสร้างที่เปลี่ยนไปได้ | [AMS](../governance/AMS.md) |
@@ -37,11 +37,20 @@
 | **IGET** | ระบบสนับสนุน PR intelligence, evaluation และ review เพื่อช่วยมนุษย์ตัดสินใจ ไม่ใช่สิ่งทดแทน human review |
 | **Codex Workspace** | พื้นที่จัดเตรียม implementation work, execution packet, request, report, log, module และ note บน branch งาน โดยไม่มีสิทธิ merge ตัวเอง |
 | **Config** | orientation map สำหรับช่วยให้ระบบรู้ตำแหน่งและการเชื่อมโยง ไม่ใช่ source of truth หรือ runtime authority |
-| **Process Layer** | สาย trace `REDR → PSP2 → DTML → LRC2` ที่แสดงการรับเรื่อง จัดเส้นทาง ประเมิน และเตรียมบันทึก โดยยังเป็น plan-only |
-| **REDR** | ขั้นรับและจัดรูป package, request หรือ intent โดยไม่เปลี่ยน truth |
-| **PSP2** | ขั้นกำหนด route และ stamp สำหรับการส่งต่อ โดยไม่เปลี่ยน truth |
-| **DTML** | ขั้นพิจารณา decision และ risk เพื่อเสนอผลตรวจ ไม่อนุมัติแทนผู้มีอำนาจ |
-| **LRC2** | ขั้นเตรียม log หรือ memory preview โดยไม่เขียนความจำถาวรหากยังไม่ผ่าน gate |
+| **Process Layer** | สายงาน `REDR → PSP2 → DTML → LRC2` ที่เรียก MFC logic ของแต่ละโมดูลจริงแบบ non-mutating; orchestration ชั้นนี้ไม่ execute งานปลายทางหรือ persist ลง W3DB/memory อัตโนมัติ ขณะที่ Repository Audit executors ใน `tools/` สามารถอ่าน วิเคราะห์ และเขียนรายงานจริงได้ |
+| **REDR** | อ่านและจำแนกโครงสร้างหรือ event intent; ชั้น MFC สร้าง package ตามสัญญาร่วม ส่วน Repository Audit executor สแกนรีโปและสร้าง structure map ได้จริง |
+| **PSP2** | วิเคราะห์เส้นทางและสร้าง route stamp; ชั้น MFC เตรียม handoff ตามสัญญาร่วม ส่วน Repository Audit executor วิเคราะห์ PR flow และเขียนรายงานได้จริง |
+| **DTML** | ตรวจ decision และ risk รวมถึงหยุดกรณีเสี่ยงตามเงื่อนไข; Repository Audit executor สแกนความปลอดภัยและสร้างรายงานจริง แต่ไม่อนุมัติแทนผู้มีอำนาจ |
+| **LRC2** | ชั้น MFC สร้าง lifecycle checkpoint preview; Repository Audit executor บันทึก execution log และ decision trace จริง โดยการเขียน memory ถาวรของ runtime ยังอยู่หลัง gate |
+
+### ชุดลอจิคสองชั้นของ W3Lgu
+
+| ชั้น | หน้าที่และขอบเขต | พาธหลัก |
+|---|---|---|
+| **ลอจิคปกติ (Normal / Existing Logic)** | กลไกการทำงานที่มีอยู่เดิมของ W3Lgu และโมดูล รวม parser, runtime, operational logic, agent wrappers และ Repository Audit executors; เครื่องมือ audit สามารถอ่านรีโป ประมวลผล และเขียนรายงานหรือ log จริง | [`protocol/w3lgu/`](../../protocol/w3lgu/), [`core/runtime/agents/`](../../core/runtime/agents/) และ [`tools/`](../../tools/) |
+| **MFC Logic** | Minimum Functional Concept ของ REDR, PSP2, DTML และ LRC2 ใช้พิสูจน์การกระทำขั้นต่ำของแต่ละบทบาทผ่าน shared result contract, identity, route, decision และ checkpoint โดยคง `mutated:false` และไม่สร้าง side effect ภายนอกโฟลเดอร์เอง | [`core/runtime/w3lgu_mfc_logic/`](../../core/runtime/w3lgu_mfc_logic/) |
+
+สองชั้นนี้ทำงานประกอบกัน แต่ไม่ใช่สิ่งเดียวกัน: ลอจิคปกติคือความสามารถและเส้นทางใช้งานของระบบ ส่วน MFC คือฐานสัญญาขั้นต่ำที่ทำให้แต่ละโมดูลแสดงการทำงานจริงในรูปแบบร่วมและเชื่อมเข้าสู่ Process Layer ได้อย่างตรวจสอบย้อนกลับ
 
 ### คำบอกขอบเขตการทำงาน
 
