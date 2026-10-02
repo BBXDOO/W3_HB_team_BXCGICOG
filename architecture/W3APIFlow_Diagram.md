@@ -1,10 +1,8 @@
 ---
-
-W3‑API Flow Diagram
-Version: v0.2  
-Last Updated: 29/05/26  
-Author: HBteamBXCGICOG  
-
+title: "W3-API Flow Diagram"
+version: "v0.2"
+last_updated: "2026-05-29"
+author: "HBteamBXCGICOG"
 ---
 
 🧭 Overview
