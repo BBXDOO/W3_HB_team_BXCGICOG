@@ -20,6 +20,40 @@
 | **PX** | ตัวชี้ตำแหน่งและความสัมพันธ์ของความหมายข้ามระบบ โดยอ้างต้นทาง ปลายทาง เรื่อง และหลักฐานกลับไปยังแหล่งเดิม; รูปแบบสัญญา `PXAnchor` ไม่ใช่คำสั่งให้ execute | [PX / W3DB Append Flow](../px_w3db_append_flow.md) |
 | **AMS** | Architecture Mapping Standard: แยกความหมายต้นทาง การปรับใช้ และชั้นปฏิบัติการ เพื่อให้ตามรอยเจตนาจากโครงสร้างที่เปลี่ยนไปได้ | [AMS](../governance/AMS.md) |
 
+## คำศัพท์จาก W3UNIVE
+
+รายการนี้รวบรวมคำที่ใช้ร่วมกันในแผนที่เทคนิคของ W3 โดยย่อความหมายจาก [W3UNIVE](mytec_info/W3UNIVE.md) เพื่อให้ระบบและผู้ร่วมงานอ้างอิงคำเดียวกันได้ รายละเอียด วิธีใช้ สถานะ และข้อควรระวัง ให้ยึด W3UNIVE และ source code ปัจจุบันเป็นหลัก
+
+| คำ | ความหมายโดยย่อใน W3 |
+|---|---|
+| **W3-API** | Cross Gateway ที่รับ intent จากภายนอกหรือ agent แล้ว normalize สร้าง packet และ trace plan; เป็นทางเข้า ไม่ใช่ runtime executor |
+| **W3 local client** | shell/Termux wrapper สำหรับเรียก W3-API และอาจเขียน Markdown ลงเครื่องฝั่งผู้ใช้ โดยไม่เปลี่ยน server ให้เป็น executor |
+| **Cross-X** | จุดประสานข้ามระบบที่รวม intent, W3Lgu packet, PX anchor, W3DB append envelope, EP_SIGNAL preview และ process trace เป็นแผนเดียว |
+| **W3DB** | relation flow และ in-process store สำหรับ append/trace ความสัมพันธ์ของข้อมูล โดยไม่เขียนทับ source truth |
+| **EP_SIGNAL** | กลไกสร้าง signal preview สำหรับสื่อสถานะหรือเหตุการณ์ โดยไม่เปลี่ยน runtime state |
+| **RYTM / Rytm** | rhythm preview ที่ประกอบกับ EP_SIGNAL เพื่อแสดงรูปแบบหรือลำดับของสัญญาณ; ในขอบเขตปัจจุบันเป็น preview-only |
+| **Hospitication** | structural health observer สำหรับตรวจสุขภาพโครงสร้างและรายงานสิ่งที่พบแบบ read-only โดยไม่ซ่อมอัตโนมัติ |
+| **G-State** | awareness metadata ที่ช่วยบอกสภาวะหรือบริบทการรับรู้ของระบบ แต่ไม่ใช่อำนาจอนุมัติหรือ source of truth |
+| **IGET** | ระบบสนับสนุน PR intelligence, evaluation และ review เพื่อช่วยมนุษย์ตัดสินใจ ไม่ใช่สิ่งทดแทน human review |
+| **Codex Workspace** | พื้นที่จัดเตรียม implementation work, execution packet, request, report, log, module และ note บน branch งาน โดยไม่มีสิทธิ merge ตัวเอง |
+| **Config** | orientation map สำหรับช่วยให้ระบบรู้ตำแหน่งและการเชื่อมโยง ไม่ใช่ source of truth หรือ runtime authority |
+| **Process Layer** | สาย trace `REDR → PSP2 → DTML → LRC2` ที่แสดงการรับเรื่อง จัดเส้นทาง ประเมิน และเตรียมบันทึก โดยยังเป็น plan-only |
+| **REDR** | ขั้นรับและจัดรูป package, request หรือ intent โดยไม่เปลี่ยน truth |
+| **PSP2** | ขั้นกำหนด route และ stamp สำหรับการส่งต่อ โดยไม่เปลี่ยน truth |
+| **DTML** | ขั้นพิจารณา decision และ risk เพื่อเสนอผลตรวจ ไม่อนุมัติแทนผู้มีอำนาจ |
+| **LRC2** | ขั้นเตรียม log หรือ memory preview โดยไม่เขียนความจำถาวรหากยังไม่ผ่าน gate |
+
+### คำบอกขอบเขตการทำงาน
+
+| คำ | ความหมายโดยย่อ |
+|---|---|
+| **`mutated:false`** | ระบบรายงานว่าไม่ได้แก้ truth หรือ runtime state |
+| **`read-only`** | อ่าน ตรวจ หรือประเมินได้ แต่ไม่แก้ไฟล์และไม่ซ่อมเอง |
+| **`plan-only`** | สร้างแผน trace หรือ preview ได้ แต่ยังไม่ execute |
+| **`gateway-only`** | ทำหน้าที่เป็นทางเข้า normalize หรือสร้าง trace ไม่ใช่ executor |
+| **`preview-only`** | สร้างผลสำหรับตรวจดูก่อนได้ แต่ยังไม่บันทึกหรือเปลี่ยนสถานะจริง |
+| **non-mutating** | การทำงานที่ไม่เปลี่ยน source truth หรือ state ของระบบ |
+
 ## แหล่งคำศัพท์อื่นในรีโป
 
 - [Glossary (ศัพท์เทคนิคและตัวย่อสำคัญ)](../../knowledge/philosophy/KNAsset/Glossary.md) อธิบายคำทั่วไป เช่น agent, plan, testcase, commit และ module พร้อมตัวอย่าง ไม่จำเป็นต้องคัดซ้ำทุกคำในหน้านี้
