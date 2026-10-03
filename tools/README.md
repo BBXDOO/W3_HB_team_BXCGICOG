@@ -2,6 +2,12 @@
 
 This directory contains utility scripts for the W3_HB_team_BXCGICOG repository: file integrity checks, schema validation, and engine smoke tests.
 
+## W3 Document Allocator
+
+`w3_document_allocator.py` สร้าง Markdown ตาม AM Type และโครง Head/Body/Movement/Owner โดยตรวจ lineage, portable path, ชื่อไฟล์ซ้ำ และ BOX boundary ก่อนเขียน รองรับ `dry-run`, `create`, `update` และคืน artifact receipt สำหรับ Orchestration ดูคู่มือภาษาไทยที่ [W3_DOCUMENT_ALLOCATOR_TH.md](../docs/guides/W3_DOCUMENT_ALLOCATOR_TH.md)
+
+BOX ยังคงเป็น planner-only และไม่ให้ write authority แก่เครื่องมือนี้ การเขียนจริงต้องระบุผู้อนุญาต และโหมด create จะไม่เขียนทับไฟล์เดิม
+
 ---
 
 ## smoke_test.py — Android/Termux Smoke Test Runner
