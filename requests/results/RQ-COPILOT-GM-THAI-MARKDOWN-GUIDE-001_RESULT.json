@@ -9,10 +9,10 @@
   "substitution": false,
   "task_keyword": "governance",
   "runtime_result": {
-    "status": "WAITING_HUMAN",
+    "status": "COMPLETED",
     "task": "document_creation",
     "module": "Copilot-Gm",
-    "output": "Document created and Gemini-validated; BBX19 final sign-off is required.",
+    "output": "Document created, Gemini-validated, and approved by BBX19.",
     "agent_result": {
       "contract_version": "1.2",
       "status": "BLOCKED",
@@ -118,19 +118,20 @@
     "artifacts": [
       {
         "path": "BBX19/notes/THAI_MARKDOWN_GUIDE.md",
-        "sha256": "5ade1c441fdd4755fe24dab92c09be7ac05afd857b691c9d2da2d68297208eda",
-        "bytes": 10488,
+        "sha256": "e3b426cc4e6abfd4c0f7bd51038fe8679d7139975ca32d9324c84dc3cf91b8ca",
+        "bytes": 10568,
         "previous_sha256": null,
         "kind": "w3.ams_document.markdown"
       }
     ],
     "artifact_path": "BBX19/notes/THAI_MARKDOWN_GUIDE.md",
-    "artifact_sha256": "5ade1c441fdd4755fe24dab92c09be7ac05afd857b691c9d2da2d68297208eda",
+    "artifact_sha256": "e3b426cc4e6abfd4c0f7bd51038fe8679d7139975ca32d9324c84dc3cf91b8ca",
     "gemini_validation_event": "repo_events/RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001_GEMINI_VALIDATION.md",
     "orchestration_evidence": "repo_events/W3-ORC-20261003-2021077697.json",
     "mutated": true,
-    "review": true,
-    "closed": false,
+    "review": false,
+    "closed": true,
+    "final_signoff": "repo_events/RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001_FINAL_SIGNOFF.md",
     "time": "2026-10-03T10:08:04Z",
     "trace_id": "a17f6ed6f3304799b5c9c411898bfe4c",
     "result_validation": {
@@ -147,16 +148,17 @@
   "artifact_paths": [
     {
       "path": "BBX19/notes/THAI_MARKDOWN_GUIDE.md",
-      "sha256": "5ade1c441fdd4755fe24dab92c09be7ac05afd857b691c9d2da2d68297208eda",
-      "bytes": 10488,
+      "sha256": "e3b426cc4e6abfd4c0f7bd51038fe8679d7139975ca32d9324c84dc3cf91b8ca",
+      "bytes": 10568,
       "previous_sha256": null,
       "kind": "w3.ams_document.markdown"
     }
   ],
   "artifact_path": "BBX19/notes/THAI_MARKDOWN_GUIDE.md",
-  "artifact_sha256": "5ade1c441fdd4755fe24dab92c09be7ac05afd857b691c9d2da2d68297208eda",
+  "artifact_sha256": "e3b426cc4e6abfd4c0f7bd51038fe8679d7139975ca32d9324c84dc3cf91b8ca",
   "gemini_validation_event": "repo_events/RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001_GEMINI_VALIDATION.md",
   "orchestration_evidence": "repo_events/W3-ORC-20261003-2021077697.json",
+  "final_signoff": "repo_events/RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001_FINAL_SIGNOFF.md",
   "checkin": {
     "doc_id": "CID_@R000A1",
     "entry_no": 1,
@@ -164,7 +166,7 @@
   },
   "request_log": "logs/request_cycle/RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001.md",
   "final_signoff_required": true,
-  "closed": false,
+  "closed": true,
   "mutated": true,
-  "review": true
+  "review": false
 }

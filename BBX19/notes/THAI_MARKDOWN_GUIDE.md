@@ -6,7 +6,7 @@ DERIVED_FROM:
   - "requests/RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001.md"
 OWNER: "BBX19"
 MAKER: "Copilot-Gm"
-STATUS: "waiting_human"
+STATUS: "approved"
 REQUEST_ID: "RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001"
 CREATED_AT: "2026-10-03T10:08:04Z"
 ---
@@ -18,7 +18,7 @@ CREATED_AT: "2026-10-03T10:08:04Z"
 1. Name: คู่มือการใช้ Markdown ฉบับภาษาไทย
 2. AM II - LEARN: ADAPTATION
 3. ID: RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001
-4. Note: Copilot-Gm draft; Gemini validated; BBX19 sign-off required
+4. Note: Copilot-Gm document; Gemini validated; BBX19 approved
 
 ## Body line
 
@@ -226,3 +226,4 @@ line break ใน Markdown หลายแบบ แต่บรรทัดว�
 - Owner: BBX19
 - Maker: Copilot-Gm
 - Log: 2026-10-03T10:08:04Z; status=waiting_human; request=RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001
+- Final sign-off: BBX19; approved=2026-10-03T10:26:12Z; evidence=conversation-confirmation

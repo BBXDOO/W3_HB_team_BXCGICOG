@@ -13,8 +13,8 @@
   },
   "source_id": "RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001",
   "created_at": "2026-10-03T10:08:04.172964Z",
-  "updated_at": "2026-10-03T10:08:04.202768Z",
-  "status": "WAITING_HUMAN",
+  "updated_at": "2026-10-03T10:26:12Z",
+  "status": "COMPLETED",
   "destination": {
     "module": "Copilot-Gm"
   },
@@ -99,6 +99,12 @@
       "event": "WAITING_HUMAN",
       "actor": "Orchestration",
       "detail": "Gemini passed; BBX19 final sign-off required"
+    },
+    {
+      "at": "2026-10-03T10:26:12Z",
+      "event": "COMPLETED",
+      "actor": "Orchestration",
+      "detail": "BBX19 final sign-off recorded"
     }
   ],
   "evidence": [
@@ -121,6 +127,11 @@
       "at": "2026-10-03T10:08:04.202762Z",
       "ref": "repo_events/RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001_GEMINI_VALIDATION.md",
       "actor": "Gemini"
+    },
+    {
+      "at": "2026-10-03T10:26:12Z",
+      "ref": "repo_events/RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001_FINAL_SIGNOFF.md",
+      "actor": "BBX19"
     }
   ],
   "blocker": null,
@@ -179,7 +190,11 @@
     }
   ],
   "human_review_required": true,
-  "human_approval": null,
-  "mutated": false,
-  "completed_at": null
+  "human_approval": {
+    "human": "BBX19",
+    "evidence": "repo_events/RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001_FINAL_SIGNOFF.md",
+    "at": "2026-10-03T10:26:12Z"
+  },
+  "mutated": true,
+  "completed_at": "2026-10-03T10:26:12Z"
 }

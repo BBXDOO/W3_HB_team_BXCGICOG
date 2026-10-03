@@ -8,8 +8,9 @@
 - preferred route: `Copilot-Gm`
 - substitution: `false`
 - task: `governance`
-- status: `WAITING_HUMAN`
+- status: `COMPLETED`
 - trace_id: `a17f6ed6f3304799b5c9c411898bfe4c`
 - result: `requests/results/RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001_RESULT.json`
 - final_signoff_required: `true`
-- closed: `false`
+- final_signoff: `repo_events/RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001_FINAL_SIGNOFF.md`
+- closed: `true`
