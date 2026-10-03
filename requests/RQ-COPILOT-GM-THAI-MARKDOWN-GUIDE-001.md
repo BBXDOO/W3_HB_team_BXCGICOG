@@ -5,6 +5,8 @@ target_module: Copilot-Gm
 requester: BBX19
 language: th
 request_type: document_creation
+document_kind: thai_markdown_guide
+artifact_path: BBX19/notes/THAI_MARKDOWN_GUIDE.md
 authority_requested: create_one_document_in_bbx19_notes
 final_signoff_required: true
 mutated: false
@@ -120,4 +122,3 @@ Gemini ต้อง:
 - ไม่มีการสร้างคู่มือหรือ source request ซ้ำโดยไม่มีเหตุผล
 
 สถานะ `ROUTED`, `ACKNOWLEDGED`, การมี draft เพียงอย่างเดียว หรือผลจาก executor ที่ไม่สร้าง artifact ไม่ถือว่า `COMPLETED`
-

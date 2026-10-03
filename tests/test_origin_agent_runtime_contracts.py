@@ -51,6 +51,44 @@ class TestOriginAgentRuntimeContracts(unittest.TestCase):
 
         self.assertEqual(result["status"], "COMPLETED")
 
+    def test_copilot_prepares_registered_document_without_writing(self):
+        result = CopilotGmAgent().execute(
+            "governance",
+            {},
+            {"payload": {
+                "request_type": "document_creation",
+                "document_kind": "thai_markdown_guide",
+                "request_id": "RQ-DOC-1",
+                "source_request": "requests/RQ-DOC-1.md",
+                "artifact_path": "BBX19/notes/THAI_MARKDOWN_GUIDE.md",
+            }},
+        )
+
+        self.assertEqual(result["status"], "BLOCKED")
+        self.assertEqual(result["decision"], "ASSIST_REQUIRED")
+        self.assertFalse(result["mutated"])
+        self.assertEqual(
+            result["document_spec"]["target"],
+            "BBX19/notes/THAI_MARKDOWN_GUIDE.md",
+        )
+        self.assertIn("## 10. ตารางความเข้ากันได้", result["document_spec"]["body"])
+
+    def test_copilot_rejects_unregistered_document_kind(self):
+        result = CopilotGmAgent().execute(
+            "governance",
+            {},
+            {"payload": {
+                "request_type": "document_creation",
+                "document_kind": "unknown",
+                "request_id": "RQ-DOC-2",
+                "artifact_path": "BBX19/notes/UNKNOWN.md",
+            }},
+        )
+
+        self.assertEqual(result["status"], "REVIEW_REQUIRED")
+        self.assertEqual(result["decision"], "unsupported_document_request")
+        self.assertFalse(result["mutated"])
+
     def test_gemini_does_not_verify_without_checks_and_evidence(self):
         unresolved = GeminiAgent().execute("verify", {}, {})
         verified = GeminiAgent().execute(

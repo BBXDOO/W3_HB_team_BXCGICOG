@@ -1,0 +1,185 @@
+{
+  "task_id": "W3-ORC-20261003-2021077697",
+  "type": "REQUEST",
+  "priority": "NORMAL",
+  "origin": {
+    "module": "BBX19",
+    "tier": 1
+  },
+  "payload": {
+    "request_id": "RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001",
+    "request_type": "document_creation",
+    "artifact_path": "BBX19/notes/THAI_MARKDOWN_GUIDE.md"
+  },
+  "source_id": "RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001",
+  "created_at": "2026-10-03T10:08:04.172964Z",
+  "updated_at": "2026-10-03T10:08:04.202768Z",
+  "status": "WAITING_HUMAN",
+  "destination": {
+    "module": "Copilot-Gm"
+  },
+  "route": [
+    {
+      "destination": {
+        "module": "Copilot-Gm"
+      },
+      "at": "2026-10-03T10:08:04.173022Z",
+      "notification": "workflows/orchestration/handoffs/RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001__Copilot-Gm.md"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-10-03T10:08:04.172964Z",
+      "event": "RECEIVED",
+      "actor": "BBX19",
+      "detail": "intake"
+    },
+    {
+      "at": "2026-10-03T10:08:04.172990Z",
+      "event": "INSPECTING",
+      "actor": "Orchestration",
+      "detail": "document request inspected"
+    },
+    {
+      "at": "2026-10-03T10:08:04.172998Z",
+      "event": "QUEUED",
+      "actor": "Orchestration",
+      "detail": "document owner selected"
+    },
+    {
+      "at": "2026-10-03T10:08:04.173027Z",
+      "event": "ROUTED",
+      "actor": "Orchestration",
+      "detail": "handoff delivered"
+    },
+    {
+      "at": "2026-10-03T10:08:04.173033Z",
+      "event": "ACKNOWLEDGED",
+      "actor": "Copilot-Gm",
+      "detail": "document content accepted"
+    },
+    {
+      "at": "2026-10-03T10:08:04.173037Z",
+      "event": "IN_PROGRESS",
+      "actor": "Copilot-Gm",
+      "detail": "content prepared"
+    },
+    {
+      "at": "2026-10-03T10:08:04.173040Z",
+      "event": "BLOCKED",
+      "actor": "Copilot-Gm",
+      "detail": "filesystem executor required"
+    },
+    {
+      "at": "2026-10-03T10:08:04.173046Z",
+      "event": "ASSISTING",
+      "actor": "Orchestration",
+      "detail": "TOOL:W3 Document Allocator"
+    },
+    {
+      "at": "2026-10-03T10:08:04.201221Z",
+      "event": "RETURNED",
+      "actor": "Orchestration",
+      "detail": "support returned to owner"
+    },
+    {
+      "at": "2026-10-03T10:08:04.202708Z",
+      "event": "IN_PROGRESS",
+      "actor": "Copilot-Gm",
+      "detail": "artifact returned to document owner"
+    },
+    {
+      "at": "2026-10-03T10:08:04.202762Z",
+      "event": "VERIFYING",
+      "actor": "Gemini",
+      "detail": "artifact validation recorded"
+    },
+    {
+      "at": "2026-10-03T10:08:04.202768Z",
+      "event": "WAITING_HUMAN",
+      "actor": "Orchestration",
+      "detail": "Gemini passed; BBX19 final sign-off required"
+    }
+  ],
+  "evidence": [
+    {
+      "at": "2026-10-03T10:08:04.173027Z",
+      "ref": "workflows/orchestration/handoffs/RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001__Copilot-Gm.md",
+      "actor": "Orchestration"
+    },
+    {
+      "at": "2026-10-03T10:08:04.173033Z",
+      "ref": "agent_result#document_spec",
+      "actor": "Copilot-Gm"
+    },
+    {
+      "at": "2026-10-03T10:08:04.201221Z",
+      "ref": "BBX19/notes/THAI_MARKDOWN_GUIDE.md#sha256=5ade1c441fdd4755fe24dab92c09be7ac05afd857b691c9d2da2d68297208eda",
+      "actor": "Orchestration"
+    },
+    {
+      "at": "2026-10-03T10:08:04.202762Z",
+      "ref": "repo_events/RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001_GEMINI_VALIDATION.md",
+      "actor": "Gemini"
+    }
+  ],
+  "blocker": null,
+  "support": [
+    {
+      "kind": "TOOL",
+      "name": "W3 Document Allocator",
+      "result": {
+        "resolved": true,
+        "evidence": "BBX19/notes/THAI_MARKDOWN_GUIDE.md#sha256=5ade1c441fdd4755fe24dab92c09be7ac05afd857b691c9d2da2d68297208eda",
+        "receipt": {
+          "contract_version": "1.0",
+          "tool": "W3 Document Allocator",
+          "target": "BBX19/notes/THAI_MARKDOWN_GUIDE.md",
+          "target_exists": false,
+          "ams": {
+            "type": "II",
+            "role": "ADAPTATION",
+            "group": "LEARN",
+            "derived_from": [
+              "requests/RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001.md"
+            ],
+            "folder_readme_present": true
+          },
+          "box": {
+            "planner_only": true,
+            "execution_allowed": false,
+            "registry": {
+              "valid": true,
+              "version": "1.0",
+              "error": null
+            },
+            "suggestions": [],
+            "suggestion_state": "not_requested",
+            "target_state": "conditional",
+            "reason": "write authority must come from the caller, not BOX"
+          },
+          "duplicates": [],
+          "warnings": [],
+          "write_allowed": true,
+          "mutated": true,
+          "review": true,
+          "status": "CREATED",
+          "mode": "create",
+          "authorized_by": "BBX19:RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001",
+          "artifact": {
+            "path": "BBX19/notes/THAI_MARKDOWN_GUIDE.md",
+            "sha256": "5ade1c441fdd4755fe24dab92c09be7ac05afd857b691c9d2da2d68297208eda",
+            "bytes": 10488,
+            "previous_sha256": null,
+            "kind": "w3.ams_document.markdown"
+          }
+        }
+      },
+      "at": "2026-10-03T10:08:04.201204Z"
+    }
+  ],
+  "human_review_required": true,
+  "human_approval": null,
+  "mutated": false,
+  "completed_at": null
+}

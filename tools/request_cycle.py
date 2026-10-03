@@ -25,6 +25,7 @@ sys.path.insert(0,str(ROOT))
 from core.modules_loader.router import load_identity, load_registry, route_task
 from core.runtime.engine_v2 import build_context, dispatch, validate_agent_result, now
 from core.memory.memory_bus import add_memory
+from tools.document_creation_flow import run_document_creation
 
 REQUESTS=ROOT/"requests"
 RESULTS=REQUESTS/"results"
@@ -239,7 +240,7 @@ def already_done(rid:str)->bool:
     except (OSError,json.JSONDecodeError):
         return False
     status=str(envelope.get("runtime_result",{}).get("status") or "").upper()
-    return status == "COMPLETED"
+    return status in {"COMPLETED", "WAITING_HUMAN"}
 
 def process(path:Path)->dict:
     req=parse_request(path)
@@ -325,6 +326,8 @@ def process(path:Path)->dict:
         "request_id": rid,
         "source_request": req["_request_file"],
         "request_type": req.get("request_type"),
+        "document_kind": req.get("document_kind"),
+        "artifact_path": req.get("artifact_path"),
         "authority_requested": req.get("authority_requested"),
         "final_signoff_required": req.get("final_signoff_required",True),
         "preferred_module": preferred,
@@ -351,7 +354,12 @@ def process(path:Path)->dict:
         agent_result=dispatch(target,task,plan,context)
         if not isinstance(agent_result,dict):
             raise TypeError("agent execute() returned non-dictionary result")
-        result={
+        if req.get("request_type") == "document_creation":
+            result=run_document_creation(request={**req, "request_id": rid}, agent_result=agent_result, repo_root=ROOT)
+            result["time"], result["trace_id"] = now(), context["trace_id"]
+            result["result_validation"] = validate_agent_result(target, agent_result)
+        else:
+            result={
           "status":str(agent_result.get("status") or "FAILED"),
           "task":task,"module":target,
           "output":str(agent_result.get("summary") or "No result summary provided."),
@@ -359,7 +367,7 @@ def process(path:Path)->dict:
           "result_validation":validate_agent_result(target,agent_result),
           "artifacts":agent_result.get("artifacts",[]),
           "time":now(),"trace_id":context["trace_id"],
-        }
+            }
     except Exception as exc:
         result={"status":"FAILED","task":task,"module":target,"error":str(exc),"artifacts":[],"time":now(),"trace_id":context["trace_id"]}
     operation=bool(result.get("status")=="COMPLETED")
@@ -384,10 +392,22 @@ def process(path:Path)->dict:
     # Direct dispatch preserves an explicit target_module, so mirror engine_v2.run()
     # memory persistence here instead of routing through execution_plan(task).
     try:
+        memory_payload = result.get("agent_result", result)
+        if req.get("request_type") == "document_creation":
+            memory_payload = {
+                "request_id": rid,
+                "request_type": "document_creation",
+                "status": result.get("status"),
+                "artifact_path": result.get("artifact_path"),
+                "artifact_sha256": result.get("artifact_sha256"),
+                "gemini_validation_event": result.get("gemini_validation_event"),
+                "orchestration_evidence": result.get("orchestration_evidence"),
+                "final_signoff_required": bool(req.get("final_signoff_required", True)),
+            }
         add_memory(
             source=target if result.get("status") != "FAILED" else "runtime",
             topic=task,
-            content=json.dumps(result.get("agent_result", result), ensure_ascii=False, sort_keys=True),
+            content=json.dumps(memory_payload, ensure_ascii=False, sort_keys=True),
             tags=["runtime", "request_cycle", str(result.get("status", "unknown")).lower()],
             score=5 if result.get("status") == "COMPLETED" else 1,
             record_type="runtime_result",
@@ -404,10 +424,14 @@ def process(path:Path)->dict:
       "substitution":bool(preferred and preferred != target),
       "task_keyword":task,"runtime_result":result,
       "artifact_paths":result.get("artifacts",[]),
+      "artifact_path":result.get("artifact_path"),
+      "artifact_sha256":result.get("artifact_sha256"),
+      "gemini_validation_event":result.get("gemini_validation_event"),
+      "orchestration_evidence":result.get("orchestration_evidence"),
       "checkin":checkin,
       "request_log":request_log_path,
       "final_signoff_required":bool(req.get("final_signoff_required",True)),
-      "closed":False,"mutated":bool(result.get("agent_result",{}).get("mutated",False)),
+      "closed":False,"mutated":bool(result.get("mutated",result.get("agent_result",{}).get("mutated",False))),
       "review":True,
     }
     rp=RESULTS/f"{safe_id(rid)}_RESULT.json"

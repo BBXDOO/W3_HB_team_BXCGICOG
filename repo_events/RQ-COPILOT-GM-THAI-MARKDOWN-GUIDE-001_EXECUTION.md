@@ -8,8 +8,8 @@
 - preferred route: `Copilot-Gm`
 - substitution: `false`
 - task: `governance`
-- status: `REVIEW_REQUIRED`
-- trace_id: `2d224e3a04984fa39ae6cc5492d77a71`
+- status: `WAITING_HUMAN`
+- trace_id: `a17f6ed6f3304799b5c9c411898bfe4c`
 - result: `requests/results/RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001_RESULT.json`
 - final_signoff_required: `true`
 - closed: `false`
