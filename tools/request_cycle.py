@@ -6,7 +6,7 @@ intelligence. A request is executed only when its target resolves to the same
 module as its task keyword in modules/registry.json.
 """
 from __future__ import annotations
-import argparse, json, re
+import argparse, hashlib, json, re, tempfile
 from pathlib import Path
 from typing import Any
 import sys
@@ -35,6 +35,11 @@ CHECKIN_DIR=LOGS/"check-in"
 REQUEST_LOG_DIR=LOGS/"request_cycle"
 CHECKIN_DOC_RE=re.compile(r"^CID_@R000([A-Z]+)(\d+)\.md$")
 MAX_CHECKIN_ROWS=50
+REQUEST_LOCK_DIR=(
+    Path(tempfile.gettempdir())
+    / "w3-request-cycle-locks"
+    / hashlib.sha256(str(ROOT.resolve()).encode("utf-8")).hexdigest()[:16]
+)
 
 
 @contextmanager
@@ -265,7 +270,7 @@ def process(path:Path)->dict:
 
     if already_done(rid):
         result_path=RESULTS/f"{safe_id(rid)}_RESULT.json"
-        lock_path=RESULTS/f".{safe_id(rid)}.result.lock"
+        lock_path=REQUEST_LOCK_DIR/f"{safe_id(rid)}.result.lock"
         with _file_lock(lock_path):
             try:
                 envelope=json.loads(result_path.read_text(encoding="utf-8"))
