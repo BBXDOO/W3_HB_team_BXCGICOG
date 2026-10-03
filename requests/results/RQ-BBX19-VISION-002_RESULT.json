@@ -51,10 +51,14 @@
       "review": true
     },
     "artifacts": [],
-    "time": "2026-10-03T07:03:09Z",
-    "trace_id": "2ee4127ae4d74781b8bf798b48197748"
+    "time": "2026-10-03T10:12:08Z",
+    "trace_id": "452c4a05395f4f229360cc469206ae51"
   },
   "artifact_paths": [],
+  "artifact_path": null,
+  "artifact_sha256": null,
+  "gemini_validation_event": null,
+  "orchestration_evidence": null,
   "checkin": {
     "doc_id": "CID_@R000A1",
     "entry_no": 1,
