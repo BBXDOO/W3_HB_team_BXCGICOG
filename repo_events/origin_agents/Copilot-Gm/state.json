@@ -1,0 +1,10 @@
+{
+  "interval_days": 15,
+  "next_due": "2026-10-24T11:26:01.849875Z",
+  "followups": [],
+  "receipts": {},
+  "last_review": "2026-10-09T11:26:01.849875Z",
+  "findings": [],
+  "last_log": "repo_events/origin_agents/Copilot-Gm/logs/df45f4ef93364e04a74c59ed01ebf1cd.json",
+  "last_report": "repo_events/origin_agents/Copilot-Gm/reports/a0a9c3fdffca4059ab78818b6e28743f.md"
+}

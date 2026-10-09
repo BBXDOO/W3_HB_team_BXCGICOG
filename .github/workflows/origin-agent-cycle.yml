@@ -1,0 +1,82 @@
+name: Origin agent work cycles
+
+on:
+  schedule:
+    # Wake-up only; persisted per-agent state selects 7 or 15 days.
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+  issues:
+    types: [opened, edited, reopened]
+  issue_comment:
+    types: [created, edited]
+  push:
+    branches: [refactor/v0.2]
+    paths: ['requests/*.origin.json']
+  pull_request:
+    branches: [refactor/v0.2]
+    paths:
+      - 'core/runtime/agents/**'
+      - 'core/identity/profiles/**'
+      - 'tools/origin_cycle.py'
+      - 'tests/test_origin_operations.py'
+      - '.github/workflows/origin-agent-cycle.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: w3-origin-cycle
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests -p 'test_origin_operations.py' -v
+
+  work:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/v0.2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run due or directed work
+        id: cycle
+        continue-on-error: true
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_PATH: ${{ github.event_path }}
+        run: |
+          if [ "$EVENT_NAME" = issues ] || [ "$EVENT_NAME" = issue_comment ]; then
+            python tools/origin_cycle.py --github-event "$EVENT_PATH" --event-name "$EVENT_NAME" > /tmp/origin-cycle-result.json
+          else
+            python tools/origin_cycle.py --periodic > /tmp/origin-cycle-result.json
+          fi
+      - name: Preserve actual changes and event logs
+        if: always()
+        run: |
+          git add -A
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'w3-origin-cycle'
+          git config user.email 'w3-origin-cycle@users.noreply.github.com'
+          git commit -m 'runtime: record Origin work and adaptive review cycles'
+          git push origin HEAD:refactor/v0.2
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: origin-cycle-result
+          path: /tmp/origin-cycle-result.json
+      - name: Report failed execution after preserving evidence
+        if: steps.cycle.outcome == 'failure'
+        run: exit 1

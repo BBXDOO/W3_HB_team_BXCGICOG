@@ -113,5 +113,67 @@
       "W3Lgu",
       "IDP-V2"
     ]
+  },
+  "file_capabilities": {
+    "version": "1.0",
+    "scopes": [
+      {
+        "path": "core/runtime/agents/chatgpt.py",
+        "operations": [
+          "read",
+          "list"
+        ]
+      },
+      {
+        "path": "core/identity/profiles/ChatGPT.idp.json",
+        "operations": [
+          "read",
+          "list"
+        ]
+      },
+      {
+        "path": "modules/ChatGPT/module.json",
+        "operations": [
+          "read",
+          "list"
+        ]
+      },
+      {
+        "path": "docs/architecture",
+        "operations": [
+          "read",
+          "list",
+          "create",
+          "write",
+          "append",
+          "edit",
+          "copy",
+          "move",
+          "delete"
+        ]
+      },
+      {
+        "path": "architecture",
+        "operations": [
+          "read",
+          "list",
+          "create",
+          "write",
+          "append",
+          "edit",
+          "copy",
+          "move",
+          "delete"
+        ]
+      }
+    ],
+    "review_paths": [
+      "core/runtime/agents/chatgpt.py",
+      "core/identity/profiles/ChatGPT.idp.json",
+      "modules/ChatGPT/module.json",
+      "docs/architecture",
+      "architecture"
+    ],
+    "scope_extension": "ENV authority_context.origin_scopes; request payloads cannot grant permissions"
   }
 }

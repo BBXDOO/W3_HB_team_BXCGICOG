@@ -133,6 +133,11 @@ class RuntimeAgent:
             "review": True,
         }
 
+    def execute_origin(self, task, plan, context):
+        """Shared actual I/O and scoped review; other tasks keep their executor."""
+        from .origin_operations import execute_origin
+        return execute_origin(self, task, plan, context)
+
     # -----------------------------
     # Continuity hooks (MVP)
     # -----------------------------

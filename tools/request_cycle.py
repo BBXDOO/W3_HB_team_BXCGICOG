@@ -345,6 +345,15 @@ def process(path:Path)->dict:
       "request_text": req["_request_text"],
       "observations": [req["_request_text"]],
     }
+    if req.get("request_type") in {"origin_file_operations", "origin_review"}:
+        block = re.search(r"```w3-origin\s*\n(.*?)\n```", req["_request_text"], re.S)
+        origin_payload = json.loads(block.group(1)) if block else {}
+        if not isinstance(origin_payload, dict):
+            raise ValueError("w3-origin request block must be an object")
+        # Transport operations/review paths only. Never copy authority_context.
+        for field in ("operations", "review_paths"):
+            if field in origin_payload:
+                request_context["payload"][field] = origin_payload[field]
     plan={
       "task":task,
       "kind":task,

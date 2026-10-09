@@ -1,0 +1,125 @@
+{
+  "contract_version": "1.0",
+  "module": "Copilot-Gm",
+  "task": "periodic role review",
+  "capability": "origin_review",
+  "status": "COMPLETED",
+  "mutated": true,
+  "traceable": true,
+  "review": false,
+  "artifacts": [],
+  "operations": [],
+  "findings": [],
+  "evidence": [
+    {
+      "path": "core/runtime/agents/copilot_gm.py",
+      "sha256": "b0765991c2a8bc9de801923f4cc06438c075f9d085f1f63559750bb5ad1953ff",
+      "bytes": 19369
+    },
+    {
+      "path": "core/identity/profiles/Copilot-Gm.idp.json",
+      "sha256": "acdab6f27ad2b03db6b5714f3d1850a5747b06de7ce4d2f22beba4c052b3f421",
+      "bytes": 3587
+    },
+    {
+      "path": "modules/Copilot-Gm/module.json",
+      "sha256": "dddd0e331d4199ea0b3a55d786f510c000790ed89d3fba30e65e23dfb4771dff",
+      "bytes": 1965
+    },
+    {
+      "path": "docs/guides/AGENT_TASKS.md",
+      "sha256": "815696f3974fd9b0c310f1b0817402311b4cb73b44fa60fe1eb108c9b9fc1a2e",
+      "bytes": 5962
+    },
+    {
+      "path": "docs/guides/AGENT_WORKSPACE_GUIDELINE.md",
+      "sha256": "406ff947b9c67ece0540063737576f94b379b9c0d3f57daa02b8f51b23c610a5",
+      "bytes": 7835
+    },
+    {
+      "path": "docs/guides/CHATGPT_LOCAL_FLOW_ARTIFACT.md",
+      "sha256": "765421dde0c997a3e325696b118759bee2bc78a870aa8b3d22230a00a21e0b69",
+      "bytes": 2154
+    },
+    {
+      "path": "docs/guides/GITHUB_PAGES_SETUP.md",
+      "sha256": "65b5f0b292980aee7b7fc188d4cbf79232818760e2bd60e53fa64afdc01a18b4",
+      "bytes": 8234
+    },
+    {
+      "path": "docs/guides/JSON_GUIDE.md",
+      "sha256": "809e28dd30b84f2d3e4eefe592a8d0a181cc4455165c77e0a19d3f349c3b837c",
+      "bytes": 7817
+    },
+    {
+      "path": "docs/guides/MODULE_USAGE_GUIDE.md",
+      "sha256": "315acb032692bea450a52dbcd3fb7cee6d7271dff6074bde1561c29c991f6bd9",
+      "bytes": 19899
+    },
+    {
+      "path": "docs/guides/ORIGIN_AGENT_OPERATIONS_TH.md",
+      "sha256": "97175f0df8fb8e5319064613d0172dca79754e7d71477dda60060440b8c68a82",
+      "bytes": 8718
+    },
+    {
+      "path": "docs/guides/PR_Flow_Table.md",
+      "sha256": "fd256439573daad99e5db96492a20580d4e6df19c08b94b4b1c8178a050b6fc2",
+      "bytes": 4679
+    },
+    {
+      "path": "docs/guides/QUICK_START.md",
+      "sha256": "f6c3478483de7112aaabc0d2799caaf86e6378d3096570a3c4a5ca209e3d26f7",
+      "bytes": 4481
+    },
+    {
+      "path": "docs/guides/W3API_TERMUX_GUIDE_TH.md",
+      "sha256": "6f2a52090e7538e3bfdbfdb91ad8f975a2530b77ea94c8d1e2a6559c067446c1",
+      "bytes": 12164
+    },
+    {
+      "path": "docs/guides/W3_DOCUMENT_ALLOCATOR_TH.md",
+      "sha256": "d8c41dda3ef3eac4a3956c6639f6acf9a150ba6a87408124c67e548583a4fb42",
+      "bytes": 3417
+    },
+    {
+      "path": "docs/standards/AGENT_SELF_WORKSPACE_STANDARD.md",
+      "sha256": "794fd9994c50ae41f70cbd6489911f683dc656c7a02b47c35167323d2b89d1a4",
+      "bytes": 10655
+    },
+    {
+      "path": "docs/standards/CONFIG_SSOT.md",
+      "sha256": "377c04072cf6ec720c3c98a2bfb9ed0ed4221e3fc0a3a191ca404deeb963b7e2",
+      "bytes": 391
+    },
+    {
+      "path": "docs/standards/NAMING_CONVENTION.md",
+      "sha256": "c385a13e7339a7e3ba8899f8762956b65621483930e44c09e4fa9837063dbf7e",
+      "bytes": 404
+    },
+    {
+      "path": "docs/standards/REPO_STRUCTURE.md",
+      "sha256": "4cb0963f344a46f2be7208dab744562b36c196f5e069479c6672443915a5490b",
+      "bytes": 557
+    },
+    {
+      "path": "docs/standards/referencing_standard.md",
+      "sha256": "b542868242b38ed638d519188bb4c9ba3576138a88c0586367b92614f3b987e0",
+      "bytes": 1271
+    }
+  ],
+  "coverage": "existence, byte hashes, Python/JSON syntax for declared review paths",
+  "role": "Support Authority & Governance Engine",
+  "responsibilities": [
+    "validate data and structure",
+    "generate audit-ready documents",
+    "provide governance recommendations",
+    "maintain policy consistency",
+    "fallback when other modules fail"
+  ],
+  "summary": "Copilot-Gm: origin_review COMPLETED",
+  "target_mutated": false,
+  "log_mutated": true,
+  "log_path": "repo_events/origin_agents/Copilot-Gm/logs/df45f4ef93364e04a74c59ed01ebf1cd.json",
+  "event_id": "df45f4ef93364e04a74c59ed01ebf1cd",
+  "created_at": "2026-10-09T11:26:01.860383Z"
+}

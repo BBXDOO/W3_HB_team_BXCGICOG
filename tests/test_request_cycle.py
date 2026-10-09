@@ -4,6 +4,33 @@ from concurrent.futures import ThreadPoolExecutor
 import tools.request_cycle as rc
 
 
+def test_origin_markdown_request_creates_actual_file(monkeypatch, tmp_path):
+    from core.runtime.agents import origin_operations as operations
+    original_root = operations.ROOT
+    profile = tmp_path / "core/identity/profiles/ChatGPT.idp.json"
+    profile.parent.mkdir(parents=True)
+    profile.write_bytes((original_root / "core/identity/profiles/ChatGPT.idp.json").read_bytes())
+    monkeypatch.setattr(operations, "ROOT", tmp_path)
+    for name, suffix in {"ROOT": "", "REQUESTS": "requests", "RESULTS": "requests/results",
+                         "EVENTS": "repo_events", "CHECKIN_DIR": "logs/check-in",
+                         "REQUEST_LOG_DIR": "logs/request_cycle", "REQUEST_LOCK_DIR": "locks"}.items():
+        monkeypatch.setattr(rc, name, tmp_path / suffix)
+    monkeypatch.setattr(rc, "build_context", lambda task, request: {
+        "request": request, "payload": request["payload"], "trace_id": "origin-transport-test"})
+    monkeypatch.setattr(rc, "add_memory", lambda **kwargs: None)
+    path = tmp_path / "requests/RQ-ORIGIN.md"
+    path.parent.mkdir()
+    path.write_text('---\nrequest_id: RQ-ORIGIN\ntask_keyword: design\ntarget_module: ChatGPT\n'
+                    'request_type: origin_file_operations\nrequester: BBX19\n---\n'
+                    '```w3-origin\n{"operations": [{"action": "create", "path": "ChatGPT/notes/work.md", '
+                    '"content": "actual delivered work"}]}\n```\n', encoding="utf-8")
+    result = rc.process(path)
+    assert result["runtime_result"]["status"] == "COMPLETED"
+    assert (tmp_path / "ChatGPT/notes/work.md").read_text() == "actual delivered work"
+    assert (tmp_path / "requests/results/RQ-ORIGIN_RESULT.json").exists()
+    assert (tmp_path / result["runtime_result"]["agent_result"]["log_path"]).exists()
+
+
 def test_parse_request_frontmatter(tmp_path):
     p=tmp_path/"r.md"
     p.write_text("---\nrequest_id: RQ-X\ntask_keyword: design\ntarget_module: ChatGPT\nfinal_signoff_required: true\n---\n# x\n",encoding="utf-8")

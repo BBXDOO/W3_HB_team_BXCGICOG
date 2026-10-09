@@ -59,6 +59,9 @@ class GeminiAgent(RuntimeAgent):
         ทำหน้าที่ตรวจสอบ (Validation/Cross-check) เหตุการณ์และข้อตกลง (Contract/EventField)
         โดยไม่สร้างผลข้างเคียงให้หน่วยความจำเดิม (mutated=False, traceable=True)
         """
+        origin_result = self.execute_origin(task, plan, context)
+        if origin_result is not None:
+            return origin_result
         # ดึงบริบทเป้าหมายและสภาวะแวดล้อม (ENV)
         target = context.get("target") or context.get("request", {}).get("target") or "W3"
         responsibilities = self._responsibilities(plan)

@@ -1,0 +1,10 @@
+{
+  "interval_days": 15,
+  "next_due": "2026-10-24T11:26:01.736440Z",
+  "followups": [],
+  "receipts": {},
+  "last_review": "2026-10-09T11:26:01.736440Z",
+  "findings": [],
+  "last_log": "repo_events/origin_agents/ChatGPT/logs/40bdae705fb74961b5cec81ed0fd36b9.json",
+  "last_report": "repo_events/origin_agents/ChatGPT/reports/a9ecc795edf4490ba4897441aa393fb7.md"
+}

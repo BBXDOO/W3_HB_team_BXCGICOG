@@ -315,6 +315,9 @@ line break ใน Markdown หลายแบบ แต่บรรทัดว�
         - returns traceable, non-fabricated status
         - includes reflection + continuity packet
         """
+        origin_result = self.execute_origin(task, plan, context)
+        if origin_result is not None:
+            return origin_result
         if not isinstance(plan, Mapping) or not isinstance(context, Mapping):
             return self._review_required(
                 task,

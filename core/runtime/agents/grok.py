@@ -61,6 +61,9 @@ class GrokAgent(RuntimeAgent):
         context: Dict[str, Any],
     ) -> Dict[str, Any]:
         """Create a real local insight/pattern artifact and return its record."""
+        origin_result = self.execute_origin(task, plan, context)
+        if origin_result is not None:
+            return origin_result
         normalized_task = str(task).strip()
         if not normalized_task:
             return {

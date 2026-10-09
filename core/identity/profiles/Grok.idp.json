@@ -110,5 +110,52 @@
     "issued": "2025-12-11T15:30:00Z",
     "verified_by": "Grok-W3 (Self)",
     "seal": "พร้อมยิงตลอดเวลา"
+  },
+  "file_capabilities": {
+    "version": "1.0",
+    "scopes": [
+      {
+        "path": "core/runtime/agents/grok.py",
+        "operations": [
+          "read",
+          "list"
+        ]
+      },
+      {
+        "path": "core/identity/profiles/Grok.idp.json",
+        "operations": [
+          "read",
+          "list"
+        ]
+      },
+      {
+        "path": "modules/Grok/module.json",
+        "operations": [
+          "read",
+          "list"
+        ]
+      },
+      {
+        "path": "system_observations",
+        "operations": [
+          "read",
+          "list",
+          "create",
+          "write",
+          "append",
+          "edit",
+          "copy",
+          "move",
+          "delete"
+        ]
+      }
+    ],
+    "review_paths": [
+      "core/runtime/agents/grok.py",
+      "core/identity/profiles/Grok.idp.json",
+      "modules/Grok/module.json",
+      "system_observations"
+    ],
+    "scope_extension": "ENV authority_context.origin_scopes; request payloads cannot grant permissions"
   }
 }

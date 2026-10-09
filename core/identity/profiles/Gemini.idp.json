@@ -109,5 +109,52 @@
   "signature": {
     "verified_by": "Gemini v0.2",
     "recorded_in": "W3-Permanent-Memory"
+  },
+  "file_capabilities": {
+    "version": "1.0",
+    "scopes": [
+      {
+        "path": "core/runtime/agents/gemini.py",
+        "operations": [
+          "read",
+          "list"
+        ]
+      },
+      {
+        "path": "core/identity/profiles/Gemini.idp.json",
+        "operations": [
+          "read",
+          "list"
+        ]
+      },
+      {
+        "path": "modules/Gemini/module.json",
+        "operations": [
+          "read",
+          "list"
+        ]
+      },
+      {
+        "path": "tests",
+        "operations": [
+          "read",
+          "list",
+          "create",
+          "write",
+          "append",
+          "edit",
+          "copy",
+          "move",
+          "delete"
+        ]
+      }
+    ],
+    "review_paths": [
+      "core/runtime/agents/gemini.py",
+      "core/identity/profiles/Gemini.idp.json",
+      "modules/Gemini/module.json",
+      "tests"
+    ],
+    "scope_extension": "ENV authority_context.origin_scopes; request payloads cannot grant permissions"
   }
 }

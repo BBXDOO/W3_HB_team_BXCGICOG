@@ -90,5 +90,67 @@
     "primary_channel": "governance_and_audit"
   },
   "timestamp": "2025-12-18T17:10:00Z",
-  "recommended_path": "/BBX19/modules/Copilot-Gm/idp/Copilot-Gm.idp.json"
+  "recommended_path": "/BBX19/modules/Copilot-Gm/idp/Copilot-Gm.idp.json",
+  "file_capabilities": {
+    "version": "1.0",
+    "scopes": [
+      {
+        "path": "core/runtime/agents/copilot_gm.py",
+        "operations": [
+          "read",
+          "list"
+        ]
+      },
+      {
+        "path": "core/identity/profiles/Copilot-Gm.idp.json",
+        "operations": [
+          "read",
+          "list"
+        ]
+      },
+      {
+        "path": "modules/Copilot-Gm/module.json",
+        "operations": [
+          "read",
+          "list"
+        ]
+      },
+      {
+        "path": "docs/guides",
+        "operations": [
+          "read",
+          "list",
+          "create",
+          "write",
+          "append",
+          "edit",
+          "copy",
+          "move",
+          "delete"
+        ]
+      },
+      {
+        "path": "docs/standards",
+        "operations": [
+          "read",
+          "list",
+          "create",
+          "write",
+          "append",
+          "edit",
+          "copy",
+          "move",
+          "delete"
+        ]
+      }
+    ],
+    "review_paths": [
+      "core/runtime/agents/copilot_gm.py",
+      "core/identity/profiles/Copilot-Gm.idp.json",
+      "modules/Copilot-Gm/module.json",
+      "docs/guides",
+      "docs/standards"
+    ],
+    "scope_extension": "ENV authority_context.origin_scopes; request payloads cannot grant permissions"
+  }
 }

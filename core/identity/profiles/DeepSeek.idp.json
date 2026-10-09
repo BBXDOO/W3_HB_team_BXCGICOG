@@ -1,4 +1,4 @@
- {
+{
   "schema": "W3-IDP",
   "version": "1.0",
   "module": "DeepSeek",
@@ -80,5 +80,52 @@
       "Copilot-Gm"
     ],
     "primary_channel": "logic_and_structure_support"
+  },
+  "file_capabilities": {
+    "version": "1.0",
+    "scopes": [
+      {
+        "path": "core/runtime/agents/deepseek.py",
+        "operations": [
+          "read",
+          "list"
+        ]
+      },
+      {
+        "path": "core/identity/profiles/DeepSeek.idp.json",
+        "operations": [
+          "read",
+          "list"
+        ]
+      },
+      {
+        "path": "modules/DeepSeek/module.json",
+        "operations": [
+          "read",
+          "list"
+        ]
+      },
+      {
+        "path": "docs/architecture",
+        "operations": [
+          "read",
+          "list",
+          "create",
+          "write",
+          "append",
+          "edit",
+          "copy",
+          "move",
+          "delete"
+        ]
+      }
+    ],
+    "review_paths": [
+      "core/runtime/agents/deepseek.py",
+      "core/identity/profiles/DeepSeek.idp.json",
+      "modules/DeepSeek/module.json",
+      "docs/architecture"
+    ],
+    "scope_extension": "ENV authority_context.origin_scopes; request payloads cannot grant permissions"
   }
- }
+}

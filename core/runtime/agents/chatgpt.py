@@ -44,6 +44,9 @@ class ChatGPTAgent(RuntimeAgent):
 
     def execute(self, task: str, plan: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
         """Create a real local flow draft and return its verifiable artifact record."""
+        origin_result = self.execute_origin(task, plan, context)
+        if origin_result is not None:
+            return origin_result
         normalized_task = str(task).strip()
         if not normalized_task:
             return {

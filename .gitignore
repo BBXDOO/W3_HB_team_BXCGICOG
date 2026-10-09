@@ -38,6 +38,8 @@ Thumbs.db
 # ---------------------------------------------------------
 *.log
 logs/
+!repo_events/origin_agents/*/logs/
+!repo_events/origin_agents/*/logs/*.json
 runtime_logs/
 
 # ---------------------------------------------------------

@@ -52,6 +52,9 @@ class DeepSeekAgent(RuntimeAgent):
         DeepSeek execute — ใช้ BOX และ CROLL เพื่อสร้างแผนงาน (planner‑only)
         ไม่มีการ execute จริง, ไม่ mutate, ไม่เขียนไฟล์
         """
+        origin_result = self.execute_origin(task, plan, context)
+        if origin_result is not None:
+            return origin_result
         # 1. พยายามหา PX จาก task หรือ context
         px = self._extract_px(task, context)
 

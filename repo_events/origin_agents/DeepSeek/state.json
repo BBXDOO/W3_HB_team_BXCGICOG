@@ -1,0 +1,10 @@
+{
+  "interval_days": 15,
+  "next_due": "2026-10-24T11:26:01.843415Z",
+  "followups": [],
+  "receipts": {},
+  "last_review": "2026-10-09T11:26:01.843415Z",
+  "findings": [],
+  "last_log": "repo_events/origin_agents/DeepSeek/logs/88ff0e57e9914935a1ce56ad03681137.json",
+  "last_report": "repo_events/origin_agents/DeepSeek/reports/b2ccfe72885545a4b44c5f0ab775f8d2.md"
+}
