@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from core.runtime.agents import get_agent
 from core.runtime.agents.origin_operations import ORIGINS, OriginFiles, atomic_write, digest, repository_lock
+from tools.origin_collaboration import collaborate, validate_repair_selection
 
 
 def iso(value):
@@ -61,11 +62,23 @@ def directed_work(root, module, request, now=None):
     if receipt in state["receipts"]:
         return {"status": "SKIPPED", "module": module, "reason": "request revision already handled"}
     payload = dict(request.get("payload", {}))
+    authority = {"repo_root": str(root)}
+    structure_roots = ("core/", "protocol/", "w3_api/", "cross_x/", "croll/", "workflows/", "iget/", "architecture/", "docs/architecture/")
+    structural_paths = [op[key] for op in payload.get("operations", [])
+                        if op.get("action") not in {"read", "list"}
+                        for key in ("path", "destination") if key in op and str(op[key]).startswith(structure_roots)]
+    if structural_paths and not payload.get("structural_repair"):
+        raise ValueError("Structural changes require a reviewed report and BBX19 selected paths")
+    if payload.get("structural_repair"):
+        authority["origin_scopes"] = {module: validate_repair_selection(root, module, request)}
     payload["request_type"] = "origin_file_operations" if payload.get("operations") else "origin_review"
     result = get_agent(module).execute(str(request.get("intent") or identity),
                                      {},
                                      {"payload": payload, "request": request,
-                                      "authority_context": {"repo_root": str(root)}})
+                                      "authority_context": authority})
+    result.update(collaborate(root, module, result, partner=payload.get("partner")))
+    if payload.get("structural_repair"):
+        result["repair_selection"] = payload["repair_selection"]
     # A text-only request is acknowledged/reviewed, not falsely completed.
     outstanding = result["status"] != "COMPLETED" or not payload.get("operations") or bool(payload.get("proposals"))
     if outstanding:
@@ -111,6 +124,16 @@ def periodic_work(root, module, now=None, force=False):
         return {"module": module, "status": "NOT_DUE", "next_due": state["next_due"]}
     result = get_agent(module).execute("periodic role review", {},
                                      {"request_type": "origin_review", "authority_context": {"repo_root": str(root)}})
+    try:
+        profile = OriginFiles(module, {"repo_root": str(root)}).profile
+    except (ValueError, OSError, KeyError, TypeError):
+        profile = {}
+    paths = profile.get("file_capabilities", {}).get("review_paths", [])
+    structural = any(path.startswith(("architecture/", "docs/architecture", "core/runtime", "workflows/")) for path in paths)
+    partners = profile.get("integration", {}).get("paired_modules", [])
+    partner = next((name for name in partners if name != module and name in ORIGINS), None)
+    result.update(collaborate(root, module, result, partner=partner, structural=structural))
+    result["findings"] = result.get("structure_findings", result.get("findings", []))
     pending = [item for item in state["followups"] if item["status"] == "OPEN"]
     clean = result["status"] == "COMPLETED" and not result.get("findings") and not pending
     state.update(interval_days=15 if clean else 7, last_review=iso(now),
@@ -126,7 +149,10 @@ def periodic_work(root, module, now=None, force=False):
               f"- Execution log: {result['log_path']}\n- Open follow-ups: {len(pending)}\n\n"
               "## Findings and evidence\n\n```json\n" +
               json.dumps({"findings": result.get("findings", []), "pending": pending,
-                          "evidence": result.get("evidence", []), "reason": result.get("reason")},
+                          "evidence": result.get("evidence", []), "reason": result.get("reason"),
+                          "partner": result.get("partner"), "collaboration_report": result.get("collaboration_report"),
+                          "orchestration_evidence": result.get("orchestration_evidence"),
+                          "repair_status": result.get("repair_status")},
                          ensure_ascii=False, indent=2) + "\n```\n")
     atomic_write(report_path, report.encode())
     state["last_report"] = str(report_path.relative_to(root))
