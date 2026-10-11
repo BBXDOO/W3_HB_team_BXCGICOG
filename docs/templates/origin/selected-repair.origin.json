@@ -1,0 +1,26 @@
+{
+  "request_id": "RQ-ORIGIN-SELECTED-REPAIR-REPLACE-ID",
+  "source": "BBX19",
+  "target": "ChatGPT",
+  "intent": "ซ่อมเฉพาะจุดที่ BBX19 เลือกจากรายงาน",
+  "payload": {
+    "structural_repair": true,
+    "repair_selection": {
+      "report_path": "repo_events/origin_agents/ChatGPT/collaboration/REPLACE-REPORT-review.json",
+      "report_sha256": "REPLACE-REPORT-SHA256",
+      "paths": [
+        "REPLACE-EXACT-PATH-FROM-FINDINGS"
+      ]
+    },
+    "operations": [
+      {
+        "action": "edit",
+        "path": "REPLACE-EXACT-PATH-FROM-FINDINGS",
+        "old": "REPLACE-OLD-TEXT",
+        "new": "REPLACE-NEW-TEXT",
+        "count": 1,
+        "expected_sha256": "REPLACE-CURRENT-FILE-SHA256"
+      }
+    ]
+  }
+}

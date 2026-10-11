@@ -1,0 +1,15 @@
+{
+  "request_id": "RQ-ORIGIN-CREATE-NOTE-REPLACE-ID",
+  "source": "BBX19",
+  "target": "ChatGPT",
+  "intent": "สร้างบันทึกตามเนื้อหาที่เตรียม ใช้ Orchestration เป็นคู่",
+  "payload": {
+    "operations": [
+      {
+        "action": "create",
+        "path": "ChatGPT/notes/REPLACE-NAME.md",
+        "content": "# ชื่องาน\n\nแทนด้วยเนื้อหางานจริง\n"
+      }
+    ]
+  }
+}

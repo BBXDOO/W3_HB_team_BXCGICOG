@@ -1,0 +1,14 @@
+{
+  "request_id": "RQ-ORIGIN-INTENT-REPLACE-ID",
+  "source": "BBX19",
+  "target": "ChatGPT",
+  "intent": "แทนด้วยเจตนาและผลงานที่ต้องการ เปิด follow-up เมื่อยังไม่มีขั้นตอน",
+  "payload": {
+    "proposals": [
+      {
+        "path": "REPLACE-PATH",
+        "reason": "แทนด้วยข้อเสนอที่ต้องตรวจต่อ"
+      }
+    ]
+  }
+}

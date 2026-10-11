@@ -1,0 +1,15 @@
+{
+  "request_id": "RQ-ORIGIN-READ-REPLACE-ID",
+  "source": "BBX19",
+  "target": "ChatGPT",
+  "intent": "อ่าน README และคืนหลักฐานผลอ่าน",
+  "payload": {
+    "partner": "Gemini",
+    "operations": [
+      {
+        "action": "read",
+        "path": "ChatGPT/README.md"
+      }
+    ]
+  }
+}
