@@ -38,3 +38,7 @@ README.md
 ## Notes
 
 เอกสารชุดนี้เป็น knowledge layer ของ IGET เพื่อให้มนุษย์และ AI agent เข้าใจระบบเดียวกัน โดยไม่ต้องอ่าน code ทั้งหมดก่อน
+
+## Origin structural review
+
+- [STRUCTURE_REVIEW_TH.md](STRUCTURE_REVIEW_TH.md) — ขอบเขตการตรวจ, ProofTracer, unknowns และการติดตาม defect ข้ามรอบ

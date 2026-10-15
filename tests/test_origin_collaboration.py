@@ -1,13 +1,13 @@
 import json
 import unittest
-from tests.test_origin_operations import OriginOperationsTests
+from tests import test_origin_operations as origin_fixtures
 from tools.origin_cycle import directed_work, periodic_work
 from tools.origin_collaboration import validate_repair_selection
 from core.runtime.agents.origin_operations import digest
 
 
 class CollaborationTests(unittest.TestCase):
-    setUp = OriginOperationsTests.setUp
+    setUp = origin_fixtures.OriginOperationsTests.setUp
     def test_missing_partner_uses_orchestration_receipt(self):
         result = directed_work(self.root, 'ChatGPT', {'request_id': 'PAIR', 'source': 'BBX19',
             'payload': {'partner': 'NotInstalled', 'operations': [
@@ -43,3 +43,48 @@ class CollaborationTests(unittest.TestCase):
                 'payload': {'structural_repair': True, 'operations': [
                     {'action': 'create', 'path': 'ChatGPT/fix.txt', 'content': 'no'}]}})
         self.assertFalse((self.root / 'ChatGPT/fix.txt').exists())
+
+    def test_structural_defect_repeats_once_then_resolves_to_fifteen_days(self):
+        path = self.root / 'core/identity/profiles/ChatGPT.idp.json'
+        profile = json.loads(path.read_text())
+        profile['file_capabilities']['review_paths'] = ['architecture/missing.py']
+        profile['file_capabilities']['scopes'].append({'path': 'architecture', 'operations': ['read']})
+        path.write_text(json.dumps(profile))
+        first = periodic_work(self.root, 'ChatGPT', force=True)
+        again = periodic_work(self.root, 'ChatGPT', force=True)
+        self.assertEqual(len(again['finding_tracking']), 1)
+        self.assertEqual(again['finding_tracking'][0]['occurrences'], 2)
+        self.assertEqual(again['interval_days'], 7)
+        target = self.root / 'architecture/missing.py'
+        target.parent.mkdir()
+        target.write_text('pass\n')
+        fixed = periodic_work(self.root, 'ChatGPT', force=True)
+        self.assertEqual(fixed['interval_days'], 15)
+        self.assertEqual(fixed['finding_tracking'][0]['status'], 'RESOLVED')
+        report = json.loads((self.root / fixed['collaboration_report']).read_text())
+        self.assertTrue(report['unknowns'])
+        self.assertEqual(report['iget']['signal']['color'], 'yellow')
+        self.assertTrue(report['iget']['proof']['trace'])
+        self.assertFalse(report['findings'])
+
+    def test_old_blanket_circuit_finding_does_not_lock_schedule(self):
+        from tools.origin_cycle import write_state, load_state
+        state = load_state(self.root, 'ChatGPT')
+        state['findings'] = [{'kind': 'circuit_verification_required', 'path': 'ChatGPT/state.json'}]
+        write_state(self.root, 'ChatGPT', state)
+        result = periodic_work(self.root, 'ChatGPT', force=True)
+        self.assertEqual(result['interval_days'], 15)
+        self.assertFalse(result['finding_tracking'])
+
+    def test_removing_defective_path_from_scope_keeps_weekly_followup(self):
+        path = self.root / 'core/identity/profiles/ChatGPT.idp.json'
+        profile = json.loads(path.read_text())
+        profile['file_capabilities']['review_paths'] = ['architecture/absent.py']
+        profile['file_capabilities']['scopes'].append({'path': 'architecture', 'operations': ['read']})
+        path.write_text(json.dumps(profile))
+        periodic_work(self.root, 'ChatGPT', force=True)
+        profile['file_capabilities']['review_paths'] = ['ChatGPT/state.json']
+        path.write_text(json.dumps(profile))
+        result = periodic_work(self.root, 'ChatGPT', force=True)
+        self.assertEqual(result['interval_days'], 7)
+        self.assertEqual(result['finding_tracking'][0]['status'], 'NOT_RECHECKED')

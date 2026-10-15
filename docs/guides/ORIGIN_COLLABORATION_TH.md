@@ -111,12 +111,14 @@ python tools/origin_cycle.py --periodic
 
 โมดูลที่มี review_paths ด้านโครงสร้าง (`architecture/`, `docs/architecture`, `core/runtime`, `workflows/`)
 เรียกทั้ง Orchestration และ IGET โดย IGET อ่านพาธที่ประกาศ เก็บ hash, syntax Python, รายการฟังก์ชันและชื่อที่ถูกเรียก
-ยังพิสูจน์วงจรข้ามระบบครบไม่ได้ จึงรายงาน circuit_verification_required ไว้ให้ติดตาม
-syntax ผ่านไม่เท่ากับกลไกครบ เมื่อ structural finding ยังอยู่ รอบโครงสร้างยังเป็น 7 วัน
+ยังพิสูจน์วงจรข้ามระบบครบไม่ได้ จึงแสดง UNVERIFIED ใน checks และ unknowns แยกจาก findings
+syntax ผ่านไม่เท่ากับกลไกครบ แต่ขอบเขตที่ยังไม่ตรวจไม่ถูกสร้างเป็นข้อบกพร่องอัตโนมัติ
+ผลตรวจเชื่อม ProofTracer เดิมของ IGET พร้อมเก็บ proof ทั้งชุดไว้ในรายงาน JSON
+ดูรายละเอียด [การตรวจและติดตามหลักฐาน](../../iget/docs/STRUCTURE_REVIEW_TH.md)
 
 | ผลตรวจ | รอบถัดไป |
 |---|---|
-| finding / ข้อเสนอค้าง / follow-up เปิด | 7 วัน |
+| ข้อบกพร่องจริงยังเปิดหรือยังไม่ได้ตรวจซ้ำ / ข้อเสนอค้าง / follow-up เปิด | 7 วัน |
 | ไม่มีสิ่งค้างและตรวจผ่านในขอบเขตที่กำหนด | 15 วัน |
 
 workflow ปลุกทุกวันเพื่อเช็กกำหนด ไม่ใช่ตรวจทุกโมดูลทุกวัน
@@ -136,6 +138,8 @@ GitHub schedule ใช้ workflow บน default branch ด้วย การ�
 | collaboration/W3-ORC-*.json | ประวัติ Orchestration และหลักฐานส่งมอบ |
 
 COMPLETED ใน Orchestration ส่วนนี้หมายถึงส่งรายงานเสร็จ ไม่ใช่ซ่อมเสร็จ
+state.review_findings เก็บรหัสข้อบกพร่องเดิม สถานะ OPEN / RESOLVED / NOT_RECHECKED
+รอบ 15 วันหมายถึงไม่มีเรื่องค้างในขอบเขตที่ตรวจ ไม่ได้เปลี่ยน UNVERIFIED ให้เป็นผ่าน
 mutated:true อาจมาจากเขียน log ดู target_mutated ว่าไฟล์งานเปลี่ยนจริงหรือไม่
 log ไม่คัดลอกเนื้อหาทั้งหมดที่อ่านลงไป
 

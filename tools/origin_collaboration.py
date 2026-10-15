@@ -7,7 +7,7 @@ from pathlib import Path
 
 from core.runtime.agents import get_agent
 from core.runtime.agents.origin_operations import OriginFiles, atomic_write, digest
-from iget.structure_review import inspect_structure
+from iget.structure_review import inspect_structure, finding_id
 from workflows import orchestration as orc
 
 
@@ -49,16 +49,17 @@ def collaborate(root, module, result, *, partner=None, structural=False):
         paths = fs.profile.get('file_capabilities', {}).get('review_paths', [])
         audit = inspect_structure(root, paths)
         findings += audit['findings']
-        # A structural round must carry explicit circuit evidence; byte/syntax checks
-        # alone cannot mark the intended working mechanism complete.
-        findings.append({'kind': 'circuit_verification_required', 'path': paths[0] if paths else module,
-                         'reason': 'Review actual intake, partner, support, return and result evidence; static inspection is insufficient.'})
+        # Unknown runtime coverage is carried separately, never manufactured as a defect.
     if not record['owner_log_exists']:
         findings.append({'kind': 'missing_owner_receipt', 'path': result['log_path']})
+    findings = list({finding_id(item): {**item, 'finding_id': finding_id(item)} for item in findings}.values())
     report = folder / (task['task_id'] + '-review.json')
     payload = {'owner': module, 'partner': active_partner, 'participants': [module, active_partner, 'Orchestration'] + (['IGET'] if structural else []),
                'owner_log': result['log_path'], 'partner_receipt': ref, 'iget': audit,
                'findings': findings, 'structural': structural,
+               'unknowns': audit['unknowns'] if audit else [],
+               'checks': audit['checks'] if audit else [],
+               'signal': audit['signal'] if audit else None,
                'repair_status': 'WAITING_BBX19_SELECTION' if findings else 'NO_REPAIR_PROPOSED',
                'source_mutated': False}
     atomic_write(report, (json.dumps(payload, ensure_ascii=False, indent=2) + '\n').encode())
@@ -68,7 +69,10 @@ def collaborate(root, module, result, *, partner=None, structural=False):
     snapshot = orc.save(task, folder)
     return {'partner': active_partner, 'collaboration_report': report_ref,
             'orchestration_evidence': str(snapshot.relative_to(root)), 'structure_findings': findings,
-            'structural_review': structural, 'repair_status': payload['repair_status']}
+            'structural_review': structural, 'repair_status': payload['repair_status'],
+            'review_unknowns': payload['unknowns'], 'review_checks': payload['checks'],
+            'review_signal': payload['signal'],
+            'checked_paths': audit['checked_paths'] if audit else []}
 
 
 def validate_repair_selection(root, module, request):

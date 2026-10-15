@@ -16,6 +16,8 @@ sys.path.insert(0, str(ROOT))
 from core.runtime.agents import get_agent
 from core.runtime.agents.origin_operations import ORIGINS, OriginFiles, atomic_write, digest, repository_lock
 from tools.origin_collaboration import collaborate, validate_repair_selection
+from iget.structure_review import reconcile_findings
+from iget.proof import ProofTracer
 
 
 def iso(value):
@@ -135,13 +137,32 @@ def periodic_work(root, module, now=None, force=False):
     result.update(collaborate(root, module, result, partner=partner, structural=structural))
     result["findings"] = result.get("structure_findings", result.get("findings", []))
     pending = [item for item in state["followups"] if item["status"] == "OPEN"]
-    clean = result["status"] == "COMPLETED" and not result.get("findings") and not pending
+    previous = state.get("review_findings", state.get("findings", []))
+    checked = set(result.get("checked_paths", []))
+    checked.update(item["path"] for item in result.get("evidence", []) if "path" in item)
+    checked.update(item["path"] for item in result.get("findings", []) if "path" in item)
+    # A failed read cannot establish that an older syntax defect was repaired.
+    checked.difference_update(item["path"] for item in result.get("findings", [])
+                              if item.get("kind") in {"unreadable_file", "outside_scope_link"})
+    ledger = reconcile_findings(previous, result.get("findings", []), checked, iso(now))
+    unresolved = [item for item in ledger if item["status"] != "RESOLVED"]
+    result["finding_tracking"] = ledger
+    state["review_findings"] = ledger
+    clean = result["status"] == "COMPLETED" and not unresolved and not pending
+    tracer = ProofTracer()
+    tracer.record("review_tracking", "Track defects without reopening the same issue", ledger, "iget:tracking")
+    tracer.record("review_interval", "15 days when no actual pending defect or work remains; coverage is reported separately",
+                  {"unresolved": len(unresolved), "pending": len(pending), "interval_days": 15 if clean else 7}, "iget:schedule")
+    result["review_proof"] = tracer.to_mpcp_result()
     state.update(interval_days=15 if clean else 7, last_review=iso(now),
                  next_due=iso(now + timedelta(days=15 if clean else 7)),
                  findings=result.get("findings", []), last_log=result["log_path"])
     report_id = uuid.uuid4().hex
     report_path = root / "repo_events/origin_agents" / module / "reports" / (report_id + ".md")
     report = (f"# {module} — Origin work cycle\n\n"
+              f"- Signal: {result.get('review_signal') or 'see execution status'}\n"
+              f"- Unresolved defects: {len(unresolved)}; open follow-ups: {len(pending)}\n"
+              f"- Coverage limits: {len(result.get('review_unknowns', []))}; not a runtime completion claim\n"
               f"- Role: {result.get('role', 'unknown')}\n"
               f"- Reviewed at: {iso(now)}\n- Status: {result['status']}\n"
               f"- Scope: {result.get('coverage', 'review failed')}\n"
@@ -152,7 +173,11 @@ def periodic_work(root, module, now=None, force=False):
                           "evidence": result.get("evidence", []), "reason": result.get("reason"),
                           "partner": result.get("partner"), "collaboration_report": result.get("collaboration_report"),
                           "orchestration_evidence": result.get("orchestration_evidence"),
-                          "repair_status": result.get("repair_status")},
+                          "repair_status": result.get("repair_status"),
+                          "unknowns": result.get("review_unknowns", []),
+                          "checks": result.get("review_checks", []),
+                          "signal": result.get("review_signal"),
+                          "finding_tracking": ledger, "proof": result["review_proof"]},
                          ensure_ascii=False, indent=2) + "\n```\n")
     atomic_write(report_path, report.encode())
     state["last_report"] = str(report_path.relative_to(root))
