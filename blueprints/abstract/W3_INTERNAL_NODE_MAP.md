@@ -176,7 +176,7 @@ W3
 | Knowledge Nodes | `docs/`, `knowledge/`, `architecture/`, `blueprints/` |
 | Evidence Nodes | `logs/`, `core/logs/`, `outcomes/`, `reports/`, `narrative_reports/` |
 | Utility Nodes | `tools/`, `tests/`, `examples/` |
-| Interface Nodes | `portal.html`, `docs/index.html`, `branding/`, adapters, possible public docs |
+| Interface Nodes | `SYSTEM/w3_infomation/portal.html`, `docs/index.html`, `branding/`, adapters, possible public docs |
 
 ---
 
@@ -443,7 +443,7 @@ Knowledge Nodes เชื่อมกับแทบทุก node group เพ�
 กลุ่มนี้คือโหนดที่ “มีแนวโน้ม” จะกลายเป็นจุดสัมผัสกับภายนอกในอนาคต
 
 ## 15.1 ตัวอย่าง
-- `portal.html`
+- `SYSTEM/w3_infomation/portal.html`
 - `docs/index.html`
 - `docs/index.md`
 - `branding/`
@@ -455,7 +455,7 @@ Knowledge Nodes เชื่อมกับแทบทุก node group เพ�
 
 | Node | ความเป็นไปได้ในการเปิดเผย |
 |---|---|
-| `portal.html` | สูง |
+| `SYSTEM/w3_infomation/portal.html` | สูง |
 | `docs/index.html` | สูง |
 | `branding/` | ปานกลาง-สูง |
 | `core/adapters/` | ปานกลาง |
