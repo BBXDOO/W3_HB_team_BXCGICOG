@@ -1,6 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-OUT="repo-structure.html"
+OUT="SYSTEM/w3_infomation/repo-structure.html"
 
 {
   echo '<!doctype html><html><head><meta charset="utf-8">'
