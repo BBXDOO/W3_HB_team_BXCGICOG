@@ -104,3 +104,21 @@ GITHUB_TOKEN หรือ GH_TOKEN
 2. permission ไม่พอ
 3. scoring/classification ไม่ตรงสถานการณ์
 ```
+
+
+## IGET ขึ้น skipped บน Draft PR
+
+สาเหตุที่พบใน PR #293: job เคยกำหนดให้ทำงานเฉพาะ PR ที่ draft=false
+จึงข้ามทั้ง job โดยไม่มีขั้นตอน runtime หรือรายงาน IGET
+แก้ให้ตรวจ Draft PR ได้ตั้งแต่เปิดและเมื่อมีการอัปเดต commit แล้ว
+การเป็น Draft ยังไม่อนุญาต merge; IGET ทำหน้าที่ส่งสัญญาณประกอบการพิจารณาตามเดิม
+
+run เก่าที่ถูกข้ามยังคงเป็นประวัติเดิม การแก้ workflow ไม่เปลี่ยนผลย้อนหลัง
+เพื่อวิเคราะห์ PR ที่เปิดอยู่ด้วย workflow ล่าสุด ให้ Run workflow โดยเลือกสาขาที่มีการแก้
+และใส่ pr_number หรือใช้ GitHub CLI ที่เข้าสู่ระบบแล้ว:
+
+```bash
+gh workflow run iget.yml --repo BBXDOO/W3_HB_team_BXCGICOG --ref refactor/v0.2 -f pr_number=293
+```
+
+การ rerun run เก่าอาจยังใช้เงื่อนไขเดิม ให้ใช้ manual dispatch ข้างต้นหรือ PR synchronize ใหม่

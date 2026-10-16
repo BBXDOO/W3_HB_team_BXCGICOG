@@ -27,3 +27,12 @@ def test_workflow_has_comment_permissions_and_disables_inline_by_default():
     assert "issues: write" in WORKFLOW
     assert 'IGET_INLINE_COMMENTS: "false"' in WORKFLOW
     assert "python -m pytest iget/tests -q" in WORKFLOW
+
+
+def test_draft_prs_receive_analysis_before_ready_for_review():
+    # Regression: PR #293 had no job steps because a draft-only gate skipped it.
+    job_header = WORKFLOW.split("  iget:", 1)[1].split("    steps:", 1)[0]
+    assert "pull_request.draft" not in job_header
+    assert "    if:" not in job_header
+    assert "      - opened" in WORKFLOW
+    assert "      - synchronize" in WORKFLOW

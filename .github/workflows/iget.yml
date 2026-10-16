@@ -27,7 +27,7 @@ jobs:
   iget:
     name: Analyze PR with IGET v9
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false
+    # Draft PRs also need feedback; readiness is not a prerequisite for analysis.
     timeout-minutes: 5
 
     steps:
