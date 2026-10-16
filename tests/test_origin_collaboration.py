@@ -88,3 +88,74 @@ class CollaborationTests(unittest.TestCase):
         result = periodic_work(self.root, 'ChatGPT', force=True)
         self.assertEqual(result['interval_days'], 7)
         self.assertEqual(result['finding_tracking'][0]['status'], 'NOT_RECHECKED')
+
+    def test_existing_architecture_permission_needs_no_repair_report(self):
+        profile_path = self.root / 'core/identity/profiles/ChatGPT.idp.json'
+        profile = json.loads(profile_path.read_text())
+        profile['file_capabilities']['scopes'].append({'path': 'docs/architecture', 'operations': ['create', 'read']})
+        profile_path.write_text(json.dumps(profile))
+        result = directed_work(self.root, 'ChatGPT', {'request_id': 'ORDINARY', 'source': 'BBX19',
+            'payload': {'operations': [{'action': 'create', 'path': 'docs/architecture/new.md', 'content': '# Design\n'}]}})
+        self.assertEqual(result['status'], 'COMPLETED')
+        self.assertTrue((self.root / 'docs/architecture/new.md').exists())
+        self.assertFalse(result['support_pending'])
+
+    def test_orchestration_uses_existing_tools_and_records_support_return(self):
+        result = directed_work(self.root, 'ChatGPT', {'request_id': 'TOOLS', 'source': 'BBX19',
+            'payload': {'operations': [{'action': 'create', 'path': 'ChatGPT/note.md', 'content': '# Real note\n'}]}})
+        task = json.loads((self.root / result['orchestration_evidence']).read_text())
+        events = [entry['event'] for entry in task['history']]
+        self.assertIn('ASSISTING', events)
+        self.assertIn('RETURNED', events)
+        support = json.loads((self.root / result['support_evidence']).read_text())
+        tools = {entry['tool'] for entry in support['tools_used']}
+        self.assertIn('tools/validate_metadata.py', tools)
+        self.assertIn('tools/check_portable_paths.py', tools)
+        self.assertTrue(support['resolved'])
+
+    def test_failed_owner_work_remains_blocked_with_diagnostics(self):
+        result = directed_work(self.root, 'ChatGPT', {'request_id': 'BLOCKED', 'source': 'BBX19',
+            'payload': {'operations': [{'action': 'read', 'path': 'ChatGPT/absent.txt'}]}})
+        self.assertEqual(result['status'], 'FAILED')
+        self.assertTrue(result['support_pending'])
+        task = json.loads((self.root / result['orchestration_evidence']).read_text())
+        self.assertEqual(task['status'], 'BLOCKED')
+        support = json.loads((self.root / result['support_evidence']).read_text())
+        self.assertTrue(support['owner_reason'])
+        self.assertFalse(support['resolved'])
+        self.assertTrue(support['next_steps'])
+
+    def test_tool_finding_creates_followup_without_rewriting_owner_output(self):
+        content = 'approved-by: BBX19\n'
+        result = directed_work(self.root, 'ChatGPT', {'request_id': 'METADATA', 'source': 'BBX19',
+            'payload': {'operations': [{'action': 'create', 'path': 'ChatGPT/note.md', 'content': content}]}})
+        self.assertEqual((self.root / 'ChatGPT/note.md').read_text(), content)
+        self.assertTrue(result['support_pending'])
+        from tools.origin_cycle import load_state
+        self.assertEqual(len(load_state(self.root, 'ChatGPT')['followups']), 1)
+
+    def test_support_checks_final_state_after_create_move_delete(self):
+        result = directed_work(self.root, 'ChatGPT', {'request_id': 'FINAL-STATES', 'source': 'BBX19',
+            'payload': {'operations': [
+                {'action': 'create', 'path': 'ChatGPT/first.txt', 'content': 'value'},
+                {'action': 'move', 'path': 'ChatGPT/first.txt', 'destination': 'ChatGPT/last.txt',
+                 'expected_sha256': digest(b'value')},
+                {'action': 'delete', 'path': 'ChatGPT/last.txt', 'expected_sha256': digest(b'value')}]}})
+        self.assertFalse(result['support_pending'])
+        support = json.loads((self.root / result['support_evidence']).read_text())
+        checks = [item for item in support['checks'] if item['check'] == 'final_file_state']
+        self.assertEqual(len(checks), 2)
+        self.assertTrue(all(item['actual_sha256'] is None for item in checks))
+
+    def test_support_detects_changed_artifact_without_claiming_completion(self):
+        from tools.origin_collaboration import collaborate
+        from core.runtime.agents import get_agent
+        result = get_agent('ChatGPT').execute('create', {}, {'payload': {
+            'request_type': 'origin_file_operations', 'operations': [
+                {'action': 'create', 'path': 'ChatGPT/file.txt', 'content': 'original'}]},
+            'authority_context': {'repo_root': str(self.root)}})
+        (self.root / 'ChatGPT/file.txt').write_text('changed')
+        check = collaborate(self.root, 'ChatGPT', result)
+        self.assertTrue(check['support_pending'])
+        support = json.loads((self.root / check['support_evidence']).read_text())
+        self.assertEqual(support['findings'][0]['kind'], 'output_evidence_mismatch')

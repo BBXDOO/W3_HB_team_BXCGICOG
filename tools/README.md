@@ -255,3 +255,9 @@ The repository includes a GitHub Actions workflow at `.github/workflows/validate
 - .gitkeep files are excluded from empty file checks as they are intentionally empty
 - The .git directory is excluded from all checks
 - Python jsonschema library supports all JSON Schema versions including 2020-12
+
+## Origin / Orchestration tool support
+
+`origin_support.py` เป็น adapter ให้ Orchestration เรียกเครื่องมือเดิมใน tools/
+เพื่อช่วยตรวจผลงาน Origin ตามขอบเขต ไม่ใช่การให้สิทธิแก้ไฟล์ทุกพาธ
+ดู [คู่มือภาษาไทย](../docs/guides/ORIGIN_TOOLS_SUPPORT_TH.md) สำหรับเครื่องมือที่เชื่อมแล้ว หลักฐาน และสถานะงานค้าง

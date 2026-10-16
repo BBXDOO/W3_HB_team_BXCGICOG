@@ -65,12 +65,8 @@ def directed_work(root, module, request, now=None):
         return {"status": "SKIPPED", "module": module, "reason": "request revision already handled"}
     payload = dict(request.get("payload", {}))
     authority = {"repo_root": str(root)}
-    structure_roots = ("core/", "protocol/", "w3_api/", "cross_x/", "croll/", "workflows/", "iget/", "architecture/", "docs/architecture/")
-    structural_paths = [op[key] for op in payload.get("operations", [])
-                        if op.get("action") not in {"read", "list"}
-                        for key in ("path", "destination") if key in op and str(op[key]).startswith(structure_roots)]
-    if structural_paths and not payload.get("structural_repair"):
-        raise ValueError("Structural changes require a reviewed report and BBX19 selected paths")
+    # Only work explicitly identified as a repair from a review needs selection.
+    # Ordinary work retains its existing IDP/ENV permissions regardless of folder.
     if payload.get("structural_repair"):
         authority["origin_scopes"] = {module: validate_repair_selection(root, module, request)}
     payload["request_type"] = "origin_file_operations" if payload.get("operations") else "origin_review"
@@ -78,17 +74,18 @@ def directed_work(root, module, request, now=None):
                                      {},
                                      {"payload": payload, "request": request,
                                       "authority_context": authority})
-    result.update(collaborate(root, module, result, partner=payload.get("partner")))
+    result.update(collaborate(root, module, result, partner=payload.get("partner"), authority_context=authority))
     if payload.get("structural_repair"):
         result["repair_selection"] = payload["repair_selection"]
     # A text-only request is acknowledged/reviewed, not falsely completed.
-    outstanding = result["status"] != "COMPLETED" or not payload.get("operations") or bool(payload.get("proposals"))
+    outstanding = result["status"] != "COMPLETED" or result.get("support_pending", False) or not payload.get("operations") or bool(payload.get("proposals"))
     if outstanding:
         state["followups"].append({"request_id": identity, "receipt": receipt,
                                    "status": "OPEN", "source": request.get("source"),
                                    "intent": request.get("intent"), "result_log": result["log_path"],
                                    "proposals": payload.get("proposals", []),
-                                   "reason": result.get("reason") or "Intent needs explicit execution steps",
+                                   "reason": result.get("reason") or ("Orchestration support remains blocked" if result.get("support_pending") else "Intent needs explicit execution steps"),
+                                   "support_evidence": result.get("support_evidence"),
                                    "created_at": iso(now)})
         state["interval_days"] = 7
         sooner = iso(now + timedelta(days=7))
@@ -174,6 +171,8 @@ def periodic_work(root, module, now=None, force=False):
                           "partner": result.get("partner"), "collaboration_report": result.get("collaboration_report"),
                           "orchestration_evidence": result.get("orchestration_evidence"),
                           "repair_status": result.get("repair_status"),
+                          "support_evidence": result.get("support_evidence"),
+                          "support_pending": result.get("support_pending", False),
                           "unknowns": result.get("review_unknowns", []),
                           "checks": result.get("review_checks", []),
                           "signal": result.get("review_signal"),

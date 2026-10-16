@@ -9,9 +9,10 @@ from core.runtime.agents import get_agent
 from core.runtime.agents.origin_operations import OriginFiles, atomic_write, digest
 from iget.structure_review import inspect_structure, finding_id
 from workflows import orchestration as orc
+from tools.origin_support import inspect_origin_work
 
 
-def collaborate(root, module, result, *, partner=None, structural=False):
+def collaborate(root, module, result, *, partner=None, structural=False, authority_context=None):
     root = Path(root).resolve()
     task = orc.new_task('W3-ORC-20261011-' + str(uuid.uuid4().int), 'REPORT', 'NORMAL',
                         {'module': module, 'tier': 1}, {'owner_log': result['log_path']},
@@ -43,6 +44,20 @@ def collaborate(root, module, result, *, partner=None, structural=False):
     orc.advance(task, 'ACKNOWLEDGED', actor=active_partner, detail='repository receipt inspected', evidence=ref)
     orc.advance(task, 'IN_PROGRESS', actor=active_partner, detail='inspect evidence and unresolved work')
     findings = list(result.get('findings', []))
+    support = None
+    if active_partner == 'Orchestration' or result.get('status') != 'COMPLETED':
+        task['blocker'] = {'kind': 'partner_unavailable' if result.get('status') == 'COMPLETED' else 'owner_work_incomplete',
+                           'owner_log': result['log_path'], 'reason': result.get('reason')}
+        orc.advance(task, 'BLOCKED', actor='Orchestration', detail=task['blocker']['kind'])
+        support_report = folder / (task['task_id'] + '-support.json')
+        orc.assist(task, kind='TOOL', name='W3 repository tools support', actor='Orchestration',
+                   handler=lambda _: inspect_origin_work(root, module, result, support_report, authority=authority_context))
+        if task['support']:
+            support = task['support'][-1]['result']
+            findings += support.get('diagnostics', {}).get('findings', [])
+        if task['status'] == 'RETURNED':
+            orc.advance(task, 'IN_PROGRESS', actor=module, detail='support evidence returned to owner',
+                        evidence=support['evidence'])
     audit = None
     if structural:
         fs = OriginFiles(module, {'repo_root': str(root)})
@@ -61,18 +76,22 @@ def collaborate(root, module, result, *, partner=None, structural=False):
                'checks': audit['checks'] if audit else [],
                'signal': audit['signal'] if audit else None,
                'repair_status': 'WAITING_BBX19_SELECTION' if findings else 'NO_REPAIR_PROPOSED',
-               'source_mutated': False}
+               'source_mutated': False, 'support': support,
+               'support_status': task['status'] if support is not None or task.get('blocker') else 'NOT_REQUIRED'}
     atomic_write(report, (json.dumps(payload, ensure_ascii=False, indent=2) + '\n').encode())
     report_ref = str(report.relative_to(root))
-    orc.advance(task, 'VERIFYING', actor='Orchestration', detail='review report persisted', evidence=report_ref)
-    orc.advance(task, 'COMPLETED', actor='Orchestration', detail='report delivered; repairs remain separate')
+    if task['status'] != 'BLOCKED':
+        orc.advance(task, 'VERIFYING', actor='Orchestration', detail='review report persisted', evidence=report_ref)
+        orc.advance(task, 'COMPLETED', actor='Orchestration', detail='report delivered; repairs remain separate')
     snapshot = orc.save(task, folder)
     return {'partner': active_partner, 'collaboration_report': report_ref,
             'orchestration_evidence': str(snapshot.relative_to(root)), 'structure_findings': findings,
             'structural_review': structural, 'repair_status': payload['repair_status'],
             'review_unknowns': payload['unknowns'], 'review_checks': payload['checks'],
             'review_signal': payload['signal'],
-            'checked_paths': audit['checked_paths'] if audit else []}
+            'checked_paths': audit['checked_paths'] if audit else [],
+            'support_pending': task['status'] == 'BLOCKED',
+            'support_evidence': support['evidence'] if support else None}
 
 
 def validate_repair_selection(root, module, request):

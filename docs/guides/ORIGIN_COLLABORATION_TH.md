@@ -97,7 +97,11 @@ sha256sum ChatGPT/notes/work.txt
 ## 5. พาธเนอร์และรอบตรวจ
 
 หลัง Origin คืน log ให้คู่ที่ระบุอ่าน log จริงด้วยสิทธิอ่านเฉพาะ receipt
-หากไม่มีคู่หรือคู่ไม่ผ่าน ใช้ Orchestration ตรวจหลักฐานและทำรายงานแทน
+หากไม่มีคู่หรือคู่ไม่ผ่าน ใช้ Orchestration เรียกเครื่องมือใน tools/ ผ่าน assist()
+ตัวเชื่อมตรวจผลใช้เครื่องมือเดิมตามชนิดไฟล์: check_portable_paths, validate_metadata,
+validate_modules พร้อมตรวจ hash/การมีอยู่ของผลงานตาม receipt และคืนหลักฐานให้เจ้าของงาน
+ถ้าเจ้าของงานล้มเหลวหรือผลตรวจมีข้อบกพร่อง Orchestration คง BLOCKED และเปิด follow-up
+รายละเอียดอยู่ใน [คู่มือการใช้ tools สนับสนุน Origin](ORIGIN_TOOLS_SUPPORT_TH.md)
 การส่งมอบนี้เกิดในรีโป้ ไม่ใช่การแจ้งแชทบอทภายนอก
 การตรวจของคู่ปัจจุบันยังเป็นการอ่าน/syntax/hash ของ receipt ไม่ได้ประเมินคุณภาพงานทุกด้าน
 
@@ -156,8 +160,9 @@ log ไม่คัดลอกเนื้อหาทั้งหมดที�
 sha256sum repo_events/origin_agents/ChatGPT/collaboration/ชื่อรายงาน-review.json
 ```
 
-การแก้ core/, protocol/, w3_api/, cross_x/, croll/, workflows/, iget/, architecture/, docs/architecture/
-ใน directed Origin flow ต้องใช้ structural_repair พร้อมการเลือกจากรายงาน
+เฉพาะใบงานซ่อมที่มาจากรอบตรวจและระบุ structural_repair ต้องมีการเลือกจากรายงาน
+งานปกติที่มีสิทธิตาม IDP/ENV ทำได้โดยไม่ต้องสร้างรายงานซ่อมเพิ่ม ไม่แบ่งสิทธิด้วยชื่อโฟลเดอร์
+การไม่ระบุ structural_repair ไม่ได้ให้สิทธิเกิน IDP/ENV
 รายงาน hash เปลี่ยน, พาธไม่อยู่ใน findings หรือ operation เกินพาธที่เลือก จะไม่เริ่มซ่อม
 ถ้า finding ไม่ละเอียดพอ ต้องตรวจและทำรายงานให้ชัดก่อน ไม่ขยายสิทธิด้วยการคาดเดา
 
