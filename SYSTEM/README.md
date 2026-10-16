@@ -35,7 +35,7 @@ W3 Hybrid System Full Checklist (Branch: refactor/v0.2)
 | W3Lgu           | protocol/w3lgu/README.md | Operational Manual, Adapters | Active | ☐ |
 | W3db            | protocol/w3db/W3DB_MANAUL.md | CRUD Tests, Flow Tests | Active | ☐ |
 | W3‑API          | architecture/W3APIFlowDiagram.md, docs/API.md | reports/W3APICROSSPROOF.md | Active | ☐ |
-| WX              | BBX19/notes/LIBRARYWX.md, W3NET.md, W3FULL.html | Civilization Snapshot, WX Layer | Active | ☐ |
+| WX              | BBX19/notes/LIBRARYWX.md, repo_events/W3NET.md, SYSTEM/w3_infomation/W3_FULL.html | Civilization Snapshot, WX Layer | Active | ☐ |
 
 ---
 
