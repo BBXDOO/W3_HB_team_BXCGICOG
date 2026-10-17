@@ -1,0 +1,15 @@
+[submodule "xrea/third_party/jadx-headless-mcp"]
+	path = w3_tool_store/xrea/third_party/jadx-headless-mcp
+	url = https://github.com/1013503897/jadx-headless-mcp.git
+[submodule "xrea/third_party/binwalk"]
+	path = w3_tool_store/xrea/third_party/binwalk
+	url = https://github.com/ReFirmLabs/binwalk.git
+[submodule "xrea/third_party/unblob"]
+	path = w3_tool_store/xrea/third_party/unblob
+	url = https://github.com/onekey-sec/unblob.git
+[submodule "xrea/third_party/ghidra-nativeaot"]
+	path = w3_tool_store/xrea/third_party/ghidra-nativeaot
+	url = https://github.com/Washi1337/ghidra-nativeaot.git
+[submodule "xrea/third_party/wakaru"]
+	path = w3_tool_store/xrea/third_party/wakaru
+	url = https://github.com/pionxzh/wakaru.git
