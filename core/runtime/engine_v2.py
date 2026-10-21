@@ -120,6 +120,7 @@ def validate_agent_result(module_name: str, agent_result: Dict[str, Any]) -> Dic
 def run(task, request=None, *, authority_context=None):
     started = time.time()
     context = {"trace_id": trace_id()}
+    result = None
     try:
         plan = execution_plan(task)
         context = build_context(task, request, authority_context=authority_context)
@@ -163,7 +164,14 @@ def run(task, request=None, *, authority_context=None):
         add_memory(
             source=plan["run_with"],
             topic=task,
-            content=_memory_content(agent_result),
+            content=_memory_content({
+                **agent_result, "status": status,
+                "reported_status": agent_result.get("status"),
+                "result_validation": result_validation,
+                "trace_id": context["trace_id"],
+                "task_id": context["request"].get("task_id"),
+                "source_id": context["request"].get("source_id"),
+            }),
             tags=["runtime", "success" if successful else status.lower()],
             score=5 if successful else 1,
             record_type="runtime_result",
@@ -180,6 +188,13 @@ def run(task, request=None, *, authority_context=None):
             "trace_id": context["trace_id"],
         }
 
+        if result is not None:
+            # Executor side effects may already exist when memory persistence fails.
+            error_result.update(
+                module=result["module"], agent_result=result["agent_result"],
+                artifacts=result["artifacts"], result_validation=result["result_validation"],
+                execution_status=result["status"],
+            )
         try:
             add_memory(
                 source="runtime",

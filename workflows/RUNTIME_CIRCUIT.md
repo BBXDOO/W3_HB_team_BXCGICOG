@@ -48,15 +48,20 @@ The real ChatGPT local executor creates a Markdown draft, not a remote model
 response. The host must authenticate human identity and review evidence. After
 review, call `review_stage(task, stage, human=..., evidence=...)`; it independently
 runs the verifier again. An unresolved or STOP result cannot be approved through
-this method. A final verified stage can then be closed with `orc.advance` and
-saved with `orc.save`. For a non-final reviewed stage, queue the next explicit
-stage; entering the next execution clears the previous approval.
+this method. Then call `circuit.continue_work(task)` to advance through the saved
+remaining plan or close its final stage. The plan cursor, exact stage parameters,
+verification state and result references are saved in the optional
+`runtime_circuit` task field, covered by the task schema. Reload the task JSON
+and call `continue_work` after a host restart. A completed stage is not replayed.
+Entering the next execution clears the previous approval; when human review is
+required, each subsequent result needs a fresh approval. The original plan and
+any request corrections remain in separate evidence files.
 
 ## Multiple modules and support
 
 Pass a finite list of task keys from `modules/registry.json`. A supplied `module`
-must match the registry. The previous agent result is the next stage's default
-payload, preserving supplied W3Lgu identity and routing fields. Explicit payloads
+must match the registry. The task payload is the first stage's default input.
+The previous agent result is the next stage's default payload, preserving supplied W3Lgu identity and routing fields. Explicit payloads
 can override this transport. Each call gets its own engine trace ID and shares
 the Orchestration task ID/source ID. A module's `next` never triggers arbitrary
 execution: only stages explicitly authorized in the supplied plan run.
@@ -68,8 +73,16 @@ human gate. A bad runtime contract or failed postcondition blocks the task.
 
 For a blocker, call `circuit.assist` with a host-selected SPECIALIST or TOOL
 adapter. Resolved support returns the task to RETURNED. Explicitly retry the
-same stage with `execute_stage`; no automatic replay of potentially mutating
-work occurs. Execute remaining stages explicitly after verification.
+same stage and then finish the saved remaining plan with `continue_work`.
+The current stage's original effective request is retained on retry. Support
+adapters receive deep copies and their output is saved as evidence, so they
+cannot change the original task's destination through a mutable reference.
+
+An unresolved REVIEW_REQUIRED/STOP result cannot be approved as if it succeeded.
+For corrected inputs, use `revise_stage(task, request=..., actor=..., evidence=...)`
+then `continue_work`. This keeps the registered job and module fixed and records
+both old and new request parameters before queuing a retry. The trusted host
+must reconcile any earlier side effects before authorizing a retry.
 
 ## Persistence and limits
 
@@ -89,8 +102,16 @@ is surfaced to the caller; do not retry execution without reconciliation.
 
 The engine now returns FAILED for routing/context exceptions, reports secondary
 memory-write errors, and downgrades invalid successful contracts before scoring
-memory. Contracts for non-W3Lgu modules retain their existing validation scope.
+memory. Stored memory includes both the effective `status` and the executor's
+`reported_status`, plus task and trace correlation. If memory writing fails after
+execution, the FAILED response retains the executor result and artifacts so the
+host can reconcile existing side effects. Contracts for non-W3Lgu modules retain
+their existing validation scope.
+
+The bridge preserves `request.target` as the subject of work (for example W3API);
+it does not replace that subject with the executor's name. Invalid stage requests
+are rejected before any task state is changed or execution is attempted.
 
 ## Validation
 
-`python -m pytest tests/test_runtime_circuit.py tests/test_orchestration.py tests/test_chatgpt_flow_artifact.py tests/test_runtime_agent_execution.py tests/test_origin_agent_runtime_contracts.py -q`
+`python -m pytest tests/test_runtime_circuit.py tests/test_runtime_circuit_review.py tests/test_orchestration.py tests/test_chatgpt_flow_artifact.py tests/test_runtime_agent_execution.py tests/test_origin_agent_runtime_contracts.py -q`
