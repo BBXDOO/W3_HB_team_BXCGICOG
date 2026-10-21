@@ -9,7 +9,7 @@
 - substitution: `false`
 - task: `vision`
 - status: `REVIEW_REQUIRED`
-- trace_id: `3095f99edee745229dbe89ef055445e5`
+- trace_id: `1546053823af49108f47c41580bb6437`
 - result: `requests/results/RQ-BBX19-VISION-002_RESULT.json`
 - final_signoff_required: `true`
 - closed: `false`
