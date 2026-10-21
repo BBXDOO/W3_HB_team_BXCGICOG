@@ -64,6 +64,29 @@ def validate(task: dict[str, Any]) -> None:
     if type(task.get("mutated")) is not bool or type(task.get("human_review_required")) is not bool:
         raise ValueError("mutated and human_review_required must be booleans")
 
+    circuit = task.get("runtime_circuit")
+    if "runtime_circuit" in task:
+        if not isinstance(circuit, dict) or type(circuit.get("version")) is not int or circuit["version"] != 1:
+            raise ValueError("invalid runtime circuit version")
+        required = {"version", "stages", "index", "effective_stage", "result_ref", "previous_result_ref", "verified"}
+        if set(circuit) != required:
+            raise ValueError("invalid runtime circuit fields")
+        stages = circuit.get("stages")
+        index = circuit.get("index")
+        if not isinstance(stages, list) or not stages or type(index) is not int or not 0 <= index < len(stages):
+            raise ValueError("invalid runtime circuit stage index")
+        if any(not isinstance(stage, dict) or not isinstance(stage.get("task"), str)
+               or not isinstance(stage.get("module"), str) or not isinstance(stage.get("request"), dict)
+               for stage in stages):
+            raise ValueError("invalid saved runtime stages")
+        if type(circuit.get("verified")) is not bool:
+            raise ValueError("runtime circuit verified must be boolean")
+        if circuit.get("effective_stage") is not None and not isinstance(circuit["effective_stage"], dict):
+            raise ValueError("invalid effective runtime stage")
+        for key in ("result_ref", "previous_result_ref"):
+            if circuit.get(key) is not None and not isinstance(circuit[key], str):
+                raise ValueError("invalid runtime circuit evidence reference")
+
 
 def new_task(task_id: str, kind: str, priority: str, origin: dict[str, Any], payload: dict[str, Any],
              *, source_id: str | None = None, human_review_required: bool = False) -> dict[str, Any]:
@@ -98,6 +121,9 @@ def advance(task: dict[str, Any], status: str, *, actor: str, detail: str,
         if last["event"] != "VERIFYING" or not any(item.get("at") == last["at"] and item.get("ref") for item in task["evidence"]):
             raise ValueError("verified stage evidence required before continuation")
     if status == "COMPLETED":
+        circuit = task.get("runtime_circuit")
+        if circuit and (not circuit["verified"] or circuit["index"] != len(circuit["stages"]) - 1):
+            raise ValueError("all runtime stages must be verified before completion")
         verifying_at = next((i for i in range(len(task["history"]) - 1, -1, -1)
                              if task["history"][i]["event"] == "VERIFYING"), None)
         if verifying_at is None or not any(isinstance(item.get("ref"), str) and item["ref"].strip()
