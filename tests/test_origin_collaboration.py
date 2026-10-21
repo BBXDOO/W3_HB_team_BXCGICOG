@@ -8,12 +8,17 @@ from core.runtime.agents.origin_operations import digest
 
 class CollaborationTests(unittest.TestCase):
     setUp = origin_fixtures.OriginOperationsTests.setUp
-    def test_missing_partner_uses_orchestration_receipt(self):
+    def test_missing_partner_selects_capable_replacement_and_records_receipt(self):
         result = directed_work(self.root, 'ChatGPT', {'request_id': 'PAIR', 'source': 'BBX19',
             'payload': {'partner': 'NotInstalled', 'operations': [
                 {'action': 'create', 'path': 'ChatGPT/paired.txt', 'content': 'real'}]}})
-        self.assertEqual(result['partner'], 'Orchestration')
-        self.assertTrue((self.root / result['orchestration_evidence']).is_file())
+        self.assertNotIn(result['partner'], ('Orchestration', 'ChatGPT', 'NotInstalled'))
+        task = json.loads((self.root / result['orchestration_evidence']).read_text())
+        receipt = json.loads((self.root / task['route'][0]['notification']).read_text())
+        self.assertEqual(receipt['requested_partner'], 'NotInstalled')
+        self.assertEqual(receipt['partner_selection']['selected'], result['partner'])
+        self.assertEqual(receipt['partner_result']['capability'], 'origin_review')
+        self.assertTrue(receipt['partner_result']['evidence'])
 
     def test_structural_round_has_iget_and_waits_for_selection(self):
         path = self.root / 'core/identity/profiles/ChatGPT.idp.json'

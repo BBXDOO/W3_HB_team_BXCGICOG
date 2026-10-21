@@ -20,12 +20,33 @@ def collaborate(root, module, result, *, partner=None, structural=False, authori
     orc.advance(task, 'INSPECTING', actor='Orchestration', detail='inspect Origin work receipt')
     orc.advance(task, 'QUEUED', actor='Orchestration', detail='select partner')
     partner_result = None
+    requested_partner = partner
+    partner_selection = None
+    if partner and partner not in {module, 'Orchestration'}:
+        from tools.orchestration_support import default_catalog
+        from core.runtime.agents.origin_operations import ORIGINS
+        delegated = {'repo_root': str(root), 'origin_scopes': {
+            name: [{'path': result['log_path'], 'operations': ['read']}] for name in ORIGINS}}
+        candidate, rejected = default_catalog(root, authority_context=delegated).select(
+            'file_review', kind='SPECIALIST', preferred=partner, owner=module,
+            request={'paths': [result['log_path']]})
+        partner_selection = {'requested': partner, 'selected': candidate.module if candidate else None,
+                             'capability': 'file_review', 'rejected': rejected}
+        partner = candidate.module if candidate else None
     if partner and partner != module:
         try:
+            # The replacement gets only read access to the owner's receipt.
+            from core.runtime.agents.origin_operations import OriginFiles
+            scope = {'repo_root': str(root), 'origin_scopes': {
+                partner: [{'path': result['log_path'], 'operations': ['read']}]}}
             partner_result = get_agent(partner).execute('Origin partner review', {},
                 {'request_type': 'origin_review', 'review_paths': [result['log_path']],
-                 'authority_context': {'repo_root': str(root), 'origin_scopes': {
-                     partner: [{'path': result['log_path'], 'operations': ['read']}]}}})
+                 'authority_context': scope})
+            actual = OriginFiles(partner, scope).review([result['log_path']])
+            if (partner_result.get('module') != partner or actual['findings'] or
+                    not actual['evidence'] or actual['evidence'] != partner_result.get('evidence')):
+                partner_result = {**partner_result, 'status': 'FAILED',
+                                  'reason': 'Partner receipt review could not be verified'}
         except (ValueError, KeyError, OSError) as exc:
             partner_result = {'status': 'FAILED', 'reason': str(exc)}
     active_partner = partner if partner_result and partner_result.get('status') == 'COMPLETED' else 'Orchestration'
@@ -33,7 +54,7 @@ def collaborate(root, module, result, *, partner=None, structural=False, authori
     if not folder.resolve().is_relative_to(root):
         raise ValueError('Collaboration directory escapes repository')
     receipt = folder / (task['task_id'] + '-partner.json')
-    record = {'owner': module, 'partner': active_partner, 'requested_partner': partner,
+    record = {'owner': module, 'partner': active_partner, 'requested_partner': requested_partner, 'partner_selection': partner_selection,
               'partner_result': partner_result, 'owner_log': result['log_path'],
               'owner_log_exists': (root / result['log_path']).is_file()}
     atomic_write(receipt, (json.dumps(record, ensure_ascii=False, indent=2) + '\n').encode())
