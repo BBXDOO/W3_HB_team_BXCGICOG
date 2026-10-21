@@ -1,6 +1,6 @@
 # Request Routing Definition
 
-Status: minimum baseline / non-executing
+Status: executable request bridge; registered flows and explicit stage plans supported
 
 ## Purpose
 
@@ -55,3 +55,7 @@ Router ส่งงาน ไม่ใช่ executor
 ห้ามตีความ proposal เป็น approval
 ห้ามเปลี่ยน source intent
 ห้าม merge/deploy จาก routing เพียงอย่างเดียว
+
+## Executable planning and support
+
+`runtime_circuit` รองรับ `stages` หรือ `workflow` ที่ host ลงทะเบียน ผ่าน `tools/runtime_circuit_intake.py`. ทะเบียน workflow เรียง dependency ก่อนบันทึกแผนจริง. เมื่อ BLOCKED ใช้ `WorkflowRuntime.support_for()` เลือก tools/specialist ตาม capability และตรวจผลก่อน RETURNED; ดู [คู่มือ](../../../docs/guides/ORCHESTRATION_CAPABILITY_SUPPORT_TH.md). Primary/Partner/Observer assignment ยังคงเป็น contract; ไม่ใช่ทุกบทบาทในเอกสารจะถูกค้นหาและเรียกอัตโนมัติ.
