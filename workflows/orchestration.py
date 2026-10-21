@@ -29,7 +29,7 @@ TRANSITIONS = {
     "BLOCKED": {"ASSISTING", "WAITING_HUMAN", "FAILED"},
     "ASSISTING": {"RETURNED", "BLOCKED", "FAILED"},
     "RETURNED": {"IN_PROGRESS", "BLOCKED"},
-    "VERIFYING": {"COMPLETED", "IN_PROGRESS", "WAITING_HUMAN"},
+    "VERIFYING": {"COMPLETED", "IN_PROGRESS", "WAITING_HUMAN", "QUEUED"},
     "WAITING_HUMAN": {"QUEUED", "ASSISTING", "VERIFYING", "CANCELLED"},
 }
 KINDS = {"REQUEST", "REPORT", "ISSUE", "SIGNAL", "INTERNAL"}
@@ -93,6 +93,10 @@ def advance(task: dict[str, Any], status: str, *, actor: str, detail: str,
         raise ValueError("support result required")
     if status == "VERIFYING" and (not isinstance(evidence, str) or not evidence.strip()):
         raise ValueError("verification evidence required")
+    if status == "QUEUED" and task["status"] == "VERIFYING":
+        last = task["history"][-1]
+        if last["event"] != "VERIFYING" or not any(item.get("at") == last["at"] and item.get("ref") for item in task["evidence"]):
+            raise ValueError("verified stage evidence required before continuation")
     if status == "COMPLETED":
         verifying_at = next((i for i in range(len(task["history"]) - 1, -1, -1)
                              if task["history"][i]["event"] == "VERIFYING"), None)

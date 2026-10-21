@@ -119,10 +119,10 @@ def validate_agent_result(module_name: str, agent_result: Dict[str, Any]) -> Dic
 
 def run(task, request=None, *, authority_context=None):
     started = time.time()
-    plan = execution_plan(task)
-    context = build_context(task, request, authority_context=authority_context)
-
+    context = {"trace_id": trace_id()}
     try:
+        plan = execution_plan(task)
+        context = build_context(task, request, authority_context=authority_context)
         agent_result = dispatch(plan["run_with"], task, plan, context)
         if not isinstance(agent_result, dict):
             agent_result = {
@@ -143,6 +143,8 @@ def run(task, request=None, *, authority_context=None):
         status = str(agent_result.get("status") or "FAILED")
         summary = str(agent_result.get("summary") or "No result summary provided.")
         result_validation = validate_agent_result(plan["run_with"], agent_result)
+        if result_validation["status"] != "valid" and status not in {"FAILED", "UNAVAILABLE", "STOP"}:
+            status = "REVIEW_REQUIRED"
         successful = status == "COMPLETED"
 
         result = {
@@ -178,14 +180,17 @@ def run(task, request=None, *, authority_context=None):
             "trace_id": context["trace_id"],
         }
 
-        add_memory(
-            source="runtime",
-            topic=task,
-            content=str(e),
-            tags=["runtime", "error"],
-            score=1,
-            record_type="runtime_result",
-        )
+        try:
+            add_memory(
+                source="runtime",
+                topic=task,
+                content=str(e),
+                tags=["runtime", "error"],
+                score=1,
+                record_type="runtime_result",
+            )
+        except Exception as memory_error:
+            error_result["memory_error"] = str(memory_error)
 
         return error_result
 
