@@ -69,7 +69,8 @@ def validate(task: dict[str, Any]) -> None:
         if not isinstance(circuit, dict) or type(circuit.get("version")) is not int or circuit["version"] != 1:
             raise ValueError("invalid runtime circuit version")
         required = {"version", "stages", "index", "effective_stage", "result_ref", "previous_result_ref", "verified"}
-        if set(circuit) != required:
+        optional = {"reconciliation_required", "pending_support"}
+        if not required <= set(circuit) or set(circuit) - required - optional:
             raise ValueError("invalid runtime circuit fields")
         stages = circuit.get("stages")
         index = circuit.get("index")
@@ -81,8 +82,18 @@ def validate(task: dict[str, Any]) -> None:
             raise ValueError("invalid saved runtime stages")
         if type(circuit.get("verified")) is not bool:
             raise ValueError("runtime circuit verified must be boolean")
-        if circuit.get("effective_stage") is not None and not isinstance(circuit["effective_stage"], dict):
-            raise ValueError("invalid effective runtime stage")
+        effective = circuit.get("effective_stage")
+        if effective is not None:
+            current = stages[index]
+            if (not isinstance(effective, dict) or not isinstance(effective.get("request"), dict)
+                    or effective.get("task") != current["task"] or effective.get("module") != current["module"]):
+                raise ValueError("invalid effective runtime stage")
+        if "reconciliation_required" in circuit and type(circuit["reconciliation_required"]) is not bool:
+            raise ValueError("reconciliation_required must be boolean")
+        pending = circuit.get("pending_support")
+        if pending is not None and (not isinstance(pending, dict) or pending.get("kind") not in {"SPECIALIST", "TOOL"}
+                                    or not isinstance(pending.get("name"), str) or not pending["name"].strip()):
+            raise ValueError("invalid pending support metadata")
         for key in ("result_ref", "previous_result_ref"):
             if circuit.get(key) is not None and not isinstance(circuit[key], str):
                 raise ValueError("invalid runtime circuit evidence reference")
@@ -122,7 +133,7 @@ def advance(task: dict[str, Any], status: str, *, actor: str, detail: str,
             raise ValueError("verified stage evidence required before continuation")
     if status == "COMPLETED":
         circuit = task.get("runtime_circuit")
-        if circuit and (not circuit["verified"] or circuit["index"] != len(circuit["stages"]) - 1):
+        if circuit and (circuit.get("reconciliation_required") or not circuit["verified"] or circuit["index"] != len(circuit["stages"]) - 1):
             raise ValueError("all runtime stages must be verified before completion")
         verifying_at = next((i for i in range(len(task["history"]) - 1, -1, -1)
                              if task["history"][i]["event"] == "VERIFYING"), None)
@@ -161,7 +172,8 @@ def route(task: dict[str, Any], destination: dict[str, Any], *, actor: str,
     return advance(task, "ROUTED", actor=actor, detail="handoff delivered", evidence=result["evidence"])
 
 
-def assist(task: dict[str, Any], *, kind: str, name: str, actor: str, handler: Handler) -> dict[str, Any]:
+def assist(task: dict[str, Any], *, kind: str, name: str, actor: str, handler: Handler,
+           record_result: Handler | None = None) -> dict[str, Any]:
     """Invoke a registered support adapter only after a blocker is recorded."""
     if task["status"] != "BLOCKED" or kind not in {"SPECIALIST", "TOOL"} or not name:
         raise ValueError("blocked task and named support adapter required")
@@ -174,6 +186,10 @@ def assist(task: dict[str, Any], *, kind: str, name: str, actor: str, handler: H
     except Exception as exc:
         advance(task, "BLOCKED", actor=actor, detail=f"support failed: {type(exc).__name__}")
         return task
+    # Persistence happens after the adapter-error catch. A completed adapter
+    # action must never be silently treated as unexecuted if evidence I/O fails.
+    if record_result is not None:
+        result = record_result(result)
     task["support"].append(dict(kind=kind, name=name, result=result, at=timestamp()))
     if result["resolved"]:
         task["blocker"] = None

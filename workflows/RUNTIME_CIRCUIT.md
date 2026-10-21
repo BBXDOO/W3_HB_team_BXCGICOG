@@ -108,10 +108,43 @@ execution, the FAILED response retains the executor result and artifacts so the
 host can reconcile existing side effects. Contracts for non-W3Lgu modules retain
 their existing validation scope.
 
-The bridge preserves `request.target` as the subject of work (for example W3API);
+The bridge assigns runtime `source` from the task's recorded origin, regardless
+of a source claimed inside stage input. It preserves `request.target` as the subject
+of work (for example W3API);
 it does not replace that subject with the executor's name. Invalid stage requests
 are rejected before any task state is changed or execution is attempted.
 
 ## Validation
 
 `python -m pytest tests/test_runtime_circuit.py tests/test_runtime_circuit_review.py tests/test_orchestration.py tests/test_chatgpt_flow_artifact.py tests/test_runtime_agent_execution.py tests/test_origin_agent_runtime_contracts.py -q`
+
+## Reconcile post-action evidence failures
+
+An adapter may have changed a file or external system before result validation
+or evidence storage fails. `ReconciliationRequired` exposes its original
+in-memory response as `.result`. A durable `reconciliation_required` flag blocks
+support invocation, stage execution, input revision and approval until the host
+checks what actually happened. Support attempt metadata is written before the
+adapter is called, so a restarted host also refuses an automatic replay.
+
+For a returned runner envelope with unsupported diagnostics, JSON-compatible
+artifact and mutation fields are preserved in the failure evidence; unsupported
+values are marked by type. The task remains BLOCKED and requires reconciliation.
+An evidence-write failure exposes the original response in an exception instead
+of discarding it. This is not a guarantee of exactly-once external execution.
+
+After inspecting actual effects, the trusted host calls
+`reconcile(task, actor=..., evidence=...)`. For an already completed support action,
+pass `support_result=error.result` to record that result and return to the owner
+without calling the adapter again. Recovery is keyed by support attempt ID and
+does not append the same saved response twice after a snapshot failure. With no
+support result, reconciliation only clears uncertainty; retrying remains an
+explicit host decision. If the response was lost during a crash, the host must
+reconstruct it from actual external state, never infer success from the task ID.
+
+Reloaded `effective_stage` must contain the task/module/request shape and match
+the current plan's task and module before any lifecycle transition is made.
+
+The schema now uses an absolute canonical `$id`, keeping nested local references
+resolvable with the repository's jsonschema 4.10–4.17 dependency range without
+fetching remote documents.

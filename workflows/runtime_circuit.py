@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 import json
+import math
 import os
 from pathlib import Path
 from typing import Callable
@@ -15,6 +16,37 @@ from uuid import uuid4
 from core.modules_loader.router import execution_plan
 from core.runtime import engine_v2
 from workflows import orchestration as orc
+
+
+class ReconciliationRequired(RuntimeError):
+    """An action may have happened; result retains the original in-memory response."""
+
+    def __init__(self, message, *, result=None):
+        super().__init__(message)
+        self.result = result
+
+
+def _json_safe(value, seen=None):
+    """Preserve JSON evidence fields, marking unsupported diagnostics and cycles."""
+    seen = set() if seen is None else seen
+    if value is None or isinstance(value, (str, bool, int)):
+        return value
+    if isinstance(value, Path):
+        return str(value)
+    if isinstance(value, float):
+        return value if math.isfinite(value) else {'unsupported_type': 'nonfinite_float'}
+    if isinstance(value, (dict, list, tuple)):
+        if id(value) in seen:
+            return {'unsupported_type': 'cycle'}
+        seen.add(id(value))
+        try:
+            if isinstance(value, dict):
+                return {(key if isinstance(key, str) else f'<{type(key).__name__}>'): _json_safe(item, seen)
+                        for key, item in value.items()}
+            return [_json_safe(item, seen) for item in value]
+        finally:
+            seen.remove(id(value))
+    return {'unsupported_type': type(value).__name__}
 
 
 class WorkflowRuntime:
@@ -102,7 +134,7 @@ class WorkflowRuntime:
         normalized = self._stage(stage)
         if 'runtime_circuit' not in task:
             self._prepare(task, [normalized])
-        state = self._state(task)
+        state = self._ready(task)
         expected = state['stages'][state['index']]
         if normalized != expected:
             raise ValueError('execution must use the original stage parameters')
@@ -137,26 +169,47 @@ class WorkflowRuntime:
             orc.advance(task, 'IN_PROGRESS', actor=module, detail='executor starting')
         state['verified'] = False
         state['result_ref'] = None
+        state.pop('pending_support', None)
         self._save(task)  # durable intent before executor side effects
         request = deepcopy(effective['request'])
         request.update(task_id=task['task_id'], source_id=task.get('source_id'))
-        request.setdefault('source', task['origin']['module'])
+        request['source'] = task['origin']['module']
         # target is the work subject, e.g. W3API; the registry chooses executor.
         try:
             result = self.runner(job, request, authority_context=deepcopy(self.authority_context))
+        except Exception as exc:
+            result = {'status': 'FAILED', 'error': str(exc)}
+        original_result = result
+        try:
             if not isinstance(result, dict) or not isinstance(result.get('status'), str):
                 raise ValueError('runner must return a result object with status')
             if not isinstance(result.get('agent_result', {}), dict) or not isinstance(result.get('result_validation', {}), dict):
                 raise ValueError('invalid runtime result envelope')
             json.dumps(result, allow_nan=False)
         except Exception as exc:
-            result = {'status': 'FAILED', 'error': str(exc)}
-        ref = self._evidence(task, 'result', result)
+            safe = _json_safe(original_result)
+            preserved = safe if isinstance(safe, dict) else {'reported_result': safe}
+            agent = preserved.get('agent_result', {})
+            agent = agent if isinstance(agent, dict) else {}
+            result = {**preserved, 'status': 'FAILED', 'error': str(exc),
+                      'reported_status': preserved.get('status'), 'agent_result': agent,
+                      'artifacts': preserved.get('artifacts', agent.get('artifacts', [])),
+                      'result_validation': {'status': 'review_required'}}
+            state['reconciliation_required'] = True
+        if result.get('memory_error') or result.get('execution_status'):
+            state['reconciliation_required'] = True
+        agent = result.get('agent_result', {})
+        task['mutated'] = task['mutated'] or bool(agent.get('mutated')) or result.get('mutated') is True
+        try:
+            ref = self._evidence(task, 'result', result)
+        except Exception as exc:
+            self._reconciliation_error(task, exc, original_result)
         state['result_ref'] = ref
         task['evidence'].append({'at': orc.timestamp(), 'actor': 'runtime-result', 'ref': ref})
-        agent = result.get('agent_result', {})
-        task['mutated'] = task['mutated'] or bool(agent.get('mutated'))
-        self._save(task)
+        try:
+            self._save(task)
+        except Exception as exc:
+            self._reconciliation_error(task, exc, original_result)
         if result['status'] not in {'COMPLETED', 'ACTIVE', 'REVIEW_REQUIRED', 'REVIEW', 'STOP'}:
             return self._block(task, 'executor did not produce a usable result', ref)
         if result.get('result_validation', {}).get('status') != 'valid':
@@ -185,7 +238,7 @@ class WorkflowRuntime:
         Load a task JSON snapshot and use this method after restarting the host.
         Interrupted IN_PROGRESS work is not replayed; reconcile its side effects.
         """
-        state = self._state(task)
+        state = self._ready(task)
         while task['status'] in {'RECEIVED', 'QUEUED', 'RETURNED', 'VERIFYING'}:
             if task['status'] != 'VERIFYING':
                 self.execute_stage(task, state['stages'][state['index']])
@@ -207,21 +260,112 @@ class WorkflowRuntime:
             raise ValueError('interrupted work requires reconciliation; refusing automatic replay')
         return task
 
+    def _ready(self, task):
+        state = self._state(task)
+        if state.get('reconciliation_required'):
+            raise ReconciliationRequired('reconcile prior side effects before another action')
+        return state
+
+    def _reconciliation_error(self, task, error, result):
+        state = self._state(task)
+        state['reconciliation_required'] = True
+        message = f'post-action evidence requires reconciliation: {error}'
+        try:
+            self._save(task)
+        except Exception as save_error:
+            message += f'; snapshot persistence also failed: {save_error}'
+        raise ReconciliationRequired(message, result=result) from error
+
     def assist(self, task, *, kind, name, handler):
-        """Call a host-selected adapter and preserve its result before returning."""
-        self._state(task)
+        """Keep post-adapter persistence failures visible with the actual response."""
+        state = self._ready(task)
+        if task['status'] != 'BLOCKED' or not task.get('blocker') or kind not in {'SPECIALIST', 'TOOL'} or not isinstance(name, str) or not name.strip():
+            raise ValueError('blocked task and named support adapter required')
+        captured = {}
         def isolated(context):
-            result = handler(deepcopy(context))
-            if not isinstance(result, dict) or type(result.get('resolved')) is not bool or not isinstance(result.get('evidence'), str) or not result['evidence'].strip():
-                raise ValueError('support must return resolved and a nonempty evidence reference')
+            try:
+                captured['result'] = handler(deepcopy(context))
+                return captured['result']
+            except Exception as exc:
+                captured['error'] = exc
+                raise
+        def record(result):
+            if not isinstance(result.get('evidence'), str) or not result['evidence'].strip():
+                raise ValueError('support evidence must be a nonempty reference')
             ref = self._evidence(task, 'support', result)
-            return {**result, 'evidence': ref}
-        orc.assist(task, kind=kind, name=name, actor='Orchestration', handler=isolated)
-        return self._save(task)
+            return {**result, 'evidence': ref, 'support_attempt_id': state['pending_support']['attempt_id']}
+        # Persist uncertainty before the adapter can make external changes.
+        state.update(reconciliation_required=True, pending_support={'kind': kind, 'name': name, 'attempt_id': uuid4().hex})
+        self._save(task)
+        before = len(task['support'])
+        try:
+            orc.assist(task, kind=kind, name=name, actor='Orchestration',
+                       handler=isolated, record_result=record)
+            if len(task['support']) == before:
+                raise captured.get('error', ValueError('support returned an invalid result'))
+        except Exception as exc:
+            raw = captured.get('result')
+            if isinstance(raw, dict):
+                task['mutated'] = task['mutated'] or raw.get('mutated') is True
+            self._reconciliation_error(task, exc, raw)
+        raw = captured['result']
+        task['mutated'] = task['mutated'] or raw.get('mutated') is True
+        state['reconciliation_required'] = False
+        try:
+            return self._save(task)
+        except Exception as exc:
+            self._reconciliation_error(task, exc, raw)
+
+    def reconcile(self, task, *, actor, evidence, support_result=None):
+        """Host confirms actual effects; optionally recover support without replay.
+
+        This records the host's reconciliation decision, not automatic evidence
+        verification. With no support_result, a retry remains an explicit choice.
+        """
+        state = self._state(task)
+        if not state.get('reconciliation_required') or task['status'] not in {'BLOCKED', 'ASSISTING', 'IN_PROGRESS', 'RETURNED'}:
+            raise ValueError('task must have unresolved post-action effects')
+        if not isinstance(actor, str) or not actor.strip() or not isinstance(evidence, str) or not evidence.strip():
+            raise ValueError('reconciliation actor and evidence required')
+        pending = state.get('pending_support')
+        if support_result is not None:
+            if task['status'] not in {'BLOCKED', 'ASSISTING', 'RETURNED'} or not pending or not isinstance(support_result, dict) or type(support_result.get('resolved')) is not bool or not isinstance(support_result.get('evidence'), str) or not support_result['evidence'].strip():
+                raise ValueError('pending support and confirmed result required')
+        ref = self._evidence(task, 'reconciliation', {
+            'actor': actor, 'evidence': evidence, 'support_result': _json_safe(support_result),
+        })
+        if support_result is not None:
+            task['mutated'] = task['mutated'] or support_result.get('mutated') is True
+            if task['status'] == 'BLOCKED':
+                orc.advance(task, 'ASSISTING', actor=actor, detail='recover existing support response', evidence=ref)
+            # A successful support result may already have been appended before
+            # the final snapshot write failed. Do not append or return it twice.
+            existing = bool(pending.get('attempt_id')) and any(item['result'].get('support_attempt_id') == pending.get('attempt_id')
+                           for item in task['support'] if isinstance(item.get('result'), dict))
+            if task['status'] != 'RETURNED':
+                if not existing:
+                    recovered = {**_json_safe(support_result), 'support_attempt_id': pending.get('attempt_id')}
+                    task['support'].append({'kind': pending['kind'], 'name': pending['name'],
+                                            'result': recovered, 'at': orc.timestamp()})
+                if support_result['resolved']:
+                    task['blocker'] = None
+                    orc.advance(task, 'RETURNED', actor=actor, detail='reconciled support result', evidence=ref)
+                else:
+                    orc.advance(task, 'BLOCKED', actor=actor, detail='reconciled unresolved support', evidence=ref)
+        elif task['status'] in {'ASSISTING', 'IN_PROGRESS'}:
+            task['blocker'] = task.get('blocker') or {'reason': 'host must explicitly choose retry'}
+            orc.advance(task, 'BLOCKED', actor=actor, detail='side effects reconciled; retry not automatic', evidence=ref)
+        task['history'].append({'at': orc.timestamp(), 'event': 'RECONCILED', 'actor': actor, 'detail': evidence})
+        task['evidence'].append({'at': orc.timestamp(), 'actor': actor, 'ref': ref})
+        state['reconciliation_required'] = False
+        try:
+            return self._save(task)
+        except Exception as exc:
+            self._reconciliation_error(task, exc, support_result)
 
     def review_stage(self, task, stage, *, human, evidence):
         """Authenticate human in the host, then recheck the exact executed stage."""
-        state = self._state(task)
+        state = self._ready(task)
         if task['status'] != 'WAITING_HUMAN':
             raise ValueError('task must be waiting for human review')
         if self._stage(stage) != state['stages'][state['index']]:
@@ -250,7 +394,7 @@ class WorkflowRuntime:
         This queues a retry; it does not execute it or approve its result. The host
         must reconcile any prior side effects before authorizing such a retry.
         """
-        state = self._state(task)
+        state = self._ready(task)
         if task['status'] not in {'WAITING_HUMAN', 'BLOCKED'}:
             raise ValueError('only unresolved stages may be revised')
         if not isinstance(actor, str) or not actor.strip() or not isinstance(evidence, str) or not evidence.strip():
