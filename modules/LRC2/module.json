@@ -34,7 +34,11 @@
       "mode": "adaptive",
       "log_level": "critical",
       "auto_start": true
-    }
+    },
+    "capabilities": [
+      "lifecycle_checkpoint",
+      "log_analysis"
+    ]
   },
   "properties": {
     "checkpoint_depth": "phase2",

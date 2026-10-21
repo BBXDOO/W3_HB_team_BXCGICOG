@@ -69,7 +69,7 @@ def validate(task: dict[str, Any]) -> None:
         if not isinstance(circuit, dict) or type(circuit.get("version")) is not int or circuit["version"] != 1:
             raise ValueError("invalid runtime circuit version")
         required = {"version", "stages", "index", "effective_stage", "result_ref", "previous_result_ref", "verified"}
-        optional = {"reconciliation_required", "pending_support"}
+        optional = {"reconciliation_required", "pending_support", "review_policy"}
         if not required <= set(circuit) or set(circuit) - required - optional:
             raise ValueError("invalid runtime circuit fields")
         stages = circuit.get("stages")
@@ -88,6 +88,8 @@ def validate(task: dict[str, Any]) -> None:
             if (not isinstance(effective, dict) or not isinstance(effective.get("request"), dict)
                     or effective.get("task") != current["task"] or effective.get("module") != current["module"]):
                 raise ValueError("invalid effective runtime stage")
+        if "review_policy" in circuit and circuit["review_policy"] not in {"each_stage", "final"}:
+            raise ValueError("invalid circuit review policy")
         if "reconciliation_required" in circuit and type(circuit["reconciliation_required"]) is not bool:
             raise ValueError("reconciliation_required must be boolean")
         pending = circuit.get("pending_support")

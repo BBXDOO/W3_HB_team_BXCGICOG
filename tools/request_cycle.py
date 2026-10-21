@@ -23,7 +23,7 @@ except ImportError:  # pragma: no cover - non-Windows runtime
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from core.modules_loader.router import load_identity, load_registry, route_task
-from core.runtime.engine_v2 import build_context, dispatch, validate_agent_result, now
+from core.runtime.engine_v2 import build_context, dispatch, validate_agent_result, now, trace_id
 from core.memory.memory_bus import add_memory
 from tools.document_creation_flow import run_document_creation
 
@@ -247,7 +247,18 @@ def already_done(rid:str)->bool:
     status=str(envelope.get("runtime_result",{}).get("status") or "").upper()
     return status in {"COMPLETED", "WAITING_HUMAN"}
 
-def process(path:Path)->dict:
+def process(path:Path, *, executors=None, verifiers=None)->dict:
+    probe=parse_request(path)
+    if probe.get("request_type") == "runtime_circuit":
+        rid=str(probe.get("request_id") or path.stem)
+        # Cover execution, unchanged-state detection and audit publication with
+        # the same per-request lock; concurrent pending scans cannot duplicate work.
+        with _file_lock(REQUEST_LOCK_DIR/f"{safe_id(rid)}.circuit.lock"):
+            return _process(path, executors=executors, verifiers=verifiers)
+    return _process(path, executors=executors, verifiers=verifiers)
+
+
+def _process(path:Path, *, executors=None, verifiers=None)->dict:
     req=parse_request(path)
     rid=str(req.get("request_id") or path.stem)
     task=str(req.get("task_keyword") or "general").strip()
@@ -268,7 +279,7 @@ def process(path:Path)->dict:
     except Exception:
         preferred=None
 
-    if already_done(rid):
+    if req.get("request_type") != "runtime_circuit" and already_done(rid):
         result_path=RESULTS/f"{safe_id(rid)}_RESULT.json"
         lock_path=REQUEST_LOCK_DIR/f"{safe_id(rid)}.result.lock"
         with _file_lock(lock_path):
@@ -363,16 +374,33 @@ def process(path:Path)->dict:
       "responsibilities":manifest.get("responsibilities",[]),
       "next_step":f"Execute task {task!r} using requested module {target}",
     }
-    context=build_context(task,request_context)
+    context={"trace_id": trace_id()}
     try:
-        agent_result=dispatch(target,task,plan,context)
+        if req.get("request_type") == "runtime_circuit":
+            from tools.runtime_circuit_intake import run_request
+            result=run_request(request={**req, "request_id": rid}, repo_root=ROOT, target_module=target,
+                               executors=executors, verifiers=verifiers)
+            prior_path=RESULTS/f"{safe_id(rid)}_RESULT.json"
+            if prior_path.exists():
+                try:
+                    prior=json.loads(prior_path.read_text(encoding="utf-8"))
+                except (OSError, ValueError):
+                    prior={}
+                if prior.get("runtime_result", {}).get("circuit_revision") == result.get("circuit_revision"):
+                    return {"status":"SKIPPED", "request_id":rid, "reason":"circuit state unchanged",
+                            "orchestration_evidence":result["orchestration_evidence"]}
+            agent_result=result.get("agent_result", {})
+        else:
+            context=build_context(task,request_context)
+            agent_result=(dispatch(target,task,plan,context) if executors is None else
+                          dispatch(target,task,plan,context,executors=executors))
         if not isinstance(agent_result,dict):
             raise TypeError("agent execute() returned non-dictionary result")
         if req.get("request_type") == "document_creation":
             result=run_document_creation(request={**req, "request_id": rid}, agent_result=agent_result, repo_root=ROOT)
             result["time"], result["trace_id"] = now(), context["trace_id"]
             result["result_validation"] = validate_agent_result(target, agent_result)
-        else:
+        elif req.get("request_type") != "runtime_circuit":
             result={
           "status":str(agent_result.get("status") or "FAILED"),
           "task":task,"module":target,
@@ -383,7 +411,25 @@ def process(path:Path)->dict:
           "time":now(),"trace_id":context["trace_id"],
             }
     except Exception as exc:
+        if req.get("request_type") == "runtime_circuit" and isinstance(exc, ValueError):
+            # Reject changed/invalid input without overwriting an existing run's
+            # outcome or making it look like the executor failed.
+            raise
         result={"status":"FAILED","task":task,"module":target,"error":str(exc),"artifacts":[],"time":now(),"trace_id":context["trace_id"]}
+        if req.get("request_type") == "runtime_circuit":
+            from workflows.runtime_circuit import ReconciliationRequired, _json_safe
+            from tools.runtime_circuit_intake import task_id as circuit_task_id
+            if isinstance(exc, ReconciliationRequired):
+                preserved=_json_safe(exc.result)
+                preserved=preserved if isinstance(preserved,dict) else {"reported_result":preserved}
+                preserved_agent=preserved.get("agent_result",{})
+                preserved_agent=preserved_agent if isinstance(preserved_agent,dict) else {}
+                result.update(status="BLOCKED", reconciliation_required=True,
+                              preserved_result=preserved, artifacts=preserved.get("artifacts", []),
+                              mutated=bool(preserved.get("mutated") or preserved_agent.get("mutated")))
+            evidence=ROOT/"repo_events/runtime_circuit/tasks"/f"{circuit_task_id(rid)}.json"
+            if evidence.exists():
+                result["orchestration_evidence"]=str(evidence.relative_to(ROOT))
     operation=bool(result.get("status")=="COMPLETED")
     suggestion=result.get("output") or result.get("error") or "processed"
     suggestion=suggestion.strip() if isinstance(suggestion,str) else suggestion
@@ -406,7 +452,7 @@ def process(path:Path)->dict:
     # Direct dispatch preserves an explicit target_module, so mirror engine_v2.run()
     # memory persistence here instead of routing through execution_plan(task).
     try:
-        memory_payload = result.get("agent_result", result)
+        memory_payload = result if req.get("request_type") == "runtime_circuit" else result.get("agent_result", result)
         if req.get("request_type") == "document_creation":
             memory_payload = {
                 "request_id": rid,
@@ -445,7 +491,7 @@ def process(path:Path)->dict:
       "checkin":checkin,
       "request_log":request_log_path,
       "final_signoff_required":bool(req.get("final_signoff_required",True)),
-      "closed":False,"mutated":bool(result.get("mutated",result.get("agent_result",{}).get("mutated",False))),
+      "closed":bool(result.get("closed",False)) if req.get("request_type") == "runtime_circuit" else False,"mutated":bool(result.get("mutated",result.get("agent_result",{}).get("mutated",False))),
       "review":True,
     }
     rp=RESULTS/f"{safe_id(rid)}_RESULT.json"
@@ -460,7 +506,7 @@ def process(path:Path)->dict:
       f"- task: `{task}`\n- status: `{result.get('status')}`\n"
       f"- trace_id: `{result.get('trace_id')}`\n- result: `{rp.relative_to(ROOT)}`\n"
       f"- final_signoff_required: `{str(bool(req.get('final_signoff_required',True))).lower()}`\n"
-      "- closed: `false`\n",
+      f"- closed: `{str(bool(envelope['closed'])).lower()}`\n",
       encoding="utf-8")
     return envelope
 

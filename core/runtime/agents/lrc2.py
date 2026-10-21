@@ -25,6 +25,9 @@ class LRC2Agent(RuntimeAgent):
         approval.  This preserves the existing Cross-X preview boundary while
         giving LRC2 a real append-only recording capability.
         """
+        if task == "log_analysis":
+            from core.runtime.capabilities.log_analysis import execute
+            return execute(task, plan, context)
         request = context.get("request") if isinstance(context.get("request"), dict) else {}
         source_record = context.get("record") or context.get("payload") or request.get("payload")
         if not isinstance(source_record, dict):

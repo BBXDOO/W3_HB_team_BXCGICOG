@@ -56,6 +56,7 @@
     "escalation": "REDR",
     "decision_trace": "DTML",
     "trace": "DTML",
+    "log_analysis": "LRC2",
     "lifecycle_review": "LRC2",
     "checkpoint": "LRC2",
     "implementation": "Codex",

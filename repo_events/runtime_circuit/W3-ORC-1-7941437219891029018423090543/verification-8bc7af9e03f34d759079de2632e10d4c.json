@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "report_sha256",
+      "passed": true
+    },
+    {
+      "name": "input_sha256",
+      "passed": true
+    },
+    {
+      "name": "source_record_count",
+      "passed": true
+    },
+    {
+      "name": "analysis_matches_source",
+      "passed": true
+    },
+    {
+      "name": "trace_matches_execution",
+      "passed": true
+    },
+    {
+      "name": "task_identity_matches",
+      "passed": true
+    },
+    {
+      "name": "gemini_verified",
+      "passed": true
+    }
+  ]
+}

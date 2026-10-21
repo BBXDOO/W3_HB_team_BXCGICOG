@@ -51,10 +51,13 @@ def _json_safe(value, seen=None):
 
 class WorkflowRuntime:
     def __init__(self, directory: Path, *, verifier: Callable,
-                 runner=None, authority_context=None):
+                 runner=None, authority_context=None, reference_root=None):
         if not callable(verifier):
             raise ValueError('trusted verifier must be callable')
         self.directory = Path(directory)
+        self.reference_root = Path(reference_root).resolve() if reference_root is not None else None
+        if self.reference_root is not None and not self.directory.resolve().is_relative_to(self.reference_root):
+            raise ValueError('evidence directory must be within reference_root')
         self.verifier = verifier
         self.runner = runner or engine_v2.run
         self.authority_context = deepcopy(authority_context or {})
@@ -87,7 +90,16 @@ class WorkflowRuntime:
             stream.write(encoded)
             stream.flush()
             os.fsync(stream.fileno())
-        return str(path.resolve())
+        resolved = path.resolve()
+        return str(resolved.relative_to(self.reference_root)) if self.reference_root else str(resolved)
+
+    def _read_evidence(self, reference):
+        path = Path(reference)
+        if self.reference_root is not None:
+            path = (self.reference_root / path).resolve()
+            if not path.is_relative_to(self.reference_root):
+                raise ValueError('evidence reference escapes reference_root')
+        return json.loads(path.read_text(encoding='utf-8'))
 
     def _save(self, task):
         orc.save(task, self.directory / 'tasks')
@@ -98,16 +110,18 @@ class WorkflowRuntime:
         orc.advance(task, 'BLOCKED', actor='Orchestration', detail=reason, evidence=evidence)
         return self._save(task)
 
-    def _prepare(self, task, stages):
+    def _prepare(self, task, stages, *, review_policy="each_stage"):
         orc.validate(task)
         if task['status'] != 'RECEIVED' or 'runtime_circuit' in task or not isinstance(stages, list) or not stages:
             raise ValueError('new task and nonempty explicit stage list required')
+        if review_policy not in {'each_stage', 'final'}:
+            raise ValueError('unknown human review policy')
         normalized = [self._stage(stage) for stage in stages]
         ref = self._evidence(task, 'pipeline', {'stages': normalized})
         task['evidence'].append({'at': orc.timestamp(), 'actor': 'pipeline-plan', 'ref': ref})
         task['runtime_circuit'] = {
             'version': 1, 'stages': normalized, 'index': 0, 'effective_stage': None,
-            'result_ref': None, 'previous_result_ref': None, 'verified': False,
+            'result_ref': None, 'previous_result_ref': None, 'verified': False, 'review_policy': review_policy,
         }
         self._save(task)
 
@@ -146,7 +160,7 @@ class WorkflowRuntime:
         if state['effective_stage'] is None:
             effective = deepcopy(expected)
             if state['previous_result_ref']:
-                previous = json.loads(Path(state['previous_result_ref']).read_text(encoding='utf-8'))
+                previous = self._read_evidence(state['previous_result_ref'])
                 effective['request'].setdefault('payload', previous.get('agent_result', {}))
             else:
                 effective['request'].setdefault('payload', deepcopy(task['payload']))
@@ -227,9 +241,9 @@ class WorkflowRuntime:
                     detail='stage postcondition verified', evidence=verification)
         return self._save(task)
 
-    def run(self, task, stages):
+    def run(self, task, stages, *, review_policy="each_stage"):
         """Start a validated explicit pipeline and stop at the first unresolved stage."""
-        self._prepare(task, stages)
+        self._prepare(task, stages, review_policy=review_policy)
         return self.continue_work(task)
 
     def continue_work(self, task):
@@ -246,7 +260,10 @@ class WorkflowRuntime:
                 return task
             if not state['verified']:
                 raise ValueError('current stage must pass its verifier before continuing')
-            if task['human_review_required'] and not task.get('human_approval'):
+            needs_review = (task['human_review_required'] and
+                            (state.get('review_policy', 'each_stage') == 'each_stage' or
+                             state['index'] == len(state['stages']) - 1))
+            if needs_review and not task.get('human_approval'):
                 orc.advance(task, 'WAITING_HUMAN', actor='Orchestration', detail='human review of verified stage')
                 return self._save(task)
             if state['index'] == len(state['stages']) - 1:
@@ -372,7 +389,7 @@ class WorkflowRuntime:
             raise ValueError('review must use the original stage parameters')
         if not isinstance(human, str) or not human.strip() or not isinstance(evidence, str) or not evidence.strip():
             raise ValueError('human identity and review evidence required')
-        result = json.loads(Path(state['result_ref']).read_text(encoding='utf-8'))
+        result = self._read_evidence(state['result_ref'])
         if result['status'] not in {'COMPLETED', 'ACTIVE'} or result.get('result_validation', {}).get('status') != 'valid':
             raise ValueError('unresolved or stopped execution must be corrected before approval')
         verdict, checked = self._verify(task, state['effective_stage'], result)

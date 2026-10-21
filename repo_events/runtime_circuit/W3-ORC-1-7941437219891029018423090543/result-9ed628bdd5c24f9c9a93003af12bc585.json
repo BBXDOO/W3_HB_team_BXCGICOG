@@ -1,0 +1,140 @@
+{
+  "status": "COMPLETED",
+  "task": "verify",
+  "module": "Gemini",
+  "output": "Gemini checked 6 explicit check(s) for [W3]; 0 failed.",
+  "agent_result": {
+    "contract_version": "1.0",
+    "status": "COMPLETED",
+    "module": "Gemini",
+    "task": "verify",
+    "action": "completed verification",
+    "decision": "VERIFIED",
+    "summary": "Gemini checked 6 explicit check(s) for [W3]; 0 failed.",
+    "reason": "Explicit checks passed with evidence. Duty: verify system contract & logic27 alignment.",
+    "artifacts": [
+      {
+        "type": "verification_stamp",
+        "target": "W3",
+        "verified_by": "Gemini",
+        "event_identity": {
+          "chain_id": "CH-LOCAL",
+          "event_id": "EV-UNKNOWN",
+          "sequence": 1,
+          "owner_scope": "Gemini-Field"
+        }
+      }
+    ],
+    "details": {
+      "mpcp_role": "validation",
+      "main_duty": "verify system contract & logic27 alignment",
+      "experience": "5 prior matches, 4 from Gemini, 4 similar task(s), reuse: structural_review, verify",
+      "checks": [
+        {
+          "name": "report_sha256",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "input_sha256",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "source_record_count",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "analysis_matches_source",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "trace_matches_execution",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "task_identity_matches",
+          "passed": true,
+          "state": "PASS"
+        }
+      ],
+      "failed_checks": [],
+      "unresolved_checks": [],
+      "evidence_supplied": true,
+      "identity_supplied": false
+    },
+    "mutated": false,
+    "traceable": true,
+    "review": false,
+    "capability": "source_artifact_verification",
+    "checked_agent_result": {
+      "contract_version": "1.0",
+      "status": "COMPLETED",
+      "module": "LRC2",
+      "task": "log_analysis",
+      "capability": "log_analysis",
+      "trace_id": "cd827151abaf423584a0368eba8d08cd",
+      "action": "analyze_recorded_log_patterns",
+      "confidence": 0.0,
+      "input_type": "log_records",
+      "decision": "analysis_report_created",
+      "reason": "Computed classifications, exact repeated error signatures and conditional historical estimates from supplied records.",
+      "next": [],
+      "standby": [
+        "Gemini"
+      ],
+      "mutated": true,
+      "traceable": true,
+      "review": false,
+      "summary": "Analyzed 105 records in 13 module/task groups; created a source-linked report.",
+      "details": {
+        "identity": {
+          "chain_id": "W3-ORC-1-7941437219891029018423090543",
+          "event_id": "cd827151abaf423584a0368eba8d08cd",
+          "package_id": "LRC2-ANALYSIS-492ec36ebe22c0a8bd52"
+        },
+        "records_total": 105,
+        "source_sha256": "492ec36ebe22c0a8bd5295a45f41c0cd3e55e99445a42965d0124d20235190b3",
+        "confidence_scope": "predictive confidence is not measured"
+      },
+      "artifacts": [
+        {
+          "path": "modules/LRC2/reports/log_analysis/cd827151abaf423584a0368eba8d08cd.json",
+          "sha256": "c5d4bef09d9df7a17b7dbb8d5c17cad7775fb0c81d62f2a044590cea7161671c",
+          "bytes": 11547,
+          "kind": "w3.lrc2.log_analysis.json"
+        }
+      ]
+    }
+  },
+  "result_validation": {
+    "status": "valid",
+    "module": "Gemini",
+    "missing_fields": [],
+    "invalid_fields": [],
+    "identity_missing_fields": [],
+    "blocking_status": null,
+    "mutated": false,
+    "traceable": true,
+    "review": false
+  },
+  "artifacts": [
+    {
+      "type": "verification_stamp",
+      "target": "W3",
+      "verified_by": "Gemini",
+      "event_identity": {
+        "chain_id": "CH-LOCAL",
+        "event_id": "EV-UNKNOWN",
+        "sequence": 1,
+        "owner_scope": "Gemini-Field"
+      }
+    }
+  ],
+  "latency_ms": 5,
+  "time": "2026-10-21T05:33:36Z",
+  "trace_id": "147daebec7684433b70b57a226403695"
+}
