@@ -64,34 +64,24 @@ def simulate_agent(task, plan, context):
     }
 
 
-def run(task):
+def run(task, request=None, *, authority_context=None):
+    """Compatibility envelope over the single v2 execution path.
+
+    The old status/plan/context/output keys remain; output is the actual
+    agent result. New callers should use engine_v2 or WorkflowRuntime.
     """
-    Main runtime pipeline
-    """
-
-    # STEP 1 route task
-    plan = execution_plan(task)
-
-    # STEP 2 collect memory context
-    context = build_context(task)
-
-    # STEP 3 execute assigned module
-    result = simulate_agent(task, plan, context)
-
-    # STEP 4 save result
-    add_memory(
-        source=plan["run_with"],
-        topic=task,
-        content=result["result"],
-        tags=["runtime", "unavailable", "legacy"],
-        score=1
-    )
-
+    from . import engine_v2
+    result = engine_v2.run(task, request, authority_context=authority_context)
+    try:
+        plan = execution_plan(task)
+    except Exception:
+        plan = None
     return {
-        "status": result["status"],
+        **result,
         "plan": plan,
-        "context": context,
-        "output": result
+        "context": {"trace_id": result["trace_id"]},
+        "output": result.get("agent_result", {"status": result["status"],
+                                                "reason": result.get("error")}),
     }
 
 

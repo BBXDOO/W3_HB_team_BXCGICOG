@@ -164,12 +164,12 @@ class TestChatGPTFlowArtifact(unittest.TestCase):
         self.assertEqual(add_memory.call_args.kwargs["tags"], ["runtime", "active"])
 
     def test_legacy_engine_does_not_fabricate_success(self):
-        with patch("core.runtime.engine.search_memory", return_value=[]), patch(
-            "core.runtime.engine.add_memory"
+        with patch("core.runtime.engine_v2.search_memory", return_value=[]), patch(
+            "core.runtime.engine_v2.add_memory"
         ):
             result = legacy_engine.run("verify")
 
-        self.assertEqual(result["status"], "UNAVAILABLE")
+        self.assertEqual(result["status"], "REVIEW_REQUIRED")
         self.assertTrue(result["output"]["review"])
         self.assertFalse(result["output"]["mutated"])
 
