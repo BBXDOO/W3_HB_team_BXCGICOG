@@ -107,6 +107,7 @@
       "status": "valid",
       "module": "Copilot-Gm",
       "missing_fields": [],
+      "invalid_fields": [],
       "identity_missing_fields": [],
       "blocking_status": null,
       "mutated": false,
@@ -114,8 +115,8 @@
       "review": true
     },
     "artifacts": [],
-    "time": "2026-10-21T04:57:39Z",
-    "trace_id": "3ed80e4a199f4238be18e5406a77d518"
+    "time": "2026-10-21T05:47:12Z",
+    "trace_id": "d3e09fb6e30c40f288438056401a8088"
   },
   "artifact_paths": [],
   "artifact_path": null,
@@ -124,7 +125,7 @@
   "orchestration_evidence": null,
   "checkin": {
     "doc_id": "CID_@R000A1",
-    "entry_no": 2,
+    "entry_no": 3,
     "path": "logs/check-in/CID_@R000A1.md"
   },
   "request_log": "logs/request_cycle/RQ-CAST-PLATFORM-W3-DATAFLOW-001.md",
