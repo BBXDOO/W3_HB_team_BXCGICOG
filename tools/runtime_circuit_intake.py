@@ -24,12 +24,21 @@ def task_id(request_id):
     return f'W3-ORC-1-{number}'
 
 
-def parse_spec(request):
+def parse_spec(request, *, flows=None):
     matches = re.findall(r'^```w3-circuit\s*\n(.*?)^```\s*$', request['_request_text'], re.S | re.M)
     if len(matches) != 1:
         raise ValueError('runtime_circuit request needs exactly one w3-circuit JSON block')
     spec = json.loads(matches[0])
-    if not isinstance(spec, dict) or not isinstance(spec.get('stages'), list) or not spec['stages']:
+    if not isinstance(spec, dict):
+        raise ValueError('w3-circuit must be an object')
+    if 'workflow' in spec:
+        if 'stages' in spec or set(spec) - {'workflow', 'input'}:
+            raise ValueError('use workflow/input or explicit stages')
+        if flows is None:
+            from tools.orchestration_support import default_flows
+            flows = default_flows()
+        spec = {'stages': flows.plan(spec['workflow'], spec.get('input', {}))}
+    if not isinstance(spec.get('stages'), list) or not spec['stages']:
         raise ValueError('w3-circuit stages must be a nonempty list')
     return spec
 

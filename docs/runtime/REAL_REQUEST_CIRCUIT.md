@@ -117,3 +117,7 @@ source request, ประวัติประกอบ และ trace ตั�
 กันเรียกซ้ำ/สแกนพร้อมกัน, กัน report ถูกแก้หลังตรวจ และ clone ข้อมูลไปอีกรูทแล้ว review ต่อ
 
 งานนำร่องข้างต้นใช้ประวัติจริงเพิ่มเติมจากชุดทดสอบ ไม่ใช้ fixture แทนประวัติจริง
+
+## Registered workflow and capability support
+
+ใบงานสามารถใช้ `{"workflow":"log_analysis","input":{"payload":{"source_file":"core/memory/memory_store.json"}}}` ใน w3-circuit แทน stages ได้. โฟลวขยายเป็นแผนจริงก่อนรัน. งาน BLOCKED เรียก `runtime.support_for()` หรือ `python -m tools.orchestration_support` เพื่อเลือกเครื่องมือหรือคู่ทดแทนที่มี executor/verifier. ดู [คู่มือใช้งานและเพิ่ม adapter](../guides/ORCHESTRATION_CAPABILITY_SUPPORT_TH.md).

@@ -68,6 +68,14 @@ class WorkflowRuntime:
             raise ValueError('stage.task must be a registered task name')
         if not isinstance(stage.get('request', {}), dict):
             raise ValueError('stage.request must be an object')
+        support = stage.get('support')
+        if support is not None:
+            if (not isinstance(support, dict) or set(support) - {'capability', 'kind', 'preferred', 'request'}
+                    or not isinstance(support.get('capability'), str) or not support['capability'].strip()
+                    or support.get('kind') not in {None, 'TOOL', 'SPECIALIST'}
+                    or not isinstance(support.get('request', {}), dict)
+                    or (support.get('preferred') is not None and not isinstance(support['preferred'], str))):
+                raise ValueError('invalid declared support requirement')
         normalized = deepcopy(stage)
         module = execution_plan(stage['task'])['run_with']
         if stage.get('module', module) != module:
@@ -257,6 +265,11 @@ class WorkflowRuntime:
             if task['status'] != 'VERIFYING':
                 self.execute_stage(task, state['stages'][state['index']])
             if task['status'] != 'VERIFYING':
+                requirement = state['stages'][state['index']].get('support')
+                if task['status'] == 'BLOCKED' and requirement:
+                    # One declared support attempt, then return to the host.
+                    # Never loop retries or guess what capability a blocker needs.
+                    self.support_for(task, request_type=task['type'], **deepcopy(requirement))
                 return task
             if not state['verified']:
                 raise ValueError('current stage must pass its verifier before continuing')
@@ -276,6 +289,27 @@ class WorkflowRuntime:
         if task['status'] in {'IN_PROGRESS', 'ROUTED', 'ACKNOWLEDGED', 'ASSISTING', 'INSPECTING'}:
             raise ValueError('interrupted work requires reconciliation; refusing automatic replay')
         return task
+
+    def run_flow(self, task, name, request, *, flows=None, review_policy="each_stage"):
+        """Expand a trusted recipe and persist the resulting concrete stages."""
+        if flows is None:
+            from tools.orchestration_support import default_flows
+            flows = default_flows()
+        return self.run(task, flows.plan(name, request), review_policy=review_policy)
+
+    def support_for(self, task, capability, *, catalog=None, **selection):
+        """Select verified support or a replacement partner for a blocked stage.
+
+        Caller holds the task lock. Successful support returns ownership without
+        replaying the stage; continue_work remains an explicit host action.
+        """
+        if catalog is None:
+            if self.reference_root is None:
+                raise ValueError('reference_root or explicit support catalog required')
+            from tools.orchestration_support import default_catalog
+            catalog = default_catalog(self.reference_root, authority_context=self.authority_context)
+        selection.setdefault('owner', (task.get('destination') or {}).get('module'))
+        return catalog.support(self, task, capability, **selection)
 
     def _ready(self, task):
         state = self._state(task)

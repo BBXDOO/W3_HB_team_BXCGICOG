@@ -27,7 +27,7 @@ Owner: BBX19 · Maker: ChatGPT · Updated: 2026-10-11
 | source | BBX19 / BBEX / BBEX-Core; การซ่อมโครงสร้างใช้ BBX19 |
 | target | ชื่อ Origin หนึ่งในห้าระบบ |
 | intent | เหตุผลและผลงานที่ต้องการ |
-| payload.partner | คู่ที่ต้องการ เช่น Gemini; ไม่ระบุหรือคู่ทำงานไม่ได้ ใช้ Orchestration |
+| payload.partner | คู่ที่ต้องการ เช่น Gemini; คู่ที่ระบุไม่พร้อมให้เลือก Origin ทดแทน; ไม่ระบุใช้ Orchestration |
 | payload.operations | รายการ operation ตามลำดับ |
 | payload.proposals | ข้อเสนอที่ต้องติดตาม ไม่ใช่คำสั่งซ่อม |
 
@@ -97,7 +97,7 @@ sha256sum ChatGPT/notes/work.txt
 ## 5. พาธเนอร์และรอบตรวจ
 
 หลัง Origin คืน log ให้คู่ที่ระบุอ่าน log จริงด้วยสิทธิอ่านเฉพาะ receipt
-หากไม่มีคู่หรือคู่ไม่ผ่าน ใช้ Orchestration เรียกเครื่องมือใน tools/ ผ่าน assist()
+หากไม่ได้ระบุคู่ ไม่มีตัวทดแทนที่พร้อม หรือคู่ที่เรียกแล้วไม่ผ่าน ใช้ Orchestration เรียกเครื่องมือใน tools/ ผ่าน assist()
 ตัวเชื่อมตรวจผลใช้เครื่องมือเดิมตามชนิดไฟล์: check_portable_paths, validate_metadata,
 validate_modules พร้อมตรวจ hash/การมีอยู่ของผลงานตาม receipt และคืนหลักฐานให้เจ้าของงาน
 ถ้าเจ้าของงานล้มเหลวหรือผลตรวจมีข้อบกพร่อง Orchestration คง BLOCKED และเปิด follow-up
@@ -193,3 +193,7 @@ python -m pytest tests/test_origin_operations.py tests/test_origin_collaboration
 - [IGET structure review](../../iget/structure_review.py)
 - [Orchestration](../../workflows/orchestration.py)
 - [Origin workflow](../../.github/workflows/origin-agent-cycle.yml)
+
+## Capability-based replacement update
+
+เมื่อระบุ payload.partner ที่ไม่มี ระบบเลือก Origin อื่นที่พร้อมและไม่ใช่เจ้าของงานสำหรับ file_review ก่อนเรียกจริง โดยจำกัดสิทธิ์อ่าน receipt และตรวจผล. หากไม่ระบุคู่ หรือไม่มีคู่ที่เลือกได้ ยังคงเส้นทาง Orchestration + tools เดิม. ดู [คู่มือปัจจุบัน](ORCHESTRATION_CAPABILITY_SUPPORT_TH.md) สำหรับ scope, หลักฐาน และกรณีคู่ที่เรียกแล้วล้มเหลว.

@@ -1,0 +1,17 @@
+{
+  "capability": "approval_metadata",
+  "inputs": [
+    {
+      "path": "workflows/orchestration/README.md",
+      "sha256": "f4ba9d5ff44e85c865f92df6c1a99eeac855fc4858f94ee520f60e47254857c7"
+    },
+    {
+      "path": "docs/guides/ORCHESTRATION_CAPABILITY_SUPPORT_TH.md",
+      "sha256": "7d20f0a492fa44a7429fb486bac12d748d283f27334bab7402b3b01c1d3ef92b"
+    }
+  ],
+  "findings": [],
+  "task_id": "W3-ORC-20261021-301",
+  "resolved": true,
+  "coverage": "approval metadata"
+}
