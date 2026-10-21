@@ -70,7 +70,12 @@ def build_context(task, request=None, *, authority_context=None):
 # DISPATCH LAYER
 # -------------------------------------------------
 
-def dispatch(module_name, task, plan, context):
+def dispatch(module_name, task, plan, context, *, executors=None):
+    if executors is not None and module_name in executors:
+        executor = executors[module_name]
+        if not callable(executor):
+            raise EngineError(f"Executor for {module_name} must be callable")
+        return executor(task, plan, context)
     agent = get_agent(module_name)
     return agent.execute(task, plan, context)
 
@@ -84,8 +89,13 @@ def validate_agent_result(module_name: str, agent_result: Dict[str, Any]) -> Dic
     missing = []
     identity_missing = []
     blocking_status = None
+    invalid_fields = []
+    if "module" not in agent_result:
+        missing.append("module")
+    elif agent_result["module"] != module_name:
+        invalid_fields.append("module")
     if module_name in W3LGU_RUNTIME_MODULES:
-        missing = sorted(field for field in W3LGU_REQUIRED_RESULT_FIELDS if field not in agent_result)
+        missing = sorted(set(missing) | {field for field in W3LGU_REQUIRED_RESULT_FIELDS if field not in agent_result})
         details = agent_result.get("details") if isinstance(agent_result.get("details"), dict) else {}
         identity = details.get("identity") if isinstance(details.get("identity"), dict) else {}
         identity_expected = bool(
@@ -100,16 +110,17 @@ def validate_agent_result(module_name: str, agent_result: Dict[str, Any]) -> Dic
         if identity_missing:
             blocking_status = "REVIEW_REQUIRED"
 
-    status = "valid" if not missing and not identity_missing else "review_required"
+    status = "valid" if not missing and not identity_missing and not invalid_fields else "review_required"
     return {
         "status": status,
         "module": module_name,
         "missing_fields": missing,
+        "invalid_fields": invalid_fields,
         "identity_missing_fields": identity_missing,
         "blocking_status": blocking_status,
         "mutated": bool(agent_result.get("mutated", False)),
-        "traceable": bool(agent_result.get("traceable", True)) and not missing and not identity_missing,
-        "review": bool(agent_result.get("review", False)) or bool(missing) or bool(identity_missing),
+        "traceable": bool(agent_result.get("traceable", True)) and not missing and not identity_missing and not invalid_fields,
+        "review": bool(agent_result.get("review", False)) or bool(missing) or bool(identity_missing) or bool(invalid_fields),
     }
 
 
@@ -117,14 +128,17 @@ def validate_agent_result(module_name: str, agent_result: Dict[str, Any]) -> Dic
 # SINGLE RUN
 # -------------------------------------------------
 
-def run(task, request=None, *, authority_context=None):
+def run(task, request=None, *, authority_context=None, executors=None):
     started = time.time()
     context = {"trace_id": trace_id()}
     result = None
     try:
         plan = execution_plan(task)
         context = build_context(task, request, authority_context=authority_context)
-        agent_result = dispatch(plan["run_with"], task, plan, context)
+        if executors is None:
+            agent_result = dispatch(plan["run_with"], task, plan, context)
+        else:
+            agent_result = dispatch(plan["run_with"], task, plan, context, executors=executors)
         if not isinstance(agent_result, dict):
             agent_result = {
                 "contract_version": "1.0",

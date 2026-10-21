@@ -46,6 +46,7 @@
         "result_ref": {"type": ["string", "null"]},
         "previous_result_ref": {"type": ["string", "null"]},
         "verified": {"type": "boolean"},
+        "review_policy": {"enum": ["each_stage", "final"]},
         "reconciliation_required": {"type": "boolean"},
         "pending_support": {
           "type": "object", "required": ["kind", "name"],

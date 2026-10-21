@@ -1,0 +1,61 @@
+{
+  "task_id": "W3-ORC-1-7941437219891029018423090543",
+  "source_id": "RQ-LRC2-LOG-ANALYSIS-001",
+  "destination": {
+    "module": "Gemini",
+    "task": "verify"
+  },
+  "payload": {
+    "request_id": "RQ-LRC2-LOG-ANALYSIS-001",
+    "source_request": "requests/RQ-LRC2-LOG-ANALYSIS-001.md",
+    "request_sha256": "a50e4a83aa5dce2af5bb48601a6f2ab104df5cdeb5ff3c4eccd34b44c8eefedc"
+  },
+  "stage": {
+    "task": "verify",
+    "module": "Gemini",
+    "request": {
+      "intent": "ตรวจรายงาน LRC2 เทียบกับ snapshot ของข้อมูลต้นทาง",
+      "request_text": "---\nrequest_id: RQ-LRC2-LOG-ANALYSIS-001\nrequest_type: runtime_circuit\ntask_keyword: log_analysis\ntarget_module: LRC2\nrequester: BBX19\nfinal_signoff_required: true\npriority: NORMAL\n---\n\n# วิเคราะห์ประวัติจริงผ่าน LRC2 → Gemini → Human Review\n\n## บริบทและเป้าหมาย\n\nเริ่มสะสมความเข้าใจประวัติของ W3 จากข้อมูลที่มีอยู่จริง โดยใช้\n`core/memory/memory_store.json` เป็นข้อมูลต้นทาง ไม่สร้างเหตุการณ์สมมุติเพื่อเติมผล\n\n## งานของ LRC2\n\n- แยกประเภทสถานะที่พบ โดยเก็บประเภทที่ยังไม่ทราบไว้ชัดเจน\n- แบ่งกลุ่มตามโมดูลและประเภทงาน\n- หา error signature ที่เกิดซ้ำพร้อมอ้างอิงรายการที่พบ\n- คำนวณการสะสมความเสี่ยงจากรายการล่าสุด 20 รายการต่อกลุ่ม\n- แสดงอัตราสำเร็จที่บันทึกไว้ พร้อมจำนวนตัวอย่างที่ใช้\n- ประมาณแบบ historical frequency เฉพาะกลุ่มที่มีผลสำเร็จ/ล้มเหลวอย่างน้อย 20 ตัวอย่าง\n  ระบุเงื่อนไขความเทียบเคียงและช่วง Wilson 95% ไม่อ้างว่าผ่านการพิสูจน์พยากรณ์อนาคต\n- เขียนรายงานผลจริงใน `modules/LRC2/reports/log_analysis/`\n\n## งานของ Gemini\n\nอ่านไฟล์รายงานและ snapshot ต้นทาง ตรวจ hash จำนวนรายการ การอ้างอิง trace\nและตรวจผลคำนวณซ้ำจากข้อมูลต้นทาง หากไม่ตรงต้องไม่ผ่าน\n\n## การจบงาน\n\nเก็บแหล่งข้อมูลและผลแต่ละขั้นไว้ตรวจสอบ หยุดที่ `WAITING_HUMAN`\nเพื่อให้ BBX19 ตรวจผลก่อนปิดใบงาน ไม่ถือว่าการมีไฟล์อย่างเดียวทำให้ใบงานจบ\n\n```w3-circuit\n{\n  \"stages\": [\n    {\n      \"task\": \"log_analysis\",\n      \"module\": \"LRC2\",\n      \"request\": {\n        \"intent\": \"วิเคราะห์ประวัติ W3 ตามงานและเกณฑ์ในใบงานนี้\",\n        \"payload\": {\n          \"source_file\": \"core/memory/memory_store.json\",\n          \"min_samples\": 20,\n          \"window_size\": 20\n        }\n      }\n    },\n    {\n      \"task\": \"verify\",\n      \"module\": \"Gemini\",\n      \"request\": {\n        \"intent\": \"ตรวจรายงาน LRC2 เทียบกับ snapshot ของข้อมูลต้นทาง\"\n      }\n    }\n  ]\n}\n```\n",
+      "_request_file": "requests/RQ-LRC2-LOG-ANALYSIS-001.md",
+      "payload": {
+        "contract_version": "1.0",
+        "status": "COMPLETED",
+        "module": "LRC2",
+        "task": "log_analysis",
+        "capability": "log_analysis",
+        "trace_id": "cd827151abaf423584a0368eba8d08cd",
+        "action": "analyze_recorded_log_patterns",
+        "confidence": 0.0,
+        "input_type": "log_records",
+        "decision": "analysis_report_created",
+        "reason": "Computed classifications, exact repeated error signatures and conditional historical estimates from supplied records.",
+        "next": [],
+        "standby": [
+          "Gemini"
+        ],
+        "mutated": true,
+        "traceable": true,
+        "review": false,
+        "summary": "Analyzed 105 records in 13 module/task groups; created a source-linked report.",
+        "details": {
+          "identity": {
+            "chain_id": "W3-ORC-1-7941437219891029018423090543",
+            "event_id": "cd827151abaf423584a0368eba8d08cd",
+            "package_id": "LRC2-ANALYSIS-492ec36ebe22c0a8bd52"
+          },
+          "records_total": 105,
+          "source_sha256": "492ec36ebe22c0a8bd5295a45f41c0cd3e55e99445a42965d0124d20235190b3",
+          "confidence_scope": "predictive confidence is not measured"
+        },
+        "artifacts": [
+          {
+            "path": "modules/LRC2/reports/log_analysis/cd827151abaf423584a0368eba8d08cd.json",
+            "sha256": "c5d4bef09d9df7a17b7dbb8d5c17cad7775fb0c81d62f2a044590cea7161671c",
+            "bytes": 11547,
+            "kind": "w3.lrc2.log_analysis.json"
+          }
+        ]
+      }
+    }
+  }
+}
