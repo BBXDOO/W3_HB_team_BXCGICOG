@@ -1,0 +1,12 @@
+{
+  "schema": "w3.human_callback/1",
+  "request_id": "YOUR_REQUEST_ID",
+  "binding": {},
+  "kind": "DECISION",
+  "decision": "CANCEL",
+  "reason": "ขอยกเลิกคำร้องนี้",
+  "annotations": [
+    "ระบุวิธีจัดการผลงานที่เกิดไปแล้ว"
+  ],
+  "evidence": []
+}

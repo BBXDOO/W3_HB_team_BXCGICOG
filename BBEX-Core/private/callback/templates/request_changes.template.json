@@ -1,0 +1,12 @@
+{
+  "schema": "w3.human_callback/1",
+  "request_id": "YOUR_REQUEST_ID",
+  "binding": {},
+  "kind": "DECISION",
+  "decision": "REVIEW",
+  "reason": "ขอปรับปรุงก่อนตรวจรับ",
+  "annotations": [
+    "ระบุสิ่งที่ต้องแก้และผลที่ต้องการ"
+  ],
+  "evidence": []
+}

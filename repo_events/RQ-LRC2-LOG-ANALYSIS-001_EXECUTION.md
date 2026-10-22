@@ -13,3 +13,13 @@
 - result: `requests/results/RQ-LRC2-LOG-ANALYSIS-001_RESULT.json`
 - final_signoff_required: `true`
 - closed: `true`
+
+<!-- w3-human-response-links -->
+
+---
+
+### ตอบกลับรายงาน
+
+วงจรนี้จบที่ `COMPLETED` แล้ว ไม่ต้องตรวจรับซ้ำ
+
+- [📑 วิธีตอบและความหมายของคำตอบ](../BBEX-Core/private/callback/README.md)

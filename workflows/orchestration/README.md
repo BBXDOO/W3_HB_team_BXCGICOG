@@ -57,3 +57,7 @@
 - **Owner:** BBX19
 - **Maker:** W3 Human-AI Team
 - **Log:** Git history / saved task history / support receipts
+
+## Unified human response
+
+การตอบฝั่งมนุษย์ใช้วงจรเดียวผ่าน `tools/human_callback.py`: BBEX intent → BBX19 decision/note → Orchestration → root audit. คำร้องใหม่สร้าง callback_path ให้อัตโนมัติ; root result เก่านำเข้าได้โดยไม่เรียก executor ซ้ำ. ดู [คู่มือและเทมเพลต](../../BBEX-Core/private/callback/README.md).

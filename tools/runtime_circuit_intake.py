@@ -104,7 +104,19 @@ def make_runtime(root, *, executors=None, verifiers=None):
             return policies[stage['task']](deepcopy(stage), deepcopy(result))
         agent = result.get('agent_result', {})
         capability = agent.get('capability')
-        if capability == 'log_analysis':
+        if capability == 'adopted_document_result':
+            from tools.document_creation_flow import _document_checks
+            try:
+                artifact = _inside(root, agent['artifact_path'])
+                checks = _document_checks(artifact.read_text(), artifact, agent['artifact_sha256'])
+                source = json.loads(_inside(root, agent['source_receipt']).read_text())['runtime_result']
+                checks.append({'name': 'existing_receipt_matches_artifact', 'passed':
+                    source.get('artifact_path') == agent['artifact_path'] and
+                    source.get('artifact_sha256') == agent['artifact_sha256'] and
+                    source.get('gemini_result', {}).get('status') == 'COMPLETED'})
+            except (OSError, ValueError, KeyError, TypeError) as exc:
+                checks = [{'name': 'existing_document_verification', 'passed': False, 'reason': str(exc)}]
+        elif capability == 'log_analysis':
             checks = log_report_checks(agent, root)
         elif capability == 'source_artifact_verification':
             # Recompute on continuation too, so stale/tampered evidence cannot
@@ -160,7 +172,12 @@ def run_request(*, request, repo_root, target_module=None, executors=None, verif
                             {'request_id': rid, 'source_request': request['_request_file'],
                              'request_sha256': request_digest}, source_id=rid,
                             human_review_required=bool(request.get('final_signoff_required', True)))
+        from workflows.human_callback import ensure_intent
+        ensure_intent(circuit, task, request)
         circuit.run(task, stages, review_policy="final")
+    if task['status'] in {'WAITING_HUMAN', 'BLOCKED'}:
+        from workflows.human_callback import prepare
+        prepare(circuit, task, request)
     results = [json.loads(_inside(root, item['ref']).read_text(encoding='utf-8'))
                for item in task['evidence'] if item['actor'] == 'runtime-result']
     artifacts = []
@@ -177,7 +194,10 @@ def run_request(*, request, repo_root, target_module=None, executors=None, verif
             'agent_result': results[-1].get('agent_result', {}) if results else {},
             'stage_results': results, 'artifacts': artifacts, 'mutated': task['mutated'],
             'orchestration_evidence': str(snapshot.relative_to(root)),
-            'review': task['status'] != 'COMPLETED', 'closed': task['status'] == 'COMPLETED',
+            'review': task['status'] not in {'COMPLETED', 'REJECTED', 'CANCELLED'},
+            'closed': task['status'] in {'COMPLETED', 'REJECTED', 'CANCELLED'},
+            'callback_path': task['payload'].get('human_cycle', {}).get('response_path') if task['status'] in {'WAITING_HUMAN', 'BLOCKED'} else None,
+            'intent_id': task['payload'].get('human_cycle', {}).get('intent', {}).get('intent_id'),
             'trace_id': results[-1].get('trace_id') if results else None, 'time': engine_v2.now(),
             'circuit_revision': hashlib.sha256(log_analysis.canonical(task)).hexdigest()}
 
@@ -199,15 +219,10 @@ def main():
     if args.review:
         if not args.human or not args.evidence:
             parser.error('--review requires --human and --evidence')
-        rid = str(request['request_id'])
-        with rc._file_lock(rc.REQUEST_LOCK_DIR/f'{rc.safe_id(rid)}.circuit.lock'):
-            circuit = make_runtime(root)
-            snapshot = circuit.directory/'tasks'/f'{task_id(rid)}.json'
-            task = json.loads(snapshot.read_text(encoding='utf-8'))
-            if task['payload']['request_sha256'] != hashlib.sha256(request['_request_text'].encode()).hexdigest():
-                raise ValueError('review request content does not match saved work')
-            stage = task['runtime_circuit']['stages'][task['runtime_circuit']['index']]
-            circuit.review_stage(task, stage, human=args.human, evidence=args.evidence)
+        from tools.human_callback import review_request
+        result = review_request(root, path, human=args.human, evidence=args.evidence)
+        print(json.dumps(result, ensure_ascii=False))
+        return
     print(json.dumps(rc.process(path), ensure_ascii=False))
 
 

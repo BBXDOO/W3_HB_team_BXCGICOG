@@ -1,0 +1,13 @@
+{
+  "schema": "w3.human_callback/1",
+  "request_id": "YOUR_REQUEST_ID",
+  "binding": {},
+  "kind": "NOTE",
+  "decision": "",
+  "reason": "รับทราบงานหรือรายงานแล้ว",
+  "annotations": [
+    "ยังไม่ใช่การอนุมัติผล"
+  ],
+  "evidence": [],
+  "message_type": "ACKNOWLEDGE"
+}

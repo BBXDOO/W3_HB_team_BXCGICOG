@@ -366,5 +366,7 @@
   "final_signoff_required": true,
   "closed": true,
   "mutated": true,
-  "review": true
+  "review": true,
+  "report_path": "requests/results/RQ-LRC2-LOG-ANALYSIS-001_REPORT.md",
+  "discussion_url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/pull/297"
 }

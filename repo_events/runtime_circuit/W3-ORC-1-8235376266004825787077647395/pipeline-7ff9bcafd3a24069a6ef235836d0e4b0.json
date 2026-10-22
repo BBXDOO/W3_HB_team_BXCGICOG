@@ -1,0 +1,11 @@
+{
+  "stages": [
+    {
+      "task": "vision",
+      "request": {
+        "request_text": "---\nrequest_id: RQ-BBX19-VISION-002\ntask_keyword: vision\ntarget_module: BBX19\nrequester: <BBX19>\nlanguage: th\nrequest_type: brainstorm\nauthority_requested: สร้างรายงานสรุป,ภาษาไทย\nfinal_signoff_required: true\nmutated: false\nreview: true\n---\n\n# คำร้องถึง BBX19\n\n## 1. เจตนา\n\nต้องการระดมความคิดเกี่ยวกับ:\n<.gitkeep>\n\n## 2. เหตุที่เรียก BBX19\n\nหัวข้อนี้เกี่ยวข้องกับ:\n\n- ความสมบูรณ์ของโครงสร้าง\n- การอัพเกรดพื้นที่ ,ทักษะใหม่ และรูปแบบการทำงาน\n- ปัญหาการยังขาดแหล่งที่มาสืบเนื่องจากความหมายของพื้นที่ไม่ชัดเจน\n- สร้างการเคลื่อนไหวในระดับระบบเพื่อกระตุ้นให้ทุกส่วนได้รับทราบ สภาพความเป็นจริงและขั้นต่ำตามเป้าหมาย\n\n## 3. คำถามหลัก\n\n1. <จำนวนโฟลเดอร์ที่มี .gitkeep>\n2. <ระบบย่อยที่มีโครงสร้างแล้วยังขาดเนื้อหาแบบไหน>\n3. <จำนวนรวมของ .../.gitkeep และลิสรายชื่อของระบบ>\n\n## 4. ข้อมูลที่ทราบ\n\n- \n- \n\n## 5. สิ่งที่ยังไม่ทราบ\n\n- <จำนวน .gitkeep>\n- <ระบบที่มี>\n- <ความหมาย ,วัตุประสงค์จริงของโฟลเดอร์ที่ใช้ .gitkeep>\n\n## 6. โมดูลร่วมระดมความคิด\n\n- Primary: <BBX19>\n- Partner: <ChatGPT>\n- Observer: <Copilot-Gm>\n- Final decision node: BBX19\n\n## 7. ผลลัพธ์ที่ต้องการ\n\n- [ ] รายงานสรุปจำนวน .gitkeep ที่พบทั้งรีโป้\n- [ ] รายชื่อโฟลเดอร์ที่พบ และความหมาย\n- [ ] ชื่อระบบหรือโครงสร้างที่ folder อยู่\n- [ ] ข้อเสนอแนะ\n- [ ] ประเด็นที่ต้องให้ BBX19 ตัดสิน\n\n## 8. ข้อจำกัด\n\n- ห้ามแก้ source intent\n- ห้ามถือ proposal เป็น approval\n- ห้าม merge หรือ deploy\n- ห้ามรายงาน COMPLETED หากยังไม่มี final sign-off\n- แยก fact, inference และ proposal ออกจากกัน\n\n## 9. Return Contract\n\nstatus:\nsummary:\noptions:\nrisks:\ncross_system_effects:\nevidence:\nunknowns:\nrecommendation:\ndecision_required:\nmutated: false\nreview: true\nfinal_signoff:\n"
+      },
+      "module": "BBX19"
+    }
+  ]
+}

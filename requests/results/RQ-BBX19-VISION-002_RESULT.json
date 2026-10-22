@@ -9,10 +9,10 @@
   "substitution": false,
   "task_keyword": "vision",
   "runtime_result": {
-    "status": "REVIEW_REQUIRED",
-    "task": "vision",
+    "status": "WAITING_HUMAN",
+    "task": "runtime_circuit",
     "module": "BBX19",
-    "output": "No final action was authorized; an explicit, evidenced BBX19 decision is required.",
+    "output": "Request RQ-BBX19-VISION-002: WAITING_HUMAN; 1 executor result(s), 0 file artifact(s).",
     "agent_result": {
       "contract_version": "1.0",
       "status": "REVIEW_REQUIRED",
@@ -40,34 +40,83 @@
         "performed": false
       }
     },
-    "result_validation": {
-      "status": "valid",
-      "module": "BBX19",
-      "missing_fields": [],
-      "invalid_fields": [],
-      "identity_missing_fields": [],
-      "blocking_status": null,
-      "mutated": false,
-      "traceable": true,
-      "review": true
-    },
+    "stage_results": [
+      {
+        "status": "REVIEW_REQUIRED",
+        "task": "vision",
+        "module": "BBX19",
+        "output": "No final action was authorized; an explicit, evidenced BBX19 decision is required.",
+        "agent_result": {
+          "contract_version": "1.0",
+          "status": "REVIEW_REQUIRED",
+          "module": "BBX19",
+          "task": "vision",
+          "action": "await_bbx19_decision",
+          "decision_state": "AWAITING_BBX19_DECISION",
+          "summary": "No final action was authorized; an explicit, evidenced BBX19 decision is required.",
+          "reason": "Missing: decision, reason, evidence, annotation, explicit_bbx19_confirmation",
+          "missing": [
+            "decision",
+            "reason",
+            "evidence",
+            "annotation",
+            "explicit_bbx19_confirmation"
+          ],
+          "intent_link": null,
+          "intent_blockers": [],
+          "artifacts": [],
+          "mutated": false,
+          "traceable": true,
+          "review": true,
+          "execution": {
+            "allowed": false,
+            "performed": false
+          }
+        },
+        "result_validation": {
+          "status": "valid",
+          "module": "BBX19",
+          "missing_fields": [],
+          "invalid_fields": [],
+          "identity_missing_fields": [],
+          "blocking_status": null,
+          "mutated": false,
+          "traceable": true,
+          "review": true
+        },
+        "artifacts": [],
+        "time": "2026-10-21T05:47:12Z",
+        "trace_id": "d10dcac8022647c6a075b5e85f3ab7f9"
+      }
+    ],
     "artifacts": [],
-    "time": "2026-10-21T05:47:12Z",
-    "trace_id": "d10dcac8022647c6a075b5e85f3ab7f9"
+    "mutated": false,
+    "orchestration_evidence": "repo_events/runtime_circuit/tasks/W3-ORC-1-8235376266004825787077647395.json",
+    "review": true,
+    "closed": false,
+    "callback_path": "BBEX-Core/private/callback/responses/W3-ORC-1-8235376266004825787077647395-c1dc038b1729.json",
+    "intent_id": "BBEX-e3c7cac9b342",
+    "trace_id": "d10dcac8022647c6a075b5e85f3ab7f9",
+    "time": "2026-10-22T15:13:49Z",
+    "circuit_revision": "85de8c29b2bbab2df8f439922ae0f10c887e1c2faa8ae0e326f32d4a94831508"
   },
   "artifact_paths": [],
   "artifact_path": null,
   "artifact_sha256": null,
   "gemini_validation_event": null,
-  "orchestration_evidence": null,
+  "orchestration_evidence": "repo_events/runtime_circuit/tasks/W3-ORC-1-8235376266004825787077647395.json",
+  "callback_path": "BBEX-Core/private/callback/responses/W3-ORC-1-8235376266004825787077647395-c1dc038b1729.json",
+  "intent_id": "BBEX-e3c7cac9b342",
   "checkin": {
     "doc_id": "CID_@R000A1",
-    "entry_no": 2,
+    "entry_no": 7,
     "path": "logs/check-in/CID_@R000A1.md"
   },
   "request_log": "logs/request_cycle/RQ-BBX19-VISION-002.md",
   "final_signoff_required": true,
   "closed": false,
   "mutated": false,
-  "review": true
+  "review": true,
+  "report_path": "requests/results/RQ-BBX19-VISION-002_REPORT.md",
+  "discussion_url": null
 }

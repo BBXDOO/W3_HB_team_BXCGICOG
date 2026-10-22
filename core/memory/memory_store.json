@@ -1466,6 +1466,20 @@
         "completed"
       ],
       "score": 5
+    },
+    {
+      "id": "3b089665-f6c1-45ae-9046-ac65cc4f18a8",
+      "timestamp": "2026-10-22T15:13:49.701718Z",
+      "type": "runtime_result",
+      "source": "BBX19",
+      "topic": "vision",
+      "content": "{\"agent_result\": {\"action\": \"await_bbx19_decision\", \"artifacts\": [], \"contract_version\": \"1.0\", \"decision_state\": \"AWAITING_BBX19_DECISION\", \"execution\": {\"allowed\": false, \"performed\": false}, \"intent_blockers\": [], \"intent_link\": null, \"missing\": [\"decision\", \"reason\", \"evidence\", \"annotation\", \"explicit_bbx19_confirmation\"], \"module\": \"BBX19\", \"mutated\": false, \"reason\": \"Missing: decision, reason, evidence, annotation, explicit_bbx19_confirmation\", \"review\": true, \"status\": \"REVIEW_REQUIRED\", \"summary\": \"No final action was authorized; an explicit, evidenced BBX19 decision is required.\", \"task\": \"vision\", \"traceable\": true}, \"artifacts\": [], \"callback_path\": \"BBEX-Core/private/callback/responses/W3-ORC-1-8235376266004825787077647395-c1dc038b1729.json\", \"circuit_revision\": \"85de8c29b2bbab2df8f439922ae0f10c887e1c2faa8ae0e326f32d4a94831508\", \"closed\": false, \"intent_id\": \"BBEX-e3c7cac9b342\", \"module\": \"BBX19\", \"mutated\": false, \"orchestration_evidence\": \"repo_events/runtime_circuit/tasks/W3-ORC-1-8235376266004825787077647395.json\", \"output\": \"Request RQ-BBX19-VISION-002: WAITING_HUMAN; 1 executor result(s), 0 file artifact(s).\", \"review\": true, \"stage_results\": [{\"agent_result\": {\"action\": \"await_bbx19_decision\", \"artifacts\": [], \"contract_version\": \"1.0\", \"decision_state\": \"AWAITING_BBX19_DECISION\", \"execution\": {\"allowed\": false, \"performed\": false}, \"intent_blockers\": [], \"intent_link\": null, \"missing\": [\"decision\", \"reason\", \"evidence\", \"annotation\", \"explicit_bbx19_confirmation\"], \"module\": \"BBX19\", \"mutated\": false, \"reason\": \"Missing: decision, reason, evidence, annotation, explicit_bbx19_confirmation\", \"review\": true, \"status\": \"REVIEW_REQUIRED\", \"summary\": \"No final action was authorized; an explicit, evidenced BBX19 decision is required.\", \"task\": \"vision\", \"traceable\": true}, \"artifacts\": [], \"module\": \"BBX19\", \"output\": \"No final action was authorized; an explicit, evidenced BBX19 decision is required.\", \"result_validation\": {\"blocking_status\": null, \"identity_missing_fields\": [], \"invalid_fields\": [], \"missing_fields\": [], \"module\": \"BBX19\", \"mutated\": false, \"review\": true, \"status\": \"valid\", \"traceable\": true}, \"status\": \"REVIEW_REQUIRED\", \"task\": \"vision\", \"time\": \"2026-10-21T05:47:12Z\", \"trace_id\": \"d10dcac8022647c6a075b5e85f3ab7f9\"}], \"status\": \"WAITING_HUMAN\", \"task\": \"runtime_circuit\", \"time\": \"2026-10-22T15:13:49Z\", \"trace_id\": \"d10dcac8022647c6a075b5e85f3ab7f9\"}",
+      "tags": [
+        "runtime",
+        "request_cycle",
+        "waiting_human"
+      ],
+      "score": 1
     }
   ],
   "runtime": {
