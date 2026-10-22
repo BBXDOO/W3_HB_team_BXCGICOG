@@ -48,6 +48,7 @@
         "verified": {"type": "boolean"},
         "review_policy": {"enum": ["each_stage", "final"]},
         "reconciliation_required": {"type": "boolean"},
+        "callback_reconciliation_required": {"type": "boolean"},
         "pending_support": {
           "type": "object", "required": ["kind", "name"],
           "properties": {"kind": {"enum": ["SPECIALIST", "TOOL"]}, "name": {"type": "string", "minLength": 1}, "attempt_id": {"type": "string"}}

@@ -30,7 +30,7 @@ def inside(root, value):
     return path
 
 
-def ensure_intent(runtime, task, request):
+def ensure_intent(runtime, task, request, *, persist=True):
     cycle = task['payload'].get('human_cycle')
     if cycle is not None:
         if not isinstance(cycle, dict) or cycle.get('intent', {}).get('record_type') != 'w3.intent_record':
@@ -48,7 +48,8 @@ def ensure_intent(runtime, task, request):
                       else 'Outcome basis: source request and declared stage verification contract'],
     )
     task['payload']['human_cycle'] = {'version': 1, 'intent': intent, 'callbacks': {}}
-    runtime._save(task)
+    if persist:
+        runtime._save(task)
     return task['payload']['human_cycle']
 
 
@@ -186,7 +187,7 @@ def apply(runtime, task, callback, *, authority_context, host_evidence, checkpoi
         runtime._save(task)
     except Exception:
         # Do not replay a partially applied human action or downstream executor.
-        task['runtime_circuit']['reconciliation_required'] = True
+        task['runtime_circuit']['callback_reconciliation_required'] = True
         cycle['callbacks'][key]['state'] = 'PENDING'
         try:
             runtime._save(task)
@@ -214,8 +215,14 @@ def reconcile_callback(runtime, task, callback_id, *, outcome, authority_context
     ref = runtime._evidence(task, 'callback-reconciliation', {
         'callback_id': callback_id, 'outcome': outcome, 'evidence': host_evidence,
         'authority': authority_context, 'observed_task_status': task['status']})
-    if task['runtime_circuit'].get('reconciliation_required'):
-        runtime.reconcile(task, actor=authority_context['verified_by'], evidence=ref)
+    state = task['runtime_circuit']
+    # Older receipts used the runtime flag for callback-only persistence failures.
+    # Migrate only states where no runtime execution/support is in flight.
+    if (state.get('reconciliation_required') and not state.get('callback_reconciliation_required')
+            and task['status'] in {'WAITING_HUMAN', 'COMPLETED', 'REJECTED', 'CANCELLED'}
+            and not state.get('pending_support')):
+        state['reconciliation_required'] = False
+    state['callback_reconciliation_required'] = False
     entry.update(state=outcome, reconciliation=ref)
     task['evidence'].append({'at': orc.timestamp(), 'actor': 'callback-reconciliation', 'ref': ref})
     task['history'].append({'at': orc.timestamp(), 'actor': 'BBX19', 'event': 'CALLBACK_RECONCILED', 'detail': outcome})
