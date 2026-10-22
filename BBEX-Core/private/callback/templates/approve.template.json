@@ -1,0 +1,12 @@
+{
+  "schema": "w3.human_callback/1",
+  "request_id": "YOUR_REQUEST_ID",
+  "binding": {},
+  "kind": "DECISION",
+  "decision": "APPROVE",
+  "reason": "ตรวจรับผลตามขอบเขตและข้อจำกัดที่ระบุ",
+  "annotations": [
+    "รับเฉพาะผลงานรอบนี้ เป้าหมายส่วนที่เหลือยังคงอยู่"
+  ],
+  "evidence": []
+}

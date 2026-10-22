@@ -1,0 +1,13 @@
+{
+  "schema": "w3.human_callback/1",
+  "request_id": "YOUR_REQUEST_ID",
+  "binding": {},
+  "kind": "NOTE",
+  "decision": "",
+  "reason": "แจ้งความคืบหน้า",
+  "annotations": [
+    "ทำแล้ว: ... / ค้าง: ... / ขั้นต่อไป: ..."
+  ],
+  "evidence": [],
+  "message_type": "PROGRESS"
+}

@@ -8,7 +8,7 @@
 - preferred route: `BBX19`
 - substitution: `false`
 - task: `vision`
-- status: `REVIEW_REQUIRED`
+- status: `WAITING_HUMAN`
 - trace_id: `d10dcac8022647c6a075b5e85f3ab7f9`
 - result: `requests/results/RQ-BBX19-VISION-002_RESULT.json`
 - final_signoff_required: `true`

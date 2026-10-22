@@ -1,0 +1,12 @@
+{
+  "schema": "w3.human_callback/1",
+  "request_id": "YOUR_REQUEST_ID",
+  "binding": {},
+  "kind": "DECISION",
+  "decision": "REJECT",
+  "reason": "ไม่รับผลหรือคำร้องนี้",
+  "annotations": [
+    "ระบุเหตุผลและขอบเขตการปฏิเสธ"
+  ],
+  "evidence": []
+}

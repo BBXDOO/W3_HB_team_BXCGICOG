@@ -1,0 +1,13 @@
+{
+  "schema": "w3.human_callback/1",
+  "request_id": "YOUR_REQUEST_ID",
+  "binding": {},
+  "kind": "NOTE",
+  "decision": "",
+  "reason": "ต้องการความช่วยเหลือ",
+  "annotations": [
+    "ติดที่: ... / ต้องการ: ... / หลักฐาน: ..."
+  ],
+  "evidence": [],
+  "message_type": "HELP"
+}

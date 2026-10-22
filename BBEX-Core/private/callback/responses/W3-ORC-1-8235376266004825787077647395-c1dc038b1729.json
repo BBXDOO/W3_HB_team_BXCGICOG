@@ -1,0 +1,17 @@
+{
+  "schema": "w3.human_callback/1",
+  "request_id": "RQ-BBX19-VISION-002",
+  "binding": {
+    "task_id": "W3-ORC-1-8235376266004825787077647395",
+    "request_sha256": "6951661c0c268da8c6e5fa790f7bb0973ce54f95f98c2d589732058945a8f7a5",
+    "stage_index": 0,
+    "stage_sha256": "5515ca7f27e456a302839e970fa4e74a2991bd3d024b1dd92cbfa42c9821d2ad",
+    "result_sha256": "23e71de891ed4c6dc79b812838b989b9ba2a834e4319ddecf93de10d9d3f8e49",
+    "intent_id": "BBEX-e3c7cac9b342"
+  },
+  "kind": "DECISION",
+  "decision": "",
+  "reason": "",
+  "annotations": [],
+  "evidence": []
+}

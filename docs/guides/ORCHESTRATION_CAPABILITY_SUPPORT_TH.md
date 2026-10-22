@@ -199,3 +199,7 @@ python -m pytest tests/test_orchestration_support.py tests/test_orchestration_su
 ```
 
 ชุดทดสอบครอบคลุมไฟล์จริง การเลือกคู่ทดแทน scope/availability การตรวจผลเท็จ การเก็บผลเมื่อบันทึกล้มเหลว และการคืนงานหลังรีสตาร์ต ไม่ได้ยืนยันความสามารถของบริการภายนอกที่ยังไม่ได้เชื่อม
+
+## Human response in the same circuit
+
+เมื่อขอแก้ไขผ่าน human callback งานเข้าสู่ BLOCKED พร้อม reason/evidence ให้ support_for() ของวงจรนี้ใช้ต่อได้; อนุมัติใช้ BBEX intent + BBX19 decision แล้วตรวจผลด้วย verifier เดิมก่อนเดินต่อ. ดู [คู่มือคำตอบและเทมเพลต](../../BBEX-Core/private/callback/README.md).
