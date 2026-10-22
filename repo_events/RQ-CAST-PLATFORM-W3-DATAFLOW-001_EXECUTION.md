@@ -9,7 +9,18 @@
 - substitution: `false`
 - task: `structural_review`
 - status: `REVIEW_REQUIRED`
-- trace_id: `d3e09fb6e30c40f288438056401a8088`
+- trace_id: `09421983edd5455a930e3c369433a003`
 - result: `requests/results/RQ-CAST-PLATFORM-W3-DATAFLOW-001_RESULT.json`
 - final_signoff_required: `true`
 - closed: `false`
+
+<!-- w3-human-response-links -->
+
+---
+
+### ตอบกลับรายงาน
+
+สถานะ `REVIEW_REQUIRED` — ตอบโดยอ้างอิงใบงาน `RQ-CAST-PLATFORM-W3-DATAFLOW-001`
+
+- ฟอร์มยังไม่ถูกเตรียม ใช้ --prepare ตามคู่มือด้านล่าง
+- [📑 วิธีตอบและความหมายของคำตอบ](../BBEX-Core/private/callback/README.md)

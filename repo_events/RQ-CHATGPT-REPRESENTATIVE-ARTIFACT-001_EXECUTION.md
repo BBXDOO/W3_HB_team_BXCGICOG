@@ -9,3 +9,13 @@
 - result: `requests/results/RQ-CHATGPT-REPRESENTATIVE-ARTIFACT-001_RESULT.json`
 - final_signoff_required: `true`
 - closed: `false`
+
+<!-- w3-human-response-links -->
+
+---
+
+### ตอบกลับรายงาน
+
+วงจรนี้จบที่ `COMPLETED` แล้ว ไม่ต้องตรวจรับซ้ำ
+
+- [📑 วิธีตอบและความหมายของคำตอบ](../BBEX-Core/private/callback/README.md)

@@ -115,22 +115,26 @@
       "review": true
     },
     "artifacts": [],
-    "time": "2026-10-21T05:47:12Z",
-    "trace_id": "d3e09fb6e30c40f288438056401a8088"
+    "time": "2026-10-22T15:36:10Z",
+    "trace_id": "09421983edd5455a930e3c369433a003"
   },
   "artifact_paths": [],
   "artifact_path": null,
   "artifact_sha256": null,
   "gemini_validation_event": null,
   "orchestration_evidence": null,
+  "callback_path": null,
+  "intent_id": null,
   "checkin": {
     "doc_id": "CID_@R000A1",
-    "entry_no": 3,
+    "entry_no": 8,
     "path": "logs/check-in/CID_@R000A1.md"
   },
   "request_log": "logs/request_cycle/RQ-CAST-PLATFORM-W3-DATAFLOW-001.md",
   "final_signoff_required": true,
   "closed": false,
   "mutated": false,
-  "review": true
+  "review": true,
+  "report_path": "requests/results/RQ-CAST-PLATFORM-W3-DATAFLOW-001_REPORT.md",
+  "discussion_url": null
 }

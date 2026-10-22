@@ -14,3 +14,13 @@
 - final_signoff_required: `true`
 - final_signoff: `repo_events/RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001_FINAL_SIGNOFF.md`
 - closed: `true`
+
+<!-- w3-human-response-links -->
+
+---
+
+### ตอบกลับรายงาน
+
+วงจรนี้จบที่ `COMPLETED` แล้ว ไม่ต้องตรวจรับซ้ำ
+
+- [📑 วิธีตอบและความหมายของคำตอบ](../BBEX-Core/private/callback/README.md)

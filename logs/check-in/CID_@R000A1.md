@@ -44,3 +44,21 @@ DOCS - REQUEST CHECK-IN SHEET
 • Operation : เฟล
 • Suggestions : "Request RQ-BBX19-VISION-002: WAITING_HUMAN; 1 executor result(s), 0 file artifact(s)."
 ---
+• NO.8 : RQ-CAST-PLATFORM-W3-DATAFLOW-001
+• DATE : 2026-10-22T15:36:10Z
+• Person : BBX19
+• Operation : เฟล
+• Suggestions : "Copilot-Gm did not complete the governance coverage review."
+---
+• NO.9 : RQ-CHATGPT-REPRESENTATIVE-ARTIFACT-001
+• DATE : 2026-09-22T09:52:57Z
+• Person : BBX19
+• Operation : ทรู
+• Suggestions : "Created a local flow artifact from the routed task and request context. No remote model, network call, or external executor was used."
+---
+• NO.10 : RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001
+• DATE : 2026-10-03T10:08:04Z
+• Person : BBX19
+• Operation : ทรู
+• Suggestions : "Document created, Gemini-validated, and approved by BBX19."
+---
