@@ -287,6 +287,8 @@ def _process(path:Path, *, executors=None, verifiers=None)->dict:
                 envelope=json.loads(result_path.read_text(encoding="utf-8"))
             except (OSError,json.JSONDecodeError):
                 return {"status":"SKIPPED","request_id":rid,"reason":"result already exists"}
+            from tools.report_navigation import publish
+            publish(ROOT, req, envelope, result_path=result_path, event_path=EVENTS/f"{safe_id(rid)}_EXECUTION.md")
             existing_checkin=envelope.get("checkin") if isinstance(envelope.get("checkin"),dict) else {}
             existing_checkin_path=existing_checkin.get("path")
             existing_request_log=envelope.get("request_log")
@@ -387,6 +389,8 @@ def _process(path:Path, *, executors=None, verifiers=None)->dict:
                 except (OSError, ValueError):
                     prior={}
                 if prior.get("runtime_result", {}).get("circuit_revision") == result.get("circuit_revision"):
+                    from tools.report_navigation import publish
+                    publish(ROOT, req, prior, result_path=prior_path, event_path=EVENTS/f"{safe_id(rid)}_EXECUTION.md")
                     return {"status":"SKIPPED", "request_id":rid, "reason":"circuit state unchanged",
                             "orchestration_evidence":result["orchestration_evidence"]}
             agent_result=result.get("agent_result", {})
@@ -510,6 +514,8 @@ def _process(path:Path, *, executors=None, verifiers=None)->dict:
       f"- final_signoff_required: `{str(bool(req.get('final_signoff_required',True))).lower()}`\n"
       f"- closed: `{str(bool(envelope['closed'])).lower()}`\n",
       encoding="utf-8")
+    from tools.report_navigation import publish
+    publish(ROOT, req, envelope, result_path=rp, event_path=ep)
     return envelope
 
 def main():

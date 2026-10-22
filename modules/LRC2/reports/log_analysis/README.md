@@ -12,3 +12,5 @@ sample-qualified historical-frequency estimates.
 [First real request report](cd827151abaf423584a0368eba8d08cd.json)
 
 [Request and execution details](../../../../docs/runtime/REAL_REQUEST_CIRCUIT.md)
+
+อ่านรายงานรอบแรกพร้อมสถานะและช่องทางตอบกลับ: [📝 รายงานสำหรับอ่าน](../../../../requests/results/RQ-LRC2-LOG-ANALYSIS-001_REPORT.md)

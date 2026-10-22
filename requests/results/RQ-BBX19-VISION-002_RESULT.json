@@ -116,5 +116,7 @@
   "final_signoff_required": true,
   "closed": false,
   "mutated": false,
-  "review": true
+  "review": true,
+  "report_path": "requests/results/RQ-BBX19-VISION-002_REPORT.md",
+  "discussion_url": null
 }
