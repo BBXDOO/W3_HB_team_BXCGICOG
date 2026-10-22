@@ -195,3 +195,33 @@ def test_saved_request_can_be_reviewed_after_moving_repository(monkeypatch, tmp_
     make_runtime(moved).review_stage(task, stage, human='BBX19', evidence='test:review-after-move')
     envelope = rc.process(moved/'requests/RQ-REAL-ANALYSIS.md')
     assert envelope['runtime_result']['status'] == 'COMPLETED'
+
+
+def test_preparation_failure_leaves_no_incomplete_task_and_retry_works(monkeypatch, tmp_path):
+    from workflows.runtime_circuit import WorkflowRuntime
+    configure(monkeypatch, tmp_path); path = request(tmp_path)
+    original = WorkflowRuntime._prepare
+    def fail(*args, **kwargs):
+        raise OSError('interrupted before initialization')
+    monkeypatch.setattr(WorkflowRuntime, '_prepare', fail)
+    with pytest.raises(OSError):
+        run_request(request=rc.parse_request(path), repo_root=tmp_path)
+    snapshot = tmp_path/'repo_events/runtime_circuit/tasks'/f'{task_id("RQ-REAL-ANALYSIS")}.json'
+    assert not snapshot.exists()
+    monkeypatch.setattr(WorkflowRuntime, '_prepare', original)
+    assert run_request(request=rc.parse_request(path), repo_root=tmp_path)['status'] == 'WAITING_HUMAN'
+
+
+def test_old_intent_only_snapshot_resumes_without_deleting_it(monkeypatch, tmp_path):
+    from workflows import orchestration as orc
+    from workflows.human_callback import ensure_intent
+    configure(monkeypatch, tmp_path); path = request(tmp_path)
+    parsed = rc.parse_request(path); rid = parsed['request_id']
+    task = orc.new_task(task_id(rid), 'REQUEST', 'NORMAL', {'module':'BBX19','tier':0},
+        {'request_id':rid, 'source_request':parsed['_request_file'],
+         'request_sha256':hashlib.sha256(parsed['_request_text'].encode()).hexdigest()}, source_id=rid, human_review_required=True)
+    ensure_intent(make_runtime(tmp_path), task, parsed)
+    original_intent = task['payload']['human_cycle']['intent']['intent_id']
+    result = run_request(request=parsed, repo_root=tmp_path)
+    assert result['status'] == 'WAITING_HUMAN' and result['intent_id'] == original_intent
+    assert len(result['stage_results']) == 2

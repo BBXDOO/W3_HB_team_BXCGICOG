@@ -135,11 +135,15 @@ def run_request(*, request, repo_root, target_module=None, executors=None, verif
     request_digest = hashlib.sha256(request['_request_text'].encode()).hexdigest()
     circuit = make_runtime(root, executors=executors, verifiers=verifiers)
     snapshot = circuit.directory / 'tasks' / f'{task_id(rid)}.json'
+    task = None
     if snapshot.exists():
         task = json.loads(snapshot.read_text(encoding='utf-8'))
         orc.validate(task)
         if task.get('source_id') != rid or task['payload'].get('request_sha256') != request_digest:
             raise ValueError('request identity/content changed; revise explicitly or use a new request_id')
+        if 'runtime_circuit' not in task and (task['status'] != 'RECEIVED' or task['evidence'] or task.get('destination')):
+            raise ValueError('uninitialized task has activity; explicit reconciliation required')
+    if task is not None and 'runtime_circuit' in task:
         circuit.continue_work(task)
     else:
         spec = parse_spec(request)
@@ -167,13 +171,13 @@ def run_request(*, request, repo_root, target_module=None, executors=None, verif
                 if not path.exists():
                     atomic_write(path, data)
                 payload.update(source_file=str(path.relative_to(root)), original_source=source)
-        task = orc.new_task(task_id(rid), 'REQUEST', str(request.get('priority') or 'NORMAL'),
+        task = task if task is not None else orc.new_task(task_id(rid), 'REQUEST', str(request.get('priority') or 'NORMAL'),
                             {'module': str(request.get('requester') or 'requests/'), 'tier': 0},
                             {'request_id': rid, 'source_request': request['_request_file'],
                              'request_sha256': request_digest}, source_id=rid,
                             human_review_required=bool(request.get('final_signoff_required', True)))
         from workflows.human_callback import ensure_intent
-        ensure_intent(circuit, task, request)
+        ensure_intent(circuit, task, request, persist=False)
         circuit.run(task, stages, review_policy="final")
     if task['status'] in {'WAITING_HUMAN', 'BLOCKED'}:
         from workflows.human_callback import prepare

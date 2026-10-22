@@ -51,7 +51,10 @@ def process_event(root, *, actor, owner, event_name, event, evidence,
             continue
         requests = []
         for candidate in (root/'requests').glob('*.md'):
-            parsed = rc.parse_request(candidate)
+            try:
+                parsed = rc.parse_request(candidate)
+            except ValueError:
+                continue  # General Markdown documents are not callback requests.
             if parsed.get('request_id') == data.get('request_id'):
                 requests.append(candidate)
         if len(requests) != 1:

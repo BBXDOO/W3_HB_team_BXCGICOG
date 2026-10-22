@@ -142,3 +142,49 @@ def test_delegation_is_explicit():
         authority('BBX19','comment:1',actor='Codex')
     grant = authority('BBX19','comment:1',actor='Codex',delegation_evidence='user instruction:delegate')
     assert grant['authority_class'] == 'DELEGATED_CREATOR'
+
+
+@pytest.mark.parametrize('decision,expected', [('APPROVE','COMPLETED'), ('HOLD','WAITING_HUMAN'),
+    ('REVIEW','BLOCKED'), ('REJECT','REJECTED'), ('CANCEL','CANCELLED'), ('NOTE','WAITING_HUMAN')])
+def test_reconcile_final_save_failure_preserves_state_without_replay(monkeypatch, tmp_path, decision, expected):
+    path, task, callback = waiting(monkeypatch, tmp_path)
+    reply = approve(callback, decision)
+    if decision == 'NOTE':
+        reply.update(kind='NOTE', decision='', message_type='ACKNOWLEDGE')
+    key = flow.digest(reply)
+    runtime = make_runtime(tmp_path)
+    original = runtime._save
+    failed = []
+    def save(work):
+        entry = work['payload']['human_cycle']['callbacks'].get(key, {})
+        if entry.get('state') == 'APPLIED' and not failed:
+            failed.append(True)
+            raise OSError('final callback save failed')
+        return original(work)
+    monkeypatch.setattr(runtime, '_save', save)
+    with pytest.raises(OSError, match='final callback'):
+        respond(tmp_path, path, reply, authority_context=AUTH, host_evidence='test:decision', runtime=runtime)
+    saved = json.loads((runtime.directory/'tasks'/f"{task['task_id']}.json").read_text())
+    assert saved['status'] == expected
+    assert saved['runtime_circuit']['callback_reconciliation_required']
+    before_results = [e for e in saved['evidence'] if e['actor'] == 'runtime-result']
+    flow.reconcile_callback(runtime, saved, key, outcome='APPLIED', authority_context=AUTH, host_evidence='test:observed-effects')
+    assert saved['status'] == expected
+    assert not saved['runtime_circuit']['callback_reconciliation_required']
+    assert respond(tmp_path, path, reply, authority_context=AUTH, host_evidence='test:rerun')['status'] == 'SKIPPED'
+    assert [e for e in saved['evidence'] if e['actor'] == 'runtime-result'] == before_results
+
+
+@pytest.mark.parametrize('legacy', [False, True])
+def test_callback_recovery_does_not_clear_independent_runtime_uncertainty(monkeypatch, tmp_path, legacy):
+    _, task, callback = waiting(monkeypatch, tmp_path)
+    runtime = make_runtime(tmp_path)
+    reply = approve(callback, 'HOLD'); key = flow.digest(reply)
+    flow.apply(runtime, task, reply, authority_context=AUTH, host_evidence='test:hold')
+    task['payload']['human_cycle']['callbacks'][key]['state'] = 'PENDING'
+    task['runtime_circuit']['reconciliation_required'] = True
+    if not legacy:
+        task['runtime_circuit']['callback_reconciliation_required'] = True
+    flow.reconcile_callback(runtime, task, key, outcome='APPLIED', authority_context=AUTH, host_evidence='test:observed')
+    assert task['runtime_circuit']['reconciliation_required'] is (not legacy)
+    assert task['status'] == 'WAITING_HUMAN'

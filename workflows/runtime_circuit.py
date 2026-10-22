@@ -313,7 +313,7 @@ class WorkflowRuntime:
 
     def _ready(self, task):
         state = self._state(task)
-        if state.get('reconciliation_required'):
+        if state.get('reconciliation_required') or state.get('callback_reconciliation_required'):
             raise ReconciliationRequired('reconcile prior side effects before another action')
         return state
 

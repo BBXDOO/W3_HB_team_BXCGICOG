@@ -77,3 +77,45 @@ def test_real_owner_push_range_finds_and_applies_edited_response(monkeypatch,tmp
     result=process_event(tmp_path,actor='BBXDOO',owner='BBXDOO',event_name='push',
         event={'before':before,'after':after},evidence='github:owner-push')
     assert result[0]['task_status']=='COMPLETED'
+
+
+@pytest.mark.parametrize('event_name', ['push', 'workflow_dispatch'])
+def test_unrelated_markdown_does_not_block_owner_reply(monkeypatch, tmp_path, event_name):
+    _, task, callback = waiting(monkeypatch, tmp_path)
+    for name in ['REVIEW01.md', 'RQ-AMS-MIGRATION-A001.md']:
+        (tmp_path/'requests'/name).write_text('# General notes without frontmatter\n')
+    path = tmp_path/task['payload']['human_cycle']['response_path']
+    path.write_text(json.dumps(approve(callback)))
+    name = str(path.relative_to(tmp_path))
+    event = {}
+    if event_name == 'push':
+        event = {'before': 'a'*40, 'after': 'b'*40}
+        def output(command, **kwargs):
+            return name+'\n' if command[1] == 'diff' else path.read_bytes()
+        monkeypatch.setattr(subprocess, 'check_output', output)
+    result = process_event(tmp_path, actor='BBXDOO', owner='BBXDOO', event_name=event_name,
+        event=event, evidence='test:owner-event', mode='apply', callback=name)
+    assert result[0]['task_status'] == 'COMPLETED'
+
+
+def test_workflow_stages_new_ignored_audit_files(tmp_path):
+    import yaml
+    workflow = yaml.safe_load((Path(__file__).resolve().parents[1]/'.github/workflows/w3_human_callback.yml').read_text())
+    steps = workflow['jobs']['human-callback']['steps']
+    script = next(s['run'] for s in steps if s.get('name') == 'Preserve callback receipts and request status')
+    def git(*args):
+        return subprocess.check_output(['git', *args], cwd=tmp_path, text=True)
+    git('init', '-q')
+    (tmp_path/'.gitignore').write_text('logs/\nmemory_store.json\n')
+    for name in ['BBEX-Core/private/callback/responses/test.json', 'repo_events/runtime_circuit/task.json',
+                 'requests/results/test.json', 'core/memory/memory_store.json']:
+        file = tmp_path/name; file.parent.mkdir(parents=True, exist_ok=True); file.write_text('{}')
+        git('add', '-f', name)
+    git('-c','user.name=test','-c','user.email=test@example.invalid','commit','-qm','baseline')
+    audit = ['logs/check-in/CID_@R000A2.md', 'logs/request_cycle/new.md', 'repo_events/new_EXECUTION.md']
+    for name in audit:
+        file = tmp_path/name; file.parent.mkdir(parents=True, exist_ok=True); file.write_text('new audit')
+    # Exercise the exact workflow staging script, before commit/push.
+    staging = script.split('          git commit')[0].split("git commit -m")[0]
+    subprocess.run(['bash','-e','-c', staging], cwd=tmp_path, check=True)
+    assert set(git('diff', '--cached', '--name-only').splitlines()) == set(audit)
