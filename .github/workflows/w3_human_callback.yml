@@ -1,0 +1,80 @@
+name: W3 Human Callback
+
+on:
+  push:
+    branches: [refactor/v0.2]
+    paths:
+      - 'BBEX-Core/private/callback/responses/*.json'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'prepare = create response form; apply = apply the edited response'
+        required: true
+        default: prepare
+        type: choice
+        options: [prepare, apply]
+      request:
+        description: 'Request Markdown path (prepare mode)'
+        required: false
+        type: string
+      callback:
+        description: 'Edited response JSON path (apply mode)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: w3-request-cycle-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  human-callback:
+    if: github.ref == 'refs/heads/refactor/v0.2' && github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/v0.2
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Process authenticated owner response
+        env:
+          CALLBACK_EVENT: ${{ github.event_path }}
+          CALLBACK_EVENT_NAME: ${{ github.event_name }}
+          CALLBACK_ACTOR: ${{ github.actor }}
+          CALLBACK_OWNER: ${{ github.repository_owner }}
+          CALLBACK_EVENT_SHA: ${{ github.sha }}
+          CALLBACK_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          CALLBACK_MODE: ${{ inputs.mode }}
+          CALLBACK_REQUEST: ${{ inputs.request }}
+          CALLBACK_FILE: ${{ inputs.callback }}
+        run: python -m tools.human_callback_event
+      - name: Preserve callback receipts and request status
+        if: always()
+        run: |
+          if git diff --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
+            exit 0
+          fi
+          git config user.name 'w3-human-callback'
+          git config user.email 'w3-human-callback@users.noreply.github.com'
+          git add -- BBEX-Core/private/callback/responses repo_events/runtime_circuit requests/results core/memory/memory_store.json
+          git add -u -- repo_events logs/check-in logs/request_cycle
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m 'runtime: record human callback and request continuation'
+          git push origin HEAD:refactor/v0.2
+      - name: Preserve recovery evidence even when final push fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: human-callback-${{ github.run_id }}
+          path: |
+            repo_events/runtime_circuit/
+            requests/results/
+            BBEX-Core/private/callback/responses/
+          retention-days: 14
