@@ -1,0 +1,22 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.w3personalsandbox.app'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.w3personalsandbox.app'
+        minSdk 24
+        targetSdk 35
+        versionCode 35
+        versionName '0.35'
+    }
+
+    buildTypes {
+        release { minifyEnabled false }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}

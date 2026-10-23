@@ -1,0 +1,7 @@
+<resources>
+    <style name="W3Theme" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+        <item name="android:statusBarColor">#101f1a</item>
+        <item name="android:navigationBarColor">#101f1a</item>
+    </style>
+</resources>

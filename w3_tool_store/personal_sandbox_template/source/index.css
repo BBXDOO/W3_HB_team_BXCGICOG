@@ -1,0 +1,248 @@
+@import "tailwindcss";
+
+:root { 
+  --bg: #151a18; 
+  --surface: #202723; 
+  --surface-2: #19211d;
+  --border: rgba(211,219,214,0.14); 
+  --text: #ffffff; 
+  --text-dim: #d4dbd6;
+  --accent: #4a9a82; 
+  --success: #16a34a; 
+  --image-overlay: rgba(12, 20, 17, 0.76);
+  
+  --shadow-raised: 
+    -6px -6px 14px rgba(255,255,255,0.02),
+    6px 6px 20px rgba(0,0,0,0.7),
+    0 0 1px rgba(255,255,255,0.15);
+  --shadow-inset: 
+    inset 4px 4px 8px rgba(0,0,0,0.6),
+    inset -1px -1px 4px rgba(255,255,255,0.02);
+  --shadow-pressed:
+    inset 6px 6px 12px rgba(0,0,0,0.8),
+    inset -2px -2px 12px rgba(255,255,255,0.02);
+}
+
+.theme-light {
+  --bg: #d5d8d4;
+  --surface: #f2f3f0;
+  --surface-2: #e3e8e2;
+  --border: rgba(18,45,34,0.17);
+  --text: #0f172a;
+  --text-dim: #475569;
+  --accent: #28755f;
+  --image-overlay: rgba(235, 239, 235, 0.82);
+  --shadow-raised: 
+    -8px -8px 16px rgba(255,255,255,1),
+    8px 8px 16px rgba(0,0,0,0.08);
+  --shadow-inset: 
+    inset 4px 4px 8px rgba(0,0,0,0.04),
+    inset -4px -4px 8px rgba(255,255,255,1);
+  --shadow-pressed:
+    inset 6px 6px 12px rgba(0,0,0,0.1),
+    inset -3px -3px 10px rgba(255,255,255,1);
+}
+
+.theme-forest {
+  --bg: #101f1a; --surface: #1b3027; --surface-2: #16271f;
+  --border: rgba(131, 207, 161, .22); --text: #f3fff6;
+  --text-dim: #c9e4d2; --accent: #65ad8d;
+}
+.theme-night-blue {
+  --bg: #111c2c; --surface: #1b2b40; --surface-2: #162338;
+  --border: rgba(132, 180, 229, .24); --text: #f4f9ff;
+  --text-dim: #c9d9ee; --accent: #76a8dc;
+  --image-overlay: rgba(12, 22, 39, .77);
+}
+.theme-aubergine {
+  --bg: #211925; --surface: #35283a; --surface-2: #2a2030;
+  --border: rgba(202, 159, 205, .25); --text: #fff6ff;
+  --text-dim: #e4d1e4; --accent: #be8ac3;
+  --image-overlay: rgba(32, 18, 37, .78);
+}
+.theme-custom {
+  --bg: color-mix(in srgb, var(--custom-theme-color, #368a77) 18%, #0d1718);
+  --surface: color-mix(in srgb, var(--custom-theme-color, #368a77) 30%, #132021);
+  --surface-2: color-mix(in srgb, var(--custom-theme-color, #368a77) 20%, #10191a);
+  --border: color-mix(in srgb, var(--custom-theme-color, #368a77) 50%, #657a75);
+  --accent: var(--custom-theme-color, #368a77);
+  --text: #f7faf8;
+  --text-dim: #d0dfd9;
+}
+/* A theme image decorates the navigation chrome; the separate wallpaper setting owns the canvas. */
+.theme-image header,
+.theme-image nav {
+  background-image: linear-gradient(rgba(8, 20, 18, .76), rgba(8, 20, 18, .82)), var(--personal-theme-image);
+  background-position: center;
+  background-size: cover;
+}
+.theme-image nav > div:first-child,
+.theme-image nav > div:last-child {
+  background: rgba(8, 20, 18, .62);
+}
+
+@theme {
+  --font-sans: "Anuphan", ui-sans-serif, system-ui, sans-serif;
+}
+
+body { 
+  font-family: var(--font-sans); 
+  background-color: var(--bg); 
+  background-image: linear-gradient(var(--image-overlay), var(--image-overlay)), var(--personal-bg-image, none);
+  background-position: center;
+  background-size: cover;
+  color: var(--text); 
+  margin: 0; 
+  overflow: hidden; 
+  height: 100vh; 
+  width: 100vw; 
+  position: fixed;
+  overscroll-behavior-y: none;
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,.025), transparent 45%);
+  opacity: 0.04; 
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: soft-light;
+}
+
+.tactile-raised { 
+  background: var(--surface); 
+  box-shadow: var(--shadow-raised);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.tactile-inset { 
+  background: var(--surface-2); 
+  box-shadow: var(--shadow-inset);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.scroll-container::-webkit-scrollbar { width: 5px; background: transparent; }
+.scroll-container::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 10px; }
+
+/* Shared editor shell: distinct work and output areas across every editor tab. */
+.workspace-layout {
+  display: grid;
+  padding: 6px;
+  gap: 0;
+}
+.workspace-list-toggle, .workspace-list-backdrop { display: none; }
+.workspace-list-header { display: none; }
+.workspace-region {
+  border: 1px solid rgba(76, 142, 112, 0.42);
+  border-radius: 18px 18px 10px 10px;
+  background: var(--surface);
+  box-shadow: 0 8px 28px rgba(5, 3, 18, 0.28);
+}
+.workspace-list {
+  background: color-mix(in srgb, var(--surface-2) 88%, #153d2f);
+  border-bottom: 1px solid rgba(76, 142, 112, 0.3);
+}
+.workspace-detail { background: var(--surface); }
+.workspace-output {
+  border: 1px solid rgba(76, 142, 112, 0.45);
+  border-radius: 10px 10px 18px 18px;
+  background: var(--surface);
+  box-shadow: 0 10px 32px rgba(5, 3, 18, 0.35);
+}
+.workspace-output-wide {
+  position: fixed;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  z-index: 45;
+  width: auto;
+  border-radius: 16px;
+  overflow: hidden;
+  background-image: linear-gradient(var(--image-overlay), var(--image-overlay)), var(--personal-bg-image, none);
+  background-position: center;
+  background-size: cover;
+}
+.workspace-divider-wide {
+  position: fixed;
+  left: 6px;
+  right: 6px;
+  z-index: 45;
+  height: 22px;
+  border-radius: 10px;
+}
+@media (max-width: 600px) {
+  .module-card-preview { zoom: 0.45; }
+}
+@media (min-width: 601px) and (max-width: 850px) {
+  .module-card-preview { zoom: 0.75; }
+}
+.workspace-action {
+  min-width: 36px;
+  min-height: 34px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--text);
+}
+.workspace-action:focus-visible { outline: 2px solid var(--accent); }
+.workspace-divider {
+  position: relative;
+  background: var(--bg);
+}
+.workspace-drag-handle {
+  width: 100%;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: row-resize;
+  touch-action: none;
+  border: 0;
+  background: transparent;
+}
+.workspace-drag-handle span {
+  width: 70px;
+  height: 5px;
+  border-radius: 99px;
+  background: #65ad8d;
+  box-shadow: 0 0 0 4px rgba(76, 142, 112, 0.16);
+}
+.workspace-drag-handle:focus-visible { outline: 2px solid #65ad8d; outline-offset: -3px; }
+@media (min-width: 768px) {
+  .workspace-list { border-bottom: 0; border-right: 1px solid rgba(76, 142, 112, 0.3); }
+}
+
+.glow-text {
+  text-shadow: 0 0 12px var(--accent);
+}
+
+.clickable {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.clickable:active {
+  transform: scale(0.98);
+  box-shadow: var(--shadow-pressed) !important;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.animate-save { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+@keyframes battle-hit-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-4px); }
+}
+.battle-hit { animation: battle-hit-shake .35s ease-in-out; }
+@media (prefers-reduced-motion: reduce) { .battle-hit { animation: none; outline: 2px solid #34d399; } }

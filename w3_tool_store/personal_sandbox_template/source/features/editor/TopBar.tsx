@@ -1,0 +1,112 @@
+
+import React, { useState, useEffect } from 'react';
+import { Button } from '../../ui/components/Button';
+import { StoryPack, UITheme } from '../../types';
+import guide from '../../docs/คู่มือใช้งานภาษาไทย.md?raw';
+
+interface TopBarProps {
+  story: StoryPack;
+  isDirty: boolean;
+  onSave: () => void;
+  onExport: () => void;
+  onExit: () => void;
+  onUndo: () => void;
+  onToggleTheme?: () => void;
+  currentTheme: UITheme;
+  onSelectTheme: (theme: UITheme) => void;
+  customThemeColor: string;
+  onSelectCustomColor: (color: string) => void;
+  onChooseThemeImage: (file: File) => void;
+  onClearThemeImage: () => void;
+  hasThemeImage: boolean;
+  onChooseBackgroundImage: (file: File) => void;
+  onClearBackgroundImage: () => void;
+  hasBackgroundImage: boolean;
+}
+
+export const TopBar: React.FC<TopBarProps> = ({ story, isDirty, onSave, onExport, onExit, onUndo, currentTheme, onSelectTheme, customThemeColor, onSelectCustomColor, onChooseThemeImage, onClearThemeImage, hasThemeImage, onChooseBackgroundImage, onClearBackgroundImage, hasBackgroundImage }) => {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [guideOpen, setGuideOpen] = useState(false);
+  const [appearanceOpen, setAppearanceOpen] = useState(false);
+
+  useEffect(() => {
+    const handleStatus = () => setIsOnline(navigator.onLine);
+    window.addEventListener('online', handleStatus);
+    window.addEventListener('offline', handleStatus);
+    return () => {
+      window.removeEventListener('online', handleStatus);
+      window.removeEventListener('offline', handleStatus);
+    };
+  }, []);
+
+  return (
+    <header className="h-16 border-b border-[#426a59]/50 px-2 md:px-6 flex items-center justify-between gap-2 bg-[#18231c] z-50 shadow-2xl relative">
+      <div className="flex items-center gap-2 md:gap-6 min-w-0">
+        <button onClick={onExit} className="text-base md:text-xl font-black text-white tracking-tighter uppercase italic glow-text hover:scale-105 transition-transform whitespace-nowrap" title="กลับไปคลังโครงการ">PERSONAL SANDBOX</button>
+        <div className="hidden md:block w-px h-8 bg-white/10"></div>
+        <div className="hidden md:flex flex-col">
+          <div className="flex items-center gap-2">
+            <div className={`w-2 h-2 rounded-full ${isOnline ? 'bg-emerald-400 shadow-[0_0_12px_#34d399]' : 'bg-amber-400 shadow-[0_0_12px_#fbbf24]'}`}></div>
+            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-200">
+              {isOnline ? 'SYSTEM_STABLE' : 'ISOLATED_SYNC'}
+            </span>
+          </div>
+        </div>
+      </div>
+      {guideOpen && <div className="fixed inset-0 z-[9999] bg-black/80 p-3 md:p-8 flex items-center justify-center" onClick={() => setGuideOpen(false)}>
+        <section role="dialog" aria-modal="true" aria-label="คู่มือภาษาไทย" className="max-w-3xl w-full max-h-[85vh] flex flex-col bg-[#18231c] text-slate-100 rounded-2xl border border-emerald-500/30 shadow-2xl" onClick={event => event.stopPropagation()}>
+          <div className="p-4 border-b border-white/10 flex items-center justify-between"><h2 className="font-bold">คู่มือภาษาไทย</h2><button onClick={() => setGuideOpen(false)} className="p-2">ปิด ✕</button></div>
+          <div className="p-5 overflow-y-auto whitespace-pre-wrap text-sm leading-7">{guide}</div>
+        </section>
+      </div>}
+
+      <div className="flex items-center gap-2 md:gap-6 shrink-0">
+        <button type="button" onClick={() => setGuideOpen(true)} className="text-xs border border-emerald-500/30 text-emerald-200 rounded-xl p-2" title="คู่มือภาษาไทย"><span className="md:hidden">?</span><span className="hidden md:inline">? คู่มือ</span></button>
+        <div className="hidden md:flex flex-col items-end mr-2">
+           <span className="text-[8px] font-black text-zinc-400 uppercase tracking-widest mb-0.5">Memory Status</span>
+           <span className={`text-[10px] font-black ${isDirty ? 'text-[#9ed3b5] animate-pulse' : 'text-emerald-400'}`}>
+             {isDirty ? 'PENDING_COMMIT' : 'ALL_SYNCHRONIZED'}
+           </span>
+        </div>
+        <button type="button" onClick={onExport} className="flex h-11 px-2 md:px-4 tactile-raised items-center gap-2 text-amber-400 font-black text-[9px] uppercase tracking-wider border border-amber-500/20 rounded-xl" title="สำรองโครงการพร้อมจุดเล่นล่าสุดที่บันทึกเป็น JSON" aria-label="สำรองโครงการและจุดเล่น">📦<span className="hidden sm:inline">EXPORT DATA</span></button>
+        <button type="button" onClick={() => setAppearanceOpen(true)}
+          className="flex w-10 h-10 tactile-raised items-center justify-center text-sm border border-white/5"
+          title="สีและภาพพื้นหลัง" aria-label="เลือกสีและภาพพื้นหลัง">🎨</button>
+        <Button 
+          variant={isDirty ? 'accent' : 'secondary'} 
+          className={`h-11 px-3 md:px-8 text-[10px] font-black border border-white/20 shadow-xl ${isDirty ? 'animate-pulse' : ''}`} 
+          onClick={onSave}
+        >
+          {isDirty ? '💾 COMMIT' : '✅ SYNCED'}
+        </Button>
+      </div>
+      {appearanceOpen && <div className="fixed inset-0 z-[9999] bg-black/75 flex items-center justify-center p-4" onClick={() => setAppearanceOpen(false)}>
+        <section role="dialog" aria-modal="true" aria-label="สีและภาพพื้นหลัง" className="w-full max-w-sm rounded-2xl p-5 border border-emerald-500/30 bg-[#18231c] text-white shadow-2xl" onClick={event => event.stopPropagation()}>
+          <div className="flex justify-between items-center mb-4"><h2 className="font-bold">สีและภาพพื้นหลัง <small className="text-emerald-300">v31</small></h2><button type="button" onClick={() => setAppearanceOpen(false)} aria-label="ปิด">✕</button></div>
+          <p className="text-xs text-slate-300 mb-2">แตะสีเพื่อเลือกธีม</p><div className="grid grid-cols-4 gap-3">
+            {([
+              ['darkNavy', 'มืดมาตรฐาน', '#202723'],
+              ['deepForest', 'เขียวป่า', '#17342a'],
+              ['nightBlue', 'น้ำเงินกลางคืน', '#182b41'],
+              ['aubergine', 'ม่วงหม่น', '#352535'],
+              ['softLight', 'สว่างนวล', '#e3e8e2']
+            ] as [UITheme, string, string][]).map(([theme, label, color]) => (
+              <button type="button" key={theme} onClick={() => onSelectTheme(theme)} aria-label={label} aria-pressed={currentTheme === theme} title={label}
+                className={`h-14 rounded-xl border-4 ${currentTheme === theme ? 'border-white ring-2 ring-emerald-400' : 'border-white/20'}`} style={{ backgroundColor: color, color: theme === 'softLight' ? '#10251d' : '#fff' }}>{currentTheme === theme ? '✓' : ''}</button>
+            ))}
+          </div>
+          <label className="flex items-center justify-between mt-4 text-sm">สีที่กำหนดเอง <input type="color" value={currentTheme === 'custom' ? customThemeColor : '#368a77'} onChange={e => onSelectCustomColor(e.target.value)} className="w-16 h-11 rounded cursor-pointer" aria-label="เลือกสีธีมที่กำหนดเอง" /></label>
+          <label className="block mt-4 p-3 text-center rounded-xl border border-dashed border-emerald-300/60 cursor-pointer">รูปธีมจากแกลลอรี่ (แถบบนและเมนูซ้าย)
+            <input className="sr-only" type="file" accept="image/*" onChange={e => { const file = e.target.files?.[0]; if (file) onChooseThemeImage(file); e.target.value = ''; }} />
+          </label>
+          {hasThemeImage && <button type="button" className="mt-2 w-full p-2 text-amber-200" onClick={onClearThemeImage}>ลบรูปธีม</button>}
+          <label className="block mt-4 p-3 text-center rounded-xl border border-dashed border-white/40 cursor-pointer">เลือกรูปพื้นหลังจากเครื่อง
+            <input className="sr-only" type="file" accept="image/*" onChange={e => { const file = e.target.files?.[0]; if (file) onChooseBackgroundImage(file); e.target.value = ''; }} />
+          </label>
+          {hasBackgroundImage && <button type="button" className="mt-3 w-full p-2 text-amber-200" onClick={onClearBackgroundImage}>ลบรูปพื้นหลัง</button>}
+          <p className="mt-3 text-xs text-slate-300">รูปจะถูกย่อและเก็บไว้ใน Chrome ของเครื่องนี้</p>
+        </section>
+      </div>}
+    </header>
+  );
+};
