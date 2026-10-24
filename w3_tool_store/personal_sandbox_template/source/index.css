@@ -158,13 +158,13 @@ body::after {
 .editor-shell nav > div:last-child { background-color: var(--surface); }
 .editor-shell.has-workspace-image main,
 .editor-shell.has-workspace-image .workspace-output {
-  background-image: linear-gradient(rgba(8, 17, 15, .27), rgba(8, 17, 15, .27)), var(--personal-bg-image);
+  background-image: linear-gradient(rgba(8, 17, 15, .16), rgba(8, 17, 15, .16)), var(--personal-bg-image);
   background-position: center;
   background-size: cover;
 }
-.editor-shell.has-workspace-image .workspace-region,
-.editor-shell.has-workspace-image .workspace-detail { background-color: rgba(14, 24, 21, .62); }
-.editor-shell.has-workspace-image .workspace-output { background-color: rgba(14, 24, 21, .28); }
+.editor-shell.has-workspace-image .workspace-region { background-color: rgba(14, 24, 21, .2); }
+.editor-shell.has-workspace-image .workspace-detail { background-color: rgba(14, 24, 21, .34); }
+.editor-shell.has-workspace-image .workspace-output { background-color: rgba(14, 24, 21, .2); }
 .editor-shell.has-workspace-image .workspace-list { background-color: var(--surface-2); }
 .workspace-divider-wide {
   position: fixed;
