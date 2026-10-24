@@ -1,0 +1,3140 @@
+{
+  "schema": "w3.agent-sandbox.result.1",
+  "run_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+  "state": "SUCCESS",
+  "scope": "local_setup_only",
+  "execute_requested": true,
+  "gate": {
+    "event_id": "EVT-735610B82898B5A53317",
+    "package": {
+      "package_id": "PKG-44C46F293BC8FDB9AF08",
+      "packet": {
+        "EVENT": "setup",
+        "TARGET": "MPCP",
+        "ROOM": "EV",
+        "CONF": "1"
+      },
+      "room": {
+        "number": 6,
+        "code": "EV",
+        "name": "EVENT",
+        "meaning": "event"
+      },
+      "px": {
+        "px": "LNEV'2500",
+        "room": "EV",
+        "x": 2500,
+        "y": 6,
+        "relative_point": [
+          2500,
+          6
+        ]
+      },
+      "poc": "POC'W3-SBX-627c21d3bac248cc93732fe4ed115a90'X2500'Y0006",
+      "tags": [
+        "PX_DERIVED_STABLE",
+        "ROOM_BASIS_EXPLICIT_CODE",
+        "ROOM_EV"
+      ],
+      "duplicate_to": [
+        "PSP2",
+        "LRC2"
+      ]
+    },
+    "stages": [
+      {
+        "stage": "REDR",
+        "status": "PACKAGED",
+        "action": "READ_CLASSIFY_TAG_DUPLICATE",
+        "data": {
+          "room": "EV",
+          "room_basis": "explicit_code",
+          "tags": [
+            "PX_DERIVED_STABLE",
+            "ROOM_BASIS_EXPLICIT_CODE",
+            "ROOM_EV"
+          ],
+          "duplicate_to": [
+            "PSP2",
+            "LRC2"
+          ]
+        }
+      },
+      {
+        "stage": "PSP2",
+        "status": "ROUTED",
+        "action": "STAMP_ROUTE_ONLY",
+        "data": {
+          "stamp": "PSP2'EVT-735610B82898B5A53317",
+          "route": [
+            "W3LGU",
+            "LNEV'2500",
+            "MPCP",
+            "LRC2"
+          ],
+          "payload_changed": false
+        }
+      },
+      {
+        "stage": "DTML",
+        "status": "READY",
+        "action": "INSPECT_DESTINATION_SIGNAL_INTENT",
+        "data": {
+          "target": "MPCP",
+          "signal": "GREEN",
+          "reasons": [
+            "BOUNDARY_CLEAR"
+          ],
+          "external_authority": false
+        }
+      },
+      {
+        "stage": "LRC2",
+        "status": "RECORDED",
+        "action": "APPEND_HASH_LINKED_HISTORY",
+        "data": {
+          "event_id": "EVT-735610B82898B5A53317",
+          "decision": "READY",
+          "record_count": 4
+        }
+      }
+    ],
+    "decision": "READY",
+    "signal": "GREEN",
+    "execute_allowed": false,
+    "lrc2_records": [
+      {
+        "sequence": 1,
+        "record_id": "LRC2-6C35CF33C1ED3F5D3A87",
+        "timestamp": "2026-10-24T12:22:59.366Z",
+        "event_id": "EVT-735610B82898B5A53317:REDR",
+        "package_id": "PKG-44C46F293BC8FDB9AF08",
+        "stage": "REDR",
+        "status": "PACKAGED",
+        "payload": {
+          "stage": "REDR",
+          "status": "PACKAGED",
+          "action": "READ_CLASSIFY_TAG_DUPLICATE",
+          "data": {
+            "room": "EV",
+            "room_basis": "explicit_code",
+            "tags": [
+              "PX_DERIVED_STABLE",
+              "ROOM_BASIS_EXPLICIT_CODE",
+              "ROOM_EV"
+            ],
+            "duplicate_to": [
+              "PSP2",
+              "LRC2"
+            ]
+          }
+        },
+        "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "record_hash": "6c35cf33c1ed3f5d3a870b5601b5208a36dd314bb4b306272063dea076f63dfc"
+      },
+      {
+        "sequence": 2,
+        "record_id": "LRC2-F41C533129C186547458",
+        "timestamp": "2026-10-24T12:22:59.366Z",
+        "event_id": "EVT-735610B82898B5A53317:PSP2",
+        "package_id": "PKG-44C46F293BC8FDB9AF08",
+        "stage": "PSP2",
+        "status": "ROUTED",
+        "payload": {
+          "stage": "PSP2",
+          "status": "ROUTED",
+          "action": "STAMP_ROUTE_ONLY",
+          "data": {
+            "stamp": "PSP2'EVT-735610B82898B5A53317",
+            "route": [
+              "W3LGU",
+              "LNEV'2500",
+              "MPCP",
+              "LRC2"
+            ],
+            "payload_changed": false
+          }
+        },
+        "previous_hash": "6c35cf33c1ed3f5d3a870b5601b5208a36dd314bb4b306272063dea076f63dfc",
+        "record_hash": "f41c533129c18654745860f6bcd5dfba1855b2655e0a1b8e5e13065a7fa74e92"
+      },
+      {
+        "sequence": 3,
+        "record_id": "LRC2-60CCD730B0E842C69681",
+        "timestamp": "2026-10-24T12:22:59.366Z",
+        "event_id": "EVT-735610B82898B5A53317:DTML",
+        "package_id": "PKG-44C46F293BC8FDB9AF08",
+        "stage": "DTML",
+        "status": "READY",
+        "payload": {
+          "stage": "DTML",
+          "status": "READY",
+          "action": "INSPECT_DESTINATION_SIGNAL_INTENT",
+          "data": {
+            "target": "MPCP",
+            "signal": "GREEN",
+            "reasons": [
+              "BOUNDARY_CLEAR"
+            ],
+            "external_authority": false
+          }
+        },
+        "previous_hash": "f41c533129c18654745860f6bcd5dfba1855b2655e0a1b8e5e13065a7fa74e92",
+        "record_hash": "60ccd730b0e842c6968107f2c72d3db6e9cd9912c0bf1a645c72ad00827b1277"
+      },
+      {
+        "sequence": 4,
+        "record_id": "LRC2-80B410FD001A9624D10D",
+        "timestamp": "2026-10-24T12:22:59.366Z",
+        "event_id": "EVT-735610B82898B5A53317:LRC2",
+        "package_id": "PKG-44C46F293BC8FDB9AF08",
+        "stage": "LRC2",
+        "status": "RECORDED",
+        "payload": {
+          "stage": "LRC2",
+          "status": "RECORDED",
+          "action": "APPEND_HASH_LINKED_HISTORY",
+          "data": {
+            "event_id": "EVT-735610B82898B5A53317",
+            "decision": "READY",
+            "record_count": 4
+          }
+        },
+        "previous_hash": "60ccd730b0e842c6968107f2c72d3db6e9cd9912c0bf1a645c72ad00827b1277",
+        "record_hash": "80b410fd001a9624d10d57901973ba5c9e0e2f3af588d57dbdb528be8f566568"
+      }
+    ]
+  },
+  "language_trace_id": "6bb1f25ecfcd41f985ba7c4d05cf3353",
+  "mpcp": {
+    "schema": "mpcp.result.1",
+    "state": "SUCCESS",
+    "cause": "sandbox_materialize",
+    "action": "modew_operation_pipeline",
+    "modew": "MaterializeBlueprint",
+    "role": "default",
+    "result": {
+      "manifest": "artifacts/setup.json",
+      "sha256": "c9983cde1ba01ae0e8948c16d02b953c594895f9a0035761c55044af27f563b4",
+      "partitions": [
+        "A",
+        "B",
+        "C"
+      ],
+      "partition_directories_verified": true
+    },
+    "reason": "modew_return",
+    "trace": [
+      {
+        "stage": "receive",
+        "data": {
+          "SYSTEM": "mpcp",
+          "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "SCOPE": "CROSS_L_ONLY",
+          "BOUNDARY": "sandbox-local-only",
+          "MODEW": "sandbox_materialize",
+          "LANGUAGE_TAG": "GEN:PY",
+          "LANGUAGE": "PY",
+          "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "EVENT_ID": "EVT-735610B82898B5A53317",
+          "CONDIEN_READ": [],
+          "CONDIEN_DENY": [],
+          "DENY": [
+            "truth_mutation"
+          ],
+          "RETURN_CONTRACT": [
+            "state",
+            "reason",
+            "trace"
+          ],
+          "PAYLOAD": {
+            "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+          },
+          "PAPER": {
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "LANGUAGE_TAG": "GEN:PY"
+          },
+          "ENV": {
+            "platform": "linux",
+            "platform_release": "6.18.55",
+            "architecture": "x86_64",
+            "python": "3.12.14",
+            "mobile": false,
+            "termux": false,
+            "container": false,
+            "commands": {
+              "bash": "/usr/bin/bash",
+              "c++": "/usr/bin/c++",
+              "cc": "/usr/bin/cc",
+              "g++": "/usr/bin/g++",
+              "gcc": "/usr/bin/gcc",
+              "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+              "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "sh": "/usr/bin/sh"
+            },
+            "variable_names": [
+              "LANG",
+              "LC_ALL",
+              "PATH",
+              "TMPDIR"
+            ],
+            "hints": {},
+            "secret_values_included": false
+          },
+          "REVIEW": true,
+          "EXECUTION_AGREEMENT": {
+            "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "lender": "sandbox-cli",
+            "borrower": "MPCP",
+            "capability": "sandbox_materialize",
+            "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "event_id": "EVT-735610B82898B5A53317",
+            "boundary": "sandbox-local-only",
+            "approved_by": "sandbox-cli:--execute",
+            "active": true
+          }
+        },
+        "env": {
+          "SYSTEM": "mpcp",
+          "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "SCOPE": "CROSS_L_ONLY",
+          "BOUNDARY": "sandbox-local-only",
+          "MODEW": "sandbox_materialize",
+          "LANGUAGE_TAG": "GEN:PY",
+          "LANGUAGE": "PY",
+          "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "EVENT_ID": "EVT-735610B82898B5A53317",
+          "CONDIEN_READ": [],
+          "CONDIEN_DENY": [],
+          "DENY": [
+            "truth_mutation"
+          ],
+          "RETURN_CONTRACT": [
+            "state",
+            "reason",
+            "trace"
+          ],
+          "PAYLOAD": {
+            "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+          },
+          "PAPER": {
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "LANGUAGE_TAG": "GEN:PY"
+          },
+          "ENV": {
+            "platform": "linux",
+            "platform_release": "6.18.55",
+            "architecture": "x86_64",
+            "python": "3.12.14",
+            "mobile": false,
+            "termux": false,
+            "container": false,
+            "commands": {
+              "bash": "/usr/bin/bash",
+              "c++": "/usr/bin/c++",
+              "cc": "/usr/bin/cc",
+              "g++": "/usr/bin/g++",
+              "gcc": "/usr/bin/gcc",
+              "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+              "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "sh": "/usr/bin/sh"
+            },
+            "variable_names": [
+              "LANG",
+              "LC_ALL",
+              "PATH",
+              "TMPDIR"
+            ],
+            "hints": {},
+            "secret_values_included": false
+          },
+          "REVIEW": true,
+          "EXECUTION_AGREEMENT": {
+            "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "lender": "sandbox-cli",
+            "borrower": "MPCP",
+            "capability": "sandbox_materialize",
+            "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "event_id": "EVT-735610B82898B5A53317",
+            "boundary": "sandbox-local-only",
+            "approved_by": "sandbox-cli:--execute",
+            "active": true
+          }
+        }
+      },
+      {
+        "stage": "validate",
+        "data": {
+          "SYSTEM": "mpcp",
+          "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "SCOPE": "CROSS_L_ONLY",
+          "BOUNDARY": "sandbox-local-only",
+          "MODEW": "sandbox_materialize",
+          "LANGUAGE_TAG": "GEN:PY",
+          "LANGUAGE": "PY",
+          "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "EVENT_ID": "EVT-735610B82898B5A53317",
+          "CONDIEN_READ": [],
+          "CONDIEN_DENY": [],
+          "DENY": [
+            "truth_mutation"
+          ],
+          "RETURN_CONTRACT": [
+            "state",
+            "reason",
+            "trace"
+          ],
+          "PAYLOAD": {
+            "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+          },
+          "PAPER": {
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "LANGUAGE_TAG": "GEN:PY"
+          },
+          "ENV": {
+            "platform": "linux",
+            "platform_release": "6.18.55",
+            "architecture": "x86_64",
+            "python": "3.12.14",
+            "mobile": false,
+            "termux": false,
+            "container": false,
+            "commands": {
+              "bash": "/usr/bin/bash",
+              "c++": "/usr/bin/c++",
+              "cc": "/usr/bin/cc",
+              "g++": "/usr/bin/g++",
+              "gcc": "/usr/bin/gcc",
+              "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+              "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "sh": "/usr/bin/sh"
+            },
+            "variable_names": [
+              "LANG",
+              "LC_ALL",
+              "PATH",
+              "TMPDIR"
+            ],
+            "hints": {},
+            "secret_values_included": false
+          },
+          "REVIEW": true,
+          "EXECUTION_AGREEMENT": {
+            "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "lender": "sandbox-cli",
+            "borrower": "MPCP",
+            "capability": "sandbox_materialize",
+            "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "event_id": "EVT-735610B82898B5A53317",
+            "boundary": "sandbox-local-only",
+            "approved_by": "sandbox-cli:--execute",
+            "active": true
+          }
+        },
+        "env": {
+          "SYSTEM": "mpcp",
+          "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "SCOPE": "CROSS_L_ONLY",
+          "BOUNDARY": "sandbox-local-only",
+          "MODEW": "sandbox_materialize",
+          "LANGUAGE_TAG": "GEN:PY",
+          "LANGUAGE": "PY",
+          "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "EVENT_ID": "EVT-735610B82898B5A53317",
+          "CONDIEN_READ": [],
+          "CONDIEN_DENY": [],
+          "DENY": [
+            "truth_mutation"
+          ],
+          "RETURN_CONTRACT": [
+            "state",
+            "reason",
+            "trace"
+          ],
+          "PAYLOAD": {
+            "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+          },
+          "PAPER": {
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "LANGUAGE_TAG": "GEN:PY"
+          },
+          "ENV": {
+            "platform": "linux",
+            "platform_release": "6.18.55",
+            "architecture": "x86_64",
+            "python": "3.12.14",
+            "mobile": false,
+            "termux": false,
+            "container": false,
+            "commands": {
+              "bash": "/usr/bin/bash",
+              "c++": "/usr/bin/c++",
+              "cc": "/usr/bin/cc",
+              "g++": "/usr/bin/g++",
+              "gcc": "/usr/bin/gcc",
+              "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+              "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "sh": "/usr/bin/sh"
+            },
+            "variable_names": [
+              "LANG",
+              "LC_ALL",
+              "PATH",
+              "TMPDIR"
+            ],
+            "hints": {},
+            "secret_values_included": false
+          },
+          "REVIEW": true,
+          "EXECUTION_AGREEMENT": {
+            "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "lender": "sandbox-cli",
+            "borrower": "MPCP",
+            "capability": "sandbox_materialize",
+            "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "event_id": "EVT-735610B82898B5A53317",
+            "boundary": "sandbox-local-only",
+            "approved_by": "sandbox-cli:--execute",
+            "active": true
+          }
+        }
+      },
+      {
+        "stage": "route",
+        "data": {
+          "SYSTEM": "mpcp",
+          "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "SCOPE": "CROSS_L_ONLY",
+          "BOUNDARY": "sandbox-local-only",
+          "MODEW": "sandbox_materialize",
+          "LANGUAGE_TAG": "GEN:PY",
+          "LANGUAGE": "PY",
+          "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "EVENT_ID": "EVT-735610B82898B5A53317",
+          "CONDIEN_READ": [],
+          "CONDIEN_DENY": [],
+          "DENY": [
+            "truth_mutation"
+          ],
+          "RETURN_CONTRACT": [
+            "state",
+            "reason",
+            "trace"
+          ],
+          "PAYLOAD": {
+            "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+          },
+          "PAPER": {
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "LANGUAGE_TAG": "GEN:PY"
+          },
+          "ENV": {
+            "platform": "linux",
+            "platform_release": "6.18.55",
+            "architecture": "x86_64",
+            "python": "3.12.14",
+            "mobile": false,
+            "termux": false,
+            "container": false,
+            "commands": {
+              "bash": "/usr/bin/bash",
+              "c++": "/usr/bin/c++",
+              "cc": "/usr/bin/cc",
+              "g++": "/usr/bin/g++",
+              "gcc": "/usr/bin/gcc",
+              "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+              "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "sh": "/usr/bin/sh"
+            },
+            "variable_names": [
+              "LANG",
+              "LC_ALL",
+              "PATH",
+              "TMPDIR"
+            ],
+            "hints": {},
+            "secret_values_included": false
+          },
+          "REVIEW": true,
+          "EXECUTION_AGREEMENT": {
+            "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "lender": "sandbox-cli",
+            "borrower": "MPCP",
+            "capability": "sandbox_materialize",
+            "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "event_id": "EVT-735610B82898B5A53317",
+            "boundary": "sandbox-local-only",
+            "approved_by": "sandbox-cli:--execute",
+            "active": true
+          }
+        },
+        "env": {
+          "SYSTEM": "mpcp",
+          "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "SCOPE": "CROSS_L_ONLY",
+          "BOUNDARY": "sandbox-local-only",
+          "MODEW": "sandbox_materialize",
+          "LANGUAGE_TAG": "GEN:PY",
+          "LANGUAGE": "PY",
+          "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "EVENT_ID": "EVT-735610B82898B5A53317",
+          "CONDIEN_READ": [],
+          "CONDIEN_DENY": [],
+          "DENY": [
+            "truth_mutation"
+          ],
+          "RETURN_CONTRACT": [
+            "state",
+            "reason",
+            "trace"
+          ],
+          "PAYLOAD": {
+            "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+          },
+          "PAPER": {
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "LANGUAGE_TAG": "GEN:PY"
+          },
+          "ENV": {
+            "platform": "linux",
+            "platform_release": "6.18.55",
+            "architecture": "x86_64",
+            "python": "3.12.14",
+            "mobile": false,
+            "termux": false,
+            "container": false,
+            "commands": {
+              "bash": "/usr/bin/bash",
+              "c++": "/usr/bin/c++",
+              "cc": "/usr/bin/cc",
+              "g++": "/usr/bin/g++",
+              "gcc": "/usr/bin/gcc",
+              "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+              "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "sh": "/usr/bin/sh"
+            },
+            "variable_names": [
+              "LANG",
+              "LC_ALL",
+              "PATH",
+              "TMPDIR"
+            ],
+            "hints": {},
+            "secret_values_included": false
+          },
+          "REVIEW": true,
+          "EXECUTION_AGREEMENT": {
+            "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "lender": "sandbox-cli",
+            "borrower": "MPCP",
+            "capability": "sandbox_materialize",
+            "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "event_id": "EVT-735610B82898B5A53317",
+            "boundary": "sandbox-local-only",
+            "approved_by": "sandbox-cli:--execute",
+            "active": true
+          }
+        }
+      },
+      {
+        "stage": "process",
+        "data": {
+          "manifest": "artifacts/setup.json",
+          "sha256": "c9983cde1ba01ae0e8948c16d02b953c594895f9a0035761c55044af27f563b4",
+          "partitions": [
+            "A",
+            "B",
+            "C"
+          ],
+          "partition_directories_verified": true
+        },
+        "env": {
+          "SYSTEM": "mpcp",
+          "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "SCOPE": "CROSS_L_ONLY",
+          "BOUNDARY": "sandbox-local-only",
+          "MODEW": "sandbox_materialize",
+          "LANGUAGE_TAG": "GEN:PY",
+          "LANGUAGE": "PY",
+          "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "EVENT_ID": "EVT-735610B82898B5A53317",
+          "CONDIEN_READ": [],
+          "CONDIEN_DENY": [],
+          "DENY": [
+            "truth_mutation"
+          ],
+          "RETURN_CONTRACT": [
+            "state",
+            "reason",
+            "trace"
+          ],
+          "PAYLOAD": {
+            "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+          },
+          "PAPER": {
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "LANGUAGE_TAG": "GEN:PY"
+          },
+          "ENV": {
+            "platform": "linux",
+            "platform_release": "6.18.55",
+            "architecture": "x86_64",
+            "python": "3.12.14",
+            "mobile": false,
+            "termux": false,
+            "container": false,
+            "commands": {
+              "bash": "/usr/bin/bash",
+              "c++": "/usr/bin/c++",
+              "cc": "/usr/bin/cc",
+              "g++": "/usr/bin/g++",
+              "gcc": "/usr/bin/gcc",
+              "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+              "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "sh": "/usr/bin/sh"
+            },
+            "variable_names": [
+              "LANG",
+              "LC_ALL",
+              "PATH",
+              "TMPDIR"
+            ],
+            "hints": {},
+            "secret_values_included": false
+          },
+          "REVIEW": true,
+          "EXECUTION_AGREEMENT": {
+            "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "lender": "sandbox-cli",
+            "borrower": "MPCP",
+            "capability": "sandbox_materialize",
+            "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "event_id": "EVT-735610B82898B5A53317",
+            "boundary": "sandbox-local-only",
+            "approved_by": "sandbox-cli:--execute",
+            "active": true
+          }
+        }
+      },
+      {
+        "stage": "transition",
+        "data": {
+          "manifest": "artifacts/setup.json",
+          "sha256": "c9983cde1ba01ae0e8948c16d02b953c594895f9a0035761c55044af27f563b4",
+          "partitions": [
+            "A",
+            "B",
+            "C"
+          ],
+          "partition_directories_verified": true
+        },
+        "env": {
+          "SYSTEM": "mpcp",
+          "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "SCOPE": "CROSS_L_ONLY",
+          "BOUNDARY": "sandbox-local-only",
+          "MODEW": "sandbox_materialize",
+          "LANGUAGE_TAG": "GEN:PY",
+          "LANGUAGE": "PY",
+          "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "EVENT_ID": "EVT-735610B82898B5A53317",
+          "CONDIEN_READ": [],
+          "CONDIEN_DENY": [],
+          "DENY": [
+            "truth_mutation"
+          ],
+          "RETURN_CONTRACT": [
+            "state",
+            "reason",
+            "trace"
+          ],
+          "PAYLOAD": {
+            "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+          },
+          "PAPER": {
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "LANGUAGE_TAG": "GEN:PY"
+          },
+          "ENV": {
+            "platform": "linux",
+            "platform_release": "6.18.55",
+            "architecture": "x86_64",
+            "python": "3.12.14",
+            "mobile": false,
+            "termux": false,
+            "container": false,
+            "commands": {
+              "bash": "/usr/bin/bash",
+              "c++": "/usr/bin/c++",
+              "cc": "/usr/bin/cc",
+              "g++": "/usr/bin/g++",
+              "gcc": "/usr/bin/gcc",
+              "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+              "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "sh": "/usr/bin/sh"
+            },
+            "variable_names": [
+              "LANG",
+              "LC_ALL",
+              "PATH",
+              "TMPDIR"
+            ],
+            "hints": {},
+            "secret_values_included": false
+          },
+          "REVIEW": true,
+          "EXECUTION_AGREEMENT": {
+            "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "lender": "sandbox-cli",
+            "borrower": "MPCP",
+            "capability": "sandbox_materialize",
+            "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "event_id": "EVT-735610B82898B5A53317",
+            "boundary": "sandbox-local-only",
+            "approved_by": "sandbox-cli:--execute",
+            "active": true
+          }
+        }
+      },
+      {
+        "stage": "output",
+        "data": {
+          "manifest": "artifacts/setup.json",
+          "sha256": "c9983cde1ba01ae0e8948c16d02b953c594895f9a0035761c55044af27f563b4",
+          "partitions": [
+            "A",
+            "B",
+            "C"
+          ],
+          "partition_directories_verified": true
+        },
+        "env": {
+          "SYSTEM": "mpcp",
+          "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "SCOPE": "CROSS_L_ONLY",
+          "BOUNDARY": "sandbox-local-only",
+          "MODEW": "sandbox_materialize",
+          "LANGUAGE_TAG": "GEN:PY",
+          "LANGUAGE": "PY",
+          "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "EVENT_ID": "EVT-735610B82898B5A53317",
+          "CONDIEN_READ": [],
+          "CONDIEN_DENY": [],
+          "DENY": [
+            "truth_mutation"
+          ],
+          "RETURN_CONTRACT": [
+            "state",
+            "reason",
+            "trace"
+          ],
+          "PAYLOAD": {
+            "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+          },
+          "PAPER": {
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "LANGUAGE_TAG": "GEN:PY"
+          },
+          "ENV": {
+            "platform": "linux",
+            "platform_release": "6.18.55",
+            "architecture": "x86_64",
+            "python": "3.12.14",
+            "mobile": false,
+            "termux": false,
+            "container": false,
+            "commands": {
+              "bash": "/usr/bin/bash",
+              "c++": "/usr/bin/c++",
+              "cc": "/usr/bin/cc",
+              "g++": "/usr/bin/g++",
+              "gcc": "/usr/bin/gcc",
+              "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+              "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "sh": "/usr/bin/sh"
+            },
+            "variable_names": [
+              "LANG",
+              "LC_ALL",
+              "PATH",
+              "TMPDIR"
+            ],
+            "hints": {},
+            "secret_values_included": false
+          },
+          "REVIEW": true,
+          "EXECUTION_AGREEMENT": {
+            "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "lender": "sandbox-cli",
+            "borrower": "MPCP",
+            "capability": "sandbox_materialize",
+            "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "event_id": "EVT-735610B82898B5A53317",
+            "boundary": "sandbox-local-only",
+            "approved_by": "sandbox-cli:--execute",
+            "active": true
+          }
+        }
+      }
+    ],
+    "mutated": false,
+    "source_truth_mutated": false,
+    "env_mutated": false,
+    "event_container_mutated": false,
+    "review": false,
+    "env": {
+      "before": {
+        "SYSTEM": "mpcp",
+        "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+        "TASK": "sandbox_materialize",
+        "INTENT": "materialize local setup",
+        "SCOPE": "CROSS_L_ONLY",
+        "BOUNDARY": "sandbox-local-only",
+        "MODEW": "sandbox_materialize",
+        "LANGUAGE_TAG": "GEN:PY",
+        "LANGUAGE": "PY",
+        "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+        "EVENT_ID": "EVT-735610B82898B5A53317",
+        "CONDIEN_READ": [],
+        "CONDIEN_DENY": [],
+        "DENY": [
+          "truth_mutation"
+        ],
+        "RETURN_CONTRACT": [
+          "state",
+          "reason",
+          "trace"
+        ],
+        "PAYLOAD": {
+          "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+        },
+        "PAPER": {
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "LANGUAGE_TAG": "GEN:PY"
+        },
+        "ENV": {
+          "platform": "linux",
+          "platform_release": "6.18.55",
+          "architecture": "x86_64",
+          "python": "3.12.14",
+          "mobile": false,
+          "termux": false,
+          "container": false,
+          "commands": {
+            "bash": "/usr/bin/bash",
+            "c++": "/usr/bin/c++",
+            "cc": "/usr/bin/cc",
+            "g++": "/usr/bin/g++",
+            "gcc": "/usr/bin/gcc",
+            "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "sh": "/usr/bin/sh"
+          },
+          "variable_names": [
+            "LANG",
+            "LC_ALL",
+            "PATH",
+            "TMPDIR"
+          ],
+          "hints": {},
+          "secret_values_included": false
+        },
+        "REVIEW": true,
+        "EXECUTION_AGREEMENT": {
+          "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "lender": "sandbox-cli",
+          "borrower": "MPCP",
+          "capability": "sandbox_materialize",
+          "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "event_id": "EVT-735610B82898B5A53317",
+          "boundary": "sandbox-local-only",
+          "approved_by": "sandbox-cli:--execute",
+          "active": true
+        }
+      },
+      "after": {
+        "SYSTEM": "mpcp",
+        "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+        "TASK": "sandbox_materialize",
+        "INTENT": "materialize local setup",
+        "SCOPE": "CROSS_L_ONLY",
+        "BOUNDARY": "sandbox-local-only",
+        "MODEW": "sandbox_materialize",
+        "LANGUAGE_TAG": "GEN:PY",
+        "LANGUAGE": "PY",
+        "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+        "EVENT_ID": "EVT-735610B82898B5A53317",
+        "CONDIEN_READ": [],
+        "CONDIEN_DENY": [],
+        "DENY": [
+          "truth_mutation"
+        ],
+        "RETURN_CONTRACT": [
+          "state",
+          "reason",
+          "trace"
+        ],
+        "PAYLOAD": {
+          "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+        },
+        "PAPER": {
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "LANGUAGE_TAG": "GEN:PY"
+        },
+        "ENV": {
+          "platform": "linux",
+          "platform_release": "6.18.55",
+          "architecture": "x86_64",
+          "python": "3.12.14",
+          "mobile": false,
+          "termux": false,
+          "container": false,
+          "commands": {
+            "bash": "/usr/bin/bash",
+            "c++": "/usr/bin/c++",
+            "cc": "/usr/bin/cc",
+            "g++": "/usr/bin/g++",
+            "gcc": "/usr/bin/gcc",
+            "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "sh": "/usr/bin/sh"
+          },
+          "variable_names": [
+            "LANG",
+            "LC_ALL",
+            "PATH",
+            "TMPDIR"
+          ],
+          "hints": {},
+          "secret_values_included": false
+        },
+        "REVIEW": true,
+        "EXECUTION_AGREEMENT": {
+          "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "lender": "sandbox-cli",
+          "borrower": "MPCP",
+          "capability": "sandbox_materialize",
+          "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "event_id": "EVT-735610B82898B5A53317",
+          "boundary": "sandbox-local-only",
+          "approved_by": "sandbox-cli:--execute",
+          "active": true
+        }
+      },
+      "delta_keys": [],
+      "preserved": true
+    },
+    "law": {
+      "validated": true,
+      "validator": "ROT:MPCP",
+      "blocked_by": null
+    },
+    "restore": {
+      "required": false,
+      "supported": false,
+      "token": null,
+      "state_preserved": true
+    },
+    "meta": {
+      "return_code": 0,
+      "format": "dict",
+      "version": 1,
+      "source_result_keys": [
+        "cause",
+        "result",
+        "role",
+        "semantic_layers",
+        "state",
+        "trace"
+      ]
+    },
+    "semantic_layers": {
+      "A": null,
+      "B": null,
+      "C": null,
+      "D": null,
+      "E": null,
+      "F": null
+    }
+  },
+  "cross_l_return": {
+    "schema": "mpcp.cross_l.return.1",
+    "w3lgu_profile": "W3Lgu-Result",
+    "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+    "event_id": "EVT-735610B82898B5A53317",
+    "language_tag": "GEN:PY",
+    "boundary": "sandbox-local-only",
+    "result": {
+      "state": "SUCCESS",
+      "reason": "modew_return",
+      "trace": [
+        {
+          "stage": "receive",
+          "data": {
+            "SYSTEM": "mpcp",
+            "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "SCOPE": "CROSS_L_ONLY",
+            "BOUNDARY": "sandbox-local-only",
+            "MODEW": "sandbox_materialize",
+            "LANGUAGE_TAG": "GEN:PY",
+            "LANGUAGE": "PY",
+            "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "EVENT_ID": "EVT-735610B82898B5A53317",
+            "CONDIEN_READ": [],
+            "CONDIEN_DENY": [],
+            "DENY": [
+              "truth_mutation"
+            ],
+            "RETURN_CONTRACT": [
+              "state",
+              "reason",
+              "trace"
+            ],
+            "PAYLOAD": {
+              "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+            },
+            "PAPER": {
+              "TASK": "sandbox_materialize",
+              "INTENT": "materialize local setup",
+              "LANGUAGE_TAG": "GEN:PY"
+            },
+            "ENV": {
+              "platform": "linux",
+              "platform_release": "6.18.55",
+              "architecture": "x86_64",
+              "python": "3.12.14",
+              "mobile": false,
+              "termux": false,
+              "container": false,
+              "commands": {
+                "bash": "/usr/bin/bash",
+                "c++": "/usr/bin/c++",
+                "cc": "/usr/bin/cc",
+                "g++": "/usr/bin/g++",
+                "gcc": "/usr/bin/gcc",
+                "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+                "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+                "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+                "sh": "/usr/bin/sh"
+              },
+              "variable_names": [
+                "LANG",
+                "LC_ALL",
+                "PATH",
+                "TMPDIR"
+              ],
+              "hints": {},
+              "secret_values_included": false
+            },
+            "REVIEW": true,
+            "EXECUTION_AGREEMENT": {
+              "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "lender": "sandbox-cli",
+              "borrower": "MPCP",
+              "capability": "sandbox_materialize",
+              "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "event_id": "EVT-735610B82898B5A53317",
+              "boundary": "sandbox-local-only",
+              "approved_by": "sandbox-cli:--execute",
+              "active": true
+            }
+          },
+          "env": {
+            "SYSTEM": "mpcp",
+            "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "SCOPE": "CROSS_L_ONLY",
+            "BOUNDARY": "sandbox-local-only",
+            "MODEW": "sandbox_materialize",
+            "LANGUAGE_TAG": "GEN:PY",
+            "LANGUAGE": "PY",
+            "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "EVENT_ID": "EVT-735610B82898B5A53317",
+            "CONDIEN_READ": [],
+            "CONDIEN_DENY": [],
+            "DENY": [
+              "truth_mutation"
+            ],
+            "RETURN_CONTRACT": [
+              "state",
+              "reason",
+              "trace"
+            ],
+            "PAYLOAD": {
+              "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+            },
+            "PAPER": {
+              "TASK": "sandbox_materialize",
+              "INTENT": "materialize local setup",
+              "LANGUAGE_TAG": "GEN:PY"
+            },
+            "ENV": {
+              "platform": "linux",
+              "platform_release": "6.18.55",
+              "architecture": "x86_64",
+              "python": "3.12.14",
+              "mobile": false,
+              "termux": false,
+              "container": false,
+              "commands": {
+                "bash": "/usr/bin/bash",
+                "c++": "/usr/bin/c++",
+                "cc": "/usr/bin/cc",
+                "g++": "/usr/bin/g++",
+                "gcc": "/usr/bin/gcc",
+                "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+                "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+                "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+                "sh": "/usr/bin/sh"
+              },
+              "variable_names": [
+                "LANG",
+                "LC_ALL",
+                "PATH",
+                "TMPDIR"
+              ],
+              "hints": {},
+              "secret_values_included": false
+            },
+            "REVIEW": true,
+            "EXECUTION_AGREEMENT": {
+              "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "lender": "sandbox-cli",
+              "borrower": "MPCP",
+              "capability": "sandbox_materialize",
+              "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "event_id": "EVT-735610B82898B5A53317",
+              "boundary": "sandbox-local-only",
+              "approved_by": "sandbox-cli:--execute",
+              "active": true
+            }
+          }
+        },
+        {
+          "stage": "validate",
+          "data": {
+            "SYSTEM": "mpcp",
+            "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "SCOPE": "CROSS_L_ONLY",
+            "BOUNDARY": "sandbox-local-only",
+            "MODEW": "sandbox_materialize",
+            "LANGUAGE_TAG": "GEN:PY",
+            "LANGUAGE": "PY",
+            "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "EVENT_ID": "EVT-735610B82898B5A53317",
+            "CONDIEN_READ": [],
+            "CONDIEN_DENY": [],
+            "DENY": [
+              "truth_mutation"
+            ],
+            "RETURN_CONTRACT": [
+              "state",
+              "reason",
+              "trace"
+            ],
+            "PAYLOAD": {
+              "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+            },
+            "PAPER": {
+              "TASK": "sandbox_materialize",
+              "INTENT": "materialize local setup",
+              "LANGUAGE_TAG": "GEN:PY"
+            },
+            "ENV": {
+              "platform": "linux",
+              "platform_release": "6.18.55",
+              "architecture": "x86_64",
+              "python": "3.12.14",
+              "mobile": false,
+              "termux": false,
+              "container": false,
+              "commands": {
+                "bash": "/usr/bin/bash",
+                "c++": "/usr/bin/c++",
+                "cc": "/usr/bin/cc",
+                "g++": "/usr/bin/g++",
+                "gcc": "/usr/bin/gcc",
+                "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+                "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+                "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+                "sh": "/usr/bin/sh"
+              },
+              "variable_names": [
+                "LANG",
+                "LC_ALL",
+                "PATH",
+                "TMPDIR"
+              ],
+              "hints": {},
+              "secret_values_included": false
+            },
+            "REVIEW": true,
+            "EXECUTION_AGREEMENT": {
+              "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "lender": "sandbox-cli",
+              "borrower": "MPCP",
+              "capability": "sandbox_materialize",
+              "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "event_id": "EVT-735610B82898B5A53317",
+              "boundary": "sandbox-local-only",
+              "approved_by": "sandbox-cli:--execute",
+              "active": true
+            }
+          },
+          "env": {
+            "SYSTEM": "mpcp",
+            "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "SCOPE": "CROSS_L_ONLY",
+            "BOUNDARY": "sandbox-local-only",
+            "MODEW": "sandbox_materialize",
+            "LANGUAGE_TAG": "GEN:PY",
+            "LANGUAGE": "PY",
+            "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "EVENT_ID": "EVT-735610B82898B5A53317",
+            "CONDIEN_READ": [],
+            "CONDIEN_DENY": [],
+            "DENY": [
+              "truth_mutation"
+            ],
+            "RETURN_CONTRACT": [
+              "state",
+              "reason",
+              "trace"
+            ],
+            "PAYLOAD": {
+              "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+            },
+            "PAPER": {
+              "TASK": "sandbox_materialize",
+              "INTENT": "materialize local setup",
+              "LANGUAGE_TAG": "GEN:PY"
+            },
+            "ENV": {
+              "platform": "linux",
+              "platform_release": "6.18.55",
+              "architecture": "x86_64",
+              "python": "3.12.14",
+              "mobile": false,
+              "termux": false,
+              "container": false,
+              "commands": {
+                "bash": "/usr/bin/bash",
+                "c++": "/usr/bin/c++",
+                "cc": "/usr/bin/cc",
+                "g++": "/usr/bin/g++",
+                "gcc": "/usr/bin/gcc",
+                "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+                "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+                "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+                "sh": "/usr/bin/sh"
+              },
+              "variable_names": [
+                "LANG",
+                "LC_ALL",
+                "PATH",
+                "TMPDIR"
+              ],
+              "hints": {},
+              "secret_values_included": false
+            },
+            "REVIEW": true,
+            "EXECUTION_AGREEMENT": {
+              "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "lender": "sandbox-cli",
+              "borrower": "MPCP",
+              "capability": "sandbox_materialize",
+              "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "event_id": "EVT-735610B82898B5A53317",
+              "boundary": "sandbox-local-only",
+              "approved_by": "sandbox-cli:--execute",
+              "active": true
+            }
+          }
+        },
+        {
+          "stage": "route",
+          "data": {
+            "SYSTEM": "mpcp",
+            "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "SCOPE": "CROSS_L_ONLY",
+            "BOUNDARY": "sandbox-local-only",
+            "MODEW": "sandbox_materialize",
+            "LANGUAGE_TAG": "GEN:PY",
+            "LANGUAGE": "PY",
+            "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "EVENT_ID": "EVT-735610B82898B5A53317",
+            "CONDIEN_READ": [],
+            "CONDIEN_DENY": [],
+            "DENY": [
+              "truth_mutation"
+            ],
+            "RETURN_CONTRACT": [
+              "state",
+              "reason",
+              "trace"
+            ],
+            "PAYLOAD": {
+              "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+            },
+            "PAPER": {
+              "TASK": "sandbox_materialize",
+              "INTENT": "materialize local setup",
+              "LANGUAGE_TAG": "GEN:PY"
+            },
+            "ENV": {
+              "platform": "linux",
+              "platform_release": "6.18.55",
+              "architecture": "x86_64",
+              "python": "3.12.14",
+              "mobile": false,
+              "termux": false,
+              "container": false,
+              "commands": {
+                "bash": "/usr/bin/bash",
+                "c++": "/usr/bin/c++",
+                "cc": "/usr/bin/cc",
+                "g++": "/usr/bin/g++",
+                "gcc": "/usr/bin/gcc",
+                "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+                "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+                "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+                "sh": "/usr/bin/sh"
+              },
+              "variable_names": [
+                "LANG",
+                "LC_ALL",
+                "PATH",
+                "TMPDIR"
+              ],
+              "hints": {},
+              "secret_values_included": false
+            },
+            "REVIEW": true,
+            "EXECUTION_AGREEMENT": {
+              "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "lender": "sandbox-cli",
+              "borrower": "MPCP",
+              "capability": "sandbox_materialize",
+              "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "event_id": "EVT-735610B82898B5A53317",
+              "boundary": "sandbox-local-only",
+              "approved_by": "sandbox-cli:--execute",
+              "active": true
+            }
+          },
+          "env": {
+            "SYSTEM": "mpcp",
+            "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "SCOPE": "CROSS_L_ONLY",
+            "BOUNDARY": "sandbox-local-only",
+            "MODEW": "sandbox_materialize",
+            "LANGUAGE_TAG": "GEN:PY",
+            "LANGUAGE": "PY",
+            "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "EVENT_ID": "EVT-735610B82898B5A53317",
+            "CONDIEN_READ": [],
+            "CONDIEN_DENY": [],
+            "DENY": [
+              "truth_mutation"
+            ],
+            "RETURN_CONTRACT": [
+              "state",
+              "reason",
+              "trace"
+            ],
+            "PAYLOAD": {
+              "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+            },
+            "PAPER": {
+              "TASK": "sandbox_materialize",
+              "INTENT": "materialize local setup",
+              "LANGUAGE_TAG": "GEN:PY"
+            },
+            "ENV": {
+              "platform": "linux",
+              "platform_release": "6.18.55",
+              "architecture": "x86_64",
+              "python": "3.12.14",
+              "mobile": false,
+              "termux": false,
+              "container": false,
+              "commands": {
+                "bash": "/usr/bin/bash",
+                "c++": "/usr/bin/c++",
+                "cc": "/usr/bin/cc",
+                "g++": "/usr/bin/g++",
+                "gcc": "/usr/bin/gcc",
+                "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+                "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+                "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+                "sh": "/usr/bin/sh"
+              },
+              "variable_names": [
+                "LANG",
+                "LC_ALL",
+                "PATH",
+                "TMPDIR"
+              ],
+              "hints": {},
+              "secret_values_included": false
+            },
+            "REVIEW": true,
+            "EXECUTION_AGREEMENT": {
+              "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "lender": "sandbox-cli",
+              "borrower": "MPCP",
+              "capability": "sandbox_materialize",
+              "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "event_id": "EVT-735610B82898B5A53317",
+              "boundary": "sandbox-local-only",
+              "approved_by": "sandbox-cli:--execute",
+              "active": true
+            }
+          }
+        },
+        {
+          "stage": "process",
+          "data": {
+            "manifest": "artifacts/setup.json",
+            "sha256": "c9983cde1ba01ae0e8948c16d02b953c594895f9a0035761c55044af27f563b4",
+            "partitions": [
+              "A",
+              "B",
+              "C"
+            ],
+            "partition_directories_verified": true
+          },
+          "env": {
+            "SYSTEM": "mpcp",
+            "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "SCOPE": "CROSS_L_ONLY",
+            "BOUNDARY": "sandbox-local-only",
+            "MODEW": "sandbox_materialize",
+            "LANGUAGE_TAG": "GEN:PY",
+            "LANGUAGE": "PY",
+            "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "EVENT_ID": "EVT-735610B82898B5A53317",
+            "CONDIEN_READ": [],
+            "CONDIEN_DENY": [],
+            "DENY": [
+              "truth_mutation"
+            ],
+            "RETURN_CONTRACT": [
+              "state",
+              "reason",
+              "trace"
+            ],
+            "PAYLOAD": {
+              "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+            },
+            "PAPER": {
+              "TASK": "sandbox_materialize",
+              "INTENT": "materialize local setup",
+              "LANGUAGE_TAG": "GEN:PY"
+            },
+            "ENV": {
+              "platform": "linux",
+              "platform_release": "6.18.55",
+              "architecture": "x86_64",
+              "python": "3.12.14",
+              "mobile": false,
+              "termux": false,
+              "container": false,
+              "commands": {
+                "bash": "/usr/bin/bash",
+                "c++": "/usr/bin/c++",
+                "cc": "/usr/bin/cc",
+                "g++": "/usr/bin/g++",
+                "gcc": "/usr/bin/gcc",
+                "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+                "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+                "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+                "sh": "/usr/bin/sh"
+              },
+              "variable_names": [
+                "LANG",
+                "LC_ALL",
+                "PATH",
+                "TMPDIR"
+              ],
+              "hints": {},
+              "secret_values_included": false
+            },
+            "REVIEW": true,
+            "EXECUTION_AGREEMENT": {
+              "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "lender": "sandbox-cli",
+              "borrower": "MPCP",
+              "capability": "sandbox_materialize",
+              "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "event_id": "EVT-735610B82898B5A53317",
+              "boundary": "sandbox-local-only",
+              "approved_by": "sandbox-cli:--execute",
+              "active": true
+            }
+          }
+        },
+        {
+          "stage": "transition",
+          "data": {
+            "manifest": "artifacts/setup.json",
+            "sha256": "c9983cde1ba01ae0e8948c16d02b953c594895f9a0035761c55044af27f563b4",
+            "partitions": [
+              "A",
+              "B",
+              "C"
+            ],
+            "partition_directories_verified": true
+          },
+          "env": {
+            "SYSTEM": "mpcp",
+            "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "SCOPE": "CROSS_L_ONLY",
+            "BOUNDARY": "sandbox-local-only",
+            "MODEW": "sandbox_materialize",
+            "LANGUAGE_TAG": "GEN:PY",
+            "LANGUAGE": "PY",
+            "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "EVENT_ID": "EVT-735610B82898B5A53317",
+            "CONDIEN_READ": [],
+            "CONDIEN_DENY": [],
+            "DENY": [
+              "truth_mutation"
+            ],
+            "RETURN_CONTRACT": [
+              "state",
+              "reason",
+              "trace"
+            ],
+            "PAYLOAD": {
+              "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+            },
+            "PAPER": {
+              "TASK": "sandbox_materialize",
+              "INTENT": "materialize local setup",
+              "LANGUAGE_TAG": "GEN:PY"
+            },
+            "ENV": {
+              "platform": "linux",
+              "platform_release": "6.18.55",
+              "architecture": "x86_64",
+              "python": "3.12.14",
+              "mobile": false,
+              "termux": false,
+              "container": false,
+              "commands": {
+                "bash": "/usr/bin/bash",
+                "c++": "/usr/bin/c++",
+                "cc": "/usr/bin/cc",
+                "g++": "/usr/bin/g++",
+                "gcc": "/usr/bin/gcc",
+                "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+                "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+                "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+                "sh": "/usr/bin/sh"
+              },
+              "variable_names": [
+                "LANG",
+                "LC_ALL",
+                "PATH",
+                "TMPDIR"
+              ],
+              "hints": {},
+              "secret_values_included": false
+            },
+            "REVIEW": true,
+            "EXECUTION_AGREEMENT": {
+              "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "lender": "sandbox-cli",
+              "borrower": "MPCP",
+              "capability": "sandbox_materialize",
+              "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "event_id": "EVT-735610B82898B5A53317",
+              "boundary": "sandbox-local-only",
+              "approved_by": "sandbox-cli:--execute",
+              "active": true
+            }
+          }
+        },
+        {
+          "stage": "output",
+          "data": {
+            "manifest": "artifacts/setup.json",
+            "sha256": "c9983cde1ba01ae0e8948c16d02b953c594895f9a0035761c55044af27f563b4",
+            "partitions": [
+              "A",
+              "B",
+              "C"
+            ],
+            "partition_directories_verified": true
+          },
+          "env": {
+            "SYSTEM": "mpcp",
+            "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+            "TASK": "sandbox_materialize",
+            "INTENT": "materialize local setup",
+            "SCOPE": "CROSS_L_ONLY",
+            "BOUNDARY": "sandbox-local-only",
+            "MODEW": "sandbox_materialize",
+            "LANGUAGE_TAG": "GEN:PY",
+            "LANGUAGE": "PY",
+            "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+            "EVENT_ID": "EVT-735610B82898B5A53317",
+            "CONDIEN_READ": [],
+            "CONDIEN_DENY": [],
+            "DENY": [
+              "truth_mutation"
+            ],
+            "RETURN_CONTRACT": [
+              "state",
+              "reason",
+              "trace"
+            ],
+            "PAYLOAD": {
+              "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+            },
+            "PAPER": {
+              "TASK": "sandbox_materialize",
+              "INTENT": "materialize local setup",
+              "LANGUAGE_TAG": "GEN:PY"
+            },
+            "ENV": {
+              "platform": "linux",
+              "platform_release": "6.18.55",
+              "architecture": "x86_64",
+              "python": "3.12.14",
+              "mobile": false,
+              "termux": false,
+              "container": false,
+              "commands": {
+                "bash": "/usr/bin/bash",
+                "c++": "/usr/bin/c++",
+                "cc": "/usr/bin/cc",
+                "g++": "/usr/bin/g++",
+                "gcc": "/usr/bin/gcc",
+                "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+                "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+                "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+                "sh": "/usr/bin/sh"
+              },
+              "variable_names": [
+                "LANG",
+                "LC_ALL",
+                "PATH",
+                "TMPDIR"
+              ],
+              "hints": {},
+              "secret_values_included": false
+            },
+            "REVIEW": true,
+            "EXECUTION_AGREEMENT": {
+              "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "lender": "sandbox-cli",
+              "borrower": "MPCP",
+              "capability": "sandbox_materialize",
+              "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+              "event_id": "EVT-735610B82898B5A53317",
+              "boundary": "sandbox-local-only",
+              "approved_by": "sandbox-cli:--execute",
+              "active": true
+            }
+          }
+        }
+      ],
+      "mutated": false,
+      "review": false,
+      "source_truth_mutated": false,
+      "env_mutated": false,
+      "event_container_mutated": false
+    },
+    "env": {
+      "platform": "linux",
+      "platform_release": "6.18.55",
+      "architecture": "x86_64",
+      "python": "3.12.14",
+      "mobile": false,
+      "termux": false,
+      "container": false,
+      "commands": {
+        "bash": "/usr/bin/bash",
+        "c++": "/usr/bin/c++",
+        "cc": "/usr/bin/cc",
+        "g++": "/usr/bin/g++",
+        "gcc": "/usr/bin/gcc",
+        "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "sh": "/usr/bin/sh"
+      },
+      "variable_names": [
+        "LANG",
+        "LC_ALL",
+        "PATH",
+        "TMPDIR"
+      ],
+      "hints": {},
+      "secret_values_included": false
+    },
+    "w3db_evidence": {
+      "operation": "append_candidate",
+      "approved_for_append": false,
+      "envelope": {
+        "append_id": "APP-MPCPRESULT-D29B803413D07824",
+        "kind": "mpcp-result",
+        "source": "MPCP",
+        "target": "W3DB",
+        "subject": "EVT-735610B82898B5A53317",
+        "payload": {
+          "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "event_id": "EVT-735610B82898B5A53317",
+          "state": "SUCCESS",
+          "reason": "modew_return",
+          "mutated": false,
+          "source_truth_mutated": false,
+          "review": false
+        },
+        "confidence": 0.5,
+        "timestamp": "2026-10-24T12:22:59Z",
+        "references": [
+          "chain:W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "event:EVT-735610B82898B5A53317"
+        ]
+      },
+      "mutated": false
+    },
+    "source_truth_mutated": false
+  },
+  "outcome": {
+    "event_id": "EVT-9EE0901C255B3C02D1BF",
+    "package": {
+      "package_id": "PKG-08E84F101F4446F4D4AF",
+      "packet": {
+        "EVENT": "setup.result",
+        "ROOM": "RE",
+        "RESULT": "SUCCESS",
+        "TARGET": "MPCP",
+        "STATE": "SUCCESS"
+      },
+      "room": {
+        "number": 3,
+        "code": "RE",
+        "name": "RESULT",
+        "meaning": "result"
+      },
+      "px": {
+        "px": "LNRE'3798",
+        "room": "RE",
+        "x": 3798,
+        "y": 3,
+        "relative_point": [
+          3798,
+          3
+        ]
+      },
+      "poc": "POC'W3-SBX-627c21d3bac248cc93732fe4ed115a90'X3798'Y0003",
+      "tags": [
+        "PX_DERIVED_STABLE",
+        "ROOM_BASIS_EXPLICIT_CODE",
+        "ROOM_RE"
+      ],
+      "duplicate_to": [
+        "PSP2",
+        "LRC2"
+      ]
+    },
+    "stages": [
+      {
+        "stage": "REDR",
+        "status": "PACKAGED",
+        "action": "READ_CLASSIFY_TAG_DUPLICATE",
+        "data": {
+          "room": "RE",
+          "room_basis": "explicit_code",
+          "tags": [
+            "PX_DERIVED_STABLE",
+            "ROOM_BASIS_EXPLICIT_CODE",
+            "ROOM_RE"
+          ],
+          "duplicate_to": [
+            "PSP2",
+            "LRC2"
+          ]
+        }
+      },
+      {
+        "stage": "PSP2",
+        "status": "ROUTED",
+        "action": "STAMP_ROUTE_ONLY",
+        "data": {
+          "stamp": "PSP2'EVT-9EE0901C255B3C02D1BF",
+          "route": [
+            "W3LGU",
+            "LNRE'3798",
+            "MPCP",
+            "LRC2"
+          ],
+          "payload_changed": false
+        }
+      },
+      {
+        "stage": "DTML",
+        "status": "READY",
+        "action": "INSPECT_DESTINATION_SIGNAL_INTENT",
+        "data": {
+          "target": "MPCP",
+          "signal": "GREEN",
+          "reasons": [
+            "BOUNDARY_CLEAR"
+          ],
+          "external_authority": false
+        }
+      },
+      {
+        "stage": "LRC2",
+        "status": "RECORDED",
+        "action": "APPEND_HASH_LINKED_HISTORY",
+        "data": {
+          "event_id": "EVT-9EE0901C255B3C02D1BF",
+          "decision": "READY",
+          "record_count": 4
+        }
+      }
+    ],
+    "decision": "READY",
+    "signal": "GREEN",
+    "execute_allowed": false,
+    "lrc2_records": [
+      {
+        "sequence": 5,
+        "record_id": "LRC2-862B57133311A9968DEE",
+        "timestamp": "2026-10-24T12:22:59.368Z",
+        "event_id": "EVT-9EE0901C255B3C02D1BF:REDR",
+        "package_id": "PKG-08E84F101F4446F4D4AF",
+        "stage": "REDR",
+        "status": "PACKAGED",
+        "payload": {
+          "stage": "REDR",
+          "status": "PACKAGED",
+          "action": "READ_CLASSIFY_TAG_DUPLICATE",
+          "data": {
+            "room": "RE",
+            "room_basis": "explicit_code",
+            "tags": [
+              "PX_DERIVED_STABLE",
+              "ROOM_BASIS_EXPLICIT_CODE",
+              "ROOM_RE"
+            ],
+            "duplicate_to": [
+              "PSP2",
+              "LRC2"
+            ]
+          }
+        },
+        "previous_hash": "80b410fd001a9624d10d57901973ba5c9e0e2f3af588d57dbdb528be8f566568",
+        "record_hash": "862b57133311a9968deeb30e3dde8ecc0e650b857174e82b27c20ad697b9ff64"
+      },
+      {
+        "sequence": 6,
+        "record_id": "LRC2-DD9B6A975C1B219DE099",
+        "timestamp": "2026-10-24T12:22:59.368Z",
+        "event_id": "EVT-9EE0901C255B3C02D1BF:PSP2",
+        "package_id": "PKG-08E84F101F4446F4D4AF",
+        "stage": "PSP2",
+        "status": "ROUTED",
+        "payload": {
+          "stage": "PSP2",
+          "status": "ROUTED",
+          "action": "STAMP_ROUTE_ONLY",
+          "data": {
+            "stamp": "PSP2'EVT-9EE0901C255B3C02D1BF",
+            "route": [
+              "W3LGU",
+              "LNRE'3798",
+              "MPCP",
+              "LRC2"
+            ],
+            "payload_changed": false
+          }
+        },
+        "previous_hash": "862b57133311a9968deeb30e3dde8ecc0e650b857174e82b27c20ad697b9ff64",
+        "record_hash": "dd9b6a975c1b219de0998614cd87511f51bd2795cad87252468d5bdac71cb176"
+      },
+      {
+        "sequence": 7,
+        "record_id": "LRC2-542802FFFD46C320CD9B",
+        "timestamp": "2026-10-24T12:22:59.368Z",
+        "event_id": "EVT-9EE0901C255B3C02D1BF:DTML",
+        "package_id": "PKG-08E84F101F4446F4D4AF",
+        "stage": "DTML",
+        "status": "READY",
+        "payload": {
+          "stage": "DTML",
+          "status": "READY",
+          "action": "INSPECT_DESTINATION_SIGNAL_INTENT",
+          "data": {
+            "target": "MPCP",
+            "signal": "GREEN",
+            "reasons": [
+              "BOUNDARY_CLEAR"
+            ],
+            "external_authority": false
+          }
+        },
+        "previous_hash": "dd9b6a975c1b219de0998614cd87511f51bd2795cad87252468d5bdac71cb176",
+        "record_hash": "542802fffd46c320cd9b4cc5bea0bf4e06397e71e9d46901d4679e8c7fc0c785"
+      },
+      {
+        "sequence": 8,
+        "record_id": "LRC2-F4CE918405591A90BFD1",
+        "timestamp": "2026-10-24T12:22:59.368Z",
+        "event_id": "EVT-9EE0901C255B3C02D1BF:LRC2",
+        "package_id": "PKG-08E84F101F4446F4D4AF",
+        "stage": "LRC2",
+        "status": "RECORDED",
+        "payload": {
+          "stage": "LRC2",
+          "status": "RECORDED",
+          "action": "APPEND_HASH_LINKED_HISTORY",
+          "data": {
+            "event_id": "EVT-9EE0901C255B3C02D1BF",
+            "decision": "READY",
+            "record_count": 4
+          }
+        },
+        "previous_hash": "542802fffd46c320cd9b4cc5bea0bf4e06397e71e9d46901d4679e8c7fc0c785",
+        "record_hash": "f4ce918405591a90bfd14d98c7c057911acb195019f48a28a260102672e04db6"
+      }
+    ]
+  },
+  "executor_trace": [
+    {
+      "stage": "INPUT:ACCEPTED",
+      "data": {
+        "SYSTEM": "mpcp",
+        "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+        "TASK": "sandbox_materialize",
+        "INTENT": "materialize local setup",
+        "SCOPE": "CROSS_L_ONLY",
+        "BOUNDARY": "sandbox-local-only",
+        "MODEW": "sandbox_materialize",
+        "LANGUAGE_TAG": "GEN:PY",
+        "LANGUAGE": "PY",
+        "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+        "EVENT_ID": "EVT-735610B82898B5A53317",
+        "CONDIEN_READ": [],
+        "CONDIEN_DENY": [],
+        "DENY": [
+          "truth_mutation"
+        ],
+        "RETURN_CONTRACT": [
+          "state",
+          "reason",
+          "trace"
+        ],
+        "PAYLOAD": {
+          "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+        },
+        "PAPER": {
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "LANGUAGE_TAG": "GEN:PY"
+        },
+        "ENV": {
+          "platform": "linux",
+          "platform_release": "6.18.55",
+          "architecture": "x86_64",
+          "python": "3.12.14",
+          "mobile": false,
+          "termux": false,
+          "container": false,
+          "commands": {
+            "bash": "/usr/bin/bash",
+            "c++": "/usr/bin/c++",
+            "cc": "/usr/bin/cc",
+            "g++": "/usr/bin/g++",
+            "gcc": "/usr/bin/gcc",
+            "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "sh": "/usr/bin/sh"
+          },
+          "variable_names": [
+            "LANG",
+            "LC_ALL",
+            "PATH",
+            "TMPDIR"
+          ],
+          "hints": {},
+          "secret_values_included": false
+        },
+        "REVIEW": true,
+        "EXECUTION_AGREEMENT": {
+          "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "lender": "sandbox-cli",
+          "borrower": "MPCP",
+          "capability": "sandbox_materialize",
+          "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "event_id": "EVT-735610B82898B5A53317",
+          "boundary": "sandbox-local-only",
+          "approved_by": "sandbox-cli:--execute",
+          "active": true
+        }
+      },
+      "env": {
+        "SYSTEM": "mpcp",
+        "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+        "TASK": "sandbox_materialize",
+        "INTENT": "materialize local setup",
+        "SCOPE": "CROSS_L_ONLY",
+        "BOUNDARY": "sandbox-local-only",
+        "MODEW": "sandbox_materialize",
+        "LANGUAGE_TAG": "GEN:PY",
+        "LANGUAGE": "PY",
+        "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+        "EVENT_ID": "EVT-735610B82898B5A53317",
+        "CONDIEN_READ": [],
+        "CONDIEN_DENY": [],
+        "DENY": [
+          "truth_mutation"
+        ],
+        "RETURN_CONTRACT": [
+          "state",
+          "reason",
+          "trace"
+        ],
+        "PAYLOAD": {
+          "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+        },
+        "PAPER": {
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "LANGUAGE_TAG": "GEN:PY"
+        },
+        "ENV": {
+          "platform": "linux",
+          "platform_release": "6.18.55",
+          "architecture": "x86_64",
+          "python": "3.12.14",
+          "mobile": false,
+          "termux": false,
+          "container": false,
+          "commands": {
+            "bash": "/usr/bin/bash",
+            "c++": "/usr/bin/c++",
+            "cc": "/usr/bin/cc",
+            "g++": "/usr/bin/g++",
+            "gcc": "/usr/bin/gcc",
+            "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "sh": "/usr/bin/sh"
+          },
+          "variable_names": [
+            "LANG",
+            "LC_ALL",
+            "PATH",
+            "TMPDIR"
+          ],
+          "hints": {},
+          "secret_values_included": false
+        },
+        "REVIEW": true,
+        "EXECUTION_AGREEMENT": {
+          "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "lender": "sandbox-cli",
+          "borrower": "MPCP",
+          "capability": "sandbox_materialize",
+          "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "event_id": "EVT-735610B82898B5A53317",
+          "boundary": "sandbox-local-only",
+          "approved_by": "sandbox-cli:--execute",
+          "active": true
+        }
+      },
+      "time": "2026-10-24T12:22:59.367959+00:00"
+    },
+    {
+      "stage": "ROT:INPUT_VALID",
+      "data": {
+        "TASK": "sandbox_materialize"
+      },
+      "env": {
+        "SYSTEM": "mpcp",
+        "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+        "TASK": "sandbox_materialize",
+        "INTENT": "materialize local setup",
+        "SCOPE": "CROSS_L_ONLY",
+        "BOUNDARY": "sandbox-local-only",
+        "MODEW": "sandbox_materialize",
+        "LANGUAGE_TAG": "GEN:PY",
+        "LANGUAGE": "PY",
+        "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+        "EVENT_ID": "EVT-735610B82898B5A53317",
+        "CONDIEN_READ": [],
+        "CONDIEN_DENY": [],
+        "DENY": [
+          "truth_mutation"
+        ],
+        "RETURN_CONTRACT": [
+          "state",
+          "reason",
+          "trace"
+        ],
+        "PAYLOAD": {
+          "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+        },
+        "PAPER": {
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "LANGUAGE_TAG": "GEN:PY"
+        },
+        "ENV": {
+          "platform": "linux",
+          "platform_release": "6.18.55",
+          "architecture": "x86_64",
+          "python": "3.12.14",
+          "mobile": false,
+          "termux": false,
+          "container": false,
+          "commands": {
+            "bash": "/usr/bin/bash",
+            "c++": "/usr/bin/c++",
+            "cc": "/usr/bin/cc",
+            "g++": "/usr/bin/g++",
+            "gcc": "/usr/bin/gcc",
+            "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "sh": "/usr/bin/sh"
+          },
+          "variable_names": [
+            "LANG",
+            "LC_ALL",
+            "PATH",
+            "TMPDIR"
+          ],
+          "hints": {},
+          "secret_values_included": false
+        },
+        "REVIEW": true,
+        "EXECUTION_AGREEMENT": {
+          "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "lender": "sandbox-cli",
+          "borrower": "MPCP",
+          "capability": "sandbox_materialize",
+          "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "event_id": "EVT-735610B82898B5A53317",
+          "boundary": "sandbox-local-only",
+          "approved_by": "sandbox-cli:--execute",
+          "active": true
+        }
+      },
+      "time": "2026-10-24T12:22:59.367983+00:00"
+    },
+    {
+      "stage": "MODEW:RESOLVED",
+      "data": {
+        "task": "sandbox_materialize",
+        "modew": "sandbox_materialize"
+      },
+      "env": {
+        "SYSTEM": "mpcp",
+        "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+        "TASK": "sandbox_materialize",
+        "INTENT": "materialize local setup",
+        "SCOPE": "CROSS_L_ONLY",
+        "BOUNDARY": "sandbox-local-only",
+        "MODEW": "sandbox_materialize",
+        "LANGUAGE_TAG": "GEN:PY",
+        "LANGUAGE": "PY",
+        "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+        "EVENT_ID": "EVT-735610B82898B5A53317",
+        "CONDIEN_READ": [],
+        "CONDIEN_DENY": [],
+        "DENY": [
+          "truth_mutation"
+        ],
+        "RETURN_CONTRACT": [
+          "state",
+          "reason",
+          "trace"
+        ],
+        "PAYLOAD": {
+          "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+        },
+        "PAPER": {
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "LANGUAGE_TAG": "GEN:PY"
+        },
+        "ENV": {
+          "platform": "linux",
+          "platform_release": "6.18.55",
+          "architecture": "x86_64",
+          "python": "3.12.14",
+          "mobile": false,
+          "termux": false,
+          "container": false,
+          "commands": {
+            "bash": "/usr/bin/bash",
+            "c++": "/usr/bin/c++",
+            "cc": "/usr/bin/cc",
+            "g++": "/usr/bin/g++",
+            "gcc": "/usr/bin/gcc",
+            "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "sh": "/usr/bin/sh"
+          },
+          "variable_names": [
+            "LANG",
+            "LC_ALL",
+            "PATH",
+            "TMPDIR"
+          ],
+          "hints": {},
+          "secret_values_included": false
+        },
+        "REVIEW": true,
+        "EXECUTION_AGREEMENT": {
+          "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "lender": "sandbox-cli",
+          "borrower": "MPCP",
+          "capability": "sandbox_materialize",
+          "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "event_id": "EVT-735610B82898B5A53317",
+          "boundary": "sandbox-local-only",
+          "approved_by": "sandbox-cli:--execute",
+          "active": true
+        }
+      },
+      "time": "2026-10-24T12:22:59.367991+00:00"
+    },
+    {
+      "stage": "CONTEXT:INJECTED",
+      "data": {
+        "SYSTEM": "mpcp",
+        "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+        "TASK": "sandbox_materialize",
+        "INTENT": "materialize local setup",
+        "SCOPE": "CROSS_L_ONLY",
+        "BOUNDARY": "sandbox-local-only",
+        "MODEW": "sandbox_materialize",
+        "LANGUAGE_TAG": "GEN:PY",
+        "LANGUAGE": "PY",
+        "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+        "EVENT_ID": "EVT-735610B82898B5A53317",
+        "CONDIEN_READ": [],
+        "CONDIEN_DENY": [],
+        "DENY": [
+          "truth_mutation"
+        ],
+        "RETURN_CONTRACT": [
+          "state",
+          "reason",
+          "trace"
+        ],
+        "PAYLOAD": {
+          "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+        },
+        "PAPER": {
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "LANGUAGE_TAG": "GEN:PY"
+        },
+        "ENV": {
+          "platform": "linux",
+          "platform_release": "6.18.55",
+          "architecture": "x86_64",
+          "python": "3.12.14",
+          "mobile": false,
+          "termux": false,
+          "container": false,
+          "commands": {
+            "bash": "/usr/bin/bash",
+            "c++": "/usr/bin/c++",
+            "cc": "/usr/bin/cc",
+            "g++": "/usr/bin/g++",
+            "gcc": "/usr/bin/gcc",
+            "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "sh": "/usr/bin/sh"
+          },
+          "variable_names": [
+            "LANG",
+            "LC_ALL",
+            "PATH",
+            "TMPDIR"
+          ],
+          "hints": {},
+          "secret_values_included": false
+        },
+        "REVIEW": true,
+        "EXECUTION_AGREEMENT": {
+          "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "lender": "sandbox-cli",
+          "borrower": "MPCP",
+          "capability": "sandbox_materialize",
+          "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "event_id": "EVT-735610B82898B5A53317",
+          "boundary": "sandbox-local-only",
+          "approved_by": "sandbox-cli:--execute",
+          "active": true
+        }
+      },
+      "env": {
+        "SYSTEM": "mpcp",
+        "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+        "TASK": "sandbox_materialize",
+        "INTENT": "materialize local setup",
+        "SCOPE": "CROSS_L_ONLY",
+        "BOUNDARY": "sandbox-local-only",
+        "MODEW": "sandbox_materialize",
+        "LANGUAGE_TAG": "GEN:PY",
+        "LANGUAGE": "PY",
+        "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+        "EVENT_ID": "EVT-735610B82898B5A53317",
+        "CONDIEN_READ": [],
+        "CONDIEN_DENY": [],
+        "DENY": [
+          "truth_mutation"
+        ],
+        "RETURN_CONTRACT": [
+          "state",
+          "reason",
+          "trace"
+        ],
+        "PAYLOAD": {
+          "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+        },
+        "PAPER": {
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "LANGUAGE_TAG": "GEN:PY"
+        },
+        "ENV": {
+          "platform": "linux",
+          "platform_release": "6.18.55",
+          "architecture": "x86_64",
+          "python": "3.12.14",
+          "mobile": false,
+          "termux": false,
+          "container": false,
+          "commands": {
+            "bash": "/usr/bin/bash",
+            "c++": "/usr/bin/c++",
+            "cc": "/usr/bin/cc",
+            "g++": "/usr/bin/g++",
+            "gcc": "/usr/bin/gcc",
+            "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "sh": "/usr/bin/sh"
+          },
+          "variable_names": [
+            "LANG",
+            "LC_ALL",
+            "PATH",
+            "TMPDIR"
+          ],
+          "hints": {},
+          "secret_values_included": false
+        },
+        "REVIEW": true,
+        "EXECUTION_AGREEMENT": {
+          "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "lender": "sandbox-cli",
+          "borrower": "MPCP",
+          "capability": "sandbox_materialize",
+          "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "event_id": "EVT-735610B82898B5A53317",
+          "boundary": "sandbox-local-only",
+          "approved_by": "sandbox-cli:--execute",
+          "active": true
+        }
+      },
+      "time": "2026-10-24T12:22:59.368001+00:00"
+    },
+    {
+      "stage": "MODEW:EXECUTED",
+      "data": {
+        "state": "SUCCESS"
+      },
+      "env": {
+        "SYSTEM": "mpcp",
+        "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+        "TASK": "sandbox_materialize",
+        "INTENT": "materialize local setup",
+        "SCOPE": "CROSS_L_ONLY",
+        "BOUNDARY": "sandbox-local-only",
+        "MODEW": "sandbox_materialize",
+        "LANGUAGE_TAG": "GEN:PY",
+        "LANGUAGE": "PY",
+        "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+        "EVENT_ID": "EVT-735610B82898B5A53317",
+        "CONDIEN_READ": [],
+        "CONDIEN_DENY": [],
+        "DENY": [
+          "truth_mutation"
+        ],
+        "RETURN_CONTRACT": [
+          "state",
+          "reason",
+          "trace"
+        ],
+        "PAYLOAD": {
+          "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+        },
+        "PAPER": {
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "LANGUAGE_TAG": "GEN:PY"
+        },
+        "ENV": {
+          "platform": "linux",
+          "platform_release": "6.18.55",
+          "architecture": "x86_64",
+          "python": "3.12.14",
+          "mobile": false,
+          "termux": false,
+          "container": false,
+          "commands": {
+            "bash": "/usr/bin/bash",
+            "c++": "/usr/bin/c++",
+            "cc": "/usr/bin/cc",
+            "g++": "/usr/bin/g++",
+            "gcc": "/usr/bin/gcc",
+            "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "sh": "/usr/bin/sh"
+          },
+          "variable_names": [
+            "LANG",
+            "LC_ALL",
+            "PATH",
+            "TMPDIR"
+          ],
+          "hints": {},
+          "secret_values_included": false
+        },
+        "REVIEW": true,
+        "EXECUTION_AGREEMENT": {
+          "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "lender": "sandbox-cli",
+          "borrower": "MPCP",
+          "capability": "sandbox_materialize",
+          "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "event_id": "EVT-735610B82898B5A53317",
+          "boundary": "sandbox-local-only",
+          "approved_by": "sandbox-cli:--execute",
+          "active": true
+        }
+      },
+      "time": "2026-10-24T12:22:59.368506+00:00"
+    },
+    {
+      "stage": "ROT:OUTPUT_VALID",
+      "data": {
+        "state": "SUCCESS"
+      },
+      "env": {
+        "SYSTEM": "mpcp",
+        "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+        "TASK": "sandbox_materialize",
+        "INTENT": "materialize local setup",
+        "SCOPE": "CROSS_L_ONLY",
+        "BOUNDARY": "sandbox-local-only",
+        "MODEW": "sandbox_materialize",
+        "LANGUAGE_TAG": "GEN:PY",
+        "LANGUAGE": "PY",
+        "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+        "EVENT_ID": "EVT-735610B82898B5A53317",
+        "CONDIEN_READ": [],
+        "CONDIEN_DENY": [],
+        "DENY": [
+          "truth_mutation"
+        ],
+        "RETURN_CONTRACT": [
+          "state",
+          "reason",
+          "trace"
+        ],
+        "PAYLOAD": {
+          "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+        },
+        "PAPER": {
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "LANGUAGE_TAG": "GEN:PY"
+        },
+        "ENV": {
+          "platform": "linux",
+          "platform_release": "6.18.55",
+          "architecture": "x86_64",
+          "python": "3.12.14",
+          "mobile": false,
+          "termux": false,
+          "container": false,
+          "commands": {
+            "bash": "/usr/bin/bash",
+            "c++": "/usr/bin/c++",
+            "cc": "/usr/bin/cc",
+            "g++": "/usr/bin/g++",
+            "gcc": "/usr/bin/gcc",
+            "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "sh": "/usr/bin/sh"
+          },
+          "variable_names": [
+            "LANG",
+            "LC_ALL",
+            "PATH",
+            "TMPDIR"
+          ],
+          "hints": {},
+          "secret_values_included": false
+        },
+        "REVIEW": true,
+        "EXECUTION_AGREEMENT": {
+          "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "lender": "sandbox-cli",
+          "borrower": "MPCP",
+          "capability": "sandbox_materialize",
+          "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "event_id": "EVT-735610B82898B5A53317",
+          "boundary": "sandbox-local-only",
+          "approved_by": "sandbox-cli:--execute",
+          "active": true
+        }
+      },
+      "time": "2026-10-24T12:22:59.368528+00:00"
+    },
+    {
+      "stage": "RESULT:RETURN",
+      "data": "SUCCESS",
+      "env": {
+        "SYSTEM": "mpcp",
+        "W3LGU_PROFILE": "W3Lgu-MPCP-Runtime",
+        "TASK": "sandbox_materialize",
+        "INTENT": "materialize local setup",
+        "SCOPE": "CROSS_L_ONLY",
+        "BOUNDARY": "sandbox-local-only",
+        "MODEW": "sandbox_materialize",
+        "LANGUAGE_TAG": "GEN:PY",
+        "LANGUAGE": "PY",
+        "CHAIN_ID": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+        "EVENT_ID": "EVT-735610B82898B5A53317",
+        "CONDIEN_READ": [],
+        "CONDIEN_DENY": [],
+        "DENY": [
+          "truth_mutation"
+        ],
+        "RETURN_CONTRACT": [
+          "state",
+          "reason",
+          "trace"
+        ],
+        "PAYLOAD": {
+          "blueprint": "NAME:AGENT_LOCAL\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:A,B,C\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve"
+        },
+        "PAPER": {
+          "TASK": "sandbox_materialize",
+          "INTENT": "materialize local setup",
+          "LANGUAGE_TAG": "GEN:PY"
+        },
+        "ENV": {
+          "platform": "linux",
+          "platform_release": "6.18.55",
+          "architecture": "x86_64",
+          "python": "3.12.14",
+          "mobile": false,
+          "termux": false,
+          "container": false,
+          "commands": {
+            "bash": "/usr/bin/bash",
+            "c++": "/usr/bin/c++",
+            "cc": "/usr/bin/cc",
+            "g++": "/usr/bin/g++",
+            "gcc": "/usr/bin/gcc",
+            "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "sh": "/usr/bin/sh"
+          },
+          "variable_names": [
+            "LANG",
+            "LC_ALL",
+            "PATH",
+            "TMPDIR"
+          ],
+          "hints": {},
+          "secret_values_included": false
+        },
+        "REVIEW": true,
+        "EXECUTION_AGREEMENT": {
+          "agreement_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "lender": "sandbox-cli",
+          "borrower": "MPCP",
+          "capability": "sandbox_materialize",
+          "chain_id": "W3-SBX-627c21d3bac248cc93732fe4ed115a90",
+          "event_id": "EVT-735610B82898B5A53317",
+          "boundary": "sandbox-local-only",
+          "approved_by": "sandbox-cli:--execute",
+          "active": true
+        }
+      },
+      "time": "2026-10-24T12:22:59.368532+00:00"
+    }
+  ],
+  "ledger": [
+    {
+      "sequence": 1,
+      "record_id": "LRC2-6C35CF33C1ED3F5D3A87",
+      "timestamp": "2026-10-24T12:22:59.366Z",
+      "event_id": "EVT-735610B82898B5A53317:REDR",
+      "package_id": "PKG-44C46F293BC8FDB9AF08",
+      "stage": "REDR",
+      "status": "PACKAGED",
+      "payload": {
+        "stage": "REDR",
+        "status": "PACKAGED",
+        "action": "READ_CLASSIFY_TAG_DUPLICATE",
+        "data": {
+          "room": "EV",
+          "room_basis": "explicit_code",
+          "tags": [
+            "PX_DERIVED_STABLE",
+            "ROOM_BASIS_EXPLICIT_CODE",
+            "ROOM_EV"
+          ],
+          "duplicate_to": [
+            "PSP2",
+            "LRC2"
+          ]
+        }
+      },
+      "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_hash": "6c35cf33c1ed3f5d3a870b5601b5208a36dd314bb4b306272063dea076f63dfc"
+    },
+    {
+      "sequence": 2,
+      "record_id": "LRC2-F41C533129C186547458",
+      "timestamp": "2026-10-24T12:22:59.366Z",
+      "event_id": "EVT-735610B82898B5A53317:PSP2",
+      "package_id": "PKG-44C46F293BC8FDB9AF08",
+      "stage": "PSP2",
+      "status": "ROUTED",
+      "payload": {
+        "stage": "PSP2",
+        "status": "ROUTED",
+        "action": "STAMP_ROUTE_ONLY",
+        "data": {
+          "stamp": "PSP2'EVT-735610B82898B5A53317",
+          "route": [
+            "W3LGU",
+            "LNEV'2500",
+            "MPCP",
+            "LRC2"
+          ],
+          "payload_changed": false
+        }
+      },
+      "previous_hash": "6c35cf33c1ed3f5d3a870b5601b5208a36dd314bb4b306272063dea076f63dfc",
+      "record_hash": "f41c533129c18654745860f6bcd5dfba1855b2655e0a1b8e5e13065a7fa74e92"
+    },
+    {
+      "sequence": 3,
+      "record_id": "LRC2-60CCD730B0E842C69681",
+      "timestamp": "2026-10-24T12:22:59.366Z",
+      "event_id": "EVT-735610B82898B5A53317:DTML",
+      "package_id": "PKG-44C46F293BC8FDB9AF08",
+      "stage": "DTML",
+      "status": "READY",
+      "payload": {
+        "stage": "DTML",
+        "status": "READY",
+        "action": "INSPECT_DESTINATION_SIGNAL_INTENT",
+        "data": {
+          "target": "MPCP",
+          "signal": "GREEN",
+          "reasons": [
+            "BOUNDARY_CLEAR"
+          ],
+          "external_authority": false
+        }
+      },
+      "previous_hash": "f41c533129c18654745860f6bcd5dfba1855b2655e0a1b8e5e13065a7fa74e92",
+      "record_hash": "60ccd730b0e842c6968107f2c72d3db6e9cd9912c0bf1a645c72ad00827b1277"
+    },
+    {
+      "sequence": 4,
+      "record_id": "LRC2-80B410FD001A9624D10D",
+      "timestamp": "2026-10-24T12:22:59.366Z",
+      "event_id": "EVT-735610B82898B5A53317:LRC2",
+      "package_id": "PKG-44C46F293BC8FDB9AF08",
+      "stage": "LRC2",
+      "status": "RECORDED",
+      "payload": {
+        "stage": "LRC2",
+        "status": "RECORDED",
+        "action": "APPEND_HASH_LINKED_HISTORY",
+        "data": {
+          "event_id": "EVT-735610B82898B5A53317",
+          "decision": "READY",
+          "record_count": 4
+        }
+      },
+      "previous_hash": "60ccd730b0e842c6968107f2c72d3db6e9cd9912c0bf1a645c72ad00827b1277",
+      "record_hash": "80b410fd001a9624d10d57901973ba5c9e0e2f3af588d57dbdb528be8f566568"
+    },
+    {
+      "sequence": 5,
+      "record_id": "LRC2-862B57133311A9968DEE",
+      "timestamp": "2026-10-24T12:22:59.368Z",
+      "event_id": "EVT-9EE0901C255B3C02D1BF:REDR",
+      "package_id": "PKG-08E84F101F4446F4D4AF",
+      "stage": "REDR",
+      "status": "PACKAGED",
+      "payload": {
+        "stage": "REDR",
+        "status": "PACKAGED",
+        "action": "READ_CLASSIFY_TAG_DUPLICATE",
+        "data": {
+          "room": "RE",
+          "room_basis": "explicit_code",
+          "tags": [
+            "PX_DERIVED_STABLE",
+            "ROOM_BASIS_EXPLICIT_CODE",
+            "ROOM_RE"
+          ],
+          "duplicate_to": [
+            "PSP2",
+            "LRC2"
+          ]
+        }
+      },
+      "previous_hash": "80b410fd001a9624d10d57901973ba5c9e0e2f3af588d57dbdb528be8f566568",
+      "record_hash": "862b57133311a9968deeb30e3dde8ecc0e650b857174e82b27c20ad697b9ff64"
+    },
+    {
+      "sequence": 6,
+      "record_id": "LRC2-DD9B6A975C1B219DE099",
+      "timestamp": "2026-10-24T12:22:59.368Z",
+      "event_id": "EVT-9EE0901C255B3C02D1BF:PSP2",
+      "package_id": "PKG-08E84F101F4446F4D4AF",
+      "stage": "PSP2",
+      "status": "ROUTED",
+      "payload": {
+        "stage": "PSP2",
+        "status": "ROUTED",
+        "action": "STAMP_ROUTE_ONLY",
+        "data": {
+          "stamp": "PSP2'EVT-9EE0901C255B3C02D1BF",
+          "route": [
+            "W3LGU",
+            "LNRE'3798",
+            "MPCP",
+            "LRC2"
+          ],
+          "payload_changed": false
+        }
+      },
+      "previous_hash": "862b57133311a9968deeb30e3dde8ecc0e650b857174e82b27c20ad697b9ff64",
+      "record_hash": "dd9b6a975c1b219de0998614cd87511f51bd2795cad87252468d5bdac71cb176"
+    },
+    {
+      "sequence": 7,
+      "record_id": "LRC2-542802FFFD46C320CD9B",
+      "timestamp": "2026-10-24T12:22:59.368Z",
+      "event_id": "EVT-9EE0901C255B3C02D1BF:DTML",
+      "package_id": "PKG-08E84F101F4446F4D4AF",
+      "stage": "DTML",
+      "status": "READY",
+      "payload": {
+        "stage": "DTML",
+        "status": "READY",
+        "action": "INSPECT_DESTINATION_SIGNAL_INTENT",
+        "data": {
+          "target": "MPCP",
+          "signal": "GREEN",
+          "reasons": [
+            "BOUNDARY_CLEAR"
+          ],
+          "external_authority": false
+        }
+      },
+      "previous_hash": "dd9b6a975c1b219de0998614cd87511f51bd2795cad87252468d5bdac71cb176",
+      "record_hash": "542802fffd46c320cd9b4cc5bea0bf4e06397e71e9d46901d4679e8c7fc0c785"
+    },
+    {
+      "sequence": 8,
+      "record_id": "LRC2-F4CE918405591A90BFD1",
+      "timestamp": "2026-10-24T12:22:59.368Z",
+      "event_id": "EVT-9EE0901C255B3C02D1BF:LRC2",
+      "package_id": "PKG-08E84F101F4446F4D4AF",
+      "stage": "LRC2",
+      "status": "RECORDED",
+      "payload": {
+        "stage": "LRC2",
+        "status": "RECORDED",
+        "action": "APPEND_HASH_LINKED_HISTORY",
+        "data": {
+          "event_id": "EVT-9EE0901C255B3C02D1BF",
+          "decision": "READY",
+          "record_count": 4
+        }
+      },
+      "previous_hash": "542802fffd46c320cd9b4cc5bea0bf4e06397e71e9d46901d4679e8c7fc0c785",
+      "record_hash": "f4ce918405591a90bfd14d98c7c057911acb195019f48a28a260102672e04db6"
+    }
+  ],
+  "ledger_verified": true,
+  "artifact_verified": true,
+  "phase_ready": false,
+  "remaining": [
+    "Android/iOS/Linux build and deployment executors are not implemented here",
+    "Blueprint modes min/full/stable/test need a separate agreed installation profile",
+    "REA MCP adapter and W3 orchestration integration are not implemented here",
+    "Local setup evidence is insufficient to certify the whole W3 next phase"
+  ],
+  "provenance": {
+    "revision": "5e4882cc379356d521ac2a589e0b9b8cc5028ffc",
+    "source_sha256": {
+      "protocol/EP_SIGNAL/CONTINUITY_MEMORY_MODEL.md": "b36710fb017603cb6fc88cbbd8019003ebe3042332dc7e73c1961d982ea213d9",
+      "protocol/EP_SIGNAL/EP_MANAUL.md": "dca933d49e493cc329feadfe991ddb576d493d6aff05bf34b3444f772c554138",
+      "protocol/EP_SIGNAL/INTERPRETATION_BOUNDARY_PAPER.md": "2fff10d4159e2d768a854b80fc88eec39e8f5454238674cec2cbcc9f1f70b308",
+      "protocol/EP_SIGNAL/README.md": "d1a1bd65903c62286057405b01ac1ea871f2764c944c4c9a3207a05a0f92c031",
+      "protocol/EP_SIGNAL/README_integration.md": "58f261373c8d30d167c38de2003698d28fde0a5077c3ffb02a2e96ae58c45394",
+      "protocol/EP_SIGNAL/RYTM_SIGNAL.md": "57953e2d36bc0fbf29d73e560eaad9671001fabd503c57b3e9ef8b6e1c2e0013",
+      "protocol/EP_SIGNAL/SIGNAL_IDENTITY_LAW.md": "1460a42c4a32b83a1a137683ecdc78b04b9ceda5b90b5b6b447439eca03669bc",
+      "protocol/EP_SIGNAL/SPEC_v1.md": "04d6fcaaed182c7bd07065c4d62c9f74b01b060185b50c48d54a2f48f107319f",
+      "protocol/EP_SIGNAL/TEST_CASE01.md": "789e7bf796e16bd04dab8b1c0bc472899744b4e03845592187596cbfbb5342c3",
+      "protocol/EP_SIGNAL/TEST_CASES.md": "4a20769581d3f809c2f279f21c9da1208e1aa8a8ce7e1ae1f9c9685b4a807eb7",
+      "protocol/EP_SIGNAL/TecnicalRytm.md": "97107fa4ccc7f4871d0f70e96f47db07293adcbc4b325979fcf4383d2ffa979e",
+      "protocol/EP_SIGNAL/TecnicalRytm02.md": "66adadbd6c3144e8805f6bf49415c1d01c467cf7e44160014e8ebad22ec54d12",
+      "protocol/EP_SIGNAL/ep_signal_adapter.py": "414c3a9af675b46add4b9123ee081279d318a4a38b2444ed395ce4f5e86a5f35",
+      "protocol/EP_SIGNAL/reference_implementation.py": "bedcb481b55837687e5a88f5198d4ba5253a5b8e15e7b5c0e25ad033a6377e18",
+      "protocol/EP_SIGNAL/rytm.py": "bd958460f6b4ddd1836329fe47dcce8814c6dd12f8016e4c59cae497739727a4",
+      "protocol/EP_SIGNAL/summary_cord01.md": "6611608c6bd32ef38a8e35021c8687a40ad26f001fe0b093514d4d58873e04fe",
+      "protocol/EP_SIGNAL/test_ep_signal_integration.py": "ca0312f22c940cfb4d1e721147c71cd5247001d9aa75178592b725910c6e9781",
+      "protocol/Files.void/File_void.md": "52559b045554524598475b5aa1cb479bab70c1c1df92f6f80c19f985de9e4a61",
+      "protocol/Files.void/README.md": "64155f8e5788932f4af2eedee403e2d74e9a79162bbaa2c498a33ddc83cf782e",
+      "protocol/Files.void/void.runtime.spec.md": "d7b6f2e6c0e05cfd57da326fc6eadcfbb92a15156ace1591431f1a987c229ce3",
+      "protocol/README.md": "fcc7f5b36e590cd2f5dddf386c18de633534454f83e5133425ecedcab809f4db",
+      "protocol/ecs/README.md": "d9f62e9972a1f33161f862ca3beddf145b0fd74595492a30975b67fcd5bcebd3",
+      "protocol/ecs/chain_pointer_operator.py": "127f43b65842e57f774516335f22f49b71bb4672a7e1079fe95198fe5e530b66",
+      "protocol/ecs/cooperative_contract.py": "2e2cc815db17d42f034895d536850f7bc1fd40692c5717fe9179e1f3da4d6e2c",
+      "protocol/ecs/event_chain_integration.py": "21b211b150a6bee11410e089c426fdf5165cb742715e4df7e43782eda22af515",
+      "protocol/ecs/event_chain_system.py": "861e2bf29419555772798dd78870d5882e9e986e5b508f34a9daaee8c08388c1",
+      "protocol/ecs/event_registry.py": "8549143796f08c91bcb148f11d511e68f2f48b15c9034362f704eccad883f90f",
+      "protocol/ecs/event_template.py": "af6b74d2310e1dfa4c06230d6fb387f13f238e9bff0e8544d35191a9196632d6",
+      "protocol/ecs/versioned_registry.py": "733826b1e0647fd899882a1e3fdc46b1a7c7f66f12dec82137539c7f5bce6a95",
+      "protocol/files_void/README.md": "1df5be83f00b0348e8bd5549e4dbe6aa9fd8af69b624726517a97823f7ddd495",
+      "protocol/files_void/__init__.py": "2faf5e4029205daada44f2cc916c9fe3de8700fcc9511ed22ed1d4a64c5cdcbf",
+      "protocol/files_void/core.py": "56d95dd497a639e2d81635c339bdf5764a370d174b41b16ec0ea1f475c51c243",
+      "protocol/files_void/tool.py": "e671fd4dc34491c604210298b5c307dcc1f89998e270918796a51ae07a13adb3",
+      "protocol/mpcp/COLOR_STATE.md": "32b8ef3c078a0448364cb2d2e79d82f147c4518c606cfbe2dce01d0471956839",
+      "protocol/mpcp/COLOR_SYMBOL_PAPER.md": "ba9911289dfcf36d14e9f5a6e4a1147656b04f3d9feebede218c886af7499ba4",
+      "protocol/mpcp/CO_MODULE_LAW.md": "907d4cbded52c1baf85a2873c1de6d9d809bdb06ca08f97a210740236702dd41",
+      "protocol/mpcp/CROSS_W3LGU_CONDIEN_RELATION.md": "717a1e14fc4c8e75fb8961814caf95d65ad950247edec30b4edd09f08a0d640d",
+      "protocol/mpcp/EVENT_TEMPLATE_CONDIEN_BRIDGE.md": "93513fed220cd6327bdd2dd30f4dfa9a630be6a016bf7ef12c4c2f5059a0eec2",
+      "protocol/mpcp/MODEW_DYNAMIC_CAPABILITY_PAPER/MODEW_DYNAMIC_CAPABILITY_PAPER.md": "e1954ae13a98b1b700390cef6eed1ee718b21401a09e184a3b07fd0d907df119",
+      "protocol/mpcp/MODEW_PAPER.md": "55feee0d860701d6dc5e30811688562f3858795b87dadccfd18d7aa4703661be",
+      "protocol/mpcp/MPCP_ORIGIN.md": "b9b8d9bef070a52a894689a02caac6a591f3c09524502c901bef1d54b441cdd5",
+      "protocol/mpcp/README.md": "2de0586ef6b744ce866d934db1e2ab1e33d7524fa0e5b71d3fd139209adbf7cb",
+      "protocol/mpcp/ROT_BASELINE.md": "7de1a33712842d31e549c606c38dcf5d8758428d99b5b1ab1596b3591fe5e233",
+      "protocol/mpcp/ROT_PAPER.md": "2bd345273e274bbf35febf7ed6646f536fadb8dad18c20bec20a509139b4cfb3",
+      "protocol/mpcp/THEORDERMPCP.md": "89f64f54ff2c06ad2352a10636638601c0e157d1dd086cc6769c25395caa9536",
+      "protocol/mpcp/W3_DISTRIBUTED_FAMILY_ARCHITECTURE.md": "afd884549a6fd5b6a4725cb7fe9fa9f59b0e51c401fce910a601004bd188b5f8",
+      "protocol/mpcp/W3_TERMS_MASTER_PAPER_v2.md": "280db094a70bb9bd468f07b61239b689c356f25ca909f05b3bde02cc1b3146c7",
+      "protocol/mpcp/__init__.py": "4fbfc99cda3d67d70dd6f085950e708b9200e3ec2666070782d9d69c55b19372",
+      "protocol/mpcp/adapter/__init__.py": "3be82229edecff12b8627e0ca0dccf856709e0b74377d040b7c532d8a34cec4c",
+      "protocol/mpcp/adapter/file_void_tool.py": "01d5ee4a1fb15e82f3739092ff3ca46dc142c1c5bc8b7d39f8fb20ab18c3124b",
+      "protocol/mpcp/adapter/w3_bridge.py": "ca2043720645920a6e1d936de8e7ea99b9b1656c6b2c7e16150c400d9263a6da",
+      "protocol/mpcp/adapter/w3db.py": "d822ee109e1886955969b96f260eb4594003c502ad29adb1a549f78d046ead7b",
+      "protocol/mpcp/case_studies/AGENT_MPCP_ALIGNMENT_TESTS_V1.md": "50e7ad19880a70f2b4e0ce7b037baebed55d067757eb2d1cf7499902728297c1",
+      "protocol/mpcp/case_studies/README.md": "cddb5696377337bccf22cf883a377a7b5a2179bf53a30b266ee5d4c085b7b27b",
+      "protocol/mpcp/config/__init__.py": "ad9301dd74c5f440e62847294ea10ea8f0bd1e4b1c0c406edb3c5b399e3b2695",
+      "protocol/mpcp/config/default.json": "483d7e0eb76637973cd366b8122a16fa9abc3454e0769f16bfea0d13122f0e7e",
+      "protocol/mpcp/config/loader.py": "e4c0105365eb81cd934c9aaaf9a4dc2d953ef66c25c0f1269aa951515dbfea8a",
+      "protocol/mpcp/cooperative_contract.py": "016ad6e7349cbfb6abbeda96c0fe0c90a45210565a0e19154f9daee76b8bc0a4",
+      "protocol/mpcp/env/README.md": "9056867a6ec3253bb59e79ac9a074a46af88f00935f46741fe227734a9a14221",
+      "protocol/mpcp/env/__init__.py": "0871d323c5ff7357794d1e22390fdbac3a462eb217df06e1837a912c9bb11b47",
+      "protocol/mpcp/env/boundary.py": "d5bf2bed23576757845e19ad7190beac733b9141b6dd1cbf6f7e0f1bbfe978a3",
+      "protocol/mpcp/env/gateway.py": "d198907fbc5d67e430d4e1a1c89f0388283d7e54af59cd5e1fda0e4d8542e369",
+      "protocol/mpcp/env/models.py": "bb8fe6ba873231cd7e45d9414abccdbcd55247635afd3471830ffaacc2c55d38",
+      "protocol/mpcp/env/probe.py": "50779f41e2df16d2b3ad2b6725eee59891e88352bb15abf22bc12a1c08e418e7",
+      "protocol/mpcp/kernel/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "protocol/mpcp/kernel/co_module.py": "4926f1c01f2da8f202de9950430b6a856a66fdcec32c4132a7e77076058f13a9",
+      "protocol/mpcp/kernel/contract.py": "4e4594100bc84372d5cf28b9f3e40acad47ff5ec8ad8af6658fc11803f54aaa7",
+      "protocol/mpcp/kernel/event_template.py": "2cde2590bd1200c024b272658f2e681e6cff98c77f22b49081b3858236a6f8d0",
+      "protocol/mpcp/kernel/module_bridge.py": "659953ac46105a10116e6ab1f4555e30b88bfe0f614b4f444dbe91f424fe3587",
+      "protocol/mpcp/kernel/module_registry.py": "21deb8e21b1ddb9a232b24713b6e974520bc966b040573a030d9601e38e94808",
+      "protocol/mpcp/kernel/module_validator.py": "e4de8504175481e2042500e6e42f99009f4dcd846cc096c42089536a26137391",
+      "protocol/mpcp/kernel/rot.py": "2886286aa03d7edaf10fb37d9de0d8946c99796697e332bf710edb4d25d4cfd1",
+      "protocol/mpcp/kernel/system.py": "c834d18b282312c15a5c419bbf848f4057c8562f8ce6651243c3775e82099cbc",
+      "protocol/mpcp/kernel/validator.py": "149a586c9745c45ad439cc103634596f547c7b2df8583ca52a2123498efb0e35",
+      "protocol/mpcp/lib/__init__.py": "f9169b3d8bed965dbdb820323645fe26a744c977212b9af9d8f70e5f41a549f8",
+      "protocol/mpcp/lib/pillar.py": "bb261a4c5418b33d4be504800b1389f5aa6cdf9d5192f372aa4e6c6f625bcef9",
+      "protocol/mpcp/lib/registry.py": "4b1734052a37c7b6fa30f083ee8f8fa2b6791a1b396f29ac7bbce9efe27a2bfc",
+      "protocol/mpcp/modew/__init__.py": "bddbc9cf142d4988e75a1e6f45ce79723bfb969616b01d073bc41a805ea2923b",
+      "protocol/mpcp/modew/base_modew.py": "d861792acee31035be377635419474f77bff82e4068ae436c3207674fe1abb7b",
+      "protocol/mpcp/mpcp_blueprint_paper/README.md": "36e4310b42ff3060159e3ca41d1e5fdbd0926c490a5f6fd4d6eb31f21b0178c1",
+      "protocol/mpcp/mpcp_blueprint_paper/mpcp_blueprint_paper.md": "b68d718ad3fcfaa2d759609b4ff609bb576bb7d14f7982db1975afccee40f5f7",
+      "protocol/mpcp/mpcp_concept_paper/ROT_PAPER.md": "7c145a7498701a8d69f54c9d60be14feeb08881c9580aaa4dcda82fd64d0d401",
+      "protocol/mpcp/mpcp_concept_paper/mpcp_concept_paper.md": "28bac48296c4c8b576e501137d7c0d22533a2e31981e34f6b661705b69043e7b",
+      "protocol/mpcp/mpcp_lib_paper/mpcp_lib_paper.md": "d10d6c45ceed6a1003fe63e73c0c6758d9939f964ddf3c29563fdd5c4c1dfd5e",
+      "protocol/mpcp/mpcp_pillar.md": "48f1a35eb30e0076b37c489115dc352fe6bc19f37412fbbc690dcd642baba2bc",
+      "protocol/mpcp/mpcp_unified_lgu/mpcp_unified_language_paper.md": "f8a54eaeabee970a3fe0024df836ac023b1847d35b9bdfb67aa3c8419c1ef77a",
+      "protocol/mpcp/orchestrator/__init__.py": "e0be1cda51d00f89d2b65a5d781e92f2663fae70ec790cf0e09cf5efc2281b24",
+      "protocol/mpcp/orchestrator/flow.py": "405b4147d6108e3c66237c5f413e4e345eab73a92e63cda62c21e313aa023c21",
+      "protocol/mpcp/orchestrator/manager.py": "c64a446c11e3e5e0cb5473af0bdfddb37236631f4c8551ec40e9a37e296d3742",
+      "protocol/mpcp/runtime/__init__.py": "6619b300694d7bc7dc5270457a453939c9f4337b582e020f624641651a90b0f3",
+      "protocol/mpcp/runtime/entry.py": "26e22a1d30aad222ba64e322fe34b3fc7ab7167194be96cbc32973f278360e51",
+      "protocol/mpcp/runtime/executor.py": "9fa1e881088b285755ba8166cd633cfabafbd71ee7857c699334aee8eb7d5390",
+      "protocol/mpcp/runtime/trace.py": "33de71ff645b4711bc9db44551ccda79a3e1519375c81620d577861145eb658a",
+      "protocol/mpcp/runtime_sanity_sweep.py": "c832463191f13ae59d4c395e77e3b7b2bb976695cd122666b497357d05f47f55",
+      "protocol/mpcp/schema/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "protocol/mpcp/schema/pillar.json": "351bce1568b5cd04b5b1eff9a80780ba8b6c998654e81b23f3153ac4fccc7bad",
+      "protocol/mpcp/schema/pillar.schema.json": "d56d38edbfbc9d5ff19b41221fa198a69ca5191a8a86d6685927d78e4771ae3e",
+      "protocol/mpcp/test_agent_mpcp_alignment.py": "2dc192a9d597700758413477666f79999088a2bcd16b5e0bafb8f6ad2b924263",
+      "protocol/mpcp/test_condien_blueprint.py": "598501fa8622429efcf1561188356d8bf95aa6c0067d650ff316b7438bd477a8",
+      "protocol/mpcp/w3lgu_integration_paper/W3LGU_CONDIEN_PROFILE.md": "536197f02ed2ba39b876f54e8897eae8256560e7d698013e5f246da4421914c1",
+      "protocol/mpcp/w3lgu_integration_paper/W3LGU_MPCP_BLUEPRINT_PROFILE.md": "9712ea0bd6fb76d0f30834f7ed55bd7d3ae8019bbf354731717072f1e935c2f9",
+      "protocol/mpcp/w3lgu_integration_paper/W3LGU_MPCP_ROLE_MAPPING.md": "ce14e1009a9d5667b91161a8157a98b7f61c45a38473560eaa46a11b1d7086da",
+      "protocol/mpcp/w3lgu_integration_paper/W3LGU_MPCP_RUNTIME_PROFILE.md": "67aa7918cba028104f6af605417527f95e96501509e835310dcdd333fd8ac7a9",
+      "protocol/mpcp/w3lgu_integration_paper/W3LGU_PROFILE_ARCHITECTURE.md": "6f79366346f6e943a4851734f3f442363155e931c668af063acb122648dc7a7f",
+      "protocol/w3db/W3DB_MANAUL.md": "9f5821c976f399a7aed8153a125cdecd7f007a4187b463b586532554f4dcc329",
+      "protocol/w3db/__init__.py": "271aeea63114336d89eaedbf10dade9af7bf698a8ce499f4c0f5fd7d34ec1a94",
+      "protocol/w3db/test_crud.py": "53a9a205715979e3f0286b82bb2a53ecaedab335eaf9dc5f4134ccdaddc58b73",
+      "protocol/w3db/test_flow.py": "d8fc93d53484feafb9c65ab977063f3a0c2c04559c5b8ffbc0afb2e4ce4573db",
+      "protocol/w3lgu/6room_event_logic_plan.md": "62e41f9e741fe5859982dc26f5959f73ecc685d59aea549891f0b68a240fe402",
+      "protocol/w3lgu/ECS_event_chain_system_plan.md": "b19ac9bc735f447626d73646ed2de8aceab70367d08a1dd2edcc85cee341cccb",
+      "protocol/w3lgu/README.md": "92c7d87a52cc8e57728f580acafeaac2b3287c684374d62cf0695c1b7bd044bb",
+      "protocol/w3lgu/RML01.md": "64c3b61a9d7d5f94f321fecddfb01539df001d7c5f46e7866e392d2dff0c8987",
+      "protocol/w3lgu/__init__.py": "94af4378fb07df15c1515a736d5c5649d709112a484529728af7d7a14ad1c238",
+      "protocol/w3lgu/adapters.py": "6f5f9a5dc0f2578e426b3d5bdebbf7f9a5d9b84e862aa70ba067f3b39a38f6d2",
+      "protocol/w3lgu/adapters/README.md": "2ffe3f09440d96709cbb88b7b9d64b41c40a559edb26915d847e532ce96ce4c9",
+      "protocol/w3lgu/bin/.keep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "protocol/w3lgu/bin/Engine": "7993f26d0b15b42d4579c7ac32e0e9e135d1539947ef5617c2dd7999089a2d61",
+      "protocol/w3lgu/bin/Hello.java": "1cbd378ddf93d686fa93218c8f3d1eba6ff24f68800d50c3a05886537d753ddf",
+      "protocol/w3lgu/bin/dt_ml.py": "34c6df965927208235c5a7ee4a4f81b4ede1a37b251086cd950ab256d7f5adf7",
+      "protocol/w3lgu/bin/engine.py": "aa519aef9767def270f2d4d10e431edc4e89e7ea99e215bffed1315d196911e3",
+      "protocol/w3lgu/bin/runtime.py": "23fe3fcbeb15a0413fb272455ac2f9d578a20ada0a4ffd883cb071474840aa32",
+      "protocol/w3lgu/core.py": "685acb105c316d9b332fbe8a63a4d9b14fdc217db655cc32de987a38f113d3a8",
+      "protocol/w3lgu/docs/MANIFEST.md": "85c301819e1c72fc13f396c409f1ddfe2c890a4aacf22df76f958a04fe17a03b",
+      "protocol/w3lgu/docs/PRODUCTION_TEMPLATE.md": "19814c25918ff78726a4f547c40bf7164637fcfc177f22d180b36b67a9a854c1",
+      "protocol/w3lgu/docs/W3Lgu_Operational_Manual.md": "b7c8a8cfe4835394486c7a63fa29f320ba4eaf1170c518fc58a5f18742a0d78f",
+      "protocol/w3lgu/docs/W3Lgu_Operational_Manual_v2.md": "1863dbffd2b395ec3d85b6f2a9b22f90b559d04d170242b93635318e26fe791d",
+      "protocol/w3lgu/docs/ถ้ายังไม่มี": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+      "protocol/w3lgu/docs/ทั้งเพื่อเก็บเอกสาร,": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+      "protocol/w3lgu/docs/สำหรับผู้เริ่มต้นจนถึงขั้นใช้งานจริง.md": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+      "protocol/w3lgu/encoding.py": "ba40f2deeff054e7fd6466bac9a1df414cdd97841831cfc5e670f843eab09ce8",
+      "protocol/w3lgu/layers/README.md": "94a0c99ef87191b7c412055c43681f95708158c44f67b5ae43894ceab8e96ad8",
+      "protocol/w3lgu/memory/README.md": "f9105fa83299790e517161fac477e781714d332a4a1293f5442a97f98fedc6a2",
+      "protocol/w3lgu/operational.py": "ff87f1704a277bcce9d2e3178aad3ce4cfdb6079c3e2a83215575092eb1ab5ac",
+      "protocol/w3lgu/papers/W3LGU_ADAPTER_PAPER.md": "33899db7ae54d4f9eaea0a72bdc0009c325cba5f55c7b66d823624cd1f625a79",
+      "protocol/w3lgu/papers/W3LGU_CONCEPT_PAPER.md": "07f248127c9e707b7c0a38cbd9a0c8849abc256c2e10b0e1be4032a79f0ab6b3",
+      "protocol/w3lgu/papers/W3LGU_EVENT_PAPER.md": "3a64c9710a844dcb45b85c876518d592fa6a9fe0919d068aa58d6e9efbc5dc4c",
+      "protocol/w3lgu/papers/W3LGU_GRAMMAR_PAPER.md": "e724153cbcaffc7f2cc35382e878150083bdb7cae8f5e7d955d106a03c14d933",
+      "protocol/w3lgu/papers/W3LGU_LAYER_PAPER.md": "e32f5ccb5be85d09b1e1a1ac3004cf47df68715a49a384ea86bbfe2e44b677f3",
+      "protocol/w3lgu/papers/W3LGU_PARSER_PAPER.md": "32e4f54622fc53a2b8663a1475f7bc750575dcd78c5e7974b41520662d455657",
+      "protocol/w3lgu/papers/W3LGU_RUNTIME_PAPER.md": "f9e09c454d2a9b7460a45d37712379bd65423d1f68e82e303702de24cc6f3b39",
+      "protocol/w3lgu/papers/W3LGU_SIGNAL_PAPER.md": "c62774d2f2c2b74693d9e7fabe27f35d14b8df92de6343fb0ff5fff175a861d3",
+      "protocol/w3lgu/parser.py": "1aab8f84f68230ae048c299a43a859e7ffa89f7c938e71994a2d26c13f295e1e",
+      "protocol/w3lgu/parser/README.md": "c9db0d325b091acf9e96324cb0a695441588888bff0c38196dcb0724e6981c5d",
+      "protocol/w3lgu/px.py": "34de47f636cce6be7995f1b3b6cf57e7c82dd02d1c76dc62b82c9a8a515a17cb",
+      "protocol/w3lgu/runtime.py": "9e4a1b20de0519b0176b02589038836e979a9594ad81958b075d687634bce589",
+      "protocol/w3lgu/runtime/README.md": "3f25c1889f9dc41276b104400cf54cafd3ef098c4e42bdfa1d0347a08dbb71d4",
+      "protocol/w3lgu/signals.py": "37ce48aa7b651a344dd085e953cf2d13fd4256bfb7cf1e15ec38d496c1dc3617",
+      "protocol/w3lgu/signals/README.md": "5dff04f63bcaa970dcf5a203b6b92a2f28d016d8f0ceb584cb5c491b0af22415",
+      "protocol/w3lgu/sixroom_runtime.py": "d143caa4197002b2b5445fabe7173ff28972a58479d3cd15b8c4553faa3a4674",
+      "protocol/w3lgu/validator.py": "155f09cc1af6592c6d5166ad2d5070516f20e35736a401508f17c219af2be517",
+      "src/core/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/core/__init__.py": "42f45ded50ecbd03bbfd9cf030fe2f695c154c9ac4d88ec29380afd69fdc0bb9",
+      "src/core/blueprint.py": "70d214b3f5b7ebaa218dbe726953bf48400ddd46cb8660949b2bd2525ac9ba94",
+      "src/core/condien.py": "5c647c8ddf5009530b292496e5eee425e760244e4eda2c33102068d98150521a",
+      "src/logs/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/main.py": "52d5b0f17988e96812eefaac19f3b9b6812676239d06e34c77863ca01d1d13e0",
+      "src/modules/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/modules/registry.json": "396dc78962d34ddb89104f11a8af27d3369cae8e2db3005d5158e042dc13f103",
+      "src/modules/registry.schema.json": "08c3a645706d76507c55ce048a5c5ae75078b74b64f0a805e60f3b774fdfbac8",
+      "src/modules/registry/registry.json": "969c3cc924ea4381d497e2a04c572c8a9fbf532ca75a3b130c08a9263f5d78de",
+      "src/utils/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/w3db/__init__.py": "e17bc89289dee7257bcc20900f32a38bd9e63c624b9bd0356d5414454ce9292d",
+      "src/w3db/append_flow.py": "5fc43105636a3ec9309466ccd8a6454c846042464e5c9d3240eb50de46876ce0",
+      "src/w3db/config.py": "8dea243e2f9a74acfe5ddd5fef865d200a909631c65443955a67cfcb14f9c595",
+      "src/w3db/crud/__init__.py": "2b5cbb99337cb3f3fca8c9bbc2491e255522f1a76e9eb98588e2967fd2310c45",
+      "src/w3db/crud/fbd.py": "23a20790c5dfc28f6c28899c4a7415b15431370710ca2a51f341202fe3f08247",
+      "src/w3db/crud/prx.py": "3104c7b2fb1ba5ebfc0a46e711dba767b9b632f59b679de15138fcb16d7bc4c5",
+      "src/w3db/crud/tuf.py": "133cb5f1e1b4c0d678c2b6f6594736b274414e105a2675904ebff34d59ced883",
+      "src/w3db/crud/whb.py": "465a46b6a4ac7a5f18c1dc0719eea71ab3d1b462fb2e7cb14c3c05b2cda25263",
+      "src/w3db/crud/xiz.py": "2302943bcba503f9bd6a5293e9bf7aead5944aaf364778e8f329bdeb680d33d5",
+      "src/w3db/flow.py": "80df4b905c30ffb4825e87a18aa3e7b2e7e2366a1e96f1ee99fd599b8ea9976b",
+      "src/w3db/models.py": "7acb78179282bbc2b0977632fcf663220a8515bf6d2987d417777f8db266026d",
+      "src/w3db/store.py": "c7d7aafb4be2e51c07a8b81dfee9830bb669e1da56dd6932cb12609e0b5dc218",
+      "protocol/mpcp/sandbox.py": "34e3457d67c48a722776371e06b67e8a48e6c55aa12b81e49de84ea2969c0e05"
+    },
+    "original_source_unchanged": true,
+    "snapshot_unchanged": true,
+    "worker_returncode": 0
+  }
+}

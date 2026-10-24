@@ -1,0 +1,42 @@
+name: MPCP Agent Sandbox
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [refactor/v0.2]
+    paths:
+      - 'protocol/mpcp/**'
+      - 'protocol/w3lgu/**'
+      - 'src/core/blueprint.py'
+      - 'tools/mpcp_sandbox.py'
+      - 'tools/agent_sandbox/**'
+      - 'tests/test_mpcp_agent_sandbox.py'
+      - '.github/workflows/mpcp-agent-sandbox.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  local-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Sandbox regressions
+        run: python -m unittest discover -s tests -p test_mpcp_agent_sandbox.py -v
+      - name: Existing MPCP and Blueprint foundations
+        run: |
+          python protocol/mpcp/runtime_sanity_sweep.py
+          python protocol/mpcp/test_condien_blueprint.py
+      - name: Run real local setup
+        run: python tools/mpcp_sandbox.py --request tools/agent_sandbox/local_setup.json --output local_workspace/ci-sandbox --execute
+      - name: Keep execution evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mpcp-agent-sandbox-evidence
+          path: local_workspace/ci-sandbox
+          if-no-files-found: warn
