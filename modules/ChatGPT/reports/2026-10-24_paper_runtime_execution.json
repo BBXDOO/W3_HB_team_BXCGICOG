@@ -1,0 +1,171 @@
+{
+  "schema": "w3.paper_equipment.observation.1",
+  "observed_at": "2026-10-24T16:41:58.739893+00:00",
+  "base_revision": "319a9cdc12600ce976ba456c1f7887e979d66693",
+  "source_kind": "working-tree changes on base_revision",
+  "source_sha256": {
+    "protocol/mpcp/runtime/paper.py": "b2b9f44df4586ce282bed5d8c833c7d914324f3f7d96d6bd1947d7502fbfef7e",
+    "protocol/mpcp/modew/file_artifact.py": "d2038f3886f816821482ccba1fcc5577cbe544df046a0e851b18ad5d0f4d4217",
+    "protocol/mpcp/kernel/rot.py": "08514c7f57f114de7f8c6442a37201f075d10f3bcb433354dd5df63187e15d8c",
+    "protocol/mpcp/env/boundary.py": "3ad1c2e18ac0ed6a0eb06020a05cb79102bf5337ce770c654accc40a2def5f07",
+    "tools/mpcp_papers.py": "9129810193b1682c37a6641d1d178750c9fd1877c798a2553574ec73d3c9ada1"
+  },
+  "state": "SUCCESS",
+  "chain_id": "MPCP-PAPER-EQUIPMENT",
+  "event_id": "EV-TEXT-001",
+  "paper_pack_id": "MPCP-TEXT-001",
+  "return_to": "MPCP",
+  "pack_hash": "cf5badd4d1cf3e381f800e1582dccc91b485c878a138b94937ba04a6618b9573",
+  "repeat_did_not_rewrite": true,
+  "artifacts": [
+    {
+      "path": "artifacts/continuity.txt",
+      "sha256": "74f3dc4e1b22f1da2cbb07c760d0cd80ef9ee9256e3b0e838409a602771c3044",
+      "content": "Event EV-TEXT-001 returns to MPCP.\n"
+    },
+    {
+      "path": "artifacts/report.md",
+      "sha256": "956e5bc44f5a573900db46f444c72a7a9df30ee391b9da1e50d9ad4fc8430cff",
+      "content": "# MPCP Paper equipment\n\nEvent: EV-TEXT-001\n"
+    }
+  ],
+  "papers": {
+    "TEXT-REPORT": {
+      "status": "COMPLETED",
+      "authority_evidence": "trusted-local-cli:--execute",
+      "verification": {
+        "passed": true,
+        "check": "intended_content_and_artifact_hash"
+      },
+      "file_void": {
+        "void_id": "FV-17ea6336-4294-4648-98cb-529c417cf3e9",
+        "source_ref": "PAPER:TEXT-REPORT:template",
+        "source_hash": "6f0f8d21f14684d14acb32ff5b03ec0e2ecf0a3e79b0464c5dcbb24b595f933e",
+        "state": "PERSISTED",
+        "env": "text.env",
+        "lib": "template-text.lib",
+        "source_mutated": false,
+        "manifestation": {
+          "artifact_type": "markdown",
+          "content": "# MPCP Paper equipment\n\nEvent: EV-TEXT-001\n",
+          "temporary": false,
+          "artifact_ref": "report.md",
+          "write_performed": false,
+          "metadata": {
+            "blueprint_ref": null,
+            "mpcp_task": "create local report",
+            "handoff_required": true
+          }
+        },
+        "trace": [
+          {
+            "stage": "unresolved",
+            "source_ref": "PAPER:TEXT-REPORT:template",
+            "source_hash": "6f0f8d21f14684d14acb32ff5b03ec0e2ecf0a3e79b0464c5dcbb24b595f933e"
+          },
+          {
+            "stage": "resolve",
+            "env": "text.env",
+            "lib": "template-text.lib",
+            "source_mutated": false
+          },
+          {
+            "stage": "manifest",
+            "artifact_type": "markdown",
+            "temporary": true,
+            "source_mutated": false
+          },
+          {
+            "stage": "persist_handoff",
+            "target_ref": "report.md",
+            "blueprint_ref": null,
+            "mpcp_task": "create local report",
+            "write_performed": false,
+            "human_review_required": true
+          }
+        ],
+        "invariants": {
+          "file_void_is_artifact": false,
+          "source_continuity_preserved": true,
+          "direct_write_allowed": false
+        }
+      },
+      "writer": "external_text_writer",
+      "write_performed": true
+    },
+    "TEXT-CONTINUITY": {
+      "status": "COMPLETED",
+      "authority_evidence": "trusted-local-cli:--execute",
+      "verification": {
+        "passed": true,
+        "check": "intended_content_and_artifact_hash"
+      },
+      "file_void": {
+        "void_id": "FV-02d6c831-38d4-4e5a-bbc1-bf0809d1b22a",
+        "source_ref": "PAPER:TEXT-CONTINUITY:template",
+        "source_hash": "ed20bc99548c9eaa7886e7e2961cc3d6a0d3dfdde4e8f82f17b35663622ee727",
+        "state": "PERSISTED",
+        "env": "text.env",
+        "lib": "template-text.lib",
+        "source_mutated": false,
+        "manifestation": {
+          "artifact_type": "text",
+          "content": "Event EV-TEXT-001 returns to MPCP.\n",
+          "temporary": false,
+          "artifact_ref": "continuity.txt",
+          "write_performed": false,
+          "metadata": {
+            "blueprint_ref": null,
+            "mpcp_task": "create continuity note",
+            "handoff_required": true
+          }
+        },
+        "trace": [
+          {
+            "stage": "unresolved",
+            "source_ref": "PAPER:TEXT-CONTINUITY:template",
+            "source_hash": "ed20bc99548c9eaa7886e7e2961cc3d6a0d3dfdde4e8f82f17b35663622ee727"
+          },
+          {
+            "stage": "resolve",
+            "env": "text.env",
+            "lib": "template-text.lib",
+            "source_mutated": false
+          },
+          {
+            "stage": "manifest",
+            "artifact_type": "text",
+            "temporary": true,
+            "source_mutated": false
+          },
+          {
+            "stage": "persist_handoff",
+            "target_ref": "continuity.txt",
+            "blueprint_ref": null,
+            "mpcp_task": "create continuity note",
+            "write_performed": false,
+            "human_review_required": true
+          }
+        ],
+        "invariants": {
+          "file_void_is_artifact": false,
+          "source_continuity_preserved": true,
+          "direct_write_allowed": false
+        }
+      },
+      "writer": "external_text_writer",
+      "write_performed": true
+    }
+  },
+  "validation": {
+    "pytest": "62 passed; 2 subtests passed; 4 existing utcnow warnings",
+    "runtime_sanity": "81/81",
+    "condien_blueprint": "69/69"
+  },
+  "limitations": [
+    "local sequential distribution",
+    "trusted host grants and verifier",
+    "markdown/text only",
+    "not a whole-W3 readiness certificate"
+  ]
+}

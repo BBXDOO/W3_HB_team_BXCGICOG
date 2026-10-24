@@ -70,6 +70,7 @@ Workbench เป็นชื่อของพื้นที่และชุ�
 | docs.sandbox | [คู่มือ MPCP sandbox](../../tools/agent_sandbox/README.md) | เครื่องมือ local setup ที่มีอยู่แล้วในพาธเดิม |
 | docs.sandbox-entry | [MPCP sandbox CLI](../../tools/mpcp_sandbox.py) | จุดเรียกใช้งานปัจจุบัน ยังไม่ได้ย้ายเข้า Workbench |
 | docs.evidence | [หลักฐาน local setup](../../tools/agent_sandbox/evidence/README.md) | ผลทดลองที่ตรวจสอบย้อนหลังได้ |
+| docs.papers | [Paper Runtime](../../protocol/mpcp/runtime/README.md) | ระบบ Paper หลายใบและอุปกรณ์ File.void text ในพาธเดิม |
 
 ---
 

@@ -155,7 +155,10 @@ class CrossLEnvironmentBoundary:
             if layer_name in denied:
                 continue
             layer = condien.get_layer(layer_name)
-            scoped[layer_name] = dict(layer.data)
+            # Keep the layer's key-level access law at the outgoing boundary.
+            scoped[layer_name] = {
+                key: layer.read_key(key) for key in layer.data if layer.can_read(key)
+            }
         return {
             "identity": condien.to_dict(),
             "layers": scoped,

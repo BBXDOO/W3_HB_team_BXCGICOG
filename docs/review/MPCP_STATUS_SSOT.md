@@ -25,6 +25,26 @@
 
 ## 1) เสร็จแล้ว (Implemented + Applied)
 
+### [FACT] Paper Pack มี local execution path และอุปกรณ์ File.void text
+- `status: applied`
+- `evidence:`
+  - `protocol/mpcp/runtime/paper.py` (event binding, per-Paper permit, durable result, reconciliation)
+  - `protocol/mpcp/modew/file_artifact.py` (template resolver → File.void → external text writer)
+  - `tools/mpcp_papers.py`
+  - `tests/test_mpcp_paper_runtime.py`
+- `runtime_usage: ใช้จริงผ่าน local CLI; ยังไม่ผูก W3-API, remote agent หรือ parallel scheduler`
+- `last_verified: 2026-10-24`
+- `owner: BBX19 / ผู้ดูแล ChatGPT`
+
+### [FACT] ENV scoped Condien read รักษา key-level READ/DENY
+- `status: applied`
+- `evidence:`
+  - `protocol/mpcp/env/boundary.py` (`scope_condien` ใช้ `can_read` / `read_key` ก่อนส่งข้อมูล)
+  - `tests/test_mpcp_paper_runtime.py`
+- `runtime_usage: ใช้จริงเมื่อส่ง Condien ให้ boundary/Paper runtime`
+- `last_verified: 2026-10-24`
+- `owner: BBX19 / ผู้ดูแล ChatGPT`
+
 ### [FACT] MPCP runtime รองรับ canonical result envelope และ packet input
 - `status: applied`
 - `evidence:`
@@ -81,37 +101,36 @@
 - `last_verified: 2026-08-18`
 - `owner: BBX19`
 
-### [FACT] Paper documentation มีอยู่ แต่ runtime ยังไม่พบ document-loader ที่ผูกไฟล์ Paper เข้าการรันโดยตรง
+### [FACT] Paper แบบคำสั่งใน event-bound Pack เรียกใช้ได้; generic Paper document loader ยังไม่ยืนยัน
 - `status: implemented`
 - `evidence:`
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/README.md` (ระบุบทบาท Paper/Rot/Modew/Condien)
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/mpcp_concept_paper/mpcp_concept_paper.md` (มีเอกสารแนว Paper/Concept)
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/runtime/executor.py` (มี parser ข้อความอินพุต `TASK:...` แต่ไม่พบการ load ไฟล์ Paper)
-- `runtime_usage: ยังไม่ใช้จริง`
-- `last_verified: 2026-05-09`
+  - `tools/mpcp_papers.py` (อ่าน JSON pack เข้า runtime)
+  - `protocol/mpcp/runtime/paper.py` (Paper เป็นคำสั่งในเหตุการณ์ ไม่บังคับไฟล์เอกสารต่อใบ)
+- `runtime_usage: local CLI โหลดคำสั่ง JSON เข้า Paper Pack ได้แล้วตามรายการข้างบน; ยังไม่ได้ยืนยัน loader สำหรับ Paper profile ทุกชนิด`
+- `last_verified: 2026-10-24`
 - `owner: BBX19`
 
-### [FACT] Blueprint documentation มีอยู่ แต่ยังไม่พบการเชื่อมเข้า MPCP runtime โดยตรง
+### [FACT] Blueprint มี local setup sandbox; bootstrap ข้ามแพลตฟอร์มยังไม่ครบ
 - `status: implemented`
 - `evidence:`
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/mpcp_blueprint_paper/mpcp_blueprint_paper.md` (นิยาม Blueprint ชัดเจน)
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/blueprints/abstract/overview.md` (มีโครงสร้าง blueprint ระดับรีโป)
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/runtime/executor.py` (ไม่พบการ load blueprint เข้ารันไทม์โดยตรง)
-- `runtime_usage: ยังไม่ใช้จริง`
-- `last_verified: 2026-05-09`
+  - `src/core/blueprint.py` (foundation parser)
+  - `protocol/mpcp/sandbox.py` (local setup Modew)
+  - `protocol/mpcp/modew/file_artifact.py` (File.void text equipment แยกจาก bootstrap)
+- `runtime_usage: tools/mpcp_sandbox.py ใช้ parser สร้าง local setup; Paper/File.void text path ใช้สร้างไฟล์จาก template แยกต่างหาก ยังไม่ได้ bootstrap Blueprint ข้ามแพลตฟอร์ม`
+- `last_verified: 2026-10-24`
 - `owner: BBX19`
 
 ---
 
 ## 3) รอดำเนินการ (Planned / Backlog)
 
-### [PROPOSAL] เพิ่มตัวเชื่อม Paper file → runtime execution
+### [PROPOSAL] ขยาย Paper ingestion ให้รองรับ profile และ event transport อื่นนอก local JSON pack
 - `status: planned`
 - `evidence:`
   - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/README.md` (ประกาศแนวคิด Paper-driven operation)
-  - `/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/protocol/mpcp/runtime/executor.py` (ปัจจุบันรับ text input โดยตรง)
+  - `protocol/mpcp/runtime/README.md` (local pack ทำงานแล้ว แต่ยังไม่ต่อ remote transport)
 - `runtime_usage: ยังไม่ใช้จริง`
-- `last_verified: 2026-05-09`
+- `last_verified: 2026-10-24`
 - `owner: BBX19`
 
 ### [PROPOSAL] เพิ่มตัวเชื่อม Blueprint file → runtime/bootstrap flow

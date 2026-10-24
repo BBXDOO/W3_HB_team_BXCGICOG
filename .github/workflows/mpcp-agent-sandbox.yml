@@ -7,10 +7,13 @@ on:
     paths:
       - 'protocol/mpcp/**'
       - 'protocol/w3lgu/**'
+      - 'protocol/files_void/**'
       - 'src/core/blueprint.py'
       - 'tools/mpcp_sandbox.py'
+      - 'tools/mpcp_papers.py'
       - 'tools/agent_sandbox/**'
       - 'tests/test_mpcp_agent_sandbox.py'
+      - 'tests/test_mpcp_paper_runtime.py'
       - '.github/workflows/mpcp-agent-sandbox.yml'
 
 permissions:
@@ -27,16 +30,24 @@ jobs:
           python-version: '3.12'
       - name: Sandbox regressions
         run: python -m unittest discover -s tests -p test_mpcp_agent_sandbox.py -v
+      - name: Install Paper test dependency
+        run: python -m pip install pytest
+      - name: Paper and File.void regressions
+        run: python -m pytest -q tests/test_mpcp_paper_runtime.py tests/test_file_void_tool.py
       - name: Existing MPCP and Blueprint foundations
         run: |
           python protocol/mpcp/runtime_sanity_sweep.py
           python protocol/mpcp/test_condien_blueprint.py
       - name: Run real local setup
         run: python tools/mpcp_sandbox.py --request tools/agent_sandbox/local_setup.json --output local_workspace/ci-sandbox --execute
+      - name: Run real event-bound text Papers
+        run: python tools/mpcp_papers.py --request tools/agent_sandbox/paper_pack.json --output local_workspace/ci-papers --execute
       - name: Keep execution evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: mpcp-agent-sandbox-evidence
-          path: local_workspace/ci-sandbox
+          path: |
+            local_workspace/ci-sandbox
+            local_workspace/ci-papers
           if-no-files-found: warn
