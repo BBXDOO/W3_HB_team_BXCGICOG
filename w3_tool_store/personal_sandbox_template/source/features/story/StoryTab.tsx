@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { StoryPack, StoryNode } from '../../types';
 import { Card } from '../../ui/components/Card';
 import { Button } from '../../ui/components/Button';
@@ -6,16 +6,19 @@ import { Input, TextArea, Select } from '../../ui/components/Input';
 import { MonitorCore } from '../../ui/components/MonitorCore';
 import { SplitLayout60_40 } from '../../ui/layout/SplitLayout60_40';
 import { generateId } from '../../core/utils';
+import { RichContent } from '../editor/ContentFormat';
 
 interface StoryTabProps {
   story: StoryPack;
   onChange: (updated: StoryPack) => void;
   toolActions?: any;
+  navigationTarget?: string | null;
 }
 
-export const StoryTab: React.FC<StoryTabProps> = ({ story, onChange, toolActions }) => {
+export const StoryTab: React.FC<StoryTabProps> = ({ story, onChange, toolActions, navigationTarget }) => {
   const [selectedId, setSelectedId] = useState<string | null>(story.storyNodes[0]?.nodeId || null);
   const [search, setSearch] = useState('');
+  useEffect(() => { if (navigationTarget && story.storyNodes.some(node => node.nodeId === navigationTarget)) setSelectedId(navigationTarget); }, [navigationTarget, story.storyNodes]);
 
   const selectedNode = useMemo(() => 
     story.storyNodes.find(n => n.nodeId === selectedId)
@@ -80,7 +83,7 @@ export const StoryTab: React.FC<StoryTabProps> = ({ story, onChange, toolActions
                 </div>
               </Card>
 
-              <TextArea label="Narrative Payload" className="min-h-[120px] text-[11px]" value={selectedNode.body || ''} onChange={v => updateNode({...selectedNode, body: v})} />
+              <TextArea richText label="Narrative Payload" className="min-h-[120px] text-[11px]" value={selectedNode.body || ''} onChange={v => updateNode({...selectedNode, body: v})} />
               
               <div className="flex flex-col gap-3">
                  <div className="flex justify-between items-center px-1">
@@ -127,7 +130,7 @@ export const StoryTab: React.FC<StoryTabProps> = ({ story, onChange, toolActions
             <div className="max-w-xl mx-auto flex flex-col gap-4 py-2 animate-in fade-in duration-700">
               <h1 className="text-2xl md:text-3xl font-black text-[var(--text)] tracking-tighter uppercase border-l-4 border-blue-600 pl-4">{selectedNode.title}</h1>
               <div className="text-sm md:text-base text-[var(--text)] leading-relaxed font-medium bg-[var(--surface)] p-5 rounded-2xl shadow-inner border border-[var(--border)] italic">
-                {selectedNode.body || 'Waiting for narrative input...'}
+                <RichContent value={selectedNode.body || 'Waiting for narrative input...'} />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
                 {selectedNode.choices?.map((c, i) => (

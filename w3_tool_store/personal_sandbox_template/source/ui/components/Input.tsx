@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useContentFormat } from '../../features/editor/ContentFormat';
 
 interface InputProps {
   label?: string;
@@ -8,6 +9,7 @@ interface InputProps {
   placeholder?: string;
   type?: string;
   className?: string;
+  richText?: boolean;
 }
 
 export const Input: React.FC<InputProps> = ({ label, value, onChange, placeholder, type = 'text', className = '' }) => {
@@ -27,14 +29,20 @@ export const Input: React.FC<InputProps> = ({ label, value, onChange, placeholde
   );
 };
 
-export const TextArea: React.FC<InputProps> = ({ label, value, onChange, placeholder, className = '' }) => {
+export const TextArea: React.FC<InputProps> = ({ label, value, onChange, placeholder, className = '', richText = false }) => {
+  const format = useContentFormat();
+  const remember = (element: HTMLTextAreaElement) => {
+    if (richText) format?.select({ element, start: element.selectionStart, end: element.selectionEnd, value: String(value ?? ''), onChange, label: label || 'เนื้อหา' });
+  };
   return (
     <div className={`flex flex-col gap-1.5 ${className}`}>
       {label && <label className="text-[10px] text-zinc-200 font-bold px-2 uppercase tracking-[0.2em]">{label}</label>}
       <div className="tactile-inset overflow-hidden">
         <textarea
           value={value ?? ''}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => { onChange(e.target.value); if (richText) format?.select({ element: e.target, start: e.target.selectionStart, end: e.target.selectionEnd, value: e.target.value, onChange, label: label || 'เนื้อหา' }); }}
+          onFocus={(e) => remember(e.currentTarget)}
+          onSelect={(e) => remember(e.currentTarget)}
           placeholder={placeholder}
           rows={4}
           className="px-4 py-3 text-[11px] outline-none bg-transparent text-white font-medium leading-relaxed resize-none w-full placeholder:text-zinc-600"

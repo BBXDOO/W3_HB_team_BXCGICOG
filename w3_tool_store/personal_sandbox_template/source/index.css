@@ -69,18 +69,6 @@
   --text: #f7faf8;
   --text-dim: #d0dfd9;
 }
-/* A theme image decorates the navigation chrome; the separate wallpaper setting owns the canvas. */
-.theme-image header,
-.theme-image nav {
-  background-image: linear-gradient(rgba(8, 20, 18, .76), rgba(8, 20, 18, .82)), var(--personal-theme-image);
-  background-position: center;
-  background-size: cover;
-}
-.theme-image nav > div:first-child,
-.theme-image nav > div:last-child {
-  background: rgba(8, 20, 18, .62);
-}
-
 @theme {
   --font-sans: "Anuphan", ui-sans-serif, system-ui, sans-serif;
 }
@@ -88,9 +76,6 @@
 body { 
   font-family: var(--font-sans); 
   background-color: var(--bg); 
-  background-image: linear-gradient(var(--image-overlay), var(--image-overlay)), var(--personal-bg-image, none);
-  background-position: center;
-  background-size: cover;
   color: var(--text); 
   margin: 0; 
   overflow: hidden; 
@@ -165,10 +150,22 @@ body::after {
   width: auto;
   border-radius: 16px;
   overflow: hidden;
-  background-image: linear-gradient(var(--image-overlay), var(--image-overlay)), var(--personal-bg-image, none);
+}
+/* Menus and lists follow the chosen color; the photo belongs to the work surface. */
+.editor-shell > header,
+.editor-shell nav { background-color: var(--surface-2); }
+.editor-shell nav > div:first-child,
+.editor-shell nav > div:last-child { background-color: var(--surface); }
+.editor-shell.has-workspace-image main,
+.editor-shell.has-workspace-image .workspace-output {
+  background-image: linear-gradient(rgba(8, 17, 15, .27), rgba(8, 17, 15, .27)), var(--personal-bg-image);
   background-position: center;
   background-size: cover;
 }
+.editor-shell.has-workspace-image .workspace-region,
+.editor-shell.has-workspace-image .workspace-detail { background-color: rgba(14, 24, 21, .62); }
+.editor-shell.has-workspace-image .workspace-output { background-color: rgba(14, 24, 21, .28); }
+.editor-shell.has-workspace-image .workspace-list { background-color: var(--surface-2); }
 .workspace-divider-wide {
   position: fixed;
   left: 6px;

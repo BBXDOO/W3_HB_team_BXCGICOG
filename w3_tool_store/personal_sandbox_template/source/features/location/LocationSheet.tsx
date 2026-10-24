@@ -82,7 +82,7 @@ export const LocationSheet: React.FC<LocationSheetProps> = ({ location, onChange
               options={[{label: 'Any', value: 'Any'}, {label: 'Day Cycle', value: 'Day'}, {label: 'Night Cycle', value: 'Night'}]}
               onChange={(v) => updateField('areaProfile.timeRule', v)}
             />
-            <TextArea label="Overview" className="text-[11px]" value={location.description || ''} onChange={(v) => updateField('description', v)} />
+            <TextArea richText label="Overview" className="text-[11px]" value={location.description || ''} onChange={(v) => updateField('description', v)} />
           </Card>
         </div>
 

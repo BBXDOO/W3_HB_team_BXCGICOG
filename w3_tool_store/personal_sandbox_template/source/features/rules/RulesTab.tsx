@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { StoryPack, RulesetPack, RuleBlock } from '../../types';
 import { Button } from '../../ui/components/Button';
 import { Input, TextArea } from '../../ui/components/Input';
@@ -6,8 +6,9 @@ import { MonitorCore } from '../../ui/components/MonitorCore';
 import { SplitLayout60_40 } from '../../ui/layout/SplitLayout60_40';
 import { generateId } from '../../core/utils';
 import { evaluateRuleset, type RuleReport } from '../../core/ruleRuntime';
+import { RichContent } from '../editor/ContentFormat';
 
-interface Props { story: StoryPack; onChange: (updated: StoryPack) => void; }
+interface Props { story: StoryPack; onChange: (updated: StoryPack) => void; navigationTarget?: string | null; }
 const newBlock = (): RuleBlock => ({ id: generateId('ruleblock'), title: 'ข้อใหม่', content: '', kind: 'reference', children: [] });
 const updateAt = (blocks: RuleBlock[], path: number[], change: (block: RuleBlock) => RuleBlock): RuleBlock[] =>
   blocks.map((block, index) => index !== path[0] ? block : path.length === 1 ? change(block) :
@@ -17,11 +18,12 @@ const removeAt = (blocks: RuleBlock[], path: number[]): RuleBlock[] => path.leng
   : blocks.map((block, index) => index === path[0]
     ? { ...block, children: removeAt(block.children || [], path.slice(1)) } : block);
 
-export const RulesTab: React.FC<Props> = ({ story, onChange }) => {
+export const RulesTab: React.FC<Props> = ({ story, onChange, navigationTarget }) => {
   const [selectedId, setSelectedId] = useState<string | null>(story.rulesets?.[0]?.id || null);
   const [contextText, setContextText] = useState('{}');
   const [report, setReport] = useState<RuleReport | null>(null);
   const [contextError, setContextError] = useState('');
+  useEffect(() => { if (navigationTarget && story.rulesets.some(rule => rule.id === navigationTarget)) setSelectedId(navigationTarget); }, [navigationTarget, story.rulesets]);
   const selected = story.rulesets.find(rule => rule.id === selectedId);
   const update = (rule: RulesetPack) => onChange({ ...story, rulesets: story.rulesets.map(item => item.id === rule.id ? rule : item) });
   const add = () => {
@@ -49,7 +51,7 @@ export const RulesTab: React.FC<Props> = ({ story, onChange }) => {
         <select value={block.kind || 'reference'} onChange={e => editBlock(path, old => ({ ...old, kind: e.target.value as RuleBlock['kind'] }))} className="ml-2 rounded bg-[#0b1512] p-2">
           <option value="reference">คำอธิบาย/อ้างอิง</option><option value="condition">เงื่อนไขที่นิยามไว้ (ยังไม่รัน)</option>
         </select></label>
-      <TextArea label="เนื้อหา (เขียน Markdown ได้)" value={block.content} onChange={value => editBlock(path, old => ({ ...old, content: value }))} />
+      <TextArea richText={block.kind !== 'condition'} label="เนื้อหา (เขียน Markdown ได้)" value={block.content} onChange={value => editBlock(path, old => ({ ...old, content: value }))} />
       {block.kind === 'condition' && <div className="grid grid-cols-2 gap-2 rounded-lg border border-emerald-500/20 p-2">
         <Input label="ชื่อ input เช่น area.type" value={block.inputKey || ''} onChange={value => editBlock(path, old => ({ ...old, inputKey: value }))} />
         <label className="text-xs">เปรียบเทียบ<select className="block w-full bg-[#0b1512] p-2 rounded" value={block.operator || ''} onChange={e => editBlock(path, old => ({ ...old, operator: e.target.value as RuleBlock['operator'] }))}>
@@ -67,7 +69,7 @@ export const RulesTab: React.FC<Props> = ({ story, onChange }) => {
     return <div key={block.id || number} className="border-l border-emerald-600/40 pl-4 mt-3">
       <h3 className="font-bold text-emerald-200">{number}. {block.title}</h3>
       <p className="text-[11px] text-slate-400">{block.kind === 'condition' ? 'เงื่อนไขที่นิยามไว้ · ยังไม่รัน' : 'คำอธิบาย/อ้างอิง'}</p>
-      <p className="whitespace-pre-wrap text-sm mt-2">{block.content}</p>{renderPreview(block.children || [], `${number}.`)}
+      <p className="whitespace-pre-wrap text-sm mt-2"><RichContent value={block.content} /></p>{renderPreview(block.children || [], `${number}.`)}
     </div>;
   });
   return <SplitLayout60_40

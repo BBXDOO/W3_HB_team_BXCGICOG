@@ -6,8 +6,8 @@ import { NavIcon } from '../../ui/components/NavIcon';
 interface LeftNavProps {
   activeTab: TabId;
   onTabChange: (tab: TabId) => void;
-  onToggleAgent: () => void;
-  isAgentOpen: boolean;
+  onToggleFormat: () => void;
+  isFormatOpen: boolean;
   isDirty?: boolean;
   onSave?: () => void;
 }
@@ -15,8 +15,8 @@ interface LeftNavProps {
 export const LeftNav: React.FC<LeftNavProps> = ({ 
   activeTab, 
   onTabChange, 
-  onToggleAgent, 
-  isAgentOpen,
+  onToggleFormat,
+  isFormatOpen,
   isDirty,
   onSave
 }) => {
@@ -65,15 +65,16 @@ export const LeftNav: React.FC<LeftNavProps> = ({
 
         <div className="mt-4 pt-4 border-t border-white/10">
            <button
-            onClick={onToggleAgent}
+            onClick={onToggleFormat}
+            aria-label="จัดรูปแบบเนื้อหา"
             className={`
               w-full flex flex-col md:flex-row items-center gap-1 md:gap-4 px-2 md:px-5 py-4 transition-all rounded-2xl group
-              ${isAgentOpen ? 'bg-[#284236] text-[#9ed3b5] border border-[#65ad8d]/40' : 'text-zinc-300 hover:text-white hover:bg-white/5'}
+              ${isFormatOpen ? 'bg-[#284236] text-[#9ed3b5] border border-[#65ad8d]/40' : 'text-zinc-300 hover:text-white hover:bg-white/5'}
             `}
           >
-            <NavIcon name="ai" className={isAgentOpen ? 'animate-pulse' : 'opacity-70 group-hover:opacity-100'} />
+            <NavIcon name="ai" className={isFormatOpen ? 'animate-pulse' : 'opacity-70 group-hover:opacity-100'} />
             <span className="text-[8px] md:text-[10px] uppercase font-black tracking-[0.2em] md:block hidden">
-              NEXUS AI
+              FONT EDIT
             </span>
           </button>
         </div>

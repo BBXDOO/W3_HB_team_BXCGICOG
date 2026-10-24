@@ -15,7 +15,8 @@ import { DashboardTab } from '../dashboard/DashboardTab';
 import { RulesTab } from '../rules/RulesTab';
 import { CommonPlayTab } from '../common/CommonPlayTab';
 import { PlaytestTab } from '../play/PlaytestTab';
-import { LogicAgent } from '../agent/LogicAgent';
+import { ContentFormatProvider, FormatPanel, RichContent } from './ContentFormat';
+import { AppCommands } from './AppCommands';
 import { SplitLayout60_40 } from '../../ui/layout/SplitLayout60_40';
 import { MonitorCore } from '../../ui/components/MonitorCore';
 import { generateId, deepClone } from '../../core/utils';
@@ -32,7 +33,9 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
   const [activeTab, setActiveTab] = useState<TabId>('home');
   const [isDirty, setIsDirty] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [isAgentOpen, setIsAgentOpen] = useState(false);
+  const [isFormatOpen, setIsFormatOpen] = useState(false);
+  const [isCommandOpen, setIsCommandOpen] = useState(false);
+  const [navigationTarget, setNavigationTarget] = useState<string | null>(null);
   const [showSaveToast, setShowSaveToast] = useState(false);
   const [saveError, setSaveError] = useState(false);
   const [backgroundImage, setBackgroundImage] = useState(() => {
@@ -50,17 +53,16 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
     if (themeClass) document.body.classList.add(themeClass);
     if (story.uiTheme === 'custom' && /^#[0-9a-f]{6}$/i.test(story.themeColor || '')) document.body.style.setProperty('--custom-theme-color', story.themeColor!);
     else document.body.style.removeProperty('--custom-theme-color');
-    const image = story.themeAssetId && story.assets[story.themeAssetId]?.dataUrl;
-    if (image) { document.body.classList.add('theme-image'); document.body.style.setProperty('--personal-theme-image', `url("${image}")`); }
-    else document.body.style.removeProperty('--personal-theme-image');
-    return () => { document.body.classList.remove(...classes); document.body.style.removeProperty('--personal-theme-image'); document.body.style.removeProperty('--custom-theme-color'); };
-  }, [story.uiTheme, story.themeColor, story.themeAssetId, story.assets]);
+    return () => { document.body.classList.remove(...classes); document.body.style.removeProperty('--custom-theme-color'); };
+  }, [story.uiTheme, story.themeColor]);
 
   useEffect(() => {
-    if (backgroundImage) document.body.style.setProperty('--personal-bg-image', `url("${backgroundImage}")`);
+    const image = story.workspaceAssetId && story.assets[story.workspaceAssetId]?.dataUrl
+      || backgroundImage || story.themeAssetId && story.assets[story.themeAssetId]?.dataUrl;
+    if (image) document.body.style.setProperty('--personal-bg-image', `url("${image}")`);
     else document.body.style.removeProperty('--personal-bg-image');
     return () => document.body.style.removeProperty('--personal-bg-image');
-  }, [backgroundImage]);
+  }, [backgroundImage, story.workspaceAssetId, story.themeAssetId, story.assets]);
 
   const updateStory = (newStory: StoryPack) => {
     setStory(newStory);
@@ -97,16 +99,21 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
     const objectUrl = URL.createObjectURL(file);
     const img = new Image();
     img.onload = () => {
-      const scale = Math.min(1, 1280 / Math.max(img.width, img.height));
+      const scale = Math.min(1, 2048 / Math.max(img.width, img.height));
       const canvas = document.createElement('canvas');
       canvas.width = Math.max(1, Math.round(img.width * scale));
       canvas.height = Math.max(1, Math.round(img.height * scale));
       canvas.getContext('2d')?.drawImage(img, 0, 0, canvas.width, canvas.height);
       URL.revokeObjectURL(objectUrl);
       try {
-        const data = canvas.toDataURL('image/jpeg', 0.72);
-        localStorage.setItem('w3.personal.background-image', data);
-        setBackgroundImage(data);
+        const data = canvas.toDataURL('image/jpeg', 0.86);
+        const assetId = generateId('workspace');
+        const next = { ...story, assets: { ...story.assets, [assetId]: { id: assetId, name: file.name, dataUrl: data } }, workspaceAssetId: assetId };
+        if (!onSave(next)) throw new Error('storage full');
+        setStory(next);
+        setIsDirty(false);
+        localStorage.removeItem('w3.personal.background-image');
+        setBackgroundImage('');
       } catch { alert('พื้นที่เก็บข้อมูลภาพไม่พอ กรุณาเลือกรูปที่เล็กลง'); }
     };
     img.onerror = () => { URL.revokeObjectURL(objectUrl); alert('อ่านรูปภาพไม่สำเร็จ'); };
@@ -116,32 +123,16 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
   const clearBackgroundImage = () => {
     try { localStorage.removeItem('w3.personal.background-image'); } catch { /* optional image */ }
     setBackgroundImage('');
+    updateStory({ ...story, workspaceAssetId: undefined, themeAssetId: undefined });
   };
 
-  const chooseThemeImage = (file: File) => {
-    if (!file.type.startsWith('image/') || file.size > 15 * 1024 * 1024) return alert('กรุณาเลือกรูปขนาดไม่เกิน 15 MB');
-    const url = URL.createObjectURL(file);
-    const image = new Image();
-    image.onload = () => {
-      const scale = Math.min(1, 1000 / Math.max(image.width, image.height));
-      const canvas = document.createElement('canvas');
-      canvas.width = Math.max(1, Math.round(image.width * scale));
-      canvas.height = Math.max(1, Math.round(image.height * scale));
-      canvas.getContext('2d')?.drawImage(image, 0, 0, canvas.width, canvas.height);
-      URL.revokeObjectURL(url);
-      const id = generateId('theme');
-      updateStory({ ...story, assets: { ...story.assets, [id]: { id, name: file.name, dataUrl: canvas.toDataURL('image/jpeg', 0.65) } }, themeAssetId: id });
-    };
-    image.onerror = () => { URL.revokeObjectURL(url); alert('อ่านรูปธีมไม่สำเร็จ'); };
-    image.src = url;
-  };
-
-  const handleSave = () => {
-    if (!onSave(story)) { setSaveError(true); return; }
+  const handleSave = (): boolean => {
+    if (!onSave(story)) { setSaveError(true); return false; }
     setIsDirty(false);
     setSaveError(false);
     setShowSaveToast(true);
     setTimeout(() => setShowSaveToast(false), 4000);
+    return true;
   };
 
   const handleExit = () => {
@@ -218,8 +209,8 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
     onAdd: handleContextualAdd,
     onExport: () => exportStory(story),
     onToggleTheme: toggleTheme,
-    onToggleAgent: () => setIsAgentOpen(!isAgentOpen),
-    isAgentOpen
+    onToggleAgent: () => setIsCommandOpen(!isCommandOpen),
+    isAgentOpen: isCommandOpen
   };
 
   const renderTabContent = () => {
@@ -227,12 +218,12 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
 
     switch (activeTab) {
       case 'home': return <DashboardTab {...commonProps} />;
-      case 'story': return <StoryTab {...commonProps} />;
+      case 'story': return <StoryTab {...commonProps} navigationTarget={navigationTarget} />;
       case 'character': return <CharactersTab {...commonProps} />;
-      case 'board': return <BoardTab {...commonProps} />;
-      case 'rule': return <RulesTab {...commonProps} />;
+      case 'board': return <BoardTab {...commonProps} navigationTarget={navigationTarget} />;
+      case 'rule': return <RulesTab {...commonProps} navigationTarget={navigationTarget} />;
       case 'commonPlay': return <CommonPlayTab {...commonProps} />;
-      case 'card': return <CardsTab {...commonProps} />;
+      case 'card': return <CardsTab {...commonProps} navigationTarget={navigationTarget} />;
       case 'event': return <EventsTab {...commonProps} />;
       case 'play': return <PlaytestTab {...commonProps} />;
       
@@ -256,7 +247,7 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
               </div>
             </div>}
             topRight={<div className="overflow-y-auto h-full scroll-container">{selectedLoc ? <LocationSheet location={selectedLoc} onChange={(updated) => updateStory({ ...story, locations: story.locations.map(l => l.locationId === updated.locationId ? updated : l) })} onDelete={() => { updateStory({ ...story, locations: story.locations.filter(l => l.locationId !== selectedLoc.locationId) }); setSelectedId(null); }} /> : <div className="p-20 text-center text-[11px] italic opacity-20 uppercase font-black tracking-widest">Select Sector Registry</div>}</div>}
-            bottomMain={<MonitorCore title="Location Telemetry" isEmpty={!selectedLoc}>{selectedLoc && <div className="p-10 flex flex-col gap-4 animate-in fade-in"><h2 className="text-5xl font-black uppercase border-l-8 border-blue-600 pl-8 leading-none text-[var(--text)]">{selectedLoc.title}</h2><p className="mt-4 text-xl text-[var(--text-dim)] font-medium max-w-2xl leading-relaxed">{selectedLoc.description || 'System awaiting data input...'}</p></div>}</MonitorCore>}
+            bottomMain={<MonitorCore title="Location Telemetry" isEmpty={!selectedLoc}>{selectedLoc && <div className="p-10 flex flex-col gap-4 animate-in fade-in"><h2 className="text-5xl font-black uppercase border-l-8 border-blue-600 pl-8 leading-none text-[var(--text)]">{selectedLoc.title}</h2><p className="mt-4 text-xl text-[var(--text-dim)] font-medium max-w-2xl leading-relaxed"><RichContent value={selectedLoc.description || 'System awaiting data input...'} /></p></div>}</MonitorCore>}
           />
         );
 
@@ -290,7 +281,8 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
   };
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-[var(--bg)]">
+    <ContentFormatProvider story={story} navigate={(tab, id) => { setNavigationTarget(id); setActiveTab(tab); if (tab === 'location' || tab === 'item') setSelectedId(id); }}>
+    <div className={`editor-shell h-screen flex flex-col overflow-hidden bg-[var(--bg)] ${story.workspaceAssetId || backgroundImage || story.themeAssetId ? 'has-workspace-image' : ''}`}>
       <TopBar 
         story={story} 
         isDirty={isDirty} 
@@ -303,20 +295,17 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
         onSelectTheme={(theme) => updateStory({ ...story, uiTheme: theme })}
         customThemeColor={story.themeColor || '#368a77'}
         onSelectCustomColor={(color) => updateStory({ ...story, uiTheme: 'custom', themeColor: color })}
-        onChooseThemeImage={chooseThemeImage}
-        onClearThemeImage={() => updateStory({ ...story, themeAssetId: undefined })}
-        hasThemeImage={Boolean(story.themeAssetId && story.assets[story.themeAssetId])}
         onChooseBackgroundImage={chooseBackgroundImage}
         onClearBackgroundImage={clearBackgroundImage}
-        hasBackgroundImage={Boolean(backgroundImage)}
+        hasBackgroundImage={Boolean(story.workspaceAssetId || backgroundImage || story.themeAssetId)}
       />
       
       <div className="flex flex-1 overflow-hidden relative">
         <LeftNav 
           activeTab={activeTab} 
-          onTabChange={(t) => { setActiveTab(t); setSelectedId(null); }} 
-          onToggleAgent={() => setIsAgentOpen(!isAgentOpen)}
-          isAgentOpen={isAgentOpen}
+          onTabChange={(t) => { setActiveTab(t); setSelectedId(null); setNavigationTarget(null); }} 
+          onToggleFormat={() => setIsFormatOpen(!isFormatOpen)}
+          isFormatOpen={isFormatOpen}
           isDirty={isDirty}
           onSave={handleSave}
         />
@@ -325,14 +314,8 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
         </main>
       </div>
 
-      <LogicAgent 
-        story={story} 
-        activeTab={activeTab} 
-        selectedId={selectedId} 
-        onApplyFix={updateStory} 
-        isOpen={isAgentOpen}
-        onClose={() => setIsAgentOpen(false)}
-      />
+      {isFormatOpen && <FormatPanel story={story} onClose={() => setIsFormatOpen(false)} />}
+      {isCommandOpen && <AppCommands story={story} activeTab={activeTab} onAdd={handleContextualAdd} onSave={handleSave} onExport={() => exportStory(story)} onClose={() => setIsCommandOpen(false)} />}
 
       {saveError && <div role="alert" className="absolute bottom-4 right-4 z-50 max-w-sm rounded-xl bg-red-950 border border-red-400 p-4 text-sm text-white shadow-2xl">
         บันทึกไม่สำเร็จ ข้อมูลที่แก้ยังอยู่ในหน้านี้ โปรดส่งออกสำเนาโครงการหรือตรวจพื้นที่เก็บข้อมูล แล้วกดบันทึกอีกครั้ง
@@ -345,5 +328,6 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
         </div>
       )}
     </div>
+    </ContentFormatProvider>
   );
 };

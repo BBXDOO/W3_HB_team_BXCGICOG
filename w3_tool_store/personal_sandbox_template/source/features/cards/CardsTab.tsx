@@ -1,5 +1,6 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { RichContent } from '../editor/ContentFormat';
 import { StoryPack, CardPack, ModulePack, Asset } from '../../types';
 import { Button } from '../../ui/components/Button';
 import { Input, TextArea, Select } from '../../ui/components/Input';
@@ -12,10 +13,12 @@ interface CardsTabProps {
   story: StoryPack;
   onChange: (updated: StoryPack) => void;
   toolActions?: any;
+  navigationTarget?: string | null;
 }
 
-export const CardsTab: React.FC<CardsTabProps> = ({ story, onChange, toolActions }) => {
+export const CardsTab: React.FC<CardsTabProps> = ({ story, onChange, toolActions, navigationTarget }) => {
   const [selectedId, setSelectedId] = useState<string | null>(story.cards[0]?.id || null);
+  useEffect(() => { if (navigationTarget && story.cards.some(c => c.id === navigationTarget)) { setMode('cards'); setSelectedId(navigationTarget); } }, [navigationTarget]);
   const [search, setSearch] = useState('');
   const [mode, setMode] = useState<'cards' | 'modules'>('cards');
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(story.modules?.[0]?.id || null);
@@ -128,7 +131,7 @@ export const CardsTab: React.FC<CardsTabProps> = ({ story, onChange, toolActions
               <Input label="ชื่อโมดูล" value={selectedModule.name} onChange={name => updateModule({ ...selectedModule, name })} />
               <div className="grid grid-cols-2 gap-2"><Input label="ประเภท" value={selectedModule.type} onChange={type => updateModule({ ...selectedModule, type })} />
                 <Input label="Grade" value={selectedModule.grade} onChange={grade => updateModule({ ...selectedModule, grade })} /></div>
-              <TextArea label="รายละเอียด" value={selectedModule.description} onChange={description => updateModule({ ...selectedModule, description })} />
+              <TextArea richText label="รายละเอียด" value={selectedModule.description} onChange={description => updateModule({ ...selectedModule, description })} />
               {(['A','B','C'] as const).map(key => <TextArea key={key} label={`ส่วน ${key}`} value={selectedModule.parts?.[key] || ''} onChange={value => updateModule({ ...selectedModule, parts: { ...selectedModule.parts, [key]: value } })} />)}
               <Button variant="danger" onClick={() => deleteModule(selectedModule)}>ลบโมดูล</Button>
             </div>
@@ -217,7 +220,7 @@ export const CardsTab: React.FC<CardsTabProps> = ({ story, onChange, toolActions
       }
       bottomMain={
         <MonitorCore title={mode === 'modules' ? 'Module Preview' : 'Card Visualizer'} isEmpty={mode === 'modules' ? !selectedModule : !selectedCard}>
-          {mode === 'modules' && selectedModule && <div className="p-5 text-[var(--text)] overflow-y-auto h-full"><h2 className="text-xl font-bold">{selectedModule.name}</h2><p className="text-xs">{selectedModule.type} · Grade {selectedModule.grade}</p><p className="mt-3 whitespace-pre-wrap">{selectedModule.description}</p>{(['A','B','C'] as const).map(key => <div key={key} className="mt-3 border border-[var(--border)] rounded p-3"><b>{key}</b><p className="whitespace-pre-wrap text-sm">{selectedModule.parts?.[key]}</p></div>)}</div>}
+          {mode === 'modules' && selectedModule && <div className="p-5 text-[var(--text)] overflow-y-auto h-full"><h2 className="text-xl font-bold">{selectedModule.name}</h2><p className="text-xs">{selectedModule.type} · Grade {selectedModule.grade}</p><p className="mt-3 whitespace-pre-wrap"><RichContent value={selectedModule.description} /></p>{(['A','B','C'] as const).map(key => <div key={key} className="mt-3 border border-[var(--border)] rounded p-3"><b>{key}</b><p className="whitespace-pre-wrap text-sm">{selectedModule.parts?.[key]}</p></div>)}</div>}
           {mode === 'cards' && selectedCard && (
             <div className="flex h-full min-h-[210px] w-full gap-2 md:gap-5 overflow-hidden">
               <div className="w-[46%] md:w-[42%] min-w-0 h-full overflow-y-auto overflow-x-hidden flex justify-start items-start pl-1 md:pl-4 py-2 scroll-container">

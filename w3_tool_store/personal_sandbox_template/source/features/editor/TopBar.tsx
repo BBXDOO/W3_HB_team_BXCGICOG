@@ -16,15 +16,12 @@ interface TopBarProps {
   onSelectTheme: (theme: UITheme) => void;
   customThemeColor: string;
   onSelectCustomColor: (color: string) => void;
-  onChooseThemeImage: (file: File) => void;
-  onClearThemeImage: () => void;
-  hasThemeImage: boolean;
   onChooseBackgroundImage: (file: File) => void;
   onClearBackgroundImage: () => void;
   hasBackgroundImage: boolean;
 }
 
-export const TopBar: React.FC<TopBarProps> = ({ story, isDirty, onSave, onExport, onExit, onUndo, currentTheme, onSelectTheme, customThemeColor, onSelectCustomColor, onChooseThemeImage, onClearThemeImage, hasThemeImage, onChooseBackgroundImage, onClearBackgroundImage, hasBackgroundImage }) => {
+export const TopBar: React.FC<TopBarProps> = ({ story, isDirty, onSave, onExport, onExit, onUndo, currentTheme, onSelectTheme, customThemeColor, onSelectCustomColor, onChooseBackgroundImage, onClearBackgroundImage, hasBackgroundImage }) => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [guideOpen, setGuideOpen] = useState(false);
   const [appearanceOpen, setAppearanceOpen] = useState(false);
@@ -82,8 +79,8 @@ export const TopBar: React.FC<TopBarProps> = ({ story, isDirty, onSave, onExport
       </div>
       {appearanceOpen && <div className="fixed inset-0 z-[9999] bg-black/75 flex items-center justify-center p-4" onClick={() => setAppearanceOpen(false)}>
         <section role="dialog" aria-modal="true" aria-label="สีและภาพพื้นหลัง" className="w-full max-w-sm rounded-2xl p-5 border border-emerald-500/30 bg-[#18231c] text-white shadow-2xl" onClick={event => event.stopPropagation()}>
-          <div className="flex justify-between items-center mb-4"><h2 className="font-bold">สีและภาพพื้นหลัง <small className="text-emerald-300">v31</small></h2><button type="button" onClick={() => setAppearanceOpen(false)} aria-label="ปิด">✕</button></div>
-          <p className="text-xs text-slate-300 mb-2">แตะสีเพื่อเลือกธีม</p><div className="grid grid-cols-4 gap-3">
+          <div className="flex justify-between items-center mb-4"><h2 className="font-bold">สีเมนูและภาพพื้นที่ทำงาน</h2><button type="button" onClick={() => setAppearanceOpen(false)} aria-label="ปิด">✕</button></div>
+          <p className="text-xs text-slate-300 mb-2">แตะสีเพื่อเลือกธีมเมนูและรายการ</p><div className="grid grid-cols-4 gap-3">
             {([
               ['darkNavy', 'มืดมาตรฐาน', '#202723'],
               ['deepForest', 'เขียวป่า', '#17342a'],
@@ -96,15 +93,11 @@ export const TopBar: React.FC<TopBarProps> = ({ story, isDirty, onSave, onExport
             ))}
           </div>
           <label className="flex items-center justify-between mt-4 text-sm">สีที่กำหนดเอง <input type="color" value={currentTheme === 'custom' ? customThemeColor : '#368a77'} onChange={e => onSelectCustomColor(e.target.value)} className="w-16 h-11 rounded cursor-pointer" aria-label="เลือกสีธีมที่กำหนดเอง" /></label>
-          <label className="block mt-4 p-3 text-center rounded-xl border border-dashed border-emerald-300/60 cursor-pointer">รูปธีมจากแกลลอรี่ (แถบบนและเมนูซ้าย)
-            <input className="sr-only" type="file" accept="image/*" onChange={e => { const file = e.target.files?.[0]; if (file) onChooseThemeImage(file); e.target.value = ''; }} />
-          </label>
-          {hasThemeImage && <button type="button" className="mt-2 w-full p-2 text-amber-200" onClick={onClearThemeImage}>ลบรูปธีม</button>}
-          <label className="block mt-4 p-3 text-center rounded-xl border border-dashed border-white/40 cursor-pointer">เลือกรูปพื้นหลังจากเครื่อง
+          <label className="block mt-4 p-3 text-center rounded-xl border border-dashed border-white/40 cursor-pointer">เลือกรูปจากเครื่องเป็นพื้นพื้นที่ทำงาน
             <input className="sr-only" type="file" accept="image/*" onChange={e => { const file = e.target.files?.[0]; if (file) onChooseBackgroundImage(file); e.target.value = ''; }} />
           </label>
           {hasBackgroundImage && <button type="button" className="mt-3 w-full p-2 text-amber-200" onClick={onClearBackgroundImage}>ลบรูปพื้นหลัง</button>}
-          <p className="mt-3 text-xs text-slate-300">รูปจะถูกย่อและเก็บไว้ใน Chrome ของเครื่องนี้</p>
+          <p className="mt-3 text-xs text-slate-300">ภาพเก็บในโครงการและอยู่ในไฟล์สำรอง JSON เมนูใช้สีที่เลือกด้านบน</p>
         </section>
       </div>}
     </header>

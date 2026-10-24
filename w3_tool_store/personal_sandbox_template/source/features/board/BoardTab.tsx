@@ -14,6 +14,7 @@ interface BoardTabProps {
   story: StoryPack;
   onChange: (updated: StoryPack) => void;
   toolActions?: any;
+  navigationTarget?: string | null;
 }
 
 const PRESET_COLORS = [
@@ -24,8 +25,9 @@ const PRESET_ICONS = [
   '🏰', '⚔️', '🛡️', '💎', '💀', '🗝️', '📜', '🌋', '⛺', '🌳', '🏠', '✨', '🌊', '🌾', '🔥', '🌀'
 ];
 
-export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions }) => {
+export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions, navigationTarget }) => {
   const [selectedBoardId, setSelectedBoardId] = useState<string | null>(story.boards[0]?.boardId || null);
+  useEffect(() => { if (navigationTarget && story.boards.some(b => b.boardId === navigationTarget)) setSelectedBoardId(navigationTarget); }, [navigationTarget]);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [tempColor, setTempColor] = useState<string>('#3B82F6');
@@ -218,7 +220,7 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
                       </div>
                     </div>
                     <Input label="Display Label" placeholder="ชื่อเรียกพิกัดนี้..." value={selectedCell.name || ''} onChange={v => updateCell(selectedCell.x, selectedCell.y, {name:v})} />
-                    <TextArea label="Atmospheric Log" className="text-[11px] min-h-[140px]" value={selectedCell.desc || ''} onChange={v => updateCell(selectedCell.x, selectedCell.y, {desc:v})} />
+                    <TextArea richText label="Atmospheric Log" className="text-[11px] min-h-[140px]" value={selectedCell.desc || ''} onChange={v => updateCell(selectedCell.x, selectedCell.y, {desc:v})} />
                  </Card>
               </div>
             ) : (

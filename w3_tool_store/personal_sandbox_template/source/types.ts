@@ -31,6 +31,7 @@ export interface StoryPack {
   uiTheme: UITheme;
   themeColor?: string;
   themeAssetId?: string;
+  workspaceAssetId?: string;
   activeMode: ActiveMode;
   projectKind?: ProjectKind; // Older projects remain unclassified until the owner chooses.
   runPresentation?: RunPresentation;
