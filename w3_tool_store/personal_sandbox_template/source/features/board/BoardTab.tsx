@@ -8,6 +8,7 @@ import { SplitLayout60_40 } from '../../ui/layout/SplitLayout60_40';
 import { generateId } from '../../core/utils';
 import { Card } from '../../ui/components/Card';
 import { Modal } from '../../ui/components/Modal';
+import { BoardWorkspace } from './BoardWorkspace';
 
 interface BoardTabProps {
   story: StoryPack;
@@ -111,10 +112,44 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
     setIsColorPickerOpen(false);
   };
 
+  const updateBoardMode = (viewMode: NonNullable<BoardPack['viewMode']>) => {
+    if (!activeBoard) return;
+    onChange({ ...story, boards: story.boards.map(board => board.boardId === activeBoard.boardId ? { ...board, viewMode } : board) });
+  };
+
+  const addRecord = (parentKey?: string) => {
+    if (!activeBoard) return;
+    for (let y = 0; y < activeBoard.height; y++) {
+      for (let x = 0; x < activeBoard.width; x++) {
+        const key = `${x}_${y}`;
+        const cell = activeBoard.cellMap[key];
+        if (cell && (cell.name || cell.desc || cell.markerColor || cell.markerIcon || (cell.type && cell.type !== 'Empty'))) continue;
+        updateCell(x, y, { name: parentKey ? 'หัวข้อย่อยใหม่' : 'รายการใหม่', parentKey, markerColor: '#168a65' });
+        setSelectedKey(key);
+        return;
+      }
+    }
+    alert('พื้นที่เต็มแล้ว กรุณาขยายขนาดตารางก่อนครับ');
+  };
+
+  const deleteRecord = (key: string) => {
+    if (!activeBoard) return;
+    const nextMap = { ...activeBoard.cellMap };
+    delete nextMap[key];
+    for (const [cellKey, cell] of Object.entries(nextMap) as [string, CellPack][]) {
+      if (cell.parentKey === key) nextMap[cellKey] = { ...cell, parentKey: undefined };
+    }
+    onChange({ ...story, boards: story.boards.map(board => board.boardId === activeBoard.boardId ? { ...board, cellMap: nextMap } : board) });
+    setSelectedKey(null);
+  };
+
   return (
     <>
       <SplitLayout60_40
         toolActions={toolActions}
+        previewKey="w3.personal.board-preview-height-v1"
+        defaultPreview={48}
+        mobileMaxPreview={60}
         topLeft={
           <div className="p-4 flex flex-col gap-6 bg-[var(--surface-2)] h-full overflow-y-auto w-full scroll-container pb-20">
             <Button variant="accent" onClick={addBoard} className="h-14 text-[10px] font-black border-2 border-white/10 shadow-xl rounded-[24px] active:scale-95 transition-all">
@@ -195,73 +230,16 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
           </div>
         }
         bottomMain={
-          <MonitorCore title="WORLD GRID NAVIGATOR" modeLabel="RENDER_V0.5" isEmpty={!activeBoard}>
-            {activeBoard && (
-              <div className="flex-1 flex flex-col items-center gap-8 py-10 h-full overflow-hidden">
-                <div className="relative overflow-auto max-w-full w-full w3-card-inset border-2 border-white/5 rounded-[48px] p-8 md:p-20 bg-[#050810] shadow-[inset_0_0_100px_rgba(0,0,0,1)] scroll-container h-full flex items-center justify-center">
-                  <div className="inline-block" key={`grid-brd-${activeBoard.boardId}-${activeBoard.width}-${activeBoard.height}`}>
-                    <div 
-                      className="grid shadow-[0_40px_100px_rgba(0,0,0,0.8)] transition-all bg-white/5" 
-                      style={{ 
-                        gridTemplateColumns: `repeat(${activeBoard.width}, ${zoom}px)`,
-                        gap: '1px' 
-                      }}
-                    >
-                      {Array.from({ length: activeBoard.height * activeBoard.width }).map((_, i) => {
-                          const x = i % activeBoard.width;
-                          const y = Math.floor(i / activeBoard.width);
-                          const key = `${x}_${y}`;
-                          const cell = getCell(x, y);
-                          const isSelected = selectedKey === key;
-                          
-                          const cellBgColor = isSelected ? (cell.markerColor || '#3B82F6') : (cell.markerColor || '#0B1220');
-
-                          return (
-                            <div 
-                              key={key} 
-                              onClick={() => setSelectedKey(key)} 
-                              className={`
-                                flex items-center justify-center transition-all cursor-pointer relative
-                                ${isSelected ? 'z-20 scale-125 shadow-2xl ring-2 ring-white/50' : 'hover:brightness-150 border border-white/5'}
-                              `} 
-                              style={{ 
-                                width: `${zoom}px`, 
-                                height: `${zoom}px`, 
-                                fontSize: `${zoom * 0.6}px`, 
-                                backgroundColor: cellBgColor
-                              }}
-                            >
-                              <span className="drop-shadow-lg select-none relative z-10 transition-transform hover:scale-110">
-                                {cell.markerIcon !== undefined && cell.markerIcon !== '' ? cell.markerIcon : (
-                                  cell.markerIcon === '' ? '' : (
-                                    cell.type === 'Location' ? '🏰' : 
-                                    cell.type === 'Encounter' ? '⚔️' : 
-                                    cell.type === 'SafeZone' ? '🛡️' : ''
-                                  )
-                                )}
-                              </span>
-                              
-                              {isSelected && (
-                                <div className="absolute inset-0 bg-white/10 animate-pulse z-0" />
-                              )}
-                            </div>
-                          );
-                      })}
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-6 w-full max-w-md bg-black/80 px-10 py-5 rounded-full border border-white/10 shadow-2xl backdrop-blur-2xl">
-                   <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest shrink-0">Scale:</span>
-                   <input 
-                     type="range" min="24" max="140" value={zoom} 
-                     onChange={(e) => setZoom(parseInt(e.target.value))} 
-                     className="flex-1 h-1.5 bg-gray-800 rounded-full appearance-none accent-blue-600 cursor-pointer" 
-                   />
-                   <span className="text-[11px] font-mono font-black text-blue-500 w-12 text-right">{zoom}px</span>
-                </div>
-              </div>
-            )}
+          <MonitorCore title="BOARD WORKSPACE" modeLabel="LIVE VIEW" isEmpty={!activeBoard}>
+            {activeBoard && <BoardWorkspace
+              board={activeBoard} selectedKey={selectedKey} zoom={zoom} onZoom={setZoom}
+              onSelect={setSelectedKey} onMode={updateBoardMode} onAdd={addRecord}
+              onUpdate={(key, patch) => {
+                const [x, y] = key.split('_').map(Number);
+                updateCell(x, y, patch);
+              }}
+              onDelete={deleteRecord}
+            />}
           </MonitorCore>
         }
       />

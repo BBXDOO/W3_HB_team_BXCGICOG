@@ -137,6 +137,7 @@ export interface BoardPack {
   title: string;
   width: number;
   height: number;
+  viewMode?: 'overview' | 'grid' | 'database' | 'mindmap';
   bgAssetId?: string;
   cellMap: Record<string, CellPack>; 
   explored: Record<string, boolean>;
@@ -153,6 +154,7 @@ export interface CellPack {
   markerIcon?: string;
   locationRefId?: string;
   eventRefs?: string[];
+  parentKey?: string;
   type?: 'Empty' | 'Location' | 'Encounter' | 'SafeZone';
 }
 

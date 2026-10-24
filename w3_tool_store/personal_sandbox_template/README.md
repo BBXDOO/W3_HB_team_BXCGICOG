@@ -2,14 +2,14 @@
 
 **Owner:** BBX19  
 **Location:** `w3_tool_store/personal_sandbox_template/`  
-**Snapshot:** Android test build v36, 24 Oct 2026  
+**Snapshot:** Android test build v37, 24 Oct 2026  
 **Scope:** W3 internal reuse by a human, a module, or an AI agent. Personal use only at this stage.
 
 ## What to copy
 
 Copy the entire `source/` directory to a new project workspace. Each copied sandbox becomes an independent project. Do not write a user's new project data into this template.
 
-`source/` contains the editable React/TypeScript app, Android wrapper, bundled offline web assets, and the Android build workflow. The bundled assets match the v36 APK tested from `BBXDOO/W3-personal-sandbox-app` branch `refactor/v0.2`, commit `5989a9b3f1151b00e0ee6e518b4472a4d26468a0`.
+`source/` contains the editable React/TypeScript app, Android wrapper, bundled offline web assets, and the Android build workflow. The bundled assets match the v37 APK tested from `BBXDOO/W3-personal-sandbox-app` branch `refactor/v0.2`, commit `d402e05f8bf7baf2a4e9d86fef9b3cf8ac0aa608`.
 
 The original W3 systems are not dependencies of the sandbox runtime. The app saves project data on the user's device and supports JSON export/import. No personal project JSON, private key, Android signing key, or `node_modules` is included here.
 
@@ -29,4 +29,4 @@ To run the browser development view: `npm run dev`. For guidance in Thai, see `s
 - The current Android artifact is a **test APK**, not a release signed for reliable upgrades or general distribution.
 - The W3 repository and the separate Android build repository are public. “Personal use” is the intended use, not a GitHub access restriction. Keep private data and signing keys outside both repositories.
 
-**Source of this snapshot:** `BBXDOO/W3-personal-sandbox-app@5989a9b3f1151b00e0ee6e518b4472a4d26468a0` for Android bundled assets and wrapper; editable source from the corresponding local W3 Personal Sandbox workspace.
+**Source of this snapshot:** `BBXDOO/W3-personal-sandbox-app@d402e05f8bf7baf2a4e9d86fef9b3cf8ac0aa608` for Android bundled assets and wrapper; editable source from the corresponding local W3 Personal Sandbox workspace.

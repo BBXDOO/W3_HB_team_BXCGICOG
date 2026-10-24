@@ -4,6 +4,9 @@ interface SplitLayout60_40Props {
   topLeft: React.ReactNode;
   topRight: React.ReactNode;
   bottomMain: React.ReactNode;
+  previewKey?: string;
+  defaultPreview?: number;
+  mobileMaxPreview?: number;
   showTools?: boolean;
   toolActions?: {
     onSearch?: () => void;
@@ -20,29 +23,32 @@ const LAYOUT_KEY = 'w3.personal.preview-height-v6';
 const MIN_PREVIEW = 10;
 const MAX_PREVIEW = 65;
 const DEFAULT_PREVIEW = 28;
-const maxPreview = () => window.matchMedia('(max-width: 767px)').matches ? 35 : MAX_PREVIEW;
+const maxPreview = (mobileMax: number) => window.matchMedia('(max-width: 767px)').matches ? mobileMax : MAX_PREVIEW;
 
-function initialPreviewHeight(): number {
+function initialPreviewHeight(key: string, defaultHeight: number, mobileMax: number): number {
   try {
-    const saved = Number(localStorage.getItem(LAYOUT_KEY));
-    if (saved >= MIN_PREVIEW && saved <= maxPreview()) return saved;
+    const saved = Number(localStorage.getItem(key));
+    if (saved >= MIN_PREVIEW && saved <= maxPreview(mobileMax)) return saved;
   } catch {
     // The layout remains usable when storage is unavailable.
   }
-  return DEFAULT_PREVIEW;
+  return defaultHeight;
 }
 
 export const SplitLayout60_40: React.FC<SplitLayout60_40Props> = ({
   topLeft,
   topRight,
   bottomMain,
+  previewKey = LAYOUT_KEY,
+  defaultPreview = DEFAULT_PREVIEW,
+  mobileMaxPreview = 35,
   showTools = true,
   toolActions,
   children
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
-  const [previewHeight, setPreviewHeight] = useState(initialPreviewHeight);
+  const [previewHeight, setPreviewHeight] = useState(() => initialPreviewHeight(previewKey, defaultPreview, mobileMaxPreview));
   const [listOpen, setListOpen] = useState(false);
   const [workspaceHeight, setWorkspaceHeight] = useState(0);
 
@@ -59,9 +65,9 @@ export const SplitLayout60_40: React.FC<SplitLayout60_40Props> = ({
   const outputHeight = Math.max(0, (workspaceHeight - 22) * previewHeight / 100);
 
   const setHeight = (height: number) => {
-    const next = Math.max(MIN_PREVIEW, Math.min(maxPreview(), Math.round(height)));
+    const next = Math.max(MIN_PREVIEW, Math.min(maxPreview(mobileMaxPreview), Math.round(height)));
     setPreviewHeight(next);
-    try { localStorage.setItem(LAYOUT_KEY, String(next)); } catch { /* optional preference */ }
+    try { localStorage.setItem(previewKey, String(next)); } catch { /* optional preference */ }
   };
 
   const moveHandle = (clientY: number) => {
@@ -104,7 +110,7 @@ export const SplitLayout60_40: React.FC<SplitLayout60_40Props> = ({
           aria-label="ปรับขนาดพื้นที่ผลลัพธ์"
           aria-orientation="horizontal"
           aria-valuemin={MIN_PREVIEW}
-          aria-valuemax={maxPreview()}
+          aria-valuemax={maxPreview(mobileMaxPreview)}
           aria-valuenow={previewHeight}
           title="ลากเพื่อปรับขนาดผลลัพธ์ • แตะสองครั้งเพื่อคืนค่าเดิม"
           onPointerDown={(event) => {
@@ -117,7 +123,7 @@ export const SplitLayout60_40: React.FC<SplitLayout60_40Props> = ({
             dragging.current = false;
           }}
           onPointerCancel={() => { dragging.current = false; }}
-          onDoubleClick={() => setHeight(DEFAULT_PREVIEW)}
+          onDoubleClick={() => setHeight(defaultPreview)}
           onKeyDown={(event) => {
             if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
               event.preventDefault();
