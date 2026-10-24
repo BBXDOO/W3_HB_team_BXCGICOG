@@ -41,6 +41,7 @@ PAPER_COMMAND_OPTIONAL = frozenset({
     "RETURN_CONTRACT",
     "REVIEW",
     "DENY",
+    "READ",
     "META",
 })
 PAPER_COMMAND_ALLOWED = PAPER_COMMAND_REQUIRED | PAPER_COMMAND_OPTIONAL
@@ -203,6 +204,11 @@ class MPCPRot:
 
     @staticmethod
     def validate_paper_pack(pack: dict, *, allow_extra: bool = False):
+        MPCPRot.normalize_paper_pack(pack, allow_extra=allow_extra)
+        return True
+
+    @staticmethod
+    def normalize_paper_pack(pack: dict, *, allow_extra: bool = False) -> list[dict]:
         """
         Paper Pack = ชุดคำสั่ง Paper หลายใบภายใต้ governance เดียว
 
@@ -242,6 +248,7 @@ class MPCPRot:
             if key in pack
         }
 
+        normalized = []
         for idx, paper in enumerate(papers):
             if not isinstance(paper, dict):
                 raise ValueError(f"ROT_FAIL: PAPER_PACK_PAPER[{idx}]_MUST_BE_DICT")
@@ -250,8 +257,9 @@ class MPCPRot:
                 MPCPRot.validate_paper_command(merged, allow_extra=allow_extra)
             except ValueError as exc:
                 raise ValueError(f"ROT_FAIL: PAPER_PACK_PAPER[{idx}]:{exc}") from exc
+            normalized.append(merged)
 
-        return True
+        return normalized
 
     # =========================
     # CORE LAW

@@ -1,5 +1,7 @@
 # MPCP + W3Lgu Agent Sandbox
 
+สำหรับระบบ Paper หลายใบใต้เหตุการณ์เดียวและการสร้างไฟล์ผ่าน File.void ให้ดู [คู่มือ Paper Runtime](../../protocol/mpcp/runtime/README.md) และเรียก `tools/mpcp_papers.py` เครื่องมือด้านล่างนี้ยังเป็น local setup sandbox เดิม
+
 เครื่องมือให้เอเจนท์ทดลองกับ runtime จริงใน W3 ด้วย Python 3.10+ โดยไม่ต้องติดตั้ง REA หรือโมเดล AI เพิ่ม
 
 ## เริ่มใช้งาน

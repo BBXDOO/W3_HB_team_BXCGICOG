@@ -1,0 +1,31 @@
+{
+  "PAPER_PACK_ID": "MPCP-TEXT-001",
+  "CHAIN_ID": "MPCP-PAPER-EQUIPMENT",
+  "EVENT_ID": "EV-TEXT-001",
+  "RESPONSIBLE_MODULE": "MPCP",
+  "RETURN_TO": "MPCP",
+  "SCOPE": "local-template-files",
+  "BOUNDARY": "host-output-root",
+  "PAPERS": [
+    {
+      "PAPER_ID": "TEXT-REPORT",
+      "TASK": "create local report",
+      "INTENT": "render the report template as a markdown artifact",
+      "CONTENT": {
+        "template": "# $title\n\nEvent: $event\n",
+        "values": {"title": "MPCP Paper equipment", "event": "EV-TEXT-001"},
+        "target": "report.md"
+      }
+    },
+    {
+      "PAPER_ID": "TEXT-CONTINUITY",
+      "TASK": "create continuity note",
+      "INTENT": "preserve a separate note for the same event",
+      "CONTENT": {
+        "template": "Event $event returns to $owner.\n",
+        "values": {"event": "EV-TEXT-001", "owner": "MPCP"},
+        "target": "continuity.txt"
+      }
+    }
+  ]
+}
