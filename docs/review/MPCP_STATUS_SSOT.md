@@ -25,6 +25,19 @@
 
 ## 1) เสร็จแล้ว (Implemented + Applied)
 
+### [FACT] Condien storage และ host equipment registration ใช้ผ่าน CLI ได้
+- `status: applied`
+- `evidence:`
+  - `src/core/condien_store.py` (append-only revision API, hash, predecessor link, stale-writer conflict)
+  - `src/core/condien.py` (`to_state` / `from_state` รักษา native access/continuity semantics)
+  - `protocol/mpcp/lib/registry.py` (`register_equipment` / `activate_equipment` / `equipment_report`)
+  - `tools/mpcp_condien.py`
+  - `tools/mpcp_papers.py` (โหลด snapshot ที่ระบุแล้วผูก CONTEXT_REF เข้า Paper)
+  - `tests/test_mpcp_condien_equipment.py`
+- `runtime_usage: local CLI save/load และ Paper scoped read ข้าม process ใช้จริง; ไม่ auto-classify layer หรือเลือก lib จากเจตนา`
+- `last_verified: 2026-10-24`
+- `owner: BBX19 / ผู้ดูแล ChatGPT`
+
 ### [FACT] Paper Pack มี local execution path และอุปกรณ์ File.void text
 - `status: applied`
 - `evidence:`
@@ -91,14 +104,15 @@
 - `last_verified: 2026-08-18`
 - `owner: BBX19`
 
-### [FACT] Condien มี implementation และ MPCP ENV ใช้ scoped-read ได้แล้ว
+### [FACT] Condien scoped-read ใช้ร่วมกับ persisted snapshot ได้แล้ว
 - `status: implemented`
 - `evidence:`
   - `src/core/condien.py`
+  - `src/core/condien_store.py`
   - `protocol/mpcp/env/boundary.py` (`scope_condien`)
   - `protocol/mpcp/test_condien_blueprint.py`
-- `runtime_usage: ใช้ได้เมื่อ caller ส่ง Condien object เข้า ENV boundary; ยังไม่ auto-load จาก Paper file`
-- `last_verified: 2026-08-18`
+- `runtime_usage: caller ส่ง object เข้า ENV ได้ตามเดิม; local Paper CLI โหลด snapshot ที่ host เลือกจาก store ได้แล้ว ยังไม่เลือกข้อมูลหรือเปิดสิทธิ์จาก Paper โดยอัตโนมัติ`
+- `last_verified: 2026-10-24`
 - `owner: BBX19`
 
 ### [FACT] Paper แบบคำสั่งใน event-bound Pack เรียกใช้ได้; generic Paper document loader ยังไม่ยืนยัน

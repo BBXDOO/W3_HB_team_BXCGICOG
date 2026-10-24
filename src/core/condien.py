@@ -23,6 +23,7 @@ not the runtime action itself.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from copy import deepcopy
 from typing import Dict, FrozenSet, List, Optional, Set
 
 
@@ -359,6 +360,73 @@ class Condien:
     # ------------------------------------------------------------------
     # Representation / inspection
     # ------------------------------------------------------------------
+
+    def to_state(self) -> dict:
+        """Full trusted-storage representation, including access-restricted data.
+
+        This is not a scoped runtime view. ENV callers must continue to use
+        explicit layer/key reads. A storage adapter owns persistence and links.
+        """
+        return deepcopy({
+            "schema": "w3.condien.state.1", "identity": self.to_dict(),
+            "layers": [layer.to_dict() for layer in self._layers.values()],
+            "carry": self._carry, "history": self.history,
+            "previous_name": self.previous.name if self.previous else getattr(self, "_previous_name_ref", None),
+        })
+
+    @classmethod
+    def from_state(cls, state: dict) -> "Condien":
+        """Restore the native meaning/access/continuity model without running it."""
+        if not isinstance(state, dict) or state.get("schema") != "w3.condien.state.1":
+            raise ValueError("CONDIEN:STATE_SCHEMA_INVALID")
+        if set(state) != {"schema", "identity", "layers", "carry", "history", "previous_name"}:
+            raise ValueError("CONDIEN:STATE_FIELDS_INVALID")
+        identity = state["identity"]
+        layers = state["layers"]
+        if not isinstance(identity, dict) or not isinstance(layers, list):
+            raise ValueError("CONDIEN:STATE_SHAPE_INVALID")
+        if (not isinstance(state["carry"], dict) or not isinstance(state["history"], list)
+                or not all(isinstance(name, str) for name in state["history"])):
+            raise ValueError("CONDIEN:CONTINUITY_STATE_INVALID")
+        names = [layer["name"] for layer in layers]
+        if not all(isinstance(n, str) and n.strip() for n in names):
+            raise ValueError("CONDIEN:LAYER_NAME_INVALID")
+        if names != identity["LAYERS"] or len(names) != len(set(names)):
+            raise ValueError("CONDIEN:LAYER_IDENTITY_MISMATCH")
+        read = identity["READ"]
+        deny = identity["DENY"]
+        if ((read != "all" and (not isinstance(read, list) or not all(isinstance(x, str) for x in read)))
+                or not isinstance(deny, list) or not all(isinstance(x, str) for x in deny)):
+            raise ValueError("CONDIEN:ACCESS_STATE_INVALID")
+        obj = cls(identity["CONDIEN"], role=identity["ROLE"], layers=names,
+                  read_layers=None if read == "all" else read, deny_layers=deny,
+                  meaning_mode=identity["MEANING_MODE"], context_mode=identity["CONTEXT_MODE"],
+                  continuity=identity["CONTINUITY"], rebase=identity["REBASE"],
+                  boundary=identity["BOUNDARY"], env=identity["ENV"],
+                  modew=identity["MODEW"], paper=identity["PAPER"])
+        for layer in layers:
+            keys = layer["read"]
+            denied_keys = layer["deny"]
+            if (type(layer["readable"]) is not bool or not isinstance(layer["data"], dict)
+                    or (keys != "all" and (not isinstance(keys, list) or not all(isinstance(k, str) for k in keys)))
+                    or not isinstance(denied_keys, list) or not all(isinstance(k, str) for k in denied_keys)):
+                raise ValueError("CONDIEN:LAYER_STATE_INVALID")
+            obj._layers[layer["name"]] = CondienLayer(
+                layer["name"], readable=layer["readable"], data=deepcopy(layer["data"]),
+                read=None if keys == "all" else set(keys), deny=set(denied_keys))
+        active = identity["ACTIVE_LAYER"]
+        if active is not None and active not in names:
+            raise ValueError("CONDIEN:ACTIVE_LAYER_INVALID")
+        obj._active_layer = active
+        obj._carry = deepcopy(state["carry"])
+        obj.history = list(state["history"])
+        previous_name = state["previous_name"]
+        if previous_name is not None and (not isinstance(previous_name, str) or not previous_name.strip()):
+            raise ValueError("CONDIEN:PREVIOUS_NAME_INVALID")
+        obj._previous_name_ref = previous_name
+        if obj.to_state() != state:
+            raise ValueError("CONDIEN:NON_CANONICAL_STATE")
+        return obj
 
     def to_dict(self) -> dict:
         """Return a structured dict representation of this Condien."""

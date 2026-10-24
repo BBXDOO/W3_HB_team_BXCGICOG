@@ -1,0 +1,66 @@
+{
+  "schema": "w3.condien.state.1",
+  "identity": {
+    "CONDIEN": "EQUIPMENT-CONTEXT",
+    "ROLE": "meaning_state_layer",
+    "MEANING_MODE": "bounded-adaptive",
+    "CONTEXT_MODE": "dynamic",
+    "LAYERS": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "READ": "all",
+    "DENY": [],
+    "ACTIVE_LAYER": "A",
+    "CONTINUITY": "carry-forward",
+    "REBASE": "bounded",
+    "BOUNDARY": "rot-governed",
+    "ENV": "preserve",
+    "MODEW": null,
+    "PAPER": null
+  },
+  "layers": [
+    {
+      "name": "A",
+      "readable": true,
+      "data": {},
+      "read": "all",
+      "deny": []
+    },
+    {
+      "name": "B",
+      "readable": true,
+      "data": {
+        "title": "บริบทที่กลับมาใช้ต่อได้",
+        "excluded": "synthetic excluded example"
+      },
+      "read": "all",
+      "deny": [
+        "excluded"
+      ]
+    },
+    {
+      "name": "C",
+      "readable": true,
+      "data": {},
+      "read": "all",
+      "deny": []
+    },
+    {
+      "name": "D",
+      "readable": true,
+      "data": {
+        "archive": "synthetic archive not requested"
+      },
+      "read": "all",
+      "deny": []
+    }
+  ],
+  "carry": {
+    "next_task": "continue with scoped context"
+  },
+  "history": [],
+  "previous_name": null
+}

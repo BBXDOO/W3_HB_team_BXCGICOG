@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import shutil
-from typing import Iterable, Mapping
+from typing import Callable, Iterable, Mapping
 
 from ..config import MPCPConfig, load_config
 
@@ -30,6 +30,44 @@ class LibraryRegistry:
 
     def __init__(self, config: MPCPConfig | None = None) -> None:
         self.config = config or load_config()
+        self._equipment: dict[str, dict] = {}
+
+    def register_equipment(self, name: str, builder: Callable, *, group: str, capabilities: Iterable[str]) -> None:
+        """Host installs real equipment explicitly; declarations alone are not equipment."""
+        if not isinstance(name, str) or not name.strip() or name != name.strip() or name in self._equipment:
+            raise ValueError("MPCP_LIB:UNIQUE_EQUIPMENT_NAME_REQUIRED")
+        if group not in {"core", "bridge", "optional"} or not callable(builder):
+            raise ValueError("MPCP_LIB:INVALID_EQUIPMENT")
+        if isinstance(capabilities, str):
+            raise ValueError("MPCP_LIB:CAPABILITY_LIST_REQUIRED")
+        capabilities = tuple(capabilities)
+        if not capabilities or not all(isinstance(c, str) and c.strip() for c in capabilities):
+            raise ValueError("MPCP_LIB:CAPABILITIES_REQUIRED")
+        self._equipment[name] = {"builder": builder, "group": group, "capabilities": capabilities}
+
+    def equipment_report(self, names: Iterable[str]) -> dict:
+        """Describe only installed local equipment, without running builders."""
+        result = {}
+        for name in names:
+            equipment = self._equipment.get(name)
+            result[name] = {"available": equipment is not None,
+                            "availability_evidence": "host_registered_builder" if equipment else "not_registered",
+                            "group": equipment["group"] if equipment else None,
+                            "capabilities": list(equipment["capabilities"]) if equipment else []}
+        return result
+
+    def activate_equipment(self, names: Iterable[str]) -> dict:
+        """Bind already installed builders to MPCP. This does not execute or approve."""
+        from ..runtime.executor import PILLAR_REGISTRY, register
+        names = tuple(names)
+        for name in names:
+            if name not in self._equipment:
+                raise ValueError(f"MPCP_LIB:EQUIPMENT_UNAVAILABLE:{name}")
+            if name in PILLAR_REGISTRY and PILLAR_REGISTRY[name] is not self._equipment[name]["builder"]:
+                raise ValueError(f"MPCP_LIB:ROUTE_ALREADY_OWNED:{name}")
+        for name in names:
+            register(name, self._equipment[name]["builder"])
+        return self.equipment_report(names)
 
     def library_group(self, name: str) -> tuple[str, ...]:
         try:

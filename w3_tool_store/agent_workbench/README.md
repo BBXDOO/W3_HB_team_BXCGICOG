@@ -71,6 +71,8 @@ Workbench เป็นชื่อของพื้นที่และชุ�
 | docs.sandbox-entry | [MPCP sandbox CLI](../../tools/mpcp_sandbox.py) | จุดเรียกใช้งานปัจจุบัน ยังไม่ได้ย้ายเข้า Workbench |
 | docs.evidence | [หลักฐาน local setup](../../tools/agent_sandbox/evidence/README.md) | ผลทดลองที่ตรวจสอบย้อนหลังได้ |
 | docs.papers | [Paper Runtime](../../protocol/mpcp/runtime/README.md) | ระบบ Paper หลายใบและอุปกรณ์ File.void text ในพาธเดิม |
+| docs.library | [Library equipment](../../protocol/mpcp/lib/README.md) | แยกรายการความสามารถออกจากอุปกรณ์ที่ host ลงทะเบียนจริง |
+| docs.condien | [Condien storage](../../src/core/README.md) | เก็บ เรียกคืน และเชื่อมบริบทข้าม process ตามสิทธิ์เดิม |
 
 ---
 
