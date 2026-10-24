@@ -8,7 +8,7 @@ android {
         applicationId 'com.w3personalsandbox.app'
         minSdk 24
         targetSdk 35
-        versionCode 35
+        versionCode 38
         versionName '0.38'
     }
 
