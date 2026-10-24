@@ -1,0 +1,28 @@
+{
+  "blueprint": {
+    "BLUEPRINT": "AGENT_LOCAL",
+    "TARGET": "local",
+    "MODE": "plan",
+    "LIB": [
+      "file",
+      "storage"
+    ],
+    "PARTITION": [
+      "A",
+      "B",
+      "C"
+    ],
+    "BOUNDARY": "sandbox-local-only",
+    "TRACE": "required",
+    "ENV": "preserve"
+  },
+  "partitions": [
+    "A",
+    "B",
+    "C"
+  ],
+  "libraries_resolved": [
+    "file",
+    "storage"
+  ]
+}

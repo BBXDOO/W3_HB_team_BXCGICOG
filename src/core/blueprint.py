@@ -106,7 +106,7 @@ class Blueprint:
         *,
         name: Optional[str] = None,
         target: Optional[str] = None,
-        mode: str = "observe",
+        mode: Optional[str] = None,
         inputs: Optional[Mapping[str, object]] = None,
         outputs: Optional[Mapping[str, object]] = None,
         constraints: Optional[Mapping[str, object]] = None,
@@ -125,6 +125,8 @@ class Blueprint:
             raw_fields["TARGET"] = target
         if mode is not None:
             raw_fields["MODE"] = mode
+        elif "MODE" not in raw_fields:
+            raw_fields["MODE"] = "observe"
         if inputs is not None:
             raw_fields["INPUTS"] = _normalize_mapping(inputs)
         if outputs is not None:

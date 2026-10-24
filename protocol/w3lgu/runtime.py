@@ -1,7 +1,7 @@
 """Enterprise-grade W3Lgu runtime (low-overhead)."""
 
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Mapping, Any
 from uuid import uuid4
 from datetime import datetime
@@ -20,8 +20,8 @@ class W3LguRuntimeResult:
     normalized_packet: W3LguPacket
     signal_packet: W3LguPacket
     memory_packet: W3LguPacket | None = None
-    trace_id: str = uuid4().hex
-    timestamp: str = datetime.utcnow().isoformat()
+    trace_id: str = field(default_factory=lambda: uuid4().hex)
+    timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
     version: str = "W3Lgu-runtime-v1"
 
     def to_text(self) -> str:

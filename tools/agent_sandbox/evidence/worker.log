@@ -1,0 +1,7 @@
+[MPCP][INPUT:ACCEPTED] {'TASK': 'sandbox_materialize', 'MODEW': 'sandbox_materialize', 'EVENT_ID': 'EVT-735610B82898B5A53317', 'CHAIN_ID': 'W3-SBX-627c21d3bac248cc93732fe4ed115a90'}
+[MPCP][ROT:INPUT_VALID] {'TASK': 'sandbox_materialize'}
+[MPCP][MODEW:RESOLVED] {'keys': ['modew', 'task']}
+[MPCP][CONTEXT:INJECTED] {'TASK': 'sandbox_materialize', 'MODEW': 'sandbox_materialize', 'EVENT_ID': 'EVT-735610B82898B5A53317', 'CHAIN_ID': 'W3-SBX-627c21d3bac248cc93732fe4ed115a90'}
+[MPCP][MODEW:EXECUTED] {'state': 'SUCCESS'}
+[MPCP][ROT:OUTPUT_VALID] {'state': 'SUCCESS'}
+[MPCP][RESULT:RETURN] 'SUCCESS'
