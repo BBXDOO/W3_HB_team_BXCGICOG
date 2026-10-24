@@ -65,36 +65,36 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ onOpenStory, onNewStor
   };
 
   return (
-    <div className="min-h-screen p-6 md:p-16 max-w-7xl mx-auto overflow-y-auto bg-[#121214] scroll-container pb-60 relative">
+    <div className="library-page h-screen w-full p-4 md:p-12 max-w-7xl mx-auto overflow-y-auto bg-[#121214] scroll-container pb-20 relative">
       
-      <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10 mb-20 pb-12 relative z-10 border-b border-white/5">
+      <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-5 mb-6 pb-6 relative z-10 border-b border-white/5">
         <div className="animate-in fade-in slide-in-from-left duration-700">
-          <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-4 uppercase italic leading-none glow-text">PERSONAL SANDBOX</h1>
+          <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter mb-3 uppercase italic leading-none glow-text">PERSONAL SANDBOX</h1>
           <div className="flex items-center gap-4">
              <div className="w-12 h-1 bg-[#ea580c] shadow-[0_0_15px_#ea580c]"></div>
              <p className="text-[#ea580c] font-black uppercase tracking-[0.3em] text-[10px]">คลังโครงการส่วนตัว</p>
           </div>
         </div>
-        <div className="flex flex-wrap gap-4 w-full md:w-auto animate-in fade-in slide-in-from-right duration-700">
+        <div className="flex flex-wrap gap-2 w-full md:w-auto animate-in fade-in slide-in-from-right duration-700">
           <input type="file" ref={fileInputRef} className="hidden" accept=".json" onChange={handleImport} />
           
           <button 
             onClick={() => setShowExportModal(true)}
-            className="h-14 px-6 tactile-raised flex items-center gap-2 text-amber-400 hover:text-amber-300 font-black text-[10px] uppercase tracking-wider transition-all border border-amber-500/30 hover:border-amber-500/60 shadow-[0_0_15px_rgba(245,158,11,0.15)] hover:scale-105 active:scale-95"
+            className="h-11 px-4 tactile-raised flex items-center gap-2 text-amber-400 hover:text-amber-300 font-black text-[10px] uppercase tracking-wider transition-all border border-amber-500/30 hover:border-amber-500/60 shadow-[0_0_15px_rgba(245,158,11,0.15)] active:scale-95"
           >
             📦 วิธีสำรองและติดตั้ง
           </button>
 
-          <Button variant="ghost" onClick={() => fileInputRef.current?.click()} className="h-14 px-8 tactile-raised text-zinc-300 font-black text-[10px] hover:text-white transition-all border border-white/5">
+          <Button variant="ghost" onClick={() => fileInputRef.current?.click()} className="h-11 px-4 tactile-raised text-zinc-300 font-black text-[10px] hover:text-white transition-all border border-white/5">
             📤 นำเข้า JSON
           </Button>
-          <Button variant="accent" onClick={() => setShowCreate(true)} className="h-14 md:h-16 px-12 text-[11px] font-black rounded-3xl shadow-2xl hover:scale-105 active:scale-95 transition-all">
+          <Button variant="accent" onClick={() => setShowCreate(true)} className="h-11 px-5 text-[11px] font-black rounded-xl shadow-2xl active:scale-95 transition-all">
             + INITIALIZE NEW CORE
           </Button>
         </div>
       </header>
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 relative z-10">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 relative z-10" aria-label="โครงการทั้งหมด">
         {index.map((item, idx) => (
           <div 
             key={item.storyId} 
@@ -102,36 +102,31 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ onOpenStory, onNewStor
             className="group cursor-pointer relative animate-in fade-in zoom-in duration-500"
             style={{ animationDelay: `${idx * 100}ms` }}
           >
-            <Card className="p-8 relative h-[340px] flex flex-col justify-between transition-all duration-300 group-hover:-translate-y-2 overflow-hidden border border-white/10 shadow-2xl">
-              <div className="flex justify-between items-start z-10">
-                <div className="flex flex-col gap-1.5">
-                   <span className="text-[9px] font-black text-emerald-400 uppercase tracking-[0.1em] bg-emerald-400/10 px-4 py-1.5 rounded-full border border-emerald-400/20 w-fit shadow-inner">{kindLabel(item.projectKind)}</span>
-                </div>
+            <Card className="library-project-card p-4 relative min-h-[170px] flex flex-col justify-between overflow-hidden border border-white/10 shadow-xl">
+              <div className="flex justify-between items-start gap-2 z-10">
+                <span className="text-[9px] font-black text-emerald-300 uppercase tracking-[0.1em] bg-emerald-400/10 px-3 py-1 rounded-full border border-emerald-400/20 w-fit">{kindLabel(item.projectKind)}</span>
                 <button 
-                  className="opacity-0 group-hover:opacity-100 text-red-500 transition-all p-2 bg-black/40 rounded-xl hover:bg-red-500 hover:text-white" 
+                  type="button" aria-label={`ลบโครงการ ${item.title}`} className="text-red-300/70 transition-all px-2 py-1 bg-black/30 rounded-lg hover:bg-red-500 hover:text-white" 
                   onClick={(e) => { e.stopPropagation(); if(confirm('ต้องการลบ "จักรวาล" ชิ้นนี้ใช่หรือไม่?')) { deleteStory(item.storyId); refreshIndex(); } }}
                 >
                   ✕
                 </button>
               </div>
 
-              <div className="flex-1 flex flex-col justify-center py-6 z-10">
-                <h3 className="text-2xl font-black text-white tracking-tighter leading-tight group-hover:text-[#ea580c] transition-colors uppercase italic break-all line-clamp-3">
+              <div className="flex-1 flex flex-col justify-center py-3 z-10">
+                <h3 className="text-xl font-black text-white tracking-tight leading-tight group-hover:text-[#ea580c] transition-colors uppercase italic break-words line-clamp-2">
                   {item.title || 'UNNAMED_ENTITY'}
                 </h3>
-                <div className="flex flex-col gap-2 mt-6">
-                  <p className="text-[9px] text-zinc-400 font-black uppercase tracking-[0.2em]">UID: <span className="text-zinc-300">{item.storyId.slice(-12)}</span></p>
-                  <p className="text-[9px] text-emerald-500/80 font-black uppercase tracking-[0.2em]">STORAGE: <span className="text-emerald-400">STABLE_SSD</span></p>
-                </div>
+                <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-[0.1em] mt-2">ID: {item.storyId.slice(-12)}</p>
               </div>
 
-              <div className="pt-6 border-t border-white/10 flex justify-between items-end z-10">
+              <div className="pt-2 border-t border-white/10 flex justify-between items-center z-10">
                 <div className="flex flex-col">
-                   <span className="text-[8px] text-zinc-400 font-black uppercase tracking-[0.3em] mb-1">Last Revision</span>
+                   <span className="text-[8px] text-zinc-400 font-black uppercase tracking-[0.15em]">แก้ไขล่าสุด</span>
                    <span className="text-[10px] text-white font-bold">{formatDate(item.updatedAt)}</span>
                 </div>
-                <div className="w-12 h-12 tactile-raised flex items-center justify-center text-[#ea580c] group-hover:bg-[#ea580c] group-hover:text-white transition-all duration-300 shadow-xl border border-white/10">
-                   <span className="text-xl font-black">→</span>
+                <div className="w-9 h-9 tactile-raised flex items-center justify-center text-[#ea580c] group-hover:bg-[#ea580c] group-hover:text-white transition-all duration-300 border border-white/10" aria-hidden="true">
+                   <span className="text-lg font-black">→</span>
                 </div>
               </div>
             </Card>
@@ -139,11 +134,11 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ onOpenStory, onNewStor
         ))}
 
         <button 
-          className="h-[340px] tactile-inset border-2 border-dashed border-white/10 flex flex-col items-center justify-center gap-6 group hover:bg-white/5 transition-all animate-in fade-in"
+          className="min-h-[110px] tactile-inset border-2 border-dashed border-white/10 flex items-center justify-center gap-3 group hover:bg-white/5 transition-all animate-in fade-in"
           onClick={() => setShowCreate(true)}
           style={{ animationDelay: `${index.length * 100}ms` }}
         >
-          <div className="w-16 h-16 tactile-raised flex items-center justify-center text-3xl text-zinc-400 group-hover:text-[#ea580c] transition-all duration-500 border border-white/5">＋</div>
+          <div className="w-10 h-10 tactile-raised flex items-center justify-center text-xl text-zinc-400 group-hover:text-[#ea580c] transition-all duration-500 border border-white/5">＋</div>
           <div className="flex flex-col items-center gap-1">
             <span className="text-[11px] font-black text-zinc-300 uppercase tracking-[0.4em] group-hover:text-white">Add Memory Block</span>
             <span className="text-[8px] text-zinc-500 font-bold uppercase tracking-[0.2em]">Initialize fresh ecosystem</span>
@@ -151,7 +146,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ onOpenStory, onNewStor
         </button>
       </section>
 
-      <footer className="mt-40 border-t border-white/10 pt-12 flex flex-col items-center gap-6 opacity-40 hover:opacity-100 transition-opacity duration-1000">
+      <footer className="mt-10 border-t border-white/10 pt-6 flex flex-col items-center gap-4 opacity-40 hover:opacity-100 transition-opacity duration-1000">
          <div className="flex items-center gap-6">
             <div className="w-12 h-[1px] bg-zinc-800"></div>
             <span className="text-[9px] font-black text-zinc-400 uppercase tracking-[0.8em]">Nexus Physical Link Established</span>
