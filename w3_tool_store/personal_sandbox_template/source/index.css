@@ -10,6 +10,7 @@
   --accent: #4a9a82; 
   --success: #16a34a; 
   --image-overlay: rgba(12, 20, 17, 0.76);
+  --workspace-photo-shade: rgba(7, 17, 14, .36);
   
   --shadow-raised: 
     -6px -6px 14px rgba(255,255,255,0.02),
@@ -32,6 +33,7 @@
   --text-dim: #475569;
   --accent: #28755f;
   --image-overlay: rgba(235, 239, 235, 0.82);
+  --workspace-photo-shade: rgba(239, 245, 240, .5);
   --shadow-raised: 
     -8px -8px 16px rgba(255,255,255,1),
     8px 8px 16px rgba(0,0,0,0.08);
@@ -158,13 +160,20 @@ body::after {
 .editor-shell nav > div:last-child { background-color: var(--surface); }
 .editor-shell.has-workspace-image main,
 .editor-shell.has-workspace-image .workspace-output {
-  background-image: linear-gradient(rgba(8, 17, 15, .16), rgba(8, 17, 15, .16)), var(--personal-bg-image);
+  background-image: linear-gradient(var(--workspace-photo-shade), var(--workspace-photo-shade)), var(--personal-bg-image);
   background-position: center;
   background-size: cover;
 }
-.editor-shell.has-workspace-image .workspace-region { background-color: rgba(14, 24, 21, .2); }
-.editor-shell.has-workspace-image .workspace-detail { background-color: rgba(14, 24, 21, .34); }
-.editor-shell.has-workspace-image .workspace-output { background-color: rgba(14, 24, 21, .2); }
+.editor-shell.has-workspace-image .workspace-region { background: transparent; }
+.editor-shell.has-workspace-image .workspace-detail { background: rgba(10, 20, 17, .12); }
+/* Editor tabs put another solid panel inside the detail pane; let the photo reach that front layer. */
+.editor-shell.has-workspace-image .workspace-detail > div { background-color: transparent; }
+.editor-shell.has-workspace-image .workspace-output { background-color: transparent; }
+.editor-shell.has-workspace-image .workspace-output > .tactile-raised {
+  background-image: linear-gradient(var(--workspace-photo-shade), var(--workspace-photo-shade)), var(--personal-bg-image);
+  background-position: center;
+  background-size: cover;
+}
 .editor-shell.has-workspace-image .workspace-list { background-color: var(--surface-2); }
 .workspace-divider-wide {
   position: fixed;

@@ -30,6 +30,6 @@ jobs:
         run: unzip -t app/build/outputs/apk/debug/app-debug.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: W3-Sandbox-v38-font-commands-theme-APK
+          name: W3-Sandbox-v39-visible-workspace-photo-APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
