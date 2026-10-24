@@ -1,0 +1,115 @@
+{
+  "schema": "w3.rea_mcp_first_use.observation.1",
+  "date_bangkok": "2026-10-25",
+  "base_revision": "38c81f2bd1d9d64f464580b2e390127b78200da9",
+  "prototype_tree": "b5f0ddb4cc9a4f20fe49fedf774ed0eec746ed3f",
+  "prototype_unchanged": true,
+  "rea_version": "6.5.0",
+  "node_version": "v24.18.0",
+  "state": "BLOCKED",
+  "connected": true,
+  "tool_count": 207,
+  "inputs_unchanged": true,
+  "host_ps_probe": {
+    "status": 1,
+    "diagnostic": "fatal library error, lookup self\n"
+  },
+  "calls": [
+    {
+      "name": "binary_session",
+      "is_error": true,
+      "retained_partial_evidence_id": null,
+      "diagnostic": {
+        "code": "execution_failure",
+        "category": "execution_failure",
+        "message": "Linux process ownership inspection requires a procps-compatible ps on REA's PATH before launching a child: Command failed: ps -axo pid=,ppid=,pgid=,uid=,stat=,command=\nfatal library error, lookup self\n"
+      }
+    },
+    {
+      "name": "inspect_sqlite_database",
+      "is_error": true,
+      "retained_partial_evidence_id": null,
+      "diagnostic": {
+        "code": "capability_unavailable",
+        "category": "unsupported_provider",
+        "message": "Linux process ownership inspection requires a procps-compatible ps on REA's PATH before launching a child: Command failed: ps -axo pid=,ppid=,pgid=,uid=,stat=,command=\nfatal library error, lookup self\n"
+      }
+    },
+    {
+      "name": "analyze_javascript_application",
+      "is_error": true,
+      "retained_partial_evidence_id": "ev_77a551bd75611067eea72354bc91c4eadbfe20914fc4e8c6acb67d689b24f2e7",
+      "diagnostic": {
+        "code": "capability_unavailable",
+        "category": "unsupported_provider",
+        "message": "Linux process ownership inspection requires a procps-compatible ps on REA's PATH before launching a child: Command failed: ps -axo pid=,ppid=,pgid=,uid=,stat=,command=\nfatal library error, lookup self\n"
+      }
+    },
+    {
+      "name": "get_evidence_bundle",
+      "is_error": false,
+      "retained_partial_evidence_id": null,
+      "diagnostic": null
+    }
+  ],
+  "partial_observation": {
+    "evidence_id": "ev_77a551bd75611067eea72354bc91c4eadbfe20914fc4e8c6acb67d689b24f2e7",
+    "operation": "analyze_javascript_application",
+    "subject": {
+      "name": "w3openland",
+      "digest": {
+        "sha256": "0aaede8e3256903beef4f06306f6e88448b2e06158e326cc9d1f5782cbbf5e8a"
+      },
+      "local_path": "/workspace/scratch/905335bf17b7/w3-review-299/blueprints/GGinventory/w3openland",
+      "format": "directory",
+      "architecture": null
+    },
+    "statistics": {
+      "relevant_files": 37,
+      "nested_asar_containers": 0,
+      "text_bytes_read": 7354,
+      "invalid_utf8_files": 0,
+      "parsed_javascript_files": 0,
+      "skipped_javascript_files": 2,
+      "visited_ast_nodes": 0,
+      "findings": 0,
+      "modules": 0,
+      "parse_failures": 0
+    },
+    "artifact_graph": {
+      "nodes": 75,
+      "edges": 74,
+      "coverage": {
+        "status": "partial",
+        "truncated": false,
+        "omitted_count": null,
+        "limits": []
+      }
+    },
+    "semantic_graph": {
+      "nodes": 31,
+      "relations": 0,
+      "coverage_status": "partial"
+    },
+    "limitations": [
+      "Caller-selected source analysis leaves 35 inventoried files outside analysis scope. Inventory identity covers the complete artifact; relationships through unselected sources remain unknown.",
+      "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+      "Graph coverage is incomplete; unavailable facts remain explicit and must not be read as absence.",
+      "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+      "Source analysis was interrupted: Provider process-ownership cannot execute prepare_owned_process: Linux process ownership inspection requires a procps-compatible ps on REA's PATH before launching a child: Command failed: ps -axo pid=,ppid=,pgid=,uid=,stat=,command=\nfatal library error, lookup self\n",
+      "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+      "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+      "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code.",
+      "core/engine.ts: Provider process-ownership cannot execute prepare_owned_process: Linux process ownership inspection requires a procps-compatible ps on REA's PATH before launching a child: Command failed: ps -axo pid=,ppid=,pgid=,uid=,stat=,command=\nfatal library error, lookup self\n"
+    ]
+  },
+  "raw_result_file_sha256": {
+    "session.json": "48e9eff2f11ca3d3b881b06c163cbda615896c077bbb5d596de0db1c755e82c1",
+    "condien-inspection.json": "393845ba92f060cefd5c2535c5e93c48e9a6bd42412e04d2764c40b091c1071b",
+    "javascript-inspection.json": "39d254f1eee89e1fdc2a7054db5f57bc3d62d593e8361ee546e1a840ce4c4810",
+    "retained-evidence.json": "3c0cabb28cb669075d2a26c6f055b5be7efbce87d43d510933351fa5fa740c39",
+    "input-integrity.json": "193f291b305b561e0764fc4546858b496a5c9ed995a8b62b8851719e484bee8a"
+  },
+  "harness_sha256": "743e79d52a6cb6e2ecf43e2bfe5b55881d31d6131f8c896be15e995239a3274e",
+  "interpretation": "Derived observation summary, not a replacement or importable form of the full REA Evidence bundle. No SQLite/JS correctness verdict was established."
+}
