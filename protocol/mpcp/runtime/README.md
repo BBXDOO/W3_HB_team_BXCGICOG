@@ -67,6 +67,8 @@ python tools/mpcp_papers.py --request tools/agent_sandbox/paper_pack.json --outp
 
 CLI เป็นการใช้สิทธิ์ของผู้ปฏิบัติงานในเครื่อง ไม่อ้างว่า BBX19 อนุมัติคำขอที่ไม่ได้ให้จริง Exit code: 0 = ทุก Paper ผ่าน, 2 = ยัง WAIT/STOP, 1 = input/host error
 
+CLI ใช้ host equipment registry สำหรับ `file-void-text` และ `condien-view` เท่านั้น หากต้องโหลดบริบทที่เก็บไว้ ให้ระบุ `--condien-store`, `--condien-name` และเลือก `--condien-revision` ได้ ดู [อุปกรณ์จัดเก็บ Condien](../../../src/core/README.md) การโหลดจะรักษา READ/DENY และผูก snapshot เข้า CONTEXT_REF ก่อนคำนวณสิทธิ์ของชุดงาน
+
 ## Movement — การนำทาง
 
 ### M1 — สิ่งที่อยู่ใน runtime/

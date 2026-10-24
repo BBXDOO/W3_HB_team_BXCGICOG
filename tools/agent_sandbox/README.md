@@ -2,6 +2,8 @@
 
 สำหรับระบบ Paper หลายใบใต้เหตุการณ์เดียวและการสร้างไฟล์ผ่าน File.void ให้ดู [คู่มือ Paper Runtime](../../protocol/mpcp/runtime/README.md) และเรียก `tools/mpcp_papers.py` เครื่องมือด้านล่างนี้ยังเป็น local setup sandbox เดิม
 
+สำหรับ Lib ที่มีอุปกรณ์จริงและ Condien ที่เก็บข้าม process ดู [Library equipment](../../protocol/mpcp/lib/README.md) และ [Condien storage/tool](../../src/core/README.md) มีตัวอย่าง `condien_state.json` / `condien_paper.json` ให้ทดลอง save แล้วอ่านกลับตามสิทธิ์
+
 เครื่องมือให้เอเจนท์ทดลองกับ runtime จริงใน W3 ด้วย Python 3.10+ โดยไม่ต้องติดตั้ง REA หรือโมเดล AI เพิ่ม
 
 ## เริ่มใช้งาน

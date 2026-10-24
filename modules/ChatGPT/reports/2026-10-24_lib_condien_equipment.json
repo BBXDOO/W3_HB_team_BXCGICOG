@@ -1,0 +1,120 @@
+{
+  "schema": "w3.lib_condien.observation.1",
+  "observed_at": "2026-10-24T17:02:55.098467+00:00",
+  "base_revision": "581b4998888f81609d97ac26bdcb147a6b370e05",
+  "source_kind": "working-tree changes on base_revision",
+  "source_sha256": {
+    "src/core/condien.py": "88e9b6b6e049892c3b42ec1810e159a7e6bf61ba4c5da6d619b740df63308573",
+    "src/core/condien_store.py": "c177aeae2a3e08350defefeebef1d72edd8402ab5ab779be49ada019cf7f290d",
+    "protocol/mpcp/lib/registry.py": "492aa56f69a088f2ad436b9103cc6cc904d49605a954112d9e7318d9bcabc8c5",
+    "protocol/mpcp/modew/condien_view.py": "574191505522717fbba4eb0f6dbee91722ac78df022ef7afd42d826921686ae9",
+    "tools/mpcp_condien.py": "af2851275e949dfcafe72bcf7832faac4b799c830849e1de2e91fbd4f10231c0",
+    "tools/mpcp_papers.py": "1e9daa30cbcd5362061f0d0b0be373254c4818cb656b833b9680d2c7080fda2a"
+  },
+  "commands": [
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "tools/mpcp_condien.py",
+      "--store",
+      "local_workspace/lib-condien-proof-final/context.sqlite",
+      "--input",
+      "tools/agent_sandbox/condien_state.json",
+      "--save"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "tools/mpcp_papers.py",
+      "--request",
+      "tools/agent_sandbox/condien_paper.json",
+      "--output",
+      "local_workspace/lib-condien-proof-final/paper",
+      "--condien-store",
+      "local_workspace/lib-condien-proof-final/context.sqlite",
+      "--condien-name",
+      "EQUIPMENT-CONTEXT",
+      "--condien-revision",
+      "1",
+      "--execute"
+    ]
+  ],
+  "responses": [
+    {
+      "state": "SUCCESS",
+      "mutated": true,
+      "name": "EQUIPMENT-CONTEXT",
+      "snapshot_id": "5fdbf07fa06d300f38c8325042f72ffe4edb2d3d2a3134181c1043fb35650145",
+      "revision": 1
+    },
+    {
+      "state": "SUCCESS",
+      "papers": {
+        "READ-B": "COMPLETED"
+      },
+      "result": "/workspace/scratch/905335bf17b7/w3-review-299/local_workspace/lib-condien-proof-final/paper/result.json"
+    }
+  ],
+  "snapshot": {
+    "snapshot_id": "5fdbf07fa06d300f38c8325042f72ffe4edb2d3d2a3134181c1043fb35650145",
+    "revision": 1
+  },
+  "equipment": {
+    "condien-view": {
+      "available": true,
+      "availability_evidence": "host_registered_builder",
+      "group": "core",
+      "capabilities": [
+        "scoped_context_read"
+      ]
+    }
+  },
+  "scoped_result": {
+    "context": {
+      "identity": {
+        "CONDIEN": "EQUIPMENT-CONTEXT",
+        "ROLE": "meaning_state_layer",
+        "MEANING_MODE": "bounded-adaptive",
+        "CONTEXT_MODE": "dynamic",
+        "LAYERS": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        "READ": "all",
+        "DENY": [],
+        "ACTIVE_LAYER": "A",
+        "CONTINUITY": "carry-forward",
+        "REBASE": "bounded",
+        "BOUNDARY": "rot-governed",
+        "ENV": "preserve",
+        "MODEW": null,
+        "PAPER": null
+      },
+      "layers": {
+        "B": {
+          "title": "บริบทที่กลับมาใช้ต่อได้"
+        }
+      },
+      "requested": [
+        "B"
+      ],
+      "denied": [
+        "D"
+      ],
+      "mutated": false
+    },
+    "context_ref": "condien:5fdbf07fa06d300f38c8325042f72ffe4edb2d3d2a3134181c1043fb35650145"
+  },
+  "carry_restored": "continue with scoped context",
+  "excluded_value_absent": true,
+  "validation": {
+    "pytest": "79 passed; 2 subtests passed; 4 existing utcnow warnings",
+    "mpcp_sanity": "81/81",
+    "condien_blueprint": "69/69"
+  },
+  "limits": [
+    "trusted local storage includes restricted data",
+    "no automatic semantic classification or library selection",
+    "no claim that every declared library is implemented"
+  ]
+}

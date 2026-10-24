@@ -9,11 +9,15 @@ on:
       - 'protocol/w3lgu/**'
       - 'protocol/files_void/**'
       - 'src/core/blueprint.py'
+      - 'src/core/condien.py'
+      - 'src/core/condien_store.py'
       - 'tools/mpcp_sandbox.py'
       - 'tools/mpcp_papers.py'
+      - 'tools/mpcp_condien.py'
       - 'tools/agent_sandbox/**'
       - 'tests/test_mpcp_agent_sandbox.py'
       - 'tests/test_mpcp_paper_runtime.py'
+      - 'tests/test_mpcp_condien_equipment.py'
       - '.github/workflows/mpcp-agent-sandbox.yml'
 
 permissions:
@@ -33,7 +37,7 @@ jobs:
       - name: Install Paper test dependency
         run: python -m pip install pytest
       - name: Paper and File.void regressions
-        run: python -m pytest -q tests/test_mpcp_paper_runtime.py tests/test_file_void_tool.py
+        run: python -m pytest -q tests/test_mpcp_paper_runtime.py tests/test_mpcp_condien_equipment.py tests/test_file_void_tool.py
       - name: Existing MPCP and Blueprint foundations
         run: |
           python protocol/mpcp/runtime_sanity_sweep.py
@@ -42,6 +46,10 @@ jobs:
         run: python tools/mpcp_sandbox.py --request tools/agent_sandbox/local_setup.json --output local_workspace/ci-sandbox --execute
       - name: Run real event-bound text Papers
         run: python tools/mpcp_papers.py --request tools/agent_sandbox/paper_pack.json --output local_workspace/ci-papers --execute
+      - name: Persist Condien and use it from another process
+        run: |
+          python tools/mpcp_condien.py --store local_workspace/ci-context/context.sqlite --input tools/agent_sandbox/condien_state.json --save
+          python tools/mpcp_papers.py --request tools/agent_sandbox/condien_paper.json --output local_workspace/ci-context/paper --condien-store local_workspace/ci-context/context.sqlite --condien-name EQUIPMENT-CONTEXT --condien-revision 1 --execute
       - name: Keep execution evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -50,4 +58,5 @@ jobs:
           path: |
             local_workspace/ci-sandbox
             local_workspace/ci-papers
+            local_workspace/ci-context
           if-no-files-found: warn

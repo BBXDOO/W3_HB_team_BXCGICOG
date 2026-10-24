@@ -1,0 +1,19 @@
+{
+  "PAPER_PACK_ID": "CONDIEN-READ-001",
+  "CHAIN_ID": "MPCP-CONTEXT-EQUIPMENT",
+  "EVENT_ID": "EV-CONTEXT-001",
+  "RESPONSIBLE_MODULE": "MPCP",
+  "RETURN_TO": "MPCP",
+  "SCOPE": "local-scoped-context",
+  "BOUNDARY": "read-only",
+  "PAPERS": [
+    {
+      "PAPER_ID": "READ-B",
+      "TASK": "read selected context",
+      "INTENT": "recover only the allowed layer B values",
+      "MODEW": "condien-view",
+      "READ": "LAYER_B",
+      "DENY": "LAYER_D"
+    }
+  ]
+}
