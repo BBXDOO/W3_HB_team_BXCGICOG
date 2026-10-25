@@ -1,8 +1,27 @@
 {
-  "interval_days": 15,
-  "next_due": "2026-11-09T01:17:18.626567Z",
-  "followups": [],
-  "receipts": {},
+  "interval_days": 7,
+  "next_due": "2026-11-01T17:16:29.221204Z",
+  "followups": [
+    {
+      "request_id": "GH-issues-306-6027051219",
+      "receipt": "GH-issues-306-6027051219:f0f2e3f5043a3fb8c1f5f75cde319686ca7445669a9297a6ecd421ad884d8455",
+      "status": "OPEN",
+      "source": "BBX19",
+      "intent": "RQ-W3-CHAIN-001 | Read-only end-to-end chain execution (MPCP/E-CS/W3Lgu/Cross-X/CROLL/Table-X/PX)\n# RQ-W3-CHAIN-001 — One-task chain inspection and runtime handoff\n\n**Owner / requester:** BBX19\n**GitHub assignee:** BBXDOO (account-level responsibility)\n**Origin target:** ChatGPT\n**Branch:** refactor/v0.2\n**Scope:** one task, seven components; **no source-code/config edits, no repair, no deployment**.\n**Initial status:** RECEIVED; runtime evidence pending.\n\n## Origin intake — first stage (read only)\n\n@ChatGPT\n\nโปรดอ่าน entry points/คู่มือของสายเชนหลักทั้งเจ็ด และคืนหลักฐาน read receipt, hash, errors และข้อจำกัดตามจริง ก่อนประเมินจุดส่งต่องานเข้าสู่ Orchestration. ห้ามถือว่าการอ่านไฟล์เป็นการ Execute โมดูลทั้งเจ็ดสำเร็จ.\n\n```w3-origin\n{\n  \"operations\": [\n    {\"action\":\"read\",\"path\":\"protocol/mpcp/runtime/README.md\"},\n    {\"action\":\"read\",\"path\":\"ecs/event_chain_system.py\"},\n    {\"action\":\"read\",\"path\":\"core/runtime/w3lgu_mfc_logic/psp2_mfc_logic.py\"},\n    {\"action\":\"read\",\"path\":\"cross_x/core.py\"},\n    {\"action\":\"read\",\"path\":\"croll/contracts.py\"},\n    {\"action\":\"read\",\"path\":\"croll/table_x.py\"},\n    {\"action\":\"read\",\"path\":\"protocol/w3lgu/px.py\"},\n    {\"action\":\"read\",\"path\":\"docs/runtime/REAL_REQUEST_CIRCUIT.md\"}\n  ]\n}\n```\n\n## Follow-on execution requirement (not satisfied by Origin read)\n\n**Work item:** Verify MPCP ENV readiness through a single real request, tracing actual integration with E-CS, W3Lgu MFC Logic, Cross-X, CROLL, Table-X, and PX in their native ordering/contracts.\n\n1. Inspect actual interfaces and determine a supported dispatch route; do not force the seven modules into an artificial sequence.\n2. Execute only via existing registered entry points / authorized W3 Runtime; honor planner-only and human gates.\n3. Preserve supported identity fields (`chain_id`, `process_id`, `event_id`, `package_id`); mark unknowns explicitly.\n4. Report per component: entry point, real input/output, recipient, status, log/evidence, first broken handoff.\n5. Never claim COMPLETED without executor evidence. If no dispatch path exists, report BLOCKED/NOT_RUN and next action.\n6. **Do not edit code or configuration or create repair patches/PRs.** Origin workflow may persist its ordinary receipts, state and logs to `repo_events/origin_agents/` as part of its documented operation; this is not permission to modify application source.\n7. Return a factual status and preserve BBX19 final sign-off.\n\n## References\n- `docs/templates/origin/ISSUE_TEMPLATE_TH.md`\n- `docs/guides/ORIGIN_AGENT_OPERATIONS_TH.md`\n- `workflows/orchestration/README.md`\n- `docs/runtime/REAL_REQUEST_CIRCUIT.md`\n\n**Acceptance:** one traceable task; Origin receipt for initial inspection; separately verified runtime execution results or explicit blocker for each of seven systems.\n",
+      "result_log": "repo_events/origin_agents/ChatGPT/logs/05ac036fc8dd425091c78cb3df4baef9.json",
+      "proposals": [],
+      "reason": "IDP/ENV does not grant read: protocol/mpcp/runtime/README.md",
+      "support_evidence": "repo_events/origin_agents/ChatGPT/collaboration/W3-ORC-20261011-254277258878941106750002446842236109244-support.json",
+      "created_at": "2026-10-25T17:16:29.221204Z"
+    }
+  ],
+  "receipts": {
+    "GH-issues-306-6027051219:f0f2e3f5043a3fb8c1f5f75cde319686ca7445669a9297a6ecd421ad884d8455": {
+      "at": "2026-10-25T17:16:29.221204Z",
+      "status": "FAILED",
+      "log": "repo_events/origin_agents/ChatGPT/logs/05ac036fc8dd425091c78cb3df4baef9.json"
+    }
+  },
   "last_review": "2026-10-25T01:17:18.626567Z",
   "findings": [],
   "last_log": "repo_events/origin_agents/ChatGPT/logs/8489be8f27f34dfb8d7beaad3b9c232c.json",
