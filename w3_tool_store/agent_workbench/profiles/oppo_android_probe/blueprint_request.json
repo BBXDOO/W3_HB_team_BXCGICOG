@@ -1,0 +1,4 @@
+{
+  "blueprint": "NAME:OPPO_ANDROID_PROBE\nTARGET:local\nMODE:plan\nLIB:file,storage\nPARTITION:device_profile,playtest,evidence\nBOUNDARY:sandbox-local-only\nTRACE:required\nENV:preserve",
+  "event": "EVENT:setup,TARGET:MPCP,ROOM:EV,CONF:1"
+}

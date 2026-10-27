@@ -1,0 +1,38 @@
+{
+  "PAPER_PACK_ID": "OPPO-PROBE-001",
+  "CHAIN_ID": "MPCP-DEVICE-PROBE",
+  "EVENT_ID": "EV-OPPO-PROBE-001",
+  "RESPONSIBLE_MODULE": "MPCP",
+  "RETURN_TO": "MPCP",
+  "SCOPE": "local-device-profile-and-playtest-plan",
+  "BOUNDARY": "agent-workbench-only",
+  "PAPERS": [
+    {
+      "PAPER_ID": "DEVICE-PROFILE",
+      "MODEW": "file-void-text",
+      "TASK": "materialize approximate Android device profile",
+      "INTENT": "record evidence and unknowns without claiming hardware emulation",
+      "CONTENT": {
+        "template": "# สภาพจำลองโดยประมาณ\n\nอุปกรณ์อ้างอิง: $device\nระบบที่ผู้ใช้รายงาน: $os\nแอป: $app\nหน้าต่างทดลอง: $viewport\n\nใช้ข้อมูลนี้กับ Chromium viewport probe เท่านั้น ค่าหน้าต่างเป็นสมมุติฐาน ยังไม่ได้วัด CSS viewport บนเครื่องจริง\n\nไม่จำลอง ColorOS, Android WebView, file picker, APK update, GPU, sensor หรือข้อมูลส่วนตัวในโทรศัพท์\n",
+        "values": {
+          "device": "OPPO Find X9 Ultra (ตามบริบทที่ผู้ใช้ให้)",
+          "os": "Android 16",
+          "app": "W3 Personal Sandbox v45; WebView wrapper",
+          "viewport": "393 x 873 CSS px; ปรับได้; ไม่อ้างว่าเป็นค่าจริงของเครื่อง"
+        },
+        "target": "device_profile.md"
+      }
+    },
+    {
+      "PAPER_ID": "PLAYTEST-PLAN",
+      "MODEW": "file-void-text",
+      "TASK": "materialize Playtest verification plan",
+      "INTENT": "preserve separate test expectations for the same event",
+      "CONTENT": {
+        "template": "# Playtest probe\n\nโครงการทดสอบใหม่: ตรวจว่า Battle defaults แสดงและแก้ค่าได้\nตัวละครสองฝ่าย: ใช้ค่า ACT/DEF/SPE/CRI และสถานะที่กำหนด ไม่เติมสถานะพิเศษเอง\nสนาม: เติมมานาต่อธาตุ 2 สูงสุด 10 แล้วตรวจค่าร่ายก่อนหัก\nการ์ด: ติดโมดูลที่ตรงชนิดและ Rule แล้วตรวจ HP/MP/EN หรือสถานะ\nเฟส: ตรวจ Rule ก่อนเปลี่ยนช่วงและสลับฝ่ายเมื่อครบ\nหลักฐาน: ผล logic test, ภาพหน้าจอ browser หากมี Chromium, ผลจริงจาก APK บน OPPO\n",
+        "values": {},
+        "target": "playtest_plan.md"
+      }
+    }
+  ]
+}
