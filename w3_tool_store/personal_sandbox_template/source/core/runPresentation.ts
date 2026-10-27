@@ -14,9 +14,9 @@ export const RUN_SOURCES: { source: RunSource; label: string; icon: string }[] =
 ];
 
 const preset: Record<ProjectKind, RunSource[]> = {
-  library: ['story', 'rules', 'locations', 'items'],
+  library: ['story', 'rules', 'locations', 'items', 'battle'],
   bookcraft: ['story', 'board', 'cards', 'characters', 'items', 'events', 'battle', 'special'],
-  concept: ['story', 'board', 'locations', 'events', 'rules']
+  concept: ['story', 'board', 'locations', 'events', 'rules', 'battle']
 };
 
 export const newRunSection = (source: RunSource, id: string): RunSection => {

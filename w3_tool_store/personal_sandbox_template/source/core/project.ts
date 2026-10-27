@@ -17,6 +17,10 @@ export const createEmptyProject = (storyId: string, projectKind: ProjectKind, ti
     activeMode: 'EDITOR',
     projectKind,
     runPresentation: defaultRunPresentation(projectKind),
+    battleConfig: {
+      elements: [], manaPerTurn: 2, field: { name: '', elements: [] },
+      phases: [{ id: 'main', name: 'ช่วงหลัก' }, { id: 'followup', name: 'ช่วงถัดไป' }], actions: []
+    },
     attributeDefinitions: DEFAULT_ATTRIBUTES.map(attribute => ({ ...attribute })),
     characters: [], boards: [], locations: [], cards: [], modules: [], items: [],
     events: [], rulesets: [], commonPlay: [], storyNodes: [], assets: {}
