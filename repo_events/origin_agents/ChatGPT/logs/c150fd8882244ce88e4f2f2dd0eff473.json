@@ -1,0 +1,19 @@
+{
+  "contract_version": "1.0",
+  "module": "ChatGPT",
+  "task": "RQ-W3-CHAIN-001 initial read receipt",
+  "capability": "origin_file_operations",
+  "status": "FAILED",
+  "mutated": true,
+  "traceable": true,
+  "review": true,
+  "artifacts": [],
+  "operations": [],
+  "reason": "IDP/ENV does not grant read: protocol/mpcp/runtime/README.md",
+  "summary": "Origin action stopped; completed operations remain listed.",
+  "target_mutated": false,
+  "log_mutated": true,
+  "log_path": "repo_events/origin_agents/ChatGPT/logs/c150fd8882244ce88e4f2f2dd0eff473.json",
+  "event_id": "c150fd8882244ce88e4f2f2dd0eff473",
+  "created_at": "2026-10-25T17:23:28.263192Z"
+}
