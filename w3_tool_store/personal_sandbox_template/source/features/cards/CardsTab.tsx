@@ -127,12 +127,29 @@ export const CardsTab: React.FC<CardsTabProps> = ({ story, onChange, toolActions
           {mode === 'modules' ? selectedModule ? (
             <div className="flex flex-col gap-4 pb-20 text-[var(--text)]">
               <h2 className="text-base font-bold text-emerald-400">แก้ไขโมดูล</h2>
-              <p className="text-xs text-[var(--text-dim)]">Playtest เดิน A → B → C ตามช่องโมดูล รองรับ PASS และ DISPLAY: ข้อความ เพื่อแสดงผล คำสั่งอื่นขึ้น UNKNOWN และยังไม่มีเอฟเฟกต์เปลี่ยนค่าสถานะ</p>
+              <p className="text-xs text-[var(--text-dim)]">โฟลว์ A → B → C ยังรองรับ PASS และ DISPLAY: เท่านั้น ผลเสริม Battle ด้านล่างเป็นข้อมูลที่ประมวลผลแยกเมื่อการ์ดถูกติดตั้งและใช้สกิล</p>
               <Input label="ชื่อโมดูล" value={selectedModule.name} onChange={name => updateModule({ ...selectedModule, name })} />
               <div className="grid grid-cols-2 gap-2"><Input label="ประเภท" value={selectedModule.type} onChange={type => updateModule({ ...selectedModule, type })} />
                 <Input label="Grade" value={selectedModule.grade} onChange={grade => updateModule({ ...selectedModule, grade })} /></div>
               <TextArea richText label="รายละเอียด" value={selectedModule.description} onChange={description => updateModule({ ...selectedModule, description })} />
               {(['A','B','C'] as const).map(key => <TextArea key={key} label={`ส่วน ${key}`} value={selectedModule.parts?.[key] || ''} onChange={value => updateModule({ ...selectedModule, parts: { ...selectedModule.parts, [key]: value } })} />)}
+              <div className="border border-emerald-400/30 rounded-xl p-3 space-y-3 text-xs">
+                <b>ผลเสริมเมื่อเชื่อมกับการ์ดใน Battle</b>
+                <p>ชนิดการ์ดต้องตรงกัน โมดูลเชื่อมจะเพิ่มผลให้สกิลของการ์ดที่ตัวละครติดตั้งอยู่</p>
+                <label className="block">ใช้ใน Battle <input type="checkbox" checked={!!selectedModule.battleLink} onChange={e => updateModule({ ...selectedModule, battleLink: e.target.checked ? { tag: 'SKILL', effects: [] } : undefined })} /></label>
+                {selectedModule.battleLink && <>
+                  <label className="block">ชนิดการ์ด<select className="block w-full p-2 bg-[var(--surface-2)]" value={selectedModule.battleLink.tag} onChange={e => updateModule({ ...selectedModule, battleLink: { ...selectedModule.battleLink!, tag: e.target.value } })}>{['SKILL','PASSIVE','CORE'].map(tag => <option key={tag}>{tag}</option>)}</select></label>
+                  <label className="block">Rule สำหรับเปิดผลเสริม<select className="block w-full p-2 bg-[var(--surface-2)]" value={selectedModule.battleLink.ruleId || ''} onChange={e => updateModule({ ...selectedModule, battleLink: { ...selectedModule.battleLink!, ruleId: e.target.value || undefined } })}><option value="">ไม่มีเงื่อนไขเพิ่ม</option>{story.rulesets.map(rule => <option key={rule.id} value={rule.id}>{rule.name}</option>)}</select></label>
+                  {selectedModule.battleLink.effects.map((effect, index) => <div key={index} className="border p-2 rounded flex flex-wrap gap-2 items-center">
+                    <select value={effect.type} onChange={e => { const type = e.target.value; const replacement = type === 'status' ? { type: 'status' as const, target: 'opponent' as const, status: 'ติดพิษ', enabled: true } : { type: 'vital' as const, target: 'opponent' as const, stat: 'hp' as const, amount: -1 }; updateModule({ ...selectedModule, battleLink: { ...selectedModule.battleLink!, effects: selectedModule.battleLink!.effects.map((item, i) => i === index ? replacement : item) } }); }}><option value="vital">HP/MP/EN</option><option value="status">สถานะ</option></select>
+                    {(effect.type === 'vital' || effect.type === 'status') && <select value={effect.target} onChange={e => updateModule({ ...selectedModule, battleLink: { ...selectedModule.battleLink!, effects: selectedModule.battleLink!.effects.map((item, i) => i === index ? { ...effect, target: e.target.value as 'self'|'opponent' } : item) } })}><option value="opponent">อีกฝั่ง</option><option value="self">ตนเอง</option></select>}
+                    {effect.type === 'vital' && <><select value={effect.stat} onChange={e => updateModule({ ...selectedModule, battleLink: { ...selectedModule.battleLink!, effects: selectedModule.battleLink!.effects.map((item, i) => i === index ? { ...effect, stat: e.target.value as 'hp'|'mp'|'en' } : item) } })}>{['hp','mp','en'].map(stat => <option key={stat}>{stat}</option>)}</select><input className="w-20 p-1 bg-[var(--surface-2)]" type="number" value={effect.amount} onChange={e => updateModule({ ...selectedModule, battleLink: { ...selectedModule.battleLink!, effects: selectedModule.battleLink!.effects.map((item, i) => i === index ? { ...effect, amount: Number(e.target.value) } : item) } })} /></>}
+                    {effect.type === 'status' && <><input aria-label="ชื่อสถานะ" className="p-1 bg-[var(--surface-2)]" value={effect.status} onChange={e => updateModule({ ...selectedModule, battleLink: { ...selectedModule.battleLink!, effects: selectedModule.battleLink!.effects.map((item, i) => i === index ? { ...effect, status: e.target.value } : item) } })} /><select value={String(effect.enabled)} onChange={e => updateModule({ ...selectedModule, battleLink: { ...selectedModule.battleLink!, effects: selectedModule.battleLink!.effects.map((item, i) => i === index ? { ...effect, enabled: e.target.value === 'true' } : item) } })}><option value="true">เพิ่ม</option><option value="false">ถอด</option></select></>}
+                    <button onClick={() => updateModule({ ...selectedModule, battleLink: { ...selectedModule.battleLink!, effects: selectedModule.battleLink!.effects.filter((_, i) => i !== index) } })}>ลบ</button>
+                  </div>)}
+                  <button className="border rounded p-2" onClick={() => updateModule({ ...selectedModule, battleLink: { ...selectedModule.battleLink!, effects: [...selectedModule.battleLink!.effects, { type: 'vital', target: 'opponent', stat: 'hp', amount: -1 }] } })}>+ เพิ่มผลเสริม</button>
+                </>}
+              </div>
               <Button variant="danger" onClick={() => deleteModule(selectedModule)}>ลบโมดูล</Button>
             </div>
           ) : <p className="text-sm text-[var(--text-dim)]">เลือกหรือสร้างโมดูล</p> : selectedCard ? (
@@ -150,7 +167,7 @@ export const CardsTab: React.FC<CardsTabProps> = ({ story, onChange, toolActions
 
               <Card className="p-4 flex flex-col gap-3">
                 <h3 className="text-sm font-bold text-emerald-400">ประกอบโมดูลบนการ์ด</h3>
-                <p className="text-xs text-[var(--text-dim)]">เลือก 2 หรือ 3 ช่อง ถอดและเปลี่ยนได้ Playtest เดินโฟลวตามลำดับ แต่ยังไม่ใช้ Grade/Access ตัดสินผลและไม่เปลี่ยนค่าสถานะ</p>
+                <p className="text-xs text-[var(--text-dim)]">เลือก 2 หรือ 3 ช่อง ถอดและเปลี่ยนได้ โมดูลที่ตั้งค่าผลเสริม Battle จะทำงานเมื่อชนิดการ์ดและ Rule ตรงกัน ส่วน Grade/Access ยังไม่ตัดสินผล</p>
                 <label className="text-xs text-[var(--text)]">จำนวนช่อง <select value={slots.length === 3 ? 3 : 2} onChange={e => resizeSlots(Number(e.target.value) as 2 | 3)} className="ml-2 p-2 bg-[var(--surface-2)] rounded"><option value="2">2</option><option value="3">3</option></select></label>
                 {Array.from({ length: slots.length === 3 ? 3 : 2 }, (_, index) => <label key={index} className="text-xs text-[var(--text)]">ช่อง {index + 1}
                   <select value={slots[index] || ''} onChange={e => { const next = Array.from({ length: slots.length === 3 ? 3 : 2 }, (_, i) => slots[i] || null); next[index] = e.target.value || null; updateCard({ ...selectedCard, moduleSlots: next }); }} className="mt-1 block w-full p-3 bg-[var(--surface-2)] rounded border border-[var(--border)]">

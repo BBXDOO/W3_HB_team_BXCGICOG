@@ -54,8 +54,9 @@ export interface StoryPack {
 /** Rules are authored per project; runtime values live only in RunState. */
 export interface BattleConfig {
   elements: string[];
+  manaPerTurn?: number; // Default 2. Project-local and editable.
   field: { name: string; locationId?: string; elements: string[]; time?: string; note?: string };
-  phases: { id: string; name: string }[];
+  phases: { id: string; name: string; ruleId?: string }[];
   actions: BattleAction[];
 }
 export interface BattleAction {
@@ -68,10 +69,12 @@ export interface BattleAction {
   cost: Record<string, number>;
   effects: BattleEffect[];
 }
+export interface BattleScale { stat: string; source: 'self' | 'opponent'; multiplier: number }
 export type BattleEffect =
-  | { type: 'vital'; target: 'self' | 'opponent'; stat: 'hp' | 'mp' | 'en'; amount: number }
+  | { type: 'vital'; target: 'self' | 'opponent'; stat: 'hp' | 'mp' | 'en'; amount: number; scale?: BattleScale }
   | { type: 'mana'; target: 'self' | 'opponent'; element: string; amount: number }
-  | { type: 'field'; element: string; enabled: boolean };
+  | { type: 'field'; element: string; enabled: boolean }
+  | { type: 'status'; target: 'self' | 'opponent'; status: string; enabled: boolean };
 
 export interface CharacterPack {
   id: string;
@@ -131,6 +134,7 @@ export interface ModulePack {
   grade: string;
   description: string;
   parts: { A: string; B: string; C: string };
+  battleLink?: { tag: string; ruleId?: string; effects: BattleEffect[] };
 }
 
 export interface BoardPack {
