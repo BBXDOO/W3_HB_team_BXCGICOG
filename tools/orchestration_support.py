@@ -25,6 +25,10 @@ def default_flows():
         {'id': 'analyze', 'task': 'log_analysis', 'module': 'LRC2'},
         {'id': 'validate', 'after': ['analyze'], 'task': 'verify', 'module': 'Gemini'},
     ])
+    flows.register('system_inspection', [
+        {'id': 'inspect', 'task': 'design', 'module': 'ChatGPT'},
+        {'id': 'verify', 'after': ['inspect'], 'task': 'verify', 'module': 'Gemini'},
+    ])
     return flows
 
 

@@ -80,12 +80,28 @@ def log_report_checks(agent, root):
 def make_runtime(root, *, executors=None, verifiers=None):
     """Keep all existing module executors; host callbacks can extend any role."""
     root = Path(root).resolve()
+    def inspection_checks(agent):
+        from w3_tool_store.agent_workbench.tools.system_inspection.runner import report_checks
+        return report_checks(root, agent)
+    def chatgpt(job, plan, context):
+        payload = context.get('payload')
+        if job == 'design' and isinstance(payload, dict) and payload.get('inspection') == 'w3_systems_v1':
+            from w3_tool_store.agent_workbench.tools.system_inspection.runner import execute
+            return execute(root, context)
+        return get_agent('ChatGPT').execute(job, plan, context)
     def lrc2(job, plan, context):
         if job == 'log_analysis':
             return log_analysis.execute(job, plan, context, repo_root=root)
         return get_agent('LRC2').execute(job, plan, context)
     def gemini(job, plan, context):
         previous = context.get('payload', {})
+        if isinstance(previous, dict) and previous.get('capability') == 'system_inspection':
+            checks = inspection_checks(previous)
+            context = deepcopy(context)
+            context['payload'] = {'checks': checks, 'evidence': previous.get('artifacts', [])}
+            outcome = get_agent('Gemini').execute(job, plan, context)
+            outcome.update(capability='system_inspection_verified', checked_agent_result=previous)
+            return outcome
         if isinstance(previous, dict) and previous.get('capability') == 'log_analysis':
             checks = log_report_checks(previous, root)
             context = deepcopy(context)
@@ -95,7 +111,7 @@ def make_runtime(root, *, executors=None, verifiers=None):
                            checked_agent_result=previous)
             return outcome
         return get_agent('Gemini').execute(job, plan, context)
-    handlers = {'LRC2': lrc2, 'Gemini': gemini, **(executors or {})}
+    handlers = {'LRC2': lrc2, 'Gemini': gemini, 'ChatGPT': chatgpt, **(executors or {})}
     policies = dict(verifiers or {})
     def runner(job, request, *, authority_context=None):
         return engine_v2.run(job, request, authority_context=authority_context, executors=handlers)
@@ -104,7 +120,12 @@ def make_runtime(root, *, executors=None, verifiers=None):
             return policies[stage['task']](deepcopy(stage), deepcopy(result))
         agent = result.get('agent_result', {})
         capability = agent.get('capability')
-        if capability == 'adopted_document_result':
+        if capability == 'system_inspection':
+            checks = inspection_checks(agent)
+        elif capability == 'system_inspection_verified':
+            checks = inspection_checks(agent['checked_agent_result'])
+            checks.append({'name': 'gemini_verified', 'passed': agent.get('decision') == 'VERIFIED'})
+        elif capability == 'adopted_document_result':
             from tools.document_creation_flow import _document_checks
             try:
                 artifact = _inside(root, agent['artifact_path'])
