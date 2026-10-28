@@ -1,0 +1,5 @@
+{
+  "module": "LRC2",
+  "task": "log_analysis",
+  "accepted_by": "local runtime bridge"
+}

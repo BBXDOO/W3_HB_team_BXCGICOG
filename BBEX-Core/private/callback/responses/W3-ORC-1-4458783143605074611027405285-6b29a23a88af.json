@@ -1,0 +1,17 @@
+{
+  "schema": "w3.human_callback/1",
+  "request_id": "RQ-W3-SYSTEM-RECHECK-20261028-001",
+  "binding": {
+    "task_id": "W3-ORC-1-4458783143605074611027405285",
+    "request_sha256": "b0cbd0b1e52364f7a513a3115540b4fa7ef4c4a94ddc3e7e58337b0aff61808d",
+    "stage_index": 1,
+    "stage_sha256": "f081338fa4253bb710d96e3ebca686e2394cf20fdbee24dc2082b06d6a2d4520",
+    "result_sha256": "b7e089f8b9014baef56868dcfcc16c3ac9ec61251c7c1d423259986dc9199944",
+    "intent_id": "BBEX-1fd883a9c3e7"
+  },
+  "kind": "DECISION",
+  "decision": "",
+  "reason": "",
+  "annotations": [],
+  "evidence": []
+}
