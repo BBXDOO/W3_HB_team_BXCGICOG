@@ -6,6 +6,9 @@ on:
     paths:
       - "requests/*.md"
       - "tools/request_cycle.py"
+      - "tools/runtime_circuit_intake.py"
+      - "tools/orchestration_support.py"
+      - "w3_tool_store/agent_workbench/tools/system_inspection/**"
       - "modules/registry.json"
       - "modules/*/module.json"
       - "core/modules_loader/**"
@@ -30,9 +33,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Install inspection test dependencies
+        id: dependencies
+        continue-on-error: true
+        run: python -m pip install -r requirements.txt
       - name: Process pending requests
+        id: process
+        continue-on-error: true
         run: python tools/request_cycle.py --pending
       - name: Commit generated artifacts and traces
+        if: always()
         run: |
           if git diff --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
             echo "No request-cycle changes."
@@ -41,6 +51,10 @@ jobs:
           git config user.name "w3-request-cycle"
           git config user.email "w3-request-cycle@users.noreply.github.com"
           git add -A
+          # Inspection stdout is evidence even when global ignore rules hide logs.
+          if [ -d repo_events/system_inspections ]; then
+            git add -f -A -- repo_events/system_inspections
+          fi
           git reset -- modules/*/logs 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No tracked request-cycle outputs to commit."
@@ -48,3 +62,16 @@ jobs:
           fi
           git commit -m "runtime: process pending W3 requests"
           git push origin HEAD:refactor/v0.2
+      - name: Preserve inspection evidence if publication fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3-system-inspection-${{ github.run_id }}
+          path: |
+            repo_events/system_inspections/
+            repo_events/runtime_circuit/
+            requests/results/
+          retention-days: 14
+      - name: Report failed host execution after preserving evidence
+        if: steps.process.outcome == 'failure' || steps.dependencies.outcome == 'failure'
+        run: exit 1
