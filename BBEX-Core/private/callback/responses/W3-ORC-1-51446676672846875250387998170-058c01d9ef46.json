@@ -10,8 +10,8 @@
     "intent_id": "BBEX-881cde02d8e5"
   },
   "kind": "DECISION",
-  "decision": "",
-  "reason": "",
+  "decision": "APPROVE",
+  "reason": " ยอมรับรายงานชุดทดสอบรอบนี้ตามขอบเขตที่ระบุ ส่วนการตรวจระบบใช้งานจริงและข้อสังเกตจากรีวิวให้ติดตามต่อ",
   "annotations": [],
   "evidence": []
 }
