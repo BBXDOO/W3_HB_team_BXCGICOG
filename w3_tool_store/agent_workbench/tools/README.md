@@ -7,7 +7,7 @@ Reserved : ยังไม่เปิดเผยตามต้นแบบ AM
 
 โฟลเดอร์นี้รองรับโครงการเครื่องมือที่เอเจนท์ใช้ทำงาน โดยแยกแต่ละเครื่องมือออกจาก prototype ต้นทางและจากข้อมูลของผู้ใช้เครื่องมือ
 
-**สถานะ: มีตัวเรียกทดสอบ REA MCP แล้ว ยังไม่มีสำเนา REA core ที่นำมาปรับเป็นเครื่องมือใหม่ในโฟลเดอร์นี้**
+**สถานะ: มี REA MCP probe, Battle flow probe และ Android WebView layout probe แล้ว ความพร้อมและหลักฐานแยกตามเครื่องมือ ยังไม่มีสำเนา REA core ที่นำมาปรับเป็นเครื่องมือใหม่ในโฟลเดอร์นี้**
 
 ```yaml
 AM_TYPE: II
@@ -29,6 +29,8 @@ DERIVED_FROM:
 |---|---|
 | [README.md](README.md) | ขอบเขตของพื้นที่ tools |
 | [rea_mcp_probe/](rea_mcp_probe/README.md) | เรียก REA MCP จริง เก็บผลและข้อจำกัด; การวิเคราะห์รอบแรกติด host process ownership |
+| [battle_flow_probe/](battle_flow_probe/README.md) | ทดลอง logic สนาม มานา การ์ด เฟส และเทิร์นด้วย Node; ไม่ใช่ผลทดสอบ UI/APK |
+| [android_webview_probe/](android_webview_probe/README.md) | ตรวจ layout ด้วย Chromium เมื่อมี dependency; ยังไม่ใช่ Android WebView/ColorOS จริง |
 
 ### M2 — เอกสารอ้างอิงนอกพื้นที่
 

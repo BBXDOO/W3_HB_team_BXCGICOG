@@ -7,7 +7,7 @@ Reserved : ยังไม่เปิดเผยตามต้นแบบ AM
 
 โฟลเดอร์นี้รองรับข้อกำหนดการใช้เครื่องมือกับระบบเฉพาะ เช่น MPCP และ W3Lgu โดยอ้างกติกาต้นทางของระบบนั้น และแยกจากโค้ดเครื่องมือที่ใช้ร่วมกัน
 
-**สถานะ: มีเอกสารกำหนดพื้นที่ ยังไม่มี profile ของ MPCP, W3Lgu หรือระบบอื่นที่เชื่อมใช้งานได้**
+**สถานะ: มี OPPO Android probe สำหรับ local Blueprint + File.void แล้ว ดูผลและข้อจำกัดใน README ย่อย เป็นการสร้างโครงและเอกสาร ไม่ใช่การรัน APK หรือจำลอง OPPO/ColorOS**
 
 ```yaml
 AM_TYPE: II
@@ -27,7 +27,8 @@ profile ที่มีเพียงแผนหรือเอกสารต
 
 | รายการ | หน้าที่ |
 |---|---|
-| [README.md](README.md) | ขอบเขตของพื้นที่ profiles; ยังไม่มี profile ย่อย |
+| [README.md](README.md) | ขอบเขตของพื้นที่ profiles |
+| [oppo_android_probe/](oppo_android_probe/README.md) | local Blueprint + File.void; มี [ผลทดลอง 2026-10-27](oppo_android_probe/RESULT_2026-10-27.md) แยกจากการทดสอบเครื่องจริง |
 
 ### M2 — เอกสารอ้างอิงนอกพื้นที่
 
