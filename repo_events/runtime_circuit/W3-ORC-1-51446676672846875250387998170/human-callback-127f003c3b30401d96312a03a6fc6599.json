@@ -1,0 +1,97 @@
+{
+  "schema": "w3.callback_receipt/1",
+  "callback_id": "546d54161f7582892ce07f3a9c97b232b9f73e49add51bfadcbe710743e78fe8",
+  "callback": {
+    "schema": "w3.human_callback/1",
+    "request_id": "RQ-W3-SYSTEM-INSPECTION-B-20261028-001",
+    "binding": {
+      "task_id": "W3-ORC-1-51446676672846875250387998170",
+      "request_sha256": "09a37a2c19ad1d390a1e0c55c1a47f62b3ac3a12cb99008f53e7e7551e074c39",
+      "stage_index": 1,
+      "stage_sha256": "79bdd172c1ec395cad021b89d78bdc7f15f658c3cd5c10860d113355d8667d2e",
+      "result_sha256": "49d386bc5b46a152cd6cc9fc29b832e58f88853965a077a83e78b1c058341c13",
+      "intent_id": "BBEX-881cde02d8e5"
+    },
+    "kind": "DECISION",
+    "decision": "APPROVE",
+    "reason": " ยอมรับรายงานชุดทดสอบรอบนี้ตามขอบเขตที่ระบุ ส่วนการตรวจระบบใช้งานจริงและข้อสังเกตจากรีวิวให้ติดตามต่อ",
+    "annotations": [
+      "ให้ติดตามการตรวจระบบใช้งานจริงและข้อสังเกตจากรีวิวต่อ"
+    ],
+    "evidence": []
+  },
+  "authority": {
+    "authority": "BBX19",
+    "authority_class": "CREATOR_ORIGIN",
+    "verified": true,
+    "verified_by": "BBX19",
+    "delegation_evidence": null
+  },
+  "host_evidence": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/actions/runs/40709411629",
+  "intent_id": "BBEX-881cde02d8e5",
+  "response": {
+    "contract_version": "1.0",
+    "status": "COMPLETED",
+    "module": "BBX19",
+    "task": "RQ-W3-SYSTEM-INSPECTION-B-20261028-001",
+    "action": "human_decision_recorded",
+    "decision": "APPROVE",
+    "decision_state": "FINAL_DECISION_RECORDED",
+    "summary": "BBX19 recorded APPROVE for 'RQ-W3-SYSTEM-INSPECTION-B-20261028-001'. No downstream action was executed.",
+    "reason": "ยอมรับรายงานชุดทดสอบรอบนี้ตามขอบเขตที่ระบุ ส่วนการตรวจระบบใช้งานจริงและข้อสังเกตจากรีวิวให้ติดตามต่อ",
+    "decision_record": {
+      "record_type": "w3.human_decision",
+      "decision_id": "BBX19-2e2f89c1ba28",
+      "decision": "APPROVE",
+      "decided_by": "BBX19",
+      "task": "RQ-W3-SYSTEM-INSPECTION-B-20261028-001",
+      "target": "W3-ORC-1-51446676672846875250387998170:stage:1",
+      "reason": "ยอมรับรายงานชุดทดสอบรอบนี้ตามขอบเขตที่ระบุ ส่วนการตรวจระบบใช้งานจริงและข้อสังเกตจากรีวิวให้ติดตามต่อ",
+      "evidence": [
+        "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/actions/runs/40709411629"
+      ],
+      "annotations": [
+        "ให้ติดตามการตรวจระบบใช้งานจริงและข้อสังเกตจากรีวิวต่อ"
+      ],
+      "trace_id": "",
+      "intent_link": {
+        "intent_id": "BBEX-881cde02d8e5",
+        "record_type": "w3.intent_record",
+        "state": "READY_FOR_ACTION",
+        "alignment_state": "OBSERVE",
+        "source_module": "BBEX-Core",
+        "override_applied": false
+      },
+      "authority_context": {
+        "authority_class": "CREATOR_ORIGIN",
+        "authority": "BBX19",
+        "verified_by": "BBX19"
+      },
+      "recorded_at": "2026-10-28T14:47:31.945910Z"
+    },
+    "intent_link": {
+      "intent_id": "BBEX-881cde02d8e5",
+      "record_type": "w3.intent_record",
+      "state": "READY_FOR_ACTION",
+      "alignment_state": "OBSERVE",
+      "source_module": "BBEX-Core",
+      "override_applied": false
+    },
+    "artifacts": [
+      {
+        "kind": "w3.human_decision.inline",
+        "id": "BBX19-2e2f89c1ba28"
+      }
+    ],
+    "mutated": false,
+    "traceable": true,
+    "review": false,
+    "execution": {
+      "allowed": true,
+      "performed": false,
+      "reason": "This adapter records authority; the authorized runtime performs the action."
+    }
+  },
+  "before_status": "WAITING_HUMAN",
+  "recorded_at": "2026-10-28T14:47:31.945937Z"
+}

@@ -60,7 +60,12 @@
           "reason": "BBEX perceives and preserves intent; BBX19 owns contextual decision and action."
         }
       },
-      "callbacks": {},
+      "callbacks": {
+        "546d54161f7582892ce07f3a9c97b232b9f73e49add51bfadcbe710743e78fe8": {
+          "state": "PENDING",
+          "receipt": "repo_events/runtime_circuit/W3-ORC-1-51446676672846875250387998170/human-callback-127f003c3b30401d96312a03a6fc6599.json"
+        }
+      },
       "response_path": "BBEX-Core/private/callback/responses/W3-ORC-1-51446676672846875250387998170-058c01d9ef46.json"
     }
   },
