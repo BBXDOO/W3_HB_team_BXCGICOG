@@ -1,12 +1,12 @@
 # รายงาน RQ-W3-SYSTEM-RECHECK-20261028-001
 
-- สถานะ: `WAITING_HUMAN`
+- สถานะ: `COMPLETED`
 - [ใบงานต้นทาง](../RQ-W3-SYSTEM-RECHECK-20261028-001.md)
 - [ผลแบบ JSON](RQ-W3-SYSTEM-RECHECK-20261028-001_RESULT.json)
 
 ## ผลที่บันทึกไว้
 
-Request RQ-W3-SYSTEM-RECHECK-20261028-001: WAITING_HUMAN; 2 executor result(s), 1 file artifact(s).
+Request RQ-W3-SYSTEM-RECHECK-20261028-001: COMPLETED; 2 executor result(s), 1 file artifact(s).
 
 ## ผลงานและหลักฐาน
 
@@ -33,7 +33,6 @@ Request RQ-W3-SYSTEM-RECHECK-20261028-001: WAITING_HUMAN; 2 executor result(s), 
 
 ### ตอบกลับรายงาน
 
-สถานะ `WAITING_HUMAN` — ตอบโดยอ้างอิงใบงาน `RQ-W3-SYSTEM-RECHECK-20261028-001`
+วงจรนี้จบที่ `COMPLETED` แล้ว ไม่ต้องตรวจรับซ้ำ
 
-- [📝 เปิดฟอร์มตอบรายงานนี้](../../BBEX-Core/private/callback/responses/W3-ORC-1-4458783143605074611027405285-6b29a23a88af.json)
 - [📑 วิธีตอบและความหมายของคำตอบ](../../BBEX-Core/private/callback/README.md)

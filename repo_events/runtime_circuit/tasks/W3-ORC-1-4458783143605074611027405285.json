@@ -62,8 +62,9 @@
       },
       "callbacks": {
         "f04659d7fc8201cf65d763bdeea0b2f0d65548fe7ce941112df7a15597809aed": {
-          "state": "PENDING",
-          "receipt": "repo_events/runtime_circuit/W3-ORC-1-4458783143605074611027405285/human-callback-65c03286e38e4ee694c810f1e12d41a5.json"
+          "state": "APPLIED",
+          "receipt": "repo_events/runtime_circuit/W3-ORC-1-4458783143605074611027405285/human-callback-65c03286e38e4ee694c810f1e12d41a5.json",
+          "after_status": "COMPLETED"
         }
       },
       "response_path": "BBEX-Core/private/callback/responses/W3-ORC-1-4458783143605074611027405285-6b29a23a88af.json"
@@ -71,8 +72,8 @@
   },
   "source_id": "RQ-W3-SYSTEM-RECHECK-20261028-001",
   "created_at": "2026-10-28T01:15:56.436762Z",
-  "updated_at": "2026-10-28T01:15:56.487934Z",
-  "status": "WAITING_HUMAN",
+  "updated_at": "2026-10-28T01:38:18.768642Z",
+  "status": "COMPLETED",
   "destination": {
     "module": "Gemini",
     "task": "verify"
@@ -173,6 +174,18 @@
       "event": "WAITING_HUMAN",
       "actor": "Orchestration",
       "detail": "human review of verified stage"
+    },
+    {
+      "at": "2026-10-28T01:38:18.763702Z",
+      "event": "VERIFYING",
+      "actor": "trusted-verifier",
+      "detail": "reviewed stage postcondition verified"
+    },
+    {
+      "at": "2026-10-28T01:38:18.768642Z",
+      "event": "COMPLETED",
+      "actor": "Orchestration",
+      "detail": "all explicit stages verified"
     }
   ],
   "evidence": [
@@ -220,14 +233,33 @@
       "at": "2026-10-28T01:15:56.486836Z",
       "ref": "repo_events/runtime_circuit/W3-ORC-1-4458783143605074611027405285/verification-3847cbe7bace4ab2ae00aeb6fdebe9dd.json",
       "actor": "trusted-verifier"
+    },
+    {
+      "at": "2026-10-28T01:38:18.763702Z",
+      "ref": "repo_events/runtime_circuit/W3-ORC-1-4458783143605074611027405285/verification-934848fe19a54d9fbf5bf93d89fc2604.json",
+      "actor": "trusted-verifier"
+    },
+    {
+      "at": "2026-10-28T01:38:18.763727Z",
+      "actor": "BBX19",
+      "ref": "repo_events/runtime_circuit/W3-ORC-1-4458783143605074611027405285/human-callback-65c03286e38e4ee694c810f1e12d41a5.json"
+    },
+    {
+      "at": "2026-10-28T01:38:18.769738Z",
+      "actor": "human-callback",
+      "ref": "repo_events/runtime_circuit/W3-ORC-1-4458783143605074611027405285/human-callback-65c03286e38e4ee694c810f1e12d41a5.json"
     }
   ],
   "blocker": null,
   "support": [],
   "human_review_required": true,
-  "human_approval": null,
+  "human_approval": {
+    "human": "BBX19",
+    "evidence": "repo_events/runtime_circuit/W3-ORC-1-4458783143605074611027405285/human-callback-65c03286e38e4ee694c810f1e12d41a5.json",
+    "at": "2026-10-28T01:38:18.763724Z"
+  },
   "mutated": true,
-  "completed_at": null,
+  "completed_at": "2026-10-28T01:38:18.768642Z",
   "runtime_circuit": {
     "version": 1,
     "stages": [
