@@ -10,8 +10,8 @@
     "intent_id": "BBEX-1fd883a9c3e7"
   },
   "kind": "DECISION",
-  "decision": "Approved",
-  "reason": "ยอมรับผลวิเคราะห์ log รอบนี้ครับ",
-  "annotations": [],
+  "decision": "APPROVE",
+  "reason": "",
+  "annotations": [ยอมรับผลวิเคราะห์ log รอบนี้],
   "evidence": []
 }
