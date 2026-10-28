@@ -1,0 +1,97 @@
+{
+  "schema": "w3.callback_receipt/1",
+  "callback_id": "f04659d7fc8201cf65d763bdeea0b2f0d65548fe7ce941112df7a15597809aed",
+  "callback": {
+    "schema": "w3.human_callback/1",
+    "request_id": "RQ-W3-SYSTEM-RECHECK-20261028-001",
+    "binding": {
+      "task_id": "W3-ORC-1-4458783143605074611027405285",
+      "request_sha256": "b0cbd0b1e52364f7a513a3115540b4fa7ef4c4a94ddc3e7e58337b0aff61808d",
+      "stage_index": 1,
+      "stage_sha256": "f081338fa4253bb710d96e3ebca686e2394cf20fdbee24dc2082b06d6a2d4520",
+      "result_sha256": "b7e089f8b9014baef56868dcfcc16c3ac9ec61251c7c1d423259986dc9199944",
+      "intent_id": "BBEX-1fd883a9c3e7"
+    },
+    "kind": "DECISION",
+    "decision": "APPROVE",
+    "reason": "ยอมรับผลวิเคราะห์ log รอบนี้ครับ",
+    "annotations": [
+      "ยอมรับผลวิเคราะห์ log รอบนี้"
+    ],
+    "evidence": []
+  },
+  "authority": {
+    "authority": "BBX19",
+    "authority_class": "CREATOR_ORIGIN",
+    "verified": true,
+    "verified_by": "BBX19",
+    "delegation_evidence": null
+  },
+  "host_evidence": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/actions/runs/40616214091",
+  "intent_id": "BBEX-1fd883a9c3e7",
+  "response": {
+    "contract_version": "1.0",
+    "status": "COMPLETED",
+    "module": "BBX19",
+    "task": "RQ-W3-SYSTEM-RECHECK-20261028-001",
+    "action": "human_decision_recorded",
+    "decision": "APPROVE",
+    "decision_state": "FINAL_DECISION_RECORDED",
+    "summary": "BBX19 recorded APPROVE for 'RQ-W3-SYSTEM-RECHECK-20261028-001'. No downstream action was executed.",
+    "reason": "ยอมรับผลวิเคราะห์ log รอบนี้ครับ",
+    "decision_record": {
+      "record_type": "w3.human_decision",
+      "decision_id": "BBX19-5699da02faa2",
+      "decision": "APPROVE",
+      "decided_by": "BBX19",
+      "task": "RQ-W3-SYSTEM-RECHECK-20261028-001",
+      "target": "W3-ORC-1-4458783143605074611027405285:stage:1",
+      "reason": "ยอมรับผลวิเคราะห์ log รอบนี้ครับ",
+      "evidence": [
+        "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/actions/runs/40616214091"
+      ],
+      "annotations": [
+        "ยอมรับผลวิเคราะห์ log รอบนี้"
+      ],
+      "trace_id": "",
+      "intent_link": {
+        "intent_id": "BBEX-1fd883a9c3e7",
+        "record_type": "w3.intent_record",
+        "state": "READY_FOR_ACTION",
+        "alignment_state": "OBSERVE",
+        "source_module": "BBEX-Core",
+        "override_applied": false
+      },
+      "authority_context": {
+        "authority_class": "CREATOR_ORIGIN",
+        "authority": "BBX19",
+        "verified_by": "BBX19"
+      },
+      "recorded_at": "2026-10-28T01:38:17.010088Z"
+    },
+    "intent_link": {
+      "intent_id": "BBEX-1fd883a9c3e7",
+      "record_type": "w3.intent_record",
+      "state": "READY_FOR_ACTION",
+      "alignment_state": "OBSERVE",
+      "source_module": "BBEX-Core",
+      "override_applied": false
+    },
+    "artifacts": [
+      {
+        "kind": "w3.human_decision.inline",
+        "id": "BBX19-5699da02faa2"
+      }
+    ],
+    "mutated": false,
+    "traceable": true,
+    "review": false,
+    "execution": {
+      "allowed": true,
+      "performed": false,
+      "reason": "This adapter records authority; the authorized runtime performs the action."
+    }
+  },
+  "before_status": "WAITING_HUMAN",
+  "recorded_at": "2026-10-28T01:38:17.010125Z"
+}
