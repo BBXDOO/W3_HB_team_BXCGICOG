@@ -1,0 +1,17 @@
+{
+  "schema": "w3.human_callback/1",
+  "request_id": "RQ-W3-SYSTEM-INSPECTION-B-20261028-001",
+  "binding": {
+    "task_id": "W3-ORC-1-51446676672846875250387998170",
+    "request_sha256": "09a37a2c19ad1d390a1e0c55c1a47f62b3ac3a12cb99008f53e7e7551e074c39",
+    "stage_index": 1,
+    "stage_sha256": "79bdd172c1ec395cad021b89d78bdc7f15f658c3cd5c10860d113355d8667d2e",
+    "result_sha256": "49d386bc5b46a152cd6cc9fc29b832e58f88853965a077a83e78b1c058341c13",
+    "intent_id": "BBEX-881cde02d8e5"
+  },
+  "kind": "DECISION",
+  "decision": "",
+  "reason": "",
+  "annotations": [],
+  "evidence": []
+}

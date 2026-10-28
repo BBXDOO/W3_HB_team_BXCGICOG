@@ -1,0 +1,5 @@
+{
+  "module": "Gemini",
+  "task": "verify",
+  "accepted_by": "local runtime bridge"
+}

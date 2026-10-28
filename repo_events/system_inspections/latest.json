@@ -1,0 +1,8 @@
+{
+  "report": "repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/report.json",
+  "overall": "PASS",
+  "inspection_state": "FINISHED",
+  "updated_at": "2026-10-28T14:35:51.601941Z",
+  "finished_at": "2026-10-28T14:35:51.598509Z",
+  "blockers": []
+}

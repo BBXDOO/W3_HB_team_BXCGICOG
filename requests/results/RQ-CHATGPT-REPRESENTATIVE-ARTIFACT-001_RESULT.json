@@ -71,7 +71,7 @@
   "review": true,
   "checkin": {
     "doc_id": "CID_@R000A1",
-    "entry_no": 12,
+    "entry_no": 17,
     "path": "logs/check-in/CID_@R000A1.md"
   },
   "request_log": "logs/request_cycle/RQ-CHATGPT-REPRESENTATIVE-ARTIFACT-001.md",

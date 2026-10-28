@@ -1,0 +1,364 @@
+{
+  "schema": "w3.system_inspection/1",
+  "run_id": "66e117ef8f3345d9b6da2f87c7203cec",
+  "task_id": "W3-ORC-1-51446676672846875250387998170",
+  "source_id": "RQ-W3-SYSTEM-INSPECTION-B-20261028-001",
+  "started_at": "2026-10-28T14:35:43.509701Z",
+  "finished_at": "2026-10-28T14:35:51.598509Z",
+  "inspection_state": "FINISHED",
+  "coverage": "listed regression and native contract checks; isolated test execution",
+  "limitations": [
+    "Executes the listed repository regression/contract tests on isolated copies with test inputs.",
+    "Does not prove one production request traverses all seven systems or authorize deployment.",
+    "A failed, skipped or unavailable suite does not certify the health of that system.",
+    "Inspection completion and system health are separate; unresolved findings remain open."
+  ],
+  "systems": [
+    {
+      "system": "MPCP",
+      "entry_point": "protocol/mpcp/runtime/README.md",
+      "tests": [
+        "tests/test_mpcp_agent_sandbox.py",
+        "tests/test_mpcp_paper_runtime.py",
+        "tests/test_mpcp_condien_equipment.py"
+      ],
+      "status": "PASS",
+      "started_at": "2026-10-28T14:35:43.511323Z",
+      "exit_code": 0,
+      "counts": {
+        "tests": 45,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed",
+      "elapsed_seconds": 3.344,
+      "input_hashes": {
+        "protocol/mpcp/runtime/README.md": "4559bb1708537302037982516e4c4ab6e4de05d0bd4847b1ab9e4c8848dfada7",
+        "tests/test_mpcp_agent_sandbox.py": "b653fd03555e1f789bd852347d8afcc82406bf11bbcf8beacf06a8ddf5725b87",
+        "tests/test_mpcp_paper_runtime.py": "20a3e27cbaf69438c1c0c079c498dd2775138d3028f108a6f98a9652d3b672c2",
+        "tests/test_mpcp_condien_equipment.py": "48f71a762117336a4f1ef3f159fca9944bafbb4de9268c6d663a027c6d7cc2ea"
+      },
+      "input_kind": "repository test inputs on isolated source copy",
+      "git_context": "temporary local protocol/src snapshot; not the source commit",
+      "recipient": "pytest subprocess in isolated workspace",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_mpcp_agent_sandbox.py",
+        "tests/test_mpcp_paper_runtime.py",
+        "tests/test_mpcp_condien_equipment.py",
+        "-q",
+        "-o",
+        "addopts=",
+        "--junitxml=/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/MPCP/junit.xml"
+      ],
+      "source_unchanged": true,
+      "finished_at": "2026-10-28T14:35:46.854839Z",
+      "evidence": [
+        {
+          "path": "repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/MPCP/pytest.log",
+          "sha256": "a906e700d147f9020e1991349aadf84314be627e7936e998b28ba4dadee0a6bb"
+        },
+        {
+          "path": "repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/MPCP/junit.xml",
+          "sha256": "29fc491716954d4b17344d68142023a5f5944fcef0e7b59c0f94fab7eba38637"
+        }
+      ]
+    },
+    {
+      "system": "E-CS",
+      "entry_point": "ecs/event_chain_system.py",
+      "tests": [
+        "tests/test_ecs_native_inspection.py",
+        "tests/test_event_chain.py"
+      ],
+      "status": "PASS",
+      "started_at": "2026-10-28T14:35:46.862399Z",
+      "exit_code": 0,
+      "counts": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed",
+      "elapsed_seconds": 0.826,
+      "input_hashes": {
+        "ecs/event_chain_system.py": "861e2bf29419555772798dd78870d5882e9e986e5b508f34a9daaee8c08388c1",
+        "tests/test_ecs_native_inspection.py": "4f173c50416823e7f0c98ee6b613bd2667058a91d9efc01442ee3a1a8f00c828",
+        "tests/test_event_chain.py": "15f2619bf43abed5a8521c2e7c58ec87f232d85859690d6a291b816f884dac63"
+      },
+      "input_kind": "repository test inputs on isolated source copy",
+      "git_context": "temporary local protocol/src snapshot; not the source commit",
+      "recipient": "pytest subprocess in isolated workspace",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_ecs_native_inspection.py",
+        "tests/test_event_chain.py",
+        "-q",
+        "-o",
+        "addopts=",
+        "--junitxml=/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/E-CS/junit.xml"
+      ],
+      "source_unchanged": true,
+      "finished_at": "2026-10-28T14:35:47.687933Z",
+      "evidence": [
+        {
+          "path": "repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/E-CS/pytest.log",
+          "sha256": "e23c310106c9f55798ef1abeed64f0077c877c5d1dfea105014fb064e968b28d"
+        },
+        {
+          "path": "repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/E-CS/junit.xml",
+          "sha256": "0f712014a0c851c3b5cda89ef6a34fdce4b97d6ca83c31c82cc11d0890ca05e1"
+        }
+      ]
+    },
+    {
+      "system": "W3Lgu",
+      "entry_point": "core/runtime/w3lgu_mfc_logic/psp2_mfc_logic.py",
+      "tests": [
+        "tests/test_w3lgu_mfc_logic.py",
+        "tests/test_w3lgu_operational.py"
+      ],
+      "status": "PASS",
+      "started_at": "2026-10-28T14:35:47.690809Z",
+      "exit_code": 0,
+      "counts": {
+        "tests": 35,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed",
+      "elapsed_seconds": 0.833,
+      "input_hashes": {
+        "core/runtime/w3lgu_mfc_logic/psp2_mfc_logic.py": "ff405e6405e29461c8027fa241f9f5d37282a41695bb0a3f7023c96fe5067571",
+        "tests/test_w3lgu_mfc_logic.py": "4eabc1abc3ac7f38bda8b1b0b3e1ffb6cea162ed87e2cf45c903ddf31247214f",
+        "tests/test_w3lgu_operational.py": "73f7c040d5df2270e52b5ae88f4f884c28d3c47263a4be4c09034214b0b6f80c"
+      },
+      "input_kind": "repository test inputs on isolated source copy",
+      "git_context": "temporary local protocol/src snapshot; not the source commit",
+      "recipient": "pytest subprocess in isolated workspace",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_w3lgu_mfc_logic.py",
+        "tests/test_w3lgu_operational.py",
+        "-q",
+        "-o",
+        "addopts=",
+        "--junitxml=/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/W3Lgu/junit.xml"
+      ],
+      "source_unchanged": true,
+      "finished_at": "2026-10-28T14:35:48.524299Z",
+      "evidence": [
+        {
+          "path": "repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/W3Lgu/pytest.log",
+          "sha256": "76705d143983e8add8a0b8a4da87a890c97ca0d444587bdccba01d07fcded7d1"
+        },
+        {
+          "path": "repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/W3Lgu/junit.xml",
+          "sha256": "29e0cb970b9738ccc3f7c42d536849aecd09f182e9c4f5a3f2533ed5dc67fe4c"
+        }
+      ]
+    },
+    {
+      "system": "Cross-X",
+      "entry_point": "cross_x/core.py",
+      "tests": [
+        "tests/test_cross_x_config.py"
+      ],
+      "status": "PASS",
+      "started_at": "2026-10-28T14:35:48.527374Z",
+      "exit_code": 0,
+      "counts": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed",
+      "elapsed_seconds": 0.826,
+      "input_hashes": {
+        "cross_x/core.py": "9ed6768d77c6b9d1a8345ac4b567b448862641ad4f1e1ea9ec7c25b427adb491",
+        "tests/test_cross_x_config.py": "2e843d6afcfa0db0fb14c81694d8f4938c70ba080033c76ce7c9924025eea19a"
+      },
+      "input_kind": "repository test inputs on isolated source copy",
+      "git_context": "temporary local protocol/src snapshot; not the source commit",
+      "recipient": "pytest subprocess in isolated workspace",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_cross_x_config.py",
+        "-q",
+        "-o",
+        "addopts=",
+        "--junitxml=/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/Cross-X/junit.xml"
+      ],
+      "source_unchanged": true,
+      "finished_at": "2026-10-28T14:35:49.353377Z",
+      "evidence": [
+        {
+          "path": "repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/Cross-X/pytest.log",
+          "sha256": "3f5dd2ce5e06c848ad8c0381c68209b2ce74c5d5d8cdc86b6a37fb014832cb57"
+        },
+        {
+          "path": "repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/Cross-X/junit.xml",
+          "sha256": "958497c17fbc660a0adcef7b7e77df3c01eba1dce2dd5fa8261115d5a4dc35d4"
+        }
+      ]
+    },
+    {
+      "system": "CROLL",
+      "entry_point": "croll/contracts.py",
+      "tests": [
+        "croll/test_contracts.py",
+        "croll/test_cross_l_dispatcher.py"
+      ],
+      "status": "PASS",
+      "started_at": "2026-10-28T14:35:49.356443Z",
+      "exit_code": 0,
+      "counts": {
+        "tests": 17,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed",
+      "elapsed_seconds": 0.726,
+      "input_hashes": {
+        "croll/contracts.py": "01ae99de296e8723183154a072eadc86265b8dffef60a52ddc60805c28e06eda",
+        "croll/test_contracts.py": "f41b717287bec92bc0f4f0fe39be39d99d2f2cd3457e947c5c40a92b96f1d182",
+        "croll/test_cross_l_dispatcher.py": "2ad23780d1e6809e0a6b231aaf06062fc2e94ecc91cbf8eb3af801828455f7e5"
+      },
+      "input_kind": "repository test inputs on isolated source copy",
+      "git_context": "temporary local protocol/src snapshot; not the source commit",
+      "recipient": "pytest subprocess in isolated workspace",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+        "-m",
+        "pytest",
+        "croll/test_contracts.py",
+        "croll/test_cross_l_dispatcher.py",
+        "-q",
+        "-o",
+        "addopts=",
+        "--junitxml=/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/CROLL/junit.xml"
+      ],
+      "source_unchanged": true,
+      "finished_at": "2026-10-28T14:35:50.082374Z",
+      "evidence": [
+        {
+          "path": "repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/CROLL/pytest.log",
+          "sha256": "1b2d37256ddb5ab4680262131858b6acbcf688867a02030558be6f526cb9d4fb"
+        },
+        {
+          "path": "repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/CROLL/junit.xml",
+          "sha256": "00882671983a083d9340cddf3472f76c891e60de4d7272874c91f9959f2f6268"
+        }
+      ]
+    },
+    {
+      "system": "Table-X",
+      "entry_point": "croll/table_x.py",
+      "tests": [
+        "croll/test_table_x.py"
+      ],
+      "status": "PASS",
+      "started_at": "2026-10-28T14:35:50.085691Z",
+      "exit_code": 0,
+      "counts": {
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed",
+      "elapsed_seconds": 0.729,
+      "input_hashes": {
+        "croll/table_x.py": "ba8cf171d9ed913cffe77c243c3f570893e6be5e2c9c5c6b60d2616f4e7b0d82",
+        "croll/test_table_x.py": "291d94362b0afc360f3abe4b6a4427b203217e8fd92a1ea293b6a9e838d11b9e"
+      },
+      "input_kind": "repository test inputs on isolated source copy",
+      "git_context": "temporary local protocol/src snapshot; not the source commit",
+      "recipient": "pytest subprocess in isolated workspace",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+        "-m",
+        "pytest",
+        "croll/test_table_x.py",
+        "-q",
+        "-o",
+        "addopts=",
+        "--junitxml=/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/Table-X/junit.xml"
+      ],
+      "source_unchanged": true,
+      "finished_at": "2026-10-28T14:35:50.814802Z",
+      "evidence": [
+        {
+          "path": "repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/Table-X/pytest.log",
+          "sha256": "400d3e5280e7e212b6d7700ff7ae82eb036b88bc003795586d70eafeee489795"
+        },
+        {
+          "path": "repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/Table-X/junit.xml",
+          "sha256": "200147b363898d0259f2284d389ef3870b036e82b3d7eebca55f35f6525b942d"
+        }
+      ]
+    },
+    {
+      "system": "PX",
+      "entry_point": "protocol/w3lgu/px.py",
+      "tests": [
+        "tests/test_px_w3db_append_flow.py"
+      ],
+      "status": "PASS",
+      "started_at": "2026-10-28T14:35:50.817931Z",
+      "exit_code": 0,
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed",
+      "elapsed_seconds": 0.777,
+      "input_hashes": {
+        "protocol/w3lgu/px.py": "34de47f636cce6be7995f1b3b6cf57e7c82dd02d1c76dc62b82c9a8a515a17cb",
+        "tests/test_px_w3db_append_flow.py": "edfb09c3c790bcd634eaed294f75aaa4ebf1ef968d05ec15338c8d77770d74d2"
+      },
+      "input_kind": "repository test inputs on isolated source copy",
+      "git_context": "temporary local protocol/src snapshot; not the source commit",
+      "recipient": "pytest subprocess in isolated workspace",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_px_w3db_append_flow.py",
+        "-q",
+        "-o",
+        "addopts=",
+        "--junitxml=/home/runner/work/W3_HB_team_BXCGICOG/W3_HB_team_BXCGICOG/repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/PX/junit.xml"
+      ],
+      "source_unchanged": true,
+      "finished_at": "2026-10-28T14:35:51.595286Z",
+      "evidence": [
+        {
+          "path": "repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/PX/pytest.log",
+          "sha256": "8edbc11f8c91bdac1389603383d2797f1ab64c9491d441e793858985b2bbf615"
+        },
+        {
+          "path": "repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/PX/junit.xml",
+          "sha256": "1b8302228e71071e453e84ffbb58bb4bb62ebc4b5bba924ddba56f3b21776632"
+        }
+      ]
+    }
+  ],
+  "overall": "PASS",
+  "blockers": []
+}

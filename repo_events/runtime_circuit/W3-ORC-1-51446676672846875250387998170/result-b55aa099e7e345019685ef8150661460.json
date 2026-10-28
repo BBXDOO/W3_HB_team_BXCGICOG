@@ -1,0 +1,249 @@
+{
+  "status": "COMPLETED",
+  "task": "verify",
+  "module": "Gemini",
+  "output": "Gemini checked 32 explicit check(s) for [W3]; 0 failed.",
+  "agent_result": {
+    "contract_version": "1.0",
+    "status": "COMPLETED",
+    "module": "Gemini",
+    "task": "verify",
+    "action": "completed verification",
+    "decision": "VERIFIED",
+    "summary": "Gemini checked 32 explicit check(s) for [W3]; 0 failed.",
+    "reason": "Explicit checks passed with evidence. Duty: verify system contract & logic27 alignment.",
+    "artifacts": [
+      {
+        "type": "verification_stamp",
+        "target": "W3",
+        "verified_by": "Gemini",
+        "event_identity": {
+          "chain_id": "CH-LOCAL",
+          "event_id": "EV-UNKNOWN",
+          "sequence": 1,
+          "owner_scope": "Gemini-Field"
+        }
+      }
+    ],
+    "details": {
+      "mpcp_role": "validation",
+      "main_duty": "verify system contract & logic27 alignment",
+      "experience": "5 prior matches, 4 from Gemini, 4 similar task(s), reuse: structural_review, verify",
+      "checks": [
+        {
+          "name": "report_hash",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "finished_with_declared_scope",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "all_systems_accounted_for",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "overall_matches_outcomes",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "MPCP:catalog",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "MPCP:inputs_unchanged",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "MPCP:evidence",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "MPCP:outcome",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "E-CS:catalog",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "E-CS:inputs_unchanged",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "E-CS:evidence",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "E-CS:outcome",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "W3Lgu:catalog",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "W3Lgu:inputs_unchanged",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "W3Lgu:evidence",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "W3Lgu:outcome",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "Cross-X:catalog",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "Cross-X:inputs_unchanged",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "Cross-X:evidence",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "Cross-X:outcome",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "CROLL:catalog",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "CROLL:inputs_unchanged",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "CROLL:evidence",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "CROLL:outcome",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "Table-X:catalog",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "Table-X:inputs_unchanged",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "Table-X:evidence",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "Table-X:outcome",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "PX:catalog",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "PX:inputs_unchanged",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "PX:evidence",
+          "passed": true,
+          "state": "PASS"
+        },
+        {
+          "name": "PX:outcome",
+          "passed": true,
+          "state": "PASS"
+        }
+      ],
+      "failed_checks": [],
+      "unresolved_checks": [],
+      "evidence_supplied": true,
+      "identity_supplied": false
+    },
+    "mutated": false,
+    "traceable": true,
+    "review": false,
+    "capability": "system_inspection_verified",
+    "checked_agent_result": {
+      "contract_version": "1.0",
+      "module": "ChatGPT",
+      "task": "design",
+      "status": "COMPLETED",
+      "capability": "system_inspection",
+      "review": false,
+      "traceable": true,
+      "mutated": true,
+      "summary": "Inspected 7 systems; listed_checks=PASS; 0 separate follow-ups. Not a production chain certification.",
+      "artifacts": [
+        {
+          "path": "repo_events/system_inspections/runs/66e117ef8f3345d9b6da2f87c7203cec/report.json",
+          "sha256": "02a7d119a81a5760fb8ac8de0979a6d2a57300d2d16fb709be1926193eb14577",
+          "kind": "w3.system_inspection.json"
+        }
+      ]
+    }
+  },
+  "result_validation": {
+    "status": "valid",
+    "module": "Gemini",
+    "missing_fields": [],
+    "invalid_fields": [],
+    "identity_missing_fields": [],
+    "blocking_status": null,
+    "mutated": false,
+    "traceable": true,
+    "review": false
+  },
+  "artifacts": [
+    {
+      "type": "verification_stamp",
+      "target": "W3",
+      "verified_by": "Gemini",
+      "event_identity": {
+        "chain_id": "CH-LOCAL",
+        "event_id": "EV-UNKNOWN",
+        "sequence": 1,
+        "owner_scope": "Gemini-Field"
+      }
+    }
+  ],
+  "latency_ms": 7,
+  "time": "2026-10-28T14:35:51Z",
+  "trace_id": "a3801fa7bce248c7aaad4f52eabda346"
+}
