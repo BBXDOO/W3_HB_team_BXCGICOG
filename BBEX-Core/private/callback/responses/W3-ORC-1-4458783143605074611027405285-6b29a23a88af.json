@@ -11,7 +11,7 @@
   },
   "kind": "DECISION",
   "decision": "APPROVE",
-  "reason": "",
-  "annotations": [ยอมรับผลวิเคราะห์ log รอบนี้],
+  "reason": "ยอมรับผลวิเคราะห์ log รอบนี้ครับ",
+  "annotations": ["ยอมรับผลวิเคราะห์ log รอบนี้"],
   "evidence": []
 }
