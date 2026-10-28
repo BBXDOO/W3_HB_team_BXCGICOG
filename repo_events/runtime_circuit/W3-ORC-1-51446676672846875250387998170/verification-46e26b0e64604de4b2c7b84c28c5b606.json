@@ -1,0 +1,137 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "report_hash",
+      "passed": true
+    },
+    {
+      "name": "finished_with_declared_scope",
+      "passed": true
+    },
+    {
+      "name": "all_systems_accounted_for",
+      "passed": true
+    },
+    {
+      "name": "overall_matches_outcomes",
+      "passed": true
+    },
+    {
+      "name": "MPCP:catalog",
+      "passed": true
+    },
+    {
+      "name": "MPCP:inputs_unchanged",
+      "passed": true
+    },
+    {
+      "name": "MPCP:evidence",
+      "passed": true
+    },
+    {
+      "name": "MPCP:outcome",
+      "passed": true
+    },
+    {
+      "name": "E-CS:catalog",
+      "passed": true
+    },
+    {
+      "name": "E-CS:inputs_unchanged",
+      "passed": true
+    },
+    {
+      "name": "E-CS:evidence",
+      "passed": true
+    },
+    {
+      "name": "E-CS:outcome",
+      "passed": true
+    },
+    {
+      "name": "W3Lgu:catalog",
+      "passed": true
+    },
+    {
+      "name": "W3Lgu:inputs_unchanged",
+      "passed": true
+    },
+    {
+      "name": "W3Lgu:evidence",
+      "passed": true
+    },
+    {
+      "name": "W3Lgu:outcome",
+      "passed": true
+    },
+    {
+      "name": "Cross-X:catalog",
+      "passed": true
+    },
+    {
+      "name": "Cross-X:inputs_unchanged",
+      "passed": true
+    },
+    {
+      "name": "Cross-X:evidence",
+      "passed": true
+    },
+    {
+      "name": "Cross-X:outcome",
+      "passed": true
+    },
+    {
+      "name": "CROLL:catalog",
+      "passed": true
+    },
+    {
+      "name": "CROLL:inputs_unchanged",
+      "passed": true
+    },
+    {
+      "name": "CROLL:evidence",
+      "passed": true
+    },
+    {
+      "name": "CROLL:outcome",
+      "passed": true
+    },
+    {
+      "name": "Table-X:catalog",
+      "passed": true
+    },
+    {
+      "name": "Table-X:inputs_unchanged",
+      "passed": true
+    },
+    {
+      "name": "Table-X:evidence",
+      "passed": true
+    },
+    {
+      "name": "Table-X:outcome",
+      "passed": true
+    },
+    {
+      "name": "PX:catalog",
+      "passed": true
+    },
+    {
+      "name": "PX:inputs_unchanged",
+      "passed": true
+    },
+    {
+      "name": "PX:evidence",
+      "passed": true
+    },
+    {
+      "name": "PX:outcome",
+      "passed": true
+    },
+    {
+      "name": "gemini_verified",
+      "passed": true
+    }
+  ]
+}
