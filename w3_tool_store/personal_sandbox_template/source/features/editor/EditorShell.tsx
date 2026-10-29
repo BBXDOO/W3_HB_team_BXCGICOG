@@ -42,6 +42,21 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
     try { return localStorage.getItem('w3.personal.background-image') || ''; } catch { return ''; }
   });
 
+  // Existing projects may carry the older forest palette. Move each project
+  // once to the new default; a theme chosen afterwards remains the user's choice.
+  useEffect(() => {
+    const key = `w3.personal.instrument-theme.${initialStory.storyId}`;
+    try {
+      if (localStorage.getItem(key)) return;
+      if (initialStory.uiTheme !== 'darkNavy') {
+        const migrated = { ...initialStory, uiTheme: 'darkNavy' as UITheme };
+        if (!onSave(migrated)) return;
+        setStory(migrated);
+      }
+      localStorage.setItem(key, '1');
+    } catch { /* The app remains usable when preference storage is unavailable. */ }
+  }, [initialStory, onSave]);
+
   useEffect(() => {
     const theme = story.uiTheme || 'darkNavy';
     const classes = ['theme-light', 'theme-forest', 'theme-night-blue', 'theme-aubergine', 'theme-custom', 'theme-image'];

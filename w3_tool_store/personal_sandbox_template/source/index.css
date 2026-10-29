@@ -292,3 +292,53 @@ body:not(.theme-light):not(.theme-forest):not(.theme-night-blue):not(.theme-aube
 body:not(.theme-light):not(.theme-forest):not(.theme-night-blue):not(.theme-aubergine):not(.theme-custom) .editor-shell [class*="bg-[#0b1513]"],
 body:not(.theme-light):not(.theme-forest):not(.theme-night-blue):not(.theme-aubergine):not(.theme-custom) .editor-shell [class*="bg-[#0c1512]"],
 body:not(.theme-light):not(.theme-forest):not(.theme-night-blue):not(.theme-aubergine):not(.theme-custom) .editor-shell [class*="bg-[#0b1613]"] { background-color: var(--surface-2) !important; }
+
+/* Instrument layout. Labels remain readable in Thai; numbers and short status
+   labels borrow the dashboard references' compact technical rhythm. */
+.editor-shell { background: radial-gradient(ellipse at 92% 0%, rgba(126,68,208,.11), transparent 34%), var(--bg); }
+.editor-shell .workspace-region,
+.editor-shell .workspace-output { border-radius: 14px; box-shadow: 0 16px 36px rgba(0,0,0,.48); }
+.editor-shell .workspace-region { background: var(--surface-2); }
+.editor-shell .workspace-detail { background: var(--surface-2); }
+.editor-shell .workspace-detail > div { background-color: transparent; }
+.editor-shell .tactile-raised { border-radius: 14px; }
+.editor-shell .tactile-inset, .editor-shell .w3-card-inset {
+  background: #0b0d12; border: 1px solid var(--border); border-radius: 11px;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,.38);
+}
+.editor-shell input:not([type="checkbox"]):not([type="range"]):not([type="file"]),
+.editor-shell textarea, .editor-shell select { accent-color: var(--accent); }
+.editor-shell label, .editor-shell .ps-stat-tile span { color: var(--text-dim); }
+.editor-shell .ps-nav { width: 60px; }
+.editor-shell .ps-nav button { border-radius: 12px; }
+.editor-shell .ps-nav-active { box-shadow: inset 3px 0 var(--accent), 0 0 14px rgba(157,104,238,.12); }
+.editor-shell .ps-nav button:not(.ps-nav-active) span:first-child { color: #a8a9b6; }
+.editor-shell .ps-nav button:nth-child(4n + 2):not(.ps-nav-active) span:first-child { color: #73a9ee; }
+.editor-shell .ps-nav button:nth-child(4n + 3):not(.ps-nav-active) span:first-child { color: #e79d62; }
+.editor-shell .ps-nav button:nth-child(4n + 4):not(.ps-nav-active) span:first-child { color: #67c9a5; }
+.editor-shell .ps-monitor { border-radius: 14px; }
+.editor-shell .ps-monitor-header { border-bottom: 1px solid var(--border); }
+.ps-dashboard-editor { background-image: radial-gradient(circle at 100% 0%, rgba(148,88,225,.08), transparent 34%); }
+.ps-stat-tile {
+  min-width: 0; min-height: 82px; display: flex; flex-direction: column; justify-content: space-between;
+  padding: 12px 14px; border-radius: 14px; border: 1px solid var(--border);
+  background: linear-gradient(145deg, #171820, #101116);
+  box-shadow: 0 8px 20px rgba(0,0,0,.22);
+}
+.ps-stat-tile span { font: 700 10px/1.4 ui-monospace, monospace; letter-spacing: .07em; }
+.ps-stat-tile strong { color: var(--accent); font: 800 26px/1 ui-monospace, monospace; }
+.ps-stat-tile:nth-child(2) strong { color: #5b9eff; }
+.ps-stat-tile:nth-child(3) strong { color: #f58165; }
+.ps-stat-tile:nth-child(4) strong { color: #42cba4; }
+.editor-shell .workspace-list-header, .editor-shell .ps-monitor-header h2,
+.editor-shell .ps-stat-tile span { font-family: ui-monospace, "SFMono-Regular", monospace; }
+.library-page .library-project-card { background: linear-gradient(155deg, #191a22, #0e1015); border: 1px solid var(--border); }
+.library-page .library-project-card::before { width: 3px; }
+.library-page .library-project-card h3 { font-style: normal; }
+.library-page header h1, .editor-shell .ps-topbar button:first-child { text-shadow: 0 0 20px rgba(162,119,244,.28); }
+@media (min-width: 768px) { .editor-shell .ps-nav { width: 220px; } }
+
+/* Legacy editor colors which were baked into per-page class strings. */
+body:not(.theme-light):not(.theme-forest):not(.theme-night-blue):not(.theme-aubergine):not(.theme-custom) .editor-shell [class*="bg-[#10221b]"],
+body:not(.theme-light):not(.theme-forest):not(.theme-night-blue):not(.theme-aubergine):not(.theme-custom) .editor-shell [class*="bg-[#0b1415]"],
+body:not(.theme-light):not(.theme-forest):not(.theme-night-blue):not(.theme-aubergine):not(.theme-custom) .editor-shell [class*="bg-[#0a1114]"] { background-color: var(--surface-2) !important; }

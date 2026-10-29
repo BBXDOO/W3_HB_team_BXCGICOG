@@ -123,20 +123,20 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ story, onChange, too
         </div>
       }
       topRight={
-        <div className="p-6 md:p-10 flex flex-col gap-8 overflow-y-auto h-full bg-[var(--surface)] scroll-container pb-24">
+        <div className="ps-dashboard-editor p-4 md:p-8 flex flex-col gap-5 overflow-y-auto h-full bg-[var(--surface)] scroll-container pb-24">
           <div className="flex flex-col gap-4 animate-in fade-in duration-500">
-            <label className="text-[11px] font-black text-blue-500 uppercase tracking-[0.5em]">Project Title</label>
+            <label className="text-[11px] font-black text-[var(--accent)] uppercase tracking-[0.25em]">01 / Project Title</label>
             <input 
               type="text"
               value={story.title || ''}
               onChange={e => onChange({...story, title: e.target.value})}
-              className="w-full bg-transparent border-b-2 border-[var(--border)] py-4 text-4xl md:text-6xl font-black text-[var(--text)] outline-none focus:border-blue-600 transition-all uppercase placeholder:opacity-5 tracking-tighter"
+              className="w-full bg-transparent border-b-2 border-[var(--border)] py-3 text-3xl md:text-5xl font-black text-[var(--text)] outline-none focus:border-[var(--accent)] transition-all uppercase tracking-tighter"
               placeholder="PROJECT_ID_NULL"
             />
           </div>
 
           <div className="animate-in fade-in duration-600">
-             <Button variant="accent" className="w-full h-16 md:h-20 text-sm md:text-lg font-black uppercase tracking-[0.3em] rounded-[24px] shadow-[0_15px_40px_rgba(37,99,235,0.3)] border-2 border-white/10 transition-transform active:scale-95" onClick={handleManualSave}>
+             <Button variant="accent" className="w-full h-12 md:h-14 text-xs md:text-sm font-black uppercase tracking-[0.16em] border border-white/10 transition-transform active:scale-95" onClick={handleManualSave}>
                COMMIT PROJECT TO ARCHIVE
              </Button>
           </div>
@@ -150,11 +150,17 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ story, onChange, too
               placeholder="ระบุจุดมุ่งหมายหรือเรื่องราวของระบบนิเวศนี้..."
             />
           </div>
+          <section aria-label="สรุปโครงการ" className="ps-stat-grid grid grid-cols-2 gap-3 mt-1">
+            <div className="ps-stat-tile"><span>01 / CHARACTERS</span><strong>{story.characters.length}</strong></div>
+            <div className="ps-stat-tile"><span>02 / CARDS</span><strong>{story.cards.length}</strong></div>
+            <div className="ps-stat-tile"><span>03 / EVENTS</span><strong>{story.events.length}</strong></div>
+            <div className="ps-stat-tile"><span>04 / BOARDS</span><strong>{story.boards.length}</strong></div>
+          </section>
         </div>
       }
       bottomMain={
         <MonitorCore title="Project Overview" modeLabel="STUDIO_VIEW" isEmpty={false}>
-          <div className="w-full max-w-3xl mx-auto flex flex-col gap-8 pt-10 pb-20 items-center text-center animate-in fade-in duration-1000">
+          <div className="w-full max-w-3xl mx-auto flex flex-col gap-5 pt-4 pb-12 items-center text-center animate-in fade-in duration-1000">
             <div className="relative group">
                <div className="w-28 h-28 md:w-36 md:h-36 bg-black flex items-center justify-center shadow-2xl border-4 border-white/5 rounded-[40px] md:rounded-[48px] overflow-hidden relative transition-all duration-700 group-hover:border-blue-500/30 group-hover:scale-105">
                  {story.logoAssetId ? (
