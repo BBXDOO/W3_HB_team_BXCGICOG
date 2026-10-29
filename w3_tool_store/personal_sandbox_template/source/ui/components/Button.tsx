@@ -18,22 +18,22 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   title
 }) => {
-  const baseClasses = 'px-5 py-2.5 flex items-center justify-center gap-2 font-black transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed text-[10px] uppercase tracking-[0.2em] rounded-2xl clickable';
+  const baseClasses = 'ps-button px-5 py-2.5 flex items-center justify-center gap-2 font-black transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed text-[10px] uppercase tracking-[0.12em] rounded-xl clickable';
   
   let variantClasses = '';
   // Reference Image: Primary (Orange)
   if (variant === 'accent' || variant === 'primary') {
-    variantClasses = 'bg-[#c2410c] text-white shadow-[-2px_-2px_6px_rgba(255,255,255,0.05),4px 4px 10px rgba(0,0,0,0.4)] hover:bg-[#ea580c] border border-white/5';
+    variantClasses = 'ps-button-primary bg-[#a277f4] text-[#0b0912] hover:bg-[#bb99ff] border border-white/10';
   }
   // Reference Image: Secondary (Green)
   else if (variant === 'secondary') {
-    variantClasses = 'bg-[#15803d] text-white shadow-[-2px_-2px_6px_rgba(255,255,255,0.05),4px 4px 10px rgba(0,0,0,0.4)] hover:bg-[#16a34a] border border-white/5';
+    variantClasses = 'ps-button-secondary bg-[#292239] text-[#e3d1ff] hover:bg-[#392b50] border border-[#a277f4]/30';
   }
   else if (variant === 'danger') {
-    variantClasses = 'bg-red-900/40 text-red-400 border border-red-500/20 shadow-inner hover:bg-red-900/60';
+    variantClasses = 'bg-[#3c1d22] text-[#ff897a] border border-[#f24d35]/30 hover:bg-[#4a2328]';
   }
   else if (variant === 'ghost') {
-    variantClasses = 'bg-transparent text-gray-500 hover:text-white shadow-none hover:bg-white/5';
+    variantClasses = 'bg-transparent text-[#bdb5cb] hover:text-white shadow-none hover:bg-white/5';
   }
   // Default/Subtle
   else {

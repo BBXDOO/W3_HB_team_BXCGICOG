@@ -65,7 +65,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ onOpenStory, onNewStor
   };
 
   return (
-    <div className="library-page h-screen w-full p-4 md:p-12 max-w-7xl mx-auto overflow-y-auto bg-[#121214] scroll-container pb-20 relative">
+    <div className="library-page h-screen w-full p-4 md:p-12 max-w-7xl mx-auto overflow-y-auto scroll-container pb-20 relative">
       
       <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-5 mb-6 pb-6 relative z-10 border-b border-white/5">
         <div className="animate-in fade-in slide-in-from-left duration-700">

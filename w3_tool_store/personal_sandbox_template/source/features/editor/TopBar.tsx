@@ -37,7 +37,7 @@ export const TopBar: React.FC<TopBarProps> = ({ story, isDirty, onSave, onExport
   }, []);
 
   return (
-    <header className="h-16 border-b border-[#426a59]/50 px-2 md:px-6 flex items-center justify-between gap-2 bg-[#18231c] z-50 shadow-2xl relative">
+    <header className="ps-topbar h-16 border-b px-2 md:px-6 flex items-center justify-between gap-2 z-50 relative">
       <div className="flex items-center gap-2 md:gap-6 min-w-0">
         <button onClick={onExit} className="text-base md:text-xl font-black text-white tracking-tighter uppercase italic glow-text hover:scale-105 transition-transform whitespace-nowrap" title="กลับไปคลังโครงการ">PERSONAL SANDBOX</button>
         <div className="hidden md:block w-px h-8 bg-white/10"></div>
@@ -51,7 +51,7 @@ export const TopBar: React.FC<TopBarProps> = ({ story, isDirty, onSave, onExport
         </div>
       </div>
       {guideOpen && <div className="fixed inset-0 z-[9999] bg-black/80 p-3 md:p-8 flex items-center justify-center" onClick={() => setGuideOpen(false)}>
-        <section role="dialog" aria-modal="true" aria-label="คู่มือภาษาไทย" className="max-w-3xl w-full max-h-[85vh] flex flex-col bg-[#18231c] text-slate-100 rounded-2xl border border-emerald-500/30 shadow-2xl" onClick={event => event.stopPropagation()}>
+        <section role="dialog" aria-modal="true" aria-label="คู่มือภาษาไทย" className="ps-dialog max-w-3xl w-full max-h-[85vh] flex flex-col text-slate-100 rounded-2xl border shadow-2xl" onClick={event => event.stopPropagation()}>
           <div className="p-4 border-b border-white/10 flex items-center justify-between"><h2 className="font-bold">คู่มือภาษาไทย</h2><button onClick={() => setGuideOpen(false)} className="p-2">ปิด ✕</button></div>
           <div className="p-5 overflow-y-auto whitespace-pre-wrap text-sm leading-7">{guide}</div>
         </section>
@@ -78,11 +78,11 @@ export const TopBar: React.FC<TopBarProps> = ({ story, isDirty, onSave, onExport
         </Button>
       </div>
       {appearanceOpen && <div className="fixed inset-0 z-[9999] bg-black/75 flex items-center justify-center p-4" onClick={() => setAppearanceOpen(false)}>
-        <section role="dialog" aria-modal="true" aria-label="สีและภาพพื้นหลัง" className="w-full max-w-sm rounded-2xl p-5 border border-emerald-500/30 bg-[#18231c] text-white shadow-2xl" onClick={event => event.stopPropagation()}>
+        <section role="dialog" aria-modal="true" aria-label="สีและภาพพื้นหลัง" className="ps-dialog w-full max-w-sm rounded-2xl p-5 border text-white shadow-2xl" onClick={event => event.stopPropagation()}>
           <div className="flex justify-between items-center mb-4"><h2 className="font-bold">สีเมนูและภาพพื้นที่ทำงาน</h2><button type="button" onClick={() => setAppearanceOpen(false)} aria-label="ปิด">✕</button></div>
           <p className="text-xs text-slate-300 mb-2">แตะสีเพื่อเลือกธีมเมนูและรายการ</p><div className="grid grid-cols-4 gap-3">
             {([
-              ['darkNavy', 'มืดมาตรฐาน', '#202723'],
+              ['darkNavy', 'มืดมาตรฐาน', '#13151b'],
               ['deepForest', 'เขียวป่า', '#17342a'],
               ['nightBlue', 'น้ำเงินกลางคืน', '#182b41'],
               ['aubergine', 'ม่วงหม่น', '#352535'],

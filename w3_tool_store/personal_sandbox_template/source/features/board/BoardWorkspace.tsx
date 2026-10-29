@@ -24,9 +24,9 @@ const modes: { id: ViewMode; label: string }[] = [
 ];
 
 const palette = ['#16a34a', '#0f9f74', '#306bd1', '#a64a9f', '#be7440', '#397d8f'];
-const panel = 'rounded-xl border border-white/10 bg-[#15211f] p-3';
-const field = 'w-full rounded-lg border border-white/15 bg-[#0b1513] px-2 py-2 text-sm text-white';
-const action = 'rounded-lg border border-emerald-500/40 px-3 py-2 text-xs text-emerald-100';
+const panel = 'rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3';
+const field = 'w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-2 py-2 text-sm text-[var(--text)]';
+const action = 'rounded-lg border border-[var(--accent)]/40 px-3 py-2 text-xs text-[var(--text)]';
 const cellName = (entry: RecordCell) => entry.cell.name?.trim() || `พิกัด ${entry.cell.x}, ${entry.cell.y}`;
 
 export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZoom, onSelect, onMode, onAdd, onUpdate, onDelete }) => {
