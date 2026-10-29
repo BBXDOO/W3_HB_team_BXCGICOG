@@ -14,7 +14,7 @@ import { buildPlayRuleContext } from '../../core/playRuleContext';
 import { changeInventory, type Inventory } from '../../core/inventory';
 
 interface Props { story: StoryPack; onChange: (updated: StoryPack) => void; }
-const box = 'rounded-xl border border-white/10 bg-[#14211e]/90';
+const box = 'rounded-xl border border-[var(--border)] bg-[var(--surface)]';
 const itemStyle = 'block w-full p-3 text-left rounded-lg border border-white/10 hover:border-emerald-400/60';
 const ruleText = (blocks: RuleBlock[], prefix = ''): string => blocks.map((block, index) => {
   const number = `${prefix}${index + 1}`;

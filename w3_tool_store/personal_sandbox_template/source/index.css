@@ -1,27 +1,24 @@
 @import "tailwindcss";
 
 :root { 
-  --bg: #151a18; 
-  --surface: #202723; 
-  --surface-2: #19211d;
-  --border: rgba(211,219,214,0.14); 
+  --bg: #090a0e; 
+  --surface: #13151b; 
+  --surface-2: #0e1016;
+  --border: rgba(185,174,207,0.18); 
   --text: #ffffff; 
-  --text-dim: #d4dbd6;
-  --accent: #4a9a82; 
+  --text-dim: #bdc0cf;
+  --accent: #a277f4; 
   --success: #16a34a; 
   --image-overlay: rgba(12, 20, 17, 0.76);
   --workspace-photo-shade: rgba(7, 17, 14, .36);
   
   --shadow-raised: 
-    -6px -6px 14px rgba(255,255,255,0.02),
-    6px 6px 20px rgba(0,0,0,0.7),
-    0 0 1px rgba(255,255,255,0.15);
+    0 12px 25px rgba(0,0,0,0.38),
+    0 1px 0 rgba(255,255,255,0.035) inset;
   --shadow-inset: 
-    inset 4px 4px 8px rgba(0,0,0,0.6),
-    inset -1px -1px 4px rgba(255,255,255,0.02);
+    inset 0 2px 6px rgba(0,0,0,0.45);
   --shadow-pressed:
-    inset 6px 6px 12px rgba(0,0,0,0.8),
-    inset -2px -2px 12px rgba(255,255,255,0.02);
+    inset 0 2px 10px rgba(0,0,0,0.65);
 }
 
 .theme-light {
@@ -107,17 +104,17 @@ body::after {
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
 }
-.library-project-card { background: #101614; border-radius: 24px; }
+.library-project-card { background: #121319; border-radius: 18px; }
 .library-project-card::before {
   content: ""; position: absolute; inset: 0 auto 0 0; width: 4px;
-  background: linear-gradient(#16e896, #0b5244);
+  background: linear-gradient(#af77ff, #f24d35);
 }
 
 .tactile-raised { 
   background: var(--surface); 
   box-shadow: var(--shadow-raised);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 16px;
   transition: all 0.3s ease;
 }
 
@@ -125,7 +122,7 @@ body::after {
   background: var(--surface-2); 
   box-shadow: var(--shadow-inset);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 12px;
   transition: all 0.3s ease;
 }
 
@@ -141,18 +138,18 @@ body::after {
 .workspace-list-toggle, .workspace-list-backdrop { display: none; }
 .workspace-list-header { display: none; }
 .workspace-region {
-  border: 1px solid rgba(76, 142, 112, 0.42);
+  border: 1px solid var(--border);
   border-radius: 18px 18px 10px 10px;
   background: var(--surface);
   box-shadow: 0 8px 28px rgba(5, 3, 18, 0.28);
 }
 .workspace-list {
-  background: color-mix(in srgb, var(--surface-2) 88%, #153d2f);
-  border-bottom: 1px solid rgba(76, 142, 112, 0.3);
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
 }
 .workspace-detail { background: var(--surface); }
 .workspace-output {
-  border: 1px solid rgba(76, 142, 112, 0.45);
+  border: 1px solid var(--border);
   border-radius: 10px 10px 18px 18px;
   background: var(--surface);
   box-shadow: 0 10px 32px rgba(5, 3, 18, 0.35);
@@ -232,12 +229,12 @@ body::after {
   width: 70px;
   height: 5px;
   border-radius: 99px;
-  background: #65ad8d;
-  box-shadow: 0 0 0 4px rgba(76, 142, 112, 0.16);
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(162, 119, 244, 0.15);
 }
-.workspace-drag-handle:focus-visible { outline: 2px solid #65ad8d; outline-offset: -3px; }
+.workspace-drag-handle:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
 @media (min-width: 768px) {
-  .workspace-list { border-bottom: 0; border-right: 1px solid rgba(76, 142, 112, 0.3); }
+  .workspace-list { border-bottom: 0; border-right: 1px solid var(--border); }
 }
 
 .glow-text {
@@ -266,3 +263,32 @@ body::after {
 }
 .battle-hit { animation: battle-hit-shake .35s ease-in-out; }
 @media (prefers-reduced-motion: reduce) { .battle-hit { animation: none; outline: 2px solid #34d399; } }
+
+/* Personal Sandbox display language: dense dark instruments, clear data and restrained neon. */
+.library-page {
+  background: radial-gradient(ellipse at 88% 0%, rgba(112, 60, 173, .12), transparent 38%), var(--bg);
+}
+.library-project-card:hover { border-color: color-mix(in srgb, var(--accent) 55%, transparent); }
+.ps-topbar, .ps-nav { background: var(--surface-2); border-color: var(--border); }
+.ps-nav > div:first-child, .ps-nav > div:last-child { background: var(--surface-2); }
+.ps-nav-active { background: color-mix(in srgb, var(--accent) 18%, var(--surface)); border-color: color-mix(in srgb, var(--accent) 45%, transparent); border-left-color: var(--accent); }
+.ps-monitor { background: var(--surface-2); border-color: var(--border); }
+.ps-monitor-header { background: var(--surface); border-color: var(--border); }
+.ps-dialog { background: var(--surface); border-color: var(--border); }
+.ps-button { box-shadow: 0 5px 14px rgba(0,0,0,.25); }
+.ps-button:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+input, textarea, select { color-scheme: dark; }
+.theme-light input, .theme-light textarea, .theme-light select { color-scheme: light; }
+.tactile-raised, .tactile-inset, .workspace-region, .workspace-output { backdrop-filter: none; }
+
+/* Older editor panels used literal forest colors. Keep their behavior and surface
+   structure, while bringing them into the default visual system. */
+body:not(.theme-light):not(.theme-forest):not(.theme-night-blue):not(.theme-aubergine):not(.theme-custom) .editor-shell [class*="bg-[#18231c]"],
+body:not(.theme-light):not(.theme-forest):not(.theme-night-blue):not(.theme-aubergine):not(.theme-custom) .editor-shell [class*="bg-[#14211e]"],
+body:not(.theme-light):not(.theme-forest):not(.theme-night-blue):not(.theme-aubergine):not(.theme-custom) .editor-shell [class*="bg-[#15211f]"],
+body:not(.theme-light):not(.theme-forest):not(.theme-night-blue):not(.theme-aubergine):not(.theme-custom) .editor-shell [class*="bg-[#111a16]"],
+body:not(.theme-light):not(.theme-forest):not(.theme-night-blue):not(.theme-aubergine):not(.theme-custom) .editor-shell [class*="bg-[#1b2921]"] { background-color: var(--surface) !important; }
+body:not(.theme-light):not(.theme-forest):not(.theme-night-blue):not(.theme-aubergine):not(.theme-custom) .editor-shell [class*="bg-[#0b1512]"],
+body:not(.theme-light):not(.theme-forest):not(.theme-night-blue):not(.theme-aubergine):not(.theme-custom) .editor-shell [class*="bg-[#0b1513]"],
+body:not(.theme-light):not(.theme-forest):not(.theme-night-blue):not(.theme-aubergine):not(.theme-custom) .editor-shell [class*="bg-[#0c1512]"],
+body:not(.theme-light):not(.theme-forest):not(.theme-night-blue):not(.theme-aubergine):not(.theme-custom) .editor-shell [class*="bg-[#0b1613]"] { background-color: var(--surface-2) !important; }

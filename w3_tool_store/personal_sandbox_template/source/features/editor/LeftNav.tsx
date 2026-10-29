@@ -35,10 +35,10 @@ export const LeftNav: React.FC<LeftNavProps> = ({
   ];
 
   return (
-    <nav className="w-14 md:w-64 border-r border-[#426a59]/50 flex flex-col bg-[#101813] overflow-hidden z-40 transition-all shadow-[10px_0_30px_rgba(0,0,0,0.3)]">
-      <div className="p-6 md:p-8 hidden md:block border-b border-white/10 bg-[#18231c]">
+    <nav className="ps-nav w-14 md:w-64 border-r flex flex-col overflow-hidden z-40 transition-all">
+      <div className="p-6 md:p-8 hidden md:block border-b border-white/10">
         <h1 className="text-xl font-black text-white tracking-tighter italic glow-text">PERSONAL SANDBOX</h1>
-        <div className="h-1 w-12 bg-[#65ad8d] mt-2"></div>
+        <div className="h-1 w-12 bg-[var(--accent)] mt-2"></div>
       </div>
       
       <div className="flex-1 pt-4 md:pt-4 overflow-y-auto scroll-container px-3 flex flex-col gap-3">
@@ -49,12 +49,12 @@ export const LeftNav: React.FC<LeftNavProps> = ({
             className={`
               w-full flex flex-col md:flex-row items-center gap-1 md:gap-4 px-2 md:px-5 py-3 md:py-4 transition-all relative rounded-2xl group
               ${activeTab === tab.id 
-                ? 'border border-[#65ad8d]/40 border-l-4 border-l-[#65ad8d] text-white font-black shadow-lg bg-[#284236]' 
+                ? 'ps-nav-active border border-l-4 text-white font-black shadow-lg' 
                 : 'text-zinc-300 hover:text-white hover:bg-white/5'
               }
             `}
           >
-            <span className={`transition-all duration-300 ${activeTab === tab.id ? 'text-[#9ed3b5]' : 'text-[#d5d8d4] opacity-80 group-hover:opacity-100'}`}>
+            <span className={`transition-all duration-300 ${activeTab === tab.id ? 'text-[var(--accent)]' : 'text-[#bfc0ce] opacity-80 group-hover:opacity-100'}`}>
               <NavIcon name={tab.id} />
             </span>
             <span className="text-[8px] md:text-[10px] uppercase font-black tracking-[0.2em] md:block hidden">
@@ -69,7 +69,7 @@ export const LeftNav: React.FC<LeftNavProps> = ({
             aria-label="จัดรูปแบบเนื้อหา"
             className={`
               w-full flex flex-col md:flex-row items-center gap-1 md:gap-4 px-2 md:px-5 py-4 transition-all rounded-2xl group
-              ${isFormatOpen ? 'bg-[#284236] text-[#9ed3b5] border border-[#65ad8d]/40' : 'text-zinc-300 hover:text-white hover:bg-white/5'}
+              ${isFormatOpen ? 'ps-nav-active text-[var(--accent)] border' : 'text-zinc-300 hover:text-white hover:bg-white/5'}
             `}
           >
             <NavIcon name="ai" className={isFormatOpen ? 'animate-pulse' : 'opacity-70 group-hover:opacity-100'} />
@@ -80,7 +80,7 @@ export const LeftNav: React.FC<LeftNavProps> = ({
         </div>
       </div>
       
-      <div className="mt-auto p-4 md:p-6 flex flex-col gap-4 border-t border-white/10 bg-[#18231c]">
+      <div className="mt-auto p-4 md:p-6 flex flex-col gap-4 border-t border-white/10">
         {isDirty && (
           <button 
             onClick={onSave}

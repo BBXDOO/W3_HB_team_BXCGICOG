@@ -5,8 +5,8 @@ import { generateId } from '../../core/utils';
 import type { Vitals } from '../../core/eventRuntime';
 
 interface Props { story: StoryPack; onChange: (story: StoryPack) => void; progress: BattleProgress | null; onProgress: (progress: BattleProgress) => void; vitals: Record<string, Vitals>; onVitals: (vitals: Record<string, Vitals>) => void; }
-const input = 'bg-[#0b1512] border border-white/20 rounded-lg px-2 py-2 w-full min-w-0';
-const panel = 'border border-white/15 bg-[#14211e]/95 rounded-xl p-3';
+const input = 'bg-[var(--surface-2)] border border-[var(--border)] rounded-lg px-2 py-2 w-full min-w-0';
+const panel = 'border border-[var(--border)] bg-[var(--surface)] rounded-xl p-3';
 const num = (value: string) => value.trim() === '' ? 0 : Number(value);
 export const BattlePanel: React.FC<Props> = ({ story, onChange, progress, onProgress, vitals, onVitals }) => {
   const config = story.battleConfig;

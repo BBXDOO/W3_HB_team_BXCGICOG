@@ -25,13 +25,13 @@ export const MonitorCore: React.FC<MonitorCoreProps> = ({
 }) => {
   return (
     <div className="h-full w-full p-2 md:p-3 flex flex-col overflow-hidden">
-      <div className="tactile-raised flex flex-col h-full overflow-hidden bg-[#111a16] shadow-[0_30px_60px_rgba(0,0,0,0.35)] relative border border-[#65ad8d]/30">
+      <div className="ps-monitor tactile-raised flex flex-col h-full overflow-hidden relative border">
         {/* Header */}
-        <div className="p-4 border-b border-[#65ad8d]/20 bg-[#1b2921] flex justify-between items-center relative z-10 shadow-md">
+        <div className="ps-monitor-header p-4 border-b flex justify-between items-center relative z-10">
           <div className="flex items-center gap-4">
-            <div className="w-2 h-2 rounded-full bg-[#65ad8d] shadow-[0_0_10px_#65ad8d]"></div>
+            <div className="w-2 h-2 rounded-full bg-[var(--accent)] shadow-[0_0_10px_var(--accent)]"></div>
             <h2 className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.4em] text-zinc-300">{title}</h2>
-            <span className="px-3 py-0.5 rounded-full text-[8px] font-black bg-[#28755f]/20 text-[#9ed3b5] border border-[#65ad8d]/40">
+            <span className="px-3 py-0.5 rounded-full text-[8px] font-black bg-[#a277f4]/20 text-[#d6bbff] border border-[#a277f4]/40">
               {modeLabel}
             </span>
           </div>
@@ -62,7 +62,7 @@ export const MonitorCore: React.FC<MonitorCoreProps> = ({
 
         {/* Footer */}
         {footer && (
-          <div className="h-14 px-8 bg-[#1b2921] border-t border-[#65ad8d]/20 flex items-center justify-between shrink-0 relative z-10">
+          <div className="ps-monitor-header h-14 px-8 border-t flex items-center justify-between shrink-0 relative z-10">
             {footer}
           </div>
         )}
