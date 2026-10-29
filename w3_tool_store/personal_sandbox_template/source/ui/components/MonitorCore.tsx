@@ -38,7 +38,7 @@ export const MonitorCore: React.FC<MonitorCoreProps> = ({
         </div>
 
         {/* Content Viewport */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden p-6 relative z-10 scroll-container">
+        <div className="ps-monitor-viewport flex-1 overflow-y-auto overflow-x-hidden relative z-10 scroll-container">
           {isEmpty && emptyState ? (
             <div className="h-full flex flex-col items-center justify-center text-center p-4">
               <div className="text-5xl mb-6 opacity-40">⚙️</div>

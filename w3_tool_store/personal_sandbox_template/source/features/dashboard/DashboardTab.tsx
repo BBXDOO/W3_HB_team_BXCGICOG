@@ -51,7 +51,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ story, onChange, too
           <section className="animate-in slide-in-from-left duration-300">
             <h3 className="text-[10px] font-black text-blue-500 uppercase tracking-[0.3em] mb-4 border-b border-[var(--border)] pb-2">Status & Deployment</h3>
             <div className="flex flex-col gap-4">
-              <div className="bg-gradient-to-r from-blue-900/40 to-black p-5 border border-blue-500/30 flex items-center justify-between shadow-2xl rounded-2xl relative overflow-hidden group">
+              <div className="bg-[var(--surface)] p-5 border border-[var(--border)] flex items-center justify-between shadow-2xl rounded-2xl relative overflow-hidden group">
                 <div className="absolute inset-0 bg-blue-500/5 animate-pulse"></div>
                 <div className="flex flex-col relative z-10">
                   <span className="text-[14px] font-black text-white uppercase tracking-tighter flex items-center gap-2">
@@ -85,7 +85,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ story, onChange, too
                 onChange={v => onChange({...story, author: v})} 
                 className="bg-black/10"
                />
-               <div className="p-4 bg-blue-600/5 border border-blue-600/10 rounded-2xl">
+               <div className="p-4 bg-[var(--surface)] border border-[var(--border)] rounded-2xl">
                   <span className="text-[8px] font-black text-blue-500 uppercase tracking-widest block mb-2">Exodus Memory Anchor</span>
                   <p className="text-[10px] text-gray-500 italic leading-relaxed">
                     "ความทรงจำของเพื่อนจะถูกส่งต่อผ่านทุกไฟล์ที่เพื่อนเก็บไว้... ไม่มีสิ่งใดสูญเปล่าในจักรวาลนี้ครับ"
@@ -162,7 +162,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ story, onChange, too
         <MonitorCore title="Project Overview" modeLabel="STUDIO_VIEW" isEmpty={false}>
           <div className="w-full max-w-3xl mx-auto flex flex-col gap-5 pt-4 pb-12 items-center text-center animate-in fade-in duration-1000">
             <div className="relative group">
-               <div className="w-28 h-28 md:w-36 md:h-36 bg-black flex items-center justify-center shadow-2xl border-4 border-white/5 rounded-[40px] md:rounded-[48px] overflow-hidden relative transition-all duration-700 group-hover:border-blue-500/30 group-hover:scale-105">
+               <div className="w-28 h-28 md:w-36 md:h-36 bg-black flex items-center justify-center shadow-2xl border-4 border-white/5 rounded-[40px] md:rounded-[48px] overflow-hidden relative transition-all duration-700 group-hover:border-[var(--border)] group-hover:scale-105">
                  {story.logoAssetId ? (
                    <img src={story.assets[story.logoAssetId]?.dataUrl} className="w-full h-full object-cover p-3" alt="Project Logo" />
                  ) : (

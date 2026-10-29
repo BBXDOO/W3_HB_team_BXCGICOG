@@ -30,6 +30,7 @@ interface EditorShellProps {
 
 export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, onSave, onExit }) => {
   const [story, setStory] = useState<StoryPack>(initialStory);
+  const [navigationCollapsed, setNavigationCollapsed] = useState(false);
   const [activeTab, setActiveTab] = useState<TabId>('home');
   const [isDirty, setIsDirty] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -224,8 +225,9 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
     onAdd: handleContextualAdd,
     onExport: () => exportStory(story),
     onToggleTheme: toggleTheme,
-    onToggleAgent: () => setIsCommandOpen(!isCommandOpen),
-    isAgentOpen: isCommandOpen
+    onToggleAgent: () => setIsFormatOpen(!isFormatOpen),
+    onToggleCommands: () => setIsCommandOpen(!isCommandOpen),
+    isAgentOpen: isFormatOpen
   };
 
   const renderTabContent = () => {
@@ -296,9 +298,11 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
   };
 
   return (
-    <ContentFormatProvider story={story} navigate={(tab, id) => { setNavigationTarget(id); setActiveTab(tab); if (tab === 'location' || tab === 'item') setSelectedId(id); }}>
-    <div className={`editor-shell h-screen flex flex-col overflow-hidden bg-[var(--bg)] ${story.workspaceAssetId || backgroundImage || story.themeAssetId ? 'has-workspace-image' : ''}`}>
+    <ContentFormatProvider story={story} onStyleChange={style => updateStory({ ...story, contentStyle: style })} navigate={(tab, id) => { setNavigationTarget(id); setActiveTab(tab); if (tab === 'location' || tab === 'item') setSelectedId(id); }}>
+    <div className={`editor-shell h-screen flex flex-col overflow-hidden bg-[var(--bg)] ${navigationCollapsed ? 'nav-collapsed' : ''} ${story.workspaceAssetId || backgroundImage || story.themeAssetId ? 'has-workspace-image' : ''}`} style={{ '--content-font-size': `${story.contentStyle?.fontSize || 12}px`, '--content-color': story.contentStyle?.color || 'var(--text)', '--content-weight': story.contentStyle?.fontWeight || 'normal' } as React.CSSProperties}>
       <TopBar 
+        navigationCollapsed={navigationCollapsed}
+        onToggleNavigation={() => setNavigationCollapsed(!navigationCollapsed)}
         story={story} 
         isDirty={isDirty} 
         onSave={handleSave} 
@@ -315,7 +319,7 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
         hasBackgroundImage={Boolean(story.workspaceAssetId || backgroundImage || story.themeAssetId)}
       />
       
-      <div className="flex flex-1 overflow-hidden relative">
+      <div className="workspace-stage"><div className="editor-upper flex flex-1 min-h-0 overflow-hidden relative">
         <LeftNav 
           activeTab={activeTab} 
           onTabChange={(t) => { setActiveTab(t); setSelectedId(null); setNavigationTarget(null); }} 
@@ -327,7 +331,7 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
         <main className="flex-1 overflow-hidden relative">
           {renderTabContent()}
         </main>
-      </div>
+      </div><div id="workspace-preview-host" /></div>
 
       {isFormatOpen && <FormatPanel story={story} onClose={() => setIsFormatOpen(false)} />}
       {isCommandOpen && <AppCommands story={story} activeTab={activeTab} onAdd={handleContextualAdd} onSave={handleSave} onExport={() => exportStory(story)} onClose={() => setIsCommandOpen(false)} />}

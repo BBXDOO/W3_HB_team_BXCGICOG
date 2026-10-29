@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import type { BoardPack, CellPack } from '../../types';
 
 type ViewMode = NonNullable<BoardPack['viewMode']>;
@@ -9,6 +9,7 @@ interface Props {
   selectedKey: string | null;
   zoom: number;
   onZoom: (value: number) => void;
+  onAppearance: (patch: Partial<BoardPack>) => void;
   onSelect: (key: string) => void;
   onMode: (mode: ViewMode) => void;
   onAdd: (parentKey?: string) => void;
@@ -29,10 +30,19 @@ const field = 'w-full rounded-lg border border-[var(--border)] bg-[var(--surface
 const action = 'rounded-lg border border-[var(--accent)]/40 px-3 py-2 text-xs text-[var(--text)]';
 const cellName = (entry: RecordCell) => entry.cell.name?.trim() || `พิกัด ${entry.cell.x}, ${entry.cell.y}`;
 
-export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZoom, onSelect, onMode, onAdd, onUpdate, onDelete }) => {
+export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZoom, onAppearance, onSelect, onMode, onAdd, onUpdate, onDelete }) => {
   const [query, setQuery] = useState('');
   const [sortBy, setSortBy] = useState<'coordinate' | 'name'>('coordinate');
-  const mode = board.viewMode || 'overview';
+  const mode = board.viewMode || 'grid';
+  const gridViewport = useRef<HTMLDivElement>(null);
+  const gap = board.gridStyle === 'dots' ? 5 : 3;
+  const fitGrid = () => {
+    const width = gridViewport.current?.clientWidth || 320;
+    const height = gridViewport.current?.clientHeight || 240;
+    const fitWidth = (width - 16 - gap * (board.width - 1)) / board.width;
+    const fitHeight = (height - 16 - gap * (board.height - 1)) / board.height;
+    onZoom(Math.max(8, Math.min(64, Math.floor(Math.min(fitWidth, fitHeight)))));
+  };
   const records: RecordCell[] = (Object.entries(board.cellMap) as [string, CellPack][])
     .filter(([, cell]) => cell.name || cell.desc || cell.markerColor || cell.markerIcon || (cell.type && cell.type !== 'Empty'))
     .map(([key, cell]) => ({ key, cell }))
@@ -65,23 +75,24 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
     </div>;
   };
 
-  return <div className="board-workspace h-full min-h-[260px] flex flex-col gap-2 text-white" aria-label="พื้นที่ข้อมูลบอร์ด">
+  return <div className="board-workspace" aria-label="พื้นที่ข้อมูลบอร์ด">
     <div className="flex items-center gap-1 overflow-x-auto shrink-0 pb-1" aria-label="รูปแบบการแสดงข้อมูล">
       {modes.map(option => <button key={option.id} type="button" onClick={() => onMode(option.id)} aria-pressed={mode === option.id}
         className={`shrink-0 rounded-lg px-3 py-2 text-xs ${mode === option.id ? 'bg-[var(--accent)] text-[#0b0912] font-bold' : 'bg-white/5 text-slate-300'}`}>{option.label}</button>)}
     </div>
-    <div className="board-workspace-columns flex-1 min-h-0 grid gap-2" style={{ gridTemplateColumns: 'minmax(0, 1.15fr) minmax(0, .85fr)' }}>
+    <div className="board-workspace-columns">
       <section className={`${panel} min-w-0 min-h-0 flex flex-col overflow-hidden`} aria-label="ภาพรวมข้อมูล">
         <div className="flex items-center justify-between gap-2 pb-2 text-xs"><strong>{mode === 'overview' ? 'ภาพรวมพื้นที่' : mode === 'grid' ? 'ตารางพิกัด' : mode === 'database' ? 'รายการข้อมูล' : 'ความสัมพันธ์'}</strong><span className="text-emerald-300">{records.length} รายการ</span></div>
         {mode === 'database' && <div className="flex gap-1 mb-2"><input className={`${field} min-w-0`} type="search" placeholder="ค้นหาข้อมูล" value={query} onChange={event => setQuery(event.target.value)} /><select aria-label="เรียงรายการ" className={`${field} w-24 shrink-0`} value={sortBy} onChange={event => setSortBy(event.target.value as 'coordinate' | 'name')}><option value="coordinate">พิกัด</option><option value="name">ชื่อ</option></select></div>}
-        <div className="flex-1 min-h-0 overflow-auto rounded-lg bg-[var(--surface-2)] p-2 scroll-container">
-          {mode === 'grid' && <div className="grid w-max" style={{ gridTemplateColumns: `repeat(${board.width}, ${zoom}px)`, gap: 1 }}>
+        <div ref={gridViewport} className="board-grid-viewport scroll-container">
+          {mode === 'grid' && <div className="grid w-max" style={{ gridTemplateColumns: `repeat(${board.width}, ${zoom}px)`, gap }}>
             {Array.from({ length: board.width * board.height }, (_, index) => {
               const x = index % board.width, y = Math.floor(index / board.width), key = `${x}_${y}`;
               const cell = board.cellMap[key];
               return <button key={key} type="button" title={cell?.name || `พิกัด ${x}, ${y}`} onClick={() => onSelect(key)}
-                className={`border border-white/10 flex items-center justify-center ${selectedKey === key ? 'ring-2 ring-white' : ''}`}
-                style={{ width: zoom, height: zoom, background: cell?.markerColor || '#142334', fontSize: zoom * .5 }}>{cell?.markerIcon || ''}</button>;
+                aria-label={`ช่อง ${x},${y}`} aria-pressed={selectedKey === key}
+                className={`board-cell ${selectedKey === key ? 'board-cell-selected' : ''}`}
+                style={{ width: zoom, height: zoom, borderRadius: board.gridStyle === 'dots' ? '50%' : 4, background: cell?.markerColor || 'var(--board-empty)', fontSize: Math.max(7, zoom * .36) }}>{cell?.markerIcon || (board.showCoordinates ? `${x},${y}` : board.gridStyle === 'dots' ? '' : cell?.name?.slice(0, 3) || '')}</button>;
             })}
           </div>}
           {mode === 'overview' && (records.length ? <div className="grid grid-cols-3 auto-rows-[68px] gap-1">
@@ -94,9 +105,16 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
             className={`w-full flex justify-between gap-2 border-b border-white/10 px-2 py-3 text-left text-xs ${selectedKey === entry.key ? 'bg-emerald-900/40' : ''}`}><span className="truncate">{entry.cell.markerIcon} {cellName(entry)}</span><span className="text-slate-400 shrink-0">{entry.cell.x},{entry.cell.y}</span></button>) : <p className="p-3 text-xs text-slate-400">ไม่พบรายการ</p>)}
           {mode === 'mindmap' && (records.length ? roots.map(entry => renderNode(entry, new Set())) : <p className="p-3 text-xs text-slate-400">เพิ่มหัวข้อเพื่อเริ่มมายด์แมพ</p>)}
         </div>
-        {mode === 'grid' && <label className="flex items-center gap-2 text-xs pt-2">ขนาดช่อง <input type="range" min="24" max="100" value={zoom} onChange={event => onZoom(Number(event.target.value))} className="min-w-0 flex-1 accent-emerald-500" />{zoom}px</label>}
+        {mode === 'grid' && <div className="board-grid-controls">
+          <button type="button" aria-pressed={board.gridStyle !== 'dots'} onClick={() => onAppearance({ gridStyle: 'tiles' })}>ช่องมน</button>
+          <button type="button" aria-pressed={board.gridStyle === 'dots'} onClick={() => onAppearance({ gridStyle: 'dots' })}>จุด</button>
+          <button type="button" onClick={fitGrid}>พอดีจอ</button>
+          <label><input type="checkbox" checked={!!board.showCoordinates} onChange={e => onAppearance({ showCoordinates: e.target.checked })} /> พิกัด</label>
+          <label className="board-size">ขนาด <input aria-label="ขนาดช่องบอร์ด" type="range" min="8" max="64" value={zoom} onChange={e => onZoom(Number(e.target.value))} /> <span>{zoom}px</span></label>
+        </div>}
+
       </section>
-      <aside className={`${panel} min-w-0 min-h-0 overflow-y-auto scroll-container space-y-3 text-xs`} aria-label="รายละเอียดและเครื่องมือ">
+      <details className="board-inspector"><summary>รายละเอียด / เครื่องมือ {selectedKey ? `· ${selectedKey.replace('_', ', ')}` : ''}</summary><aside className="board-inspector-content scroll-container space-y-3 text-xs" aria-label="รายละเอียดและเครื่องมือ">
         <div><strong className="text-emerald-200">{selected ? cellName(selected) : selectedKey ? `พิกัด ${selectedKey.replace('_', ', ')}` : 'เครื่องมือ'}</strong><p className="text-slate-400 mt-1">{mode === 'mindmap' ? 'จัดหัวข้อและความเชื่อมโยง' : mode === 'database' ? 'ค้นหาและแก้ข้อมูล' : 'เลือกช่องหรือรายการเพื่อดูรายละเอียด'}</p></div>
         <button className={`${action} w-full`} onClick={() => onAdd(mode === 'mindmap' ? selectedKey || undefined : undefined)}>+ {mode === 'mindmap' && selectedKey ? 'เพิ่มหัวข้อย่อย' : 'เพิ่มรายการ'}</button>
         {mode === 'overview' && <div className="grid grid-cols-2 gap-1" aria-label="สรุปข้อมูล"><div className="rounded-lg bg-emerald-950/60 p-2"><span className="text-slate-400">รายการ</span><strong className="block text-lg">{records.length}</strong></div><div className="rounded-lg bg-emerald-950/60 p-2"><span className="text-slate-400">ช่องทั้งหมด</span><strong className="block text-lg">{board.width * board.height}</strong></div></div>}
@@ -105,6 +123,7 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
         {mode === 'mindmap' && <p className="text-slate-400">หัวข้อหลัก {roots.length} · แตะหัวข้อแล้วเพิ่มหัวข้อย่อยหรือเปลี่ยนหัวข้อแม่</p>}
         {mode === 'grid' && <p className="text-slate-400">แตะช่องในตารางเพื่อกำหนดชนิด สี และไอคอนในส่วนแก้ไขด้านบน</p>}
         {selectedKey && <>
+          <div className="board-marker-controls"><label>สีช่อง<input aria-label="สีช่องบอร์ด" type="color" value={selected?.cell.markerColor || '#8c6ed0'} onChange={e => onUpdate(selectedKey, { markerColor: e.target.value })} /></label><label>ไอคอน<input aria-label="ไอคอนช่องบอร์ด" className={field} value={selected?.cell.markerIcon || ''} onChange={e => onUpdate(selectedKey, { markerIcon: e.target.value })} /></label></div>
           <label className="block">ชื่อ<input className={`${field} mt-1`} value={selected?.cell.name || ''} onChange={event => onUpdate(selectedKey, { name: event.target.value })} placeholder="ตั้งชื่อรายการ" /></label>
           <label className="block">รายละเอียด<textarea className={`${field} mt-1 min-h-20 resize-y`} value={selected?.cell.desc || ''} onChange={event => onUpdate(selectedKey, { desc: event.target.value })} placeholder="บันทึกข้อมูล" /></label>
           {mode === 'mindmap' && <label className="block">เชื่อมจากหัวข้อแม่<select className={`${field} mt-1`} value={selected?.cell.parentKey || ''} onChange={event => onUpdate(selectedKey, { parentKey: event.target.value || undefined })}>
@@ -113,7 +132,7 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
           <button className="text-rose-300 border border-rose-400/30 rounded-lg px-3 py-2" onClick={() => { if (window.confirm('ลบข้อมูลในช่องนี้?')) onDelete(selectedKey); }}>ลบรายการนี้</button>
         </>}
         <div className="border-t border-white/10 pt-2 text-slate-400">พื้นที่ {board.width} × {board.height} ช่อง<br />ข้อมูล {records.length} รายการ<br />เลือกโหมดด้านบนเพื่อเปลี่ยนวิธีดูข้อมูล</div>
-      </aside>
+      </aside></details>
     </div>
   </div>;
 };

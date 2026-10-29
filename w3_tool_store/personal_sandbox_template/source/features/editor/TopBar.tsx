@@ -5,6 +5,8 @@ import { StoryPack, UITheme } from '../../types';
 import guide from '../../docs/คู่มือใช้งานภาษาไทย.md?raw';
 
 interface TopBarProps {
+  navigationCollapsed: boolean;
+  onToggleNavigation: () => void;
   story: StoryPack;
   isDirty: boolean;
   onSave: () => void;
@@ -21,7 +23,7 @@ interface TopBarProps {
   hasBackgroundImage: boolean;
 }
 
-export const TopBar: React.FC<TopBarProps> = ({ story, isDirty, onSave, onExport, onExit, onUndo, currentTheme, onSelectTheme, customThemeColor, onSelectCustomColor, onChooseBackgroundImage, onClearBackgroundImage, hasBackgroundImage }) => {
+export const TopBar: React.FC<TopBarProps> = ({ navigationCollapsed, onToggleNavigation, story, isDirty, onSave, onExport, onExit, onUndo, currentTheme, onSelectTheme, customThemeColor, onSelectCustomColor, onChooseBackgroundImage, onClearBackgroundImage, hasBackgroundImage }) => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [guideOpen, setGuideOpen] = useState(false);
   const [appearanceOpen, setAppearanceOpen] = useState(false);
@@ -38,8 +40,9 @@ export const TopBar: React.FC<TopBarProps> = ({ story, isDirty, onSave, onExport
 
   return (
     <header className="ps-topbar h-16 border-b px-2 md:px-6 flex items-center justify-between gap-2 z-50 relative">
-      <div className="flex items-center gap-2 md:gap-6 min-w-0">
-        <button onClick={onExit} className="ps-brand" title="กลับไปคลังโครงการ">PERSONAL SANDBOX<small>WORKSPACE / 0.48</small></button>
+      <div className="ps-brand-group">
+        <button type="button" aria-label="ย่อหรือขยายเมนู" aria-expanded={!navigationCollapsed} onClick={onToggleNavigation} className="ps-menu-toggle">☰</button>
+        <button onClick={onExit} className="ps-brand" title="กลับไปคลังโครงการ"><span className="ps-brand-long">PERSONAL </span>SANDBOX<small>WORKSPACE / 0.49</small></button>
         <div className="hidden md:block w-px h-8 bg-white/10"></div>
         <div className="hidden md:flex flex-col">
           <div className="flex items-center gap-2">
@@ -58,19 +61,19 @@ export const TopBar: React.FC<TopBarProps> = ({ story, isDirty, onSave, onExport
       </div>}
 
       <div className="ps-topbar-actions shrink-0">
-        <button type="button" onClick={() => setGuideOpen(true)} className="text-xs border border-emerald-500/30 text-emerald-200 rounded-xl p-2" title="คู่มือภาษาไทย"><span>? คู่มือ</span></button>
+        <button type="button" onClick={() => setGuideOpen(true)} className="text-xs border border-emerald-500/30 text-emerald-200 rounded-xl p-2" title="คู่มือภาษาไทย"><span>?<span className="ps-control-label"> คู่มือ</span></span></button>
         <button id="w3-check-update" type="button" aria-label="ตรวจอัปเดตแอป" onClick={() => {
           const bridge = (window as unknown as { AndroidBridge?: { checkUpdate?: () => void } }).AndroidBridge;
           if (bridge?.checkUpdate) bridge.checkUpdate();
           else alert('ปุ่มอัปเดตใช้ได้ในแอป Android');
-        }}>↑ อัปเดต</button>
+        }}>↑<span className="ps-control-label"> อัปเดต</span></button>
         <div className="hidden md:flex flex-col items-end mr-2">
            <span className="text-[8px] font-black text-zinc-400 uppercase tracking-widest mb-0.5">Memory Status</span>
            <span className={`text-[10px] font-black ${isDirty ? 'text-[#9ed3b5] animate-pulse' : 'text-emerald-400'}`}>
              {isDirty ? 'PENDING_COMMIT' : 'ALL_SYNCHRONIZED'}
            </span>
         </div>
-        <button type="button" onClick={onExport} className="flex h-11 px-2 md:px-4 tactile-raised items-center gap-2 text-amber-400 font-black text-[9px] uppercase tracking-wider border border-amber-500/20 rounded-xl" title="สำรองโครงการพร้อมจุดเล่นล่าสุดที่บันทึกเป็น JSON" aria-label="สำรองโครงการและจุดเล่น"><span>ส่งออก</span></button>
+        <button type="button" onClick={onExport} className="flex h-11 px-2 md:px-4 tactile-raised items-center gap-2 text-amber-400 font-black text-[9px] uppercase tracking-wider border border-amber-500/20 rounded-xl" title="สำรองโครงการพร้อมจุดเล่นล่าสุดที่บันทึกเป็น JSON" aria-label="สำรองโครงการและจุดเล่น"><span>⇧<span className="ps-control-label"> ส่งออก</span></span></button>
         <button type="button" onClick={() => setAppearanceOpen(true)}
           className="flex w-10 h-10 tactile-raised items-center justify-center text-sm border border-white/5"
           title="สีและภาพพื้นหลัง" aria-label="เลือกสีและภาพพื้นหลัง">ธีม</button>
@@ -79,7 +82,7 @@ export const TopBar: React.FC<TopBarProps> = ({ story, isDirty, onSave, onExport
           className={`h-11 px-3 md:px-8 text-[10px] font-black border border-white/20 shadow-xl ${isDirty ? 'animate-pulse' : ''}`} 
           onClick={onSave}
         >
-          {isDirty ? 'บันทึก' : '✓ เก็บแล้ว'}
+          {isDirty ? 'บันทึก' : '✓'}
         </Button>
       </div>
       {appearanceOpen && <div className="fixed inset-0 z-[9999] bg-black/75 flex items-center justify-center p-4" onClick={() => setAppearanceOpen(false)}>

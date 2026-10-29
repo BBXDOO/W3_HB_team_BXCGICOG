@@ -32,19 +32,20 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [tempColor, setTempColor] = useState<string>('#3B82F6');
   const [tempIcon, setTempIcon] = useState<string>('🏰');
-  const [zoom, setZoom] = useState(48); 
-  
+  const [zoom, setZoom] = useState(22);
+
   const [wInput, setWInput] = useState('12');
   const [hInput, setHInput] = useState('12');
 
   const customColorInputRef = useRef<HTMLInputElement>(null);
 
-  const activeBoard = useMemo(() => 
+  const activeBoard = useMemo(() =>
     story.boards.find(b => b.boardId === selectedBoardId)
   , [story.boards, selectedBoardId]);
 
   useEffect(() => {
     if (activeBoard) {
+      setZoom(activeBoard.cellSize || 22);
       setWInput(activeBoard.width.toString());
       setHInput(activeBoard.height.toString());
     }
@@ -63,9 +64,9 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
 
   const addBoard = () => {
     const id = generateId('brd');
-    const b: BoardPack = { 
-      boardId: id, title: 'NEW ECOSYSTEM AREA', width: 12, height: 12, cellMap: {}, 
-      explored: {}, visionRangeDefault: 2, movementPerTurnDefault: 2 
+    const b: BoardPack = {
+      boardId: id, title: 'NEW ECOSYSTEM AREA', width: 12, height: 12, viewMode: 'grid', cellSize: 22, gridStyle: 'tiles', cellMap: {},
+      explored: {}, visionRangeDefault: 2, movementPerTurnDefault: 2
     };
     onChange({ ...story, boards: [...story.boards, b] });
     setSelectedBoardId(id);
@@ -77,8 +78,8 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
     const key = `${x}_${y}`;
     const nextMap = { ...activeBoard.cellMap };
     nextMap[key] = { ...getCell(x, y), ...updated };
-    
-    const updatedBoards = story.boards.map(b => 
+
+    const updatedBoards = story.boards.map(b =>
       b.boardId === activeBoard.boardId ? { ...b, cellMap: nextMap } : b
     );
     onChange({ ...story, boards: updatedBoards });
@@ -88,8 +89,8 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
     if (!activeBoard) return;
     const w = Math.min(50, Math.max(1, parseInt(wInput) || 12));
     const h = Math.min(50, Math.max(1, parseInt(hInput) || 12));
-    
-    const updatedBoards = story.boards.map(b => 
+
+    const updatedBoards = story.boards.map(b =>
       b.boardId === activeBoard.boardId ? { ...b, width: w, height: h } : b
     );
     setSelectedKey(null);
@@ -106,7 +107,7 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
 
   const handleConfirmColor = () => {
     if (selectedCell) {
-      updateCell(selectedCell.x, selectedCell.y, { 
+      updateCell(selectedCell.x, selectedCell.y, {
         markerColor: tempColor,
         markerIcon: tempIcon
       });
@@ -149,20 +150,20 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
     <>
       <SplitLayout60_40
         toolActions={toolActions}
-        previewKey="w3.personal.board-preview-height-v1"
-        defaultPreview={48}
+        previewKey="w3.personal.board-preview-height-v2"
+        defaultPreview={50}
         mobileMaxPreview={60}
         topLeft={
           <div className="p-4 flex flex-col gap-6 bg-[var(--surface-2)] h-full overflow-y-auto w-full scroll-container pb-20">
             <Button variant="accent" onClick={addBoard} className="h-14 text-[10px] font-black border-2 border-white/10 shadow-xl rounded-[24px] active:scale-95 transition-all">
               + สร้างพื้นที่อาณาจักรใหม่
             </Button>
-            
+
             <div className="flex flex-col gap-2">
                <label className="text-[9px] text-gray-500 font-black uppercase tracking-widest px-1">เลือกพื้นที่ที่ต้องการแก้ไข</label>
-               <Select 
-                  value={selectedBoardId || ''} 
-                  options={[{label:'--- เลือกพื้นที่ ---', value:''}, ...story.boards.map(b => ({ label: b.title, value: b.boardId }))]} 
+               <Select
+                  value={selectedBoardId || ''}
+                  options={[{label:'--- เลือกพื้นที่ ---', value:''}, ...story.boards.map(b => ({ label: b.title, value: b.boardId }))]}
                   onChange={id => setSelectedBoardId(id)}
                   className="h-12"
                 />
@@ -200,10 +201,10 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
                       <Select label="Entity Type" value={selectedCell.type || 'Empty'} options={[{label:'Empty Cell',value:'Empty'},{label:'Location Hub',value:'Location'},{label:'Encounter Point',value:'Encounter'},{label:'Neutral Zone',value:'SafeZone'}]} onChange={v => updateCell(selectedCell.x, selectedCell.y, {type:v as any})} />
                       <div className="flex flex-col gap-1">
                          <label className="text-[9px] text-gray-500 font-black px-1 uppercase tracking-widest">Visual Skin</label>
-                         <button 
-                           onClick={handleOpenColorPicker} 
-                           className="h-14 w-full rounded-[20px] border-2 flex items-center justify-center transition-all shadow-xl active:scale-90 group relative overflow-hidden" 
-                           style={{ 
+                         <button
+                           onClick={handleOpenColorPicker}
+                           className="h-14 w-full rounded-[20px] border-2 flex items-center justify-center transition-all shadow-xl active:scale-90 group relative overflow-hidden"
+                           style={{
                              backgroundColor: selectedCell.markerColor || '#1e293b',
                              borderColor: 'rgba(255,255,255,0.1)'
                            }}
@@ -211,8 +212,8 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
                            <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                            <span className="text-3xl drop-shadow-lg select-none relative z-10">
                             {selectedCell.markerIcon || (
-                                selectedCell.type === 'Location' ? '🏰' : 
-                                selectedCell.type === 'Encounter' ? '⚔️' : 
+                                selectedCell.type === 'Location' ? '🏰' :
+                                selectedCell.type === 'Encounter' ? '⚔️' :
                                 selectedCell.type === 'SafeZone' ? '🛡️' : '🎨'
                             )}
                            </span>
@@ -234,7 +235,8 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
         bottomMain={
           <MonitorCore title="BOARD WORKSPACE" modeLabel="LIVE VIEW" isEmpty={!activeBoard}>
             {activeBoard && <BoardWorkspace
-              board={activeBoard} selectedKey={selectedKey} zoom={zoom} onZoom={setZoom}
+              board={activeBoard} selectedKey={selectedKey} zoom={zoom} onZoom={value => { setZoom(value); onChange({ ...story, boards: story.boards.map(b => b.boardId === activeBoard.boardId ? { ...b, cellSize: value } : b) }); }}
+              onAppearance={patch => onChange({ ...story, boards: story.boards.map(b => b.boardId === activeBoard.boardId ? { ...b, ...patch } : b) })}
               onSelect={setSelectedKey} onMode={updateBoardMode} onAdd={addRecord}
               onUpdate={(key, patch) => {
                 const [x, y] = key.split('_').map(Number);
@@ -246,10 +248,10 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
         }
       />
 
-      <Modal 
-        isOpen={isColorPickerOpen} 
-        title="Cell Skin Configuration" 
-        onClose={() => setIsColorPickerOpen(false)} 
+      <Modal
+        isOpen={isColorPickerOpen}
+        title="Cell Skin Configuration"
+        onClose={() => setIsColorPickerOpen(false)}
         footer={
           <div className="flex gap-4 w-full">
             <Button variant="secondary" className="flex-1 h-16 rounded-[28px] font-black uppercase text-[11px]" onClick={() => setIsColorPickerOpen(false)}>ยกเลิก</Button>
@@ -263,8 +265,8 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
             <label className="text-[10px] font-black text-blue-500 uppercase px-1 tracking-[0.4em]">Signature Icon</label>
             <div className="grid grid-cols-5 gap-3 p-6 bg-black/40 rounded-[32px] border border-white/5">
               {/* CLEAR ICON BUTTON - AS REQUESTED BY USER SKETCH */}
-              <button 
-                onClick={() => setTempIcon('')} 
+              <button
+                onClick={() => setTempIcon('')}
                 className={`aspect-square rounded-[20px] bg-red-600/10 border-2 transition-all flex items-center justify-center text-2xl active:scale-90 ${tempIcon === '' ? 'border-red-500 shadow-xl scale-110 bg-red-600/20' : 'border-white/5 opacity-40 hover:opacity-100'}`}
                 title="ไม่แสดง Icon (ใส)"
               >
@@ -272,9 +274,9 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
               </button>
 
               {PRESET_ICONS.map((icon, i) => (
-                <button 
-                  key={i} 
-                  onClick={() => setTempIcon(icon)} 
+                <button
+                  key={i}
+                  onClick={() => setTempIcon(icon)}
                   className={`aspect-square rounded-[20px] bg-[var(--surface)] border-2 transition-all flex items-center justify-center text-2xl active:scale-90 ${tempIcon === icon ? 'border-blue-500 bg-blue-500/20 shadow-xl scale-110' : 'border-white/5 opacity-40 hover:opacity-100'}`}
                 >
                   {icon}
@@ -288,11 +290,11 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
             <label className="text-[10px] font-black text-blue-500 uppercase px-1 tracking-[0.4em]">Color Tint</label>
             <div className="grid grid-cols-8 gap-3 p-6 bg-black/40 rounded-[32px] border border-white/5">
               {PRESET_COLORS.map((c, i) => (
-                <button 
-                  key={i} 
-                  onClick={() => setTempColor(c)} 
-                  className={`aspect-square rounded-xl border-[4px] transition-all active:scale-90 ${tempColor === c ? 'border-white scale-110 shadow-xl' : 'border-transparent opacity-60'}`} 
-                  style={{ backgroundColor: c }} 
+                <button
+                  key={i}
+                  onClick={() => setTempColor(c)}
+                  className={`aspect-square rounded-xl border-[4px] transition-all active:scale-90 ${tempColor === c ? 'border-white scale-110 shadow-xl' : 'border-transparent opacity-60'}`}
+                  style={{ backgroundColor: c }}
                 />
               ))}
             </div>
@@ -304,25 +306,25 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
                 <label className="text-[10px] font-black text-gray-500 uppercase tracking-[0.4em]">Custom Palette</label>
                 <div className="text-[11px] font-mono text-blue-500 font-black tracking-tighter">{tempColor.toUpperCase()}</div>
              </div>
-             
+
              <div className="flex items-center gap-6 bg-black/60 p-6 rounded-[40px] border border-white/5 shadow-inner">
-                <button 
+                <button
                   onClick={() => customColorInputRef.current?.click()}
                   className="flex-1 h-28 bg-[var(--surface-2)] rounded-[32px] border-2 border-dashed border-white/10 flex flex-col items-center justify-center gap-2 hover:bg-white/5 transition-all group active:scale-95"
                 >
                   <span className="text-4xl group-hover:rotate-12 transition-transform">🎨</span>
                   <span className="text-[9px] font-black text-white/40 uppercase tracking-widest">Open Color Picker</span>
-                  <input 
-                    type="color" 
+                  <input
+                    type="color"
                     ref={customColorInputRef}
-                    className="hidden" 
-                    value={tempColor} 
-                    onChange={(e) => setTempColor(e.target.value)} 
+                    className="hidden"
+                    value={tempColor}
+                    onChange={(e) => setTempColor(e.target.value)}
                   />
                 </button>
 
                 <div className="flex flex-col items-center gap-3">
-                   <div 
+                   <div
                       className="w-24 h-24 rounded-full border-[6px] border-white shadow-2xl transition-all duration-500"
                       style={{ backgroundColor: tempColor }}
                    />

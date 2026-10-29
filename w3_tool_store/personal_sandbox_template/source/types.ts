@@ -29,6 +29,7 @@ export interface StoryPack {
   createdAt: number;
   updatedAt: number;
   uiTheme: UITheme;
+  contentStyle?: { fontSize?: number; color?: string; fontWeight?: 'normal' | 'bold' };
   themeColor?: string;
   themeAssetId?: string;
   workspaceAssetId?: string;
@@ -143,6 +144,9 @@ export interface BoardPack {
   width: number;
   height: number;
   viewMode?: 'overview' | 'grid' | 'database' | 'mindmap';
+  gridStyle?: 'tiles' | 'dots';
+  cellSize?: number;
+  showCoordinates?: boolean;
   bgAssetId?: string;
   cellMap: Record<string, CellPack>; 
   explored: Record<string, boolean>;

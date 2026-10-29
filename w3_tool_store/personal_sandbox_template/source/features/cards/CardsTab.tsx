@@ -239,13 +239,13 @@ export const CardsTab: React.FC<CardsTabProps> = ({ story, onChange, toolActions
         <MonitorCore title={mode === 'modules' ? 'Module Preview' : 'Card Visualizer'} isEmpty={mode === 'modules' ? !selectedModule : !selectedCard}>
           {mode === 'modules' && selectedModule && <div className="p-5 text-[var(--text)] overflow-y-auto h-full"><h2 className="text-xl font-bold">{selectedModule.name}</h2><p className="text-xs">{selectedModule.type} · Grade {selectedModule.grade}</p><p className="mt-3 whitespace-pre-wrap"><RichContent value={selectedModule.description} /></p>{(['A','B','C'] as const).map(key => <div key={key} className="mt-3 border border-[var(--border)] rounded p-3"><b>{key}</b><p className="whitespace-pre-wrap text-sm">{selectedModule.parts?.[key]}</p></div>)}</div>}
           {mode === 'cards' && selectedCard && (
-            <div className="flex h-full min-h-[210px] w-full gap-2 md:gap-5 overflow-hidden">
-              <div className="w-[46%] md:w-[42%] min-w-0 h-full overflow-y-auto overflow-x-hidden flex justify-start items-start pl-1 md:pl-4 py-2 scroll-container">
+            <div className="card-preview-layout">
+              <div className="card-preview-visual scroll-container">
               {/* THE MODULE CARD (ถอดแบบจากภาพวาด) */}
-              <div className="module-card-preview w-72 h-[460px] shrink-0 origin-top-left bg-[var(--surface)] border-[2px] border-[var(--border)] rounded-[40px] p-5 flex flex-col shadow-2xl relative overflow-hidden group">
+              <div className="module-card-preview w-full h-[310px] shrink-0 bg-[var(--surface)] border-[2px] border-[var(--border)] rounded-xl p-3 flex flex-col shadow-2xl relative overflow-hidden group">
                 
                 {/* Header (ID/Name/Type/Acc + PIC) */}
-                <div className="flex gap-4 mb-4 h-24">
+                <div className="flex gap-2 mb-2 h-14">
                    <div className="flex-1 flex flex-col justify-between py-1">
                       <div>
                         <div className="text-[8px] font-black text-blue-500 uppercase tracking-tighter">ID: {selectedCard.id.slice(-8)}</div>
@@ -256,7 +256,7 @@ export const CardsTab: React.FC<CardsTabProps> = ({ story, onChange, toolActions
                         <div className="text-[9px] font-black text-blue-400 uppercase">ACCESS: {selectedCard.accessLevel}</div>
                       </div>
                    </div>
-                   <div className="w-20 h-20 w3-card-inset flex items-center justify-center relative overflow-hidden shrink-0 rounded-2xl border-2 border-white/5">
+                   <div className="w-10 h-10 w3-card-inset flex items-center justify-center relative overflow-hidden shrink-0 rounded-2xl border-2 border-white/5">
                       {selectedCard.iconAssetId ? (
                         <img src={story.assets[selectedCard.iconAssetId]?.dataUrl} className="w-full h-full object-cover" />
                       ) : <span className="text-2xl opacity-10 font-black">PIC</span>}
@@ -282,7 +282,7 @@ export const CardsTab: React.FC<CardsTabProps> = ({ story, onChange, toolActions
                 </div>
 
                 {/* Output C (Effect Area) */}
-                <div className="h-20 w3-card-inset bg-amber-500/5 rounded-2xl p-3 border border-amber-500/10 font-mono text-[9px] text-amber-500 overflow-hidden relative">
+                <div className="h-14 w3-card-inset bg-amber-500/5 rounded-2xl p-3 border border-amber-500/10 font-mono text-[9px] text-amber-500 overflow-hidden relative">
                    <div className="absolute top-2 right-3 text-[7px] text-amber-500/20 font-black uppercase">EFFECT_C</div>
                    <p className="leading-relaxed opacity-90">{selectedCard.effectResult || '// Final Output'}</p>
                 </div>
@@ -297,7 +297,7 @@ export const CardsTab: React.FC<CardsTabProps> = ({ story, onChange, toolActions
                 </div>
               </div>
               </div>
-              <div className="flex-1 min-w-0 h-full overflow-y-auto py-2 pr-1 md:pr-4 scroll-container" aria-label="ชุดคำสั่งโมดูล A B C">
+              <div className="card-preview-commands scroll-container" aria-label="ชุดคำสั่งโมดูล A B C">
                 {([
                   ['A', selectedCard.inputCondition, 'text-blue-400', 'border-blue-500/30'],
                   ['B', selectedCard.logicCode, 'text-emerald-400', 'border-emerald-500/30'],
