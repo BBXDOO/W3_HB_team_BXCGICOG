@@ -10,6 +10,8 @@ export const createEmptyProject = (storyId: string, projectKind: ProjectKind, ti
     title: title.trim(),
     author: 'ARCHITECT',
     version: 'v0.1.0',
+    projectStatus: 'draft',
+    projectProgress: 0,
     description: '',
     createdAt: now,
     updatedAt: now,

@@ -18,11 +18,15 @@ export interface AttributeDef {
   defaultValue: number;
 }
 
+export type ProjectStatus = 'draft' | 'active' | 'paused' | 'complete';
+
 export interface StoryPack {
   storyId: string;
   title: string;
   author?: string; 
-  version?: string; 
+  version?: string;
+  projectStatus?: ProjectStatus;
+  projectProgress?: number;
   description?: string;
   sourceUrl?: string; 
   logoAssetId?: string;

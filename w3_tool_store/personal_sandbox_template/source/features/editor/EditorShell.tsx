@@ -81,7 +81,7 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
   }, [backgroundImage, story.workspaceAssetId, story.themeAssetId, story.assets]);
 
   const updateStory = (newStory: StoryPack) => {
-    setStory(newStory);
+    setStory({ ...newStory, updatedAt: Date.now() });
     setIsDirty(true);
     setSaveError(false);
   };

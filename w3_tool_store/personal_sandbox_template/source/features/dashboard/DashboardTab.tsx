@@ -1,11 +1,15 @@
+import { summarizeProject, normalizeProgress, projectStatusLabels } from '../../core/projectSummary';
+import type { ProjectStatus } from '../../types';
+import { ProjectIdentityCard } from '../../ui/components/ProjectIdentityCard';
+import { Acknowledgements } from '../../ui/components/Acknowledgements';
 
 import React, { useState } from 'react';
 import { StoryPack, UITheme, Asset } from '../../types';
 import { Button } from '../../ui/components/Button';
 import { MonitorCore } from '../../ui/components/MonitorCore';
 import { SplitLayout60_40 } from '../../ui/layout/SplitLayout60_40';
-import { formatDate, generateId, SPECIAL_STATUS } from '../../core/utils';
-import { Input, TextArea } from '../../ui/components/Input';
+import { generateId, SPECIAL_STATUS } from '../../core/utils';
+import { Input, TextArea, Select } from '../../ui/components/Input';
 
 interface DashboardTabProps {
   story: StoryPack;
@@ -150,6 +154,10 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ story, onChange, too
               placeholder="ระบุจุดมุ่งหมายหรือเรื่องราวของระบบนิเวศนี้..."
             />
           </div>
+          <section className="project-meta-editor" aria-label="ข้อมูลและความคืบหน้าโครงการ">
+            <div className="grid grid-cols-2 gap-3"><Input label="เวอร์ชันโครงการ" value={story.version || ''} onChange={version => onChange({ ...story, version })} /><Select label="สถานะโครงการ" value={story.projectStatus || ''} options={[{ label: 'ยังไม่ระบุ', value: '' }, ...Object.entries(projectStatusLabels).map(([value, label]) => ({ value, label }))]} onChange={value => onChange({ ...story, projectStatus: value ? value as ProjectStatus : undefined })} /></div>
+            <label className="project-progress-control">ความคืบหน้าที่คุณกำหนด (0–100%)<div><input aria-label="ปรับความคืบหน้าโครงการ" type="range" min="0" max="100" value={normalizeProgress(story.projectProgress) ?? 0} onChange={e => onChange({ ...story, projectProgress: Number(e.target.value) })} /><input aria-label="เปอร์เซ็นต์ความคืบหน้าโครงการ" type="number" min="0" max="100" placeholder="—" value={normalizeProgress(story.projectProgress) ?? ''} onChange={e => onChange({ ...story, projectProgress: e.target.value === '' ? undefined : normalizeProgress(Number(e.target.value)) })} /></div></label>
+          </section>
           <section aria-label="สรุปโครงการ" className="ps-stat-grid grid grid-cols-2 gap-3 mt-1">
             <div className="ps-stat-tile"><span>01 / ตัวละคร</span><strong>{story.characters.length}</strong></div>
             <div className="ps-stat-tile"><span>02 / การ์ด</span><strong>{story.cards.length}</strong></div>
@@ -160,47 +168,12 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ story, onChange, too
       }
       bottomMain={
         <MonitorCore title="Project Overview" modeLabel="STUDIO_VIEW" isEmpty={false}>
-          <div className="w-full max-w-3xl mx-auto flex flex-col gap-5 pt-4 pb-12 items-center text-center animate-in fade-in duration-1000">
-            <div className="relative group">
-               <div className="w-28 h-28 md:w-36 md:h-36 bg-black flex items-center justify-center shadow-2xl border-4 border-white/5 rounded-[40px] md:rounded-[48px] overflow-hidden relative transition-all duration-700 group-hover:border-[var(--border)] group-hover:scale-105">
-                 {story.logoAssetId ? (
-                   <img src={story.assets[story.logoAssetId]?.dataUrl} className="w-full h-full object-cover p-3" alt="Project Logo" />
-                 ) : (
-                   <span className="text-5xl md:text-6xl group-hover:rotate-12 transition-transform duration-700">🏛️</span>
-                 )}
-                 <div className="absolute inset-0 bg-blue-600/5 animate-pulse"></div>
-                 <input type="file" className="absolute inset-0 opacity-0 cursor-pointer z-20" onChange={handleLogoUpload} accept="image/*" />
-               </div>
-               <div className="absolute -bottom-2 -right-4 bg-blue-600 text-[8px] md:text-[9px] font-black px-3 py-1.5 text-white uppercase tracking-[0.3em] shadow-2xl rounded-xl border-2 border-white/20 z-30">
-                 EXODUS_MEMORY_ACTIVE
-               </div>
-            </div>
-            
-            <div className="flex flex-col gap-3 px-4 w-full">
-              <h1 className="text-3xl md:text-6xl font-black tracking-tighter uppercase text-[var(--text)] leading-tight break-words w-full">
-                {story.title || 'UNNAMED_ECOLOGY'}
-              </h1>
-              <div className="flex items-center justify-center gap-4 mt-2">
-                 <span className="text-[8px] md:text-[10px] text-blue-500 font-black tracking-[0.4em] uppercase border-b-2 border-blue-500/20 pb-1">
-                    {story.version || 'v0.1.0'}
-                 </span>
-                 <div className="w-1 h-1 bg-white/10 rounded-full"></div>
-                 <span className="text-[8px] md:text-[10px] text-gray-500 font-black tracking-[0.4em] uppercase border-b-2 border-white/10 pb-1">
-                    {story.author || 'ANONYMOUS'}
-                 </span>
-              </div>
-            </div>
-
-            <div className="p-6 md:p-10 bg-black/40 backdrop-blur-md border border-white/5 w-full relative shadow-2xl rounded-[32px] md:rounded-[40px]">
-               <p className="text-lg md:text-2xl text-gray-400 leading-relaxed font-black uppercase tracking-tighter italic">
-                 "{story.description || "Awaiting ecosystem declaration..."}"
-               </p>
-               <div className="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[7px] md:text-[8px] font-mono text-gray-600 tracking-widest uppercase">
-                  <span>Last Rev: {formatDate(story.updatedAt)}</span>
-                  <span>Anchor ID: EX-{story.storyId.slice(-6).toUpperCase()}</span>
-               </div>
-            </div>
+          <div className="project-overview-detail">
+            <div className="project-logo-control"><label title="เปลี่ยนรูปโครงการ"><span>{story.logoAssetId ? <img src={story.assets[story.logoAssetId]?.dataUrl} alt="รูปโครงการ" /> : '◇'}</span><input aria-label="เปลี่ยนรูปโครงการ" type="file" accept="image/*" onChange={handleLogoUpload} /></label><span>PROJECT PROFILE / BBX19 WORKSPACE</span></div>
+            <ProjectIdentityCard project={{ ...story, ...summarizeProject(story) }} description={story.description} />
+            <Acknowledgements />
           </div>
+
         </MonitorCore>
       }
     />

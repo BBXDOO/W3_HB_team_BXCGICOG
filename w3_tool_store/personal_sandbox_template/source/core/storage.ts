@@ -1,3 +1,4 @@
+import { summarizeProject, type ProjectSummary } from './projectSummary';
 
 import { StoryPack, CharacterPack, ItemPack, EventPack, AttributeDef, ProjectKind } from '../types';
 import { clearRunState, loadRunState, parseRunState, saveRunState, type RunState } from './runState';
@@ -5,7 +6,7 @@ import { clearRunState, loadRunState, parseRunState, saveRunState, type RunState
 const INDEX_KEY = 'w3idp.story.index';
 const STORY_PREFIX = 'w3idp.story.';
 
-export interface StoryIndexItem {
+export interface StoryIndexItem extends ProjectSummary {
   storyId: string;
   title: string;
   updatedAt: number;
@@ -149,7 +150,7 @@ export const saveStory = (story: StoryPack) => {
     const updatedStory = { ...story, updatedAt: Date.now() };
     const existingIndex = index.findIndex(i => i.storyId === story.storyId);
     const newItem = { storyId: story.storyId, title: story.title, updatedAt: updatedStory.updatedAt,
-      projectKind: story.projectKind };
+      projectKind: story.projectKind, ...summarizeProject(story) };
     if (existingIndex > -1) index[existingIndex] = newItem;
     else index.push(newItem);
     localStorage.setItem(key, JSON.stringify(updatedStory));

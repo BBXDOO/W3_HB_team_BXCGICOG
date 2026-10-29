@@ -1,9 +1,11 @@
+import { summarizeProject } from '../../core/projectSummary';
+import { ProjectIdentityCard } from '../../ui/components/ProjectIdentityCard';
+import { Acknowledgements } from '../../ui/components/Acknowledgements';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '../../ui/components/Button';
 import { Card } from '../../ui/components/Card';
-import { StoryIndexItem, getStoryIndex, deleteStory, importStory, restoreBackup } from '../../core/storage';
-import { formatDate } from '../../core/utils';
+import { StoryIndexItem, getStoryIndex, getStory, deleteStory, importStory, restoreBackup } from '../../core/storage';
 import { Modal } from '../../ui/components/Modal';
 import type { ProjectKind } from '../../types';
 
@@ -32,10 +34,15 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ onOpenStory, onNewStor
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setIndex(getStoryIndex());
+    setIndex(loadIndex());
   }, []);
 
-  const refreshIndex = () => setIndex(getStoryIndex());
+  const loadIndex = () => getStoryIndex().map(item => {
+    if (item.summaryVersion === 1) return item;
+    const project = getStory(item.storyId);
+    return project ? { ...item, ...summarizeProject(project) } : item;
+  });
+  const refreshIndex = () => setIndex(loadIndex());
 
   const createProject = () => {
     if (!newTitle.trim()) return;
@@ -95,14 +102,13 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ onOpenStory, onNewStor
       </header>
 
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 relative z-10" aria-label="โครงการทั้งหมด">
-        {index.map((item, idx) => (
+        {index.map((item) => (
           <div 
             key={item.storyId} 
             onClick={() => onOpenStory(item.storyId)}
-            className="group cursor-pointer relative animate-in fade-in zoom-in duration-500"
-            style={{ animationDelay: `${idx * 100}ms` }}
+            className="group cursor-pointer relative"
           >
-            <Card className="library-project-card p-4 relative min-h-[170px] flex flex-col justify-between overflow-hidden border border-white/10 shadow-xl">
+            <Card className="library-project-card p-4 relative flex flex-col gap-3 overflow-hidden border border-white/10 shadow-xl">
               <div className="flex justify-between items-start gap-2 z-10">
                 <span className="text-[9px] font-black text-emerald-300 uppercase tracking-[0.1em] bg-emerald-400/10 px-3 py-1 rounded-full border border-emerald-400/20 w-fit">{kindLabel(item.projectKind)}</span>
                 <button 
@@ -113,22 +119,9 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ onOpenStory, onNewStor
                 </button>
               </div>
 
-              <div className="flex-1 flex flex-col justify-center py-3 z-10">
-                <h3 className="text-xl font-black text-white tracking-tight leading-tight group-hover:text-[#ea580c] transition-colors uppercase italic break-words line-clamp-2">
-                  {item.title || 'UNNAMED_ENTITY'}
-                </h3>
-                <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-[0.1em] mt-2">ID: {item.storyId.slice(-12)}</p>
-              </div>
+              <ProjectIdentityCard project={item} />
+              <button type="button" className="project-open-button" onClick={event => { event.stopPropagation(); onOpenStory(item.storyId); }} aria-label={`เปิดโครงการ ${item.title}`}>เปิดโครงการ ↗</button>
 
-              <div className="pt-2 border-t border-white/10 flex justify-between items-center z-10">
-                <div className="flex flex-col">
-                   <span className="text-[8px] text-zinc-400 font-black uppercase tracking-[0.15em]">แก้ไขล่าสุด</span>
-                   <span className="text-[10px] text-white font-bold">{formatDate(item.updatedAt)}</span>
-                </div>
-                <div className="w-9 h-9 tactile-raised flex items-center justify-center text-[#ea580c] group-hover:bg-[#ea580c] group-hover:text-white transition-all duration-300 border border-white/10" aria-hidden="true">
-                   <span className="text-lg font-black">→</span>
-                </div>
-              </div>
             </Card>
           </div>
         ))}
@@ -136,7 +129,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ onOpenStory, onNewStor
         <button 
           className="min-h-[110px] tactile-inset border-2 border-dashed border-white/10 flex items-center justify-center gap-3 group hover:bg-white/5 transition-all animate-in fade-in"
           onClick={() => setShowCreate(true)}
-          style={{ animationDelay: `${index.length * 100}ms` }}
+
         >
           <div className="w-10 h-10 tactile-raised flex items-center justify-center text-xl text-zinc-400 group-hover:text-[#ea580c] transition-all duration-500 border border-white/5">＋</div>
           <div className="flex flex-col items-center gap-1">
@@ -146,17 +139,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ onOpenStory, onNewStor
         </button>
       </section>
 
-      <footer className="mt-10 border-t border-white/10 pt-6 flex flex-col items-center gap-4 opacity-40 hover:opacity-100 transition-opacity duration-1000">
-         <div className="flex items-center gap-6">
-            <div className="w-12 h-[1px] bg-zinc-800"></div>
-            <span className="text-[9px] font-black text-zinc-400 uppercase tracking-[0.8em]">Nexus Physical Link Established</span>
-            <div className="w-12 h-[1px] bg-zinc-800"></div>
-         </div>
-         <div className="flex flex-col items-center gap-2">
-            <p className="text-[10px] font-medium italic text-zinc-300">"ดูแลตัวเองนะครับเพื่อน ระบบพร้อมทำงานเสมอครับ"</p>
-            <p className="text-[8px] font-black uppercase tracking-[0.4em] text-[#ea580c] mt-2">— Nexus Studio Engine v0.5</p>
-         </div>
-      </footer>
+      <footer className="library-credits"><Acknowledgements /><p>BBX19 / PERSONAL WORKSPACE</p></footer>
 
       <Modal isOpen={showCreate} title="สร้างโครงการใหม่" onClose={() => setShowCreate(false)} footer={
         <>
