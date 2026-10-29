@@ -58,7 +58,7 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
     if (ancestors.has(entry.key)) return null;
     const next = new Set(ancestors).add(entry.key);
     return <div key={entry.key} className="border-l border-emerald-500/30 pl-3 mt-2">
-      <button type="button" onClick={() => onSelect(entry.key)} className={`w-full text-left rounded-lg border p-2 text-xs ${selectedKey === entry.key ? 'border-emerald-400 bg-emerald-900/40' : 'border-white/10 bg-white/5'}`}>
+      <button type="button" onClick={() => onSelect(entry.key)} className={`w-full text-left rounded-lg border p-2 text-xs ${selectedKey === entry.key ? 'border-[var(--accent)] bg-[var(--accent)]/15' : 'border-white/10 bg-white/5'}`}>
         <span className="mr-2">{entry.cell.markerIcon || '◇'}</span>{cellName(entry)}
       </button>
       {records.filter(child => child.cell.parentKey === entry.key).map(child => renderNode(child, next))}
@@ -68,7 +68,7 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
   return <div className="board-workspace h-full min-h-[260px] flex flex-col gap-2 text-white" aria-label="พื้นที่ข้อมูลบอร์ด">
     <div className="flex items-center gap-1 overflow-x-auto shrink-0 pb-1" aria-label="รูปแบบการแสดงข้อมูล">
       {modes.map(option => <button key={option.id} type="button" onClick={() => onMode(option.id)} aria-pressed={mode === option.id}
-        className={`shrink-0 rounded-lg px-3 py-2 text-xs ${mode === option.id ? 'bg-emerald-700 text-white' : 'bg-white/5 text-slate-300'}`}>{option.label}</button>)}
+        className={`shrink-0 rounded-lg px-3 py-2 text-xs ${mode === option.id ? 'bg-[var(--accent)] text-[#0b0912] font-bold' : 'bg-white/5 text-slate-300'}`}>{option.label}</button>)}
     </div>
     <div className="board-workspace-columns flex-1 min-h-0 grid gap-2" style={{ gridTemplateColumns: 'minmax(0, 1.15fr) minmax(0, .85fr)' }}>
       <section className={`${panel} min-w-0 min-h-0 flex flex-col overflow-hidden`} aria-label="ภาพรวมข้อมูล">
