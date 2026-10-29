@@ -47,7 +47,7 @@ export const MonitorCore: React.FC<MonitorCoreProps> = ({
               {emptyState.onAction && (
                 <button 
                   onClick={emptyState.onAction}
-                  className="px-8 py-3 bg-[#28755f] text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl shadow-xl hover:bg-[#348b70] transition-all"
+                  className="px-8 py-3 bg-[var(--accent)] text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl shadow-xl hover:brightness-110 transition-all"
                 >
                   {emptyState.actionLabel || '+ INITIALIZE'}
                 </button>

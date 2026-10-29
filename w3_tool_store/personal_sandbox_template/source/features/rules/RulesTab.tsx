@@ -48,13 +48,13 @@ export const RulesTab: React.FC<Props> = ({ story, onChange, navigationTarget })
         <input aria-label={`ชื่อข้อ ${number}`} value={block.title} onChange={e => editBlock(path, old => ({ ...old, title: e.target.value }))} className="flex-1 min-w-0 rounded bg-black/30 p-2 text-sm" />
         <button className="text-xs text-red-300" aria-label={`ลบข้อ ${number}`} onClick={() => selected && update({ ...selected, blocks: removeAt(selected.blocks, path) })}>ลบ</button></div>
       <label className="block text-xs text-slate-300">ประเภท
-        <select value={block.kind || 'reference'} onChange={e => editBlock(path, old => ({ ...old, kind: e.target.value as RuleBlock['kind'] }))} className="ml-2 rounded bg-[#0b1512] p-2">
+        <select value={block.kind || 'reference'} onChange={e => editBlock(path, old => ({ ...old, kind: e.target.value as RuleBlock['kind'] }))} className="ml-2 rounded bg-[var(--surface-2)] p-2">
           <option value="reference">คำอธิบาย/อ้างอิง</option><option value="condition">เงื่อนไขที่นิยามไว้ (ยังไม่รัน)</option>
         </select></label>
       <TextArea richText={block.kind !== 'condition'} label="เนื้อหา (เขียน Markdown ได้)" value={block.content} onChange={value => editBlock(path, old => ({ ...old, content: value }))} />
       {block.kind === 'condition' && <div className="grid grid-cols-2 gap-2 rounded-lg border border-emerald-500/20 p-2">
         <Input label="ชื่อ input เช่น area.type" value={block.inputKey || ''} onChange={value => editBlock(path, old => ({ ...old, inputKey: value }))} />
-        <label className="text-xs">เปรียบเทียบ<select className="block w-full bg-[#0b1512] p-2 rounded" value={block.operator || ''} onChange={e => editBlock(path, old => ({ ...old, operator: e.target.value as RuleBlock['operator'] }))}>
+        <label className="text-xs">เปรียบเทียบ<select className="block w-full bg-[var(--surface-2)] p-2 rounded" value={block.operator || ''} onChange={e => editBlock(path, old => ({ ...old, operator: e.target.value as RuleBlock['operator'] }))}>
           <option value="">เลือก</option>{['exists','==','!=','>','>=','<','<='].map(op => <option key={op} value={op}>{op}</option>)}
         </select></label>
         {block.operator !== 'exists' && <Input label="ค่าที่เทียบ" value={block.expected || ''} onChange={value => editBlock(path, old => ({ ...old, expected: value }))} />}

@@ -1,3 +1,4 @@
+import { NavIcon } from '../components/NavIcon';
 import React, { useEffect, useRef, useState } from 'react';
 
 interface SplitLayout60_40Props {
@@ -137,10 +138,10 @@ export const SplitLayout60_40: React.FC<SplitLayout60_40Props> = ({
         style={{ height: `${outputHeight}px` }} aria-label="พื้นที่แสดงผล">
         {showTools && toolActions && (toolActions.onSearch || toolActions.onAdd || toolActions.onExport || toolActions.onToggleAgent) && (
           <div className="workspace-output-actions flex items-center gap-2 px-3 py-1 border-b border-[var(--border)] bg-[var(--surface-2)] shrink-0" aria-label="เครื่องมือพื้นที่แสดงผล">
-            {toolActions.onSearch && <button type="button" onClick={toolActions.onSearch} aria-label="ค้นหา" className="workspace-action">🔍</button>}
-            {toolActions.onAdd && <button type="button" onClick={toolActions.onAdd} aria-label="เพิ่มรายการ" className="workspace-action">＋</button>}
-            {toolActions.onExport && <button type="button" onClick={toolActions.onExport} aria-label="ส่งออก" className="workspace-action">📤</button>}
-            {toolActions.onToggleAgent && <button type="button" onClick={toolActions.onToggleAgent} aria-label="เปิดหรือปิดผู้ช่วย" className="workspace-action ml-auto">🧠</button>}
+            {toolActions.onSearch && <button type="button" onClick={toolActions.onSearch} aria-label="ค้นหา" className="workspace-action"><NavIcon name="search" /></button>}
+            {toolActions.onAdd && <button type="button" onClick={toolActions.onAdd} aria-label="เพิ่มรายการ" className="workspace-action"><NavIcon name="add" /></button>}
+            {toolActions.onExport && <button type="button" onClick={toolActions.onExport} aria-label="ส่งออก" className="workspace-action"><NavIcon name="export" /></button>}
+            {toolActions.onToggleAgent && <button type="button" onClick={toolActions.onToggleAgent} aria-label="เปิดหรือปิดผู้ช่วย" className="workspace-action ml-auto"><NavIcon name="ai" /></button>}
           </div>
         )}
         <div className="flex-1 w-full min-w-0 min-h-0 overflow-y-auto scroll-container relative">

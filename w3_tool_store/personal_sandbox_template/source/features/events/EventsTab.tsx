@@ -246,7 +246,7 @@ export const EventsTab: React.FC<EventsTabProps> = ({ story, onChange, toolActio
                  </div>
               </div>
 
-              <div className="flex-1 p-6 w3-card-inset bg-[#050505] text-emerald-400 font-mono text-[10px] md:text-[11px] rounded-[32px] shadow-inner border border-white/5 overflow-y-auto scroll-container">
+              <div className="flex-1 p-6 w3-card-inset bg-[var(--surface-2)] text-emerald-400 font-mono text-[10px] md:text-[11px] rounded-[32px] shadow-inner border border-white/5 overflow-y-auto scroll-container">
                 <div className="mb-4 opacity-40 border-b border-emerald-900/30 pb-2 uppercase tracking-widest">EVENT_PIPELINE_INIT_V0.7</div>
                 <div className="flex flex-col gap-1.5">
                   {selectedEvent.actions.length > 0 ? selectedEvent.actions.map((act, i) => (

@@ -38,7 +38,7 @@ export const ItemSheet: React.FC<ItemSheetProps> = ({ item, onChange, onDelete }
       <Card className="p-4 flex flex-col gap-4 w-full">
         <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
           <div className="w-14 h-14 md:w-20 md:h-20 w3-card-inset flex items-center justify-center text-2xl md:text-4xl shrink-0">🎒</div>
-          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 w-full">
+          <div className="flex-1 grid grid-cols-1 min-[380px]:grid-cols-2 lg:grid-cols-4 gap-3 w-full">
             <Input label="Label" value={item.name} onChange={(v) => updateField('name', v)} />
             <Input label="Asset ID" value={item.itemId} onChange={(v) => updateField('itemId', v)} />
             <Select 

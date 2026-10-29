@@ -57,7 +57,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ story, onChange, too
                   <span className="text-[14px] font-black text-white uppercase tracking-tighter flex items-center gap-2">
                     {SPECIAL_STATUS.EXODUS.icon} {saveStatus}
                   </span>
-                  <span className="text-[8px] text-blue-400 uppercase font-black mt-1">Memory Integrity: 100% Verified</span>
+                  <span className="text-[8px] text-blue-400 uppercase font-black mt-1">ข้อมูลโครงการบนเครื่องนี้</span>
                 </div>
                 <div className="w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_15px_#2563EB] animate-flicker relative z-10"></div>
               </div>
@@ -125,25 +125,25 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ story, onChange, too
       topRight={
         <div className="ps-dashboard-editor p-4 md:p-8 flex flex-col gap-5 overflow-y-auto h-full bg-[var(--surface)] scroll-container pb-24">
           <div className="flex flex-col gap-4 animate-in fade-in duration-500">
-            <label className="text-[11px] font-black text-[var(--accent)] uppercase tracking-[0.25em]">01 / Project Title</label>
+            <div className="ps-project-heading"><label>01 / โครงการ</label><span>PROJECT</span></div>
             <input 
               type="text"
               value={story.title || ''}
               onChange={e => onChange({...story, title: e.target.value})}
-              className="w-full bg-transparent border-b-2 border-[var(--border)] py-3 text-3xl md:text-5xl font-black text-[var(--text)] outline-none focus:border-[var(--accent)] transition-all uppercase tracking-tighter"
+              className="w-full bg-transparent border-b-2 border-[var(--border)] py-3 text-2xl md:text-4xl font-black text-[var(--text)] outline-none focus:border-[var(--accent)] transition-all uppercase tracking-tighter"
               placeholder="PROJECT_ID_NULL"
             />
           </div>
 
           <div className="animate-in fade-in duration-600">
              <Button variant="accent" className="w-full h-12 md:h-14 text-xs md:text-sm font-black uppercase tracking-[0.16em] border border-white/10 transition-transform active:scale-95" onClick={handleManualSave}>
-               COMMIT PROJECT TO ARCHIVE
+               บันทึกโครงการ
              </Button>
           </div>
 
           <div className="flex flex-col gap-5 animate-in fade-in duration-700">
             <TextArea 
-              label="Ecosystem Declaration"
+              label="รายละเอียด / จุดมุ่งหมาย"
               value={story.description || ''}
               onChange={v => onChange({...story, description: v})}
               className="w-full text-base md:text-lg font-medium leading-relaxed"
@@ -151,10 +151,10 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ story, onChange, too
             />
           </div>
           <section aria-label="สรุปโครงการ" className="ps-stat-grid grid grid-cols-2 gap-3 mt-1">
-            <div className="ps-stat-tile"><span>01 / CHARACTERS</span><strong>{story.characters.length}</strong></div>
-            <div className="ps-stat-tile"><span>02 / CARDS</span><strong>{story.cards.length}</strong></div>
-            <div className="ps-stat-tile"><span>03 / EVENTS</span><strong>{story.events.length}</strong></div>
-            <div className="ps-stat-tile"><span>04 / BOARDS</span><strong>{story.boards.length}</strong></div>
+            <div className="ps-stat-tile"><span>01 / ตัวละคร</span><strong>{story.characters.length}</strong></div>
+            <div className="ps-stat-tile"><span>02 / การ์ด</span><strong>{story.cards.length}</strong></div>
+            <div className="ps-stat-tile"><span>03 / เหตุการณ์</span><strong>{story.events.length}</strong></div>
+            <div className="ps-stat-tile"><span>04 / บอร์ด</span><strong>{story.boards.length}</strong></div>
           </section>
         </div>
       }

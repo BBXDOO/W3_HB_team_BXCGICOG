@@ -21,17 +21,17 @@ export const LeftNav: React.FC<LeftNavProps> = ({
   onSave
 }) => {
   const tabs: { id: TabId; label: string }[] = [
-    { id: 'home', label: 'Home' },
-    { id: 'story', label: 'Story' },
-    { id: 'character', label: 'Characters' },
-    { id: 'card', label: 'Cards' },
-    { id: 'board', label: 'Board' },
-    { id: 'location', label: 'Locations' },
-    { id: 'item', label: 'Items' },
-    { id: 'event', label: 'Events' },
-    { id: 'rule', label: 'Rules' },
-    { id: 'commonPlay', label: 'Common Play' },
-    { id: 'play', label: 'Playtest' },
+    { id: 'home', label: 'หน้าแรก' },
+    { id: 'story', label: 'เรื่องราว' },
+    { id: 'character', label: 'ตัวละคร' },
+    { id: 'card', label: 'การ์ด' },
+    { id: 'board', label: 'บอร์ด' },
+    { id: 'location', label: 'สถานที่' },
+    { id: 'item', label: 'ไอเทม' },
+    { id: 'event', label: 'เหตุการณ์' },
+    { id: 'rule', label: 'กฎ' },
+    { id: 'commonPlay', label: 'คำสั่ง' },
+    { id: 'play', label: 'ทดลอง' },
   ];
 
   return (
@@ -45,6 +45,9 @@ export const LeftNav: React.FC<LeftNavProps> = ({
         {tabs.map((tab) => (
           <button
             key={tab.id}
+            title={tab.label}
+            aria-label={tab.label}
+            aria-current={activeTab === tab.id ? 'page' : undefined}
             onClick={() => onTabChange(tab.id)}
             className={`
               w-full flex flex-col md:flex-row items-center gap-1 md:gap-4 px-2 md:px-5 py-3 md:py-4 transition-all relative rounded-2xl group
@@ -57,7 +60,7 @@ export const LeftNav: React.FC<LeftNavProps> = ({
             <span className={`transition-all duration-300 ${activeTab === tab.id ? 'text-[var(--accent)]' : 'text-[#bfc0ce] opacity-80 group-hover:opacity-100'}`}>
               <NavIcon name={tab.id} />
             </span>
-            <span className="text-[8px] md:text-[10px] uppercase font-black tracking-[0.2em] md:block hidden">
+            <span className="ps-nav-label">
               {tab.label}
             </span>
           </button>
@@ -73,8 +76,8 @@ export const LeftNav: React.FC<LeftNavProps> = ({
             `}
           >
             <NavIcon name="ai" className={isFormatOpen ? 'animate-pulse' : 'opacity-70 group-hover:opacity-100'} />
-            <span className="text-[8px] md:text-[10px] uppercase font-black tracking-[0.2em] md:block hidden">
-              FONT EDIT
+            <span className="ps-nav-label">
+              รูปแบบ
             </span>
           </button>
         </div>
@@ -84,7 +87,7 @@ export const LeftNav: React.FC<LeftNavProps> = ({
         {isDirty && (
           <button 
             onClick={onSave}
-            className="w-full py-4 bg-[#28755f] text-white rounded-[20px] text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl hover:bg-[#348b70] transition-all active:scale-95 border border-white/20"
+            className="w-full py-4 bg-[var(--accent)] text-white rounded-[20px] text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl hover:brightness-110 transition-all active:scale-95 border border-white/20"
           >
             💾 COMMIT CHANGES
           </button>

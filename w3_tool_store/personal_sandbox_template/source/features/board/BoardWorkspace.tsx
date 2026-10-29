@@ -74,7 +74,7 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
       <section className={`${panel} min-w-0 min-h-0 flex flex-col overflow-hidden`} aria-label="ภาพรวมข้อมูล">
         <div className="flex items-center justify-between gap-2 pb-2 text-xs"><strong>{mode === 'overview' ? 'ภาพรวมพื้นที่' : mode === 'grid' ? 'ตารางพิกัด' : mode === 'database' ? 'รายการข้อมูล' : 'ความสัมพันธ์'}</strong><span className="text-emerald-300">{records.length} รายการ</span></div>
         {mode === 'database' && <div className="flex gap-1 mb-2"><input className={`${field} min-w-0`} type="search" placeholder="ค้นหาข้อมูล" value={query} onChange={event => setQuery(event.target.value)} /><select aria-label="เรียงรายการ" className={`${field} w-24 shrink-0`} value={sortBy} onChange={event => setSortBy(event.target.value as 'coordinate' | 'name')}><option value="coordinate">พิกัด</option><option value="name">ชื่อ</option></select></div>}
-        <div className="flex-1 min-h-0 overflow-auto rounded-lg bg-[#0a1114] p-2 scroll-container">
+        <div className="flex-1 min-h-0 overflow-auto rounded-lg bg-[var(--surface-2)] p-2 scroll-container">
           {mode === 'grid' && <div className="grid w-max" style={{ gridTemplateColumns: `repeat(${board.width}, ${zoom}px)`, gap: 1 }}>
             {Array.from({ length: board.width * board.height }, (_, index) => {
               const x = index % board.width, y = Math.floor(index / board.width), key = `${x}_${y}`;

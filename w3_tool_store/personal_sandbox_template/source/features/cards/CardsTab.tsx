@@ -195,7 +195,7 @@ export const CardsTab: React.FC<CardsTabProps> = ({ story, onChange, toolActions
                     <h3 className="text-[10px] font-black text-[var(--text-dim)] uppercase tracking-widest">Logic Process (Code/f)</h3>
                  </div>
                  <textarea 
-                    className="w-full bg-[#050505] text-blue-400 p-4 rounded-2xl text-[11px] font-mono min-h-[140px] outline-none border border-white/5 focus:border-blue-500/50 shadow-inner"
+                    className="w-full bg-[var(--surface-2)] text-blue-400 p-4 rounded-2xl text-[11px] font-mono min-h-[140px] outline-none border border-white/5 focus:border-blue-500/50 shadow-inner"
                     value={selectedCard.logicCode}
                     placeholder="// เขียนกระบวนการลอจิกที่นี่..."
                     onChange={e => updateCard({...selectedCard, logicCode: e.target.value})}
@@ -274,7 +274,7 @@ export const CardsTab: React.FC<CardsTabProps> = ({ story, onChange, toolActions
                 </div>
 
                 {/* Process B (Code Block) */}
-                <div className="flex-1 w3-card-inset bg-[#050505] rounded-2xl p-4 mb-3 border border-white/5 font-mono text-[10px] text-emerald-400 overflow-hidden relative shadow-inner">
+                <div className="flex-1 w3-card-inset bg-[var(--surface-2)] rounded-2xl p-4 mb-3 border border-white/5 font-mono text-[10px] text-emerald-400 overflow-hidden relative shadow-inner">
                    <div className="absolute top-2 right-3 text-[7px] text-white/10 font-black tracking-widest uppercase">PROCESS_B</div>
                    <div className="whitespace-pre-wrap leading-relaxed opacity-80">
                      {selectedCard.logicCode || '// Processing...'}

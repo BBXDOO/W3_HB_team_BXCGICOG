@@ -69,7 +69,7 @@ export const Select: React.FC<{
           className="px-4 py-3 text-[11px] outline-none bg-transparent text-white font-bold appearance-none w-full cursor-pointer"
         >
           {options.map((opt) => (
-            <option key={opt.value} value={opt.value} className="bg-[#1c1c1f] text-white">{opt.label}</option>
+            <option key={opt.value} value={opt.value} className="bg-[var(--surface-2)] text-white">{opt.label}</option>
           ))}
         </select>
         <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-300 text-[10px]">▼</div>
