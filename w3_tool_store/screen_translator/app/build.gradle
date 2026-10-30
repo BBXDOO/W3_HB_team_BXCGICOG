@@ -1,8 +1,16 @@
 plugins { id 'com.android.application' }
+// Passwords are read directly from the step's secret environment, never GITHUB_ENV/OUTPUT.
+def privateSigning = [:]
+def signingInput = System.getenv('INPUT_SIGNING_JSON')
+if (signingInput) {
+    try { privateSigning = new groovy.json.JsonSlurper().parseText(signingInput) }
+    catch (Exception ignored) { throw new GradleException('Invalid private signing configuration') }
+    if (!(privateSigning instanceof Map)) throw new GradleException('Invalid private signing configuration')
+}
 def keyFile = System.getenv('W3_RELEASE_KEYSTORE_FILE')
-def releaseStorePassword = System.getenv('W3_RELEASE_STORE_PASSWORD')
-def releaseKeyAlias = System.getenv('W3_RELEASE_KEY_ALIAS')
-def releaseKeyPassword = System.getenv('W3_RELEASE_KEY_PASSWORD')
+def releaseStorePassword = privateSigning.store_password ?: System.getenv('W3_RELEASE_STORE_PASSWORD')
+def releaseKeyAlias = privateSigning.key_alias ?: System.getenv('W3_RELEASE_KEY_ALIAS')
+def releaseKeyPassword = privateSigning.key_password ?: System.getenv('W3_RELEASE_KEY_PASSWORD')
 def signedRelease = [keyFile, releaseStorePassword, releaseKeyAlias, releaseKeyPassword].every { it != null && !it.isEmpty() }
 android {
     namespace 'org.w3.translate'

@@ -23,14 +23,6 @@ try:
     keyfile = Path(os.environ["RUNNER_TEMP"]) / "w3-translator-signing.p12"
     keyfile.write_bytes(base64.b64decode(fields["keystore_base64"], validate=True))
     keyfile.chmod(0o600)
-    with open(os.environ["GITHUB_ENV"], "a") as out:
-        for name, value in {
-            "W3_RELEASE_KEYSTORE_FILE": str(keyfile),
-            "W3_RELEASE_STORE_PASSWORD": fields["store_password"],
-            "W3_RELEASE_KEY_ALIAS": fields["key_alias"],
-            "W3_RELEASE_KEY_PASSWORD": fields["key_password"],
-        }.items():
-            out.write(name + "=" + value + "\n")
     with open(os.environ["GITHUB_OUTPUT"], "a") as out:
         out.write("ready=true\n")
 except Exception:
