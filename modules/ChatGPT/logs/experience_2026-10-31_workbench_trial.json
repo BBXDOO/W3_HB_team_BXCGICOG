@@ -1,0 +1,89 @@
+{
+  "schema": "w3.chatgpt.workbench-experience/1",
+  "date": "2026-10-31",
+  "source_repository": "BBXDOO/W3_HB_team_BXCGICOG",
+  "source_ref": "refactor/v0.2",
+  "source_commit": "566de95c996185d21614f40183cb6ae505f98feb",
+  "cause": {
+    "request": "BBX19 ให้สำรวจว่าโต๊ะเอเจนท์ใช้ sandbox และเครื่องมือในพื้นที่ได้จริงหรือไม่",
+    "intent": "ลงมือใช้เครื่องมือที่มีเพื่อเข้าใจกลไก ก่อนสรุปจากเอกสาร"
+  },
+  "activity": {
+    "environment": {
+      "python": "3.12.14",
+      "node": "24.22.1"
+    },
+    "source_preparation": "Fetched 104 UTF-8 files via GitHub connector at pinned source commit into a local trial directory. Included protocol/src Python and JSON plus selected CLI/examples/probe. Created a local Git snapshot for sandbox inventory; its revision is not the upstream commit. No full repository checkout or xrea build.",
+    "commands": [
+      "python tools/mpcp_sandbox.py --request tools/agent_sandbox/local_setup.json --output trial_runs/observe",
+      "python tools/mpcp_sandbox.py --request tools/agent_sandbox/local_setup.json --output trial_runs/execute --execute",
+      "python tools/mpcp_papers.py --request tools/agent_sandbox/paper_pack.json --output trial_runs/papers --execute",
+      "node --test w3_tool_store/agent_workbench/tools/battle_flow_probe/battle_flow_probe.test.mjs",
+      "Changed only trial request TARGET:local to TARGET:android; executed sandbox in new output directory",
+      "Repeated same Paper Pack CLI using existing output directory"
+    ]
+  },
+  "result": {
+    "sandbox_without_execute": {
+      "state": "WAIT",
+      "artifact_verified": false,
+      "ledger_verified": true
+    },
+    "sandbox_execute": {
+      "state": "SUCCESS",
+      "artifact_verified": true,
+      "ledger_verified": true,
+      "original_source_unchanged": true,
+      "snapshot_unchanged": true
+    },
+    "unsupported_android_request": {
+      "state": "STOP",
+      "reason": "UNSUPPORTED_TARGET: only local setup is implemented",
+      "artifact_directory_created": false
+    },
+    "paper_pack": {
+      "state": "SUCCESS",
+      "papers": {
+        "TEXT-REPORT": "COMPLETED",
+        "TEXT-CONTINUITY": "COMPLETED"
+      },
+      "repeat_state": "SUCCESS",
+      "artifacts": [
+        {
+          "path": "artifacts/report.md",
+          "bytes": 43,
+          "sha256": "956e5bc44f5a573900db46f444c72a7a9df30ee391b9da1e50d9ad4fc8430cff",
+          "content": "# MPCP Paper equipment\n\nEvent: EV-TEXT-001\n"
+        },
+        {
+          "path": "artifacts/continuity.txt",
+          "bytes": 35,
+          "sha256": "74f3dc4e1b22f1da2cbb07c760d0cd80ef9ee9256e3b0e838409a602771c3044",
+          "content": "Event EV-TEXT-001 returns to MPCP.\n"
+        }
+      ]
+    },
+    "battle_probe": {
+      "exit_code": 0,
+      "test_files_passed": 1,
+      "observed_checks": [
+        "refill",
+        "cap boundary",
+        "atomic cost",
+        "equipped card",
+        "field change",
+        "phase",
+        "turn swap",
+        "restore",
+        "unsupported effect and unequipped card rejected"
+      ]
+    }
+  },
+  "understanding": "Workbench เป็นโต๊ะใช้งานจริง อุปกรณ์อยู่ได้ทั้งภายในพื้นที่และพาธเดิมที่เชื่อมถึงกัน การทดลองแยกพื้นที่ให้เห็นคำขอ การกำกับงาน ผู้ลงมือ ผลคืน และข้อจำกัด โดยรักษาต้นทางไว้",
+  "limits": [
+    "REA MCP not executed or built in this round; its README documents separate runtime prerequisites and a historical ps failure, not a new observed failure.",
+    "No APK/device test, deployment, production seven-system inspection, automatic learning, or Modew return-to-home isolation was proven.",
+    "No new tool was needed for this bounded task. No production implementation was changed.",
+    "Raw run directories remain in transient execution workspace; this record preserves commands, outcomes and exact generated text hashes."
+  ]
+}
