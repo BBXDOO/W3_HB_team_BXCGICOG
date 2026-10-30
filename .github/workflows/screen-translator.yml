@@ -12,6 +12,11 @@ on:
       - 'w3_tool_store/agent_workbench/tools/android_apk_probe/**'
       - '.github/workflows/screen-translator.yml'
   workflow_dispatch:
+    inputs:
+      publish_update:
+        description: Publish a signed translator update (requires signing secret)
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -44,3 +49,48 @@ jobs:
             w3_tool_store/screen_translator/app/build/outputs/apk/debug/*.apk
             w3_tool_store/screen_translator/app/build/reports/
           if-no-files-found: error
+
+  publish-update:
+    needs: android
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/refactor/v0.2') || (github.event_name == 'workflow_dispatch' && inputs.publish_update && github.ref == 'refs/heads/refactor/v0.2')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: translator-update-publishing
+      cancel-in-progress: false
+    defaults:
+      run:
+        working-directory: w3_tool_store/screen_translator
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore dedicated translator signing key
+        id: signing
+        env:
+          INPUT_SIGNING_JSON: ${{ secrets.W3_TRANSLATOR_SIGNING_JSON }}
+        run: python scripts/restore_signing.py
+      - uses: actions/setup-java@v4
+        if: steps.signing.outputs.ready == 'true'
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        if: steps.signing.outputs.ready == 'true'
+        with:
+          packages: 'platform-tools platforms;android-35 build-tools;34.0.0 build-tools;35.0.0'
+          log-accepted-android-sdk-licenses: false
+      - uses: gradle/actions/setup-gradle@v4
+        if: steps.signing.outputs.ready == 'true'
+        with:
+          gradle-version: '8.9'
+      - name: Build signed release
+        if: steps.signing.outputs.ready == 'true'
+        run: gradle --no-daemon --max-workers=2 :app:assembleRelease
+      - name: Publish verified translator update
+        if: steps.signing.outputs.ready == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/publish_update.py
+      - name: Remove temporary signing material
+        if: always()
+        run: rm -f "$RUNNER_TEMP/w3-translator-signing.p12"

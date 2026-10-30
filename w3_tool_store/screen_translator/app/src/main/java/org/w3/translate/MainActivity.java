@@ -21,6 +21,7 @@ public class MainActivity extends Activity {
     private TextView status;
     private Button prepare,start;
     private boolean loading,notificationAsked,capturePending;
+    private UpdateController updater;
     private final List<Translator> downloads=new ArrayList<>();
     private final String[] codes={"auto","zh","ja","en"};
     @Override public void onCreate(Bundle b){
@@ -29,6 +30,9 @@ public class MainActivity extends Activity {
         LinearLayout root=Ui.column(this,22);root.setBackgroundColor(Ui.BG);scroll.addView(root);setContentView(scroll);
         root.setOnApplyWindowInsetsListener((v,in)->{root.setPadding(Ui.dp(this,22),in.getSystemWindowInsetTop()+Ui.dp(this,18),Ui.dp(this,22),in.getSystemWindowInsetBottom()+Ui.dp(this,22));return in;});
         TextView brand=Ui.text(this,"W3  /  เครื่องมือช่วยอ่าน",13);root.addView(brand);
+        Button update=Ui.button(this,"อัปเดตแอป · รุ่น "+versionLabel());root.addView(update);
+        TextView updateStatus=Ui.text(this,"กดเพื่อตรวจรุ่นใหม่ผ่านอินเทอร์เน็ต",13);root.addView(updateStatus);
+        updater=new UpdateController(this,update,updateStatus);
         TextView title=Ui.text(this,"อ่านเข้าใจ\nไปต่อได้",36);Ui.bold(title);root.addView(title);
         root.addView(Ui.text(this,"แปลจีน · ญี่ปุ่น · อังกฤษ → ไทย\nบนหน้าจอเกม คู่มือ และหนังสือ",17));
         LinearLayout card=Ui.column(this,18);card.setBackground(Ui.round(0xffffffff,Ui.dp(this,20)));root.addView(card,new LinearLayout.LayoutParams(-1,-2));
@@ -45,9 +49,10 @@ public class MainActivity extends Activity {
         root.addView(Ui.text(this,"วิธีใช้",20));
         root.addView(Ui.text(this,"เริ่มแปล → อนุญาตหน้าจอ → สลับไปแอปที่ต้องการ\n\nปุ่มลอย «ไทย» เปิดเมนู: พัก / แปลครั้งเดียว / อ่านเต็มหน้า / เลือกพื้นที่ / ซ่อน / ปิด\n\nคำแปลเป็นชั้นทับหน้าจอ กดซ่อนก่อนแตะเมนูที่อ่านแล้วได้ ปุ่มลอยลากย้ายได้\n\nโหมดอัตโนมัติจะเว้นช่วงอ่านจอ มีหน่วงและอาจเห็นคำแปลหายชั่วครู่ระหว่างจับภาพ",15));
         root.addView(Ui.text(this,"ก่อนเริ่ม",20));
-        root.addView(Ui.text(this,"• Android ขอสิทธิ์แสดงทับแอปและจับภาพหน้าจอ\n• แอปที่ป้องกันการจับภาพจะอ่านไม่ได้\n• ตัวหนังสือเล็ก ฟอนต์เกม และภาษาญี่ปุ่นที่มีแต่คันจิอาจอ่านผิด เลือกภาษาตรง ๆ ช่วยได้\n• คำศัพท์วิชาการ สูตร และตารางควรเทียบต้นฉบับ\n• ไม่บันทึกภาพหรือประวัติคำแปล แปลในเครื่องหลังเตรียมภาษา; SDK อาจติดต่อ Google เพื่อดาวน์โหลดและส่งข้อมูลวินิจฉัย\n• รุ่นทดลอง 0.1 — ยังต้องทดสอบบน OPPO จริง",14));
+        root.addView(Ui.text(this,"• Android ขอสิทธิ์แสดงทับแอปและจับภาพหน้าจอ\n• แอปที่ป้องกันการจับภาพจะอ่านไม่ได้\n• ตัวหนังสือเล็ก ฟอนต์เกม และภาษาญี่ปุ่นที่มีแต่คันจิอาจอ่านผิด เลือกภาษาตรง ๆ ช่วยได้\n• คำศัพท์วิชาการ สูตร และตารางควรเทียบต้นฉบับ\n• ไม่บันทึกภาพหรือประวัติคำแปล แปลในเครื่องหลังเตรียมภาษา; SDK อาจติดต่อ Google เพื่อดาวน์โหลดและส่งข้อมูลวินิจฉัย\n• รุ่นทดลอง — ยังต้องทดสอบบน OPPO จริง",14));
         root.addView(Ui.text(this,"ใช้ ML Kit ของ Google · คำแปลอัตโนมัติ",12));
     }
+    private String versionLabel(){try{String v=getPackageManager().getPackageInfo(getPackageName(),0).versionName;return v==null?"?":v.replace("-preview","");}catch(Exception e){return "?";}}
     private String selected(){return codes[language.getSelectedItemPosition()];}
     private void prepareModels(){
         if(loading)return;
@@ -79,11 +84,12 @@ public class MainActivity extends Activity {
     @Override public void onRequestPermissionsResult(int request,String[] permissions,int[] results){super.onRequestPermissionsResult(request,permissions,results);if(request==10)startCapture();}
     @Override protected void onActivityResult(int request,int result,Intent data){
         super.onActivityResult(request,result,data);
+        if(request==UpdateController.INSTALL_PERMISSION){updater.permissionReturned();return;}
         if(request!=CAPTURE)return;
         capturePending=false;
         if(result!=RESULT_OK || data==null){status.setText("ยังไม่อนุญาตจับภาพ กดเริ่มใหม่ได้เมื่อพร้อม");return;}
         Intent i=new Intent(this,ScreenService.class).putExtra("code",result).putExtra("data",data).putExtra("source",selected()).putExtra("reader",mode.getSelectedItemPosition()==1);
         startForegroundService(i);status.setText("เปิดปุ่มลอยแล้ว สลับไปแอปที่ต้องการอ่านได้เลย");
     }
-    @Override protected void onDestroy(){super.onDestroy();for(Translator t:downloads)t.close();downloads.clear();}
+    @Override protected void onDestroy(){super.onDestroy();if(updater!=null)updater.close();for(Translator t:downloads)t.close();downloads.clear();}
 }
