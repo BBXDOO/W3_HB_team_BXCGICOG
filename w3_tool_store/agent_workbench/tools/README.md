@@ -31,6 +31,7 @@ DERIVED_FROM:
 | [rea_mcp_probe/](rea_mcp_probe/README.md) | เรียก REA MCP จริง เก็บผลและข้อจำกัด; การวิเคราะห์รอบแรกติด host process ownership |
 | [battle_flow_probe/](battle_flow_probe/README.md) | ทดลอง logic สนาม มานา การ์ด เฟส และเทิร์นด้วย Node; ไม่ใช่ผลทดสอบ UI/APK |
 | [android_webview_probe/](android_webview_probe/README.md) | ตรวจ layout ด้วย Chromium เมื่อมี dependency; ยังไม่ใช่ Android WebView/ColorOS จริง |
+| [android_apk_probe/](android_apk_probe/README.md) | ตรวจลายเซ็นและ manifest ของ APK จริงด้วย Android SDK; ไม่ใช่ผลรันบนเครื่อง |
 | [system_inspection/](system_inspection/README.md) | ตัวเชื่อม Orchestration ตรวจชุดจริง 7 ระบบ แยกเรื่องที่สะดุดแล้วเดินระบบอิสระถัดไป |
 
 ### M2 — เอกสารอ้างอิงนอกพื้นที่
