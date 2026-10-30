@@ -45,7 +45,9 @@ shutil.copyfile(apk, asset)
 sha = hashlib.sha256(asset.read_bytes()).hexdigest()
 (output / "SHA256SUMS").write_text(f"{sha}  {asset.name}\n")
 notes = output / "notes.txt"
-notes.write_text(f"W3 แปลหน้าจอ รุ่นอัปเดต {version}\n\nติดตั้งอัปเดตผ่านปุ่มอัปเดตแอปในหน้าหลัก รองรับ package และกุญแจลงนามเดิม\n\nSHA-256: {sha}\n", encoding="utf-8")
+feature_notes = root / "release-notes" / f"v{version}.md"
+details = feature_notes.read_text(encoding="utf-8") if feature_notes.exists() else "ติดตั้งอัปเดตผ่านปุ่มอัปเดตแอปในหน้าหลัก รองรับ package และกุญแจลงนามเดิม"
+notes.write_text(f"W3 แปลหน้าจอ รุ่นอัปเดต {version}\n\n{details}\n\nSHA-256: {sha}\n", encoding="utf-8")
 subprocess.run(["gh", "release", "create", tag, str(asset), str(output / "SHA256SUMS"), "--repo", repo,
                 "--target", os.environ["GITHUB_SHA"], "--prerelease", "--title", f"W3 Screen Translator v{version}", "--notes-file", str(notes)], check=True)
 # Verify GitHub provides the digest that the Android client requires.

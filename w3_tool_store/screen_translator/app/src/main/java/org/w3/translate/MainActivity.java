@@ -33,6 +33,8 @@ public class MainActivity extends Activity {
         Button update=Ui.button(this,"อัปเดตแอป · รุ่น "+versionLabel());root.addView(update);
         TextView updateStatus=Ui.text(this,"กดเพื่อตรวจรุ่นใหม่ผ่านอินเทอร์เน็ต",13);root.addView(updateStatus);
         updater=new UpdateController(this,update,updateStatus);
+        Button articles=Ui.button(this,"บทความของฉัน · บันทึกจากลิงก์");root.addView(articles);
+        articles.setOnClickListener(v->startActivity(new Intent(this,ArticleActivity.class)));
         TextView title=Ui.text(this,"อ่านเข้าใจ\nไปต่อได้",36);Ui.bold(title);root.addView(title);
         root.addView(Ui.text(this,"แปลจีน · ญี่ปุ่น · อังกฤษ → ไทย\nบนหน้าจอเกม คู่มือ และหนังสือ",17));
         LinearLayout card=Ui.column(this,18);card.setBackground(Ui.round(0xffffffff,Ui.dp(this,20)));root.addView(card,new LinearLayout.LayoutParams(-1,-2));
@@ -49,7 +51,7 @@ public class MainActivity extends Activity {
         root.addView(Ui.text(this,"วิธีใช้",20));
         root.addView(Ui.text(this,"เริ่มแปล → อนุญาตหน้าจอ → สลับไปแอปที่ต้องการ\n\nปุ่มลอย «ไทย» เปิดเมนู: พัก / แปลครั้งเดียว / อ่านเต็มหน้า / เลือกพื้นที่ / ซ่อน / ปิด\n\nคำแปลเป็นชั้นทับหน้าจอ กดซ่อนก่อนแตะเมนูที่อ่านแล้วได้ ปุ่มลอยลากย้ายได้\n\nโหมดอัตโนมัติจะเว้นช่วงอ่านจอ มีหน่วงและอาจเห็นคำแปลหายชั่วครู่ระหว่างจับภาพ",15));
         root.addView(Ui.text(this,"ก่อนเริ่ม",20));
-        root.addView(Ui.text(this,"• Android ขอสิทธิ์แสดงทับแอปและจับภาพหน้าจอ\n• แอปที่ป้องกันการจับภาพจะอ่านไม่ได้\n• ตัวหนังสือเล็ก ฟอนต์เกม และภาษาญี่ปุ่นที่มีแต่คันจิอาจอ่านผิด เลือกภาษาตรง ๆ ช่วยได้\n• คำศัพท์วิชาการ สูตร และตารางควรเทียบต้นฉบับ\n• ไม่บันทึกภาพหรือประวัติคำแปล แปลในเครื่องหลังเตรียมภาษา; SDK อาจติดต่อ Google เพื่อดาวน์โหลดและส่งข้อมูลวินิจฉัย\n• รุ่นทดลอง — ยังต้องทดสอบบน OPPO จริง",14));
+        root.addView(Ui.text(this,"• Android ขอสิทธิ์แสดงทับแอปและจับภาพหน้าจอ\n• แอปที่ป้องกันการจับภาพจะอ่านไม่ได้\n• ตัวหนังสือเล็ก ฟอนต์เกม และภาษาญี่ปุ่นที่มีแต่คันจิอาจอ่านผิด เลือกภาษาตรง ๆ ช่วยได้\n• คำศัพท์วิชาการ สูตร และตารางควรเทียบต้นฉบับ\n• ตัวแปลหน้าจอไม่บันทึกภาพหรือประวัติ ส่วนบทความจะเก็บในเครื่องเมื่อคุณเลือกบันทึกลิงก์\n• แปลในเครื่องหลังเตรียมภาษา; SDK อาจติดต่อ Google เพื่อดาวน์โหลดและส่งข้อมูลวินิจฉัย\n• รุ่นทดลอง — ยังต้องทดสอบบน OPPO จริง",14));
         root.addView(Ui.text(this,"ใช้ ML Kit ของ Google · คำแปลอัตโนมัติ",12));
     }
     private String versionLabel(){try{String v=getPackageManager().getPackageInfo(getPackageName(),0).versionName;return v==null?"?":v.replace("-preview","");}catch(Exception e){return "?";}}
