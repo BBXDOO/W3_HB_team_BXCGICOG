@@ -30,7 +30,9 @@ public class ScreenService extends Service {
     private VirtualDisplay display;
     private ImageReader images;
     private WindowManager wm;
-    private LinearLayout controls,actionHost;
+    private LinearLayout controls,actionHost,actionRow;
+    private int actionCount;
+    private String statusText="";
     private WindowManager.LayoutParams controlParams;
     private FrameLayout subtitles;
     private View reading,selection;
@@ -108,13 +110,18 @@ public class ScreenService extends Service {
         // system obscuring-opacity threshold. Use a lower window-wide alpha.
         subs.alpha=.75f;
         wm.addView(subtitles,subs);
-        controls=Ui.column(this,6);controls.setBackground(Ui.round(0xf5166c62,Ui.dp(this,16)));
-        controlParams=params(Ui.dp(this,70),-2,true);controlParams.gravity=Gravity.TOP|Gravity.LEFT;controlParams.x=screenW-Ui.dp(this,80);controlParams.y=Ui.dp(this,140);
+        controls=Ui.column(this,0);controls.setClipChildren(false);controls.setClipToPadding(false);
+        controlParams=params(Ui.dp(this,72),-2,true);controlParams.gravity=Gravity.TOP|Gravity.LEFT;controlParams.x=screenW-Ui.dp(this,80);controlParams.y=Ui.dp(this,140);
         wm.addView(controls,controlParams);rebuildControls();
     }
     private void rebuildControls(){
-        controls.removeAllViews();
-        TextView handle=Ui.text(this,expanded?"ไทย   ·   ลากย้าย":"ไทย",17);handle.setGravity(Gravity.CENTER);handle.setTextColor(Color.WHITE);Ui.bold(handle);controls.addView(handle);
+        controls.removeAllViews();actionCount=0;
+        int padding=Ui.dp(this,expanded?14:0);controls.setPadding(padding,padding,padding,padding);
+        if(expanded)SoftControls.surface(controls,27,false);else controls.setBackground(null);
+        TextView handle=Ui.text(this,expanded?"ไทย   ·   ลากย้าย    ⌃":"ไทย",expanded?14:17);
+        handle.setGravity(Gravity.CENTER);handle.setTextColor(SoftControls.INK);Ui.bold(handle);
+        if(!expanded)SoftControls.surface(handle,100,false);
+        controls.addView(handle,new LinearLayout.LayoutParams(-1,Ui.dp(this,expanded?38:72)));
         handle.setContentDescription("เมนูแปลภาษา แตะเพื่อเปิดหรือย่อ ลากเพื่อย้าย");
         handle.setOnClickListener(v->{expanded=!expanded;rebuildControls();});
         handle.setOnTouchListener(new View.OnTouchListener(){float x,y;int sx,sy;boolean moved;
@@ -127,23 +134,37 @@ public class ScreenService extends Service {
                 }
             }
         });
+        int menuHeight=0;
         if(expanded){
-            ScrollView menu=new ScrollView(this); actionHost=Ui.column(this,0);menu.addView(actionHost);
-            controls.addView(menu,new LinearLayout.LayoutParams(-1,Math.min(Ui.dp(this,380),Math.max(Ui.dp(this,130),screenH-Ui.dp(this,160)))));
-            state=Ui.text(this,paused?"พักอยู่":"อัตโนมัติ",12);state.setTextColor(Color.WHITE);actionHost.addView(state);
-            control(paused?"▶ แปลอัตโนมัติ":"Ⅱ พัก",()->{paused=!paused;generation++;main.removeCallbacks(tick);if(!paused){readerMode=false;removeReading();main.postDelayed(tick,300);}rebuildControls();});
-            control("แปลครั้งเดียว",()->{paused=true;readerMode=false;removeReading();rebuildControls();capture(true);});
-            control("อ่านเต็มหน้า",()->{paused=true;readerMode=true;rebuildControls();capture(true);});
-            control("เลือกพื้นที่",this::chooseRegion);
-            control(hidden?"แสดงคำแปล":"ซ่อนคำแปล",()->{hidden=!hidden;generation++;if(subtitles!=null)subtitles.setVisibility(hidden || reading!=null?View.INVISIBLE:View.VISIBLE);if(reading!=null)reading.setVisibility(hidden?View.INVISIBLE:View.VISIBLE);rebuildControls();if(!hidden)schedule();});
-            control("ปิดตัวแปล",this::stopSelf);
+            state=Ui.text(this,statusText.isEmpty()?(paused?"พักการแปล":"แปลอัตโนมัติ"):statusText,12);
+            state.setTextColor(paused?0xff776134:SoftControls.GREEN);state.setGravity(Gravity.CENTER);state.setMaxLines(2);
+            controls.addView(state,new LinearLayout.LayoutParams(-1,Ui.dp(this,40)));
+            ScrollView menu=new ScrollView(this);menu.setFillViewport(false);menu.setClipToPadding(false);
+            actionHost=Ui.column(this,0);actionHost.setClipChildren(false);menu.addView(actionHost);
+            int cardHeight=Ui.dp(this,Math.max(80,58*getResources().getConfiguration().fontScale));
+            menuHeight=Math.min(cardHeight*3,Math.max(Ui.dp(this,100),screenH-Ui.dp(this,170)));
+            controls.addView(menu,new LinearLayout.LayoutParams(-1,menuHeight));
+            control(paused?"อัตโนมัติ":"พักการแปล",paused?"play":"pause",!paused,false,()->{paused=!paused;generation++;main.removeCallbacks(tick);status(paused?"พักการแปล":"แปลอัตโนมัติ");if(!paused){readerMode=false;removeReading();main.postDelayed(tick,300);}rebuildControls();});
+            control("แปลครั้งเดียว","once",false,false,()->{paused=true;readerMode=false;removeReading();rebuildControls();capture(true);});
+            control("อ่านเต็มหน้า","book",false,false,()->{paused=true;readerMode=true;rebuildControls();capture(true);});
+            control("เลือกพื้นที่","crop",false,false,this::chooseRegion);
+            control(hidden?"แสดงคำแปล":"ซ่อนคำแปล",hidden?"show":"hide",false,false,()->{hidden=!hidden;generation++;if(subtitles!=null)subtitles.setVisibility(hidden || reading!=null?View.INVISIBLE:View.VISIBLE);if(reading!=null)reading.setVisibility(hidden?View.INVISIBLE:View.VISIBLE);rebuildControls();if(!hidden)schedule();});
+            control("ปิดตัวแปล","stop",false,true,this::stopSelf);
         }else state=null;
-        controlParams.width=Ui.dp(this,expanded?190:70);controlParams.x=Math.max(0,Math.min(controlParams.x,screenW-controlParams.width));
-        controlParams.y=Math.min(controlParams.y,Math.max(Ui.dp(this,30),screenH-Ui.dp(this,expanded?480:80)));
+        int width=Ui.dp(this,expanded?220:72);
+        controlParams.x+=controlParams.width-width;controlParams.width=width;
+        controlParams.x=Math.max(0,Math.min(controlParams.x,screenW-width));
+        int panelHeight=expanded?menuHeight+Ui.dp(this,106):Ui.dp(this,72);
+        controlParams.y=Math.max(Ui.dp(this,30),Math.min(controlParams.y,screenH-panelHeight-Ui.dp(this,16)));
         wm.updateViewLayout(controls,controlParams);
     }
-    private void control(String text,Runnable action){Button b=Ui.button(this,text);b.setTextSize(13);b.setMinHeight(Ui.dp(this,42));actionHost.addView(b,new LinearLayout.LayoutParams(-1,Ui.dp(this,44)));b.setOnClickListener(v->action.run());}
-    private void status(String s){if(state!=null)state.setText(s);}
+    private void control(String text,String icon,boolean active,boolean destructive,Runnable action){
+        if(actionCount++%2==0){actionRow=new LinearLayout(this);actionRow.setClipChildren(false);actionHost.addView(actionRow,new LinearLayout.LayoutParams(-1,-2));}
+        Button b=SoftControls.button(this,text,icon,active,destructive);
+        int height=Ui.dp(this,Math.max(80,58*getResources().getConfiguration().fontScale));
+        actionRow.addView(b,new LinearLayout.LayoutParams(0,height,1));b.setOnClickListener(v->action.run());
+    }
+    private void status(String s){statusText=s;if(state!=null)state.setText(s);}
     private void toast(String s){Toast.makeText(this,s,Toast.LENGTH_LONG).show();}
     private void schedule(){if(!dead && !paused && !hidden && !selecting){main.removeCallbacks(tick);main.postDelayed(tick,2200);}}
     private void capture(boolean once){

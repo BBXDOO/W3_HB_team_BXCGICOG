@@ -29,7 +29,7 @@ AM Ⅲ - BUILD · OWNER: BBX19 · MAKER: ChatGPT/Codex
 - หมุนจอ/เปลี่ยนสัดส่วน capture ต้องเริ่มใหม่; ไม่รับประกัน floating windows, letterboxing, multi-window หรือ ColorOS ก่อนทดสอบจริง
 - หน้าที่ป้องกัน capture หรือ overlay อ่านไม่ได้ เคารพข้อจำกัด Android
 - ไม่บันทึกภาพหน้าจอหรือประวัติ เก็บคำแปล cache ในหน่วยความจำเฉพาะ session (ไม่เกิน 256 รายการ); ปิดแล้วล้าง อนุญาตเน็ตสำหรับดาวน์โหลดโมเดลและ SDK อาจส่ง diagnostics ตามเอกสาร Google
-- รุ่น `0.1-preview`, application ID `org.w3.translate.preview`, ใช้ **debug signing สำหรับทดสอบ** ยังไม่ใช่ช่องอัปเดต release ห้ามแทนที่ Personal Sandbox
+- รุ่น `0.2-preview`, application ID `org.w3.translate.preview`, ใช้ **debug signing สำหรับทดสอบ** ยังไม่ใช่ช่องอัปเดต release ห้ามแทนที่ Personal Sandbox
 
 ## Build และการตรวจ
 
@@ -40,7 +40,7 @@ AM Ⅲ - BUILD · OWNER: BBX19 · MAKER: ChatGPT/Codex
 ANDROID_HOME=/path/to/sdk python ../agent_workbench/tools/android_apk_probe/probe.py app/build/outputs/apk/debug/app-debug.apk --output /tmp/apk-report.json
 ```
 
-ดู [DESIGN.md](DESIGN.md), [DEVICE_TEST_TH.md](DEVICE_TEST_TH.md) และ [VALIDATION.md](VALIDATION.md) แยกผล build/static tests ออกจากการทดสอบจริง ไม่อ้างว่าแปลบน OPPO ผ่านหากยังไม่มีหลักฐาน
+ดู [DESIGN.md](DESIGN.md), [DEVICE_TEST_TH.md](DEVICE_TEST_TH.md) และ [ผลรุ่น 0.2](VALIDATION-v0.2.md) และ [ผลรุ่น 0.1](VALIDATION.md) แยกผล build/static tests ออกจากการทดสอบจริง ไม่อ้างว่าแปลบน OPPO ผ่านหากยังไม่มีหลักฐาน
 
 ## ที่มา
 
@@ -52,3 +52,7 @@ ANDROID_HOME=/path/to/sdk python ../agent_workbench/tools/android_apk_probe/prob
 - https://developers.google.com/ml-kit/terms
 - https://developers.google.com/ml-kit/usage-and-billing
 - https://developer.android.com/media/grow/media-projection
+
+## ปุ่มลอยและแผงรุ่น 0.2
+
+ใช้ภาพ Neumorphism ของ BBX19 เป็นแนวทาง: เทาอ่อน เงานุ่มสองทิศ ปุ่มลอยวงกลม และไอคอนคำสั่ง 2 คอลัมน์ กดแล้วปุ่มยุบลงเล็กน้อย แตะคำว่าไทยเพื่อเปิด/ย่อ ลากส่วนหัวเพื่อย้าย สถานะยังอยู่เมื่อย่อแล้วเปิดใหม่ แผงเลื่อนได้เมื่อพื้นที่จอไม่พอ โค้ดวาดด้วย Android Canvas ไม่มีรูปภาพหรือ dependency เพิ่มสำหรับธีมนี้
