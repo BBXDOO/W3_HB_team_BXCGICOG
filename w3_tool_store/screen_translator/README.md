@@ -29,7 +29,7 @@ AM Ⅲ - BUILD · OWNER: BBX19 · MAKER: ChatGPT/Codex
 - หมุนจอ/เปลี่ยนสัดส่วน capture ต้องเริ่มใหม่; ไม่รับประกัน floating windows, letterboxing, multi-window หรือ ColorOS ก่อนทดสอบจริง
 - หน้าที่ป้องกัน capture หรือ overlay อ่านไม่ได้ เคารพข้อจำกัด Android
 - ไม่บันทึกภาพหน้าจอหรือประวัติ เก็บคำแปล cache ในหน่วยความจำเฉพาะ session (ไม่เกิน 256 รายการ); ปิดแล้วล้าง อนุญาตเน็ตสำหรับดาวน์โหลดโมเดลและ SDK อาจส่ง diagnostics ตามเอกสาร Google
-- รุ่น `0.3-preview`, application ID `org.w3.translate.preview`, ใช้ **debug signing สำหรับทดสอบ** ยังไม่ใช่ช่องอัปเดต release ห้ามแทนที่ Personal Sandbox
+- รุ่น `0.4-preview`, application ID `org.w3.translate.preview`; APK จากช่อง release ใช้กุญแจเดิมเพื่ออัปเดตทับแอปแปลหน้าจอได้ เป็นคนละแอปกับ Personal Sandbox
 
 ## Build และการตรวจ
 
@@ -60,3 +60,7 @@ ANDROID_HOME=/path/to/sdk python ../agent_workbench/tools/android_apk_probe/prob
 ## อัปเดตแอปรุ่น 0.3
 
 มีปุ่มอัปเดตด้านบนหน้าหลัก ตรวจและดาวน์โหลดเฉพาะเมื่อผู้ใช้กด ตรวจไฟล์/รุ่น/package/ลายเซ็น แล้วส่งต่อให้ Android ยืนยันติดตั้ง ดู [ตั้งค่าช่องอัปเดตครั้งเดียว](UPDATE_SETUP_TH.md) และ [ผลตรวจรุ่น 0.3](VALIDATION-v0.3.md)
+
+## บันทึกบทความจากลิงก์ รุ่น 0.4
+
+หน้าหลัก → **บทความของฉัน** วางลิงก์หรือแชร์จากเบราว์เซอร์ แล้วกดบันทึก เก็บต้นฉบับพร้อมหัวข้อใน SQLite ของแอป แปลเป็นไทยทีละส่วนและแปลต่อได้ มีสารบัญ ค้นข้อความ อ่านออฟไลน์ จำตำแหน่ง และส่งออก Markdown เก็บคนละส่วนกับแคช ดู [คู่มือและขอบเขตบทความ](ARTICLES_TH.md) และ [ผลตรวจรุ่น 0.4](VALIDATION-v0.4.md)

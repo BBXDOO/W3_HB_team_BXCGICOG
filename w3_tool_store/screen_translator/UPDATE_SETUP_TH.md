@@ -28,6 +28,7 @@ AM Ⅲ - BUILD · OWNER: BBX19 · MAKER: ChatGPT/Codex
 
 เพิ่ม versionCode ให้สูงขึ้น → ส่ง PR → ทดสอบผ่าน → เมิร์กเข้า `refactor/v0.2` → job `publish-update` ใช้ Secret เดิมลงนาม → ตรวจ fingerprint ตาม `signing-certificate-sha256.txt` → เผยแพร่ release เฉพาะชื่อ `screen-translator-vN` → ปุ่มอัปเดตในแอปตรวจพบ
 
+- รหัสผ่านลงนามส่งจาก Secret ผ่าน environment เฉพาะขั้น build ให้ Gradle อ่านในหน่วยความจำ ไม่เขียนลง GITHUB_ENV หรือ GITHUB_OUTPUT ส่วน keystore ที่เข้ารหัสแล้วอยู่ในไฟล์ชั่วคราว permission 0600 และลบท้าย job
 - ไม่เผยแพร่จาก pull_request และไม่เปิด Secret ให้โค้ดใน PR
 - job ที่อ่าน Secret ทำงานเฉพาะ trusted branch `refactor/v0.2` หลังตรวจ APK ผ่าน
 - ไม่เขียนทับ release/APK ที่เคยเผยแพร่แล้ว ต้องเพิ่ม versionCode เมื่อเปลี่ยนแอป

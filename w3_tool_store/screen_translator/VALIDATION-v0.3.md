@@ -24,3 +24,9 @@ APK SHA-256: `7f2b08c2d1a1a999b1f0ba4d837226efd2decbabcc6ccf1d45d460d322a16b0d`
 [หลักฐาน APK](evidence/apk-v0.3-report.json) · [ตั้งค่าครั้งเดียว](UPDATE_SETUP_TH.md)
 
 ไม่มี private key หรือค่า secret ใน source/PR/public artifact ไฟล์ตั้งค่าที่ให้ผู้ใช้แยกอยู่ในพื้นที่ส่วนตัว ไม่ถือว่า build/CI ผ่านเท่ากับเผยแพร่ update channel สำเร็จ
+
+## แก้ CodeQL: clear-text password storage
+
+ลบการเขียนรหัสผ่านลง GITHUB_ENV จาก restore_signing.py ให้ขั้น build รับ INPUT_SIGNING_JSON จาก GitHub Secret โดยตรง และให้ Gradle อ่านค่าในหน่วยความจำ GITHUB_OUTPUT มีเพียง ready=true/false ส่วน keystore ที่เข้ารหัสแล้วใช้ไฟล์ permission 0600 และลบหลังจบ job
+
+ตรวจจริงทั้งกรณีมีและไม่มี Secret: ไม่สร้างไฟล์ GITHUB_ENV, output มีเพียง ready flag และไม่มีรหัสผ่าน จากนั้น assembleRelease ด้วย config เดิมผ่าน ไม่เปลี่ยน certificate หรือรูปแบบ Secret เดิม รอ CodeQL/CI ของ PR แก้ไขและการสแกนหลัง merge เพื่อยืนยันการปิด alert

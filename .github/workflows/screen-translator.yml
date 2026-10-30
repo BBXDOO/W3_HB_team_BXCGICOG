@@ -85,6 +85,9 @@ jobs:
           gradle-version: '8.9'
       - name: Build signed release
         if: steps.signing.outputs.ready == 'true'
+        env:
+          INPUT_SIGNING_JSON: ${{ secrets.W3_TRANSLATOR_SIGNING_JSON }}
+          W3_RELEASE_KEYSTORE_FILE: ${{ runner.temp }}/w3-translator-signing.p12
         run: gradle --no-daemon --max-workers=2 :app:assembleRelease
       - name: Publish verified translator update
         if: steps.signing.outputs.ready == 'true'
