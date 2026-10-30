@@ -29,7 +29,7 @@ AM Ⅲ - BUILD · OWNER: BBX19 · MAKER: ChatGPT/Codex
 - หมุนจอ/เปลี่ยนสัดส่วน capture ต้องเริ่มใหม่; ไม่รับประกัน floating windows, letterboxing, multi-window หรือ ColorOS ก่อนทดสอบจริง
 - หน้าที่ป้องกัน capture หรือ overlay อ่านไม่ได้ เคารพข้อจำกัด Android
 - ไม่บันทึกภาพหน้าจอหรือประวัติ เก็บคำแปล cache ในหน่วยความจำเฉพาะ session (ไม่เกิน 256 รายการ); ปิดแล้วล้าง อนุญาตเน็ตสำหรับดาวน์โหลดโมเดลและ SDK อาจส่ง diagnostics ตามเอกสาร Google
-- รุ่น `0.2-preview`, application ID `org.w3.translate.preview`, ใช้ **debug signing สำหรับทดสอบ** ยังไม่ใช่ช่องอัปเดต release ห้ามแทนที่ Personal Sandbox
+- รุ่น `0.3-preview`, application ID `org.w3.translate.preview`, ใช้ **debug signing สำหรับทดสอบ** ยังไม่ใช่ช่องอัปเดต release ห้ามแทนที่ Personal Sandbox
 
 ## Build และการตรวจ
 
@@ -56,3 +56,7 @@ ANDROID_HOME=/path/to/sdk python ../agent_workbench/tools/android_apk_probe/prob
 ## ปุ่มลอยและแผงรุ่น 0.2
 
 ใช้ภาพ Neumorphism ของ BBX19 เป็นแนวทาง: เทาอ่อน เงานุ่มสองทิศ ปุ่มลอยวงกลม และไอคอนคำสั่ง 2 คอลัมน์ กดแล้วปุ่มยุบลงเล็กน้อย แตะคำว่าไทยเพื่อเปิด/ย่อ ลากส่วนหัวเพื่อย้าย สถานะยังอยู่เมื่อย่อแล้วเปิดใหม่ แผงเลื่อนได้เมื่อพื้นที่จอไม่พอ โค้ดวาดด้วย Android Canvas ไม่มีรูปภาพหรือ dependency เพิ่มสำหรับธีมนี้
+
+## อัปเดตแอปรุ่น 0.3
+
+มีปุ่มอัปเดตด้านบนหน้าหลัก ตรวจและดาวน์โหลดเฉพาะเมื่อผู้ใช้กด ตรวจไฟล์/รุ่น/package/ลายเซ็น แล้วส่งต่อให้ Android ยืนยันติดตั้ง ดู [ตั้งค่าช่องอัปเดตครั้งเดียว](UPDATE_SETUP_TH.md) และ [ผลตรวจรุ่น 0.3](VALIDATION-v0.3.md)

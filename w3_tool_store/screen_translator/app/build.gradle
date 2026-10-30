@@ -1,8 +1,17 @@
 plugins { id 'com.android.application' }
+def keyFile = System.getenv('W3_RELEASE_KEYSTORE_FILE')
+def releaseStorePassword = System.getenv('W3_RELEASE_STORE_PASSWORD')
+def releaseKeyAlias = System.getenv('W3_RELEASE_KEY_ALIAS')
+def releaseKeyPassword = System.getenv('W3_RELEASE_KEY_PASSWORD')
+def signedRelease = [keyFile, releaseStorePassword, releaseKeyAlias, releaseKeyPassword].every { it != null && !it.isEmpty() }
 android {
     namespace 'org.w3.translate'
     compileSdk 35
-    defaultConfig { applicationId 'org.w3.translate.preview'; minSdk 26; targetSdk 35; versionCode 2; versionName '0.2-preview'; ndk { abiFilters 'arm64-v8a' } }
+    defaultConfig { applicationId 'org.w3.translate.preview'; minSdk 26; targetSdk 35; versionCode 3; versionName '0.3-preview'; ndk { abiFilters 'arm64-v8a' } }
+    if (signedRelease) {
+        signingConfigs { channel { storeFile file(keyFile); storePassword releaseStorePassword; keyAlias releaseKeyAlias; keyPassword releaseKeyPassword } }
+    }
+    buildTypes { release { minifyEnabled false; if (signedRelease) signingConfig signingConfigs.channel } }
     compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
 }
 dependencies {
