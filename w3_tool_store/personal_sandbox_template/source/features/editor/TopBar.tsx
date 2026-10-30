@@ -42,7 +42,7 @@ export const TopBar: React.FC<TopBarProps> = ({ navigationCollapsed, onToggleNav
     <header className="ps-topbar h-16 border-b px-2 md:px-6 flex items-center justify-between gap-2 z-50 relative">
       <div className="ps-brand-group">
         <button type="button" aria-label="ย่อหรือขยายเมนู" aria-expanded={!navigationCollapsed} onClick={onToggleNavigation} className="ps-menu-toggle">☰</button>
-        <button onClick={onExit} className="ps-brand" title="กลับไปคลังโครงการ"><span className="ps-brand-long">PERSONAL </span>SANDBOX<small>WORKSPACE / 0.50</small></button>
+        <button onClick={onExit} className="ps-brand" title="กลับไปคลังโครงการ"><span className="ps-brand-long">PERSONAL </span>SANDBOX<small>WORKSPACE / 0.51</small></button>
         <div className="hidden md:block w-px h-8 bg-white/10"></div>
         <div className="hidden md:flex flex-col">
           <div className="flex items-center gap-2">

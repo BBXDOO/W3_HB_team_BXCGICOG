@@ -77,7 +77,7 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
       || backgroundImage || story.themeAssetId && story.assets[story.themeAssetId]?.dataUrl;
     if (image) document.body.style.setProperty('--personal-bg-image', `url("${image}")`);
     else document.body.style.removeProperty('--personal-bg-image');
-    return () => document.body.style.removeProperty('--personal-bg-image');
+    return () => { document.body.style.removeProperty('--personal-bg-image'); };
   }, [backgroundImage, story.workspaceAssetId, story.themeAssetId, story.assets]);
 
   const updateStory = (newStory: StoryPack) => {
@@ -157,6 +157,10 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
   };
 
   const handleContextualAdd = () => {
+    if (activeTab === 'story') {
+      const add = document.getElementById('tab-primary-add') as HTMLButtonElement | null;
+      if (add) { add.click(); return; }
+    }
     const id = generateId();
     let updatedStory = { ...story };
 
@@ -199,7 +203,7 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
         setSelectedId(newEv.id);
         break;
       case 'story':
-        const newNode: StoryNode = { nodeId: generateId('node'), type: 'NarrativeBlock', title: 'New Narrative Point', body: '', choices: [] };
+        const newNode: StoryNode = { nodeId: generateId('node'), type: 'NarrativeBlock', title: 'ตอนใหม่', body: '', bodyFormat: 'markdown', choices: [] };
         updatedStory.storyNodes = [...story.storyNodes, newNode];
         setSelectedId(newNode.nodeId);
         break;
@@ -235,7 +239,7 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
 
     switch (activeTab) {
       case 'home': return <DashboardTab {...commonProps} />;
-      case 'story': return <StoryTab {...commonProps} navigationTarget={navigationTarget} />;
+      case 'story': return <StoryTab {...commonProps} navigationTarget={navigationTarget} onCommit={handleSave} saveState={saveError ? 'error' : isDirty ? 'pending' : 'saved'} />;
       case 'character': return <CharactersTab {...commonProps} />;
       case 'board': return <BoardTab {...commonProps} navigationTarget={navigationTarget} />;
       case 'rule': return <RulesTab {...commonProps} navigationTarget={navigationTarget} />;

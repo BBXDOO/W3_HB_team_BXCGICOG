@@ -262,6 +262,7 @@ export interface TriggerPack { id: string; when: 'enter' | 'click'; condition?: 
 export interface LootPack { id: string; itemRefId: string; chance: number; amount: number; }
 
 export interface StoryNode {
+  bodyFormat?: 'markdown' | 'legacy';
   nodeId: string;
   type: 'NarrativeBlock' | 'ChoiceNode' | 'EventHook';
   title?: string;

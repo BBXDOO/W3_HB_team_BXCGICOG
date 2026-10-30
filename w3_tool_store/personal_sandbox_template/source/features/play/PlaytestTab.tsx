@@ -1,3 +1,4 @@
+import { MarkdownContent } from '../story/MarkdownContent';
 import React, { useEffect, useState } from 'react';
 import { BattlePanel } from './BattlePanel';
 import type { BattleProgress } from '../../core/battle';
@@ -130,18 +131,18 @@ export const PlaytestTab: React.FC<Props> = ({ story, onChange }) => {
     if (!section) return empty;
     if (section.source === 'battle') return <BattlePanel story={story} onChange={onChange} progress={battleProgress} onProgress={setBattleProgress} vitals={vitals} onVitals={setVitals} />;
     if (section.source === 'special') {
-      const entries = [...story.storyNodes.filter(entry => entry.type === 'EventHook').map(entry => ({ id: `node:${entry.nodeId}`, name: entry.title || 'ฉากพิเศษ', kind: 'ฉาก', body: entry.body || '', image: entry.imageAssetId, event: undefined as EventPack | undefined })),
-        ...story.events.filter(entry => ['Special', 'System'].includes(entry.eventType)).map(entry => ({ id: `event:${entry.id}`, name: entry.name, kind: 'อีเวนต์', body: [entry.areaRule, ...entry.actions.filter(action => action.actionType.toLowerCase() === 'message').map(action => action.payload)].filter(Boolean).join('\n\n'), image: entry.iconAssetId, event: entry }))];
+      const entries = [...story.storyNodes.filter(entry => entry.type === 'EventHook').map(entry => ({ id: `node:${entry.nodeId}`, name: entry.title || 'ฉากพิเศษ', kind: 'ฉาก', body: entry.body || '', bodyFormat: entry.bodyFormat, image: entry.imageAssetId, event: undefined as EventPack | undefined })),
+        ...story.events.filter(entry => ['Special', 'System'].includes(entry.eventType)).map(entry => ({ id: `event:${entry.id}`, name: entry.name, kind: 'อีเวนต์', body: [entry.areaRule, ...entry.actions.filter(action => action.actionType.toLowerCase() === 'message').map(action => action.payload)].filter(Boolean).join('\n\n'), image: entry.iconAssetId, bodyFormat: 'legacy' as const, event: entry }))];
       const selected = entries.find(entry => entry.id === specialId) || entries[0];
       return entries.length ? <div className="h-full min-h-0 grid md:grid-cols-[200px_1fr] gap-3"><nav className={`${box} p-2 overflow-y-auto space-y-2`}>{entries.map(entry => <button key={entry.id} className={`${itemStyle} ${selected.id === entry.id ? 'border-emerald-400' : ''}`} onClick={() => setSpecialId(entry.id)}><small className="text-emerald-300">{entry.kind}</small><span className="block">{entry.name}</span></button>)}</nav><article className={`${box} p-5 overflow-y-auto`}>
-        {selected.image && story.assets[selected.image] && <img src={story.assets[selected.image].dataUrl} alt="" className="max-h-52 w-full object-contain rounded-lg mb-4" />}<small className="text-emerald-300">{selected.kind}</small><h3 className="text-2xl font-bold mb-4">{selected.name}</h3><p className="whitespace-pre-wrap leading-7">{selected.body || 'ยังไม่มีเนื้อหา'}</p>
+        {selected.image && story.assets[selected.image] && <img src={story.assets[selected.image].dataUrl} alt="" className="max-h-52 w-full object-contain rounded-lg mb-4" />}<small className="text-emerald-300">{selected.kind}</small><h3 className="text-2xl font-bold mb-4">{selected.name}</h3>{selected.bodyFormat === 'markdown' ? <MarkdownContent value={selected.body} /> : <p className="whitespace-pre-wrap leading-7">{selected.body || 'ยังไม่มีเนื้อหา'}</p>}
         {selected.event && <div className="border-t border-white/10 mt-6 pt-4"><p className="text-xs text-slate-300 mb-3">ผลอีเวนต์ใช้ตัวละครที่เลือกใน Playtest · รองรับ OnInteract, Message/Self และผล HP/MP/EN ตามเงื่อนไขเท่านั้น</p><button onClick={() => execute(selected.event!)} className="p-2 rounded border border-emerald-400/50">โต้ตอบกับอีเวนต์</button></div>}
       </article></div> : <p className="text-slate-400 p-8">ยังไม่มีฉาก EventHook หรืออีเวนต์ชนิด Special / Story เพิ่มได้จากหน้า Story และ Events</p>;
     }
     if (section.source === 'story') return story.storyNodes.length ? <div className="grid md:grid-cols-[200px_1fr] gap-3 h-full min-h-0">
       <div className={`${box} overflow-y-auto p-2 space-y-2`}>{story.storyNodes.map(entry =>
         <button key={entry.nodeId} className={`${itemStyle} ${node?.nodeId === entry.nodeId ? 'border-emerald-400' : ''}`} onClick={() => setNodeId(entry.nodeId)}>{entry.title || 'ไม่มีชื่อหัวข้อ'}</button>)}</div>
-      <article className={`${box} overflow-y-auto p-5`}><h2 className="text-2xl font-bold mb-4">{node?.title}</h2><p className="whitespace-pre-wrap leading-7">{node?.body}</p>
+      <article className={`${box} overflow-y-auto p-5`}><h2 className="text-2xl font-bold mb-4">{node?.title}</h2>{node?.bodyFormat === 'markdown' ? <MarkdownContent value={node.body || ''} /> : <p className="whitespace-pre-wrap leading-7">{node?.body}</p>}
         <div className="grid gap-2 mt-6">{node?.choices?.map((choice, index) => <button key={index} className={itemStyle} onClick={() => {
           if (story.storyNodes.some(entry => entry.nodeId === choice.toNodeId)) setNodeId(choice.toNodeId);
           else setNotice('ปลายทางของตัวเลือกยังไม่มี');
