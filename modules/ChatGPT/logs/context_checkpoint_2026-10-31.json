@@ -33,12 +33,35 @@
       "topic": "future_readiness",
       "statement": "BBX19 ให้ความสำคัญกับการสร้างเครื่องมือและโครงสร้างที่อาจจำเป็นในอนาคต เพื่อรักษาความสามารถทำงานเมื่อ AI หรืออินเทอร์เน็ตเดิมเข้าไม่ถึง",
       "status": "design_intent"
+    },
+    {
+      "topic": "space_identity",
+      "statement": "W3 สร้างพื้นที่ตามวัตถุประสงค์การใช้; พื้นที่มีรูปแบบและตัวตน แต่ไม่ใช้กฎตายตัวปิดเส้นทางการเติบโต ความสัมพันธ์และทิศทางประสานงานเลือกจากเป้าหมายของผลลัพธ์",
+      "status": "concept"
+    },
+    {
+      "topic": "identity_vs_operation",
+      "statement": "การรับรู้ตัวตนของสิ่งหนึ่งต่างจากการทำงานภายใต้เงื่อนไขเฉพาะสนาม แม้เป็นสิ่งเดียวกัน กฎของส่วนหนึ่งไม่จำเป็นต้องใช้กับอีกส่วนหรือสนามที่ดูเหมือนกัน; สีแดงมีคุณลักษณะเด่นและรับรู้เร็ว ส่วนความหมายว่า 'หยุด' เป็นเงื่อนไขของไฟจราจร ไม่ใช่ตัวตนของสี",
+      "status": "concept"
+    },
+    {
+      "topic": "learning_growth",
+      "statement": "BBX19 แยกการสะสมประสบการณ์/ความทรงจำผ่านกิจกรรมและโจทย์ในพื้นที่ออกจากการรอรุ่นอัปเกรดฝั่งผู้พัฒนา; ไม่ควรสมมติว่าการพัฒนาทั้งหมดต้องรออย่างหลัง",
+      "status": "concept"
     }
   ],
   "observed_repo": [
     {
       "statement": "module.json ของ ChatGPT ระบุ workspace logs/reports/flows/scenarios และสิทธิ์เขียนใน logs",
       "source": "modules/ChatGPT/module.json@refactor/v0.2"
+    },
+    {
+      "statement": "Core vs Structure แยก Intent/Will จาก Boundary/Schema/Validate; minimum standard ใช้กับ Structure ไม่ล็อก Core",
+      "source": "knowledge/philosophy/corevsstructure.md@refactor/v0.2"
+    },
+    {
+      "statement": "Open Compass ระบุว่าทิศทางและ Cross อาจทำหน้าที่เป็นข้อบังคับได้; schema เป็นเพียงรูปแบบหนึ่ง และ flow ที่ยกตัวอย่างไม่ควรถูกเหมารวมเป็นเส้นทางบังคับทุกงาน",
+      "source": "knowledge/philosophy/open_compass.md@refactor/v0.2"
     }
   ],
   "open_questions": [
@@ -50,5 +73,11 @@
     "ตรวจ branch, commit และไฟล์ต้นทางก่อนอ้างสถานะปัจจุบัน",
     "บันทึกเฉพาะสาระที่จำเป็นต่อการต่อยอด; ไม่ใส่ข้อมูลส่วนตัวหรือบทสนทนาดิบ",
     "การบันทึกนี้ไม่สามารถล้างหรือเพิ่มขนาด context window ของ ChatGPT ได้"
+  ],
+  "chatgpt_interpretation": [
+    {
+      "statement": "ก่อนออกแบบการเชื่อมพื้นที่ ระบุเจตนา/ผลลัพธ์และสภาพแวดล้อมของงาน แล้วเลือกความสัมพันธ์ที่ตรวจสอบได้โดยไม่บังคับทุกงานเข้าห่วงโซ่เดียว",
+      "status": "working_interpretation_not_user_rule"
+    }
   ]
 }
