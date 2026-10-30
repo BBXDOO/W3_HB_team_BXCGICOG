@@ -1,0 +1,54 @@
+{
+  "schema": "w3.chatgpt.context_checkpoint.v1",
+  "recorded_at": "2026-10-31",
+  "purpose": "จุดตั้งต้นสำหรับฟื้นบริบทการทำงานข้ามหัวแชต ไม่ใช่แหล่งความจริงแทนโค้ดหรือเอกสารต้นทาง",
+  "authority": "บันทึกโดย ChatGPT จากบทสนทนากับ BBX19; ตรวจหลักฐานล่าสุดก่อนนำไปปฏิบัติ",
+  "confirmed_by_user": [
+    {
+      "topic": "continuity",
+      "statement": "พื้นที่เอเจนท์ใน Git มีไว้ส่วนหนึ่งเพื่อบันทึกและส่งต่อบริบท; ให้ค่อย ๆ ย่อยสาระสำคัญเป็น JSON ในพื้นที่ของโมดูล ChatGPT",
+      "status": "active"
+    },
+    {
+      "topic": "personal_sandbox",
+      "statement": "BBX19 ให้หัวแชตอื่นดูแลการปรับ UX/UI Personal Sandbox แล้ว; ChatGPT หัวแชตนี้หยุดแก้โค้ดและหยุดออกอัปเดตทับ",
+      "status": "do_not_modify_without_new_request"
+    },
+    {
+      "topic": "personal_sandbox",
+      "statement": "BBX19 ส่งภาพหน้าจอของธีมดำและส้มรุ่นใหม่ และระบุว่าโดยรวมโอเค เหลือปรับอีกเล็กน้อยกับหัวแชตที่ดูแล",
+      "status": "user_reported"
+    },
+    {
+      "topic": "w3_learning",
+      "statement": "ยุค Learn ใช้พื้นที่แซนด์บ็อกซ์สร้างโจทย์และกรณีผิดพลาดให้ระบบและโมดูลเรียนรู้ ไม่ใช่รอความผิดพลาดจริง",
+      "status": "concept"
+    },
+    {
+      "topic": "w3_runtime",
+      "statement": "คำว่า runtime ของ W3 อาจหมายถึงมนุษย์ที่พาบริบทข้ามระบบ AI ไม่จำกัดเฉพาะโปรแกรมใน Git",
+      "status": "concept"
+    },
+    {
+      "topic": "future_readiness",
+      "statement": "BBX19 ให้ความสำคัญกับการสร้างเครื่องมือและโครงสร้างที่อาจจำเป็นในอนาคต เพื่อรักษาความสามารถทำงานเมื่อ AI หรืออินเทอร์เน็ตเดิมเข้าไม่ถึง",
+      "status": "design_intent"
+    }
+  ],
+  "observed_repo": [
+    {
+      "statement": "module.json ของ ChatGPT ระบุ workspace logs/reports/flows/scenarios และสิทธิ์เขียนใน logs",
+      "source": "modules/ChatGPT/module.json@refactor/v0.2"
+    }
+  ],
+  "open_questions": [
+    "โครงสร้าง JSON สำหรับบันทึกบริบทระยะยาวควรเชื่อมกับระบบ memory / logs ของ W3 อย่างไร โดยไม่สร้างความจริงซ้ำซ้อน",
+    "สถานะล่าสุดของงานอื่นต้องตรวจจาก Git ก่อนนำไปดำเนินการ"
+  ],
+  "operating_rules": [
+    "แยกคำยืนยันของ BBX19 ออกจากการตีความของ ChatGPT",
+    "ตรวจ branch, commit และไฟล์ต้นทางก่อนอ้างสถานะปัจจุบัน",
+    "บันทึกเฉพาะสาระที่จำเป็นต่อการต่อยอด; ไม่ใส่ข้อมูลส่วนตัวหรือบทสนทนาดิบ",
+    "การบันทึกนี้ไม่สามารถล้างหรือเพิ่มขนาด context window ของ ChatGPT ได้"
+  ]
+}
