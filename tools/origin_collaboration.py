@@ -36,7 +36,6 @@ def collaborate(root, module, result, *, partner=None, structural=False, authori
     if partner and partner != module:
         try:
             # The replacement gets only read access to the owner's receipt.
-            from core.runtime.agents.origin_operations import OriginFiles
             scope = {'repo_root': str(root), 'origin_scopes': {
                 partner: [{'path': result['log_path'], 'operations': ['read']}]}}
             partner_result = get_agent(partner).execute('Origin partner review', {},
@@ -136,3 +135,4 @@ def validate_repair_selection(root, module, request):
                 raise ValueError('Operation exceeds BBX19 selected repair paths')
     return [{'path': path, 'operations': ['read', 'list', 'create', 'write', 'append', 'edit', 'delete', 'copy', 'move']}
             for path in sorted(selected)]
+

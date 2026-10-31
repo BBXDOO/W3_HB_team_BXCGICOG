@@ -8,6 +8,75 @@ from core.runtime.agents.origin_operations import digest
 
 class CollaborationTests(unittest.TestCase):
     setUp = origin_fixtures.OriginOperationsTests.setUp
+    def test_periodic_exception_is_recorded_before_next_module_runs(self):
+        from unittest.mock import patch
+        from core.runtime.agents.origin_operations import ORIGINS
+        from tools.origin_cycle import periodic_results
+        visited = []
+        def work(root, module, now=None):
+            if visited:
+                receipts = list((root / 'repo_events/origin_agents' / ORIGINS[0] / 'reports').glob('*_FAILURE.json'))
+                self.assertEqual(len(receipts), 1)
+            visited.append(module)
+            if module == ORIGINS[0]:
+                raise RuntimeError('host stopped after a possible partial write')
+            return {'module': module, 'status': 'NOT_DUE'}
+        with patch('tools.origin_cycle.periodic_work', side_effect=work):
+            results = periodic_results(self.root, now=self.now)
+        self.assertEqual(visited, list(ORIGINS))
+        failure = json.loads((self.root / results[0]['failure_evidence']).read_text())
+        self.assertEqual(failure['status'], 'FAILED')
+        self.assertTrue(failure['partial_writes_possible'])
+        self.assertFalse(failure['retried_in_this_run'])
+        self.assertEqual([item['status'] for item in results[1:]], ['NOT_DUE'] * (len(ORIGINS) - 1))
+
+    def test_periodic_stops_if_failure_cannot_be_recorded(self):
+        from unittest.mock import patch
+        from tools.origin_cycle import periodic_results
+        with patch('tools.origin_cycle.periodic_work', side_effect=RuntimeError('host error')) as work:
+            with patch('tools.origin_cycle.atomic_write', side_effect=OSError('storage unavailable')):
+                with self.assertRaises(OSError):
+                    periodic_results(self.root, now=self.now)
+        self.assertEqual(work.call_count, 1)
+
+    def test_structural_review_without_partner_persists_report_and_returns_support(self):
+        from tools.origin_collaboration import collaborate
+        from core.runtime.agents import get_agent
+        result = get_agent('ChatGPT').execute('scoped review', {}, {
+            'request_type': 'origin_review',
+            'authority_context': {'repo_root': str(self.root)}})
+        checked = collaborate(self.root, 'ChatGPT', result, structural=True)
+        report = json.loads((self.root / checked['collaboration_report']).read_text())
+        task = json.loads((self.root / checked['orchestration_evidence']).read_text())
+        self.assertTrue(report['structural'])
+        self.assertIn('IGET', report['participants'])
+        self.assertEqual(checked['partner'], 'Orchestration')
+        self.assertFalse(checked['support_pending'])
+        self.assertEqual(task['status'], 'COMPLETED')
+        self.assertEqual(json.loads((self.root / 'ChatGPT/state.json').read_text()), {'active': True})
+
+    def test_all_due_origins_without_partner_persist_structural_round(self):
+        from core.runtime.agents.origin_operations import ORIGINS
+        from tools.origin_cycle import load_state
+        reviewed = self.root / 'core/runtime/agents/reviewed.py'
+        reviewed.parent.mkdir(parents=True)
+        reviewed.write_text('pass\n')
+        for module in ORIGINS:
+            with self.subTest(module=module):
+                path = self.root / 'core/identity/profiles' / (module + '.idp.json')
+                profile = json.loads(path.read_text())
+                profile.setdefault('integration', {})['paired_modules'] = []
+                profile['file_capabilities']['review_paths'] = ['core/runtime/agents/reviewed.py']
+                profile['file_capabilities']['scopes'].append({
+                    'path': 'core/runtime/agents', 'operations': ['read']})
+                path.write_text(json.dumps(profile))
+                result = periodic_work(self.root, module, now=self.now, force=True)
+                state = load_state(self.root, module)
+                self.assertTrue(result['structural_review'])
+                self.assertTrue((self.root / state['last_report']).is_file())
+                self.assertEqual(state['last_review'], '2026-10-09T00:00:00Z')
+                self.assertFalse(result['support_pending'])
+
     def test_missing_partner_selects_capable_replacement_and_records_receipt(self):
         result = directed_work(self.root, 'ChatGPT', {'request_id': 'PAIR', 'source': 'BBX19',
             'payload': {'partner': 'NotInstalled', 'operations': [
@@ -164,3 +233,4 @@ class CollaborationTests(unittest.TestCase):
         self.assertTrue(check['support_pending'])
         support = json.loads((self.root / check['support_evidence']).read_text())
         self.assertEqual(support['findings'][0]['kind'], 'output_evidence_mismatch')
+
