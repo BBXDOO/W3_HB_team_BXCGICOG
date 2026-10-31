@@ -31,10 +31,20 @@ public final class LanguagePolicy {
         }
         return latinRun;
     }
-    private static final Pattern NUMBER=Pattern.compile("[+−-]?\\p{Nd}+(?:[.,:/]\\p{Nd}+)*%?");
+    private static final Pattern NUMBER=Pattern.compile("(?:[+−-]\\s*)?(?:\\p{Nd}+(?:[.,:/]\\p{Nd}+)*|\\.\\p{Nd}+)%?");
     /** Do not display/cache a translation that dropped, changed, or invented values. */
     public static boolean preservesNumbers(String original,String translated){
         return numbers(original).equals(numbers(translated));
     }
-    private static List<String> numbers(String text){List<String> result=new ArrayList<>();Matcher m=NUMBER.matcher(text);while(m.find())result.add(m.group());return result;}
+    private static List<String> numbers(String text){
+        List<String> result=new ArrayList<>();Matcher m=NUMBER.matcher(text);
+        while(m.find()){
+            String value=m.group().replaceAll("\\s","").replace('−','-');
+            // Only normalize a missing leading zero; keep versions/fractions exact.
+            if(value.startsWith("."))value="0"+value;
+            else if(value.startsWith("-.")||value.startsWith("+."))value=value.substring(0,1)+"0"+value.substring(1);
+            result.add(value);
+        }
+        return result;
+    }
 }

@@ -27,4 +27,20 @@ public class LanguagePolicyTest {
         assertFalse(LanguagePolicy.preservesNumbers("100/120","100/100"));
         assertFalse(LanguagePolicy.preservesNumbers("-5%","5%"));
     }
+    @Test public void leadingDecimalsCannotLoseDecimalPointOrSign(){
+        assertFalse(LanguagePolicy.preservesNumbers("Use .5 mg","Use 5 mg"));
+        assertFalse(LanguagePolicy.preservesNumbers("Use -.5 mg","Use 5 mg"));
+        assertFalse(LanguagePolicy.preservesNumbers("Use -.5 mg","Use .5 mg"));
+        assertFalse(LanguagePolicy.preservesNumbers("Use - .5 mg","Use .5 mg"));
+        assertFalse(LanguagePolicy.preservesNumbers("Use .05 mg","Use .5 mg"));
+        assertFalse(LanguagePolicy.preservesNumbers("Rate .5%","Rate 5%"));
+    }
+    @Test public void equivalentLeadingZeroAndMinusNotationIsAccepted(){
+        assertTrue(LanguagePolicy.preservesNumbers("Use .5 mg","ใช้ 0.5 mg"));
+        assertTrue(LanguagePolicy.preservesNumbers("Use -.5 mg","ใช้ -0.5 mg"));
+        assertTrue(LanguagePolicy.preservesNumbers("Use -0.5 mg","ใช้ -.5 mg"));
+        assertTrue(LanguagePolicy.preservesNumbers("Use +.5 mg","ใช้ +0.5 mg"));
+        assertTrue(LanguagePolicy.preservesNumbers("Use −.5 mg","ใช้ -0.5 mg"));
+        assertTrue(LanguagePolicy.preservesNumbers("Rate .5%","อัตรา 0.5%"));
+    }
 }
