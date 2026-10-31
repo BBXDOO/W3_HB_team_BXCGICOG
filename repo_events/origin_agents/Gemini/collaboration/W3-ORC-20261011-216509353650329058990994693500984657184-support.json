@@ -1,0 +1,1189 @@
+{
+  "tool": "W3 repository tools support",
+  "owner": "Gemini",
+  "owner_status": "COMPLETED",
+  "owner_log": "repo_events/origin_agents/Gemini/logs/8353ba607f1b450ab0bc0bc80276884a.json",
+  "checks": [
+    {
+      "check": "owner_receipt",
+      "path": "repo_events/origin_agents/Gemini/logs/8353ba607f1b450ab0bc0bc80276884a.json",
+      "state": "EVIDENCED",
+      "sha256": "272f425df9128f009e42d5382cf7ab118ca884cd88fe995d3f66fe5e0b2a6bcf"
+    },
+    {
+      "check": "portable_path",
+      "path": "core/runtime/agents/gemini.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "core/runtime/agents/gemini.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "b2d911890fc93013e5104d999e4a5cd65c3060adb21158804be8a12aff7c0ec9",
+      "actual_sha256": "b2d911890fc93013e5104d999e4a5cd65c3060adb21158804be8a12aff7c0ec9"
+    },
+    {
+      "check": "portable_path",
+      "path": "core/identity/profiles/Gemini.idp.json",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "core/identity/profiles/Gemini.idp.json",
+      "state": "EVIDENCED",
+      "expected_sha256": "53cdc24af673f605781f30dfcbb1509d4d99282e285ef9dd11c05f5632b5928f",
+      "actual_sha256": "53cdc24af673f605781f30dfcbb1509d4d99282e285ef9dd11c05f5632b5928f"
+    },
+    {
+      "check": "portable_path",
+      "path": "modules/Gemini/module.json",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "modules/Gemini/module.json",
+      "state": "EVIDENCED",
+      "expected_sha256": "8fd428198846537de91ef50b47f06b7f2dff1dc9a9f79c647a8dbe1b86ccfa82",
+      "actual_sha256": "8fd428198846537de91ef50b47f06b7f2dff1dc9a9f79c647a8dbe1b86ccfa82"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_agent_self_workspace_standard.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_agent_self_workspace_standard.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "70edcc997826b1578e713ec52396b47f49381178931c8b3b36bab6703b647161",
+      "actual_sha256": "70edcc997826b1578e713ec52396b47f49381178931c8b3b36bab6703b647161"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_bbex_intent.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_bbex_intent.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "fb055433b2fa8bd86c168688e50938d510b6d743f77c01a841d732198039ff7b",
+      "actual_sha256": "fb055433b2fa8bd86c168688e50938d510b6d743f77c01a841d732198039ff7b"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_bbx19_action.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_bbx19_action.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "535ebea647e597ad20fd4fc47de6eb7d4cf8d5a2f4cfc2ece59a13462f39cc74",
+      "actual_sha256": "535ebea647e597ad20fd4fc47de6eb7d4cf8d5a2f4cfc2ece59a13462f39cc74"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_box_integration.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_box_integration.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "c51a62b0dacf2d4e263561dfc9eed4eba9ffcbecc5f97e342ced2e616c2d9e76",
+      "actual_sha256": "c51a62b0dacf2d4e263561dfc9eed4eba9ffcbecc5f97e342ced2e616c2d9e76"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_branch_public_docs.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_branch_public_docs.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "5c28ed37b0716961ae90fe80430f182b05fcf4b74260bd8746215d825e95ad97",
+      "actual_sha256": "5c28ed37b0716961ae90fe80430f182b05fcf4b74260bd8746215d825e95ad97"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_chatgpt_flow_artifact.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_chatgpt_flow_artifact.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "906f234155b7b52c9d94975382a1b2432d8f1616865b71c2d97c4238df9f6c74",
+      "actual_sha256": "906f234155b7b52c9d94975382a1b2432d8f1616865b71c2d97c4238df9f6c74"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_codex_agent.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_codex_agent.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "b260e08b380752d2e263c4972ec3abb10a3074fa3ea0a68a2e55339014f8d39f",
+      "actual_sha256": "b260e08b380752d2e263c4972ec3abb10a3074fa3ea0a68a2e55339014f8d39f"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_cross_x_config.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_cross_x_config.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "2e843d6afcfa0db0fb14c81694d8f4938c70ba080033c76ce7c9924025eea19a",
+      "actual_sha256": "2e843d6afcfa0db0fb14c81694d8f4938c70ba080033c76ce7c9924025eea19a"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_document_creation_flow.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_document_creation_flow.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "09c78052027d397d18b306118b5dbc59a467aa64240e468d6526fc14223a0b00",
+      "actual_sha256": "09c78052027d397d18b306118b5dbc59a467aa64240e468d6526fc14223a0b00"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_ecs_native_inspection.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_ecs_native_inspection.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "4f173c50416823e7f0c98ee6b613bd2667058a91d9efc01442ee3a1a8f00c828",
+      "actual_sha256": "4f173c50416823e7f0c98ee6b613bd2667058a91d9efc01442ee3a1a8f00c828"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_ep_signal_rytm.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_ep_signal_rytm.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "fcbc741c1fbec1135b195eb20993cc1b3f307869e6fe4cff3589621a66cb441f",
+      "actual_sha256": "fcbc741c1fbec1135b195eb20993cc1b3f307869e6fe4cff3589621a66cb441f"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_event_chain.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_event_chain.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "15f2619bf43abed5a8521c2e7c58ec87f232d85859690d6a291b816f884dac63",
+      "actual_sha256": "15f2619bf43abed5a8521c2e7c58ec87f232d85859690d6a291b816f884dac63"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_file_void_tool.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_file_void_tool.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "9c8995f31765c506f84401387e65e748e5d96ecd5121b1d54d0d897c23e29f4f",
+      "actual_sha256": "9c8995f31765c506f84401387e65e748e5d96ecd5121b1d54d0d897c23e29f4f"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_g_state_foundation.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_g_state_foundation.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "57acfca2e426616752595d9d6c20d3a632b2b4963a352d6b9c538bc52333ff44",
+      "actual_sha256": "57acfca2e426616752595d9d6c20d3a632b2b4963a352d6b9c538bc52333ff44"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_hospitication_cli.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_hospitication_cli.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "e24c1f2a065fe700877b4d7bfe40e2648b0ca6e0343d6c1e319dea7b951ff262",
+      "actual_sha256": "e24c1f2a065fe700877b4d7bfe40e2648b0ca6e0343d6c1e319dea7b951ff262"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_hospitication_core.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_hospitication_core.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "e4f529c8bacd71814522754bf6a88d5ccdcbd0303f0d0581f0b37516807e1dec",
+      "actual_sha256": "e4f529c8bacd71814522754bf6a88d5ccdcbd0303f0d0581f0b37516807e1dec"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_hospitication_runner.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_hospitication_runner.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "beb7582d44128bea2eb345113af8492b47b030af21650a17afcfb930870e6940",
+      "actual_sha256": "beb7582d44128bea2eb345113af8492b47b030af21650a17afcfb930870e6940"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_human_callback.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_human_callback.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "96f881176c08ec24b0feaa70d072bc15e9cdb57c8201a8e9373cb7736ded5c1c",
+      "actual_sha256": "96f881176c08ec24b0feaa70d072bc15e9cdb57c8201a8e9373cb7736ded5c1c"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_human_callback_event.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_human_callback_event.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "47ea082765d8fbf932c80518d3eb3703bfa72046783eca673068e001c1d5ee9c",
+      "actual_sha256": "47ea082765d8fbf932c80518d3eb3703bfa72046783eca673068e001c1d5ee9c"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_human_callback_legacy.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_human_callback_legacy.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "2480376dbd1ba36b59f5de7269dd5407cc8737665295dc7092c3333f3786b847",
+      "actual_sha256": "2480376dbd1ba36b59f5de7269dd5407cc8737665295dc7092c3333f3786b847"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_log_analysis_capability.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_log_analysis_capability.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "f4d229da3f0af47d6d90304be53e351c58c8ce9668080d2c46ff7f12a0dbd032",
+      "actual_sha256": "f4d229da3f0af47d6d90304be53e351c58c8ce9668080d2c46ff7f12a0dbd032"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_main_agent_readiness.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_main_agent_readiness.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "e0c4445539cb8a28a4c2516e484f243d14b82b490e8bcf1a0fb50cf814b5b8f3",
+      "actual_sha256": "e0c4445539cb8a28a4c2516e484f243d14b82b490e8bcf1a0fb50cf814b5b8f3"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_modules_loader.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_modules_loader.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "358fa1bdc26f54e7f75dadc6a1564dfe1060e8cb7bcc011bbfb56eb80cc40646",
+      "actual_sha256": "358fa1bdc26f54e7f75dadc6a1564dfe1060e8cb7bcc011bbfb56eb80cc40646"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_mpcp_agent_sandbox.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_mpcp_agent_sandbox.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "b653fd03555e1f789bd852347d8afcc82406bf11bbcf8beacf06a8ddf5725b87",
+      "actual_sha256": "b653fd03555e1f789bd852347d8afcc82406bf11bbcf8beacf06a8ddf5725b87"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_mpcp_condien_equipment.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_mpcp_condien_equipment.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "48f71a762117336a4f1ef3f159fca9944bafbb4de9268c6d663a027c6d7cc2ea",
+      "actual_sha256": "48f71a762117336a4f1ef3f159fca9944bafbb4de9268c6d663a027c6d7cc2ea"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_mpcp_paper_runtime.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_mpcp_paper_runtime.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "20a3e27cbaf69438c1c0c079c498dd2775138d3028f108a6f98a9652d3b672c2",
+      "actual_sha256": "20a3e27cbaf69438c1c0c079c498dd2775138d3028f108a6f98a9652d3b672c2"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_orchestration.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_orchestration.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "0384cc89fe0de2ba4a66f48245f6835f0d2ba016c5ca65d4fd7f4f5e7b5a4e80",
+      "actual_sha256": "0384cc89fe0de2ba4a66f48245f6835f0d2ba016c5ca65d4fd7f4f5e7b5a4e80"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_orchestration_support.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_orchestration_support.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "8d145134998c0a10385e2d02e2410cef6fcbb28b8a3e05f11fe033e8c54d4c54",
+      "actual_sha256": "8d145134998c0a10385e2d02e2410cef6fcbb28b8a3e05f11fe033e8c54d4c54"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_orchestration_support_recovery.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_orchestration_support_recovery.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "e8ab80e970a90a7e19c966fe623f3b1ac6e20b710260e4a64af60e0c80744043",
+      "actual_sha256": "e8ab80e970a90a7e19c966fe623f3b1ac6e20b710260e4a64af60e0c80744043"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_origin_agent_runtime_contracts.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_origin_agent_runtime_contracts.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "3230e0912b3a9ef2456f4d3e26d2749476b949c48cce1b2774900d2c206ee99c",
+      "actual_sha256": "3230e0912b3a9ef2456f4d3e26d2749476b949c48cce1b2774900d2c206ee99c"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_origin_collaboration.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_origin_collaboration.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "6f7e2bd079d87640dbd564f7e34ad3c7aa195f3ced1eca66ae2ca77a69970cd8",
+      "actual_sha256": "6f7e2bd079d87640dbd564f7e34ad3c7aa195f3ced1eca66ae2ca77a69970cd8"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_origin_operations.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_origin_operations.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "37d00fac5561aa1dda603aa6f3667caebc91d83d16a078d9930943401ffd0cc7",
+      "actual_sha256": "37d00fac5561aa1dda603aa6f3667caebc91d83d16a078d9930943401ffd0cc7"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_process_layer.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_process_layer.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "6cee11358cbf102437d6378729895dfc3a368bfe7cfb6e63bffe6f3321eeab9d",
+      "actual_sha256": "6cee11358cbf102437d6378729895dfc3a368bfe7cfb6e63bffe6f3321eeab9d"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_psp2_agent_dispatch.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_psp2_agent_dispatch.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "d8e4108927560cd3b2d06ee3aabd6e9ebe635b2f3c2b75edeb9d3bdeb60fa819",
+      "actual_sha256": "d8e4108927560cd3b2d06ee3aabd6e9ebe635b2f3c2b75edeb9d3bdeb60fa819"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_px_w3db_append_flow.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_px_w3db_append_flow.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "edfb09c3c790bcd634eaed294f75aaa4ebf1ef968d05ec15338c8d77770d74d2",
+      "actual_sha256": "edfb09c3c790bcd634eaed294f75aaa4ebf1ef968d05ec15338c8d77770d74d2"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_report_navigation.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_report_navigation.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "c8df41e4dad3a0983ef4d0f77476da17371587833ea37842ab4739aa2f72b623",
+      "actual_sha256": "c8df41e4dad3a0983ef4d0f77476da17371587833ea37842ab4739aa2f72b623"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_request_cycle.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_request_cycle.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "ae741c73772bed010e90ba12773dccfdb057770c9dd9382c5f00fa9b5c2ff3d7",
+      "actual_sha256": "ae741c73772bed010e90ba12773dccfdb057770c9dd9382c5f00fa9b5c2ff3d7"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_run_audit_contract.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_run_audit_contract.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "bd954df69b4357d3a34b3c2ad2d81514e6ce4b259d375afbcac8de22e0f431f0",
+      "actual_sha256": "bd954df69b4357d3a34b3c2ad2d81514e6ce4b259d375afbcac8de22e0f431f0"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_runtime_agent_execution.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_runtime_agent_execution.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "83cab914e871cfd5c090bf32b55941df5d267a614c4c42e284ffed055841b1df",
+      "actual_sha256": "83cab914e871cfd5c090bf32b55941df5d267a614c4c42e284ffed055841b1df"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_runtime_circuit.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_runtime_circuit.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "331e3d41507d8b6059c337d2b0dba9e4b5a7e9378383493a5527f46a676e1beb",
+      "actual_sha256": "331e3d41507d8b6059c337d2b0dba9e4b5a7e9378383493a5527f46a676e1beb"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_runtime_circuit_intake.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_runtime_circuit_intake.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "a4060a3f6e5d92fc1daab04415bfb4bf24997a20f02b90606914ab7ef12779db",
+      "actual_sha256": "a4060a3f6e5d92fc1daab04415bfb4bf24997a20f02b90606914ab7ef12779db"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_runtime_circuit_review.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_runtime_circuit_review.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "c63bae0bf01205ce05f36d12f617f26ecfe3ea458b48f434af1da4e0956d7244",
+      "actual_sha256": "c63bae0bf01205ce05f36d12f617f26ecfe3ea458b48f434af1da4e0956d7244"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_runtime_reconciliation.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_runtime_reconciliation.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "170eec406f7d939320fb789a03c90f3939916ba5ec214f329b4726a1df23d561",
+      "actual_sha256": "170eec406f7d939320fb789a03c90f3939916ba5ec214f329b4726a1df23d561"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_semantic_router.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_semantic_router.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "e09a71925819762e20b9818815523115bd571df766d4f3ca93fd6905f1fe0ce8",
+      "actual_sha256": "e09a71925819762e20b9818815523115bd571df766d4f3ca93fd6905f1fe0ce8"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_system_inspection.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_system_inspection.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "1155563b4ade55d514959837a0ccdb9b78dc0474b4f4c1e88876e9f5a5d7c01b",
+      "actual_sha256": "1155563b4ade55d514959837a0ccdb9b78dc0474b4f4c1e88876e9f5a5d7c01b"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_task_cli.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_task_cli.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "dcc6c1ee500dafcd967a41ccbf831d22125f780de40f45cd3704f472fdb312cd",
+      "actual_sha256": "dcc6c1ee500dafcd967a41ccbf831d22125f780de40f45cd3704f472fdb312cd"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_w3_api_cross.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_w3_api_cross.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "ba8db92ca2951a61ecf38cd7d226aa2e22eef72df25d5589cd791c938075cc75",
+      "actual_sha256": "ba8db92ca2951a61ecf38cd7d226aa2e22eef72df25d5589cd791c938075cc75"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_w3_api_cross_plan.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_w3_api_cross_plan.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "ffa7ac7a831d2619eeb651bd578b890e63bcdce216f616fccf0958d9c073e431",
+      "actual_sha256": "ffa7ac7a831d2619eeb651bd578b890e63bcdce216f616fccf0958d9c073e431"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_w3_api_gateway.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_w3_api_gateway.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "fbbc850ee6dd50660c84a35be1c23c37749ef707d399354eff588ba8ac5650d6",
+      "actual_sha256": "fbbc850ee6dd50660c84a35be1c23c37749ef707d399354eff588ba8ac5650d6"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_w3_api_mfc_integration.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_w3_api_mfc_integration.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "6c7514656cf8c926d776bd88b40f42383cdb9025cdb58b5fa48a72d6b27fbdee",
+      "actual_sha256": "6c7514656cf8c926d776bd88b40f42383cdb9025cdb58b5fa48a72d6b27fbdee"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_w3_document_allocator.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_w3_document_allocator.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "3dd83763243835ab8c60b4feed6ab1a701f6622cb13e8214279a70a8000e7566",
+      "actual_sha256": "3dd83763243835ab8c60b4feed6ab1a701f6622cb13e8214279a70a8000e7566"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_w3_integration_grade.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_w3_integration_grade.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "9db3ffb69be2d9647c1b3b2bba70ddc22677bd6c6e1c88e242d664b400211b48",
+      "actual_sha256": "9db3ffb69be2d9647c1b3b2bba70ddc22677bd6c6e1c88e242d664b400211b48"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_w3api_tools.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_w3api_tools.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "9f75dca406f8c80bc7dded0bfbd2354d5f825b354ec959f8c23c6afb177c3c60",
+      "actual_sha256": "9f75dca406f8c80bc7dded0bfbd2354d5f825b354ec959f8c23c6afb177c3c60"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_w3lgu_core.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_w3lgu_core.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "a17d69c578353425dc37eeacf42a32671c74e46eb1cd4fadd060469ae79a6ac9",
+      "actual_sha256": "a17d69c578353425dc37eeacf42a32671c74e46eb1cd4fadd060469ae79a6ac9"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_w3lgu_event_field_logic27.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_w3lgu_event_field_logic27.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "57053f5b1e322ac11100761dea9900b4b33d95f0c06c5744c8aaa50ed9f57baf",
+      "actual_sha256": "57053f5b1e322ac11100761dea9900b4b33d95f0c06c5744c8aaa50ed9f57baf"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_w3lgu_mfc_logic.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_w3lgu_mfc_logic.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "4eabc1abc3ac7f38bda8b1b0b3e1ffb6cea162ed87e2cf45c903ddf31247214f",
+      "actual_sha256": "4eabc1abc3ac7f38bda8b1b0b3e1ffb6cea162ed87e2cf45c903ddf31247214f"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_w3lgu_operational.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_w3lgu_operational.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "73f7c040d5df2270e52b5ae88f4f884c28d3c47263a4be4c09034214b0b6f80c",
+      "actual_sha256": "73f7c040d5df2270e52b5ae88f4f884c28d3c47263a4be4c09034214b0b6f80c"
+    },
+    {
+      "check": "portable_path",
+      "path": "tests/test_w3unive_handbook.py",
+      "state": "EVIDENCED",
+      "notes": []
+    },
+    {
+      "check": "final_file_state",
+      "path": "tests/test_w3unive_handbook.py",
+      "state": "EVIDENCED",
+      "expected_sha256": "b2d72fbc4bb76320053a8e09ef2f1430f806fefc128fb9ff79fc737af2d27a7a",
+      "actual_sha256": "b2d72fbc4bb76320053a8e09ef2f1430f806fefc128fb9ff79fc737af2d27a7a"
+    }
+  ],
+  "findings": [],
+  "tools_used": [
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "core/runtime/agents/gemini.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "core/identity/profiles/Gemini.idp.json",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "modules/Gemini/module.json",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/validate_modules.py",
+      "function": "validate_module",
+      "path": "modules/Gemini/module.json",
+      "purpose": "validate module definition"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_agent_self_workspace_standard.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_bbex_intent.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_bbx19_action.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_box_integration.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_branch_public_docs.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_chatgpt_flow_artifact.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_codex_agent.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_cross_x_config.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_document_creation_flow.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_ecs_native_inspection.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_ep_signal_rytm.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_event_chain.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_file_void_tool.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_g_state_foundation.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_hospitication_cli.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_hospitication_core.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_hospitication_runner.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_human_callback.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_human_callback_event.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_human_callback_legacy.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_log_analysis_capability.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_main_agent_readiness.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_modules_loader.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_mpcp_agent_sandbox.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_mpcp_condien_equipment.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_mpcp_paper_runtime.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_orchestration.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_orchestration_support.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_orchestration_support_recovery.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_origin_agent_runtime_contracts.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_origin_collaboration.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_origin_operations.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_process_layer.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_psp2_agent_dispatch.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_px_w3db_append_flow.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_report_navigation.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_request_cycle.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_run_audit_contract.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_runtime_agent_execution.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_runtime_circuit.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_runtime_circuit_intake.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_runtime_circuit_review.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_runtime_reconciliation.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_semantic_router.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_system_inspection.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_task_cli.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_w3_api_cross.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_w3_api_cross_plan.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_w3_api_gateway.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_w3_api_mfc_integration.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_w3_document_allocator.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_w3_integration_grade.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_w3api_tools.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_w3lgu_core.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_w3lgu_event_field_logic27.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_w3lgu_mfc_logic.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_w3lgu_operational.py",
+      "purpose": "inspect output path portability"
+    },
+    {
+      "tool": "tools/check_portable_paths.py",
+      "function": "path_problems",
+      "path": "tests/test_w3unive_handbook.py",
+      "purpose": "inspect output path portability"
+    }
+  ],
+  "owner_reason": null,
+  "resolved": true,
+  "next_steps": [],
+  "source_mutated": false,
+  "unknowns": [
+    "Checks verify recorded file outcomes, not all role semantics or external systems."
+  ]
+}
