@@ -37,7 +37,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: python -m unittest discover -s tests -p 'test_origin_operations.py' -v
+      - run: python -m unittest tests.test_origin_operations tests.test_origin_collaboration -v
 
   work:
     if: github.event_name != 'pull_request'
@@ -80,3 +80,4 @@ jobs:
       - name: Report failed execution after preserving evidence
         if: steps.cycle.outcome == 'failure'
         run: exit 1
+

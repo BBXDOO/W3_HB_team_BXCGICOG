@@ -185,6 +185,29 @@ def periodic_work(root, module, now=None, force=False):
             "report_path": state["last_report"], "pending_count": len(pending)}
 
 
+def periodic_results(root, now=None):
+    """Record a failed module before continuing independent periodic reviews.
+
+    Never replay directed work or overwrite its state to hide partial writes.
+    If the failure receipt cannot be saved, stop instead of silently skipping it.
+    """
+    results = []
+    for module in ORIGINS:
+        try:
+            results.append(periodic_work(root, module, now=now))
+        except Exception as exc:
+            path = Path(root) / 'repo_events/origin_agents' / module / 'reports' / (uuid.uuid4().hex + '_FAILURE.json')
+            result = {'module': module, 'status': 'FAILED',
+                      'stage': 'periodic_work', 'error_type': type(exc).__name__,
+                      'reason': str(exc), 'recorded_at': iso(now or datetime.now(timezone.utc)),
+                      'partial_writes_possible': True, 'retried_in_this_run': False,
+                      'scope': 'host exception; not a finding that the reviewed system failed',
+                      'failure_evidence': str(path.relative_to(root))}
+            atomic_write(path, (json.dumps(result, ensure_ascii=False, indent=2) + '\n').encode())
+            results.append(result)
+    return results
+
+
 def intake_github(event, event_name, authorized_login="BBXDOO"):
     """Resolve a mention as work, not as an authorization grant.
 
@@ -227,11 +250,11 @@ def main():
         if request.get("source") in {"BBX19", "BBEX", "BBEX-Core"} and request.get("target") in ORIGINS:
             results.append(directed_work(root, request["target"], request))
     if args.periodic:
-        for module in ORIGINS:
-            results.append(periodic_work(root, module))
+        results.extend(periodic_results(root))
     print(json.dumps(results, ensure_ascii=False, indent=2))
     return 1 if any(result.get("status") == "FAILED" for result in results) else 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
