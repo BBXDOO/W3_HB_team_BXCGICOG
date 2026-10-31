@@ -111,17 +111,17 @@ public class ScreenService extends Service {
         subs.alpha=.75f;
         wm.addView(subtitles,subs);
         controls=Ui.column(this,0);controls.setClipChildren(false);controls.setClipToPadding(false);
-        controlParams=params(Ui.dp(this,72),-2,true);controlParams.gravity=Gravity.TOP|Gravity.LEFT;controlParams.x=screenW-Ui.dp(this,80);controlParams.y=Ui.dp(this,140);
+        controlParams=params(Ui.dp(this,48),-2,true);controlParams.gravity=Gravity.TOP|Gravity.LEFT;controlParams.x=screenW-Ui.dp(this,56);controlParams.y=Ui.dp(this,140);
         wm.addView(controls,controlParams);rebuildControls();
     }
     private void rebuildControls(){
         controls.removeAllViews();actionCount=0;
         int padding=Ui.dp(this,expanded?14:0);controls.setPadding(padding,padding,padding,padding);
-        if(expanded)SoftControls.surface(controls,27,false);else controls.setBackground(null);
-        TextView handle=Ui.text(this,expanded?"ไทย   ·   ลากย้าย    ⌃":"ไทย",expanded?14:17);
-        handle.setGravity(Gravity.CENTER);handle.setTextColor(SoftControls.INK);Ui.bold(handle);
-        if(!expanded)SoftControls.surface(handle,100,false);
-        controls.addView(handle,new LinearLayout.LayoutParams(-1,Ui.dp(this,expanded?38:72)));
+        if(expanded)SoftControls.surface(controls);else{controls.setBackground(null);controls.setLayerType(View.LAYER_TYPE_NONE,null);}
+        TextView handle=Ui.text(this,expanded?"ไทย   ·   ลากย้าย    ⌃":"ไทย",14);
+        handle.setGravity(Gravity.CENTER);handle.setTextColor(Color.BLACK);handle.setIncludeFontPadding(false);handle.setPadding(0,0,0,0);Ui.bold(handle);
+        if(!expanded)SoftControls.surface(handle);
+        controls.addView(handle,new LinearLayout.LayoutParams(-1,Ui.dp(this,expanded?38:48)));
         handle.setContentDescription("เมนูแปลภาษา แตะเพื่อเปิดหรือย่อ ลากเพื่อย้าย");
         handle.setOnClickListener(v->{expanded=!expanded;rebuildControls();});
         handle.setOnTouchListener(new View.OnTouchListener(){float x,y;int sx,sy;boolean moved;
@@ -142,7 +142,7 @@ public class ScreenService extends Service {
             ScrollView menu=new ScrollView(this);menu.setFillViewport(false);menu.setClipToPadding(false);
             actionHost=Ui.column(this,0);actionHost.setClipChildren(false);menu.addView(actionHost);
             int cardHeight=Ui.dp(this,Math.max(80,58*getResources().getConfiguration().fontScale));
-            menuHeight=Math.min(cardHeight*3,Math.max(Ui.dp(this,100),screenH-Ui.dp(this,170)));
+            menuHeight=Math.min((cardHeight+Ui.dp(this,6))*3,Math.max(Ui.dp(this,100),screenH-Ui.dp(this,170)));
             controls.addView(menu,new LinearLayout.LayoutParams(-1,menuHeight));
             control(paused?"อัตโนมัติ":"พักการแปล",paused?"play":"pause",!paused,false,()->{paused=!paused;generation++;main.removeCallbacks(tick);status(paused?"พักการแปล":"แปลอัตโนมัติ");if(!paused){readerMode=false;removeReading();main.postDelayed(tick,300);}rebuildControls();});
             control("แปลครั้งเดียว","once",false,false,()->{paused=true;readerMode=false;removeReading();rebuildControls();capture(true);});
@@ -151,10 +151,10 @@ public class ScreenService extends Service {
             control(hidden?"แสดงคำแปล":"ซ่อนคำแปล",hidden?"show":"hide",false,false,()->{hidden=!hidden;generation++;if(subtitles!=null)subtitles.setVisibility(hidden || reading!=null?View.INVISIBLE:View.VISIBLE);if(reading!=null)reading.setVisibility(hidden?View.INVISIBLE:View.VISIBLE);rebuildControls();if(!hidden)schedule();});
             control("ปิดตัวแปล","stop",false,true,this::stopSelf);
         }else state=null;
-        int width=Ui.dp(this,expanded?220:72);
+        int width=Ui.dp(this,expanded?220:48);
         controlParams.x+=controlParams.width-width;controlParams.width=width;
         controlParams.x=Math.max(0,Math.min(controlParams.x,screenW-width));
-        int panelHeight=expanded?menuHeight+Ui.dp(this,106):Ui.dp(this,72);
+        int panelHeight=expanded?menuHeight+Ui.dp(this,106):Ui.dp(this,48);
         controlParams.y=Math.max(Ui.dp(this,30),Math.min(controlParams.y,screenH-panelHeight-Ui.dp(this,16)));
         wm.updateViewLayout(controls,controlParams);
     }
@@ -162,7 +162,8 @@ public class ScreenService extends Service {
         if(actionCount++%2==0){actionRow=new LinearLayout(this);actionRow.setClipChildren(false);actionHost.addView(actionRow,new LinearLayout.LayoutParams(-1,-2));}
         Button b=SoftControls.button(this,text,icon,active,destructive);
         int height=Ui.dp(this,Math.max(80,58*getResources().getConfiguration().fontScale));
-        actionRow.addView(b,new LinearLayout.LayoutParams(0,height,1));b.setOnClickListener(v->action.run());
+        LinearLayout.LayoutParams cell=new LinearLayout.LayoutParams(0,height,1);cell.setMargins(Ui.dp(this,3),Ui.dp(this,3),Ui.dp(this,3),Ui.dp(this,3));
+        actionRow.addView(b,cell);b.setOnClickListener(v->action.run());
     }
     private void status(String s){statusText=s;if(state!=null)state.setText(s);}
     private void toast(String s){Toast.makeText(this,s,Toast.LENGTH_LONG).show();}
@@ -172,6 +173,7 @@ public class ScreenService extends Service {
         if(hidden){status("ซ่อนอยู่ • กดแสดงก่อนแปล");return;}
         if(!once && paused)return;
         busy=true;captureAttempts=0;int job=++generation;
+        latest.clear();subtitles.removeAllViews();removeReading();
         controls.setVisibility(View.INVISIBLE);subtitles.setVisibility(View.INVISIBLE);if(reading!=null)reading.setVisibility(View.INVISIBLE);
         // Drain old frames, then wait for composition with our windows hidden.
         try(Image old=images.acquireLatestImage()){}catch(Exception ignored){}
@@ -200,30 +202,44 @@ public class ScreenService extends Service {
             if(dead || job!=generation){finishJob();return;}
             List<Piece> pieces=new ArrayList<>();
             for(Text.TextBlock block:text.getTextBlocks()){
-                Rect box=block.getBoundingBox();String raw=block.getText().trim();
-                if(box==null || !LanguagePolicy.readable(raw))continue;
-                float cx=box.exactCenterX()/captureW,cy=box.exactCenterY()/captureH;
-                if(!region.contains(cx,cy))continue;
-                pieces.add(new Piece(raw,LanguagePolicy.source(raw,source),new Rect(box)));
-                if(pieces.size()==LIMIT)break;
+                StringBuilder raw=new StringBuilder();Rect box=null;
+                for(Text.Line line:block.getLines()){
+                    Rect lineBox=line.getBoundingBox();String value=line.getText().trim();
+                    if(lineBox==null || !LanguagePolicy.readable(value) || !region.contains(lineBox.exactCenterX()/captureW,lineBox.exactCenterY()/captureH)){
+                        addPiece(pieces,raw,box);box=null;continue;
+                    }
+                    if(raw.length()>0)raw.append('\n');raw.append(value);
+                    if(box==null)box=new Rect(lineBox);else box.union(lineBox);
+                }
+                addPiece(pieces,raw,box);
+                if(pieces.size()>=LIMIT)break;
             }
             if(pieces.isEmpty()){latest.clear();subtitles.removeAllViews();removeReading();status("ไม่พบข้อความ • อาจเล็กหรือป้องกันจับภาพ");toastIfReader("ไม่พบข้อความที่อ่านได้");finishJob();return;}
             status("กำลังแปล "+pieces.size()+" ส่วน…");translate(pieces,job);
         }).addOnFailureListener(e->{status("อ่านข้อความไม่สำเร็จ • ลองใหม่");toastIfReader("อ่านข้อความไม่สำเร็จ");finishJob();}).addOnCompleteListener(t->owned.recycle());
+    }
+    private void addPiece(List<Piece> pieces,StringBuilder raw,Rect box){
+        if(box!=null && raw.length()>0 && pieces.size()<LIMIT){String value=raw.toString();pieces.add(new Piece(value,LanguagePolicy.source(value,source),new Rect(box)));}
+        raw.setLength(0);
     }
     private void translate(List<Piece> pieces,int job){
         List<Task<String>> tasks=new ArrayList<>();
         for(Piece p:pieces){String key=p.language+":"+p.original;String hit=cache.get(key);tasks.add(hit!=null?Tasks.forResult(hit):translators.get(p.language).translate(p.original));}
         Tasks.whenAllComplete(tasks).addOnCompleteListener(done->{
             if(dead || job!=generation){finishJob();return;}
-            int failures=0;
+            int failures=0,protectedValues=0;
             for(int i=0;i<pieces.size();i++){
                 Piece p=pieces.get(i);Task<String> t=tasks.get(i);
-                if(t.isSuccessful()){p.translated=t.getResult();cache.put(p.language+":"+p.original,p.translated);}else{p.translated="[แปลไม่สำเร็จ — กลับไปเตรียมชุดภาษา]\n"+p.original;failures++;}
+                if(t.isSuccessful()){
+                    String value=t.getResult();
+                    if(value!=null && LanguagePolicy.preservesNumbers(p.original,value)){p.translated=value;cache.put(p.language+":"+p.original,p.translated);}
+                    else{p.translated=p.original;protectedValues++;}
+                }else{p.translated="[แปลไม่สำเร็จ — กลับไปเตรียมชุดภาษา]\n"+p.original;failures++;}
             }
             while(cache.size()>256)cache.remove(cache.keySet().iterator().next());
             latest.clear();latest.addAll(pieces);drawSubtitles();if(readerMode)showReading();
             status(failures>0?"บางส่วนแปลไม่ได้ • เตรียมชุดภาษาใหม่":"แปลแล้ว "+pieces.size()+" ส่วน"+(pieces.size()==LIMIT?" • ถึงขีดจำกัด ลองเลือกพื้นที่":""));
+            if(failures==0 && protectedValues>0)status("คงต้นฉบับ "+protectedValues+" ส่วน เพื่อรักษาตัวเลข");
             if(failures>0){paused=true;toast("บางส่วนแปลไม่ได้ กลับไปกดดาวน์โหลด / ตรวจชุดภาษาใน W3");}
             finishJob();
         });
