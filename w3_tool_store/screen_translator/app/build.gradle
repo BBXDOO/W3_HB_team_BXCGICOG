@@ -15,7 +15,7 @@ def signedRelease = [keyFile, releaseStorePassword, releaseKeyAlias, releaseKeyP
 android {
     namespace 'org.w3.translate'
     compileSdk 35
-    defaultConfig { applicationId 'org.w3.translate.preview'; minSdk 26; targetSdk 35; versionCode 4; versionName '0.4-preview'; ndk { abiFilters 'arm64-v8a' } }
+    defaultConfig { applicationId 'org.w3.translate.preview'; minSdk 26; targetSdk 35; versionCode 5; versionName '0.5-preview'; ndk { abiFilters 'arm64-v8a' } }
     if (signedRelease) {
         signingConfigs { channel { storeFile file(keyFile); storePassword releaseStorePassword; keyAlias releaseKeyAlias; keyPassword releaseKeyPassword } }
     }

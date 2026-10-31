@@ -3,65 +3,38 @@ package org.w3.translate;
 import android.content.Context;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 
-/** Small native surfaces with a light upper-left and dark lower-right shadow. */
+/** Crisp white rectangular controls, without blur, gradients, or software shadows. */
 final class SoftControls {
     static final int INK=0xff30383b, MUTED=0xff586269, GREEN=0xff17685c, RED=0xff923d3d;
     private SoftControls() {}
 
-    static void surface(View view,float radius,boolean active){
-        view.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
-        view.setBackground(new Surface(view.getContext(),radius,active));
-        view.setElevation(0);
+    static void surface(View view){
+        StateListDrawable background=new StateListDrawable();
+        for(int color:new int[]{0xffeeeeee,Color.WHITE}){
+            GradientDrawable shape=new GradientDrawable();shape.setShape(GradientDrawable.RECTANGLE);
+            shape.setColor(color);shape.setCornerRadius(0);shape.setStroke(Math.max(1,Ui.dp(view.getContext(),1)),Color.BLACK);
+            background.addState(color==Color.WHITE?new int[]{}:new int[]{android.R.attr.state_pressed},shape);
+        }
+        view.setLayerType(View.LAYER_TYPE_NONE,null);view.setBackground(background);
+        view.setElevation(0);view.setTranslationZ(0);view.setStateListAnimator(null);
     }
     static Button button(Context c,String label,String icon,boolean active,boolean destructive){
         Button b=new Button(c);
         b.setText(label);b.setAllCaps(false);b.setTextSize(13);b.setMaxLines(2);
         b.setMinWidth(0);b.setMinimumWidth(0);b.setMinHeight(0);b.setMinimumHeight(0);
         b.setGravity(Gravity.CENTER);b.setIncludeFontPadding(false);
-        b.setBackgroundTintList(null);surface(b,20,active);
+        b.setBackgroundTintList(null);surface(b);
         b.setPadding(Ui.dp(c,9),Ui.dp(c,10),Ui.dp(c,9),Ui.dp(c,10));
         int ink=destructive?RED:active?GREEN:INK;b.setTextColor(ink);
         Icon glyph=new Icon(icon,ink);glyph.setBounds(0,0,Ui.dp(c,23),Ui.dp(c,23));
         b.setCompoundDrawables(null,glyph,null,null);b.setCompoundDrawablePadding(Ui.dp(c,3));
         return b;
-    }
-    private static final class Surface extends Drawable {
-        private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
-        private final float inset,radius,blur,offset;
-        private final boolean active;
-        private boolean pressed;
-        private int alpha=255;
-        Surface(Context c,float r,boolean a){inset=Ui.dp(c,7);radius=Ui.dp(c,r);blur=Ui.dp(c,5);offset=Ui.dp(c,3);active=a;}
-        @Override public void draw(Canvas canvas){
-            Rect b=getBounds();RectF face=new RectF(b.left+inset,b.top+inset,b.right-inset,b.bottom-inset);
-            if(face.width()<=0 || face.height()<=0)return;
-            paint.setAlpha(alpha);paint.setStyle(Paint.Style.FILL);
-            int color=pressed?0xffd2d8d9:active?0xffdce7e3:0xffe3e5e7;
-            paint.setColor(color);
-            if(!pressed){
-                paint.setShadowLayer(blur,-offset,-offset,0xfaffffff);canvas.drawRoundRect(face,radius,radius,paint);
-                paint.setShadowLayer(blur,offset,offset,0x707a838b);canvas.drawRoundRect(face,radius,radius,paint);
-            }
-            paint.clearShadowLayer();
-            paint.setShader(new LinearGradient(face.left,face.top,face.right,face.bottom,
-                pressed?color:active?0xffe5eeea:0xffeceef0,color,Shader.TileMode.CLAMP));
-            canvas.drawRoundRect(face,radius,radius,paint);paint.setShader(null);
-            paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(1f);
-            paint.setColor(pressed?0xffa7b2b4:0x90ffffff);canvas.drawRoundRect(face,radius,radius,paint);
-            paint.setStyle(Paint.Style.FILL);
-        }
-        @Override public boolean isStateful(){return true;}
-        @Override protected boolean onStateChange(int[] states){
-            boolean next=false;for(int state:states)if(state==android.R.attr.state_pressed)next=true;
-            if(pressed==next)return false;pressed=next;invalidateSelf();return true;
-        }
-        @Override public void setAlpha(int a){alpha=a;invalidateSelf();}
-        @Override public void setColorFilter(ColorFilter f){paint.setColorFilter(f);invalidateSelf();}
-        @Override public int getOpacity(){return PixelFormat.TRANSLUCENT;}
     }
     private static final class Icon extends Drawable {
         private final Paint p=new Paint(Paint.ANTI_ALIAS_FLAG);
