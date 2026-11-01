@@ -1,0 +1,707 @@
+{
+  "task_id": "W3-ORC-20261011-326416905410935473905236216573873154353",
+  "type": "REPORT",
+  "priority": "NORMAL",
+  "origin": {
+    "module": "Copilot-Gm",
+    "tier": 1
+  },
+  "payload": {
+    "owner_log": "repo_events/origin_agents/Copilot-Gm/logs/2722739b67cc463896017922b29af2cc.json"
+  },
+  "source_id": "repo_events/origin_agents/Copilot-Gm/logs/2722739b67cc463896017922b29af2cc.json",
+  "created_at": "2026-11-01T01:01:49.870426Z",
+  "updated_at": "2026-11-01T01:01:49.886669Z",
+  "status": "COMPLETED",
+  "destination": {
+    "module": "Orchestration"
+  },
+  "route": [
+    {
+      "destination": {
+        "module": "Orchestration"
+      },
+      "at": "2026-11-01T01:01:49.871113Z",
+      "notification": "repo_events/origin_agents/Copilot-Gm/collaboration/W3-ORC-20261011-326416905410935473905236216573873154353-partner.json"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-11-01T01:01:49.870426Z",
+      "event": "RECEIVED",
+      "actor": "Copilot-Gm",
+      "detail": "intake"
+    },
+    {
+      "at": "2026-11-01T01:01:49.870445Z",
+      "event": "INSPECTING",
+      "actor": "Orchestration",
+      "detail": "inspect Origin work receipt"
+    },
+    {
+      "at": "2026-11-01T01:01:49.870451Z",
+      "event": "QUEUED",
+      "actor": "Orchestration",
+      "detail": "select partner"
+    },
+    {
+      "at": "2026-11-01T01:01:49.871123Z",
+      "event": "ROUTED",
+      "actor": "Orchestration",
+      "detail": "handoff delivered"
+    },
+    {
+      "at": "2026-11-01T01:01:49.871130Z",
+      "event": "ACKNOWLEDGED",
+      "actor": "Orchestration",
+      "detail": "repository receipt inspected"
+    },
+    {
+      "at": "2026-11-01T01:01:49.871135Z",
+      "event": "IN_PROGRESS",
+      "actor": "Orchestration",
+      "detail": "inspect evidence and unresolved work"
+    },
+    {
+      "at": "2026-11-01T01:01:49.871140Z",
+      "event": "BLOCKED",
+      "actor": "Orchestration",
+      "detail": "partner_unavailable"
+    },
+    {
+      "at": "2026-11-01T01:01:49.871150Z",
+      "event": "ASSISTING",
+      "actor": "Orchestration",
+      "detail": "TOOL:W3 repository tools support"
+    },
+    {
+      "at": "2026-11-01T01:01:49.881394Z",
+      "event": "RETURNED",
+      "actor": "Orchestration",
+      "detail": "support returned to owner"
+    },
+    {
+      "at": "2026-11-01T01:01:49.881403Z",
+      "event": "IN_PROGRESS",
+      "actor": "Copilot-Gm",
+      "detail": "support evidence returned to owner"
+    },
+    {
+      "at": "2026-11-01T01:01:49.886651Z",
+      "event": "VERIFYING",
+      "actor": "Orchestration",
+      "detail": "review report persisted"
+    },
+    {
+      "at": "2026-11-01T01:01:49.886669Z",
+      "event": "COMPLETED",
+      "actor": "Orchestration",
+      "detail": "report delivered; repairs remain separate"
+    }
+  ],
+  "evidence": [
+    {
+      "at": "2026-11-01T01:01:49.871123Z",
+      "ref": "repo_events/origin_agents/Copilot-Gm/collaboration/W3-ORC-20261011-326416905410935473905236216573873154353-partner.json",
+      "actor": "Orchestration"
+    },
+    {
+      "at": "2026-11-01T01:01:49.871130Z",
+      "ref": "repo_events/origin_agents/Copilot-Gm/collaboration/W3-ORC-20261011-326416905410935473905236216573873154353-partner.json",
+      "actor": "Orchestration"
+    },
+    {
+      "at": "2026-11-01T01:01:49.881394Z",
+      "ref": "repo_events/origin_agents/Copilot-Gm/collaboration/W3-ORC-20261011-326416905410935473905236216573873154353-support.json",
+      "actor": "Orchestration"
+    },
+    {
+      "at": "2026-11-01T01:01:49.881403Z",
+      "ref": "repo_events/origin_agents/Copilot-Gm/collaboration/W3-ORC-20261011-326416905410935473905236216573873154353-support.json",
+      "actor": "Copilot-Gm"
+    },
+    {
+      "at": "2026-11-01T01:01:49.886651Z",
+      "ref": "repo_events/origin_agents/Copilot-Gm/collaboration/W3-ORC-20261011-326416905410935473905236216573873154353-review.json",
+      "actor": "Orchestration"
+    }
+  ],
+  "blocker": null,
+  "support": [
+    {
+      "kind": "TOOL",
+      "name": "W3 repository tools support",
+      "result": {
+        "resolved": true,
+        "evidence": "repo_events/origin_agents/Copilot-Gm/collaboration/W3-ORC-20261011-326416905410935473905236216573873154353-support.json",
+        "diagnostics": {
+          "tool": "W3 repository tools support",
+          "owner": "Copilot-Gm",
+          "owner_status": "COMPLETED",
+          "owner_log": "repo_events/origin_agents/Copilot-Gm/logs/2722739b67cc463896017922b29af2cc.json",
+          "checks": [
+            {
+              "check": "owner_receipt",
+              "path": "repo_events/origin_agents/Copilot-Gm/logs/2722739b67cc463896017922b29af2cc.json",
+              "state": "EVIDENCED",
+              "sha256": "6ccac33723deabdabcaf93ae1f599bf3095f99002e34d828509db53a37995136"
+            },
+            {
+              "check": "portable_path",
+              "path": "core/runtime/agents/copilot_gm.py",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "core/runtime/agents/copilot_gm.py",
+              "state": "EVIDENCED",
+              "expected_sha256": "b0765991c2a8bc9de801923f4cc06438c075f9d085f1f63559750bb5ad1953ff",
+              "actual_sha256": "b0765991c2a8bc9de801923f4cc06438c075f9d085f1f63559750bb5ad1953ff"
+            },
+            {
+              "check": "portable_path",
+              "path": "core/identity/profiles/Copilot-Gm.idp.json",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "core/identity/profiles/Copilot-Gm.idp.json",
+              "state": "EVIDENCED",
+              "expected_sha256": "acdab6f27ad2b03db6b5714f3d1850a5747b06de7ce4d2f22beba4c052b3f421",
+              "actual_sha256": "acdab6f27ad2b03db6b5714f3d1850a5747b06de7ce4d2f22beba4c052b3f421"
+            },
+            {
+              "check": "portable_path",
+              "path": "modules/Copilot-Gm/module.json",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "modules/Copilot-Gm/module.json",
+              "state": "EVIDENCED",
+              "expected_sha256": "dddd0e331d4199ea0b3a55d786f510c000790ed89d3fba30e65e23dfb4771dff",
+              "actual_sha256": "dddd0e331d4199ea0b3a55d786f510c000790ed89d3fba30e65e23dfb4771dff"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/guides/AGENT_TASKS.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/guides/AGENT_TASKS.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "815696f3974fd9b0c310f1b0817402311b4cb73b44fa60fe1eb108c9b9fc1a2e",
+              "actual_sha256": "815696f3974fd9b0c310f1b0817402311b4cb73b44fa60fe1eb108c9b9fc1a2e"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/guides/AGENT_WORKSPACE_GUIDELINE.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/guides/AGENT_WORKSPACE_GUIDELINE.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "406ff947b9c67ece0540063737576f94b379b9c0d3f57daa02b8f51b23c610a5",
+              "actual_sha256": "406ff947b9c67ece0540063737576f94b379b9c0d3f57daa02b8f51b23c610a5"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/guides/CHATGPT_LOCAL_FLOW_ARTIFACT.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/guides/CHATGPT_LOCAL_FLOW_ARTIFACT.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "765421dde0c997a3e325696b118759bee2bc78a870aa8b3d22230a00a21e0b69",
+              "actual_sha256": "765421dde0c997a3e325696b118759bee2bc78a870aa8b3d22230a00a21e0b69"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/guides/GITHUB_PAGES_SETUP.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/guides/GITHUB_PAGES_SETUP.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "65b5f0b292980aee7b7fc188d4cbf79232818760e2bd60e53fa64afdc01a18b4",
+              "actual_sha256": "65b5f0b292980aee7b7fc188d4cbf79232818760e2bd60e53fa64afdc01a18b4"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/guides/JSON_GUIDE.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/guides/JSON_GUIDE.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "809e28dd30b84f2d3e4eefe592a8d0a181cc4455165c77e0a19d3f349c3b837c",
+              "actual_sha256": "809e28dd30b84f2d3e4eefe592a8d0a181cc4455165c77e0a19d3f349c3b837c"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/guides/MODULE_USAGE_GUIDE.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/guides/MODULE_USAGE_GUIDE.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "315acb032692bea450a52dbcd3fb7cee6d7271dff6074bde1561c29c991f6bd9",
+              "actual_sha256": "315acb032692bea450a52dbcd3fb7cee6d7271dff6074bde1561c29c991f6bd9"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/guides/ORCHESTRATION_CAPABILITY_SUPPORT_TH.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/guides/ORCHESTRATION_CAPABILITY_SUPPORT_TH.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "61383d498be30edc498473ff355568187092959e98ead908ec7c70a9a7e2e87b",
+              "actual_sha256": "61383d498be30edc498473ff355568187092959e98ead908ec7c70a9a7e2e87b"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/guides/ORIGIN_AGENT_OPERATIONS_TH.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/guides/ORIGIN_AGENT_OPERATIONS_TH.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "2ef46b7278f1fbd2ecaf37b2ad1fe98eef509789923c46ec9abb3d07364fbf1b",
+              "actual_sha256": "2ef46b7278f1fbd2ecaf37b2ad1fe98eef509789923c46ec9abb3d07364fbf1b"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/guides/ORIGIN_COLLABORATION_TH.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/guides/ORIGIN_COLLABORATION_TH.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "3b205349cb159222915ad98c5b86af2be89575fae69e2686ea10294a205e2916",
+              "actual_sha256": "3b205349cb159222915ad98c5b86af2be89575fae69e2686ea10294a205e2916"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/guides/ORIGIN_TOOLS_SUPPORT_TH.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/guides/ORIGIN_TOOLS_SUPPORT_TH.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "35100babf977a66e33fc2903c4d024b9000bb5196e20432d295767f543b7f31f",
+              "actual_sha256": "35100babf977a66e33fc2903c4d024b9000bb5196e20432d295767f543b7f31f"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/guides/PR_Flow_Table.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/guides/PR_Flow_Table.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "fd256439573daad99e5db96492a20580d4e6df19c08b94b4b1c8178a050b6fc2",
+              "actual_sha256": "fd256439573daad99e5db96492a20580d4e6df19c08b94b4b1c8178a050b6fc2"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/guides/QUICK_START.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/guides/QUICK_START.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "f6c3478483de7112aaabc0d2799caaf86e6378d3096570a3c4a5ca209e3d26f7",
+              "actual_sha256": "f6c3478483de7112aaabc0d2799caaf86e6378d3096570a3c4a5ca209e3d26f7"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/guides/W3API_TERMUX_GUIDE_TH.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/guides/W3API_TERMUX_GUIDE_TH.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "6f2a52090e7538e3bfdbfdb91ad8f975a2530b77ea94c8d1e2a6559c067446c1",
+              "actual_sha256": "6f2a52090e7538e3bfdbfdb91ad8f975a2530b77ea94c8d1e2a6559c067446c1"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/guides/W3_DOCUMENT_ALLOCATOR_TH.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/guides/W3_DOCUMENT_ALLOCATOR_TH.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "d8c41dda3ef3eac4a3956c6639f6acf9a150ba6a87408124c67e548583a4fb42",
+              "actual_sha256": "d8c41dda3ef3eac4a3956c6639f6acf9a150ba6a87408124c67e548583a4fb42"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/standards/AGENT_SELF_WORKSPACE_STANDARD.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/standards/AGENT_SELF_WORKSPACE_STANDARD.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "794fd9994c50ae41f70cbd6489911f683dc656c7a02b47c35167323d2b89d1a4",
+              "actual_sha256": "794fd9994c50ae41f70cbd6489911f683dc656c7a02b47c35167323d2b89d1a4"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/standards/CONFIG_SSOT.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/standards/CONFIG_SSOT.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "377c04072cf6ec720c3c98a2bfb9ed0ed4221e3fc0a3a191ca404deeb963b7e2",
+              "actual_sha256": "377c04072cf6ec720c3c98a2bfb9ed0ed4221e3fc0a3a191ca404deeb963b7e2"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/standards/NAMING_CONVENTION.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/standards/NAMING_CONVENTION.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "c385a13e7339a7e3ba8899f8762956b65621483930e44c09e4fa9837063dbf7e",
+              "actual_sha256": "c385a13e7339a7e3ba8899f8762956b65621483930e44c09e4fa9837063dbf7e"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/standards/REPO_STRUCTURE.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/standards/REPO_STRUCTURE.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "4cb0963f344a46f2be7208dab744562b36c196f5e069479c6672443915a5490b",
+              "actual_sha256": "4cb0963f344a46f2be7208dab744562b36c196f5e069479c6672443915a5490b"
+            },
+            {
+              "check": "portable_path",
+              "path": "docs/standards/referencing_standard.md",
+              "state": "EVIDENCED",
+              "notes": []
+            },
+            {
+              "check": "final_file_state",
+              "path": "docs/standards/referencing_standard.md",
+              "state": "EVIDENCED",
+              "expected_sha256": "b542868242b38ed638d519188bb4c9ba3576138a88c0586367b92614f3b987e0",
+              "actual_sha256": "b542868242b38ed638d519188bb4c9ba3576138a88c0586367b92614f3b987e0"
+            }
+          ],
+          "findings": [],
+          "tools_used": [
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "core/runtime/agents/copilot_gm.py",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "core/identity/profiles/Copilot-Gm.idp.json",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "modules/Copilot-Gm/module.json",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_modules.py",
+              "function": "validate_module",
+              "path": "modules/Copilot-Gm/module.json",
+              "purpose": "validate module definition"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/guides/AGENT_TASKS.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/guides/AGENT_TASKS.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/guides/AGENT_WORKSPACE_GUIDELINE.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/guides/AGENT_WORKSPACE_GUIDELINE.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/guides/CHATGPT_LOCAL_FLOW_ARTIFACT.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/guides/CHATGPT_LOCAL_FLOW_ARTIFACT.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/guides/GITHUB_PAGES_SETUP.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/guides/GITHUB_PAGES_SETUP.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/guides/JSON_GUIDE.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/guides/JSON_GUIDE.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/guides/MODULE_USAGE_GUIDE.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/guides/MODULE_USAGE_GUIDE.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/guides/ORCHESTRATION_CAPABILITY_SUPPORT_TH.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/guides/ORCHESTRATION_CAPABILITY_SUPPORT_TH.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/guides/ORIGIN_AGENT_OPERATIONS_TH.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/guides/ORIGIN_AGENT_OPERATIONS_TH.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/guides/ORIGIN_COLLABORATION_TH.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/guides/ORIGIN_COLLABORATION_TH.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/guides/ORIGIN_TOOLS_SUPPORT_TH.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/guides/ORIGIN_TOOLS_SUPPORT_TH.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/guides/PR_Flow_Table.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/guides/PR_Flow_Table.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/guides/QUICK_START.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/guides/QUICK_START.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/guides/W3API_TERMUX_GUIDE_TH.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/guides/W3API_TERMUX_GUIDE_TH.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/guides/W3_DOCUMENT_ALLOCATOR_TH.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/guides/W3_DOCUMENT_ALLOCATOR_TH.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/standards/AGENT_SELF_WORKSPACE_STANDARD.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/standards/AGENT_SELF_WORKSPACE_STANDARD.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/standards/CONFIG_SSOT.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/standards/CONFIG_SSOT.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/standards/NAMING_CONVENTION.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/standards/NAMING_CONVENTION.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/standards/REPO_STRUCTURE.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/standards/REPO_STRUCTURE.md",
+              "purpose": "check approval metadata"
+            },
+            {
+              "tool": "tools/check_portable_paths.py",
+              "function": "path_problems",
+              "path": "docs/standards/referencing_standard.md",
+              "purpose": "inspect output path portability"
+            },
+            {
+              "tool": "tools/validate_metadata.py",
+              "function": "validate_file",
+              "path": "docs/standards/referencing_standard.md",
+              "purpose": "check approval metadata"
+            }
+          ],
+          "owner_reason": null,
+          "resolved": true,
+          "next_steps": [],
+          "source_mutated": false,
+          "unknowns": [
+            "Checks verify recorded file outcomes, not all role semantics or external systems."
+          ]
+        }
+      },
+      "at": "2026-11-01T01:01:49.881378Z"
+    }
+  ],
+  "human_review_required": false,
+  "human_approval": null,
+  "mutated": false,
+  "completed_at": "2026-11-01T01:01:49.886669Z"
+}

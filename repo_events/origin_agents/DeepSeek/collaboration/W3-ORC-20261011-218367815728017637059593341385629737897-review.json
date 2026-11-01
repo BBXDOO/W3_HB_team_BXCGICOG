@@ -1,0 +1,451 @@
+{
+  "owner": "DeepSeek",
+  "partner": "Orchestration",
+  "participants": [
+    "DeepSeek",
+    "Orchestration",
+    "Orchestration",
+    "IGET"
+  ],
+  "owner_log": "repo_events/origin_agents/DeepSeek/logs/e90289c838154cd78bd299295771b567.json",
+  "partner_receipt": "repo_events/origin_agents/DeepSeek/collaboration/W3-ORC-20261011-218367815728017637059593341385629737897-partner.json",
+  "iget": {
+    "module": "IGET",
+    "status": "COMPLETED",
+    "findings": [],
+    "evidence": [
+      {
+        "path": "core/runtime/agents/deepseek.py",
+        "sha256": "aa64cb078b332b8bd9bbf226957ae2ceef6e957b6c80b75a9f91a440a9822123",
+        "bytes": 8102
+      },
+      {
+        "path": "core/identity/profiles/DeepSeek.idp.json",
+        "sha256": "ca7dcc7135d18ef455cc38ab3263465c9eb7df1106ed013c279279eee93cec3e",
+        "bytes": 3374
+      },
+      {
+        "path": "modules/DeepSeek/module.json",
+        "sha256": "714e3c99293af0f990e7446f18e389a4d6f973fb21d34253c6d670b52eb6ee37",
+        "bytes": 1897
+      },
+      {
+        "path": "docs/architecture/AUDIT_ARCHITECTURE.md",
+        "sha256": "a08fc358954f41ed5fd56f901b997f1f5e25d60543607fb225c98f743bee286b",
+        "bytes": 12544
+      },
+      {
+        "path": "docs/architecture/REDR_Structure_Map.md",
+        "sha256": "06d7021b8f9cd683ce5f5ce9a13cee4b112dcbdc90d9f59b3b1556fa19de99dc",
+        "bytes": 39827
+      },
+      {
+        "path": "docs/architecture/W3_ORIGINAL_INTENT_AND_AUTONOMY.md",
+        "sha256": "b88dc834516e2933eca811a9e7e919e7a1b9bdf115f35129198d2b07091d19c0",
+        "bytes": 19154
+      },
+      {
+        "path": "docs/architecture/WORDS.md",
+        "sha256": "7e22810f78b045f349f0041b33671735846e47fe4682cacab785744344842937",
+        "bytes": 14518
+      },
+      {
+        "path": "docs/architecture/mytec_info/W3UNIVE.md",
+        "sha256": "c04c9dc20931aeea75d132c5e2edcccd5c9caa69ebb9d4a93d7f82b19f083b36",
+        "bytes": 22544
+      }
+    ],
+    "definitions": [
+      {
+        "path": "core/runtime/agents/deepseek.py",
+        "name": "inspect_mpcp",
+        "line": 20
+      },
+      {
+        "path": "core/runtime/agents/deepseek.py",
+        "name": "run",
+        "line": 29
+      },
+      {
+        "path": "core/runtime/agents/deepseek.py",
+        "name": "execute",
+        "line": 50
+      },
+      {
+        "path": "core/runtime/agents/deepseek.py",
+        "name": "_extract_px",
+        "line": 79
+      },
+      {
+        "path": "core/runtime/agents/deepseek.py",
+        "name": "_consult_box",
+        "line": 97
+      },
+      {
+        "path": "core/runtime/agents/deepseek.py",
+        "name": "_read_box_registry",
+        "line": 110
+      },
+      {
+        "path": "core/runtime/agents/deepseek.py",
+        "name": "_build_plan_response",
+        "line": 137
+      },
+      {
+        "path": "core/runtime/agents/deepseek.py",
+        "name": "_build_fallback_response",
+        "line": 166
+      }
+    ],
+    "checked_paths": [
+      "core/identity/profiles/DeepSeek.idp.json",
+      "core/runtime/agents/deepseek.py",
+      "docs/architecture",
+      "docs/architecture/AUDIT_ARCHITECTURE.md",
+      "docs/architecture/REDR_Structure_Map.md",
+      "docs/architecture/W3_ORIGINAL_INTENT_AND_AUTONOMY.md",
+      "docs/architecture/WORDS.md",
+      "docs/architecture/mytec_info/W3UNIVE.md",
+      "modules/DeepSeek/module.json"
+    ],
+    "call_names": [
+      "Path",
+      "_build_fallback_response",
+      "_build_plan_response",
+      "_consult_box",
+      "_experience_summary",
+      "_extract_px",
+      "_read_box_registry",
+      "_responsibilities",
+      "dispatch_workset",
+      "execute_origin",
+      "exists",
+      "frozenset",
+      "get",
+      "group",
+      "load",
+      "open",
+      "replace",
+      "scan_terms",
+      "search",
+      "str"
+    ],
+    "coverage": "declared paths, bytes, Python/JSON syntax and static call inventory",
+    "unknowns": [
+      "Static inventory does not prove an end-to-end execution or a missing dynamic caller."
+    ],
+    "checks": [
+      {
+        "check": "declared_files",
+        "state": "EVIDENCED"
+      },
+      {
+        "check": "runtime_circuit",
+        "state": "UNVERIFIED",
+        "reason": "Static inventory does not prove an end-to-end execution or a missing dynamic caller."
+      }
+    ],
+    "signal": {
+      "color": "yellow",
+      "reason": "static_checks_only_runtime_unverified"
+    },
+    "proof": {
+      "mpcp_role": "governance_assistant",
+      "mpcp_version": "1.0",
+      "elapsed_sec": 0.0024,
+      "trace": [
+        {
+          "step": "structure_scope",
+          "claim": "Inspect declared paths without executing source",
+          "evidence": [
+            "core/runtime/agents/deepseek.py",
+            "core/identity/profiles/DeepSeek.idp.json",
+            "modules/DeepSeek/module.json",
+            "docs/architecture"
+          ],
+          "semantic_tag": "iget:scope",
+          "timestamp": 1793494909.8539717
+        },
+        {
+          "step": "structure_observed",
+          "claim": "Read bytes and record static checks",
+          "evidence": {
+            "files": 8,
+            "checked_paths": [
+              "core/runtime/agents/deepseek.py",
+              "core/runtime/agents/deepseek.py",
+              "core/identity/profiles/DeepSeek.idp.json",
+              "core/identity/profiles/DeepSeek.idp.json",
+              "modules/DeepSeek/module.json",
+              "modules/DeepSeek/module.json",
+              "docs/architecture",
+              "docs/architecture/AUDIT_ARCHITECTURE.md",
+              "docs/architecture/REDR_Structure_Map.md",
+              "docs/architecture/W3_ORIGINAL_INTENT_AND_AUTONOMY.md",
+              "docs/architecture/WORDS.md",
+              "docs/architecture/mytec_info/W3UNIVE.md"
+            ]
+          },
+          "semantic_tag": "iget:observation",
+          "timestamp": 1793494909.8563087
+        },
+        {
+          "step": "structure_findings",
+          "claim": "Observed defects within declared scope",
+          "evidence": [],
+          "semantic_tag": "iget:findings",
+          "timestamp": 1793494909.8563094
+        },
+        {
+          "step": "structure_limits",
+          "claim": "Runtime circuit remains unverified by static inspection",
+          "evidence": [
+            "Static inventory does not prove an end-to-end execution or a missing dynamic caller."
+          ],
+          "semantic_tag": "iget:unknown",
+          "timestamp": 1793494909.8563101
+        }
+      ]
+    },
+    "source_mutated": false
+  },
+  "findings": [],
+  "structural": true,
+  "unknowns": [
+    "Static inventory does not prove an end-to-end execution or a missing dynamic caller."
+  ],
+  "checks": [
+    {
+      "check": "declared_files",
+      "state": "EVIDENCED"
+    },
+    {
+      "check": "runtime_circuit",
+      "state": "UNVERIFIED",
+      "reason": "Static inventory does not prove an end-to-end execution or a missing dynamic caller."
+    }
+  ],
+  "signal": {
+    "color": "yellow",
+    "reason": "static_checks_only_runtime_unverified"
+  },
+  "repair_status": "NO_REPAIR_PROPOSED",
+  "source_mutated": false,
+  "support": {
+    "resolved": true,
+    "evidence": "repo_events/origin_agents/DeepSeek/collaboration/W3-ORC-20261011-218367815728017637059593341385629737897-support.json",
+    "diagnostics": {
+      "tool": "W3 repository tools support",
+      "owner": "DeepSeek",
+      "owner_status": "COMPLETED",
+      "owner_log": "repo_events/origin_agents/DeepSeek/logs/e90289c838154cd78bd299295771b567.json",
+      "checks": [
+        {
+          "check": "owner_receipt",
+          "path": "repo_events/origin_agents/DeepSeek/logs/e90289c838154cd78bd299295771b567.json",
+          "state": "EVIDENCED",
+          "sha256": "f90b94fe83f914ac2b8d9710dc2acba87e12ea16ce380674c72b5751d8c4f2d2"
+        },
+        {
+          "check": "portable_path",
+          "path": "core/runtime/agents/deepseek.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "core/runtime/agents/deepseek.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "aa64cb078b332b8bd9bbf226957ae2ceef6e957b6c80b75a9f91a440a9822123",
+          "actual_sha256": "aa64cb078b332b8bd9bbf226957ae2ceef6e957b6c80b75a9f91a440a9822123"
+        },
+        {
+          "check": "portable_path",
+          "path": "core/identity/profiles/DeepSeek.idp.json",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "core/identity/profiles/DeepSeek.idp.json",
+          "state": "EVIDENCED",
+          "expected_sha256": "ca7dcc7135d18ef455cc38ab3263465c9eb7df1106ed013c279279eee93cec3e",
+          "actual_sha256": "ca7dcc7135d18ef455cc38ab3263465c9eb7df1106ed013c279279eee93cec3e"
+        },
+        {
+          "check": "portable_path",
+          "path": "modules/DeepSeek/module.json",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "modules/DeepSeek/module.json",
+          "state": "EVIDENCED",
+          "expected_sha256": "714e3c99293af0f990e7446f18e389a4d6f973fb21d34253c6d670b52eb6ee37",
+          "actual_sha256": "714e3c99293af0f990e7446f18e389a4d6f973fb21d34253c6d670b52eb6ee37"
+        },
+        {
+          "check": "portable_path",
+          "path": "docs/architecture/AUDIT_ARCHITECTURE.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "docs/architecture/AUDIT_ARCHITECTURE.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "a08fc358954f41ed5fd56f901b997f1f5e25d60543607fb225c98f743bee286b",
+          "actual_sha256": "a08fc358954f41ed5fd56f901b997f1f5e25d60543607fb225c98f743bee286b"
+        },
+        {
+          "check": "portable_path",
+          "path": "docs/architecture/REDR_Structure_Map.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "docs/architecture/REDR_Structure_Map.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "06d7021b8f9cd683ce5f5ce9a13cee4b112dcbdc90d9f59b3b1556fa19de99dc",
+          "actual_sha256": "06d7021b8f9cd683ce5f5ce9a13cee4b112dcbdc90d9f59b3b1556fa19de99dc"
+        },
+        {
+          "check": "portable_path",
+          "path": "docs/architecture/W3_ORIGINAL_INTENT_AND_AUTONOMY.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "docs/architecture/W3_ORIGINAL_INTENT_AND_AUTONOMY.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "b88dc834516e2933eca811a9e7e919e7a1b9bdf115f35129198d2b07091d19c0",
+          "actual_sha256": "b88dc834516e2933eca811a9e7e919e7a1b9bdf115f35129198d2b07091d19c0"
+        },
+        {
+          "check": "portable_path",
+          "path": "docs/architecture/WORDS.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "docs/architecture/WORDS.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "7e22810f78b045f349f0041b33671735846e47fe4682cacab785744344842937",
+          "actual_sha256": "7e22810f78b045f349f0041b33671735846e47fe4682cacab785744344842937"
+        },
+        {
+          "check": "portable_path",
+          "path": "docs/architecture/mytec_info/W3UNIVE.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "docs/architecture/mytec_info/W3UNIVE.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "c04c9dc20931aeea75d132c5e2edcccd5c9caa69ebb9d4a93d7f82b19f083b36",
+          "actual_sha256": "c04c9dc20931aeea75d132c5e2edcccd5c9caa69ebb9d4a93d7f82b19f083b36"
+        }
+      ],
+      "findings": [],
+      "tools_used": [
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "core/runtime/agents/deepseek.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "core/identity/profiles/DeepSeek.idp.json",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "modules/DeepSeek/module.json",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_modules.py",
+          "function": "validate_module",
+          "path": "modules/DeepSeek/module.json",
+          "purpose": "validate module definition"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "docs/architecture/AUDIT_ARCHITECTURE.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "docs/architecture/AUDIT_ARCHITECTURE.md",
+          "purpose": "check approval metadata"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "docs/architecture/REDR_Structure_Map.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "docs/architecture/REDR_Structure_Map.md",
+          "purpose": "check approval metadata"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "docs/architecture/W3_ORIGINAL_INTENT_AND_AUTONOMY.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "docs/architecture/W3_ORIGINAL_INTENT_AND_AUTONOMY.md",
+          "purpose": "check approval metadata"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "docs/architecture/WORDS.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "docs/architecture/WORDS.md",
+          "purpose": "check approval metadata"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "docs/architecture/mytec_info/W3UNIVE.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "docs/architecture/mytec_info/W3UNIVE.md",
+          "purpose": "check approval metadata"
+        }
+      ],
+      "owner_reason": null,
+      "resolved": true,
+      "next_steps": [],
+      "source_mutated": false,
+      "unknowns": [
+        "Checks verify recorded file outcomes, not all role semantics or external systems."
+      ]
+    }
+  },
+  "support_status": "IN_PROGRESS"
+}

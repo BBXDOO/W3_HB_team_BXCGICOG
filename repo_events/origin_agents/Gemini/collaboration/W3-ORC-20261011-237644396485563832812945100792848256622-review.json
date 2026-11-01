@@ -1,0 +1,4673 @@
+{
+  "owner": "Gemini",
+  "partner": "Orchestration",
+  "participants": [
+    "Gemini",
+    "Orchestration",
+    "Orchestration",
+    "IGET"
+  ],
+  "owner_log": "repo_events/origin_agents/Gemini/logs/3a2003ff749e401baf26927082732ed5.json",
+  "partner_receipt": "repo_events/origin_agents/Gemini/collaboration/W3-ORC-20261011-237644396485563832812945100792848256622-partner.json",
+  "iget": {
+    "module": "IGET",
+    "status": "COMPLETED",
+    "findings": [],
+    "evidence": [
+      {
+        "path": "core/runtime/agents/gemini.py",
+        "sha256": "b2d911890fc93013e5104d999e4a5cd65c3060adb21158804be8a12aff7c0ec9",
+        "bytes": 5909
+      },
+      {
+        "path": "core/identity/profiles/Gemini.idp.json",
+        "sha256": "53cdc24af673f605781f30dfcbb1509d4d99282e285ef9dd11c05f5632b5928f",
+        "bytes": 4712
+      },
+      {
+        "path": "modules/Gemini/module.json",
+        "sha256": "8fd428198846537de91ef50b47f06b7f2dff1dc9a9f79c647a8dbe1b86ccfa82",
+        "bytes": 1889
+      },
+      {
+        "path": "tests/test_agent_self_workspace_standard.py",
+        "sha256": "70edcc997826b1578e713ec52396b47f49381178931c8b3b36bab6703b647161",
+        "bytes": 1636
+      },
+      {
+        "path": "tests/test_bbex_intent.py",
+        "sha256": "fb055433b2fa8bd86c168688e50938d510b6d743f77c01a841d732198039ff7b",
+        "bytes": 6119
+      },
+      {
+        "path": "tests/test_bbx19_action.py",
+        "sha256": "535ebea647e597ad20fd4fc47de6eb7d4cf8d5a2f4cfc2ece59a13462f39cc74",
+        "bytes": 7853
+      },
+      {
+        "path": "tests/test_box_integration.py",
+        "sha256": "c51a62b0dacf2d4e263561dfc9eed4eba9ffcbecc5f97e342ced2e616c2d9e76",
+        "bytes": 1548
+      },
+      {
+        "path": "tests/test_branch_public_docs.py",
+        "sha256": "5c28ed37b0716961ae90fe80430f182b05fcf4b74260bd8746215d825e95ad97",
+        "bytes": 925
+      },
+      {
+        "path": "tests/test_chatgpt_flow_artifact.py",
+        "sha256": "906f234155b7b52c9d94975382a1b2432d8f1616865b71c2d97c4238df9f6c74",
+        "bytes": 7067
+      },
+      {
+        "path": "tests/test_codex_agent.py",
+        "sha256": "b260e08b380752d2e263c4972ec3abb10a3074fa3ea0a68a2e55339014f8d39f",
+        "bytes": 3068
+      },
+      {
+        "path": "tests/test_cross_x_config.py",
+        "sha256": "2e843d6afcfa0db0fb14c81694d8f4938c70ba080033c76ce7c9924025eea19a",
+        "bytes": 4211
+      },
+      {
+        "path": "tests/test_document_creation_flow.py",
+        "sha256": "09c78052027d397d18b306118b5dbc59a467aa64240e468d6526fc14223a0b00",
+        "bytes": 1949
+      },
+      {
+        "path": "tests/test_ecs_native_inspection.py",
+        "sha256": "4f173c50416823e7f0c98ee6b613bd2667058a91d9efc01442ee3a1a8f00c828",
+        "bytes": 1106
+      },
+      {
+        "path": "tests/test_ep_signal_rytm.py",
+        "sha256": "fcbc741c1fbec1135b195eb20993cc1b3f307869e6fe4cff3589621a66cb441f",
+        "bytes": 1879
+      },
+      {
+        "path": "tests/test_event_chain.py",
+        "sha256": "15f2619bf43abed5a8521c2e7c58ec87f232d85859690d6a291b816f884dac63",
+        "bytes": 3750
+      },
+      {
+        "path": "tests/test_file_void_tool.py",
+        "sha256": "9c8995f31765c506f84401387e65e748e5d96ecd5121b1d54d0d897c23e29f4f",
+        "bytes": 2894
+      },
+      {
+        "path": "tests/test_g_state_foundation.py",
+        "sha256": "57acfca2e426616752595d9d6c20d3a632b2b4963a352d6b9c538bc52333ff44",
+        "bytes": 2943
+      },
+      {
+        "path": "tests/test_hospitication_cli.py",
+        "sha256": "e24c1f2a065fe700877b4d7bfe40e2648b0ca6e0343d6c1e319dea7b951ff262",
+        "bytes": 1421
+      },
+      {
+        "path": "tests/test_hospitication_core.py",
+        "sha256": "e4f529c8bacd71814522754bf6a88d5ccdcbd0303f0d0581f0b37516807e1dec",
+        "bytes": 3302
+      },
+      {
+        "path": "tests/test_hospitication_runner.py",
+        "sha256": "beb7582d44128bea2eb345113af8492b47b030af21650a17afcfb930870e6940",
+        "bytes": 828
+      },
+      {
+        "path": "tests/test_human_callback.py",
+        "sha256": "96f881176c08ec24b0feaa70d072bc15e9cdb57c8201a8e9373cb7736ded5c1c",
+        "bytes": 10929
+      },
+      {
+        "path": "tests/test_human_callback_event.py",
+        "sha256": "47ea082765d8fbf932c80518d3eb3703bfa72046783eca673068e001c1d5ee9c",
+        "bytes": 7252
+      },
+      {
+        "path": "tests/test_human_callback_legacy.py",
+        "sha256": "2480376dbd1ba36b59f5de7269dd5407cc8737665295dc7092c3333f3786b847",
+        "bytes": 2769
+      },
+      {
+        "path": "tests/test_log_analysis_capability.py",
+        "sha256": "f4d229da3f0af47d6d90304be53e351c58c8ce9668080d2c46ff7f12a0dbd032",
+        "bytes": 3869
+      },
+      {
+        "path": "tests/test_main_agent_readiness.py",
+        "sha256": "e0c4445539cb8a28a4c2516e484f243d14b82b490e8bcf1a0fb50cf814b5b8f3",
+        "bytes": 5037
+      },
+      {
+        "path": "tests/test_modules_loader.py",
+        "sha256": "358fa1bdc26f54e7f75dadc6a1564dfe1060e8cb7bcc011bbfb56eb80cc40646",
+        "bytes": 1030
+      },
+      {
+        "path": "tests/test_mpcp_agent_sandbox.py",
+        "sha256": "b653fd03555e1f789bd852347d8afcc82406bf11bbcf8beacf06a8ddf5725b87",
+        "bytes": 5021
+      },
+      {
+        "path": "tests/test_mpcp_condien_equipment.py",
+        "sha256": "48f71a762117336a4f1ef3f159fca9944bafbb4de9268c6d663a027c6d7cc2ea",
+        "bytes": 9933
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "sha256": "20a3e27cbaf69438c1c0c079c498dd2775138d3028f108a6f98a9652d3b672c2",
+        "bytes": 11229
+      },
+      {
+        "path": "tests/test_orchestration.py",
+        "sha256": "0384cc89fe0de2ba4a66f48245f6835f0d2ba016c5ca65d4fd7f4f5e7b5a4e80",
+        "bytes": 4432
+      },
+      {
+        "path": "tests/test_orchestration_support.py",
+        "sha256": "8d145134998c0a10385e2d02e2410cef6fcbb28b8a3e05f11fe033e8c54d4c54",
+        "bytes": 7792
+      },
+      {
+        "path": "tests/test_orchestration_support_recovery.py",
+        "sha256": "e8ab80e970a90a7e19c966fe623f3b1ac6e20b710260e4a64af60e0c80744043",
+        "bytes": 5223
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "sha256": "3230e0912b3a9ef2456f4d3e26d2749476b949c48cce1b2774900d2c206ee99c",
+        "bytes": 10710
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "sha256": "17ad7b88e9209e3e6c8026eb3449470876f5edcb6cd30b2d4d4edd7fc6899834",
+        "bytes": 14749
+      },
+      {
+        "path": "tests/test_origin_operations.py",
+        "sha256": "37d00fac5561aa1dda603aa6f3667caebc91d83d16a078d9930943401ffd0cc7",
+        "bytes": 11666
+      },
+      {
+        "path": "tests/test_process_layer.py",
+        "sha256": "6cee11358cbf102437d6378729895dfc3a368bfe7cfb6e63bffe6f3321eeab9d",
+        "bytes": 3193
+      },
+      {
+        "path": "tests/test_psp2_agent_dispatch.py",
+        "sha256": "d8e4108927560cd3b2d06ee3aabd6e9ebe635b2f3c2b75edeb9d3bdeb60fa819",
+        "bytes": 667
+      },
+      {
+        "path": "tests/test_px_w3db_append_flow.py",
+        "sha256": "edfb09c3c790bcd634eaed294f75aaa4ebf1ef968d05ec15338c8d77770d74d2",
+        "bytes": 3159
+      },
+      {
+        "path": "tests/test_report_navigation.py",
+        "sha256": "c8df41e4dad3a0983ef4d0f77476da17371587833ea37842ab4739aa2f72b623",
+        "bytes": 3045
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "sha256": "ae741c73772bed010e90ba12773dccfdb057770c9dd9382c5f00fa9b5c2ff3d7",
+        "bytes": 15717
+      },
+      {
+        "path": "tests/test_run_audit_contract.py",
+        "sha256": "bd954df69b4357d3a34b3c2ad2d81514e6ce4b259d375afbcac8de22e0f431f0",
+        "bytes": 961
+      },
+      {
+        "path": "tests/test_runtime_agent_execution.py",
+        "sha256": "83cab914e871cfd5c090bf32b55941df5d267a614c4c42e284ffed055841b1df",
+        "bytes": 2290
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "sha256": "331e3d41507d8b6059c337d2b0dba9e4b5a7e9378383493a5527f46a676e1beb",
+        "bytes": 6494
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "sha256": "a4060a3f6e5d92fc1daab04415bfb4bf24997a20f02b90606914ab7ef12779db",
+        "bytes": 11759
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "sha256": "c63bae0bf01205ce05f36d12f617f26ecfe3ea458b48f434af1da4e0956d7244",
+        "bytes": 10532
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "sha256": "170eec406f7d939320fb789a03c90f3939916ba5ec214f329b4726a1df23d561",
+        "bytes": 10325
+      },
+      {
+        "path": "tests/test_semantic_router.py",
+        "sha256": "e09a71925819762e20b9818815523115bd571df766d4f3ca93fd6905f1fe0ce8",
+        "bytes": 4474
+      },
+      {
+        "path": "tests/test_system_inspection.py",
+        "sha256": "1155563b4ade55d514959837a0ccdb9b78dc0474b4f4c1e88876e9f5a5d7c01b",
+        "bytes": 5704
+      },
+      {
+        "path": "tests/test_task_cli.py",
+        "sha256": "dcc6c1ee500dafcd967a41ccbf831d22125f780de40f45cd3704f472fdb312cd",
+        "bytes": 2586
+      },
+      {
+        "path": "tests/test_w3_api_cross.py",
+        "sha256": "ba8db92ca2951a61ecf38cd7d226aa2e22eef72df25d5589cd791c938075cc75",
+        "bytes": 3679
+      },
+      {
+        "path": "tests/test_w3_api_cross_plan.py",
+        "sha256": "ffa7ac7a831d2619eeb651bd578b890e63bcdce216f616fccf0958d9c073e431",
+        "bytes": 2555
+      },
+      {
+        "path": "tests/test_w3_api_gateway.py",
+        "sha256": "fbbc850ee6dd50660c84a35be1c23c37749ef707d399354eff588ba8ac5650d6",
+        "bytes": 1521
+      },
+      {
+        "path": "tests/test_w3_api_mfc_integration.py",
+        "sha256": "6c7514656cf8c926d776bd88b40f42383cdb9025cdb58b5fa48a72d6b27fbdee",
+        "bytes": 1541
+      },
+      {
+        "path": "tests/test_w3_document_allocator.py",
+        "sha256": "3dd83763243835ab8c60b4feed6ab1a701f6622cb13e8214279a70a8000e7566",
+        "bytes": 7078
+      },
+      {
+        "path": "tests/test_w3_integration_grade.py",
+        "sha256": "9db3ffb69be2d9647c1b3b2bba70ddc22677bd6c6e1c88e242d664b400211b48",
+        "bytes": 4980
+      },
+      {
+        "path": "tests/test_w3api_tools.py",
+        "sha256": "9f75dca406f8c80bc7dded0bfbd2354d5f825b354ec959f8c23c6afb177c3c60",
+        "bytes": 3052
+      },
+      {
+        "path": "tests/test_w3lgu_core.py",
+        "sha256": "a17d69c578353425dc37eeacf42a32671c74e46eb1cd4fadd060469ae79a6ac9",
+        "bytes": 3480
+      },
+      {
+        "path": "tests/test_w3lgu_event_field_logic27.py",
+        "sha256": "57053f5b1e322ac11100761dea9900b4b33d95f0c06c5744c8aaa50ed9f57baf",
+        "bytes": 3556
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "sha256": "4eabc1abc3ac7f38bda8b1b0b3e1ffb6cea162ed87e2cf45c903ddf31247214f",
+        "bytes": 9514
+      },
+      {
+        "path": "tests/test_w3lgu_operational.py",
+        "sha256": "73f7c040d5df2270e52b5ae88f4f884c28d3c47263a4be4c09034214b0b6f80c",
+        "bytes": 5017
+      },
+      {
+        "path": "tests/test_w3unive_handbook.py",
+        "sha256": "b2d72fbc4bb76320053a8e09ef2f1430f806fefc128fb9ff79fc737af2d27a7a",
+        "bytes": 2223
+      }
+    ],
+    "definitions": [
+      {
+        "path": "core/runtime/agents/gemini.py",
+        "name": "_context_value",
+        "line": 22
+      },
+      {
+        "path": "core/runtime/agents/gemini.py",
+        "name": "_normalize_checks",
+        "line": 34
+      },
+      {
+        "path": "core/runtime/agents/gemini.py",
+        "name": "execute",
+        "line": 56
+      },
+      {
+        "path": "tests/test_agent_self_workspace_standard.py",
+        "name": "test_agent_self_workspace_standard_exists_and_defines_scope",
+        "line": 9
+      },
+      {
+        "path": "tests/test_agent_self_workspace_standard.py",
+        "name": "test_agent_self_workspace_standard_covers_core_self_work_needs",
+        "line": 20
+      },
+      {
+        "path": "tests/test_agent_self_workspace_standard.py",
+        "name": "test_agent_self_workspace_templates_are_human_readable_and_non_runtime",
+        "line": 34
+      },
+      {
+        "path": "tests/test_bbex_intent.py",
+        "name": "setUp",
+        "line": 10
+      },
+      {
+        "path": "tests/test_bbex_intent.py",
+        "name": "test_complete_intent_is_ready_but_never_executes",
+        "line": 16
+      },
+      {
+        "path": "tests/test_bbex_intent.py",
+        "name": "test_missing_outcome_preserves_uncertainty",
+        "line": 30
+      },
+      {
+        "path": "tests/test_bbex_intent.py",
+        "name": "test_agent_does_not_write_without_explicit_persistence",
+        "line": 37
+      },
+      {
+        "path": "tests/test_bbex_intent.py",
+        "name": "test_save_is_explicit_and_writes_markdown",
+        "line": 49
+      },
+      {
+        "path": "tests/test_bbex_intent.py",
+        "name": "test_revisions_keep_one_intent_without_overwriting_history",
+        "line": 58
+      },
+      {
+        "path": "tests/test_bbex_intent.py",
+        "name": "test_runtime_payload_can_explicitly_persist_intent",
+        "line": 77
+      },
+      {
+        "path": "tests/test_bbex_intent.py",
+        "name": "test_declared_drift_requires_reflection_without_deciding",
+        "line": 94
+      },
+      {
+        "path": "tests/test_bbex_intent.py",
+        "name": "test_bbx19_receives_consultation_and_structural_options",
+        "line": 107
+      },
+      {
+        "path": "tests/test_bbex_intent.py",
+        "name": "test_other_modules_receive_feedback_not_structural_direction",
+        "line": 124
+      },
+      {
+        "path": "tests/test_bbx19_action.py",
+        "name": "setUp",
+        "line": 9
+      },
+      {
+        "path": "tests/test_bbx19_action.py",
+        "name": "test_missing_explicit_decision_requires_review",
+        "line": 13
+      },
+      {
+        "path": "tests/test_bbx19_action.py",
+        "name": "test_approve_records_authority_without_executing",
+        "line": 19
+      },
+      {
+        "path": "tests/test_bbx19_action.py",
+        "name": "test_non_bbx19_source_cannot_fabricate_approval",
+        "line": 33
+      },
+      {
+        "path": "tests/test_bbx19_action.py",
+        "name": "test_repeated_decision_has_stable_identity",
+        "line": 41
+      },
+      {
+        "path": "tests/test_bbx19_action.py",
+        "name": "test_untrusted_request_cannot_self_declare_bbx19_authority",
+        "line": 52
+      },
+      {
+        "path": "tests/test_bbx19_action.py",
+        "name": "test_verified_creator_origin_context_authorizes_bbx19",
+        "line": 66
+      },
+      {
+        "path": "tests/test_bbx19_action.py",
+        "name": "test_supplied_non_object_intent_record_requires_review",
+        "line": 83
+      },
+      {
+        "path": "tests/test_bbx19_action.py",
+        "name": "test_ready_bbex_intent_is_linked_to_bbx19_decision",
+        "line": 97
+      },
+      {
+        "path": "tests/test_bbx19_action.py",
+        "name": "test_bbx19_does_not_approve_drift_record_without_explicit_override",
+        "line": 119
+      },
+      {
+        "path": "tests/test_bbx19_action.py",
+        "name": "test_override_cannot_authorize_a_fabricated_intent_record",
+        "line": 148
+      },
+      {
+        "path": "tests/test_box_integration.py",
+        "name": "test_box_registry_is_readable_and_validated",
+        "line": 11
+      },
+      {
+        "path": "tests/test_box_integration.py",
+        "name": "test_cross_plan_can_include_box_suggestion_without_new_authority",
+        "line": 17
+      },
+      {
+        "path": "tests/test_box_integration.py",
+        "name": "test_cross_plan_preserves_default_response_when_box_is_not_requested",
+        "line": 32
+      },
+      {
+        "path": "tests/test_box_integration.py",
+        "name": "test_cross_plan_unknown_px_returns_null_suggestion_and_review",
+        "line": 39
+      },
+      {
+        "path": "tests/test_branch_public_docs.py",
+        "name": "read_doc",
+        "line": 7
+      },
+      {
+        "path": "tests/test_branch_public_docs.py",
+        "name": "test_branch_strategy_defines_active_base_and_truth_layers",
+        "line": 11
+      },
+      {
+        "path": "tests/test_branch_public_docs.py",
+        "name": "test_public_boundary_defines_public_internal_labels_and_release_flow",
+        "line": 22
+      },
+      {
+        "path": "tests/test_chatgpt_flow_artifact.py",
+        "name": "setUp",
+        "line": 14
+      },
+      {
+        "path": "tests/test_chatgpt_flow_artifact.py",
+        "name": "tearDown",
+        "line": 19
+      },
+      {
+        "path": "tests/test_chatgpt_flow_artifact.py",
+        "name": "test_execute_creates_verifiable_artifact",
+        "line": 26
+      },
+      {
+        "path": "tests/test_chatgpt_flow_artifact.py",
+        "name": "test_engine_returns_artifact",
+        "line": 66
+      },
+      {
+        "path": "tests/test_chatgpt_flow_artifact.py",
+        "name": "test_verifier_without_evidence_requires_review",
+        "line": 86
+      },
+      {
+        "path": "tests/test_chatgpt_flow_artifact.py",
+        "name": "test_engine_v2_flags_incomplete_w3lgu_result_contract",
+        "line": 98
+      },
+      {
+        "path": "tests/test_chatgpt_flow_artifact.py",
+        "name": "test_engine_v2_flags_missing_expected_identity",
+        "line": 106
+      },
+      {
+        "path": "tests/test_chatgpt_flow_artifact.py",
+        "name": "test_engine_v2_rejects_non_dict_agent_result",
+        "line": 128
+      },
+      {
+        "path": "tests/test_chatgpt_flow_artifact.py",
+        "name": "test_engine_v2_success_rule_only_completed_scores_success",
+        "line": 141
+      },
+      {
+        "path": "tests/test_chatgpt_flow_artifact.py",
+        "name": "test_legacy_engine_does_not_fabricate_success",
+        "line": 166
+      },
+      {
+        "path": "tests/test_codex_agent.py",
+        "name": "test_codex_manifest_declares_non_overlapping_governance_boundaries",
+        "line": 11
+      },
+      {
+        "path": "tests/test_codex_agent.py",
+        "name": "test_codex_execution_packet_is_five_line_w3lgu_and_immutable",
+        "line": 24
+      },
+      {
+        "path": "tests/test_codex_agent.py",
+        "name": "test_codex_registered_in_modules_loader_and_central_registry",
+        "line": 50
+      },
+      {
+        "path": "tests/test_codex_agent.py",
+        "name": "test_codex_idp_and_module_json_reference_each_other",
+        "line": 67
+      },
+      {
+        "path": "tests/test_cross_x_config.py",
+        "name": "test_w3_config_bundle_covers_current_ecosystem",
+        "line": 9
+      },
+      {
+        "path": "tests/test_cross_x_config.py",
+        "name": "test_cross_x_plan_builds_full_non_mutating_chain",
+        "line": 23
+      },
+      {
+        "path": "tests/test_cross_x_config.py",
+        "name": "test_cross_x_rejects_unsupported_modes",
+        "line": 68
+      },
+      {
+        "path": "tests/test_cross_x_config.py",
+        "name": "test_cross_x_rejects_w3lgu_unsafe_cross_ids",
+        "line": 81
+      },
+      {
+        "path": "tests/test_cross_x_config.py",
+        "name": "test_cross_x_request_is_immutable",
+        "line": 86
+      },
+      {
+        "path": "tests/test_cross_x_config.py",
+        "name": "test_event_chain_rejects_duplicate_system_handoffs",
+        "line": 93
+      },
+      {
+        "path": "tests/test_document_creation_flow.py",
+        "name": "test_flow_creates_validated_artifact_and_waits_for_human",
+        "line": 11
+      },
+      {
+        "path": "tests/test_ecs_native_inspection.py",
+        "name": "test_native_ecs_preserves_event_and_routes_confidence",
+        "line": 11
+      },
+      {
+        "path": "tests/test_ep_signal_rytm.py",
+        "name": "test_rytm_signal_round_trips_binary_and_keeps_meta_tokens",
+        "line": 9
+      },
+      {
+        "path": "tests/test_ep_signal_rytm.py",
+        "name": "test_ep_signal_can_be_exposed_as_immutable_rytm_packet",
+        "line": 21
+      },
+      {
+        "path": "tests/test_ep_signal_rytm.py",
+        "name": "test_rytm_preview_is_non_mutating_and_reversible",
+        "line": 34
+      },
+      {
+        "path": "tests/test_ep_signal_rytm.py",
+        "name": "test_rytm_rejects_invalid_or_non_reversible_packets",
+        "line": 44
+      },
+      {
+        "path": "tests/test_event_chain.py",
+        "name": "_chain",
+        "line": 8
+      },
+      {
+        "path": "tests/test_event_chain.py",
+        "name": "test_build_event_chain_records_order_and_contracts",
+        "line": 16
+      },
+      {
+        "path": "tests/test_event_chain.py",
+        "name": "test_build_event_chain_rejects_unsafe_identifier",
+        "line": 28
+      },
+      {
+        "path": "tests/test_event_chain.py",
+        "name": "test_inactive_system_is_recorded_without_execution",
+        "line": 37
+      },
+      {
+        "path": "tests/test_event_chain.py",
+        "name": "test_bind_event_return_returns_new_chain_without_mutating_original",
+        "line": 52
+      },
+      {
+        "path": "tests/test_event_chain.py",
+        "name": "test_bind_event_return_rejects_terminal_double_bind",
+        "line": 72
+      },
+      {
+        "path": "tests/test_event_chain.py",
+        "name": "test_waiting_event_can_resume_with_return_history",
+        "line": 93
+      },
+      {
+        "path": "tests/test_event_chain.py",
+        "name": "test_stopped_event_sets_chain_state_to_stopped",
+        "line": 116
+      },
+      {
+        "path": "tests/test_file_void_tool.py",
+        "name": "test_file_void_manifest_preserves_source_and_creates_temporary_artifact",
+        "line": 7
+      },
+      {
+        "path": "tests/test_file_void_tool.py",
+        "name": "test_file_void_rejects_manifest_before_resolve",
+        "line": 20
+      },
+      {
+        "path": "tests/test_file_void_tool.py",
+        "name": "test_file_void_save_is_handoff_not_direct_write",
+        "line": 27
+      },
+      {
+        "path": "tests/test_file_void_tool.py",
+        "name": "test_mpcp_adapter_can_call_file_void_from_context",
+        "line": 50
+      },
+      {
+        "path": "tests/test_file_void_tool.py",
+        "name": "test_mpcp_pillar_stage_shape_returns_success_payload",
+        "line": 69
+      },
+      {
+        "path": "tests/test_g_state_foundation.py",
+        "name": "read_doc",
+        "line": 7
+      },
+      {
+        "path": "tests/test_g_state_foundation.py",
+        "name": "test_g_state_paper_defines_awareness_not_execution",
+        "line": 11
+      },
+      {
+        "path": "tests/test_g_state_foundation.py",
+        "name": "test_g_state_paper_declares_canonical_states_and_integration_boundaries",
+        "line": 25
+      },
+      {
+        "path": "tests/test_g_state_foundation.py",
+        "name": "test_g_state_examples_are_human_readable_and_non_runtime",
+        "line": 45
+      },
+      {
+        "path": "tests/test_g_state_foundation.py",
+        "name": "test_v0_2_to_v0_3_readiness_locks_truth_and_gateway_boundaries",
+        "line": 66
+      },
+      {
+        "path": "tests/test_g_state_foundation.py",
+        "name": "test_g_state_culture_link_is_advisory_context_not_authority",
+        "line": 82
+      },
+      {
+        "path": "tests/test_hospitication_cli.py",
+        "name": "test_cli_json_stdout",
+        "line": 8
+      },
+      {
+        "path": "tests/test_hospitication_cli.py",
+        "name": "test_cli_output_file",
+        "line": 33
+      },
+      {
+        "path": "tests/test_hospitication_core.py",
+        "name": "make_repo",
+        "line": 18
+      },
+      {
+        "path": "tests/test_hospitication_core.py",
+        "name": "test_observer_is_read_only_and_deterministic",
+        "line": 34
+      },
+      {
+        "path": "tests/test_hospitication_core.py",
+        "name": "test_signal_envelope_and_node_are_immutable",
+        "line": 47
+      },
+      {
+        "path": "tests/test_hospitication_core.py",
+        "name": "test_report_pipeline_emits_deterministic_json_and_markdown",
+        "line": 63
+      },
+      {
+        "path": "tests/test_hospitication_core.py",
+        "name": "test_detector_and_recovery_boundaries_do_not_diagnose_or_mutate",
+        "line": 77
+      },
+      {
+        "path": "tests/test_hospitication_runner.py",
+        "name": "test_hospitication_runner_is_callable_and_read_only",
+        "line": 11
+      },
+      {
+        "path": "tests/test_human_callback.py",
+        "name": "waiting",
+        "line": 14
+      },
+      {
+        "path": "tests/test_human_callback.py",
+        "name": "approve",
+        "line": 23
+      },
+      {
+        "path": "tests/test_human_callback.py",
+        "name": "test_one_response_links_intent_decision_and_orchestration",
+        "line": 34
+      },
+      {
+        "path": "tests/test_human_callback.py",
+        "name": "test_nonapproval_decisions_have_real_task_effects",
+        "line": 58
+      },
+      {
+        "path": "tests/test_human_callback.py",
+        "name": "test_note_records_ack_progress_help_delivery_without_approval",
+        "line": 68
+      },
+      {
+        "path": "tests/test_human_callback.py",
+        "name": "test_callback_cannot_claim_authority_or_target_different_work",
+        "line": 78
+      },
+      {
+        "path": "tests/test_human_callback.py",
+        "name": "test_tampered_report_does_not_become_approved",
+        "line": 89
+      },
+      {
+        "path": "tests/test_human_callback.py",
+        "name": "test_old_review_cli_uses_same_decision_and_intent_records",
+        "line": 101
+      },
+      {
+        "path": "tests/test_human_callback.py",
+        "name": "test_source_change_and_blank_reply_do_not_apply",
+        "line": 109
+      },
+      {
+        "path": "tests/test_human_callback.py",
+        "name": "test_revised_stage_invalidates_old_callback",
+        "line": 118
+      },
+      {
+        "path": "tests/test_human_callback.py",
+        "name": "test_save_failure_after_action_never_replays_approval",
+        "line": 126
+      },
+      {
+        "path": "tests/test_human_callback.py",
+        "name": "test_delegation_is_explicit",
+        "line": 140
+      },
+      {
+        "path": "tests/test_human_callback.py",
+        "name": "test_reconcile_final_save_failure_preserves_state_without_replay",
+        "line": 149
+      },
+      {
+        "path": "tests/test_human_callback.py",
+        "name": "test_callback_recovery_does_not_clear_independent_runtime_uncertainty",
+        "line": 179
+      },
+      {
+        "path": "tests/test_human_callback.py",
+        "name": "save",
+        "line": 129
+      },
+      {
+        "path": "tests/test_human_callback.py",
+        "name": "save",
+        "line": 158
+      },
+      {
+        "path": "tests/test_human_callback_event.py",
+        "name": "test_owner_can_apply_one_edited_form_without_terminal_flags",
+        "line": 14
+      },
+      {
+        "path": "tests/test_human_callback_event.py",
+        "name": "test_blank_template_and_nonowner_do_not_approve",
+        "line": 33
+      },
+      {
+        "path": "tests/test_human_callback_event.py",
+        "name": "test_remote_checkpoint_failure_prevents_action_and_can_be_reconciled",
+        "line": 42
+      },
+      {
+        "path": "tests/test_human_callback_event.py",
+        "name": "test_event_cannot_apply_newer_unseen_response",
+        "line": 57
+      },
+      {
+        "path": "tests/test_human_callback_event.py",
+        "name": "test_real_owner_push_range_finds_and_applies_edited_response",
+        "line": 67
+      },
+      {
+        "path": "tests/test_human_callback_event.py",
+        "name": "test_unrelated_markdown_does_not_block_owner_reply",
+        "line": 83
+      },
+      {
+        "path": "tests/test_human_callback_event.py",
+        "name": "test_workflow_stages_new_ignored_audit_files",
+        "line": 101
+      },
+      {
+        "path": "tests/test_human_callback_event.py",
+        "name": "checkpoint",
+        "line": 20
+      },
+      {
+        "path": "tests/test_human_callback_event.py",
+        "name": "failure",
+        "line": 44
+      },
+      {
+        "path": "tests/test_human_callback_event.py",
+        "name": "git",
+        "line": 69
+      },
+      {
+        "path": "tests/test_human_callback_event.py",
+        "name": "git",
+        "line": 106
+      },
+      {
+        "path": "tests/test_human_callback_event.py",
+        "name": "output",
+        "line": 93
+      },
+      {
+        "path": "tests/test_human_callback_legacy.py",
+        "name": "document_request",
+        "line": 10
+      },
+      {
+        "path": "tests/test_human_callback_legacy.py",
+        "name": "test_existing_document_result_joins_same_callback_without_rewriting_artifact",
+        "line": 22
+      },
+      {
+        "path": "tests/test_human_callback_legacy.py",
+        "name": "test_legacy_unfinished_human_request_can_be_answered_but_not_falsely_closed",
+        "line": 36
+      },
+      {
+        "path": "tests/test_log_analysis_capability.py",
+        "name": "logs",
+        "line": 12
+      },
+      {
+        "path": "tests/test_log_analysis_capability.py",
+        "name": "test_analysis_uses_context_with_known_counts_and_error_patterns",
+        "line": 19
+      },
+      {
+        "path": "tests/test_log_analysis_capability.py",
+        "name": "test_small_history_does_not_fabricate_a_prediction",
+        "line": 37
+      },
+      {
+        "path": "tests/test_log_analysis_capability.py",
+        "name": "test_memory_bus_json_content_and_unknown_outcomes_are_preserved",
+        "line": 48
+      },
+      {
+        "path": "tests/test_log_analysis_capability.py",
+        "name": "test_real_executor_writes_hash_verifiable_source_linked_report",
+        "line": 58
+      },
+      {
+        "path": "tests/test_log_analysis_capability.py",
+        "name": "test_missing_or_invalid_data_is_not_completed",
+        "line": 74
+      },
+      {
+        "path": "tests/test_main_agent_readiness.py",
+        "name": "test_all_main_agents_are_runtime_registered",
+        "line": 26
+      },
+      {
+        "path": "tests/test_main_agent_readiness.py",
+        "name": "test_bbx19_requires_explicit_human_decision",
+        "line": 29
+      },
+      {
+        "path": "tests/test_main_agent_readiness.py",
+        "name": "test_bbex_core_records_intent_without_executing",
+        "line": 40
+      },
+      {
+        "path": "tests/test_main_agent_readiness.py",
+        "name": "test_chatgpt_creates_only_local_review_artifact",
+        "line": 51
+      },
+      {
+        "path": "tests/test_main_agent_readiness.py",
+        "name": "test_gemini_does_not_verify_without_evidence",
+        "line": 68
+      },
+      {
+        "path": "tests/test_main_agent_readiness.py",
+        "name": "test_copilot_does_not_grant_governance_authority",
+        "line": 75
+      },
+      {
+        "path": "tests/test_main_agent_readiness.py",
+        "name": "test_codex_prepares_packet_without_execution_authority",
+        "line": 87
+      },
+      {
+        "path": "tests/test_main_agent_readiness.py",
+        "name": "test_deepseek_remains_planner_only",
+        "line": 99
+      },
+      {
+        "path": "tests/test_main_agent_readiness.py",
+        "name": "test_grok_creates_observation_artifact_not_final_truth",
+        "line": 111
+      },
+      {
+        "path": "tests/test_main_agent_readiness.py",
+        "name": "test_cast_structures_only_supplied_observations",
+        "line": 131
+      },
+      {
+        "path": "tests/test_modules_loader.py",
+        "name": "test_modules_loader_uses_canonical_registry",
+        "line": 7
+      },
+      {
+        "path": "tests/test_modules_loader.py",
+        "name": "test_modules_loader_has_every_routed_manifest_and_runtime_profile",
+        "line": 14
+      },
+      {
+        "path": "tests/test_modules_loader.py",
+        "name": "test_router_names_manifest_as_manifest",
+        "line": 20
+      },
+      {
+        "path": "tests/test_modules_loader.py",
+        "name": "test_legacy_loader_directories_are_retired",
+        "line": 27
+      },
+      {
+        "path": "tests/test_mpcp_agent_sandbox.py",
+        "name": "setUp",
+        "line": 13
+      },
+      {
+        "path": "tests/test_mpcp_agent_sandbox.py",
+        "name": "run_request",
+        "line": 19
+      },
+      {
+        "path": "tests/test_mpcp_agent_sandbox.py",
+        "name": "test_real_setup_and_preserved_source",
+        "line": 22
+      },
+      {
+        "path": "tests/test_mpcp_agent_sandbox.py",
+        "name": "test_no_agreement_waits_without_side_effects",
+        "line": 36
+      },
+      {
+        "path": "tests/test_mpcp_agent_sandbox.py",
+        "name": "test_stop_and_review_do_not_execute",
+        "line": 42
+      },
+      {
+        "path": "tests/test_mpcp_agent_sandbox.py",
+        "name": "test_traversal_is_stopped_before_writes",
+        "line": 52
+      },
+      {
+        "path": "tests/test_mpcp_agent_sandbox.py",
+        "name": "test_unsupported_target_reports_gap",
+        "line": 59
+      },
+      {
+        "path": "tests/test_mpcp_agent_sandbox.py",
+        "name": "test_malformed_request_retains_error_evidence",
+        "line": 65
+      },
+      {
+        "path": "tests/test_mpcp_agent_sandbox.py",
+        "name": "test_output_is_never_overwritten",
+        "line": 73
+      },
+      {
+        "path": "tests/test_mpcp_agent_sandbox.py",
+        "name": "test_timeout_retains_result_and_log",
+        "line": 81
+      },
+      {
+        "path": "tests/test_mpcp_agent_sandbox.py",
+        "name": "test_unknown_blueprint_capabilities_are_not_silently_ignored",
+        "line": 87
+      },
+      {
+        "path": "tests/test_mpcp_agent_sandbox.py",
+        "name": "test_blueprint_keeps_declared_mode_and_validates_it",
+        "line": 93
+      },
+      {
+        "path": "tests/test_mpcp_agent_sandbox.py",
+        "name": "test_each_w3lgu_run_has_its_own_trace",
+        "line": 101
+      },
+      {
+        "path": "tests/test_mpcp_condien_equipment.py",
+        "name": "context",
+        "line": 18
+      },
+      {
+        "path": "tests/test_mpcp_condien_equipment.py",
+        "name": "test_full_state_roundtrip_keeps_native_semantics_without_changing_inspection",
+        "line": 28
+      },
+      {
+        "path": "tests/test_mpcp_condien_equipment.py",
+        "name": "test_store_restores_layers_and_carry_after_a_new_process",
+        "line": 43
+      },
+      {
+        "path": "tests/test_mpcp_condien_equipment.py",
+        "name": "test_immutable_versions_and_stale_writer_conflict",
+        "line": 59
+      },
+      {
+        "path": "tests/test_mpcp_condien_equipment.py",
+        "name": "test_previous_context_link_survives_restart",
+        "line": 72
+      },
+      {
+        "path": "tests/test_mpcp_condien_equipment.py",
+        "name": "test_unsaved_predecessor_changes_cannot_hide_behind_an_old_reference",
+        "line": 86
+      },
+      {
+        "path": "tests/test_mpcp_condien_equipment.py",
+        "name": "test_corrupted_snapshot_is_not_treated_as_context",
+        "line": 95
+      },
+      {
+        "path": "tests/test_mpcp_condien_equipment.py",
+        "name": "test_reading_missing_store_does_not_create_database",
+        "line": 104
+      },
+      {
+        "path": "tests/test_mpcp_condien_equipment.py",
+        "name": "test_storage_refuses_lossy_or_non_json_data_before_writing",
+        "line": 112
+      },
+      {
+        "path": "tests/test_mpcp_condien_equipment.py",
+        "name": "test_unknown_state_fields_and_layer_identity_do_not_disappear",
+        "line": 120
+      },
+      {
+        "path": "tests/test_mpcp_condien_equipment.py",
+        "name": "test_equipment_registry_distinguishes_declared_names_from_real_builders",
+        "line": 129
+      },
+      {
+        "path": "tests/test_mpcp_condien_equipment.py",
+        "name": "test_equipment_cannot_silently_replace_another_host_route",
+        "line": 148
+      },
+      {
+        "path": "tests/test_mpcp_condien_equipment.py",
+        "name": "test_core_model_does_not_require_storage_equipment_to_be_installed",
+        "line": 157
+      },
+      {
+        "path": "tests/test_mpcp_condien_equipment.py",
+        "name": "test_storage_cli_then_paper_cli_reads_only_allowed_persisted_values",
+        "line": 173
+      },
+      {
+        "path": "tests/test_mpcp_condien_equipment.py",
+        "name": "test_concurrent_storage_writers_keep_one_revision",
+        "line": 194
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "setup",
+        "line": 17
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "grant",
+        "line": 36
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "test_two_papers_create_real_files_via_file_void_and_return_to_one_event",
+        "line": 41
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "test_no_permit_waits_and_a_subset_can_be_distributed",
+        "line": 64
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "test_host_can_distribute_to_two_different_worksites",
+        "line": 75
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "test_forged_paper_authority_and_changed_permit_do_not_run",
+        "line": 88
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "test_preflight_bad_second_paper_never_executes_first",
+        "line": 99
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "test_saved_event_cannot_be_rebound_to_changed_commands",
+        "line": 108
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "test_interrupted_execution_is_not_replayed",
+        "line": 117
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "test_final_save_failure_retains_effects_and_reconciles_without_rewrite",
+        "line": 130
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "test_tampered_completed_artifact_is_rechecked_and_never_silently_recreated",
+        "line": 151
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "test_text_equipment_rejects_escape_or_unsupported_format",
+        "line": 162
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "test_reference_resolution_is_explicit_and_preserves_provenance",
+        "line": 172
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "test_review_requires_exact_successful_saved_result",
+        "line": 182
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "test_two_cli_processes_do_not_execute_papers_twice",
+        "line": 202
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "test_condien_scope_honors_layer_and_key_read_deny",
+        "line": 215
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "fail_once",
+        "line": 135
+      },
+      {
+        "path": "tests/test_mpcp_paper_runtime.py",
+        "name": "run",
+        "line": 185
+      },
+      {
+        "path": "tests/test_orchestration.py",
+        "name": "task",
+        "line": 12
+      },
+      {
+        "path": "tests/test_orchestration.py",
+        "name": "test_support_returns_to_original_route_and_human_closes",
+        "line": 17
+      },
+      {
+        "path": "tests/test_orchestration.py",
+        "name": "test_failed_support_keeps_blocked_state",
+        "line": 43
+      },
+      {
+        "path": "tests/test_orchestration.py",
+        "name": "test_route_validates_before_delivery_and_preserves_snapshot",
+        "line": 54
+      },
+      {
+        "path": "tests/test_orchestration.py",
+        "name": "test_verification_requires_current_result_and_fresh_approval",
+        "line": 73
+      },
+      {
+        "path": "tests/test_orchestration.py",
+        "name": "test_save_rejects_missing_required_snapshot_fields",
+        "line": 91
+      },
+      {
+        "path": "tests/test_orchestration.py",
+        "name": "broken",
+        "line": 47
+      },
+      {
+        "path": "tests/test_orchestration.py",
+        "name": "notify",
+        "line": 60
+      },
+      {
+        "path": "tests/test_orchestration_support.py",
+        "name": "blocked",
+        "line": 12
+      },
+      {
+        "path": "tests/test_orchestration_support.py",
+        "name": "test_tool_runs_real_metadata_checks_and_preserves_owner",
+        "line": 18
+      },
+      {
+        "path": "tests/test_orchestration_support.py",
+        "name": "test_pair_replaces_unavailable_partner_and_passes_full_context",
+        "line": 37
+      },
+      {
+        "path": "tests/test_orchestration_support.py",
+        "name": "test_unknown_capability_remains_blocked",
+        "line": 58
+      },
+      {
+        "path": "tests/test_orchestration_support.py",
+        "name": "test_verifier_rejects_claimed_resolution",
+        "line": 65
+      },
+      {
+        "path": "tests/test_orchestration_support.py",
+        "name": "test_uncertain_effect_does_not_try_another_partner",
+        "line": 73
+      },
+      {
+        "path": "tests/test_orchestration_support.py",
+        "name": "test_support_evidence_failure_retains_actual_result",
+        "line": 84
+      },
+      {
+        "path": "tests/test_orchestration_support.py",
+        "name": "test_flow_dependency_order_and_cycle_validation",
+        "line": 97
+      },
+      {
+        "path": "tests/test_orchestration_support.py",
+        "name": "test_request_can_choose_real_workflow_without_writing_stages",
+        "line": 110
+      },
+      {
+        "path": "tests/test_orchestration_support.py",
+        "name": "test_inventory_does_not_execute_and_path_escape_is_rejected",
+        "line": 117
+      },
+      {
+        "path": "tests/test_orchestration_support.py",
+        "name": "test_real_origin_pair_selection_and_byte_syntax_verification",
+        "line": 127
+      },
+      {
+        "path": "tests/test_orchestration_support.py",
+        "name": "handler",
+        "line": 39
+      },
+      {
+        "path": "tests/test_orchestration_support.py",
+        "name": "fail",
+        "line": 75
+      },
+      {
+        "path": "tests/test_orchestration_support.py",
+        "name": "evidence",
+        "line": 89
+      },
+      {
+        "path": "tests/test_orchestration_support_recovery.py",
+        "name": "test_verified_support_survives_restart_and_requires_explicit_original_retry",
+        "line": 9
+      },
+      {
+        "path": "tests/test_orchestration_support_recovery.py",
+        "name": "test_any_existing_tools_file_can_have_a_host_adapter",
+        "line": 28
+      },
+      {
+        "path": "tests/test_orchestration_support_recovery.py",
+        "name": "test_request_type_and_availability_filter_without_invoking",
+        "line": 45
+      },
+      {
+        "path": "tests/test_orchestration_support_recovery.py",
+        "name": "test_registered_recipe_runs_from_root_request_through_actual_executors",
+        "line": 54
+      },
+      {
+        "path": "tests/test_orchestration_support_recovery.py",
+        "name": "test_declared_stage_support_is_automatic_but_does_not_replay_owner",
+        "line": 73
+      },
+      {
+        "path": "tests/test_orchestration_support_recovery.py",
+        "name": "test_bad_support_declaration_rejected_before_execution",
+        "line": 93
+      },
+      {
+        "path": "tests/test_orchestration_support_recovery.py",
+        "name": "runner",
+        "line": 18
+      },
+      {
+        "path": "tests/test_orchestration_support_recovery.py",
+        "name": "handler",
+        "line": 32
+      },
+      {
+        "path": "tests/test_orchestration_support_recovery.py",
+        "name": "runner",
+        "line": 77
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_copilot_requires_governance_evidence",
+        "line": 15
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_copilot_invalid_packet_fails_safe",
+        "line": 28
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_copilot_accepts_structured_evidence_without_crashing",
+        "line": 35
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_copilot_reads_api_payload_evidence",
+        "line": 45
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_copilot_prepares_registered_document_without_writing",
+        "line": 54
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_copilot_rejects_unregistered_document_kind",
+        "line": 76
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_gemini_does_not_verify_without_checks_and_evidence",
+        "line": 92
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_gemini_reads_runtime_payload_checks_and_evidence",
+        "line": 108
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_gemini_keeps_malformed_checks_unresolved",
+        "line": 118
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_cast_structures_only_supplied_observations",
+        "line": 136
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_cast_router_plan_infers_reasoning_kind",
+        "line": 149
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_engine_context_rejects_non_mapping_request_without_crashing",
+        "line": 159
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_cast_log_write_is_reported_as_mutation",
+        "line": 165
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_cast_invalid_packet_fails_safe",
+        "line": 182
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_cast_requires_assignment_identity_before_write",
+        "line": 188
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_cast_preserves_explicit_false_report_and_actual_log_path",
+        "line": 200
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_cast_log_failure_returns_review_required",
+        "line": 217
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_cast_health_summary_survives_malformed_log_record",
+        "line": 229
+      },
+      {
+        "path": "tests/test_origin_agent_runtime_contracts.py",
+        "name": "test_codex_is_runtime_routable_but_cannot_self_approve",
+        "line": 255
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "name": "test_periodic_exception_is_recorded_before_next_module_runs",
+        "line": 11
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "name": "test_periodic_stops_if_failure_cannot_be_recorded",
+        "line": 33
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "name": "test_structural_review_without_partner_persists_report_and_returns_support",
+        "line": 42
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "name": "test_all_due_origins_without_partner_persist_structural_round",
+        "line": 58
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "name": "test_missing_partner_selects_capable_replacement_and_records_receipt",
+        "line": 80
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "name": "test_structural_round_has_iget_and_waits_for_selection",
+        "line": 92
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "name": "test_repair_cannot_run_without_report_selection",
+        "line": 114
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "name": "test_structural_defect_repeats_once_then_resolves_to_fifteen_days",
+        "line": 121
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "name": "test_old_blanket_circuit_finding_does_not_lock_schedule",
+        "line": 144
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "name": "test_removing_defective_path_from_scope_keeps_weekly_followup",
+        "line": 153
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "name": "test_existing_architecture_permission_needs_no_repair_report",
+        "line": 166
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "name": "test_orchestration_uses_existing_tools_and_records_support_return",
+        "line": 177
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "name": "test_failed_owner_work_remains_blocked_with_diagnostics",
+        "line": 190
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "name": "test_tool_finding_creates_followup_without_rewriting_owner_output",
+        "line": 202
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "name": "test_support_checks_final_state_after_create_move_delete",
+        "line": 211
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "name": "test_support_detects_changed_artifact_without_claiming_completion",
+        "line": 224
+      },
+      {
+        "path": "tests/test_origin_collaboration.py",
+        "name": "work",
+        "line": 16
+      },
+      {
+        "path": "tests/test_origin_operations.py",
+        "name": "setUp",
+        "line": 14
+      },
+      {
+        "path": "tests/test_origin_operations.py",
+        "name": "execute",
+        "line": 31
+      },
+      {
+        "path": "tests/test_origin_operations.py",
+        "name": "test_all_five_read_create_edit_append_copy_move_delete",
+        "line": 37
+      },
+      {
+        "path": "tests/test_origin_operations.py",
+        "name": "test_write_requires_current_hash_and_preserves_existing_data",
+        "line": 65
+      },
+      {
+        "path": "tests/test_origin_operations.py",
+        "name": "test_cross_scope_from_env_works_but_payload_cannot_grant",
+        "line": 73
+      },
+      {
+        "path": "tests/test_origin_operations.py",
+        "name": "test_traversal_and_symlink_escape_cannot_write",
+        "line": 82
+      },
+      {
+        "path": "tests/test_origin_operations.py",
+        "name": "test_partial_failure_is_not_success_and_records_real_mutations",
+        "line": 92
+      },
+      {
+        "path": "tests/test_origin_operations.py",
+        "name": "test_read_contents_not_duplicated_into_event_log",
+        "line": 100
+      },
+      {
+        "path": "tests/test_origin_operations.py",
+        "name": "test_7_day_initial_15_day_clean_and_7_day_defect",
+        "line": 108
+      },
+      {
+        "path": "tests/test_origin_operations.py",
+        "name": "test_named_work_bypasses_timer_and_preserves_periodic_due",
+        "line": 120
+      },
+      {
+        "path": "tests/test_origin_operations.py",
+        "name": "test_text_intent_followed_up_until_explicit_evidence_resolution",
+        "line": 130
+      },
+      {
+        "path": "tests/test_origin_operations.py",
+        "name": "test_github_owner_mentions_and_structured_operations",
+        "line": 142
+      },
+      {
+        "path": "tests/test_origin_operations.py",
+        "name": "test_concurrent_directed_intake_is_idempotent",
+        "line": 150
+      },
+      {
+        "path": "tests/test_origin_operations.py",
+        "name": "test_binary_write_and_existing_file_mode_are_preserved",
+        "line": 157
+      },
+      {
+        "path": "tests/test_origin_operations.py",
+        "name": "test_invalid_idp_is_a_logged_failure_and_keeps_weekly_followup",
+        "line": 172
+      },
+      {
+        "path": "tests/test_origin_operations.py",
+        "name": "test_proposal_keeps_weekly_cycle_even_when_file_work_succeeded",
+        "line": 180
+      },
+      {
+        "path": "tests/test_process_layer.py",
+        "name": "test_process_layer_runs_four_stages_without_mutation",
+        "line": 9
+      },
+      {
+        "path": "tests/test_process_layer.py",
+        "name": "test_process_layer_reviews_stamped_cross_hop_for_local_target",
+        "line": 41
+      },
+      {
+        "path": "tests/test_process_layer.py",
+        "name": "test_process_layer_marks_risky_intent_for_review",
+        "line": 52
+      },
+      {
+        "path": "tests/test_process_layer.py",
+        "name": "test_process_package_is_immutable",
+        "line": 62
+      },
+      {
+        "path": "tests/test_process_layer.py",
+        "name": "test_w3db_and_memory_status_are_inspectable_without_append",
+        "line": 69
+      },
+      {
+        "path": "tests/test_psp2_agent_dispatch.py",
+        "name": "test_psp2_direct_dispatch_unknown_route_requires_review",
+        "line": 4
+      },
+      {
+        "path": "tests/test_psp2_agent_dispatch.py",
+        "name": "test_psp2_direct_dispatch_px_without_bridge_requires_review",
+        "line": 13
+      },
+      {
+        "path": "tests/test_px_w3db_append_flow.py",
+        "name": "_program",
+        "line": 11
+      },
+      {
+        "path": "tests/test_px_w3db_append_flow.py",
+        "name": "test_px_anchor_from_five_line_is_immutable_and_reference_only",
+        "line": 23
+      },
+      {
+        "path": "tests/test_px_w3db_append_flow.py",
+        "name": "test_append_envelope_is_deterministic_and_append_only",
+        "line": 37
+      },
+      {
+        "path": "tests/test_px_w3db_append_flow.py",
+        "name": "test_append_px_to_w3db_creates_relation_records_and_idempotent_replay",
+        "line": 61
+      },
+      {
+        "path": "tests/test_px_w3db_append_flow.py",
+        "name": "test_append_envelope_to_w3db_rejects_duplicate_when_not_idempotent",
+        "line": 77
+      },
+      {
+        "path": "tests/test_px_w3db_append_flow.py",
+        "name": "test_w3_api_trace_plan_includes_px_and_append_envelope_without_mutation",
+        "line": 87
+      },
+      {
+        "path": "tests/test_report_navigation.py",
+        "name": "test_report_has_response_links_without_mutating_lrc2_artifact",
+        "line": 11
+      },
+      {
+        "path": "tests/test_report_navigation.py",
+        "name": "test_no_related_pr_is_guessed_and_unsafe_links_are_ignored",
+        "line": 34
+      },
+      {
+        "path": "tests/test_report_navigation.py",
+        "name": "test_channel_can_be_added_later_without_changing_request_or_replaying",
+        "line": 43
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "test_origin_markdown_request_creates_actual_file",
+        "line": 7
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "test_parse_request_frontmatter",
+        "line": 34
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "test_safe_id",
+        "line": 44
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "test_parse_request_preserves_body",
+        "line": 48
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "test_resolve_module_name_normalizes_symbols",
+        "line": 56
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "test_resolve_module_name_exact_keeps_identity",
+        "line": 62
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "test_resolve_module_name_unknown_returns_fallback_warning",
+        "line": 68
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "test_next_doc_id_rollover",
+        "line": 74
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "test_append_checkin_entry_rotates_after_50",
+        "line": 80
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "test_select_checkin_doc_prefers_newer_series",
+        "line": 114
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "test_append_checkin_entry_concurrent_unique_rows",
+        "line": 133
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "test_append_checkin_entry_serializes_suggestions_and_keeps_entry_numbers",
+        "line": 154
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "test_process_backfills_evidence_for_existing_completed_result",
+        "line": 180
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "test_process_backfill_is_single_writer_under_concurrency",
+        "line": 223
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "test_process_backfill_skips_when_status_not_completed",
+        "line": 266
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "test_process_event_uses_target_module_and_executed_by",
+        "line": 302
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "test_pending_allows_routing_without_target_module",
+        "line": 333
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "_run",
+        "line": 138
+      },
+      {
+        "path": "tests/test_request_cycle.py",
+        "name": "fake_process",
+        "line": 351
+      },
+      {
+        "path": "tests/test_run_audit_contract.py",
+        "name": "test_bbex_audit_receives_explicit_intent_outcome_and_output",
+        "line": 8
+      },
+      {
+        "path": "tests/test_runtime_agent_execution.py",
+        "name": "test_w3lgu_agents_have_real_execute_contracts",
+        "line": 12
+      },
+      {
+        "path": "tests/test_runtime_agent_execution.py",
+        "name": "test_psp2_does_not_mutate_source_package",
+        "line": 21
+      },
+      {
+        "path": "tests/test_runtime_agent_execution.py",
+        "name": "test_lrc2_requires_approval_before_append",
+        "line": 28
+      },
+      {
+        "path": "tests/test_runtime_agent_execution.py",
+        "name": "test_lrc2_appends_hash_chained_records",
+        "line": 35
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "task",
+        "line": 10
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "success",
+        "line": 15
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "test_explicit_pipeline_persists_and_forwards_without_following_next",
+        "line": 22
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "test_failed_verifier_support_then_explicit_retry",
+        "line": 38
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "test_review_required_never_closes_or_runs_next",
+        "line": 52
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "test_final_human_gate_and_resume_not_automatic",
+        "line": 60
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "test_contract_block_and_no_execution_for_wrong_route",
+        "line": 67
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "test_real_gemini_executor_and_verification_failure",
+        "line": 75
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "test_engine_fail_closed_and_pre_dispatch_errors",
+        "line": 86
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "test_legacy_delegates",
+        "line": 97
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "test_human_review_checks_result_before_final_closure",
+        "line": 105
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "test_real_flow_artifact_evidence_and_human_gate",
+        "line": 115
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "runner",
+        "line": 24
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "review",
+        "line": 53
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "invalid",
+        "line": 68
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "verify",
+        "line": 76
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "reviewed",
+        "line": 106
+      },
+      {
+        "path": "tests/test_runtime_circuit.py",
+        "name": "verify",
+        "line": 120
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "configure",
+        "line": 15
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "request",
+        "line": 23
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "test_real_root_request_runs_lrc2_gemini_and_human_gate",
+        "line": 40
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "test_live_memory_input_is_frozen_before_execution_mutates_memory",
+        "line": 65
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "test_tampered_report_cannot_be_approved",
+        "line": 80
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "test_unknown_semantic_verifier_does_not_accept_a_file_as_finished_work",
+        "line": 93
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "test_host_executor_receives_full_context_without_being_replaced_by_template",
+        "line": 102
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "test_registered_executor_cannot_claim_another_modules_identity",
+        "line": 125
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "test_modified_request_id_content_does_not_silently_restart",
+        "line": 133
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "test_changed_request_does_not_replace_previous_result",
+        "line": 143
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "test_concurrent_pending_scans_do_not_reexecute_or_duplicate_checkins",
+        "line": 155
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "test_final_review_policy_still_stops_on_module_review_request",
+        "line": 167
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "test_saved_request_can_be_reviewed_after_moving_repository",
+        "line": 180
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "test_preparation_failure_leaves_no_incomplete_task_and_retry_works",
+        "line": 200
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "test_old_intent_only_snapshot_resumes_without_deleting_it",
+        "line": 215
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "executor",
+        "line": 108
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "verify",
+        "line": 115
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "executor",
+        "line": 170
+      },
+      {
+        "path": "tests/test_runtime_circuit_intake.py",
+        "name": "fail",
+        "line": 204
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "task",
+        "line": 14
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "result",
+        "line": 19
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "test_failed_review_flag_must_block_not_wait_for_approval",
+        "line": 27
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "test_target_is_work_subject_not_executor",
+        "line": 38
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "test_malformed_request_rejected_before_lifecycle_or_side_effects",
+        "line": 48
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "test_review_must_use_original_stage_parameters",
+        "line": 57
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "test_runtime_memory_preserves_effective_status",
+        "line": 69
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "test_reload_and_continue_after_review_does_not_replay_completed_stage",
+        "line": 80
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "test_support_retry_then_remaining_stages_retains_original_request",
+        "line": 108
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "test_malformed_runner_results_become_blockers",
+        "line": 134
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "test_interrupted_work_is_not_replayed",
+        "line": 143
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "test_revised_request_queues_same_owner_with_audit",
+        "line": 151
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "test_memory_failure_retains_executor_side_effect_evidence",
+        "line": 172
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "test_cannot_close_before_remaining_explicit_stages",
+        "line": 183
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "test_snapshot_state_validation_rejects_out_of_range_cursor",
+        "line": 194
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "test_real_gemini_pipeline_finishes_with_subject_and_snapshot",
+        "line": 202
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "test_first_stage_receives_task_payload_without_mutating_source",
+        "line": 218
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "failed",
+        "line": 28
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "run",
+        "line": 40
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "reviewed",
+        "line": 58
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "reviewed",
+        "line": 82
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "runner",
+        "line": 111
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "support",
+        "line": 120
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "runner",
+        "line": 152
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "reviewed",
+        "line": 184
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "verify",
+        "line": 203
+      },
+      {
+        "path": "tests/test_runtime_circuit_review.py",
+        "name": "runner",
+        "line": 222
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "task",
+        "line": 12
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "result",
+        "line": 17
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "test_source_cannot_override_recorded_origin",
+        "line": 25
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "test_bad_effective_stage_rejected_before_resume",
+        "line": 38
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "test_bad_runner_diagnostic_preserves_mutation_and_artifacts",
+        "line": 49
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "test_support_persistence_failure_is_not_silently_retriable",
+        "line": 66
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "test_recover_support_result_without_replaying_adapter",
+        "line": 88
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "test_support_snapshot_failure_retains_attempt_for_reconciliation",
+        "line": 103
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "test_runner_evidence_write_failure_exposes_result_and_blocks_replay",
+        "line": 119
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "test_reloaded_support_uncertainty_refuses_another_invocation",
+        "line": 143
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "test_task_schema_validates_effective_stage_and_reconciliation_metadata",
+        "line": 160
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "test_recovered_unresolved_support_is_not_appended_twice",
+        "line": 176
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "test_reconcile_unknown_runner_effects_does_not_execute_retry",
+        "line": 191
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "test_record_result_failure_propagates_from_orchestration",
+        "line": 204
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "test_runner_snapshot_failure_exposes_original_result",
+        "line": 217
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "runner",
+        "line": 27
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "runner",
+        "line": 50
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "handler",
+        "line": 70
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "evidence",
+        "line": 74
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "handler",
+        "line": 92
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "broken_save",
+        "line": 107
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "runner",
+        "line": 121
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "broken",
+        "line": 129
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "broken",
+        "line": 148
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "broken",
+        "line": 180
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "runner",
+        "line": 193
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "fail",
+        "line": 209
+      },
+      {
+        "path": "tests/test_runtime_reconciliation.py",
+        "name": "broken",
+        "line": 221
+      },
+      {
+        "path": "tests/test_semantic_router.py",
+        "name": "_create_routing_trace",
+        "line": 23
+      },
+      {
+        "path": "tests/test_semantic_router.py",
+        "name": "route_task",
+        "line": 64
+      },
+      {
+        "path": "tests/test_system_inspection.py",
+        "name": "fixture_root",
+        "line": 9
+      },
+      {
+        "path": "tests/test_system_inspection.py",
+        "name": "context",
+        "line": 20
+      },
+      {
+        "path": "tests/test_system_inspection.py",
+        "name": "test_real_failure_has_followup_and_does_not_stop_next_system",
+        "line": 25
+      },
+      {
+        "path": "tests/test_system_inspection.py",
+        "name": "test_missing_entry_is_recorded_and_later_suite_runs",
+        "line": 42
+      },
+      {
+        "path": "tests/test_system_inspection.py",
+        "name": "test_timeout_is_bounded_and_does_not_mutate_source",
+        "line": 52
+      },
+      {
+        "path": "tests/test_system_inspection.py",
+        "name": "test_request_cannot_inject_commands_or_paths",
+        "line": 61
+      },
+      {
+        "path": "tests/test_system_inspection.py",
+        "name": "test_interrupted_collection_keeps_prior_row_and_visible_progress",
+        "line": 71
+      },
+      {
+        "path": "tests/test_system_inspection.py",
+        "name": "test_skipped_or_empty_suites_never_pass",
+        "line": 87
+      },
+      {
+        "path": "tests/test_system_inspection.py",
+        "name": "test_root_request_runs_registered_inspection_then_pair_without_replay",
+        "line": 92
+      },
+      {
+        "path": "tests/test_system_inspection.py",
+        "name": "interrupt",
+        "line": 74
+      },
+      {
+        "path": "tests/test_task_cli.py",
+        "name": "test_submit_task_reports_queued_task_identity",
+        "line": 17
+      },
+      {
+        "path": "tests/test_task_cli.py",
+        "name": "test_submit_task_returns_failure_for_exception",
+        "line": 35
+      },
+      {
+        "path": "tests/test_task_cli.py",
+        "name": "test_submit_task_rejects_result_without_task_id",
+        "line": 44
+      },
+      {
+        "path": "tests/test_task_cli.py",
+        "name": "test_parser_trims_values_and_preserves_defaults",
+        "line": 50
+      },
+      {
+        "path": "tests/test_task_cli.py",
+        "name": "test_parser_rejects_blank_values",
+        "line": 59
+      },
+      {
+        "path": "tests/test_w3_api_cross.py",
+        "name": "test_w3_cross_returns_traceable_five_line_packet",
+        "line": 12
+      },
+      {
+        "path": "tests/test_w3_api_cross.py",
+        "name": "test_w3_cross_defaults_to_observe_and_auto_target",
+        "line": 45
+      },
+      {
+        "path": "tests/test_w3_api_cross.py",
+        "name": "test_w3_cross_does_not_mutate_w3db_store",
+        "line": 64
+      },
+      {
+        "path": "tests/test_w3_api_cross.py",
+        "name": "test_w3_cross_validates_required_fields",
+        "line": 79
+      },
+      {
+        "path": "tests/test_w3_api_cross.py",
+        "name": "test_w3_cross_rejects_empty_intent",
+        "line": 85
+      },
+      {
+        "path": "tests/test_w3_api_cross.py",
+        "name": "test_w3_cross_encodes_packet_delimiters_from_external_input",
+        "line": 91
+      },
+      {
+        "path": "tests/test_w3_api_cross_plan.py",
+        "name": "assert_plan_safety",
+        "line": 10
+      },
+      {
+        "path": "tests/test_w3_api_cross_plan.py",
+        "name": "test_w3_cross_plan_valid_px_returns_dispatch_plan",
+        "line": 22
+      },
+      {
+        "path": "tests/test_w3_api_cross_plan.py",
+        "name": "test_w3_cross_plan_px_format_with_prefix",
+        "line": 36
+      },
+      {
+        "path": "tests/test_w3_api_cross_plan.py",
+        "name": "test_w3_cross_plan_invalid_px_returns_review_plan",
+        "line": 48
+      },
+      {
+        "path": "tests/test_w3_api_cross_plan.py",
+        "name": "test_w3_cross_plan_missing_px_is_validation_error",
+        "line": 61
+      },
+      {
+        "path": "tests/test_w3_api_cross_plan.py",
+        "name": "test_w3_cross_plan_with_paper_context_marker",
+        "line": 67
+      },
+      {
+        "path": "tests/test_w3_api_gateway.py",
+        "name": "test_health_endpoint_reports_online_without_mutation",
+        "line": 12
+      },
+      {
+        "path": "tests/test_w3_api_gateway.py",
+        "name": "test_root_main_reuses_canonical_app",
+        "line": 22
+      },
+      {
+        "path": "tests/test_w3_api_gateway.py",
+        "name": "test_w3_cross_accepts_minimal_request_and_returns_gateway_contract",
+        "line": 28
+      },
+      {
+        "path": "tests/test_w3_api_gateway.py",
+        "name": "test_w3_cross_keeps_focus_inside_payload_trace",
+        "line": 43
+      },
+      {
+        "path": "tests/test_w3_api_mfc_integration.py",
+        "name": "test_api_packet_reaches_lrc2_checkpoint_without_persistence",
+        "line": 8
+      },
+      {
+        "path": "tests/test_w3_document_allocator.py",
+        "name": "setUp",
+        "line": 13
+      },
+      {
+        "path": "tests/test_w3_document_allocator.py",
+        "name": "tearDown",
+        "line": 35
+      },
+      {
+        "path": "tests/test_w3_document_allocator.py",
+        "name": "spec",
+        "line": 40
+      },
+      {
+        "path": "tests/test_w3_document_allocator.py",
+        "name": "test_dry_run_preserves_box_boundary_and_does_not_write",
+        "line": 55
+      },
+      {
+        "path": "tests/test_w3_document_allocator.py",
+        "name": "test_create_writes_ams_shape_and_receipt",
+        "line": 64
+      },
+      {
+        "path": "tests/test_w3_document_allocator.py",
+        "name": "test_am_i_allows_empty_lineage_with_valid_yaml_shape",
+        "line": 79
+      },
+      {
+        "path": "tests/test_w3_document_allocator.py",
+        "name": "test_create_refuses_existing_file_without_overwrite",
+        "line": 89
+      },
+      {
+        "path": "tests/test_w3_document_allocator.py",
+        "name": "test_update_requires_current_digest",
+        "line": 98
+      },
+      {
+        "path": "tests/test_w3_document_allocator.py",
+        "name": "test_rejects_unsafe_or_wrong_target",
+        "line": 113
+      },
+      {
+        "path": "tests/test_w3_document_allocator.py",
+        "name": "test_am_ii_and_iii_require_existing_lineage",
+        "line": 118
+      },
+      {
+        "path": "tests/test_w3_document_allocator.py",
+        "name": "test_duplicate_filename_is_reported",
+        "line": 126
+      },
+      {
+        "path": "tests/test_w3_document_allocator.py",
+        "name": "test_box_managed_source_space_is_prohibited",
+        "line": 132
+      },
+      {
+        "path": "tests/test_w3_document_allocator.py",
+        "name": "test_orchestration_handler_returns_real_artifact_evidence",
+        "line": 142
+      },
+      {
+        "path": "tests/test_w3_integration_grade.py",
+        "name": "test_ep_signal_to_w3db_flow_creates_trace_records",
+        "line": 22
+      },
+      {
+        "path": "tests/test_w3_integration_grade.py",
+        "name": "test_hospitication_report_signals_append_to_w3db",
+        "line": 36
+      },
+      {
+        "path": "tests/test_w3_integration_grade.py",
+        "name": "test_hospitication_w3db_bridge_translates_detection_to_stability",
+        "line": 51
+      },
+      {
+        "path": "tests/test_w3_integration_grade.py",
+        "name": "test_layer_enforcement_signal_bridge_downgrades_red_to_yellow",
+        "line": 74
+      },
+      {
+        "path": "tests/test_w3_integration_grade.py",
+        "name": "test_layer_cli_accepts_hospitication_signals",
+        "line": 88
+      },
+      {
+        "path": "tests/test_w3_integration_grade.py",
+        "name": "test_semantic_router_interpret_hospitication_report_records_w3db",
+        "line": 115
+      },
+      {
+        "path": "tests/test_w3_integration_grade.py",
+        "name": "test_hospitication_json_can_feed_layer_bridge",
+        "line": 126
+      },
+      {
+        "path": "tests/test_w3api_tools.py",
+        "name": "load_tool",
+        "line": 15
+      },
+      {
+        "path": "tests/test_w3api_tools.py",
+        "name": "test_w3api_tool_builds_cross_payload_from_cli_args",
+        "line": 23
+      },
+      {
+        "path": "tests/test_w3api_tools.py",
+        "name": "test_w3api_tool_render_markdown_preserves_gateway_boundaries",
+        "line": 48
+      },
+      {
+        "path": "tests/test_w3api_tools.py",
+        "name": "test_w3api_write_md_uses_build_payload_and_render_markdown",
+        "line": 69
+      },
+      {
+        "path": "tests/test_w3api_tools.py",
+        "name": "test_w3api_tool_help_is_callable",
+        "line": 100
+      },
+      {
+        "path": "tests/test_w3api_tools.py",
+        "name": "fake_post_json",
+        "line": 74
+      },
+      {
+        "path": "tests/test_w3lgu_core.py",
+        "name": "test_parse_line_repairs_line_c_spaces_to_canonical_packet",
+        "line": 24
+      },
+      {
+        "path": "tests/test_w3lgu_core.py",
+        "name": "test_packet_contract_is_immutable",
+        "line": 32
+      },
+      {
+        "path": "tests/test_w3lgu_core.py",
+        "name": "test_semicolon_splits_event_sequence",
+        "line": 39
+      },
+      {
+        "path": "tests/test_w3lgu_core.py",
+        "name": "test_signal_mapping_preserves_half_confidence_as_warn",
+        "line": 47
+      },
+      {
+        "path": "tests/test_w3lgu_core.py",
+        "name": "test_five_line_program_preserves_mem_patch_law_event_signal_boundaries",
+        "line": 55
+      },
+      {
+        "path": "tests/test_w3lgu_core.py",
+        "name": "test_five_line_rejects_missing_line",
+        "line": 73
+      },
+      {
+        "path": "tests/test_w3lgu_core.py",
+        "name": "test_runtime_outputs_signal_and_memory_without_external_side_effects",
+        "line": 85
+      },
+      {
+        "path": "tests/test_w3lgu_core.py",
+        "name": "test_runtime_runs_five_line_event_only",
+        "line": 95
+      },
+      {
+        "path": "tests/test_w3lgu_core.py",
+        "name": "test_adapters_bridge_text_and_mpcp_without_losing_w3lgu_view",
+        "line": 112
+      },
+      {
+        "path": "tests/test_w3lgu_core.py",
+        "name": "test_normalize_line_is_deterministic",
+        "line": 123
+      },
+      {
+        "path": "tests/test_w3lgu_event_field_logic27.py",
+        "name": "test_logic27_registry_has_27_slots",
+        "line": 9
+      },
+      {
+        "path": "tests/test_w3lgu_event_field_logic27.py",
+        "name": "test_event_field_keeps_identity",
+        "line": 14
+      },
+      {
+        "path": "tests/test_w3lgu_event_field_logic27.py",
+        "name": "test_clear_route_event_selects_route_slot",
+        "line": 31
+      },
+      {
+        "path": "tests/test_w3lgu_event_field_logic27.py",
+        "name": "test_unclear_event_selects_shadow_slot",
+        "line": 45
+      },
+      {
+        "path": "tests/test_w3lgu_event_field_logic27.py",
+        "name": "test_borrow_field_selects_borrow_slot",
+        "line": 58
+      },
+      {
+        "path": "tests/test_w3lgu_event_field_logic27.py",
+        "name": "test_logic27_cannot_approve_execution",
+        "line": 73
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_redr_classifies_risk_event",
+        "line": 10
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_redr_classifies_memory_event",
+        "line": 18
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_psp2_creates_route_stamp",
+        "line": 25
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_psp2_generate_px_stamp_matches_route_package",
+        "line": 34
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_psp2_resolve_node_returns_first_route_target",
+        "line": 39
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_psp2_infers_lrc2_route_from_memory",
+        "line": 42
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_psp2_preserves_cross_route_for_review",
+        "line": 49
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_psp2_preserves_unknown_route_for_review",
+        "line": 67
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_psp2_classifies_w3db_and_w3db_append_as_cross_series",
+        "line": 76
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_redr_preserves_identity_from_nested_request_payload",
+        "line": 85
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_psp2_unwraps_redr_package_before_route_classification",
+        "line": 104
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_dtml_builds_review_trace",
+        "line": 112
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_dtml_stops_red_risk_before_downstream_execution",
+        "line": 121
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_dtml_reviews_yellow_risk",
+        "line": 129
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_dtml_waits_on_unclear_trace",
+        "line": 135
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_dtml_reviews_unknown_and_cross_routes",
+        "line": 142
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_lrc2_creates_checkpoint_preview",
+        "line": 151
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_lrc2_detects_memory_record_phase",
+        "line": 159
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_lrc2_records_route_stamp_and_identity",
+        "line": 165
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_lrc2_missing_identity_creates_explicit_unknown",
+        "line": 177
+      },
+      {
+        "path": "tests/test_w3lgu_mfc_logic.py",
+        "name": "test_minimum_chain",
+        "line": 187
+      },
+      {
+        "path": "tests/test_w3lgu_operational.py",
+        "name": "test_production_template_exposes_exactly_27_numbered_laws_and_six_rooms",
+        "line": 19
+      },
+      {
+        "path": "tests/test_w3lgu_operational.py",
+        "name": "test_px_notation_maps_horizontal_position_and_room_vertical_axis",
+        "line": 30
+      },
+      {
+        "path": "tests/test_w3lgu_operational.py",
+        "name": "test_operational_runtime_classifies_all_six_rooms",
+        "line": 51
+      },
+      {
+        "path": "tests/test_w3lgu_operational.py",
+        "name": "test_operational_chain_performs_four_roles_and_records_every_stage",
+        "line": 59
+      },
+      {
+        "path": "tests/test_w3lgu_operational.py",
+        "name": "test_half_confidence_is_review_not_truth_or_failure",
+        "line": 80
+      },
+      {
+        "path": "tests/test_w3lgu_operational.py",
+        "name": "test_unresolved_marker_stops_but_is_still_recorded",
+        "line": 91
+      },
+      {
+        "path": "tests/test_w3lgu_operational.py",
+        "name": "test_lrc2_append_is_idempotent_and_hash_linked",
+        "line": 106
+      },
+      {
+        "path": "tests/test_w3lgu_operational.py",
+        "name": "test_explicit_px_must_match_room_and_confidence_must_be_valid",
+        "line": 139
+      },
+      {
+        "path": "tests/test_w3lgu_operational.py",
+        "name": "test_stable_derived_px_and_ids_make_replay_observable",
+        "line": 148
+      },
+      {
+        "path": "tests/test_w3unive_handbook.py",
+        "name": "test_w3unive_handbook_exists_and_is_practical_thai_technical_doc",
+        "line": 8
+      },
+      {
+        "path": "tests/test_w3unive_handbook.py",
+        "name": "test_w3unive_handbook_covers_required_systems_and_boundaries",
+        "line": 20
+      },
+      {
+        "path": "tests/test_w3unive_handbook.py",
+        "name": "test_w3unive_handbook_links_to_real_core_paths",
+        "line": 44
+      },
+      {
+        "path": "tests/test_w3unive_handbook.py",
+        "name": "test_w3unive_handbook_lists_known_commands_without_promoting_missing_w3db_tests",
+        "line": 61
+      }
+    ],
+    "checked_paths": [
+      "core/identity/profiles/Gemini.idp.json",
+      "core/runtime/agents/gemini.py",
+      "modules/Gemini/module.json",
+      "tests",
+      "tests/test_agent_self_workspace_standard.py",
+      "tests/test_bbex_intent.py",
+      "tests/test_bbx19_action.py",
+      "tests/test_box_integration.py",
+      "tests/test_branch_public_docs.py",
+      "tests/test_chatgpt_flow_artifact.py",
+      "tests/test_codex_agent.py",
+      "tests/test_cross_x_config.py",
+      "tests/test_document_creation_flow.py",
+      "tests/test_ecs_native_inspection.py",
+      "tests/test_ep_signal_rytm.py",
+      "tests/test_event_chain.py",
+      "tests/test_file_void_tool.py",
+      "tests/test_g_state_foundation.py",
+      "tests/test_hospitication_cli.py",
+      "tests/test_hospitication_core.py",
+      "tests/test_hospitication_runner.py",
+      "tests/test_human_callback.py",
+      "tests/test_human_callback_event.py",
+      "tests/test_human_callback_legacy.py",
+      "tests/test_log_analysis_capability.py",
+      "tests/test_main_agent_readiness.py",
+      "tests/test_modules_loader.py",
+      "tests/test_mpcp_agent_sandbox.py",
+      "tests/test_mpcp_condien_equipment.py",
+      "tests/test_mpcp_paper_runtime.py",
+      "tests/test_orchestration.py",
+      "tests/test_orchestration_support.py",
+      "tests/test_orchestration_support_recovery.py",
+      "tests/test_origin_agent_runtime_contracts.py",
+      "tests/test_origin_collaboration.py",
+      "tests/test_origin_operations.py",
+      "tests/test_process_layer.py",
+      "tests/test_psp2_agent_dispatch.py",
+      "tests/test_px_w3db_append_flow.py",
+      "tests/test_report_navigation.py",
+      "tests/test_request_cycle.py",
+      "tests/test_run_audit_contract.py",
+      "tests/test_runtime_agent_execution.py",
+      "tests/test_runtime_circuit.py",
+      "tests/test_runtime_circuit_intake.py",
+      "tests/test_runtime_circuit_review.py",
+      "tests/test_runtime_reconciliation.py",
+      "tests/test_semantic_router.py",
+      "tests/test_system_inspection.py",
+      "tests/test_task_cli.py",
+      "tests/test_w3_api_cross.py",
+      "tests/test_w3_api_cross_plan.py",
+      "tests/test_w3_api_gateway.py",
+      "tests/test_w3_api_mfc_integration.py",
+      "tests/test_w3_document_allocator.py",
+      "tests/test_w3_integration_grade.py",
+      "tests/test_w3api_tools.py",
+      "tests/test_w3lgu_core.py",
+      "tests/test_w3lgu_event_field_logic27.py",
+      "tests/test_w3lgu_mfc_logic.py",
+      "tests/test_w3lgu_operational.py",
+      "tests/test_w3unive_handbook.py"
+    ],
+    "call_names": [
+      "Adapter",
+      "AuditOrchestrator",
+      "BBEXCore",
+      "BBEXCoreAgent",
+      "BBX19Agent",
+      "Blueprint",
+      "CastAgent",
+      "ChatGPTAgent",
+      "Condien",
+      "CondienStore",
+      "CopilotGmAgent",
+      "CrossXRequest",
+      "DocumentSpec",
+      "Draft202012Validator",
+      "EventChainSystem",
+      "EventFrame",
+      "FileVoidTextModew",
+      "FlowCatalog",
+      "GeminiAgent",
+      "HospiticationConfig",
+      "LRC2Agent",
+      "LRC2Ledger",
+      "LibraryRegistry",
+      "Namespace",
+      "NoSuitableAgentError",
+      "NodeRef",
+      "OSError",
+      "OriginOperationsTests",
+      "PSP2Agent",
+      "PaperPackRuntime",
+      "PaperPermit",
+      "Path",
+      "Popen",
+      "ReviewText",
+      "RuntimeError",
+      "SignalEnvelope",
+      "StringIO",
+      "SupportCatalog",
+      "TemporaryDirectory",
+      "TestClient",
+      "ThreadPoolExecutor",
+      "W3DBStore",
+      "W3LguOperationalRuntime",
+      "WorkflowRuntime",
+      "__import__",
+      "_chain",
+      "_context_value",
+      "_create_routing_trace",
+      "_experience_summary",
+      "_next_doc_id",
+      "_normalize_checks",
+      "_program",
+      "_responsibilities",
+      "_select_checkin_doc",
+      "activate_equipment",
+      "add",
+      "addCleanup",
+      "add_event",
+      "add_layer",
+      "advance",
+      "all",
+      "allocate_document",
+      "analyze",
+      "any",
+      "append",
+      "append_checkin_entry",
+      "append_envelope_to_w3db",
+      "append_px_to_w3db",
+      "apply",
+      "approve",
+      "approx",
+      "as_dict",
+      "as_posix",
+      "assertEqual",
+      "assertFalse",
+      "assertGreaterEqual",
+      "assertIn",
+      "assertIsNone",
+      "assertNotEqual",
+      "assertNotIn",
+      "assertRaises",
+      "assertRaisesRegex",
+      "assertTrue",
+      "assert_called_once",
+      "assert_called_once_with",
+      "assert_plan_safety",
+      "assist",
+      "authority",
+      "b64encode",
+      "bind_event_return",
+      "blocked",
+      "bool",
+      "build_append_envelope",
+      "build_context",
+      "build_cross_w3lgu_packet",
+      "build_cross_x_plan",
+      "build_event_chain",
+      "build_event_field",
+      "build_execution_packet",
+      "build_file_void_stage",
+      "build_parser",
+      "build_payload",
+      "build_report",
+      "build_rytm_preview",
+      "build_w3db_trace_plan",
+      "call_file_void_tool",
+      "canonical",
+      "capture",
+      "carry",
+      "carry_forward_from",
+      "chdir",
+      "check_output",
+      "checkpoint_lifecycle",
+      "chmod",
+      "classify",
+      "classify_event",
+      "cleanup",
+      "clear",
+      "collaborate",
+      "communicate",
+      "component_path",
+      "configure",
+      "connect",
+      "context",
+      "continue_work",
+      "copytree",
+      "count",
+      "create_fbd",
+      "create_prx_from_tuf",
+      "create_tuf",
+      "create_void",
+      "create_xiz",
+      "datetime",
+      "decode",
+      "decode_w3lgu_value",
+      "deepcopy",
+      "default_catalog",
+      "detect_signals",
+      "dict",
+      "digest",
+      "directed_work",
+      "discussion_url",
+      "dispatch",
+      "document_request",
+      "dumps",
+      "emit_signals",
+      "encode",
+      "endswith",
+      "ensure_intent",
+      "enumerate",
+      "ep_signal_to_rytm",
+      "equipment_report",
+      "evaluate_paths",
+      "exec_module",
+      "execute",
+      "execute_origin",
+      "execute_stage",
+      "execution_plan",
+      "exists",
+      "extend",
+      "fail",
+      "file_void_tool",
+      "fixture_root",
+      "float",
+      "from_ep_signal",
+      "from_mpcp",
+      "from_rytm_signal",
+      "from_state",
+      "from_text",
+      "frozenset",
+      "generate_px_stamp",
+      "get",
+      "get_agent",
+      "get_layer",
+      "get_logic_slot",
+      "getattr",
+      "getcwd",
+      "getvalue",
+      "git",
+      "glob",
+      "grant",
+      "handler",
+      "hexdigest",
+      "import_module",
+      "index",
+      "inside",
+      "inspect_allocation",
+      "inspect_memory_status",
+      "inspect_w3db_status",
+      "intake_github",
+      "interpret_hospitication_report",
+      "is_dir",
+      "is_file",
+      "isinstance",
+      "isoformat",
+      "issubset",
+      "items",
+      "iter_errors",
+      "iterdir",
+      "join",
+      "json",
+      "len",
+      "library_group",
+      "list",
+      "list_fbd",
+      "list_prx",
+      "list_tuf",
+      "list_xiz",
+      "load",
+      "load_hospitication_signals",
+      "load_manifest",
+      "load_registry",
+      "load_snapshot",
+      "load_state",
+      "load_store",
+      "load_template_registry",
+      "load_tool",
+      "load_w3_config",
+      "loads",
+      "logs",
+      "lower",
+      "main",
+      "make_orchestration_handler",
+      "make_repo",
+      "make_runtime",
+      "manifest",
+      "map",
+      "mkdir",
+      "module_from_spec",
+      "new_task",
+      "next",
+      "normalize_line",
+      "object",
+      "observe_repository",
+      "open",
+      "operational_template",
+      "original",
+      "parametrize",
+      "parse",
+      "parse_args",
+      "parse_blueprint",
+      "parse_five_line_program",
+      "parse_line",
+      "parse_request",
+      "parse_rhythm",
+      "parse_rytm_signal",
+      "parse_spec",
+      "patch",
+      "periodic_results",
+      "periodic_work",
+      "plan",
+      "pop",
+      "post",
+      "prepare_paper_pack",
+      "process",
+      "process_event",
+      "process_line",
+      "process_packet",
+      "propose_recovery",
+      "px_from_five_line",
+      "px_to_append_envelope",
+      "raises",
+      "range",
+      "read_bytes",
+      "read_doc",
+      "read_fbd",
+      "read_from_layer",
+      "read_prx",
+      "read_text",
+      "read_tuf",
+      "read_xiz",
+      "readline",
+      "readouterr",
+      "real",
+      "real_evidence",
+      "real_save",
+      "realpath",
+      "recall",
+      "reconcile",
+      "reconcile_callback",
+      "redirect_stderr",
+      "redirect_stdout",
+      "register",
+      "register_equipment",
+      "register_repository_tool",
+      "relative_to",
+      "render_json",
+      "render_markdown",
+      "replace",
+      "report_checks",
+      "request",
+      "resolve",
+      "resolve_followup",
+      "resolve_module_name",
+      "resolve_node",
+      "respond",
+      "result",
+      "review_request",
+      "review_stage",
+      "revise_stage",
+      "rglob",
+      "rmtree",
+      "route",
+      "route_package",
+      "route_task",
+      "run",
+      "run_audit",
+      "run_document_creation",
+      "run_five_line",
+      "run_line",
+      "run_request",
+      "run_sandbox",
+      "run_suite",
+      "run_w3_process_layer",
+      "run_w3lgu_packet_process_layer",
+      "rytm_from_binary",
+      "safe_id",
+      "safe_load",
+      "save",
+      "scope_condien",
+      "select_logic27",
+      "set",
+      "setUp",
+      "setattr",
+      "setdefault",
+      "sha256",
+      "signal_for_state",
+      "sorted",
+      "spec",
+      "spec_from_file_location",
+      "split",
+      "split_events",
+      "splitlines",
+      "stage",
+      "start",
+      "startswith",
+      "stat",
+      "stats",
+      "stop",
+      "store_ep_signal_to_w3db",
+      "store_hospitication_report_to_w3db",
+      "store_hospitication_signal_to_w3db",
+      "str",
+      "strip",
+      "subTest",
+      "submit_task",
+      "success",
+      "sum",
+      "super",
+      "support",
+      "support_for",
+      "symlink_to",
+      "task",
+      "task_id",
+      "timedelta",
+      "timestamp",
+      "to_binary",
+      "to_dict",
+      "to_ep_signal",
+      "to_mpcp",
+      "to_rytm_signal",
+      "to_shadow",
+      "to_signal",
+      "to_state",
+      "to_text",
+      "to_w3lgu",
+      "tool_inventory",
+      "trace_decision",
+      "tuple",
+      "update",
+      "utcnow",
+      "uuid4",
+      "validate",
+      "validate_agent_result",
+      "validate_five_line",
+      "validate_manifest",
+      "validate_minimum_laws",
+      "validate_packet",
+      "validate_w3_config",
+      "values",
+      "verify",
+      "verify_text_artifact",
+      "versions",
+      "waiting",
+      "write",
+      "write_bytes",
+      "write_layer",
+      "write_state",
+      "write_text"
+    ],
+    "coverage": "declared paths, bytes, Python/JSON syntax and static call inventory",
+    "unknowns": [
+      "Static inventory does not prove an end-to-end execution or a missing dynamic caller."
+    ],
+    "checks": [
+      {
+        "check": "declared_files",
+        "state": "EVIDENCED"
+      },
+      {
+        "check": "runtime_circuit",
+        "state": "UNVERIFIED",
+        "reason": "Static inventory does not prove an end-to-end execution or a missing dynamic caller."
+      }
+    ],
+    "signal": {
+      "color": "yellow",
+      "reason": "static_checks_only_runtime_unverified"
+    },
+    "proof": {
+      "mpcp_role": "governance_assistant",
+      "mpcp_version": "1.0",
+      "elapsed_sec": 0.0852,
+      "trace": [
+        {
+          "step": "structure_scope",
+          "claim": "Inspect declared paths without executing source",
+          "evidence": [
+            "core/runtime/agents/gemini.py",
+            "core/identity/profiles/Gemini.idp.json",
+            "modules/Gemini/module.json",
+            "tests"
+          ],
+          "semantic_tag": "iget:scope",
+          "timestamp": 1793494909.7283227
+        },
+        {
+          "step": "structure_observed",
+          "claim": "Read bytes and record static checks",
+          "evidence": {
+            "files": 61,
+            "checked_paths": [
+              "core/runtime/agents/gemini.py",
+              "core/runtime/agents/gemini.py",
+              "core/identity/profiles/Gemini.idp.json",
+              "core/identity/profiles/Gemini.idp.json",
+              "modules/Gemini/module.json",
+              "modules/Gemini/module.json",
+              "tests",
+              "tests/test_agent_self_workspace_standard.py",
+              "tests/test_bbex_intent.py",
+              "tests/test_bbx19_action.py",
+              "tests/test_box_integration.py",
+              "tests/test_branch_public_docs.py",
+              "tests/test_chatgpt_flow_artifact.py",
+              "tests/test_codex_agent.py",
+              "tests/test_cross_x_config.py",
+              "tests/test_document_creation_flow.py",
+              "tests/test_ecs_native_inspection.py",
+              "tests/test_ep_signal_rytm.py",
+              "tests/test_event_chain.py",
+              "tests/test_file_void_tool.py",
+              "tests/test_g_state_foundation.py",
+              "tests/test_hospitication_cli.py",
+              "tests/test_hospitication_core.py",
+              "tests/test_hospitication_runner.py",
+              "tests/test_human_callback.py",
+              "tests/test_human_callback_event.py",
+              "tests/test_human_callback_legacy.py",
+              "tests/test_log_analysis_capability.py",
+              "tests/test_main_agent_readiness.py",
+              "tests/test_modules_loader.py",
+              "tests/test_mpcp_agent_sandbox.py",
+              "tests/test_mpcp_condien_equipment.py",
+              "tests/test_mpcp_paper_runtime.py",
+              "tests/test_orchestration.py",
+              "tests/test_orchestration_support.py",
+              "tests/test_orchestration_support_recovery.py",
+              "tests/test_origin_agent_runtime_contracts.py",
+              "tests/test_origin_collaboration.py",
+              "tests/test_origin_operations.py",
+              "tests/test_process_layer.py",
+              "tests/test_psp2_agent_dispatch.py",
+              "tests/test_px_w3db_append_flow.py",
+              "tests/test_report_navigation.py",
+              "tests/test_request_cycle.py",
+              "tests/test_run_audit_contract.py",
+              "tests/test_runtime_agent_execution.py",
+              "tests/test_runtime_circuit.py",
+              "tests/test_runtime_circuit_intake.py",
+              "tests/test_runtime_circuit_review.py",
+              "tests/test_runtime_reconciliation.py",
+              "tests/test_semantic_router.py",
+              "tests/test_system_inspection.py",
+              "tests/test_task_cli.py",
+              "tests/test_w3_api_cross.py",
+              "tests/test_w3_api_cross_plan.py",
+              "tests/test_w3_api_gateway.py",
+              "tests/test_w3_api_mfc_integration.py",
+              "tests/test_w3_document_allocator.py",
+              "tests/test_w3_integration_grade.py",
+              "tests/test_w3api_tools.py",
+              "tests/test_w3lgu_core.py",
+              "tests/test_w3lgu_event_field_logic27.py",
+              "tests/test_w3lgu_mfc_logic.py",
+              "tests/test_w3lgu_operational.py",
+              "tests/test_w3unive_handbook.py"
+            ]
+          },
+          "semantic_tag": "iget:observation",
+          "timestamp": 1793494909.813456
+        },
+        {
+          "step": "structure_findings",
+          "claim": "Observed defects within declared scope",
+          "evidence": [],
+          "semantic_tag": "iget:findings",
+          "timestamp": 1793494909.813458
+        },
+        {
+          "step": "structure_limits",
+          "claim": "Runtime circuit remains unverified by static inspection",
+          "evidence": [
+            "Static inventory does not prove an end-to-end execution or a missing dynamic caller."
+          ],
+          "semantic_tag": "iget:unknown",
+          "timestamp": 1793494909.813459
+        }
+      ]
+    },
+    "source_mutated": false
+  },
+  "findings": [],
+  "structural": true,
+  "unknowns": [
+    "Static inventory does not prove an end-to-end execution or a missing dynamic caller."
+  ],
+  "checks": [
+    {
+      "check": "declared_files",
+      "state": "EVIDENCED"
+    },
+    {
+      "check": "runtime_circuit",
+      "state": "UNVERIFIED",
+      "reason": "Static inventory does not prove an end-to-end execution or a missing dynamic caller."
+    }
+  ],
+  "signal": {
+    "color": "yellow",
+    "reason": "static_checks_only_runtime_unverified"
+  },
+  "repair_status": "NO_REPAIR_PROPOSED",
+  "source_mutated": false,
+  "support": {
+    "resolved": true,
+    "evidence": "repo_events/origin_agents/Gemini/collaboration/W3-ORC-20261011-237644396485563832812945100792848256622-support.json",
+    "diagnostics": {
+      "tool": "W3 repository tools support",
+      "owner": "Gemini",
+      "owner_status": "COMPLETED",
+      "owner_log": "repo_events/origin_agents/Gemini/logs/3a2003ff749e401baf26927082732ed5.json",
+      "checks": [
+        {
+          "check": "owner_receipt",
+          "path": "repo_events/origin_agents/Gemini/logs/3a2003ff749e401baf26927082732ed5.json",
+          "state": "EVIDENCED",
+          "sha256": "da82c00106e757881c024807c4733603e69b712be51513f86e052cbfdcc06c95"
+        },
+        {
+          "check": "portable_path",
+          "path": "core/runtime/agents/gemini.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "core/runtime/agents/gemini.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "b2d911890fc93013e5104d999e4a5cd65c3060adb21158804be8a12aff7c0ec9",
+          "actual_sha256": "b2d911890fc93013e5104d999e4a5cd65c3060adb21158804be8a12aff7c0ec9"
+        },
+        {
+          "check": "portable_path",
+          "path": "core/identity/profiles/Gemini.idp.json",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "core/identity/profiles/Gemini.idp.json",
+          "state": "EVIDENCED",
+          "expected_sha256": "53cdc24af673f605781f30dfcbb1509d4d99282e285ef9dd11c05f5632b5928f",
+          "actual_sha256": "53cdc24af673f605781f30dfcbb1509d4d99282e285ef9dd11c05f5632b5928f"
+        },
+        {
+          "check": "portable_path",
+          "path": "modules/Gemini/module.json",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "modules/Gemini/module.json",
+          "state": "EVIDENCED",
+          "expected_sha256": "8fd428198846537de91ef50b47f06b7f2dff1dc9a9f79c647a8dbe1b86ccfa82",
+          "actual_sha256": "8fd428198846537de91ef50b47f06b7f2dff1dc9a9f79c647a8dbe1b86ccfa82"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_agent_self_workspace_standard.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_agent_self_workspace_standard.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "70edcc997826b1578e713ec52396b47f49381178931c8b3b36bab6703b647161",
+          "actual_sha256": "70edcc997826b1578e713ec52396b47f49381178931c8b3b36bab6703b647161"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_bbex_intent.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_bbex_intent.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "fb055433b2fa8bd86c168688e50938d510b6d743f77c01a841d732198039ff7b",
+          "actual_sha256": "fb055433b2fa8bd86c168688e50938d510b6d743f77c01a841d732198039ff7b"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_bbx19_action.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_bbx19_action.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "535ebea647e597ad20fd4fc47de6eb7d4cf8d5a2f4cfc2ece59a13462f39cc74",
+          "actual_sha256": "535ebea647e597ad20fd4fc47de6eb7d4cf8d5a2f4cfc2ece59a13462f39cc74"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_box_integration.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_box_integration.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "c51a62b0dacf2d4e263561dfc9eed4eba9ffcbecc5f97e342ced2e616c2d9e76",
+          "actual_sha256": "c51a62b0dacf2d4e263561dfc9eed4eba9ffcbecc5f97e342ced2e616c2d9e76"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_branch_public_docs.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_branch_public_docs.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "5c28ed37b0716961ae90fe80430f182b05fcf4b74260bd8746215d825e95ad97",
+          "actual_sha256": "5c28ed37b0716961ae90fe80430f182b05fcf4b74260bd8746215d825e95ad97"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_chatgpt_flow_artifact.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_chatgpt_flow_artifact.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "906f234155b7b52c9d94975382a1b2432d8f1616865b71c2d97c4238df9f6c74",
+          "actual_sha256": "906f234155b7b52c9d94975382a1b2432d8f1616865b71c2d97c4238df9f6c74"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_codex_agent.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_codex_agent.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "b260e08b380752d2e263c4972ec3abb10a3074fa3ea0a68a2e55339014f8d39f",
+          "actual_sha256": "b260e08b380752d2e263c4972ec3abb10a3074fa3ea0a68a2e55339014f8d39f"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_cross_x_config.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_cross_x_config.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "2e843d6afcfa0db0fb14c81694d8f4938c70ba080033c76ce7c9924025eea19a",
+          "actual_sha256": "2e843d6afcfa0db0fb14c81694d8f4938c70ba080033c76ce7c9924025eea19a"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_document_creation_flow.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_document_creation_flow.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "09c78052027d397d18b306118b5dbc59a467aa64240e468d6526fc14223a0b00",
+          "actual_sha256": "09c78052027d397d18b306118b5dbc59a467aa64240e468d6526fc14223a0b00"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_ecs_native_inspection.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_ecs_native_inspection.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "4f173c50416823e7f0c98ee6b613bd2667058a91d9efc01442ee3a1a8f00c828",
+          "actual_sha256": "4f173c50416823e7f0c98ee6b613bd2667058a91d9efc01442ee3a1a8f00c828"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_ep_signal_rytm.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_ep_signal_rytm.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "fcbc741c1fbec1135b195eb20993cc1b3f307869e6fe4cff3589621a66cb441f",
+          "actual_sha256": "fcbc741c1fbec1135b195eb20993cc1b3f307869e6fe4cff3589621a66cb441f"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_event_chain.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_event_chain.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "15f2619bf43abed5a8521c2e7c58ec87f232d85859690d6a291b816f884dac63",
+          "actual_sha256": "15f2619bf43abed5a8521c2e7c58ec87f232d85859690d6a291b816f884dac63"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_file_void_tool.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_file_void_tool.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "9c8995f31765c506f84401387e65e748e5d96ecd5121b1d54d0d897c23e29f4f",
+          "actual_sha256": "9c8995f31765c506f84401387e65e748e5d96ecd5121b1d54d0d897c23e29f4f"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_g_state_foundation.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_g_state_foundation.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "57acfca2e426616752595d9d6c20d3a632b2b4963a352d6b9c538bc52333ff44",
+          "actual_sha256": "57acfca2e426616752595d9d6c20d3a632b2b4963a352d6b9c538bc52333ff44"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_hospitication_cli.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_hospitication_cli.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "e24c1f2a065fe700877b4d7bfe40e2648b0ca6e0343d6c1e319dea7b951ff262",
+          "actual_sha256": "e24c1f2a065fe700877b4d7bfe40e2648b0ca6e0343d6c1e319dea7b951ff262"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_hospitication_core.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_hospitication_core.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "e4f529c8bacd71814522754bf6a88d5ccdcbd0303f0d0581f0b37516807e1dec",
+          "actual_sha256": "e4f529c8bacd71814522754bf6a88d5ccdcbd0303f0d0581f0b37516807e1dec"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_hospitication_runner.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_hospitication_runner.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "beb7582d44128bea2eb345113af8492b47b030af21650a17afcfb930870e6940",
+          "actual_sha256": "beb7582d44128bea2eb345113af8492b47b030af21650a17afcfb930870e6940"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_human_callback.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_human_callback.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "96f881176c08ec24b0feaa70d072bc15e9cdb57c8201a8e9373cb7736ded5c1c",
+          "actual_sha256": "96f881176c08ec24b0feaa70d072bc15e9cdb57c8201a8e9373cb7736ded5c1c"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_human_callback_event.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_human_callback_event.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "47ea082765d8fbf932c80518d3eb3703bfa72046783eca673068e001c1d5ee9c",
+          "actual_sha256": "47ea082765d8fbf932c80518d3eb3703bfa72046783eca673068e001c1d5ee9c"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_human_callback_legacy.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_human_callback_legacy.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "2480376dbd1ba36b59f5de7269dd5407cc8737665295dc7092c3333f3786b847",
+          "actual_sha256": "2480376dbd1ba36b59f5de7269dd5407cc8737665295dc7092c3333f3786b847"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_log_analysis_capability.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_log_analysis_capability.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "f4d229da3f0af47d6d90304be53e351c58c8ce9668080d2c46ff7f12a0dbd032",
+          "actual_sha256": "f4d229da3f0af47d6d90304be53e351c58c8ce9668080d2c46ff7f12a0dbd032"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_main_agent_readiness.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_main_agent_readiness.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "e0c4445539cb8a28a4c2516e484f243d14b82b490e8bcf1a0fb50cf814b5b8f3",
+          "actual_sha256": "e0c4445539cb8a28a4c2516e484f243d14b82b490e8bcf1a0fb50cf814b5b8f3"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_modules_loader.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_modules_loader.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "358fa1bdc26f54e7f75dadc6a1564dfe1060e8cb7bcc011bbfb56eb80cc40646",
+          "actual_sha256": "358fa1bdc26f54e7f75dadc6a1564dfe1060e8cb7bcc011bbfb56eb80cc40646"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_mpcp_agent_sandbox.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_mpcp_agent_sandbox.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "b653fd03555e1f789bd852347d8afcc82406bf11bbcf8beacf06a8ddf5725b87",
+          "actual_sha256": "b653fd03555e1f789bd852347d8afcc82406bf11bbcf8beacf06a8ddf5725b87"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_mpcp_condien_equipment.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_mpcp_condien_equipment.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "48f71a762117336a4f1ef3f159fca9944bafbb4de9268c6d663a027c6d7cc2ea",
+          "actual_sha256": "48f71a762117336a4f1ef3f159fca9944bafbb4de9268c6d663a027c6d7cc2ea"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_mpcp_paper_runtime.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_mpcp_paper_runtime.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "20a3e27cbaf69438c1c0c079c498dd2775138d3028f108a6f98a9652d3b672c2",
+          "actual_sha256": "20a3e27cbaf69438c1c0c079c498dd2775138d3028f108a6f98a9652d3b672c2"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_orchestration.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_orchestration.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "0384cc89fe0de2ba4a66f48245f6835f0d2ba016c5ca65d4fd7f4f5e7b5a4e80",
+          "actual_sha256": "0384cc89fe0de2ba4a66f48245f6835f0d2ba016c5ca65d4fd7f4f5e7b5a4e80"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_orchestration_support.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_orchestration_support.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "8d145134998c0a10385e2d02e2410cef6fcbb28b8a3e05f11fe033e8c54d4c54",
+          "actual_sha256": "8d145134998c0a10385e2d02e2410cef6fcbb28b8a3e05f11fe033e8c54d4c54"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_orchestration_support_recovery.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_orchestration_support_recovery.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "e8ab80e970a90a7e19c966fe623f3b1ac6e20b710260e4a64af60e0c80744043",
+          "actual_sha256": "e8ab80e970a90a7e19c966fe623f3b1ac6e20b710260e4a64af60e0c80744043"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_origin_agent_runtime_contracts.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_origin_agent_runtime_contracts.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "3230e0912b3a9ef2456f4d3e26d2749476b949c48cce1b2774900d2c206ee99c",
+          "actual_sha256": "3230e0912b3a9ef2456f4d3e26d2749476b949c48cce1b2774900d2c206ee99c"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_origin_collaboration.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_origin_collaboration.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "17ad7b88e9209e3e6c8026eb3449470876f5edcb6cd30b2d4d4edd7fc6899834",
+          "actual_sha256": "17ad7b88e9209e3e6c8026eb3449470876f5edcb6cd30b2d4d4edd7fc6899834"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_origin_operations.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_origin_operations.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "37d00fac5561aa1dda603aa6f3667caebc91d83d16a078d9930943401ffd0cc7",
+          "actual_sha256": "37d00fac5561aa1dda603aa6f3667caebc91d83d16a078d9930943401ffd0cc7"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_process_layer.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_process_layer.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "6cee11358cbf102437d6378729895dfc3a368bfe7cfb6e63bffe6f3321eeab9d",
+          "actual_sha256": "6cee11358cbf102437d6378729895dfc3a368bfe7cfb6e63bffe6f3321eeab9d"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_psp2_agent_dispatch.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_psp2_agent_dispatch.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "d8e4108927560cd3b2d06ee3aabd6e9ebe635b2f3c2b75edeb9d3bdeb60fa819",
+          "actual_sha256": "d8e4108927560cd3b2d06ee3aabd6e9ebe635b2f3c2b75edeb9d3bdeb60fa819"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_px_w3db_append_flow.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_px_w3db_append_flow.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "edfb09c3c790bcd634eaed294f75aaa4ebf1ef968d05ec15338c8d77770d74d2",
+          "actual_sha256": "edfb09c3c790bcd634eaed294f75aaa4ebf1ef968d05ec15338c8d77770d74d2"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_report_navigation.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_report_navigation.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "c8df41e4dad3a0983ef4d0f77476da17371587833ea37842ab4739aa2f72b623",
+          "actual_sha256": "c8df41e4dad3a0983ef4d0f77476da17371587833ea37842ab4739aa2f72b623"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_request_cycle.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_request_cycle.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "ae741c73772bed010e90ba12773dccfdb057770c9dd9382c5f00fa9b5c2ff3d7",
+          "actual_sha256": "ae741c73772bed010e90ba12773dccfdb057770c9dd9382c5f00fa9b5c2ff3d7"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_run_audit_contract.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_run_audit_contract.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "bd954df69b4357d3a34b3c2ad2d81514e6ce4b259d375afbcac8de22e0f431f0",
+          "actual_sha256": "bd954df69b4357d3a34b3c2ad2d81514e6ce4b259d375afbcac8de22e0f431f0"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_runtime_agent_execution.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_runtime_agent_execution.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "83cab914e871cfd5c090bf32b55941df5d267a614c4c42e284ffed055841b1df",
+          "actual_sha256": "83cab914e871cfd5c090bf32b55941df5d267a614c4c42e284ffed055841b1df"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_runtime_circuit.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_runtime_circuit.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "331e3d41507d8b6059c337d2b0dba9e4b5a7e9378383493a5527f46a676e1beb",
+          "actual_sha256": "331e3d41507d8b6059c337d2b0dba9e4b5a7e9378383493a5527f46a676e1beb"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_runtime_circuit_intake.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_runtime_circuit_intake.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "a4060a3f6e5d92fc1daab04415bfb4bf24997a20f02b90606914ab7ef12779db",
+          "actual_sha256": "a4060a3f6e5d92fc1daab04415bfb4bf24997a20f02b90606914ab7ef12779db"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_runtime_circuit_review.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_runtime_circuit_review.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "c63bae0bf01205ce05f36d12f617f26ecfe3ea458b48f434af1da4e0956d7244",
+          "actual_sha256": "c63bae0bf01205ce05f36d12f617f26ecfe3ea458b48f434af1da4e0956d7244"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_runtime_reconciliation.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_runtime_reconciliation.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "170eec406f7d939320fb789a03c90f3939916ba5ec214f329b4726a1df23d561",
+          "actual_sha256": "170eec406f7d939320fb789a03c90f3939916ba5ec214f329b4726a1df23d561"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_semantic_router.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_semantic_router.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "e09a71925819762e20b9818815523115bd571df766d4f3ca93fd6905f1fe0ce8",
+          "actual_sha256": "e09a71925819762e20b9818815523115bd571df766d4f3ca93fd6905f1fe0ce8"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_system_inspection.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_system_inspection.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "1155563b4ade55d514959837a0ccdb9b78dc0474b4f4c1e88876e9f5a5d7c01b",
+          "actual_sha256": "1155563b4ade55d514959837a0ccdb9b78dc0474b4f4c1e88876e9f5a5d7c01b"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_task_cli.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_task_cli.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "dcc6c1ee500dafcd967a41ccbf831d22125f780de40f45cd3704f472fdb312cd",
+          "actual_sha256": "dcc6c1ee500dafcd967a41ccbf831d22125f780de40f45cd3704f472fdb312cd"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_w3_api_cross.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_w3_api_cross.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "ba8db92ca2951a61ecf38cd7d226aa2e22eef72df25d5589cd791c938075cc75",
+          "actual_sha256": "ba8db92ca2951a61ecf38cd7d226aa2e22eef72df25d5589cd791c938075cc75"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_w3_api_cross_plan.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_w3_api_cross_plan.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "ffa7ac7a831d2619eeb651bd578b890e63bcdce216f616fccf0958d9c073e431",
+          "actual_sha256": "ffa7ac7a831d2619eeb651bd578b890e63bcdce216f616fccf0958d9c073e431"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_w3_api_gateway.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_w3_api_gateway.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "fbbc850ee6dd50660c84a35be1c23c37749ef707d399354eff588ba8ac5650d6",
+          "actual_sha256": "fbbc850ee6dd50660c84a35be1c23c37749ef707d399354eff588ba8ac5650d6"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_w3_api_mfc_integration.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_w3_api_mfc_integration.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "6c7514656cf8c926d776bd88b40f42383cdb9025cdb58b5fa48a72d6b27fbdee",
+          "actual_sha256": "6c7514656cf8c926d776bd88b40f42383cdb9025cdb58b5fa48a72d6b27fbdee"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_w3_document_allocator.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_w3_document_allocator.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "3dd83763243835ab8c60b4feed6ab1a701f6622cb13e8214279a70a8000e7566",
+          "actual_sha256": "3dd83763243835ab8c60b4feed6ab1a701f6622cb13e8214279a70a8000e7566"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_w3_integration_grade.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_w3_integration_grade.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "9db3ffb69be2d9647c1b3b2bba70ddc22677bd6c6e1c88e242d664b400211b48",
+          "actual_sha256": "9db3ffb69be2d9647c1b3b2bba70ddc22677bd6c6e1c88e242d664b400211b48"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_w3api_tools.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_w3api_tools.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "9f75dca406f8c80bc7dded0bfbd2354d5f825b354ec959f8c23c6afb177c3c60",
+          "actual_sha256": "9f75dca406f8c80bc7dded0bfbd2354d5f825b354ec959f8c23c6afb177c3c60"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_w3lgu_core.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_w3lgu_core.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "a17d69c578353425dc37eeacf42a32671c74e46eb1cd4fadd060469ae79a6ac9",
+          "actual_sha256": "a17d69c578353425dc37eeacf42a32671c74e46eb1cd4fadd060469ae79a6ac9"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_w3lgu_event_field_logic27.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_w3lgu_event_field_logic27.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "57053f5b1e322ac11100761dea9900b4b33d95f0c06c5744c8aaa50ed9f57baf",
+          "actual_sha256": "57053f5b1e322ac11100761dea9900b4b33d95f0c06c5744c8aaa50ed9f57baf"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_w3lgu_mfc_logic.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_w3lgu_mfc_logic.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "4eabc1abc3ac7f38bda8b1b0b3e1ffb6cea162ed87e2cf45c903ddf31247214f",
+          "actual_sha256": "4eabc1abc3ac7f38bda8b1b0b3e1ffb6cea162ed87e2cf45c903ddf31247214f"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_w3lgu_operational.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_w3lgu_operational.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "73f7c040d5df2270e52b5ae88f4f884c28d3c47263a4be4c09034214b0b6f80c",
+          "actual_sha256": "73f7c040d5df2270e52b5ae88f4f884c28d3c47263a4be4c09034214b0b6f80c"
+        },
+        {
+          "check": "portable_path",
+          "path": "tests/test_w3unive_handbook.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "tests/test_w3unive_handbook.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "b2d72fbc4bb76320053a8e09ef2f1430f806fefc128fb9ff79fc737af2d27a7a",
+          "actual_sha256": "b2d72fbc4bb76320053a8e09ef2f1430f806fefc128fb9ff79fc737af2d27a7a"
+        }
+      ],
+      "findings": [],
+      "tools_used": [
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "core/runtime/agents/gemini.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "core/identity/profiles/Gemini.idp.json",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "modules/Gemini/module.json",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_modules.py",
+          "function": "validate_module",
+          "path": "modules/Gemini/module.json",
+          "purpose": "validate module definition"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_agent_self_workspace_standard.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_bbex_intent.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_bbx19_action.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_box_integration.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_branch_public_docs.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_chatgpt_flow_artifact.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_codex_agent.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_cross_x_config.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_document_creation_flow.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_ecs_native_inspection.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_ep_signal_rytm.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_event_chain.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_file_void_tool.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_g_state_foundation.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_hospitication_cli.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_hospitication_core.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_hospitication_runner.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_human_callback.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_human_callback_event.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_human_callback_legacy.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_log_analysis_capability.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_main_agent_readiness.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_modules_loader.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_mpcp_agent_sandbox.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_mpcp_condien_equipment.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_mpcp_paper_runtime.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_orchestration.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_orchestration_support.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_orchestration_support_recovery.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_origin_agent_runtime_contracts.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_origin_collaboration.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_origin_operations.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_process_layer.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_psp2_agent_dispatch.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_px_w3db_append_flow.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_report_navigation.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_request_cycle.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_run_audit_contract.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_runtime_agent_execution.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_runtime_circuit.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_runtime_circuit_intake.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_runtime_circuit_review.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_runtime_reconciliation.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_semantic_router.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_system_inspection.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_task_cli.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_w3_api_cross.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_w3_api_cross_plan.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_w3_api_gateway.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_w3_api_mfc_integration.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_w3_document_allocator.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_w3_integration_grade.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_w3api_tools.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_w3lgu_core.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_w3lgu_event_field_logic27.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_w3lgu_mfc_logic.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_w3lgu_operational.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "tests/test_w3unive_handbook.py",
+          "purpose": "inspect output path portability"
+        }
+      ],
+      "owner_reason": null,
+      "resolved": true,
+      "next_steps": [],
+      "source_mutated": false,
+      "unknowns": [
+        "Checks verify recorded file outcomes, not all role semantics or external systems."
+      ]
+    }
+  },
+  "support_status": "IN_PROGRESS"
+}
