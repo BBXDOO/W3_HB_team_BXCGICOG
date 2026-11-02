@@ -1,0 +1,32 @@
+{
+  "baseline": {
+    "structural_inspect": {
+      "status": "UNAVAILABLE",
+      "action": "no_local_executor"
+    },
+    "reason": {
+      "status": "COMPLETED",
+      "action": "structure_context"
+    },
+    "report": {
+      "status": "REVIEW_REQUIRED",
+      "action": "log_subsystem_report"
+    }
+  },
+  "candidate": {
+    "structural_inspect": {
+      "status": "REVIEW_REQUIRED",
+      "action": "inspect_structure"
+    },
+    "reason": {
+      "status": "REVIEW_REQUIRED",
+      "action": "structure_context"
+    },
+    "report": {
+      "status": "REVIEW_REQUIRED",
+      "action": "log_subsystem_report"
+    }
+  },
+  "test_result": "Initial 37 tests passed; final Cast/runtime/Origin/inspection regression: 109 tests passed",
+  "limits": "Candidate without explicit source_paths correctly needs review, not fabricated execution."
+}

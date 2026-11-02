@@ -1,0 +1,254 @@
+{
+  "result": {
+    "contract_version": "1.0",
+    "module": "ChatGPT",
+    "task": "design",
+    "status": "COMPLETED",
+    "capability": "system_inspection",
+    "review": false,
+    "traceable": true,
+    "mutated": true,
+    "summary": "Inspected 7 systems; listed_checks=PASS; 0 separate follow-ups. Not a production chain certification.",
+    "artifacts": [
+      {
+        "path": "repo_events/system_inspections/runs/5c5942db8bc7427ba5af51e048266382/report.json",
+        "sha256": "8266b9d30ff27a9669e4c78266b7b3e34a75631509e6bc1cd42bbe0e77988b53",
+        "kind": "w3.system_inspection.json"
+      }
+    ]
+  },
+  "verifier_checks": [
+    {
+      "name": "report_hash",
+      "passed": true
+    },
+    {
+      "name": "source_manifest_hash",
+      "passed": true
+    },
+    {
+      "name": "source_manifest_matches_current",
+      "passed": true
+    },
+    {
+      "name": "finished_with_declared_scope",
+      "passed": true
+    },
+    {
+      "name": "all_systems_accounted_for",
+      "passed": true
+    },
+    {
+      "name": "overall_matches_outcomes",
+      "passed": true
+    },
+    {
+      "name": "MPCP:catalog",
+      "passed": true
+    },
+    {
+      "name": "MPCP:inputs_unchanged",
+      "passed": true
+    },
+    {
+      "name": "MPCP:evidence",
+      "passed": true
+    },
+    {
+      "name": "MPCP:outcome",
+      "passed": true
+    },
+    {
+      "name": "E-CS:catalog",
+      "passed": true
+    },
+    {
+      "name": "E-CS:inputs_unchanged",
+      "passed": true
+    },
+    {
+      "name": "E-CS:evidence",
+      "passed": true
+    },
+    {
+      "name": "E-CS:outcome",
+      "passed": true
+    },
+    {
+      "name": "W3Lgu:catalog",
+      "passed": true
+    },
+    {
+      "name": "W3Lgu:inputs_unchanged",
+      "passed": true
+    },
+    {
+      "name": "W3Lgu:evidence",
+      "passed": true
+    },
+    {
+      "name": "W3Lgu:outcome",
+      "passed": true
+    },
+    {
+      "name": "Cross-X:catalog",
+      "passed": true
+    },
+    {
+      "name": "Cross-X:inputs_unchanged",
+      "passed": true
+    },
+    {
+      "name": "Cross-X:evidence",
+      "passed": true
+    },
+    {
+      "name": "Cross-X:outcome",
+      "passed": true
+    },
+    {
+      "name": "CROLL:catalog",
+      "passed": true
+    },
+    {
+      "name": "CROLL:inputs_unchanged",
+      "passed": true
+    },
+    {
+      "name": "CROLL:evidence",
+      "passed": true
+    },
+    {
+      "name": "CROLL:outcome",
+      "passed": true
+    },
+    {
+      "name": "Table-X:catalog",
+      "passed": true
+    },
+    {
+      "name": "Table-X:inputs_unchanged",
+      "passed": true
+    },
+    {
+      "name": "Table-X:evidence",
+      "passed": true
+    },
+    {
+      "name": "Table-X:outcome",
+      "passed": true
+    },
+    {
+      "name": "PX:catalog",
+      "passed": true
+    },
+    {
+      "name": "PX:inputs_unchanged",
+      "passed": true
+    },
+    {
+      "name": "PX:evidence",
+      "passed": true
+    },
+    {
+      "name": "PX:outcome",
+      "passed": true
+    }
+  ],
+  "systems": [
+    {
+      "system": "MPCP",
+      "status": "PASS",
+      "counts": {
+        "tests": 45,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed"
+    },
+    {
+      "system": "E-CS",
+      "status": "PASS",
+      "counts": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed"
+    },
+    {
+      "system": "W3Lgu",
+      "status": "PASS",
+      "counts": {
+        "tests": 35,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed"
+    },
+    {
+      "system": "Cross-X",
+      "status": "PASS",
+      "counts": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed"
+    },
+    {
+      "system": "CROLL",
+      "status": "PASS",
+      "counts": {
+        "tests": 17,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed"
+    },
+    {
+      "system": "Table-X",
+      "status": "PASS",
+      "counts": {
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed"
+    },
+    {
+      "system": "PX",
+      "status": "PASS",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed"
+    }
+  ],
+  "previous_attempts": [
+    {
+      "report": "repo_events/system_inspections/runs/3216e2ae775242aab639fb9a3661c27f/report.json",
+      "accepted": false,
+      "reason": "Cross-X pytest.log empty on verification; hash mismatch. Cause not established."
+    },
+    {
+      "report": "repo_events/system_inspections/runs/ac13e722f6784a5bbdb2a867054d30a2/report.json",
+      "accepted_at_run": true,
+      "superseded": "Final Cast alias fix changed source manifest; retained historical candidate result, not current-source evidence."
+    },
+    {
+      "report": "repo_events/system_inspections/runs/7a4d30b14f2b4e049359b441d7ea74df/report.json",
+      "accepted_at_run": true,
+      "superseded": "Origin status intake fix changed source manifest; kept as historical candidate evidence."
+    }
+  ]
+}

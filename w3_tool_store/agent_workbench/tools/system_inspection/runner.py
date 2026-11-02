@@ -64,6 +64,37 @@ def file_hash(root, name):
     return digest(path.read_bytes()) if path.is_file() else None
 
 
+def source_manifest(root):
+    """Bind inspection to runtime/config/test sources, not just entry files.
+
+    Runtime outputs and mutable memory are deliberately outside this source
+    scope. The manifest declares its scope; it is not a full disk snapshot.
+    """
+    roots = ('core', 'protocol', 'src', 'ecs', 'cross_x', 'croll', 'config',
+             'tests', 'w3_api', 'tools', 'workflows', 'wx',
+             'w3_tool_store/agent_workbench/tools')
+    ignored = {'__pycache__', '.pytest_cache', 'node_modules', 'runs'}
+    names = set()
+    for base in roots:
+        folder = root / base
+        if folder.is_dir():
+            for path in folder.rglob('*'):
+                rel = path.relative_to(root)
+                if set(rel.parts) & ignored or path.is_symlink():
+                    continue
+                if path.is_file() and path.suffix in {'.py', '.json', '.yaml', '.yml', '.md'}:
+                    if str(rel) != 'core/memory/memory_store.json':
+                        names.add(str(rel))
+    names.update(str(p.relative_to(root)) for p in root.glob('*.py'))
+    names.update(str(p.relative_to(root)) for p in (root/'modules').glob('*/module.json'))
+    if (root/'requirements.txt').is_file():
+        names.add('requirements.txt')
+    return {'schema': 'w3.inspection_source_manifest/1', 'roots': list(roots),
+            'excluded': ['mutable runtime memory', 'generated evidence', 'symlinks',
+                         'xrea prototype', 'installed dependencies'],
+            'files': {name: file_hash(root, name) for name in sorted(names)}}
+
+
 def junit_counts(path):
     tree = ET.parse(path).getroot()
     suites = [tree] if tree.tag == 'testsuite' else tree.findall('testsuite')
@@ -194,11 +225,16 @@ def execute(root, context):
     run_id = uuid4().hex
     folder = inside(root, f'{BASE}/runs/{run_id}')
     folder.mkdir(parents=True, exist_ok=False)
+    manifest = source_manifest(root)
+    manifest_path = folder / 'source-manifest.json'
+    write_json(manifest_path, manifest)
     report = {'schema': 'w3.system_inspection/1', 'run_id': run_id,
               'task_id': context['request'].get('task_id'), 'source_id': context['request'].get('source_id'),
               'started_at': now(), 'finished_at': None, 'inspection_state': 'IN_PROGRESS',
               'coverage': 'listed regression and native contract checks; isolated test execution',
-              'limitations': LIMITATIONS, 'systems': [], 'overall': 'PARTIAL', 'blockers': []}
+              'limitations': LIMITATIONS, 'systems': [], 'overall': 'PARTIAL', 'blockers': [],
+              'source_manifest': {'path': str(manifest_path.relative_to(root)),
+                                  'sha256': digest(manifest_path.read_bytes())}}
     path = folder / 'report.json'
     reference = str(path.relative_to(root))
     def checkpoint():
@@ -210,6 +246,9 @@ def execute(root, context):
     checkpoint()
     for system, entry, tests in CATALOG:
         item = run_suite(root, folder / system, system, entry, tests)
+        if source_manifest(root) != manifest:
+            item.update(status='BLOCKED', reason='source manifest changed during inspection',
+                        source_unchanged=False)
         report['systems'].append(item)
         if item['status'] != 'PASS':
             blocker = folder / 'blockers' / f'{system}.md'
@@ -252,6 +291,15 @@ def report_checks(root, agent):
         data = path.read_bytes()
         report = json.loads(data)
         check('report_hash', digest(data) == info['sha256'])
+        manifest_ref = report.get('source_manifest')
+        if manifest_ref is None:
+            check('source_manifest_available', False)  # historical evidence, not current-source proof
+        else:
+            manifest_path = inside(root, manifest_ref['path'])
+            manifest_data = manifest_path.read_bytes()
+            check('source_manifest_hash', manifest_path.parent == path.parent and
+                  digest(manifest_data) == manifest_ref['sha256'])
+            check('source_manifest_matches_current', json.loads(manifest_data) == source_manifest(root))
         check('finished_with_declared_scope', report['inspection_state'] == 'FINISHED' and report['limitations'] == LIMITATIONS)
         rows = report['systems']
         check('all_systems_accounted_for', [r['system'] for r in rows] == [s[0] for s in CATALOG])

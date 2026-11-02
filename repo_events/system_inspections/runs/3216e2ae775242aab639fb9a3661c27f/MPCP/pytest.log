@@ -1,0 +1,15 @@
+.............................................                            [100%]
+=============================== warnings summary ===============================
+tests/test_mpcp_agent_sandbox.py::SandboxTests::test_each_w3lgu_run_has_its_own_trace
+tests/test_mpcp_agent_sandbox.py::SandboxTests::test_each_w3lgu_run_has_its_own_trace
+  /tmp/w3-inspection-ojf8k7a_/repository/protocol/w3lgu/runtime.py:57: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    W3LguPair("TIMESTAMP", datetime.utcnow().isoformat()),
+
+tests/test_mpcp_agent_sandbox.py::SandboxTests::test_each_w3lgu_run_has_its_own_trace
+tests/test_mpcp_agent_sandbox.py::SandboxTests::test_each_w3lgu_run_has_its_own_trace
+  /tmp/w3-inspection-ojf8k7a_/repository/protocol/w3lgu/runtime.py:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: /workspace/scratch/905335bf17b7/w3/repo_events/system_inspections/runs/3216e2ae775242aab639fb9a3661c27f/MPCP/junit.xml -
+45 passed, 4 warnings in 2.47s

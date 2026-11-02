@@ -1,0 +1,68 @@
+{
+  "scope": "Original issue bodies retained before current status consolidation",
+  "issues": [
+    {
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/issues/306",
+      "title": "RQ-W3-CHAIN-001 | Read-only end-to-end chain execution (MPCP/E-CS/W3Lgu/Cross-X/CROLL/Table-X/PX)",
+      "issue_number": 306,
+      "body": "# RQ-W3-CHAIN-001 — One-task chain inspection and runtime handoff\n\n**Owner / requester:** BBX19\n**GitHub assignee:** BBXDOO (account-level responsibility)\n**Origin target:** ChatGPT\n**Branch:** refactor/v0.2\n**Scope:** one task, seven components; **no source-code/config edits, no repair, no deployment**.\n**Initial status:** RECEIVED; runtime evidence pending.\n\n## Origin intake — first stage (read only)\n\n@ChatGPT\n\nโปรดอ่าน entry points/คู่มือของสายเชนหลักทั้งเจ็ด และคืนหลักฐาน read receipt, hash, errors และข้อจำกัดตามจริง ก่อนประเมินจุดส่งต่องานเข้าสู่ Orchestration. ห้ามถือว่าการอ่านไฟล์เป็นการ Execute โมดูลทั้งเจ็ดสำเร็จ.\n\n```w3-origin\n{\n  \"operations\": [\n    {\"action\":\"read\",\"path\":\"protocol/mpcp/runtime/README.md\"},\n    {\"action\":\"read\",\"path\":\"ecs/event_chain_system.py\"},\n    {\"action\":\"read\",\"path\":\"core/runtime/w3lgu_mfc_logic/psp2_mfc_logic.py\"},\n    {\"action\":\"read\",\"path\":\"cross_x/core.py\"},\n    {\"action\":\"read\",\"path\":\"croll/contracts.py\"},\n    {\"action\":\"read\",\"path\":\"croll/table_x.py\"},\n    {\"action\":\"read\",\"path\":\"protocol/w3lgu/px.py\"},\n    {\"action\":\"read\",\"path\":\"docs/runtime/REAL_REQUEST_CIRCUIT.md\"}\n  ]\n}\n```\n\n## Follow-on execution requirement (not satisfied by Origin read)\n\n**Work item:** Verify MPCP ENV readiness through a single real request, tracing actual integration with E-CS, W3Lgu MFC Logic, Cross-X, CROLL, Table-X, and PX in their native ordering/contracts.\n\n1. Inspect actual interfaces and determine a supported dispatch route; do not force the seven modules into an artificial sequence.\n2. Execute only via existing registered entry points / authorized W3 Runtime; honor planner-only and human gates.\n3. Preserve supported identity fields (`chain_id`, `process_id`, `event_id`, `package_id`); mark unknowns explicitly.\n4. Report per component: entry point, real input/output, recipient, status, log/evidence, first broken handoff.\n5. Never claim COMPLETED without executor evidence. If no dispatch path exists, report BLOCKED/NOT_RUN and next action.\n6. **Do not edit code or configuration or create repair patches/PRs.** Origin workflow may persist its ordinary receipts, state and logs to `repo_events/origin_agents/` as part of its documented operation; this is not permission to modify application source.\n7. Return a factual status and preserve BBX19 final sign-off.\n\n## References\n- `docs/templates/origin/ISSUE_TEMPLATE_TH.md`\n- `docs/guides/ORIGIN_AGENT_OPERATIONS_TH.md`\n- `workflows/orchestration/README.md`\n- `docs/runtime/REAL_REQUEST_CIRCUIT.md`\n\n**Acceptance:** one traceable task; Origin receipt for initial inspection; separately verified runtime execution results or explicit blocker for each of seven systems.\n",
+      "state": "closed",
+      "user": {
+        "login": "BBXDOO",
+        "name": "BBXDOO",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/203280429?v=4",
+        "id": 203280429
+      },
+      "assignees": [
+        {
+          "login": "Copilot",
+          "name": "Copilot",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/in/1143301?v=4",
+          "id": 198982749
+        },
+        {
+          "login": "BBXDOO",
+          "name": "BBXDOO",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/u/203280429?v=4",
+          "id": 203280429
+        }
+      ],
+      "labels": null,
+      "milestone": null,
+      "state_reason": "completed",
+      "comments": 2,
+      "created_at": "2026-10-25T17:10:15Z",
+      "updated_at": "2026-10-27T13:26:34Z",
+      "closed_at": "2026-10-27T13:26:34Z",
+      "display_url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/issues/306",
+      "display_title": "RQ-W3-CHAIN-001 | Read-only end-to-end chain execution (MPCP/E-CS/W3Lgu/Cross-X/CROLL/Table-X/PX)"
+    },
+    {
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/issues/309",
+      "title": "RQ-W3-SYSTEM-RECHECK-20261028-001 | ตรวจระบบผ่าน Root Request และ Orchestration",
+      "issue_number": 309,
+      "body": "## ตัวเชื่อมขั้น B พร้อมตรวจใน PR #310\n\n- โค้ดและใบงานอยู่ใน [PR #310](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/pull/310); ยังไม่ merge เข้า branch ใช้งาน\n- มี recipe + host executor + evidence verifier ที่รับ Root Request จริงแล้ว\n- รัน inspection circuit ใน implementation host: 7 ระบบ รวม 134 tests ผ่าน; ตรวจหลักฐาน 32 ข้อผ่าน; final gate WAITING_HUMAN ไม่ได้อนุมัติแทนเจ้าของ\n- regression ของตัวเชื่อม/วงจรเดิม 64 tests ผ่าน รวมกรณีล้มแล้วเดินต่อ, missing input, timeout, tampered evidence, interruption และ no replay\n- รอบแรกพบสำเนาขาด Git context ทำ MPCP fail แต่ระบบถัดไปยังทำงาน แก้เฉพาะตัวเชื่อมแล้วตรวจซ้ำผ่าน\n- รายงานที่สร้างหลังรันจะอยู่ repo_events/system_inspections/latest.json → รายงานรวมและ blockers รายเรื่อง รอบสรุปเดิมเพิ่มจุดอ่านนี้แล้ว\n- ผลข้างต้นเป็น listed regression/native contract checks ในสำเนาแยก ไม่รับรอง production request เดียวผ่านทั้งเจ็ดระบบ; hosted evidence ยังต้องตรวจเมื่อรับโค้ดเข้า branch ใช้งาน\n- ข้อความ NOT_DISPATCHED ในผลวินิจฉัยก่อนหน้าเป็นประวัติก่อนสร้างตัวเชื่อม ไม่ใช่สถานะการทดลองล่าสุด\n- ไม่ปิด Issue นี้จากผล local trial หรือจากการ merge เพียงอย่างเดียว\n\n## ผลวินิจฉัยเหตุที่ขั้น B ไม่มีผล — 28 ต.ค. 2026\n\n**ขั้น B ยังไม่ได้ถูก dispatch เข้าตัวปฏิบัติ ไม่มีหลักฐานว่าเป็นงานรันค้างนาน**\n\n- แผนที่บันทึกจริงมี 2 ขั้นเท่านั้น: log_analysis และ verify; index สุดท้าย 1; status COMPLETED\n- runtime ไม่มี blocker หรือ reconciliation flag ค้างสำหรับงานสองขั้นนี้ จบหลังตรวจรับเมื่อ 2026-10-28T01:38:18Z\n- ข้อความส่วน B ใน Markdown ไม่ได้ถูกแปลงเป็น runtime stages และไม่มี support requirement สำหรับ B\n- default_flows มีสูตร log_analysis สองขั้น; make_runtime รองรับ host executors/verifiers เพิ่มได้ แต่ไม่ได้ลงทะเบียนตัวตรวจระบบ 7 ส่วนให้ใบงานนี้\n- request-cycle workflow รับ root Markdown และรัน pending; ไม่ใช่ผู้วางแผนจาก checklist ใน Issue\n- ข้อความ auto-responder เป็นรายงาน/dispatch preview ไม่ใช่หลักฐานว่าตัวปฏิบัติรับงาน B แล้ว\n- ช่องว่างการประสานงาน: ผู้ประสานฝั่ง host ยังไม่ได้จัดทำและเรียกชุดตรวจ B ที่มีตัวปฏิบัติและตัวตรวจผลจริง จึงต้องบันทึก B เป็น NOT_DISPATCHED / NOT_RUN ไม่ใช่ WAITING_HUMAN หรือ IN_PROGRESS\n\n**การเดินต่อที่จำเป็น:** สำรวจ entry points รายระบบ เลือกหรือเชื่อม executor + verifier ที่ตรงงาน แล้วส่ง B เป็นงานที่รันได้โดยชัดเจนพร้อมหลักฐาน อ้างผล A เดิมและรักษาใบงาน/receipt ที่ปิดแล้ว ไม่แก้ request เดิมจน hash เปลี่ยน ไม่วนรัน A ซ้ำ และไม่ขออนุมัติ A ซ้ำ\n\nหลักฐาน: [saved task](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/5413a80c3c5cbb3ef7111ae05e70b549e6c12c2b/repo_events/runtime_circuit/tasks/W3-ORC-1-4458783143605074611027405285.json) · [สูตร workflow](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/5413a80c3c5cbb3ef7111ae05e70b549e6c12c2b/tools/orchestration_support.py) · [intake/verifier](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/5413a80c3c5cbb3ef7111ae05e70b549e6c12c2b/tools/runtime_circuit_intake.py) · [runtime continuation](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/5413a80c3c5cbb3ef7111ae05e70b549e6c12c2b/workflows/runtime_circuit.py)\n\n## สถานะอ่านเร็ว — ตรวจหลักฐาน 28 ต.ค. 2026\n\n- ✅ ขั้น A: วิเคราะห์ log 114 รายการ และคู่ตรวจผ่าน 6 ข้อ เจ้าของตรวจรับแล้ว วงจรย่อยเป็น COMPLETED\n- ⬜ ขั้น B: NOT_DISPATCHED / NOT_RUN — ยังไม่ได้เชื่อมเป็นงานที่เรียก executor/verifier สำหรับการตรวจ 7 ระบบ\n- Issue นี้ยัง OPEN เพราะครอบคลุมทั้ง A และ B\n- การอนุมัติขั้น A ไม่ได้เริ่มขั้น B อัตโนมัติ แผน runtime ของใบงานปัจจุบันมีเฉพาะ log_analysis และการตรวจผล\n- งานถัดไปของผู้ประสาน: เลือก entry point และตัวปฏิบัติ/ตัวตรวจที่มีจริงสำหรับขั้น B เก็บผลรายระบบก่อนอัปเดต checklist\n- ตอนนี้ไม่มีคำตัดสินเพิ่มเติมที่ต้องขอจาก BBX19 สำหรับขั้น A\n\nหลักฐาน: [รายงานขั้น A](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/refactor/v0.2/requests/results/RQ-W3-SYSTEM-RECHECK-20261028-001_REPORT.md) · [ผลเครื่อง](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/refactor/v0.2/requests/results/RQ-W3-SYSTEM-RECHECK-20261028-001_RESULT.json) · [ประวัติ Orchestration](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/refactor/v0.2/repo_events/runtime_circuit/tasks/W3-ORC-1-4458783143605074611027405285.json)\n\n## งานตรวจระบบรอบใหม่\n\nBBX19 มอบหมายให้เริ่มจากเส้นทางที่ตรวจในโค้ดแล้ว ใช้ใบงาน `RQ-W3-SYSTEM-RECHECK-20261028-001` แยกจากงานเดิม #306 และเก็บหลักฐานเดิมไว้\n\nใบงาน: [เปิด Root Request](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/refactor/v0.2/requests/RQ-W3-SYSTEM-RECHECK-20261028-001.md)\n\n### เส้นทางที่ใช้\nRoot requests/*.md → request_cycle --pending → runtime_circuit intake → Orchestration → registered log_analysis workflow → ผู้วิเคราะห์และคู่ตรวจตามใบงาน → result/snapshot/report → human callback\n\nตรวจ source บน refactor/v0.2 commit 19b921f แล้ว:\n- inbox ระดับโมดูลเป็นตำแหน่งรับไฟล์ที่ CLI ต้องระบุ ยังไม่พบตัวสแกนอัตโนมัติใน entry points ที่ตรวจ\n- root request scanner และ workflow push trigger มีอยู่จริง\n- Issue intake ของ Origin เป็นอีกเส้นทาง ไม่ใช่การส่งเข้า request cycle\n- ตัวเชื่อมปัจจุบันรองรับการวิเคราะห์ log และตรวจผลจริง แต่ไม่มี verifier ทั่วไปที่ทำให้การใส่ขั้นตรวจระบบใดๆ ลงแผนสำเร็จเอง\n\n### ผู้รับงานและความสำเร็จ\nOrchestration ประสานงาน; รายชื่อผู้วิเคราะห์ คู่ตรวจ และผู้ประสานฝั่ง host อยู่ในใบงาน ใช้ executors/verifiers ที่ลงทะเบียนจริง\n\n- [x] A: รับใบงานนี้เข้า runtime และตรึง input snapshot ก่อนเขียนประวัติของตนเอง\n- [x] A: วิเคราะห์บันทึกจริงตามโมดูล/งาน หา repeated error/blocked/review/unknown พร้อม record references\n- [x] A: คู่ตรวจคำนวณซ้ำ ตรวจ source/report/hash/trace และเก็บผลจริง\n- [ ] B: ตรวจทางรับ-ส่งของ MPCP / E-CS / W3Lgu MFC Logic / Cross-X / CROLL / Table-X / PX ตาม entry point ที่ source รองรับ โดยสำรวจ modules/, core/runtime/, src/ และคู่มือประกอบ\n- [ ] B: รายงานต่อระบบว่าใครรับอะไร ส่งให้ใคร ผลจริง หลักฐาน จุดส่งต่อที่ขาด และ NOT_RUN สำหรับสิ่งที่ยังไม่รัน\n- [ ] แยกงานที่ทำได้จากเรื่องที่ต้องใช้อำนาจเพิ่ม และบันทึกสิ่งที่เรียนรู้\n- [ ] คืนรายงาน A/B และช่องทางตรวจรับตามผลที่เกิดจริง\n\n**ขั้น A ผ่านไม่เท่ากับทุก runtime ผ่าน และไม่เพียงพอให้ปิด Issue ทั้งงาน** ห้ามใช้ closing keyword จาก PR ที่เพิ่มเพียง receipt เพื่อปิดงานนี้ก่อนตรวจขอบเขตครบ\n\n### ขอบเขต\nเริ่มตรวจและสร้างหลักฐานโดยไม่แก้ application source/config/IDP ไม่ merge/deploy หรือข้ามขอบเขต planner-only หากขาด host adapter ให้ระบุ capability/executor/verifier ที่ขาดและจัดทำตัวเชื่อมแยกใน workbench พร้อมทดสอบก่อนใช้งาน การใส่ชื่อใน payload ไม่สร้างสิทธิ์หรือความสามารถ\n\n### วิธีติดตาม\nคำสั่งเฉพาะใบงาน:\n```sh\npython tools/request_cycle.py --request requests/RQ-W3-SYSTEM-RECHECK-20261028-001.md\n```\nผลอยู่ใน requests/results/RQ-W3-SYSTEM-RECHECK-20261028-001_RESULT.json และ companion _REPORT.md; ตรวจ orchestration_evidence และ callback_path จากผลจริง ห้ามสร้างการอนุมัติแทนเจ้าของ\n\n## ประวัติเริ่มงาน\n\nบันทึกใบงานบน refactor/v0.2 ที่ commit 6a8d3f2 จากนั้นระบบประมวลผลและบันทึกการตรวจรับที่ commit 5413a80 สถานะก่อนเริ่มรันเป็นข้อมูลเก่า ให้ยึดสถานะอ่านเร็วและหลักฐานข้างต้น\n\nIssue เป็นกระดานติดตาม ส่วนทางเข้าคิวคือ Root Request ไม่มีการเปลี่ยนใบงานที่ผูก hash แล้วหรือเรียก executor เดิมซ้ำในการอัปเดต checklist ครั้งนี้\n",
+      "state": "open",
+      "user": {
+        "login": "BBXDOO",
+        "name": "BBXDOO",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/203280429?v=4",
+        "id": 203280429
+      },
+      "assignees": null,
+      "labels": null,
+      "milestone": null,
+      "state_reason": null,
+      "comments": 5,
+      "created_at": "2026-10-28T01:15:37Z",
+      "updated_at": "2026-10-28T14:16:33Z",
+      "closed_at": null,
+      "display_url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/issues/309",
+      "display_title": "RQ-W3-SYSTEM-RECHECK-20261028-001 | ตรวจระบบผ่าน Root Request และ Orchestration"
+    }
+  ]
+}

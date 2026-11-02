@@ -19,6 +19,7 @@ on:
       - 'core/identity/profiles/**'
       - 'tools/origin_cycle.py'
       - 'tests/test_origin_operations.py'
+      - 'tests/test_origin_status_intake.py'
       - '.github/workflows/origin-agent-cycle.yml'
 
 permissions:
@@ -37,7 +38,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: python -m unittest tests.test_origin_operations tests.test_origin_collaboration -v
+      - run: python -m unittest tests.test_origin_operations tests.test_origin_collaboration tests.test_origin_status_intake -v
 
   work:
     if: github.event_name != 'pull_request'

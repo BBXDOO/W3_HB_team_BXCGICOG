@@ -221,6 +221,12 @@ def intake_github(event, event_name, authorized_login="BBXDOO"):
         return []
     content = event.get("comment", {}) if event_name == "issue_comment" else issue
     text = (content.get("title", "") + "\n" + (content.get("body") or ""))
+    # Status reconciliation is not a new assignment. Inspect the body directly
+    # because an issue title may precede the marker in the combined text.
+    if (content.get("body") or "").lstrip().startswith("<!-- w3-status-update -->"):
+        return []
+    if event_name == "issues" and event.get("action") == "edited" and issue.get("state") == "closed":
+        return []
     structured = re.search(r"```w3-origin\s*\n(.*?)\n```", text, re.S)
     payload = json.loads(structured.group(1)) if structured else {}
     if not isinstance(payload, dict):
