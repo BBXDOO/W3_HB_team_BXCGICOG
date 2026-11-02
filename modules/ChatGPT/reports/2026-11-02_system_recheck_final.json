@@ -11,8 +11,8 @@
     "summary": "Inspected 7 systems; listed_checks=PASS; 0 separate follow-ups. Not a production chain certification.",
     "artifacts": [
       {
-        "path": "repo_events/system_inspections/runs/7a4d30b14f2b4e049359b441d7ea74df/report.json",
-        "sha256": "4b2b7b431349b77bec9cd8796e9443eeb5b7f6745316783fddeba31048dc47d8",
+        "path": "repo_events/system_inspections/runs/5c5942db8bc7427ba5af51e048266382/report.json",
+        "sha256": "8266b9d30ff27a9669e4c78266b7b3e34a75631509e6bc1cd42bbe0e77988b53",
         "kind": "w3.system_inspection.json"
       }
     ]
@@ -244,6 +244,11 @@
       "report": "repo_events/system_inspections/runs/ac13e722f6784a5bbdb2a867054d30a2/report.json",
       "accepted_at_run": true,
       "superseded": "Final Cast alias fix changed source manifest; retained historical candidate result, not current-source evidence."
+    },
+    {
+      "report": "repo_events/system_inspections/runs/7a4d30b14f2b4e049359b441d7ea74df/report.json",
+      "accepted_at_run": true,
+      "superseded": "Origin status intake fix changed source manifest; kept as historical candidate evidence."
     }
   ]
 }

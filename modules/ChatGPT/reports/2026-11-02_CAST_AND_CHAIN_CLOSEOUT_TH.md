@@ -59,7 +59,7 @@ review thread ใน PR เก่ายังไม่ถูกทำเคร�
 | PX | 5 |
 
 [ผลและ verifier รอบสุดท้าย](2026-11-02_system_recheck_final.json)
-[รายงานเต็ม](../../../repo_events/system_inspections/runs/7a4d30b14f2b4e049359b441d7ea74df/REPORT_TH.md)
+[รายงานเต็ม](../../../repo_events/system_inspections/runs/5c5942db8bc7427ba5af51e048266382/REPORT_TH.md)
 
 มีความผิดพลาดที่ต้องเก็บไว้: รอบแรก JUnit ผ่าน 134 ข้อ แต่ตอน verifier อ่านซ้ำ
 Cross-X/pytest.log เป็นไฟล์ว่างและไม่ตรง hash ที่บันทึก จึงไม่รับผลรอบแรก
@@ -118,9 +118,25 @@ planner boundary และ identity ของแต่ละระบบ ไม�
 ฉบับที่คำร้องเก่าต้องการ จึงคงวาระรายงานเดิมตาม BBX19 ขอไว้รอบถัดไป
 Vision อยู่นอกลำดับงานรอบนี้และยังไม่มีผลงานตามโจทย์ จึงไม่ตรวจรับแทน
 
-## 6. การตรวจและสิ่งที่ต้องทำต่อ
+## 6. ปัญหาที่พบระหว่างอัปเดตสถานะ และการสะสาง
 
-- Cast/new evidence binding + existing runtime/Origin: 109 tests ผ่าน (48 คำเตือน utcnow เดิม)
+อัปเดต issue body แล้ว Origin บน branch ใช้งานตีความข้อความประวัติเป็นงานใหม่จริง
+เกิด directed runs 41448287117 (success ของตัว review) และ 41448291424 (failure)
+มี follow-up ซ้ำจาก #309 และ #306 เพิ่มใน state วันที่ 2 พ.ย.
+ไม่ถือ success ของ review ว่าคำร้องเชนสำเร็จ และไม่ลบ receipt ใหม่ที่เกิดขึ้น
+
+เพิ่ม marker `<!-- w3-status-update -->` ให้ intake ไม่ dispatch ข้อความสถานะ
+และไม่สร้างงานจากการ edited ของ issue ที่ปิดแล้ว; reopened request ยังรับได้
+มี regression 5 ข้อพร้อม CI และปรับ issue bodies ให้ไม่มี executable block
+ของประวัติเดิม; คำร้องต้นฉบับเก็บใน issue_history.json และ GitHub edit history
+
+นำ state ล่าสุดจาก branch ใช้งานมารวมก่อนสะสาง follow-up ทั้งสามรายการ
+เป็น SUPERSEDED/STATUS_UPDATE_DUPLICATE โดยใช้ resolve_followup เดิมพร้อม hash
+การแก้ state อยู่ใน PR และจะมีผลเมื่อ merge ไม่เขียนทับ state จาก scheduler อย่างเงียบ ๆ
+
+## 7. การตรวจและสิ่งที่ต้องทำต่อ
+
+- Cast/new evidence binding + existing runtime/Origin: 114 tests ผ่าน (48 คำเตือน utcnow เดิม)
 - เจ็ดระบบในสำเนาแยกรอบสุดท้าย: 134 tests ผ่าน และ evidence verifier ผ่านครบ
 - native host probes ตามตารางมีผลจริง เก็บ input/output/hash ไว้ ไม่ได้รัน REA ใหม่
 - ไม่แก้ xrea prototype, IDP permissions, ไม่ merge/deploy และไม่ลงนามตรวจรับแทน

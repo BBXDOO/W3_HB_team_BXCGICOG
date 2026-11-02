@@ -1,0 +1,26 @@
+{
+  "tool": "W3 repository tools support",
+  "owner": "ChatGPT",
+  "owner_status": "FAILED",
+  "owner_log": "repo_events/origin_agents/ChatGPT/logs/06d4ee30eeea475e97673a9b854cb462.json",
+  "checks": [
+    {
+      "check": "owner_receipt",
+      "path": "repo_events/origin_agents/ChatGPT/logs/06d4ee30eeea475e97673a9b854cb462.json",
+      "state": "EVIDENCED",
+      "sha256": "1a44f71bffd84503da336418deeb18b7b67943dbf972863050a6364113cf3736"
+    }
+  ],
+  "findings": [],
+  "tools_used": [],
+  "owner_reason": "IDP/ENV does not grant read: protocol/mpcp/runtime/README.md",
+  "resolved": false,
+  "next_steps": [
+    "Inspect the recorded owner error and affected paths.",
+    "Return corrected work to the Origin owner; repairs from review require BBX19 selection."
+  ],
+  "source_mutated": false,
+  "unknowns": [
+    "Checks verify recorded file outcomes, not all role semantics or external systems."
+  ]
+}
