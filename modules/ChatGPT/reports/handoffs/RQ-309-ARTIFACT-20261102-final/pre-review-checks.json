@@ -1,0 +1,62 @@
+[
+  {
+    "name": "trusted_rule_profile",
+    "passed": true
+  },
+  {
+    "name": "two_distinct_artifacts",
+    "passed": true
+  },
+  {
+    "name": "w3.cast.structure_report.json:hash",
+    "passed": true
+  },
+  {
+    "name": "w3.cast.private_pattern.json:hash",
+    "passed": true
+  },
+  {
+    "name": "request_and_trace_binding",
+    "passed": true
+  },
+  {
+    "name": "source_paths_match_request",
+    "passed": true
+  },
+  {
+    "name": "core/runtime/agents/cast.py:source_hash",
+    "passed": true
+  },
+  {
+    "name": "core/runtime/agents/cast.py:structure",
+    "passed": true
+  },
+  {
+    "name": "core/runtime/capabilities/cast_structure.py:source_hash",
+    "passed": true
+  },
+  {
+    "name": "core/runtime/capabilities/cast_structure.py:structure",
+    "passed": true
+  },
+  {
+    "name": "core/identity/profiles/Cast.idp.json:source_hash",
+    "passed": true
+  },
+  {
+    "name": "core/identity/profiles/Cast.idp.json:structure",
+    "passed": true
+  },
+  {
+    "name": "private_pattern_separate",
+    "passed": true
+  },
+  {
+    "name": "idp_reference",
+    "passed": true
+  },
+  {
+    "name": "no_source_write",
+    "passed": true
+  }
+]

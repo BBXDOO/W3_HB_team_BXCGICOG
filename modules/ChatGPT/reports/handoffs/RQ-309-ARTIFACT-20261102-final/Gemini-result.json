@@ -1,0 +1,112 @@
+{
+  "contract_version": "1.0",
+  "status": "COMPLETED",
+  "module": "Gemini",
+  "task": "verify",
+  "action": "completed verification",
+  "decision": "VERIFIED",
+  "summary": "Gemini checked 15 explicit check(s) for [RQ-ARTIFACT-HANDOFF-135030246865754401287499718175699695189]; 0 failed.",
+  "reason": "Explicit checks passed with evidence. Duty: verify system contract & logic27 alignment.",
+  "artifacts": [
+    {
+      "type": "verification_stamp",
+      "target": "RQ-ARTIFACT-HANDOFF-135030246865754401287499718175699695189",
+      "verified_by": "Gemini",
+      "event_identity": {
+        "chain_id": "W3-ORC-20261102-135030246865754401287499718175699695189",
+        "event_id": "aaaf223b71b9445fb3f83315baa6182d",
+        "sequence": 2,
+        "owner_scope": "artifact-review"
+      }
+    }
+  ],
+  "details": {
+    "mpcp_role": "validation",
+    "main_duty": "verify system contract & logic27 alignment",
+    "experience": "0 prior matches",
+    "checks": [
+      {
+        "name": "trusted_rule_profile",
+        "passed": true,
+        "state": "PASS"
+      },
+      {
+        "name": "two_distinct_artifacts",
+        "passed": true,
+        "state": "PASS"
+      },
+      {
+        "name": "w3.cast.structure_report.json:hash",
+        "passed": true,
+        "state": "PASS"
+      },
+      {
+        "name": "w3.cast.private_pattern.json:hash",
+        "passed": true,
+        "state": "PASS"
+      },
+      {
+        "name": "request_and_trace_binding",
+        "passed": true,
+        "state": "PASS"
+      },
+      {
+        "name": "source_paths_match_request",
+        "passed": true,
+        "state": "PASS"
+      },
+      {
+        "name": "core/runtime/agents/cast.py:source_hash",
+        "passed": true,
+        "state": "PASS"
+      },
+      {
+        "name": "core/runtime/agents/cast.py:structure",
+        "passed": true,
+        "state": "PASS"
+      },
+      {
+        "name": "core/runtime/capabilities/cast_structure.py:source_hash",
+        "passed": true,
+        "state": "PASS"
+      },
+      {
+        "name": "core/runtime/capabilities/cast_structure.py:structure",
+        "passed": true,
+        "state": "PASS"
+      },
+      {
+        "name": "core/identity/profiles/Cast.idp.json:source_hash",
+        "passed": true,
+        "state": "PASS"
+      },
+      {
+        "name": "core/identity/profiles/Cast.idp.json:structure",
+        "passed": true,
+        "state": "PASS"
+      },
+      {
+        "name": "private_pattern_separate",
+        "passed": true,
+        "state": "PASS"
+      },
+      {
+        "name": "idp_reference",
+        "passed": true,
+        "state": "PASS"
+      },
+      {
+        "name": "no_source_write",
+        "passed": true,
+        "state": "PASS"
+      }
+    ],
+    "failed_checks": [],
+    "unresolved_checks": [],
+    "evidence_supplied": true,
+    "identity_supplied": true
+  },
+  "mutated": false,
+  "traceable": true,
+  "review": false
+}

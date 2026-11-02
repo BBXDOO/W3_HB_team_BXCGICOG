@@ -33,6 +33,7 @@ DERIVED_FROM:
 | [android_webview_probe/](android_webview_probe/README.md) | ตรวจ layout ด้วย Chromium เมื่อมี dependency; ยังไม่ใช่ Android WebView/ColorOS จริง |
 | [android_apk_probe/](android_apk_probe/README.md) | ตรวจลายเซ็นและ manifest ของ APK จริงด้วย Android SDK; ไม่ใช่ผลรันบนเครื่อง |
 | [system_inspection/](system_inspection/README.md) | ตัวเชื่อม Orchestration ตรวจชุดจริง 7 ระบบ แยกเรื่องที่สะดุดแล้วเดินระบบอิสระถัดไป |
+| [artifact_handoff/](artifact_handoff/README.md) | งานผลิต artifact → คู่ตรวจตามกติกา → ส่งคืนเจ้าของและหยุด พร้อมหลักฐานย้อนกลับ |
 
 ### M2 — เอกสารอ้างอิงนอกพื้นที่
 

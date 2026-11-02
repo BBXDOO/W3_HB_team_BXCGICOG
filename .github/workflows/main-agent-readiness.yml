@@ -9,6 +9,8 @@ on:
       - "core/runtime/capabilities/cast_structure.py"
       - "w3_tool_store/agent_workbench/tools/system_inspection/**"
       - "tests/test_cast_structure.py"
+      - "tests/test_artifact_handoff.py"
+      - "w3_tool_store/agent_workbench/tools/artifact_handoff/**"
       - "tests/test_system_inspection.py"
       - "core/modules_loader/**"
       - "modules/**"
@@ -26,6 +28,8 @@ on:
       - "core/runtime/capabilities/cast_structure.py"
       - "w3_tool_store/agent_workbench/tools/system_inspection/**"
       - "tests/test_cast_structure.py"
+      - "tests/test_artifact_handoff.py"
+      - "w3_tool_store/agent_workbench/tools/artifact_handoff/**"
       - "tests/test_system_inspection.py"
       - "core/modules_loader/**"
       - "modules/**"
@@ -69,4 +73,5 @@ jobs:
           python -m unittest tests.test_chatgpt_flow_artifact -v
           python -m unittest tests.test_origin_agent_runtime_contracts -v
           python -m unittest tests.test_cast_structure -v
+          python -m unittest tests.test_artifact_handoff -v
           python -m pytest tests/test_system_inspection.py -q -o addopts=
