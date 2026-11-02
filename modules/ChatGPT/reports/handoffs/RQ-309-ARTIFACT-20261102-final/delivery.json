@@ -1,0 +1,29 @@
+{
+  "schema": "w3.artifact_delivery/1",
+  "request_id": "RQ-ARTIFACT-HANDOFF-135030246865754401287499718175699695189",
+  "task_id": "W3-ORC-20261102-135030246865754401287499718175699695189",
+  "status": "WAITING_HUMAN",
+  "technical_result": "VERIFIED",
+  "expected_stop_reached": true,
+  "recipient": "BBX19",
+  "human_approval": null,
+  "automatic_continuation": false,
+  "artifacts": [
+    {
+      "path": "modules/Cast/reports/aaaf223b71b9445fb3f83315baa6182d.json",
+      "sha256": "32c3ec3488824d8cd5ec35acce8c52ac367f52dc99e56de1074d03b383c26680",
+      "bytes": 10317,
+      "kind": "w3.cast.structure_report.json"
+    },
+    {
+      "path": "modules/Cast/artifacts/private/aaaf223b71b9445fb3f83315baa6182d.json",
+      "sha256": "71ff829348aa2a65e9533417b02a9638d47ea89781834b847e4fae6e708a7635",
+      "bytes": 764,
+      "kind": "w3.cast.private_pattern.json"
+    }
+  ],
+  "rules": "modules/ChatGPT/reports/handoffs/RQ-309-ARTIFACT-20261102-final/rules.json",
+  "verification": "modules/ChatGPT/reports/handoffs/RQ-309-ARTIFACT-20261102-final/Gemini-result.json",
+  "task_snapshot": "modules/ChatGPT/reports/handoffs/RQ-309-ARTIFACT-20261102-final/tasks/W3-ORC-20261102-135030246865754401287499718175699695189.json",
+  "scope": "this source report and private pattern only; not all W3 systems"
+}

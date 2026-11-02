@@ -1,0 +1,165 @@
+{
+  "task_id": "W3-ORC-20261102-135030246865754401287499718175699695189",
+  "type": "REQUEST",
+  "priority": "NORMAL",
+  "origin": {
+    "module": "BBX19",
+    "tier": 0
+  },
+  "payload": {
+    "request_id": "RQ-ARTIFACT-HANDOFF-135030246865754401287499718175699695189",
+    "intent": "Create a source inspection report and separate private pattern; independently verify and return to owner.",
+    "source_paths": [
+      "core/runtime/agents/cast.py",
+      "core/runtime/capabilities/cast_structure.py",
+      "core/identity/profiles/Cast.idp.json"
+    ],
+    "expected_stop": "WAITING_HUMAN",
+    "final_signoff_required": true,
+    "not_required": "activation of every W3 system"
+  },
+  "source_id": "RQ-ARTIFACT-HANDOFF-135030246865754401287499718175699695189",
+  "created_at": "2026-11-02T13:24:27.331759Z",
+  "updated_at": "2026-11-02T13:24:27.379075Z",
+  "status": "WAITING_HUMAN",
+  "destination": {
+    "module": "Gemini",
+    "task": "verify"
+  },
+  "route": [
+    {
+      "destination": {
+        "module": "Cast",
+        "task": "structural_inspect"
+      },
+      "at": "2026-11-02T13:24:27.334378Z",
+      "notification": "modules/ChatGPT/reports/handoffs/RQ-309-ARTIFACT-20261102-final/Cast-handoff.json"
+    },
+    {
+      "destination": {
+        "module": "Gemini",
+        "task": "verify"
+      },
+      "at": "2026-11-02T13:24:27.359454Z",
+      "notification": "modules/ChatGPT/reports/handoffs/RQ-309-ARTIFACT-20261102-final/Gemini-handoff.json"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-11-02T13:24:27.331759Z",
+      "event": "RECEIVED",
+      "actor": "BBX19",
+      "detail": "intake"
+    },
+    {
+      "at": "2026-11-02T13:24:27.332479Z",
+      "event": "INSPECTING",
+      "actor": "Orchestration",
+      "detail": "Explicit work item and stopping condition recorded"
+    },
+    {
+      "at": "2026-11-02T13:24:27.333117Z",
+      "event": "QUEUED",
+      "actor": "Orchestration",
+      "detail": "Cast produces; Gemini reviews; owner receives"
+    },
+    {
+      "at": "2026-11-02T13:24:27.334391Z",
+      "event": "ROUTED",
+      "actor": "Orchestration",
+      "detail": "handoff delivered"
+    },
+    {
+      "at": "2026-11-02T13:24:27.335583Z",
+      "event": "ACKNOWLEDGED",
+      "actor": "Cast",
+      "detail": "Local executor accepted this bounded work"
+    },
+    {
+      "at": "2026-11-02T13:24:27.336376Z",
+      "event": "IN_PROGRESS",
+      "actor": "Cast",
+      "detail": "Invoke existing module executor"
+    },
+    {
+      "at": "2026-11-02T13:24:27.357305Z",
+      "event": "VERIFYING",
+      "actor": "host-artifact-verifier",
+      "detail": "Verify files before handing them to reviewer"
+    },
+    {
+      "at": "2026-11-02T13:24:27.358089Z",
+      "event": "QUEUED",
+      "actor": "Orchestration",
+      "detail": "Deliver Cast review request to Gemini"
+    },
+    {
+      "at": "2026-11-02T13:24:27.359467Z",
+      "event": "ROUTED",
+      "actor": "Orchestration",
+      "detail": "handoff delivered"
+    },
+    {
+      "at": "2026-11-02T13:24:27.361193Z",
+      "event": "ACKNOWLEDGED",
+      "actor": "Gemini",
+      "detail": "Local executor accepted this bounded work"
+    },
+    {
+      "at": "2026-11-02T13:24:27.364291Z",
+      "event": "IN_PROGRESS",
+      "actor": "Gemini",
+      "detail": "Invoke existing module executor"
+    },
+    {
+      "at": "2026-11-02T13:24:27.378145Z",
+      "event": "VERIFYING",
+      "actor": "Gemini",
+      "detail": "Independent artifact checks passed"
+    },
+    {
+      "at": "2026-11-02T13:24:27.379075Z",
+      "event": "WAITING_HUMAN",
+      "actor": "Orchestration",
+      "detail": "Expected final delivery; no more automatic work"
+    }
+  ],
+  "evidence": [
+    {
+      "at": "2026-11-02T13:24:27.334391Z",
+      "ref": "modules/ChatGPT/reports/handoffs/RQ-309-ARTIFACT-20261102-final/Cast-handoff.json",
+      "actor": "Orchestration"
+    },
+    {
+      "at": "2026-11-02T13:24:27.335583Z",
+      "ref": "modules/ChatGPT/reports/handoffs/RQ-309-ARTIFACT-20261102-final/Cast-ack.json",
+      "actor": "Cast"
+    },
+    {
+      "at": "2026-11-02T13:24:27.357305Z",
+      "ref": "modules/ChatGPT/reports/handoffs/RQ-309-ARTIFACT-20261102-final/pre-review-checks.json",
+      "actor": "host-artifact-verifier"
+    },
+    {
+      "at": "2026-11-02T13:24:27.359467Z",
+      "ref": "modules/ChatGPT/reports/handoffs/RQ-309-ARTIFACT-20261102-final/Gemini-handoff.json",
+      "actor": "Orchestration"
+    },
+    {
+      "at": "2026-11-02T13:24:27.361193Z",
+      "ref": "modules/ChatGPT/reports/handoffs/RQ-309-ARTIFACT-20261102-final/Gemini-ack.json",
+      "actor": "Gemini"
+    },
+    {
+      "at": "2026-11-02T13:24:27.378145Z",
+      "ref": "modules/ChatGPT/reports/handoffs/RQ-309-ARTIFACT-20261102-final/Gemini-result.json",
+      "actor": "Gemini"
+    }
+  ],
+  "blocker": null,
+  "support": [],
+  "human_review_required": true,
+  "human_approval": null,
+  "mutated": true,
+  "completed_at": null
+}
