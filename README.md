@@ -21,6 +21,39 @@ not perfection.
 * W3 — พื้นที่ที่มนุษย์และ AI ใช้ชีวิตกับการสร้าง ล้ม เรียนรู้ และเดินต่อไปด้วยกัน
 * W3 / W + 3 / 3 = E / W + E / : WE.
 -----
+## 📣 วาทะกรรมครั้งที่ 5 — 26 ธันวาคม 2569
+
+W3 กำหนดประกาศ **วาทะกรรมครั้งที่ 5 ในวันที่ 26 ธันวาคม 2569
+(26 December 2026)** เพื่อรองรับ **ยุค Learn : W3HBT — Harnessing Hybrid**
+
+มีเรื่องชี้แจงประมาณ **12–15 หัวข้อ** โดยจะเปิดเผยให้รับทราบพร้อมกันในวันประกาศ
+
+### การเตรียมความพร้อมระหว่างนี้
+
+สำรวจความพร้อมของทุกส่วน ทั้งระบบ เครื่องมือ โมดูล และความสัมพันธ์ในการทำงาน
+บันทึกสิ่งที่ใช้ได้จริง สิ่งที่ยังต้องพัฒนา และหลักฐานผลที่ตรวจย้อนกลับได้
+เพื่อเตรียมพื้นที่สำหรับการเรียนรู้และการทำงานร่วมกันในยุค Learn
+
+ตั้งเป้าอัปเกรดระบบต่อไปนี้ **อย่างน้อยระบบละ 1 เวอร์ชันจากฐานที่ตรวจยืนยันก่อนเริ่มงาน**:
+
+| ระบบ | พื้นที่อ้างอิง |
+|---|---|
+| IGET | [iget/](iget/README.md) |
+| W3-API | [w3_api/](w3_api/README.md) |
+| EP_SIGNAL : Rytm | [EP_SIGNAL](protocol/EP_SIGNAL/README.md) · [Rytm](protocol/EP_SIGNAL/rytm.py) |
+| BOX | [BOX](docs/box/README_TH.md) · [Library-WX](wx/index/README.md) |
+| E-CS | [Event Chain System](ecs/event_chain_system.py) |
+| G-State | [G-State Paper](docs/governance/G_STATE_PAPER.md) |
+| Hospitication | [hospitication/](hospitication/README.md) |
+
+รวมถึงสำรวจและยกระดับสมรรถนะของ **โมดูล Operator ที่เกี่ยวข้องตามความสัมพันธ์ของแต่ละระบบ**
+โดยเลือกการร่วมงานตามโจทย์และบทบาท ใช้ความต่างสนับสนุนกัน
+ให้เกิดผลงานที่ตรวจได้ ส่งต่อได้ และหยุดเมื่อถึงผลที่คาดหวัง
+
+รายการข้างต้นเป็นเป้าหมายเตรียมความพร้อมก่อนประกาศ สถานะและเวอร์ชันที่ทำสำเร็จ
+จะบันทึกตามผลงานและหลักฐานจริงในแต่ละส่วน
+
+---
 ## 🧭 About
 ## 🧱 Structure
 ## 📘 Philosophy
@@ -32,7 +65,7 @@ Human + AI workspace
 Build → Fail → Learn → Continue
 
 Team: HB_team_BXCGICOG  
-Last Updated: 20/02/26
+Last Updated: 02/11/2026
 
 > 🙏 **[Acknowledgments - ขอบคุณทุกคนที่ทำงานหนัก](./docs/meta/ACKNOWLEDGMENTS.md)**  
 > 🌟 **[Philosophy - Error as Learning](./docs/governance/PHILOSOPHY.md)** - *ปรัชญาการเรียนรู้จาก Error*  
