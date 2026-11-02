@@ -89,6 +89,19 @@ def test_skipped_or_empty_suites_never_pass():
     assert inspection.classify(0, {'tests': 1, 'failures': 0, 'errors': 0, 'skipped': 1}) == 'PARTIAL'
 
 
+def test_changed_transitive_implementation_invalidates_old_result(monkeypatch, tmp_path):
+    monkeypatch.setattr(inspection, 'CATALOG', fixture_root(tmp_path))
+    core = tmp_path/'core'
+    core.mkdir()
+    dependency = core/'dependency.py'
+    dependency.write_text('VALUE = 1\n')
+    result = inspection.execute(tmp_path, context())
+    assert all(c['passed'] for c in inspection.report_checks(tmp_path, result))
+    dependency.write_text('VALUE = 2\n')
+    checks = inspection.report_checks(tmp_path, result)
+    assert not next(c['passed'] for c in checks if c['name'] == 'source_manifest_matches_current')
+
+
 def test_root_request_runs_registered_inspection_then_pair_without_replay(monkeypatch, tmp_path):
     from tests.test_runtime_circuit_intake import configure
     from tools import request_cycle as rc

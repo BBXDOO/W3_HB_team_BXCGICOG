@@ -22,7 +22,7 @@ class CastAgent(RuntimeAgent):
                 return True
             if normalized in {"false", "0", "no", "silent", "missing", ""}:
                 return False
-        if value in {0, 1}:
+        if isinstance(value, (int, float)) and value in {0, 1}:
             return bool(value)
         raise ValueError("reported must be a boolean or an explicit boolean string")
 
@@ -45,7 +45,7 @@ class CastAgent(RuntimeAgent):
         }
 
     def execute(self, task: str, plan: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
-        """บันทึกกิจกรรมระดับ MAIN ของ W3 — ไม่ลงลึกใน subsystem ใดๆ
+        """Cast local capabilities: main activity, supplied context and source inspection.
 
         plan รองรับ 2 รูปแบบ:
           {"kind": "assignment", "module": "...", "task": "...", "assigned_by": "..."}
@@ -60,9 +60,15 @@ class CastAgent(RuntimeAgent):
             return self._review_required(task, "context must be a mapping", "validate_context")
 
         task_name = str(task or "").strip().lower()
+        if task_name in {"structural_inspect", "structural_adapt", "capability_learn"}:
+            from core.runtime.capabilities.cast_structure import execute
+            try:
+                return execute(task_name, context)
+            except (OSError, TypeError, ValueError, SyntaxError) as exc:
+                return self._review_required(task, str(exc), "inspect_structure")
         inferred_kind = (
             "reasoning"
-            if task_name in {"reason", "reasoning", "interpret", "interpretation", "structural_review"}
+            if task_name in {"reason", "reasoning", "critical_reasoning", "interpret", "interpretation", "structural_review"}
             else ""
         )
         kind = str(plan.get("kind") or inferred_kind).strip()
@@ -158,7 +164,6 @@ class CastAgent(RuntimeAgent):
                 or context.get("evidence")
                 or payload.get("observations")
                 or payload.get("evidence")
-                or context.get("records")
                 or []
             )
             if not isinstance(observations, list):

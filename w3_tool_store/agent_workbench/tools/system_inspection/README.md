@@ -24,6 +24,13 @@ FAIL/BLOCKED/TIMEOUT เก็บไว้ตามจริง การเก�
 หาก host ไม่มี pytest จะได้รายงาน BLOCKED แยกแต่ละระบบ พร้อมตรวจชุดถัดไปต่อ
 การแยกสำเนามีไว้ไม่ให้ชุดทดสอบเขียน checkout จริง ไม่ใช่ security sandbox
 
+รายงานใหม่เก็บ `source-manifest.json` ซึ่งผูก hash ของ runtime/config/tests
+และ manifest โมดูลตาม roots ที่ประกาศไว้ในไฟล์นั้น ตัวตรวจผลเปรียบเทียบทั้ง
+manifest และ hash ของไฟล์หลักฐานกับซอร์สปัจจุบัน จึงปฏิเสธผลเก่าหาก dependency
+ที่อยู่ในขอบเขตเปลี่ยน แม้ entry point เดิมไม่เปลี่ยนก็ตาม ไม่รวม mutable memory,
+generated evidence, symlinks, dependencies ที่ติดตั้ง หรือ xrea prototype
+รายงานเก่าที่ไม่มี manifest ยังคงเป็นประวัติ แต่ไม่ใช้รับรองซอร์สรุ่นปัจจุบัน
+
 ## Movement
 
 - [runner.py](runner.py): catalog คงที่, รันชุดตรวจ, เก็บรายงานและตัวตรวจหลักฐาน
