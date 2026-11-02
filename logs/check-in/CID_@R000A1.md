@@ -122,3 +122,21 @@ DOCS - REQUEST CHECK-IN SHEET
 • Operation : ทรู
 • Suggestions : "Request RQ-W3-SYSTEM-INSPECTION-B-20261028-001: COMPLETED; 2 executor result(s), 1 file artifact(s)."
 ---
+• NO.21 : RQ-CAST-PLATFORM-W3-DATAFLOW-001
+• DATE : 2026-11-02T13:03:06Z
+• Person : BBX19
+• Operation : เฟล
+• Suggestions : "Copilot-Gm did not complete the governance coverage review."
+---
+• NO.22 : RQ-CHATGPT-REPRESENTATIVE-ARTIFACT-001
+• DATE : 2026-09-22T09:52:57Z
+• Person : BBX19
+• Operation : ทรู
+• Suggestions : "Created a local flow artifact from the routed task and request context. No remote model, network call, or external executor was used."
+---
+• NO.23 : RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001
+• DATE : 2026-10-03T10:08:04Z
+• Person : BBX19
+• Operation : ทรู
+• Suggestions : "Document created, Gemini-validated, and approved by BBX19."
+---
