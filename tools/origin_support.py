@@ -22,6 +22,7 @@ def inspect_origin_work(root, module, result, report_path, *, authority=None):
     if not allowed.is_relative_to(root) or not report_path.is_relative_to(allowed):
         raise ValueError('Support report must remain in Origin collaboration space')
     findings, checks, tools_used = [], [], []
+    receipt_verified = False
     receipt = (root / result['log_path']).resolve()
     log_root = (root / 'repo_events/origin_agents' / module / 'logs').resolve()
     try:
@@ -29,6 +30,9 @@ def inspect_origin_work(root, module, result, report_path, *, authority=None):
             raise ValueError('Owner receipt outside module log space')
         data = receipt.read_bytes()
         recorded = json.loads(data)
+        receipt_verified = digest(data) == result.get('receipt_sha256')
+        if result.get('receipt_sha256') and not receipt_verified:
+            raise ValueError('Owner receipt changed after execution')
         if recorded.get('module') != module or recorded.get('status') != result.get('status'):
             raise ValueError('Owner receipt identity/status mismatch')
         checks.append({'check': 'owner_receipt', 'path': result['log_path'],
@@ -38,9 +42,14 @@ def inspect_origin_work(root, module, result, report_path, *, authority=None):
         findings.append({'kind': 'invalid_owner_receipt', 'path': result['log_path'], 'reason': str(exc)})
     try:
         fs = OriginFiles(module, authority or {'repo_root': str(root)})
-        expected = {}
+        expected, produced_outputs = {}, {}
         for operation in recorded.get('operations', []):
             action, path = operation['action'], operation['path']
+            if operation.get('mutated') and operation.get('sha256'):
+                target = operation.get('destination', path)
+                produced_outputs[target] = operation['sha256']
+            if action in {'delete', 'move'} and operation.get('mutated'):
+                produced_outputs.pop(path, None)
             if action in {'read', 'copy'} and operation.get('sha256'):
                 expected[path] = operation['sha256']
             if action in {'create', 'write', 'append', 'edit'} and operation.get('sha256'):
@@ -61,6 +70,14 @@ def inspect_origin_work(root, module, result, report_path, *, authority=None):
                                    'path': value, 'purpose': 'inspect output path portability'})
                 checks.append({'check': 'portable_path', 'path': value,
                                'state': 'REVIEW' if portability else 'EVIDENCED', 'notes': portability})
+                if expected_hash is None:
+                    matched = not path.exists()
+                    actual = None
+                else:
+                    actual = digest(path.read_bytes())
+                    matched = actual == expected_hash
+                accountable = (module if receipt_verified and matched and expected_hash is not None
+                               and produced_outputs.get(value) == expected_hash else None)
                 if expected_hash is not None and path.is_file():
                     errors = []
                     if path.name == 'module.json':
@@ -71,14 +88,15 @@ def inspect_origin_work(root, module, result, report_path, *, authority=None):
                         errors = validate_file(str(path))
                         tools_used.append({'tool': 'tools/validate_metadata.py', 'function': 'validate_file',
                                            'path': value, 'purpose': 'check approval metadata'})
+                    after_validation = digest(path.read_bytes())
+                    if after_validation != actual:
+                        actual, matched, accountable = after_validation, False, None
                     for error in errors:
-                        findings.append({'kind': 'repository_tool_finding', 'path': value, 'reason': error})
-                if expected_hash is None:
-                    matched = not path.exists()
-                    actual = None
-                else:
-                    actual = digest(path.read_bytes())
-                    matched = actual == expected_hash
+                        findings.append({'kind': 'repository_tool_finding', 'path': value, 'reason': error,
+                                         'accountable': accountable, 'provenance': {
+                                             'receipt_verified': receipt_verified,
+                                             'produced_sha256': produced_outputs.get(value),
+                                             'expected_sha256': expected_hash, 'actual_sha256': actual}})
                 checks.append({'check': 'final_file_state', 'path': value,
                                'state': 'EVIDENCED' if matched else 'DEFECT',
                                'expected_sha256': expected_hash, 'actual_sha256': actual})

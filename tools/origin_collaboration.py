@@ -49,7 +49,9 @@ def collaborate(root, module, result, *, partner=None, structural=False, authori
                 partner_result = {'status': 'FAILED', 'invalid_partner_receipt': True}
             actual = OriginFiles(partner, scope).review([result['log_path']])
             if (partner_result.get('module') != partner or
-                    not actual['evidence'] or actual['evidence'] != partner_result.get('evidence')):
+                    actual['evidence'] != partner_result.get('evidence') or
+                    actual['findings'] != partner_result.get('findings', []) or
+                    partner_result.get('status') != ('REVIEW_REQUIRED' if actual['findings'] else 'COMPLETED')):
                 partner_result = {**partner_result, 'status': 'FAILED',
                                   'reason': 'Partner receipt review could not be verified', 'invalid_partner_receipt': True}
             elif actual['findings']:
@@ -68,7 +70,14 @@ def collaborate(root, module, result, *, partner=None, structural=False, authori
                       {'owner': module, 'evidence': ([result['work_start']] + ([result['intake_handoff']] if result.get('intake_handoff') else [])) if result.get('work_start') else []})
     if not result.get('work_start'):
         pair.note(module, 'Legacy receipt has no pre-execution intake; cannot certify original request', evidence=result['log_path'])
-    pair.carry(result.get('handoff_notes', []), result.get('note_explanations', []))
+    annotation_error = None
+    try:
+        pair.carry(result.get('handoff_notes', []), result.get('note_explanations', []))
+    except (ValueError, TypeError, KeyError) as exc:
+        annotation_error = {'kind': 'invalid_annotations', 'reason': str(exc),
+                            'path': result['log_path']}
+        record['annotation_error'] = annotation_error
+        pair.note(module, 'Rejected annotations retained in owner receipt', kind='error', evidence=result['log_path'])
     atomic_write(receipt, (json.dumps(record, ensure_ascii=False, indent=2) + '\n').encode())
     ref = str(receipt.relative_to(root))
     pair.transfer(module, active_partner, 'Orchestration', [ref, result['log_path']] if record['owner_log_exists'] else [ref],
@@ -79,6 +88,8 @@ def collaborate(root, module, result, *, partner=None, structural=False, authori
     orc.advance(task, 'ACKNOWLEDGED', actor=active_partner, detail='repository receipt inspected', evidence=ref)
     orc.advance(task, 'IN_PROGRESS', actor=active_partner, detail='inspect evidence and unresolved work')
     findings = list(result.get('findings', []))
+    if annotation_error:
+        findings.append(annotation_error)
     support = None
     if requested_partner in {None, 'Orchestration'} or active_partner == 'Orchestration' or result.get('status') != 'COMPLETED':
         task['blocker'] = {'kind': 'partner_unavailable' if result.get('status') == 'COMPLETED' else 'owner_work_incomplete',
@@ -120,15 +131,16 @@ def collaborate(root, module, result, *, partner=None, structural=False, authori
                'repair_status': 'WAITING_BBX19_SELECTION' if findings else 'NO_REPAIR_PROPOSED',
                'source_mutated': False, 'support': support,
                'support_status': task['status'] if support is not None or task.get('blocker') else 'NOT_REQUIRED'}
-    clear_errors = [item for item in findings if item.get('kind') in {'invalid_owner_receipt', 'missing_owner_receipt', 'repository_tool_finding'}]
+    explicit_errors = [item for item in findings if item.get('kind') in {'invalid_owner_receipt', 'missing_owner_receipt', 'repository_tool_finding', 'invalid_annotations'}]
+    clear_errors = [item for item in explicit_errors if item.get('accountable') == module]
     for item in findings:
-        pair.note(module, str(item), kind='error' if item in clear_errors else 'doubt', evidence=item.get('path'))
+        pair.note(item.get('accountable') or ('Orchestration' if item in explicit_errors else module), str(item), kind='error' if item in explicit_errors else 'doubt', evidence=item.get('path'))
     for item in payload['unknowns']:
         pair.note(module, str(item), evidence=ref)
     if partner_result and partner_result.get('invalid_partner_receipt'):
         pair.note(partner, 'Partner receipt could not be independently verified', kind='error', evidence=ref)
     if active_partner == 'Orchestration':
-        pair.note('Orchestration', 'No independent module reviewer available', kind='error', evidence=ref)
+        pair.note('Orchestration', 'Independent review did not establish an acceptable owner receipt', kind='error', evidence=ref)
     pair.transfer('Orchestration', active_partner if active_partner != 'Orchestration' else module, module,
                   [ref], [{'name': 'owner_receipt_present', 'passed': record['owner_log_exists']}])
     payload['paired_review'] = pair.audit()
@@ -138,12 +150,18 @@ def collaborate(root, module, result, *, partner=None, structural=False, authori
     # Persist full report before optional fault-note side effects.
     atomic_write(report, (json.dumps(payload, ensure_ascii=False, indent=2) + '\n').encode())
     if clear_errors:
-        payload['fault_note'] = record_fault(root, module, str(report.relative_to(root)), clear_errors)
-    if clear_errors or active_partner == 'Orchestration' or (partner_result and partner_result.get('status') == 'FAILED'):
+        try:
+            payload['fault_note'] = record_fault(root, module, str(report.relative_to(root)), clear_errors)
+        except (OSError, ValueError) as exc:
+            payload['fault_note_error'] = str(exc)
+    if explicit_errors or active_partner == 'Orchestration' or (partner_result and partner_result.get('status') == 'FAILED'):
         payload['replacement_pair'] = replacement(root, module, partner, [result['log_path']])
         if partner_result and partner_result.get('invalid_partner_receipt') and partner in {'ChatGPT', 'Gemini', 'Grok', 'DeepSeek', 'Copilot-Gm'}:
-            payload['reviewer_fault_note'] = record_fault(root, partner, str(report.relative_to(root)),
-                                                         payload['paired_review']['conflicts'])
+            try:
+                payload['reviewer_fault_note'] = record_fault(root, partner, str(report.relative_to(root)),
+                                                             payload['paired_review']['conflicts'])
+            except (OSError, ValueError) as exc:
+                payload['reviewer_fault_note_error'] = str(exc)
     if (not payload['paired_review']['trace_verified'] or payload['paired_review']['conflicts'] or not payload['paired_review']['all_handoffs_accepted']) and task['status'] != 'BLOCKED':
         task['blocker'] = {'reason': 'Backward trace failed', 'evidence': ref}
         orc.advance(task, 'BLOCKED', actor='Orchestration', detail='Backward trace failed', evidence=ref)

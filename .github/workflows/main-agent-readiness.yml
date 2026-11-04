@@ -11,6 +11,7 @@ on:
       - "tests/test_cast_structure.py"
       - "tests/test_artifact_handoff.py"
       - "tests/test_paired_work.py"
+      - "tests/test_paired_review_regressions.py"
       - "workflows/paired_work.py"
       - "w3_tool_store/agent_workbench/tools/artifact_handoff/**"
       - "tests/test_system_inspection.py"
@@ -32,6 +33,7 @@ on:
       - "tests/test_cast_structure.py"
       - "tests/test_artifact_handoff.py"
       - "tests/test_paired_work.py"
+      - "tests/test_paired_review_regressions.py"
       - "workflows/paired_work.py"
       - "w3_tool_store/agent_workbench/tools/artifact_handoff/**"
       - "tests/test_system_inspection.py"
@@ -77,5 +79,5 @@ jobs:
           python -m unittest tests.test_chatgpt_flow_artifact -v
           python -m unittest tests.test_origin_agent_runtime_contracts -v
           python -m unittest tests.test_cast_structure -v
-          python -m unittest tests.test_artifact_handoff tests.test_paired_work -v
+          python -m unittest tests.test_artifact_handoff tests.test_paired_work tests.test_paired_review_regressions -v
           python -m pytest tests/test_system_inspection.py -q -o addopts=

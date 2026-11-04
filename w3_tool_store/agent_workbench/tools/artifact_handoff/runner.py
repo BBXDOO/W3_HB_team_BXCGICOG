@@ -106,6 +106,15 @@ def verify_artifacts(root, produced, request, rules, baseline=None):
     return checks
 
 
+def verify_baseline(root, baseline):
+    try:
+        passed = bool(baseline) and all(sha(read_inside(root, p)) == expected
+                                        for p, expected in baseline.items())
+        return {'name': 'host_source_baseline', 'passed': passed}
+    except (OSError, ValueError, TypeError) as exc:
+        return {'name': 'host_source_baseline', 'passed': False, 'reason': str(exc)}
+
+
 def run(root, output, source_paths):
     root, output = Path(root).resolve(), Path(output).resolve()
     allowed = root/'modules/ChatGPT/reports/handoffs'
@@ -144,22 +153,55 @@ def run(root, output, source_paths):
     def advance(status, actor, detail, ref=None):
         orc.advance(task, status, actor=actor, detail=detail, evidence=ref)
         persist()
+    def prepare_handoff(module):
+        if json.loads(request_path.read_bytes()) != request or json.loads(rules_path.read_bytes()) != RULES:
+            raise ValueError('handoff request or rules changed')
+        pair.transfer('Orchestration', 'host-artifact-verifier', module,
+                      [str(request_path.relative_to(root)), str(rules_path.relative_to(root))],
+                      [{'name': 'request_and_rules', 'passed': json.loads(request_path.read_bytes()) == request and json.loads(rules_path.read_bytes()) == RULES}])
     def handoff(module, job, payload):
         def notify(message):
             ref = evidence(module+'-handoff', {**message, 'input': payload,
                                                'rules_path': str(rules_path.relative_to(root))})
             return {'delivered': True, 'evidence': ref}
-        pair.transfer('Orchestration', 'host-artifact-verifier', module,
-                      [str(request_path.relative_to(root)), str(rules_path.relative_to(root))],
-                      [{'name': 'request_and_rules', 'passed': json.loads(request_path.read_bytes()) == request and json.loads(rules_path.read_bytes()) == RULES}])
         orc.route(task, {'module': module, 'task': job}, actor='Orchestration', notify=notify)
         persist()
         ack = evidence(module+'-ack', {'accepted_by': 'local module executor', 'module': module,
                                       'request_id': request['request_id']})
         advance('ACKNOWLEDGED', module, 'Local executor accepted this bounded work', ack)
         advance('IN_PROGRESS', module, 'Invoke existing module executor')
+    produced = {}
+    def blocked(reason, check_ref, accountable=None):
+        task['blocker'] = {'reason': reason, 'evidence': check_ref}
+        if task['status'] in {'INSPECTING', 'VERIFYING'}:
+            advance('WAITING_HUMAN', 'Orchestration', 'Handoff preparation failed', check_ref)
+        if task['status'] != 'BLOCKED':
+            advance('BLOCKED', 'Orchestration', reason, check_ref)
+        pair.note(accountable or 'Orchestration', reason, kind='error', evidence=check_ref)
+        pair.transfer(accountable or 'Orchestration', 'host-artifact-verifier', 'Orchestration',
+                      [check_ref], [{'name': 'delivery_valid', 'passed': False}])
+        delivery = {'schema': 'w3.artifact_delivery/1', 'status': 'BLOCKED',
+                    'request_id': request['request_id'], 'technical_result': 'UNRESOLVED',
+                    'expected_stop_reached': False, 'human_approval': None,
+                    'automatic_continuation': False, 'artifacts': produced.get('artifacts', []),
+                    'failure': reason, 'checks': check_ref, 'paired_review': pair.audit(),
+                    'task_snapshot': str(persist().relative_to(root)),
+                    'replacement_pair': replacement(root, 'Cast', 'Gemini', [check_ref])}
+        write(output/'delivery.json', delivery)
+        if accountable:
+            try:
+                delivery['fault_note'] = record_fault(root, accountable,
+                    str((output/'delivery.json').relative_to(root)), delivery['paired_review']['conflicts'])
+            except (OSError, ValueError) as exc:
+                delivery['fault_note_error'] = str(exc)
+        write(output/'delivery.json', delivery)
+        return delivery
     persist()
     advance('INSPECTING', 'Orchestration', 'Explicit work item and stopping condition recorded')
+    try:
+        prepare_handoff('Cast')
+    except (OSError, ValueError, TypeError, KeyError) as exc:
+        return blocked('Initial handoff invalid', evidence('handoff-error', {'reason': str(exc)}))
     advance('QUEUED', 'Orchestration', 'Cast produces; Gemini reviews; owner receives')
     handoff('Cast', 'structural_inspect', request)
     try:
@@ -173,39 +215,24 @@ def run(root, output, source_paths):
     # This is an artifact review handoff requested by Cast, not approval of its
     # source changes or the use of WorkflowRuntime to bypass its review gate.
     produced_hash = sha(read_inside(root, produced_ref))
-    checks = verify_artifacts(root, produced, request, RULES, baseline)
+    baseline_check = verify_baseline(root, baseline)
+    checks = [baseline_check] + verify_artifacts(root, produced, request, RULES, baseline)
     initial = evidence('pre-review-checks', checks)
-    def blocked(reason, check_ref, accountable=None):
-        task['blocker'] = {'reason': reason, 'evidence': check_ref}
-        if task['status'] != 'BLOCKED':
-            advance('BLOCKED', 'Orchestration', reason, check_ref)
-        pair.note(accountable or 'Orchestration', reason, kind='error', evidence=check_ref)
-        pair.transfer(accountable or 'Orchestration', 'host-artifact-verifier', 'Orchestration',
-                      [check_ref], [{'name': 'delivery_valid', 'passed': False}])
-        delivery = {'schema': 'w3.artifact_delivery/1', 'status': 'BLOCKED',
-                    'request_id': request['request_id'], 'technical_result': 'UNRESOLVED',
-                    'expected_stop_reached': False, 'human_approval': None,
-                    'automatic_continuation': False, 'artifacts': produced.get('artifacts', []),
-                    'failure': reason, 'checks': check_ref, 'paired_review': pair.audit(),
-                    'task_snapshot': str(persist().relative_to(root)),
-                    'replacement_pair': replacement(root, 'Cast', 'Gemini', [produced_ref])}
-        write(output/'delivery.json', delivery)
-        if accountable:
-            try:
-                delivery['fault_note'] = record_fault(root, accountable,
-                    str((output/'delivery.json').relative_to(root)), delivery['paired_review']['conflicts'])
-            except (OSError, ValueError) as exc:
-                delivery['fault_note_error'] = str(exc)
-        write(output/'delivery.json', delivery)
-        return delivery
     if produced.get('status') != 'COMPLETED' or not checks or not all(c['passed'] for c in checks):
+        baseline_check = verify_baseline(root, baseline)
+        checks.append({**baseline_check, 'name': 'baseline_at_accountability'})
+        initial = evidence('pre-review-checks', checks)
         return blocked('Producer output cannot be verified', initial,
                        'Cast' if produced.get('status') == 'COMPLETED' and
-                       not any(c['name'] == 'host_source_baseline' and not c['passed'] for c in checks) else None)
-    report = json.loads(read_inside(root, produced['artifacts'][0]['path']))
-    for unknown in report.get('unknowns', []):
-        pair.note('Cast', str(unknown), evidence=produced['artifacts'][0]['path'])
-    pair.transfer('Cast', 'host-artifact-verifier', 'Gemini', [produced_ref, initial], checks)
+                       baseline_check['passed'] is True else None)
+    try:
+        report = json.loads(read_inside(root, produced['artifacts'][0]['path']))
+        for unknown in report.get('unknowns', []):
+            pair.note('Cast', str(unknown), evidence=produced['artifacts'][0]['path'])
+        pair.transfer('Cast', 'host-artifact-verifier', 'Gemini', [produced_ref, initial], checks)
+        prepare_handoff('Gemini')
+    except (OSError, ValueError, TypeError, KeyError) as exc:
+        return blocked('Review handoff preparation failed', evidence('handoff-error', {'reason': str(exc)}))
     advance('VERIFYING', 'host-artifact-verifier', 'Verify files before handing them to reviewer', initial)
     advance('QUEUED', 'Orchestration', 'Deliver Cast review request to Gemini')
     handoff('Gemini', 'verify', {'produced_result': produced_ref, 'rules_path': str(rules_path.relative_to(root))})

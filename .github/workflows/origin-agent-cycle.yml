@@ -21,6 +21,9 @@ on:
       - 'tools/origin_collaboration.py'
       - 'workflows/paired_work.py'
       - 'tests/test_paired_work.py'
+      - 'tests/test_paired_review_regressions.py'
+      - 'tools/origin_support.py'
+      - 'tools/orchestration_support.py'
       - 'tests/test_origin_collaboration.py'
       - 'tests/test_origin_operations.py'
       - 'tests/test_origin_status_intake.py'
@@ -42,7 +45,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: python -m unittest tests.test_origin_operations tests.test_origin_collaboration tests.test_origin_status_intake tests.test_paired_work -v
+      - run: python -m unittest tests.test_origin_operations tests.test_origin_collaboration tests.test_origin_status_intake tests.test_paired_work tests.test_paired_review_regressions -v
 
   work:
     if: github.event_name != 'pull_request'

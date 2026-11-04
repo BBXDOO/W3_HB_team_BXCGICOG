@@ -43,8 +43,17 @@ class PairedWork:
         return note['id']
 
     def carry(self, notes, explanations=()):
+        # Validate on a scratch ledger so partial input never enters a handoff.
+        trial = PairedWork(self.root, str(self.folder.relative_to(self.root)), self.start)
+        trial.notes, trial.explanations = deepcopy(self.notes), deepcopy(self.explanations)
+        trial._carry(notes, explanations)
+        self.notes, self.explanations = trial.notes, trial.explanations
+
+    def _carry(self, notes, explanations):
+        if not isinstance(notes, list) or not isinstance(explanations, (list, tuple)):
+            raise ValueError('notes and explanations must be lists')
         for note in notes:
-            if (not isinstance(note, dict) or not all(note.get(k) for k in ('id', 'owner', 'meaning'))
+            if (not isinstance(note, dict) or not all(isinstance(note.get(k), str) and note[k].strip() for k in ('id', 'owner', 'meaning'))
                     or note.get('kind') not in {'doubt', 'error'}):
                 raise ValueError('malformed carried note')
             existing = next((n for n in self.notes if n['id'] == note['id']), None)
@@ -53,6 +62,8 @@ class PairedWork:
             if existing is None:
                 self.notes.append(deepcopy(note))
         for explanation in explanations:
+            if not isinstance(explanation, dict):
+                raise ValueError('malformed explanation')
             self.explain(explanation['owner'], explanation['note_id'],
                          what=explanation['what'], how=explanation['how'], why=explanation['why'])
 
@@ -93,7 +104,7 @@ class PairedWork:
         return ref
 
     def audit(self):
-        failures, previous, known_notes = [], None, {}
+        failures, previous, known_notes, known_explanations = [], None, {}, []
         for index, ref in enumerate(self.events):
             try:
                 data = inside(self.root, ref['path']).read_bytes()
@@ -108,12 +119,17 @@ class PairedWork:
                 current = {n['id']: n for n in event['notes']}
                 if any(current.get(k) != v for k, v in known_notes.items()):
                     raise ValueError('earlier note omitted or rewritten')
+                if event['explanations'][:len(known_explanations)] != known_explanations:
+                    raise ValueError('earlier explanation omitted or rewritten')
+                known_explanations = event['explanations']
                 known_notes = current
                 previous = ref
             except (OSError, ValueError, KeyError, TypeError) as exc:
                 failures.append({'receipt': ref, 'reason': str(exc)})
         if known_notes != {n['id']: n for n in self.notes}:
             failures.append({'reason': 'final notes differ from last handoff'})
+        if known_explanations != self.explanations:
+            failures.append({'reason': 'final explanations differ from last handoff'})
         for item in self.start.get('evidence', []):
             try:
                 if fingerprint(inside(self.root, item['path']).read_bytes()) != item['sha256']:
@@ -125,9 +141,9 @@ class PairedWork:
                 'explanations': deepcopy(self.explanations), 'failures': failures,
                 'note_review': [{'id': n['id'], 'owner': n['owner'],
                     'disposition': 'ERROR_RETAINED' if n['kind'] == 'error' else 'CARRIED',
-                    'explanation_attached': any(e['note_id'] == n['id'] for e in self.explanations)} for n in self.notes],
+                    'explanation_attached': any(e['note_id'] == n['id'] for e in known_explanations if e in self.explanations)} for n in self.notes],
                 'explanation_requests': [{'note_id': n['id'], 'owner': n['owner'], 'fields': ['what', 'how', 'why']}
-                    for n in self.notes if not any(e['note_id'] == n['id'] for e in self.explanations)],
+                    for n in self.notes if not any(e['note_id'] == n['id'] for e in known_explanations if e in self.explanations)],
                 'trace_verified': bool(self.events) and bool(self.start.get('evidence')) and not failures,
                 'all_handoffs_accepted': bool(self.events) and not failures and all(
                     json.loads(inside(self.root, ref['path']).read_bytes())['accepted'] for ref in self.events),
@@ -168,7 +184,7 @@ def replacement(root, owner, reviewer, paths):
         m: [{'path': p, 'operations': ['read']} for p in paths] for m in ORIGINS}}
     candidate, rejected = default_catalog(root, authority_context=authority).select(
         'file_review', kind='SPECIALIST', owner=owner,
-        exclude=['origin-review:'+reviewer], request={'paths': paths})
+        exclude=['origin-review:'+reviewer] if reviewer else [], request={'paths': paths})
     return {'selected_by': 'Orchestration', 'sender': owner,
             'reviewer': candidate.module if candidate else None,
             'status': 'SELECTED_AWAITING_RETRY' if candidate else 'BLOCKED_NO_CAPABLE_PAIR',

@@ -34,3 +34,26 @@
 
 [กติกาและวิธีชี้แจง](../../../workflows/orchestration/definitions/PAIRED_WORK.md)
 [ผลส่งมอบและหมายเหตุทั้งหมด](handoffs/RQ-PAIRED-20261104-final/delivery.json)
+
+## แก้ตามรีวิว PR #322 รอบที่สอง
+
+ตรวจและแก้ประเด็นไม่ซ้ำกัน 10 ข้อจาก Codex และ Copilot:
+
+| ประเด็น | สิ่งที่แก้และหลักฐานทดสอบ |
+| --- | --- |
+| เนื้อหา edit ถูกเก็บใน intake | เก็บเฉพาะ metadata ที่อนุญาต ไม่เก็บ old/new หรือคีย์แทรกอื่น; test_edit_bodies_and_unrecognized_fields_are_not_persisted |
+| กล่าวโทษหน่วยที่เพียงอ่านไฟล์เสีย | ผูก hash ใบปฏิบัติงานจาก host กับผลผลิตของรอบนั้น และตรวจ hash ปัจจุบันก่อนระบุเจ้าของความผิด; test_read_only_invalid_input_does_not_create_owner_fault / test_unknown_writer_invalid_output_does_not_create_owner_fault / test_tampered_owner_receipt_cannot_establish_producer_fault |
+| Baseline ยังไม่ถูกตรวจแต่สรุปว่า Cast ผิด | ตรวจ baseline แยกจาก parser เสมอ ถ้าหาย/เปลี่ยน/อ่านไม่ได้ไม่ระบุผู้กระทำ; test_missing_or_invalid_source_does_not_imply_cast_fault |
+| operations ผิดชนิดทำให้ไม่เกิดใบ FAILED | ตรวจรูปแบบก่อนวนเก็บ metadata และยังคืนใบล้มเหลว; test_non_list_operations_still_get_failure_receipts |
+| หมายเหตุหายเมื่อใช้ request.payload | อ่านผ่านตัวแกะ transport เดียวกับ operations ครบทั้ง direct/payload/request/request.payload; test_all_supported_context_transports_keep_notes_and_explanations |
+| ผู้ตรวจแจ้งว่าไฟล์หายแต่กลับถูกกล่าวโทษ | เปรียบเทียบ findings/status/evidence จริง ยอมรับผล REVIEW_REQUIRED ที่ตรงกัน; test_correct_missing_receipt_review_does_not_blame_reviewer |
+| หมายเหตุผิดรูปแบบทำ collaboration ล้มซ้ำ | ตรวจแบบ atomic และเก็บเหตุปฏิเสธในรายงาน BLOCKED พร้อม snapshot/follow-up; test_rejected_annotations_block_with_report_and_followup |
+| คำขอ/กติกาเสียก่อนส่งให้ Gemini | ตรวจและสร้างใบส่งก่อน QUEUED หากเสียให้ BLOCKED พร้อม delivery และ snapshot; test_request_and_rules_damage_always_leave_blocked_delivery |
+| ไม่มีผู้ตรวจเดิมทำ replacement ล้ม | สร้างรายการเว้นผู้ตรวจเดิมเฉพาะเมื่อมีชื่อ คืนผลหาคู่ไม่ได้พร้อม snapshot; test_no_independent_reviewer_returns_saved_block |
+| คำชี้แจงถูกเพิ่มหลังส่งแต่ถูกนับว่าส่งแล้ว | ตรวจความต่อเนื่องและเทียบคำชี้แจงท้ายสุดกับใบที่ส่งจริง; test_explanation_added_after_last_handoff_is_not_certified / test_explanation_omission_or_rewrite_breaks_continuity |
+
+ชุดทดสอบกรณีข้างต้นอยู่ที่ `tests/test_paired_review_regressions.py` และเพิ่มเข้า CI แล้ว
+
+ผลตรวจรอบแก้: unittest ที่เกี่ยวข้อง **146 ข้อผ่าน** และ pytest สำหรับ Orchestration support/recovery กับ system inspection **24 ข้อผ่าน**
+pytest มีคำเตือน utcnow เดิม 8 รายการ ไม่มี test ล้ม
+หลักฐานการเดินงานรอบแรกคงไว้ตามที่เกิดจริง การแก้ครั้งนี้ยังรอ CI และการรีวิว commit ใหม่บน GitHub
