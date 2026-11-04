@@ -140,3 +140,21 @@ DOCS - REQUEST CHECK-IN SHEET
 • Operation : ทรู
 • Suggestions : "Document created, Gemini-validated, and approved by BBX19."
 ---
+• NO.24 : RQ-CAST-PLATFORM-W3-DATAFLOW-001
+• DATE : 2026-11-04T16:38:57Z
+• Person : BBX19
+• Operation : เฟล
+• Suggestions : "Copilot-Gm did not complete the governance coverage review."
+---
+• NO.25 : RQ-CHATGPT-REPRESENTATIVE-ARTIFACT-001
+• DATE : 2026-09-22T09:52:57Z
+• Person : BBX19
+• Operation : ทรู
+• Suggestions : "Created a local flow artifact from the routed task and request context. No remote model, network call, or external executor was used."
+---
+• NO.26 : RQ-COPILOT-GM-THAI-MARKDOWN-GUIDE-001
+• DATE : 2026-10-03T10:08:04Z
+• Person : BBX19
+• Operation : ทรู
+• Suggestions : "Document created, Gemini-validated, and approved by BBX19."
+---
