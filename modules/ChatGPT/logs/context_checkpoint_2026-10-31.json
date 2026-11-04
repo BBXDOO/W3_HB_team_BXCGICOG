@@ -79,5 +79,12 @@
       "statement": "ก่อนออกแบบการเชื่อมพื้นที่ ระบุเจตนา/ผลลัพธ์และสภาพแวดล้อมของงาน แล้วเลือกความสัมพันธ์ที่ตรวจสอบได้โดยไม่บังคับทุกงานเข้าห่วงโซ่เดียว",
       "status": "working_interpretation_not_user_rule"
     }
+  ],
+  "related_checkpoints": [
+    {
+      "path": "modules/ChatGPT/logs/context_checkpoint_2026-11-04_paired_work.json",
+      "recorded_at": "2026-11-04",
+      "purpose": "สถานะคู่งานและ PR #322 หลังผสาน; ตรวจหลักฐานสดก่อนใช้"
+    }
   ]
 }
