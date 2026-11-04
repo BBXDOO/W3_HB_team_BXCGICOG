@@ -37,3 +37,17 @@ WorkflowRuntime หรืออนุมัติใบงานเก่าท�
 
 OWNER : BBX19\
 MAKER : ChatGPT / Codex
+
+## กติกาคู่งานและหลักฐานก่อนเริ่ม
+
+เพิ่ม paired receipts ที่ระบุผู้ส่ง/ผู้ตรวจ/ผู้รับ และแนบหมายเหตุทุกข้อใน `delivery.json`
+ก่อนสรุป Orchestration ตรวจย้อนถึง request/rules/source-baseline ของ host
+ถ้าข้อผิดพลาดชัดเจน เก็บ delivery เต็ม เลือกผู้ตรวจคู่ใหม่ตามความสามารถที่มี
+และบันทึกบทเรียนใน `/notes` ของหน่วยที่ระบุความผิดได้จากหลักฐาน
+
+แก้ข้อทักท้วง PR #320: แยกไฟล์ด้วยตัวไฟล์จริงรวม hardlink/symlink,
+ผูก IDP กับ Cast v2 ตัวจริง, เปรียบเทียบไฟล์กับ baseline ก่อนผลิต,
+ผูกผลส่งกับผลรับด้วย hash ของ envelope, และตัดพาธซ้ำก่อนเริ่ม
+`verify_artifacts` ที่ไม่มี baseline ของ host จะไม่รับรองข้ออ้างว่าไม่มีการแก้ซอร์ส
+
+[รูปแบบคู่งานและคำชี้แจง](../../../../workflows/orchestration/definitions/PAIRED_WORK.md)

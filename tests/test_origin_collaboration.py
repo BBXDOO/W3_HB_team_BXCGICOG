@@ -50,7 +50,8 @@ class CollaborationTests(unittest.TestCase):
         task = json.loads((self.root / checked['orchestration_evidence']).read_text())
         self.assertTrue(report['structural'])
         self.assertIn('IGET', report['participants'])
-        self.assertEqual(checked['partner'], 'Orchestration')
+        self.assertNotIn(checked['partner'], ('ChatGPT', 'Orchestration'))
+        self.assertTrue(report['paired_review']['trace_verified'])
         self.assertFalse(checked['support_pending'])
         self.assertEqual(task['status'], 'COMPLETED')
         self.assertEqual(json.loads((self.root / 'ChatGPT/state.json').read_text()), {'active': True})
@@ -234,3 +235,28 @@ class CollaborationTests(unittest.TestCase):
         support = json.loads((self.root / check['support_evidence']).read_text())
         self.assertEqual(support['findings'][0]['kind'], 'output_evidence_mismatch')
 
+
+    def test_carried_note_and_owner_explanation_reach_final_report(self):
+        note = {'id': 'doubt-1', 'owner': 'ChatGPT', 'kind': 'doubt', 'meaning': 'limited inspection'}
+        explanation = {'note_id': 'doubt-1', 'owner': 'ChatGPT', 'what': 'read file',
+                       'how': 'local file adapter', 'why': 'bounded request'}
+        result = directed_work(self.root, 'ChatGPT', {'request_id': 'NOTES', 'source': 'BBX19',
+            'payload': {'handoff_notes': [note], 'note_explanations': [explanation],
+                        'operations': [{'action': 'read', 'path': 'ChatGPT/state.json'}]}})
+        report = json.loads((self.root/result['collaboration_report']).read_bytes())
+        self.assertIn(note, report['handoff_notes'])
+        self.assertEqual(report['note_explanations'][0]['what'], 'read file')
+        self.assertTrue(report['paired_review']['trace_verified'])
+        for ref in report['paired_review']['receipts']:
+            self.assertIn(note, json.loads((self.root/ref['path']).read_bytes())['notes'])
+
+    def test_clear_format_fault_creates_owned_notes_and_replacement(self):
+        result = directed_work(self.root, 'ChatGPT', {'request_id': 'BAD-FORMAT', 'source': 'BBX19',
+            'payload': {'operations': [{'action': 'create', 'path': 'ChatGPT/invalid.md',
+                                       'content': 'approved-by: BBX19\n'}]}})
+        report = json.loads((self.root/result['collaboration_report']).read_bytes())
+        self.assertTrue(result['support_pending'])
+        self.assertTrue(report['paired_review']['conflicts'])
+        self.assertTrue(report['fault_note'].startswith('ChatGPT/notes/'))
+        self.assertTrue((self.root/report['fault_note']).is_file())
+        self.assertNotIn(report['replacement_pair']['reviewer'], ('ChatGPT', report['partner']))

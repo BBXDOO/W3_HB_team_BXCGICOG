@@ -1,0 +1,106 @@
+{
+  "schema": "w3.artifact_delivery/1",
+  "request_id": "RQ-ARTIFACT-HANDOFF-91541484676504136431259836707556116184",
+  "task_id": "W3-ORC-20261102-91541484676504136431259836707556116184",
+  "status": "WAITING_HUMAN",
+  "technical_result": "VERIFIED",
+  "expected_stop_reached": true,
+  "recipient": "BBX19",
+  "human_approval": null,
+  "automatic_continuation": false,
+  "paired_review": {
+    "schema": "w3.paired_audit/1",
+    "start": {
+      "request_id": "RQ-ARTIFACT-HANDOFF-91541484676504136431259836707556116184",
+      "evidence": [
+        {
+          "path": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/request.json",
+          "sha256": "4d5ca2d74b97a911a6b818f7da32ca05d65a00ca52b49789130c363c1090af14"
+        },
+        {
+          "path": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/rules.json",
+          "sha256": "4dcf29cc39749f4903d54b12180b4a2d35ad88caae615371e77235bacbae7f7e"
+        },
+        {
+          "path": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/source-baseline.json",
+          "sha256": "474d3b0f0f61da604254097f1a85631ad8aed4d8ce610263adcb52c7a5f8431b"
+        }
+      ]
+    },
+    "receipts": [
+      {
+        "path": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/paired/0-5c9812aee054474e9a8e5a728ea197c3.json",
+        "sha256": "06f2c9fe4d900b8c7cf100f6ffb87e018575fbb4efcc973bfafdbc152b115d1c"
+      },
+      {
+        "path": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/paired/1-c104c9ba4b66487f9953fe4addb49686.json",
+        "sha256": "eb3d71312f3ed760e8935fa593a294eb5ec4b0fc2ed65d411b35da7da245584f"
+      },
+      {
+        "path": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/paired/2-c78695c472a348ce90cf6f09571803d1.json",
+        "sha256": "ec25763880c79ea3e60ef2e6ef1ff346524590d6c4e0b394633121410eca34da"
+      },
+      {
+        "path": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/paired/3-715ee61948204260b93e64b06e9290af.json",
+        "sha256": "b640d565808aafb855f1f3962d7146775858b9b5b5edae7a2f46ed150efd99f7"
+      },
+      {
+        "path": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/paired/4-59173e664571442cabae79bb10298549.json",
+        "sha256": "7f3452d57a6d56f03f76a8620c3d28f3cb55d1f59bc4bb58171ff313cde197b6"
+      }
+    ],
+    "notes": [
+      {
+        "id": "e5e859e20e93487197235513cc004e9a",
+        "owner": "Cast",
+        "kind": "doubt",
+        "meaning": "Dynamic callers, semantic correctness and end-to-end execution are not established.",
+        "evidence": "modules/Cast/reports/815f23ba038843b29e298239f9c026f1.json",
+        "status": "OPEN"
+      }
+    ],
+    "explanations": [],
+    "failures": [],
+    "note_review": [
+      {
+        "id": "e5e859e20e93487197235513cc004e9a",
+        "owner": "Cast",
+        "disposition": "CARRIED",
+        "explanation_attached": false
+      }
+    ],
+    "explanation_requests": [
+      {
+        "note_id": "e5e859e20e93487197235513cc004e9a",
+        "owner": "Cast",
+        "fields": [
+          "what",
+          "how",
+          "why"
+        ]
+      }
+    ],
+    "trace_verified": true,
+    "all_handoffs_accepted": true,
+    "conflicts": [],
+    "explanation_policy": "responsible owner may append what/how/why; claims do not clear evidence failures"
+  },
+  "artifacts": [
+    {
+      "path": "modules/Cast/reports/815f23ba038843b29e298239f9c026f1.json",
+      "sha256": "14092d35101333f3f4eb97c6dfb402dbc56a9b66980b15e19c41bb9f6186df44",
+      "bytes": 9898,
+      "kind": "w3.cast.structure_report.json"
+    },
+    {
+      "path": "modules/Cast/artifacts/private/815f23ba038843b29e298239f9c026f1.json",
+      "sha256": "020c53dc7fc780e824c42861596149b30af616c74becccbf23a02a336bfcd652",
+      "bytes": 635,
+      "kind": "w3.cast.private_pattern.json"
+    }
+  ],
+  "rules": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/rules.json",
+  "verification": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/Gemini-result.json",
+  "task_snapshot": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/tasks/W3-ORC-20261102-91541484676504136431259836707556116184.json",
+  "scope": "this source report and private pattern only; not all W3 systems"
+}

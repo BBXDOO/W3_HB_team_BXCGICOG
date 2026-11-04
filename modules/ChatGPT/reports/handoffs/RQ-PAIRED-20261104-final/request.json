@@ -1,0 +1,11 @@
+{
+  "request_id": "RQ-ARTIFACT-HANDOFF-91541484676504136431259836707556116184",
+  "intent": "Create a source inspection report and separate private pattern; independently verify and return to owner.",
+  "source_paths": [
+    "core/runtime/agents/cast.py",
+    "core/runtime/capabilities/cast_structure.py"
+  ],
+  "expected_stop": "WAITING_HUMAN",
+  "final_signoff_required": true,
+  "not_required": "activation of every W3 system"
+}

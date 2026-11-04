@@ -1,0 +1,24 @@
+{
+  "task_id": "W3-ORC-20261102-91541484676504136431259836707556116184",
+  "source_id": "RQ-ARTIFACT-HANDOFF-91541484676504136431259836707556116184",
+  "destination": {
+    "module": "Gemini",
+    "task": "verify"
+  },
+  "payload": {
+    "request_id": "RQ-ARTIFACT-HANDOFF-91541484676504136431259836707556116184",
+    "intent": "Create a source inspection report and separate private pattern; independently verify and return to owner.",
+    "source_paths": [
+      "core/runtime/agents/cast.py",
+      "core/runtime/capabilities/cast_structure.py"
+    ],
+    "expected_stop": "WAITING_HUMAN",
+    "final_signoff_required": true,
+    "not_required": "activation of every W3 system"
+  },
+  "input": {
+    "produced_result": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/Cast-result.json",
+    "rules_path": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/rules.json"
+  },
+  "rules_path": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/rules.json"
+}

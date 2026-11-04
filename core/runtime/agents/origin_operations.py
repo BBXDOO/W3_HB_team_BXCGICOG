@@ -55,7 +55,7 @@ def record_event(root, module, result):
         raise ValueError("Origin event directory escapes repository")
     def without_content(value):
         if isinstance(value, dict):
-            return {k: without_content(v) for k, v in value.items() if k not in {"content", "data_base64"}}
+            return {k: without_content(v) for k, v in value.items() if k not in {"content", "data_base64", "old", "new"}}
         if isinstance(value, list):
             return [without_content(v) for v in value]
         return value
@@ -64,6 +64,7 @@ def record_event(root, module, result):
     event = without_content(result)
     event.update(event_id=event_id, created_at=timestamp(), module=module)
     atomic_write(event_path, (json.dumps(event, ensure_ascii=False, indent=2) + "\n").encode())
+    result["receipt_sha256"] = digest(event_path.read_bytes())
     return result
 
 
@@ -273,7 +274,33 @@ def execute_origin(agent, task, plan, context):
         root = Path(authority.get("repo_root", ROOT)).resolve() if isinstance(authority, dict) else ROOT
         return record_event(root, agent.module_name, result)
     with repository_lock(fs.root):
+        intake = fs.events / 'intake' / (uuid.uuid4().hex + '.json')
+        # Record origin before effects. Body content stays out of operational logs.
+        payload = agent._mapping(context.get('payload'))
+        operations = agent.resolve_context_value(context, 'operations')
+        safe_operations = operations if isinstance(operations, list) else []
+        intake_value = {'module': agent.module_name, 'task': task, 'request_type': request_type,
+                        'source_id': agent._mapping(context.get('request')).get('request_id'),
+                        'request_sha256': digest(json.dumps(context.get('request'), sort_keys=True, default=str).encode()),
+                        'payload_sha256': digest(json.dumps(payload, sort_keys=True, default=str).encode()),
+                        'operations': [{k: v for k, v in op.items() if k in {'action', 'path', 'destination', 'expected_sha256', 'count'}}
+                                       for op in safe_operations if isinstance(op, dict)]}
+        atomic_write(intake, (json.dumps(intake_value, ensure_ascii=False, indent=2)+'\n').encode())
+        result['work_start'] = {'path': str(intake.relative_to(fs.root)), 'sha256': digest(intake.read_bytes())}
+        result['handoff_notes'] = agent.resolve_context_value(context, 'handoff_notes')
+        result['note_explanations'] = agent.resolve_context_value(context, 'note_explanations')
+        if result['handoff_notes'] is None:
+            result['handoff_notes'] = []
+        if result['note_explanations'] is None:
+            result['note_explanations'] = []
         try:
+            from workflows.paired_work import PairedWork
+            intake_pair = PairedWork(fs.root, str((fs.events/'intake_pairs'/uuid.uuid4().hex).relative_to(fs.root)),
+                                     {'evidence': [result['work_start']]})
+            intake_pair.carry(result['handoff_notes'], result['note_explanations'])
+            result['intake_handoff'] = intake_pair.transfer('Orchestration', 'host-origin-intake-verifier',
+                agent.module_name, [result['work_start']['path']],
+                [{'name': 'supported_origin_request', 'passed': request_type in {'origin_review', 'origin_file_operations'}}])
             if request_type == "origin_review":
                 result.update(fs.review(agent.resolve_context_value(context, "review_paths")))
                 result["status"] = "REVIEW_REQUIRED" if result["findings"] else "COMPLETED"

@@ -109,7 +109,8 @@ def default_catalog(root, *, authority_context=None):
             actual = OriginFiles(m, authority).review(context['request']['paths'])
             receipt = json.loads(inside(root, agent['log_path']).read_text())
             return {'passed': agent.get('module') == m and agent.get('status') == 'COMPLETED'
-                    and all(receipt.get(k) == v for k, v in agent.items())
+                    and all(receipt.get(k) == v for k, v in agent.items() if k != 'receipt_sha256')
+                    and hashlib.sha256(inside(root, agent['log_path']).read_bytes()).hexdigest() == agent.get('receipt_sha256')
                     and not actual['findings'] and bool(actual['evidence'])
                     and actual['evidence'] == agent.get('evidence')}
         catalog.register(Adapter(f'origin-review:{module}', 'SPECIALIST', frozenset({'file_review'}),

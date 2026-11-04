@@ -1,0 +1,15 @@
+{
+  "schema": "w3.artifact_review_rules/1",
+  "profile": "cast_source_inspection",
+  "checks": [
+    "artifact_hashes",
+    "request_and_trace_binding",
+    "source_hashes",
+    "source_structure_matches_source",
+    "private_pattern_separate",
+    "idp_reference",
+    "no_source_write"
+  ],
+  "expected_stop": "WAITING_HUMAN",
+  "authority": "technical verification only; owner review is separate"
+}
