@@ -1,0 +1,26 @@
+{
+  "schema": "w3.sandbox.manual-release.v1",
+  "versionCode": 52,
+  "versionName": "0.52",
+  "manualSha256": "2cd185ec9a0376532e64ac1b9cdf6f13f3810c865d43b2bc2f1f58d87dae67f5",
+  "sourceSha256": "5dbfd25a0f5c1a53486577d5a18dd98cba710a6f895b4d3b6e2b9bf22ad4de36",
+  "menus": [
+    "home",
+    "story",
+    "character",
+    "card",
+    "board",
+    "location",
+    "item",
+    "event",
+    "rule",
+    "commonPlay",
+    "play",
+    "library",
+    "shared",
+    "battle",
+    "commands",
+    "update",
+    "storage"
+  ]
+}

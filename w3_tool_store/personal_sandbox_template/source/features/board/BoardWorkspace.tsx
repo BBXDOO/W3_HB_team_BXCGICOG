@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import type { BoardPack, CellPack } from '../../types';
+import { BOARD_TABLE_THEMES, boardTableTheme } from '../../core/boardTheme';
 
 type ViewMode = NonNullable<BoardPack['viewMode']>;
 type RecordCell = { key: string; cell: CellPack };
@@ -34,6 +35,7 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
   const [query, setQuery] = useState('');
   const [sortBy, setSortBy] = useState<'coordinate' | 'name'>('coordinate');
   const mode = board.viewMode || 'grid';
+  const tableTheme = boardTableTheme(board);
   const gridViewport = useRef<HTMLDivElement>(null);
   const gap = board.gridStyle === 'dots' ? 5 : 3;
   const fitGrid = () => {
@@ -84,7 +86,12 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
       <section className={`${panel} min-w-0 min-h-0 flex flex-col overflow-hidden`} aria-label="ภาพรวมข้อมูล">
         <div className="flex items-center justify-between gap-2 pb-2 text-xs"><strong>{mode === 'overview' ? 'ภาพรวมพื้นที่' : mode === 'grid' ? 'ตารางพิกัด' : mode === 'database' ? 'รายการข้อมูล' : 'ความสัมพันธ์'}</strong><span className="text-emerald-300">{records.length} รายการ</span></div>
         {mode === 'database' && <div className="flex gap-1 mb-2"><input className={`${field} min-w-0`} type="search" placeholder="ค้นหาข้อมูล" value={query} onChange={event => setQuery(event.target.value)} /><select aria-label="เรียงรายการ" className={`${field} w-24 shrink-0`} value={sortBy} onChange={event => setSortBy(event.target.value as 'coordinate' | 'name')}><option value="coordinate">พิกัด</option><option value="name">ชื่อ</option></select></div>}
-        <div ref={gridViewport} className="board-grid-viewport scroll-container">
+        <div ref={gridViewport} className="board-grid-viewport scroll-container" style={mode === 'grid' ? {
+          background: tableTheme.background,
+          '--table-text': tableTheme.text,
+          '--table-grid': tableTheme.grid,
+          '--table-selection': tableTheme.selection,
+        } as React.CSSProperties : undefined}>
           {mode === 'grid' && <div className="grid w-max" style={{ gridTemplateColumns: `repeat(${board.width}, ${zoom}px)`, gap }}>
             {Array.from({ length: board.width * board.height }, (_, index) => {
               const x = index % board.width, y = Math.floor(index / board.width), key = `${x}_${y}`;
@@ -92,7 +99,7 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
               return <button key={key} type="button" title={cell?.name || `พิกัด ${x}, ${y}`} onClick={() => onSelect(key)}
                 aria-label={`ช่อง ${x},${y}`} aria-pressed={selectedKey === key}
                 className={`board-cell ${selectedKey === key ? 'board-cell-selected' : ''}`}
-                style={{ width: zoom, height: zoom, borderRadius: board.gridStyle === 'dots' ? '50%' : 4, background: cell?.markerColor || 'var(--board-empty)', fontSize: Math.max(7, zoom * .36) }}>{cell?.markerIcon || (board.showCoordinates ? `${x},${y}` : board.gridStyle === 'dots' ? '' : cell?.name?.slice(0, 3) || '')}</button>;
+                style={{ width: zoom, height: zoom, borderRadius: board.gridStyle === 'dots' ? '50%' : 4, background: cell?.markerColor || tableTheme.empty, fontSize: Math.max(7, zoom * .36) }}>{cell?.markerIcon || (board.showCoordinates ? `${x},${y}` : board.gridStyle === 'dots' ? '' : cell?.name?.slice(0, 3) || '')}</button>;
             })}
           </div>}
           {mode === 'overview' && (records.length ? <div className="grid grid-cols-3 auto-rows-[68px] gap-1">
@@ -112,6 +119,21 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
           <label><input type="checkbox" checked={!!board.showCoordinates} onChange={e => onAppearance({ showCoordinates: e.target.checked })} /> พิกัด</label>
           <label className="board-size">ขนาด <input aria-label="ขนาดช่องบอร์ด" type="range" min="8" max="64" value={zoom} onChange={e => onZoom(Number(e.target.value))} /> <span>{zoom}px</span></label>
         </div>}
+        {mode === 'grid' && <details className="board-table-theme">
+          <summary>🎨 ธีมเฉพาะตาราง</summary>
+          <div className="board-table-theme-options">
+            <div className="flex flex-wrap gap-2">{Object.entries(BOARD_TABLE_THEMES).map(([id, preset]) => <button key={id} type="button"
+              aria-pressed={Object.keys(tableTheme).every(key => tableTheme[key] === preset.colors[key])}
+              onClick={() => onAppearance({ tableTheme: { ...preset.colors } })}>{preset.label}</button>)}
+              <button type="button" onClick={() => onAppearance({ tableTheme: undefined })}>คืนค่าเริ่มต้น</button>
+            </div>
+            <div className="board-table-color-fields">{([
+              ['background', 'พื้นตาราง'], ['empty', 'ช่องว่าง'], ['grid', 'เส้นตาราง'], ['text', 'ตัวอักษร'], ['selection', 'กรอบช่องที่เลือก'],
+            ] as const).map(([key, label]) => <label key={key}>{label}<input type="color" aria-label={label} value={tableTheme[key]}
+              onChange={event => onAppearance({ tableTheme: { ...tableTheme, [key]: event.target.value } })} /></label>)}</div>
+            <p>ปรับเฉพาะตารางพิกัดของบอร์ดนี้ กดบันทึกเพื่อเก็บค่า ส่งออก JSON เพื่อสำรองพร้อมโครงการ สีช่องที่กำหนดไว้เองยังใช้ตามเดิม</p>
+          </div>
+        </details>}
 
       </section>
       <details className="board-inspector"><summary>รายละเอียด / เครื่องมือ {selectedKey ? `· ${selectedKey.replace('_', ', ')}` : ''}</summary><aside className="board-inspector-content scroll-container space-y-3 text-xs" aria-label="รายละเอียดและเครื่องมือ">
@@ -136,3 +158,4 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
     </div>
   </div>;
 };
+

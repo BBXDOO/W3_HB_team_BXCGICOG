@@ -1,0 +1,29 @@
+name: Personal Sandbox manual and web checks
+on:
+  push:
+    branches: [refactor/v0.2]
+    paths: ['w3_tool_store/personal_sandbox_template/**', '.github/workflows/personal-sandbox.yml']
+  pull_request:
+    paths: ['w3_tool_store/personal_sandbox_template/**', '.github/workflows/personal-sandbox.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: w3_tool_store/personal_sandbox_template/source
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: w3_tool_store/personal_sandbox_template/source/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run check:manual
+      - run: npm exec --yes --package=tsx -- tsx tests/boardTheme.tsx
+      - run: npm exec --yes --package=tsx -- tsx tests/authoringSmoke.tsx
+      - run: sh android-app/sync-web-assets.sh

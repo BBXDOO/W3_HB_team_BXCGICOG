@@ -13,4 +13,7 @@ html = path.read_text()
 html = html.replace('</head>', '  <link rel="stylesheet" href="./compact.css">\n</head>')
 path.write_text(html)
 PY
-echo "Android web assets updated."
+npm run verify:release
+python3 android-app/check-release.py
+echo "Android web assets updated with matching manual."
+

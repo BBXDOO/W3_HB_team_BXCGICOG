@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '../../ui/components/Button';
 import { StoryPack, UITheme } from '../../types';
-import guide from '../../docs/คู่มือใช้งานภาษาไทย.md?raw';
+import { UserGuide } from '../../ui/components/UserGuide';
+import { APP_VERSION_NAME } from '../../core/appVersion';
 
 interface TopBarProps {
   navigationCollapsed: boolean;
@@ -42,7 +43,7 @@ export const TopBar: React.FC<TopBarProps> = ({ navigationCollapsed, onToggleNav
     <header className="ps-topbar h-16 border-b px-2 md:px-6 flex items-center justify-between gap-2 z-50 relative">
       <div className="ps-brand-group">
         <button type="button" aria-label="ย่อหรือขยายเมนู" aria-expanded={!navigationCollapsed} onClick={onToggleNavigation} className="ps-menu-toggle">☰</button>
-        <button onClick={onExit} className="ps-brand" title="กลับไปคลังโครงการ"><span className="ps-brand-long">PERSONAL </span>SANDBOX<small>WORKSPACE / 0.51</small></button>
+        <button onClick={onExit} className="ps-brand" title="กลับไปคลังโครงการ"><span className="ps-brand-long">PERSONAL </span>SANDBOX<small>WORKSPACE / {APP_VERSION_NAME}</small></button>
         <div className="hidden md:block w-px h-8 bg-white/10"></div>
         <div className="hidden md:flex flex-col">
           <div className="flex items-center gap-2">
@@ -56,7 +57,7 @@ export const TopBar: React.FC<TopBarProps> = ({ navigationCollapsed, onToggleNav
       {guideOpen && <div className="fixed inset-0 z-[9999] bg-black/80 p-3 md:p-8 flex items-center justify-center" onClick={() => setGuideOpen(false)}>
         <section role="dialog" aria-modal="true" aria-label="คู่มือภาษาไทย" className="ps-dialog max-w-3xl w-full max-h-[85vh] flex flex-col text-slate-100 rounded-2xl border shadow-2xl" onClick={event => event.stopPropagation()}>
           <div className="p-4 border-b border-white/10 flex items-center justify-between"><h2 className="font-bold">คู่มือภาษาไทย</h2><button onClick={() => setGuideOpen(false)} className="p-2">ปิด ✕</button></div>
-          <div className="p-5 overflow-y-auto whitespace-pre-wrap text-sm leading-7">{guide}</div>
+          <UserGuide />
         </section>
       </div>}
 
@@ -111,3 +112,4 @@ export const TopBar: React.FC<TopBarProps> = ({ navigationCollapsed, onToggleNav
     </header>
   );
 };
+

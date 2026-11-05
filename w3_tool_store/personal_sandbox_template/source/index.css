@@ -177,8 +177,17 @@ input::placeholder, textarea::placeholder { color: var(--text-dim); opacity: .65
 .board-workspace-columns { display: grid; grid-template-rows: minmax(100px, 1fr) auto; gap: 6px; min-height: 0; flex: 1; }
 .board-workspace-columns > section { padding: 8px; }
 .board-grid-viewport { flex: 1; min-height: 0; overflow: auto; padding: 6px; border-radius: 6px; background: #0003; }
-.board-cell { display: flex; align-items: center; justify-content: center; color: #f3f0f7; border: 1px solid #ffffff0a; box-shadow: inset 0 1px #ffffff08; overflow: hidden; }
-.board-cell-selected { outline: 2px solid var(--accent); outline-offset: -1px; }
+.board-cell { display: flex; align-items: center; justify-content: center; color: var(--table-text, #f3f0f7); border: 1px solid var(--table-grid, #ffffff0a); box-shadow: inset 0 1px #ffffff08; overflow: hidden; }
+.board-cell-selected { outline: 2px solid var(--table-selection, var(--accent)); outline-offset: -1px; }
+.board-table-theme { flex-shrink: 0; max-height: 45%; overflow: auto; border: 1px solid var(--border); border-radius: 8px; margin-top: 6px; font-size: 12px; color: var(--text); }
+.board-table-theme summary { padding: 10px; cursor: pointer; }
+.board-table-theme-options { padding: 0 10px 10px; }
+.board-table-theme-options button { border: 1px solid var(--border); border-radius: 6px; padding: 8px; }
+.board-table-theme-options button[aria-pressed="true"] { outline: 2px solid var(--accent); }
+.board-table-theme-options p { margin-top: 8px; line-height: 1.7; }
+.board-table-color-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-top: 10px; }
+.board-table-color-fields label { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.board-table-color-fields input { width: 44px; height: 36px; padding: 2px; }
 .board-grid-controls { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; padding-top: 7px; }
 .board-grid-controls button { border: 1px solid var(--border); padding: 4px 7px; font-size: 9px; border-radius: 5px; }
 .board-grid-controls button[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
@@ -314,3 +323,4 @@ input::placeholder, textarea::placeholder { color: var(--text-dim); opacity: .65
 .markdown-image-placeholder { display: block; padding: 8px; border: 1px dashed var(--border); color: var(--text-dim); font-size: 11px; }
 .editor-shell .workspace-output-content .markdown-content :is(p,pre) { font-size: inherit; color: inherit; font-weight: inherit; }
 @media (min-width: 900px) { .story-writer-split { grid-template-columns: minmax(0,1fr) minmax(0,1fr); grid-template-rows: minmax(0,1fr); } .story-writer-split .story-writer-preview { border-top: 0; border-left: 1px solid var(--border); } }
+

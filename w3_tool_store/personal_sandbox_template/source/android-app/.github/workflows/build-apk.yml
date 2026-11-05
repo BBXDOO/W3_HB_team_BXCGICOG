@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Verify bundled manual matches APK
+        run: python3 check-release.py
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -33,3 +35,4 @@ jobs:
           name: W3-Sandbox-v40-compact-scrollable-library-APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+

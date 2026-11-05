@@ -142,6 +142,14 @@ export interface ModulePack {
   battleLink?: { tag: string; ruleId?: string; effects: BattleEffect[] };
 }
 
+export interface BoardTableTheme {
+  background: string;
+  empty: string;
+  grid: string;
+  text: string;
+  selection: string;
+}
+
 export interface BoardPack {
   boardId: string;
   title: string;
@@ -151,6 +159,7 @@ export interface BoardPack {
   gridStyle?: 'tiles' | 'dots';
   cellSize?: number;
   showCoordinates?: boolean;
+  tableTheme?: BoardTableTheme;
   bgAssetId?: string;
   cellMap: Record<string, CellPack>; 
   explored: Record<string, boolean>;
@@ -272,3 +281,4 @@ export interface StoryNode {
 }
 
 export interface Asset { id: string; name: string; dataUrl: string; }
+

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { StoryPack, TabId } from '../../types';
-import guide from '../../docs/คู่มือใช้งานภาษาไทย.md?raw';
+import { UserGuide } from '../../ui/components/UserGuide';
 
 interface Props {
   story: StoryPack;
@@ -28,7 +28,7 @@ export const AppCommands: React.FC<Props> = ({ story, activeTab, onAdd, onSave, 
     <section role="dialog" aria-modal="true" aria-label="คำสั่งและคู่มือแอป" className="w-full max-w-xl max-h-[85vh] flex flex-col rounded-2xl border border-emerald-500/40 bg-[var(--surface)] text-white shadow-2xl" onClick={event => event.stopPropagation()}>
       <div className="flex items-center justify-between border-b border-white/10 p-4"><h2 className="font-bold text-emerald-200">คำสั่งและคู่มือ Sandbox</h2><button aria-label="ปิด" onClick={onClose}>✕</button></div>
       <div className="flex gap-2 p-3 border-b border-white/10"><button className={`rounded-lg px-4 py-2 text-sm ${tab === 'commands' ? 'bg-emerald-700' : 'bg-white/10'}`} onClick={() => setTab('commands')}>คำสั่ง</button><button className={`rounded-lg px-4 py-2 text-sm ${tab === 'manual' ? 'bg-emerald-700' : 'bg-white/10'}`} onClick={() => setTab('manual')}>คู่มือ</button></div>
-      {tab === 'manual' ? <div className="overflow-y-auto p-4 whitespace-pre-wrap text-sm leading-7">{guide}</div> : <div className="overflow-y-auto p-4 space-y-4 text-sm">
+      {tab === 'manual' ? <UserGuide /> : <div className="overflow-y-auto p-4 space-y-4 text-sm">
         <p className="text-slate-300">เลือกงานที่แอปรองรับและดูผลด้านล่าง คำสั่งเหล่านี้ทำงานกับโครงการที่เปิดอยู่</p>
         <label className="block">เลือกคำสั่ง<select className="mt-2 w-full rounded-lg border border-white/15 bg-[var(--surface-2)] p-3" value={command} onChange={event => { setCommand(event.target.value); setResult(''); }}>
           <option value="summary">สรุปจำนวนข้อมูลในโครงการ</option><option value="add">เพิ่มรายการในหน้าปัจจุบัน</option><option value="save">บันทึกโครงการลงเครื่อง</option><option value="export">ส่งออกสำเนา JSON</option>
@@ -41,3 +41,4 @@ export const AppCommands: React.FC<Props> = ({ story, activeTab, onAdd, onSave, 
     </section>
   </div>;
 };
+

@@ -8,7 +8,11 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "tsc --noEmit",
-    "pack:zip": "python3 build_zip.py"
+    "pack:zip": "python3 build_zip.py",
+    "review:manual": "node scripts/manual-release.mjs --review",
+    "check:manual": "node scripts/manual-release.mjs",
+    "verify:release": "node scripts/manual-release.mjs --bundle",
+    "prebuild": "npm run check:manual"
   },
   "dependencies": {
     "@google/genai": "^1.38.0",
