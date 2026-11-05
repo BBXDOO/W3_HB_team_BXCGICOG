@@ -2,7 +2,7 @@
 
 **Owner:** BBX19  
 **Location:** `w3_tool_store/personal_sandbox_template/`  
-**Current editable source:** v52 (0.52), 5 Nov 2026; derived from the original v40 snapshot  
+**Current editable source:** v53 (0.53), 5 Nov 2026; derived from the original v40 snapshot  
 **Scope:** W3 internal reuse by a human, a module, or an AI agent. Personal use only at this stage.
 
 ## What to copy
@@ -33,7 +33,9 @@ To run the browser development view: `npm run dev`. For guidance in Thai, see `s
 
 ## Current user guide and release checks
 
-- [คู่มือภาษาไทย v52 ครบทุกเมนู](source/docs/คู่มือใช้งานภาษาไทย.md) — also bundled in the app.
+- [คู่มือภาษาไทย v53 ครบทุกเมนู](source/docs/คู่มือใช้งานภาษาไทย.md) — also bundled in the app.
 - [ขั้นตรวจคู่มือก่อนอัปเดต](source/docs/RELEASE_CHECKLIST_TH.md)
 - v52 adds a theme scoped to each board coordinate table.
 - Run `npm run review:manual` only after reviewing changed menus; `npm run check:manual` rejects unreviewed source changes. The Android build checks its bundled manual before publishing.
+
+- v53 adds seamless square grids and a project-local Lego image library with single-image/sheet import, repeat placement and JSON backup. Existing rounded/dot modes remain available.

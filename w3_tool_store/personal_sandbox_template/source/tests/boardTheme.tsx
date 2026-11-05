@@ -25,7 +25,7 @@ const render = (data: BoardPack) => renderToStaticMarkup(<BoardWorkspace board={
 const grid = render(restored.boards[0]);
 assert.ok(grid.includes('ธีมเฉพาะตาราง'));
 assert.ok(grid.includes('--table-text:#29251e'));
-assert.ok(grid.includes('background:#ff0000')); // Existing marker retains its data color.
+assert.ok(grid.includes('background-color:#ff0000')); // Existing marker retains its data color.
 for (const viewMode of ['overview', 'database', 'mindmap'] as const) {
   const html = render({ ...restored.boards[0], viewMode });
   assert.ok(!html.includes('ธีมเฉพาะตาราง'));

@@ -9,6 +9,8 @@ import { generateId } from '../../core/utils';
 import { Card } from '../../ui/components/Card';
 import { Modal } from '../../ui/components/Modal';
 import { BoardWorkspace } from './BoardWorkspace';
+import { TileLibrary } from './TileLibrary';
+import { placeBoardTile, tileImage } from '../../core/boardTiles';
 
 interface BoardTabProps {
   story: StoryPack;
@@ -33,6 +35,7 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
   const [tempColor, setTempColor] = useState<string>('#3B82F6');
   const [tempIcon, setTempIcon] = useState<string>('🏰');
   const [zoom, setZoom] = useState(22);
+  const [tileBrush, setTileBrush] = useState<string | null>(null);
 
   const [wInput, setWInput] = useState('12');
   const [hInput, setHInput] = useState('12');
@@ -126,7 +129,7 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
       for (let x = 0; x < activeBoard.width; x++) {
         const key = `${x}_${y}`;
         const cell = activeBoard.cellMap[key];
-        if (cell && (cell.name || cell.desc || cell.markerColor || cell.markerIcon || (cell.type && cell.type !== 'Empty'))) continue;
+        if (cell && (cell.name || cell.desc || cell.markerColor || cell.markerIcon || cell.tileRefId || (cell.type && cell.type !== 'Empty'))) continue;
         updateCell(x, y, { name: parentKey ? 'หัวข้อย่อยใหม่' : 'รายการใหม่', parentKey, markerColor: '#168a65' });
         setSelectedKey(key);
         return;
@@ -237,7 +240,9 @@ export const BoardTab: React.FC<BoardTabProps> = ({ story, onChange, toolActions
             {activeBoard && <BoardWorkspace
               board={activeBoard} selectedKey={selectedKey} zoom={zoom} onZoom={value => { setZoom(value); onChange({ ...story, boards: story.boards.map(b => b.boardId === activeBoard.boardId ? { ...b, cellSize: value } : b) }); }}
               onAppearance={patch => onChange({ ...story, boards: story.boards.map(b => b.boardId === activeBoard.boardId ? { ...b, ...patch } : b) })}
-              onSelect={setSelectedKey} onMode={updateBoardMode} onAdd={addRecord}
+              tileLibrary={<TileLibrary story={story} onChange={onChange} brush={tileBrush} onBrush={setTileBrush} />}
+              tileImages={Object.fromEntries((story.boardTiles || []).map(tile => [tile.id, tileImage(story.boardTiles || [], story.assets, tile.id)]).filter((entry): entry is [string, string] => !!entry[1]))}
+              onSelect={key => { setSelectedKey(key); if (tileBrush) onChange(placeBoardTile(story, activeBoard.boardId, key, tileBrush === '__erase' ? undefined : tileBrush)); }} onMode={updateBoardMode} onAdd={addRecord}
               onUpdate={(key, patch) => {
                 const [x, y] = key.split('_').map(Number);
                 updateCell(x, y, patch);

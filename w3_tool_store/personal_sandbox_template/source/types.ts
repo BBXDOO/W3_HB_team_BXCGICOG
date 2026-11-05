@@ -45,6 +45,7 @@ export interface StoryPack {
   attributeDefinitions: AttributeDef[]; // Global stats schema
   characters: CharacterPack[];
   boards: BoardPack[];
+  boardTiles?: BoardTile[];
   locations: LocationPack[];
   cards: CardPack[];
   modules?: ModulePack[]; // Independent module registry; older projects have none.
@@ -142,6 +143,8 @@ export interface ModulePack {
   battleLink?: { tag: string; ruleId?: string; effects: BattleEffect[] };
 }
 
+export interface BoardTile { id: string; name: string; assetId: string; }
+
 export interface BoardTableTheme {
   background: string;
   empty: string;
@@ -156,7 +159,8 @@ export interface BoardPack {
   width: number;
   height: number;
   viewMode?: 'overview' | 'grid' | 'database' | 'mindmap';
-  gridStyle?: 'tiles' | 'dots';
+  gridStyle?: 'tiles' | 'dots' | 'seamless';
+  showGridLines?: boolean;
   cellSize?: number;
   showCoordinates?: boolean;
   tableTheme?: BoardTableTheme;
@@ -174,6 +178,7 @@ export interface CellPack {
   desc?: string;
   markerColor?: string;
   markerIcon?: string;
+  tileRefId?: string;
   locationRefId?: string;
   eventRefs?: string[];
   parentKey?: string;

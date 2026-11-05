@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import type { BoardPack, CellPack } from '../../types';
 import { BOARD_TABLE_THEMES, boardTableTheme } from '../../core/boardTheme';
+import { gridGeometry } from '../../core/boardTiles';
 
 type ViewMode = NonNullable<BoardPack['viewMode']>;
 type RecordCell = { key: string; cell: CellPack };
@@ -16,6 +17,8 @@ interface Props {
   onAdd: (parentKey?: string) => void;
   onUpdate: (key: string, patch: Partial<CellPack>) => void;
   onDelete: (key: string) => void;
+  tileLibrary?: React.ReactNode;
+  tileImages?: Record<string, string>;
 }
 
 const modes: { id: ViewMode; label: string }[] = [
@@ -31,13 +34,13 @@ const field = 'w-full rounded-lg border border-[var(--border)] bg-[var(--surface
 const action = 'rounded-lg border border-[var(--accent)]/40 px-3 py-2 text-xs text-[var(--text)]';
 const cellName = (entry: RecordCell) => entry.cell.name?.trim() || `พิกัด ${entry.cell.x}, ${entry.cell.y}`;
 
-export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZoom, onAppearance, onSelect, onMode, onAdd, onUpdate, onDelete }) => {
+export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZoom, onAppearance, onSelect, onMode, onAdd, onUpdate, onDelete, tileLibrary, tileImages = {} }) => {
   const [query, setQuery] = useState('');
   const [sortBy, setSortBy] = useState<'coordinate' | 'name'>('coordinate');
   const mode = board.viewMode || 'grid';
   const tableTheme = boardTableTheme(board);
   const gridViewport = useRef<HTMLDivElement>(null);
-  const gap = board.gridStyle === 'dots' ? 5 : 3;
+  const { gap, radius } = gridGeometry(board.gridStyle);
   const fitGrid = () => {
     const width = gridViewport.current?.clientWidth || 320;
     const height = gridViewport.current?.clientHeight || 240;
@@ -46,7 +49,7 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
     onZoom(Math.max(8, Math.min(64, Math.floor(Math.min(fitWidth, fitHeight)))));
   };
   const records: RecordCell[] = (Object.entries(board.cellMap) as [string, CellPack][])
-    .filter(([, cell]) => cell.name || cell.desc || cell.markerColor || cell.markerIcon || (cell.type && cell.type !== 'Empty'))
+    .filter(([, cell]) => cell.name || cell.desc || cell.markerColor || cell.markerIcon || cell.tileRefId || (cell.type && cell.type !== 'Empty'))
     .map(([key, cell]) => ({ key, cell }))
     .filter(({ cell }) => cell.x < board.width && cell.y < board.height)
     .sort((a, b) => a.cell.y - b.cell.y || a.cell.x - b.cell.x);
@@ -98,8 +101,10 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
               const cell = board.cellMap[key];
               return <button key={key} type="button" title={cell?.name || `พิกัด ${x}, ${y}`} onClick={() => onSelect(key)}
                 aria-label={`ช่อง ${x},${y}`} aria-pressed={selectedKey === key}
-                className={`board-cell ${selectedKey === key ? 'board-cell-selected' : ''}`}
-                style={{ width: zoom, height: zoom, borderRadius: board.gridStyle === 'dots' ? '50%' : 4, background: cell?.markerColor || tableTheme.empty, fontSize: Math.max(7, zoom * .36) }}>{cell?.markerIcon || (board.showCoordinates ? `${x},${y}` : board.gridStyle === 'dots' ? '' : cell?.name?.slice(0, 3) || '')}</button>;
+                className={`board-cell ${board.gridStyle === 'seamless' ? 'board-cell-seamless' : ''} ${selectedKey === key ? 'board-cell-selected' : ''}`}
+                style={{ width: zoom, height: zoom, borderRadius: radius, backgroundColor: cell?.markerColor || tableTheme.empty, backgroundImage: cell?.tileRefId && tileImages[cell.tileRefId] ? `url("${tileImages[cell.tileRefId]}")` : undefined, backgroundSize: '100% 100%', borderWidth: board.gridStyle === 'seamless' ? 0 : undefined,
+                  boxShadow: board.gridStyle === 'seamless' ? board.showGridLines !== false ? `inset -1px -1px ${tableTheme.grid}` : 'none' : undefined,
+                  fontSize: Math.max(7, zoom * .36) }}>{cell?.markerIcon || (board.showCoordinates ? `${x},${y}` : cell?.tileRefId || board.gridStyle === 'dots' ? '' : cell?.name?.slice(0, 3) || '')}</button>;
             })}
           </div>}
           {mode === 'overview' && (records.length ? <div className="grid grid-cols-3 auto-rows-[68px] gap-1">
@@ -113,8 +118,10 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
           {mode === 'mindmap' && (records.length ? roots.map(entry => renderNode(entry, new Set())) : <p className="p-3 text-xs text-slate-400">เพิ่มหัวข้อเพื่อเริ่มมายด์แมพ</p>)}
         </div>
         {mode === 'grid' && <div className="board-grid-controls">
-          <button type="button" aria-pressed={board.gridStyle !== 'dots'} onClick={() => onAppearance({ gridStyle: 'tiles' })}>ช่องมน</button>
+          <button type="button" aria-pressed={!board.gridStyle || board.gridStyle === 'tiles'} onClick={() => onAppearance({ gridStyle: 'tiles' })}>ช่องมน</button>
           <button type="button" aria-pressed={board.gridStyle === 'dots'} onClick={() => onAppearance({ gridStyle: 'dots' })}>จุด</button>
+          <button type="button" aria-pressed={board.gridStyle === 'seamless'} onClick={() => onAppearance({ gridStyle: 'seamless' })}>กริดชิด</button>
+          {board.gridStyle === 'seamless' && <label><input type="checkbox" checked={board.showGridLines !== false} onChange={event => onAppearance({ showGridLines: event.target.checked })} /> เส้นกริด</label>}
           <button type="button" onClick={fitGrid}>พอดีจอ</button>
           <label><input type="checkbox" checked={!!board.showCoordinates} onChange={e => onAppearance({ showCoordinates: e.target.checked })} /> พิกัด</label>
           <label className="board-size">ขนาด <input aria-label="ขนาดช่องบอร์ด" type="range" min="8" max="64" value={zoom} onChange={e => onZoom(Number(e.target.value))} /> <span>{zoom}px</span></label>
@@ -135,6 +142,7 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
           </div>
         </details>}
 
+        {mode === 'grid' && tileLibrary}
       </section>
       <details className="board-inspector"><summary>รายละเอียด / เครื่องมือ {selectedKey ? `· ${selectedKey.replace('_', ', ')}` : ''}</summary><aside className="board-inspector-content scroll-container space-y-3 text-xs" aria-label="รายละเอียดและเครื่องมือ">
         <div><strong className="text-emerald-200">{selected ? cellName(selected) : selectedKey ? `พิกัด ${selectedKey.replace('_', ', ')}` : 'เครื่องมือ'}</strong><p className="text-slate-400 mt-1">{mode === 'mindmap' ? 'จัดหัวข้อและความเชื่อมโยง' : mode === 'database' ? 'ค้นหาและแก้ข้อมูล' : 'เลือกช่องหรือรายการเพื่อดูรายละเอียด'}</p></div>

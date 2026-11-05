@@ -188,6 +188,19 @@ input::placeholder, textarea::placeholder { color: var(--text-dim); opacity: .65
 .board-table-color-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-top: 10px; }
 .board-table-color-fields label { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .board-table-color-fields input { width: 44px; height: 36px; padding: 2px; }
+.board-cell-seamless { box-sizing: border-box; padding: 0; margin: 0; min-width: 0; min-height: 0; }
+.board-tile-library { flex-shrink: 0; max-height: 48%; overflow: auto; margin-top: 6px; border: 1px solid var(--border); border-radius: 8px; font-size: 12px; color: var(--text); }
+.board-tile-library summary { cursor: pointer; padding: 10px; }
+.board-tile-library-body { padding: 0 10px 10px; display: flex; flex-direction: column; gap: 10px; }
+.board-tile-library-body p { line-height: 1.7; }
+.board-tile-library-body button { border: 1px solid var(--border); border-radius: 6px; padding: 8px; }
+.board-tile-library-body button[aria-pressed="true"] { outline: 2px solid var(--accent); }
+.board-tile-library-body input { display: block; width: 100%; background: var(--surface-2); padding: 8px; border: 1px solid var(--border); border-radius: 5px; }
+.board-tile-palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 8px; }
+.board-tile-palette img { display: block; width: 100%; aspect-ratio: 1; object-fit: contain; background: #8883; }
+.board-tile-palette span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 80px; }
+.board-tile-palette button { width: 100%; }
+.tile-sheet-preview { display: block; max-width: 100%; max-height: 160px; object-fit: contain; }
 .board-grid-controls { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; padding-top: 7px; }
 .board-grid-controls button { border: 1px solid var(--border); padding: 4px 7px; font-size: 9px; border-radius: 5px; }
 .board-grid-controls button[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }

@@ -1,4 +1,5 @@
 import { MarkdownContent } from '../story/MarkdownContent';
+import { tileImage } from '../../core/boardTiles';
 import React, { useEffect, useState } from 'react';
 import { BattlePanel } from './BattlePanel';
 import type { BattleProgress } from '../../core/battle';
@@ -158,7 +159,7 @@ export const PlaytestTab: React.FC<Props> = ({ story, onChange }) => {
             const occupants = story.characters.filter(character => positions[character.id]?.boardId === board.boardId && positions[character.id]?.x === x && positions[character.id]?.y === y);
             return <button key={key} aria-label={`พิกัด ${x}, ${y}${occupants.length ? ` มีตัวละคร ${occupants.map(c => c.name).join(', ')}` : ''}`} title={cell?.name || key} onClick={() => setCellKey(key)}
               className={`w-12 h-12 border border-white/10 text-lg relative ${cellKey === key ? 'outline outline-2 outline-sky-400 z-10' : ''}`}
-              style={{ backgroundColor: cell?.markerColor || '#16252b' }}>{cell?.markerIcon || (cell?.type === 'Location' ? '⌖' : cell?.type === 'Encounter' ? '⚡' : '')}{occupants.length > 0 && <span className="absolute right-0 bottom-0 w-3 h-3 rounded-full bg-emerald-400 animate-pulse ring-2 ring-black" />}</button>;
+              style={{ backgroundColor: cell?.markerColor || '#16252b', backgroundImage: tileImage(story.boardTiles || [], story.assets, cell?.tileRefId) ? `url("${tileImage(story.boardTiles || [], story.assets, cell?.tileRefId)}")` : undefined, backgroundSize: '100% 100%', borderWidth: board.gridStyle === 'seamless' && board.showGridLines === false ? 0 : undefined }}>{cell?.markerIcon || (cell?.type === 'Location' ? '⌖' : cell?.type === 'Encounter' ? '⚡' : '')}{occupants.length > 0 && <span className="absolute right-0 bottom-0 w-3 h-3 rounded-full bg-emerald-400 animate-pulse ring-2 ring-black" />}</button>;
           })}</div></div></div>
       <aside className={`${box} p-4 overflow-y-auto text-sm`}>
         {cellKey ? (() => { const [x, y] = cellKey.split('_').map(Number), view = getWorldCell(story, board.boardId, x, y);

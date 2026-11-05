@@ -17,7 +17,7 @@ if (!version || !versionName || Number(gradle.match(/versionCode (\d+)/)?.[1]) !
 const manual = read('docs/คู่มือใช้งานภาษาไทย.md');
 if (!manual.includes(`<!-- manual-version: ${version} -->`) || !manual.includes(`<!-- reviewed-version: ${version} -->`)) fail('guide version/review is missing');
 const nav = [...read('features/editor/LeftNav.tsx').matchAll(/\{ id: '([^']+)', label:/g)].map(match => match[1]);
-const required = [...nav, 'library', 'shared', 'battle', 'commands', 'update', 'storage'];
+const required = [...nav, 'library', 'shared', 'battle', 'commands', 'update', 'storage', 'tileLibrary'];
 for (const menu of required) {
   const marker = `<!-- menu: ${menu} -->`;
   if (!manual.includes(marker) || manual.split(marker)[1].split(/\n## /)[0].trim().length < 150) fail(`missing detailed section: ${menu}`);

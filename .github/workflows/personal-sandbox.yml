@@ -24,6 +24,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run check:manual
+      - run: npm exec --yes --package=tsx -- tsx tests/boardTiles.tsx
       - run: npm exec --yes --package=tsx -- tsx tests/boardTheme.tsx
       - run: npm exec --yes --package=tsx -- tsx tests/authoringSmoke.tsx
       - run: sh android-app/sync-web-assets.sh
