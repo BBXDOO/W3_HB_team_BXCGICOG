@@ -16,7 +16,8 @@
     "controlled local planning/selector probes",
     "read-only historical paired receipt audit",
     "Thai survey, reading guide, source anchors and checkpoint",
-    "owner clarifications on code-first board, action spaces, contextual links and culture recorded"
+    "owner clarifications on code-first board, action spaces, contextual links and culture recorded",
+    "read MPCP color papers and W3DB guide; record seven-group organization and intent/route questions"
   ],
   "next_slice": {
     "proposal": "establish evidence-backed code/action/relation model for one source region, then overlay one recorded event run",
@@ -28,7 +29,8 @@
       "same participant may appear at multiple occurrences without merging identities",
       "source links identify commit/path/symbol/line",
       "missing or changed evidence is visible rather than a passing health state",
-      "guide/status/evidence updated"
+      "guide/status/evidence updated",
+      "color owner/context and missing versus uninspected evidence are explicit"
     ]
   },
   "pending": [
@@ -49,13 +51,15 @@
     "documents remain contextual links, not execution stages",
     "Vertical Space blank cells represent action space",
     "six Gradations locate folder groups, not temporal runtime stages",
-    "public repository is intentional; no unsolicited external-audience work"
+    "public repository is intentional; no unsolicited external-audience work",
+    "seven groups are navigation clusters, not seven mandatory execution stages",
+    "MPCP color state and W3DB PRX meanings remain distinct"
   ],
   "reports": {
     "guide": "README.md",
     "survey": "SURVEY_TH.md",
     "evidence": "survey_evidence.json",
-    "latest_checkpoint": "checkpoints/2026-11-06.md"
+    "latest_checkpoint": "checkpoints/2026-11-06-seven-groups.md"
   },
   "automation": {
     "title": "พัฒนาบอร์ด W3",
@@ -67,5 +71,15 @@
     "approximate_local_time": "19:00",
     "timing_mode": "flexible_schedule",
     "require_progress_record_each_run": true
+  },
+  "board_groups": {
+    "status": "owner_groups_with_proposed_abbreviations",
+    "SYS": "W3 systems/structures",
+    "UNT": "units/modules/specialists",
+    "TOL": "tools",
+    "DOC": "contextual documents",
+    "STO": "stores",
+    "GOV": "governance",
+    "PLT": "platform/GitHub workflows"
   }
 }
