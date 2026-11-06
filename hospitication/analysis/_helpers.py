@@ -17,15 +17,15 @@ def files_by_suffix(snapshot: ObservationSnapshot, suffixes: tuple[str, ...]) ->
 
 
 def code_files(snapshot: ObservationSnapshot) -> tuple[FileObservation, ...]:
-    return files_by_suffix(snapshot, CODE_EXTENSIONS)
+    return files_by_suffix(snapshot, snapshot.scope.code_extensions if snapshot.scope else CODE_EXTENSIONS)
 
 
 def doc_files(snapshot: ObservationSnapshot) -> tuple[FileObservation, ...]:
-    return files_by_suffix(snapshot, DOC_EXTENSIONS)
+    return files_by_suffix(snapshot, snapshot.scope.doc_extensions if snapshot.scope else DOC_EXTENSIONS)
 
 
 def config_files(snapshot: ObservationSnapshot) -> tuple[FileObservation, ...]:
-    return files_by_suffix(snapshot, CONFIG_EXTENSIONS)
+    return files_by_suffix(snapshot, snapshot.scope.config_extensions if snapshot.scope else CONFIG_EXTENSIONS)
 
 
 def top_counts(values: list[str], limit: int = 10) -> dict[str, int]:

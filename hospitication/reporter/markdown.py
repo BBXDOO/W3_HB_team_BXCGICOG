@@ -13,6 +13,7 @@ def render_markdown(report: HealthReport) -> str:
         f"- Repository: `{report.repo_root}`",
         f"- Overall pressure score: `{report.overall_score:.4f}`",
         f"- Summary: {report.summary}",
+        "- Basis: single-snapshot heuristics; not runtime health or temporal trends.",
         "",
         "## Metrics",
         "",
@@ -21,6 +22,18 @@ def render_markdown(report: HealthReport) -> str:
     ]
     for metric in sorted(report.metrics, key=lambda item: item.name):
         lines.append(f"| `{metric.name}` | `{metric.score:.4f}` | {metric.summary} |")
+
+    if report.observation_scope:
+        scope = report.observation_scope
+        lines.extend(["", "## Observation Scope", "",
+                      f"- Observer version: `{scope.version}`",
+                      f"- Observed text files: `{scope.observed_files}`",
+                      f"- Excluded paths: {', '.join(scope.excluded_paths) or 'none'}",
+                      f"- Maximum file bytes: `{scope.max_file_bytes}`",
+                      "- Skipped entries (directory counts do not count their contents):"])
+        lines.extend(f"  - {reason}: {count}" for reason, count in scope.skipped_entries)
+        if not scope.skipped_entries:
+            lines.append("  - none")
 
     lines.extend(["", "## Signals", ""])
     if report.signals:

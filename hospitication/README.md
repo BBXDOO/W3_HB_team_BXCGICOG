@@ -14,7 +14,7 @@ immutable signals, and produces non-mutating recovery proposals.
 Hospitication separates the pipeline into explicit layers:
 
 1. **Observe** — read repository structure without mutation.
-2. **Detect** — identify drift, spikes, oscillation, or divergence.
+2. **Detect** — apply single-snapshot pressure thresholds and compare metric spread.
 3. **Emit** — convert detections into immutable signal envelopes.
 4. **Evaluate** — compute health/burden metrics.
 5. **Recover** — propose mitigation only; never apply changes by default.
@@ -66,8 +66,39 @@ python -m hospitication.cli --repo . --format json --timestamp 2026-05-28T00:00:
 
 ## Analyzer Coverage
 
+### Observation scope — v0.2.0
+
+The default scan excludes the reference prototype at `w3_tool_store/xrea/`.
+Use `--include-prototypes` on either CLI to explicitly include it. This changes
+the measurement scope; a lower score is not evidence of a healthier runtime.
+
+Only supported UTF-8 text files are measured. Images, unsupported formats,
+binary content, symbolic links, oversized files and unreadable entries are
+skipped. Ignored/excluded directories are pruned before traversal. JSON reports
+include `observation_scope` with observer version, extension lists, exclusions,
+size limit, measured file count and skip counts. Directory skip counts count
+directories, not the unknown number of files within them. `.mjs` and `.cjs`
+are recognized as code, but import analysis remains Python-only and reports
+other code files as unmeasured rather than using them to dilute Python scores.
+
+Scores are structural heuristics, not diagnoses, runtime test results, or
+proof of health. The legacy `drift` type means a threshold in one snapshot;
+there is no historical baseline. `oscillation` is no longer emitted by this
+detector because alternating scores for different metrics do not prove a
+time trend. Historical signal types and stored reports remain unchanged.
+Vocabulary coverage now includes all terms used by the semantic/replay analyzers.
+Both that correction and the scope changes make v0.1 and v0.2 scores unsuitable
+for direct trend comparison. Compare runs only with the same version and scope.
+The default epoch timestamp remains a reproducibility setting; pass
+`--timestamp` to label an actual observation date.
+
+```bash
+python tools/run_hospitication.py --repo . --timestamp 2026-11-06T00:00:00Z
+python -m hospitication.cli --repo . --format json --include-prototypes
+```
+
 - `semantic_pressure` — overloaded W3 governance/replay vocabulary pressure.
-- `dependency_fatigue` — import breadth and repeated coupling points.
+- `dependency_fatigue` — Python import-root breadth and repeated import roots (not a dependency graph).
 - `replay_complexity` — event/outcome/ledger/checkpoint/replay surfaces.
 - `recovery_resistance` — large files with limited test/doc counterweight.
 - `cognitive_cost` — file count, line breadth, and configuration surface.

@@ -25,6 +25,7 @@ def main(argv: list[str] | None = None) -> int:
         description="Run a read-only Hospitication health check and print a concise summary.",
     )
     parser.add_argument("--repo", default=".", help="Repository root to observe")
+    parser.add_argument("--include-prototypes", action="store_true", help="Include the xrea reference prototype in this scan")
     parser.add_argument(
         "--timestamp",
         default=HospiticationConfig().deterministic_timestamp,
@@ -35,7 +36,8 @@ def main(argv: list[str] | None = None) -> int:
     try:
         report = build_report(
             args.repo,
-            HospiticationConfig(deterministic_timestamp=args.timestamp),
+            HospiticationConfig(deterministic_timestamp=args.timestamp,
+                                excluded_paths=() if args.include_prototypes else HospiticationConfig().excluded_paths),
         )
     except Exception as exc:  # Runner failure only; Hospitication remains non-mutating.
         print("status:runner_failed")
@@ -54,7 +56,9 @@ def main(argv: list[str] | None = None) -> int:
     print("mutated:false")
     print("observation:not repair")
     print(f"repo:{report.repo_root}")
-    print(f"checked_areas:files={len(report.metrics)} metrics, signals={len(report.signals)}, proposals={len(report.proposals)}")
+    print(f"checked_areas:files={report.observation_scope.observed_files}, metrics={len(report.metrics)}, signals={len(report.signals)}, proposals={len(report.proposals)}")
+    print('measurement_basis:single_snapshot_heuristics; not runtime health or temporal trends')
+    print('excluded_paths:' + ','.join(report.observation_scope.excluded_paths))
     print(f"overall_pressure:{report.overall_score:.4f}")
     print(f"summary:{report.summary}")
     print("warnings_risks:")

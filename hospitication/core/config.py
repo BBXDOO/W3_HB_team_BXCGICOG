@@ -4,12 +4,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 DEFAULT_TIMESTAMP = "1970-01-01T00:00:00Z"
 
 CODE_EXTENSIONS = (
     ".py",
     ".js",
+    ".mjs",
+    ".cjs",
     ".ts",
     ".tsx",
     ".jsx",
@@ -38,6 +40,9 @@ DEFAULT_IGNORED_DIRS = (
     "build",
 )
 DEFAULT_MAX_FILE_BYTES = 1_000_000
+DEFAULT_EXCLUDED_PATHS = ("w3_tool_store/xrea",)
+TEXT_EXTENSIONS = (".html", ".css", ".svg", ".xml", ".sql", ".csv", ".jsonl", ".gstate")
+TEXT_FILENAMES = ("README", "LICENSE", "NOTICE", "Makefile", "Dockerfile", ".gitignore", ".gitattributes")
 
 
 @dataclass(frozen=True)
@@ -51,3 +56,4 @@ class HospiticationConfig:
     max_file_bytes: int = DEFAULT_MAX_FILE_BYTES
     deterministic_timestamp: str = DEFAULT_TIMESTAMP
     emit_threshold: float = 0.2
+    excluded_paths: tuple[str, ...] = DEFAULT_EXCLUDED_PATHS
