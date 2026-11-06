@@ -17,7 +17,8 @@
     "read-only historical paired receipt audit",
     "Thai survey, reading guide, source anchors and checkpoint",
     "owner clarifications on code-first board, action spaces, contextual links and culture recorded",
-    "read MPCP color papers and W3DB guide; record seven-group organization and intent/route questions"
+    "read MPCP color papers and W3DB guide; record seven-group organization and intent/route questions",
+    "owner clarifications: board-local visual language, standby composition, Modew preparation and support division recorded"
   ],
   "next_slice": {
     "proposal": "establish evidence-backed code/action/relation model for one source region, then overlay one recorded event run",
@@ -53,13 +54,16 @@
     "six Gradations locate folder groups, not temporal runtime stages",
     "public repository is intentional; no unsolicited external-audience work",
     "seven groups are navigation clusters, not seven mandatory execution stages",
-    "MPCP color state and W3DB PRX meanings remain distinct"
+    "MPCP color state and W3DB PRX meanings remain distinct",
+    "board may define contextual visual mappings while preserving raw source states",
+    "standby describes waiting for composition; verify actual availability per implementation",
+    "report missing runtime capabilities to support; do not automatically build packs"
   ],
   "reports": {
     "guide": "README.md",
     "survey": "SURVEY_TH.md",
     "evidence": "survey_evidence.json",
-    "latest_checkpoint": "checkpoints/2026-11-06-seven-groups.md"
+    "latest_checkpoint": "checkpoints/2026-11-06-context-and-scope.md"
   },
   "automation": {
     "title": "พัฒนาบอร์ด W3",
@@ -81,5 +85,16 @@
     "STO": "stores",
     "GOV": "governance",
     "PLT": "platform/GitHub workflows"
+  },
+  "support_handoff": {
+    "scope": "source-backed code mechanism and gaps",
+    "pack_construction_owner": "separate support agent/context assigned by BBX19",
+    "required_evidence": [
+      "caller/receiver and input/output",
+      "conditions and expected result",
+      "source revision and anchors",
+      "gap versus uninspected scope",
+      "existing alternatives versus proposals"
+    ]
   }
 }
