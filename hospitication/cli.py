@@ -32,6 +32,7 @@ def build_report(repo_root: str | Path, config: HospiticationConfig | None = Non
         signals=signals,
         proposals=proposals,
         summary=summary,
+        observation_scope=snapshot.scope,
     )
 
 
@@ -56,6 +57,7 @@ def main(argv: list[str] | None = None) -> int:
         help="Report format",
     )
     parser.add_argument("--output", help="Optional output file. Defaults to stdout.")
+    parser.add_argument("--include-prototypes", action="store_true", help="Include the xrea reference prototype in this scan")
     parser.add_argument(
         "--timestamp",
         default=None,
@@ -64,7 +66,8 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     config = HospiticationConfig(
-        deterministic_timestamp=args.timestamp or HospiticationConfig().deterministic_timestamp
+        deterministic_timestamp=args.timestamp or HospiticationConfig().deterministic_timestamp,
+        excluded_paths=() if args.include_prototypes else HospiticationConfig().excluded_paths,
     )
     report = build_report(args.repo, config)
     rendered = render_report(report, args.format)

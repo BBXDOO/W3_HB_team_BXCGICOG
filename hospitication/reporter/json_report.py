@@ -16,6 +16,8 @@ def report_to_dict(report: HealthReport) -> dict[str, Any]:
         "repo_root": report.repo_root,
         "summary": report.summary,
         "overall_score": report.overall_score,
+        "observation_scope": asdict(report.observation_scope) if report.observation_scope else None,
+        "measurement_basis": "single_snapshot_heuristics; not runtime health or temporal trends",
         "metrics": [asdict(metric) for metric in sorted(report.metrics, key=lambda item: item.name)],
         "signals": [signal_to_dict(signal) for signal in sorted(report.signals, key=lambda item: item.signal_id)],
         "proposals": [asdict(proposal) for proposal in sorted(report.proposals, key=lambda item: item.proposal_id)],

@@ -70,6 +70,23 @@ class FileObservation:
 
 
 @dataclass(frozen=True)
+class ObservationScope:
+    """Declared coverage of one scan, including files it could not measure."""
+
+    version: str
+    code_extensions: tuple[str, ...]
+    doc_extensions: tuple[str, ...]
+    config_extensions: tuple[str, ...]
+    text_extensions: tuple[str, ...]
+    text_filenames: tuple[str, ...]
+    max_file_bytes: int
+    excluded_paths: tuple[str, ...]
+    ignored_dirs: tuple[str, ...]
+    observed_files: int
+    skipped_entries: tuple[tuple[str, int], ...]
+
+
+@dataclass(frozen=True)
 class ObservationSnapshot:
     """Immutable repository snapshot used by analyzers and detectors."""
 
@@ -77,6 +94,7 @@ class ObservationSnapshot:
     files: tuple[FileObservation, ...]
     observed_at: str
     ignored_dirs: tuple[str, ...] = ()
+    scope: ObservationScope | None = None
 
     @property
     def total_lines(self) -> int:
@@ -185,6 +203,7 @@ class HealthReport:
     signals: tuple[SignalEnvelope, ...]
     proposals: tuple[RecoveryProposal, ...]
     summary: str
+    observation_scope: ObservationScope | None = None
 
     @property
     def overall_score(self) -> float:

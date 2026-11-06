@@ -7,7 +7,8 @@ from hospitication.core.types import MetricScore, ObservationSnapshot
 
 
 def analyze_dependency_fatigue(snapshot: ObservationSnapshot) -> MetricScore:
-    code = code_files(snapshot)
+    all_code = code_files(snapshot)
+    code = tuple(file for file in all_code if file.suffix == '.py')
     imports: list[str] = []
     for file in code:
         imports.extend(file.imports)
@@ -18,9 +19,11 @@ def analyze_dependency_fatigue(snapshot: ObservationSnapshot) -> MetricScore:
     return MetricScore(
         name="dependency_fatigue",
         score=score,
-        summary="Dependency fatigue from import breadth and repeated coupling points.",
+        summary="Python import breadth and repeated import roots; other languages are unmeasured.",
         evidence={
             "code_files": len(code),
+            "unmeasured_code_files": len(all_code) - len(code),
+            "import_scope": "python_only",
             "unique_imports": len(unique_imports),
             "import_mentions": len(imports),
             "top_imports": top_counts(imports, limit=8),

@@ -1,7 +1,7 @@
 """Pattern detectors for Hospitication signals.
 
-Detectors only detect drift/spike/oscillation/divergence. They never diagnose,
-recommend, or mutate truth.
+Single-snapshot thresholds produce drift/spike and cross-metric divergence.
+They do not establish temporal drift or oscillation, diagnose, or mutate truth.
 """
 
 from __future__ import annotations
@@ -50,30 +50,4 @@ def detect_signals(metrics: tuple[MetricScore, ...]) -> tuple[DetectorResult, ..
                 )
             )
 
-    oscillation = _oscillation_score(scores)
-    if oscillation >= 0.5:
-        results.append(
-            DetectorResult(
-                detector_type="oscillation",
-                detected=True,
-                confidence=round(oscillation, 4),
-                locality=NodeRef(14, 15),
-                evidence={"direction_changes": oscillation},
-            )
-        )
-
     return tuple(results)
-
-
-def _oscillation_score(scores: list[float]) -> float:
-    if len(scores) < 3:
-        return 0.0
-    changes = 0
-    previous_direction = 0
-    for left, right in zip(scores, scores[1:]):
-        direction = 1 if right > left else -1 if right < left else 0
-        if direction and previous_direction and direction != previous_direction:
-            changes += 1
-        if direction:
-            previous_direction = direction
-    return min(1.0, changes / max(1, len(scores) - 2))
