@@ -51,6 +51,10 @@ def main(argv: list[str] | None = None) -> int:
         if metric.score >= 0.5
     ]
     recommendations = tuple(report.proposals[:3])
+    skipped = dict(report.observation_scope.skipped_entries)
+    unreadable_files = skipped.get('unreadable_files', 0)
+    unreadable_directories = skipped.get('unreadable_directories', 0)
+    partial = bool(unreadable_files or unreadable_directories)
 
     print("status:completed")
     print("mutated:false")
@@ -59,13 +63,23 @@ def main(argv: list[str] | None = None) -> int:
     print(f"checked_areas:files={report.observation_scope.observed_files}, metrics={len(report.metrics)}, signals={len(report.signals)}, proposals={len(report.proposals)}")
     print('measurement_basis:single_snapshot_heuristics; not runtime health or temporal trends')
     print('excluded_paths:' + ','.join(report.observation_scope.excluded_paths))
+    print('coverage:' + ('partial' if partial else 'complete_within_declared_scope'))
+    print(f'unreadable_files:{unreadable_files}')
+    print(f'unreadable_directories:{unreadable_directories}')
+    print('skipped_entries:')
+    for reason, count in sorted(skipped.items()):
+        print(f'- {reason}:{count}')
+    if not skipped:
+        print('- none')
     print(f"overall_pressure:{report.overall_score:.4f}")
     print(f"summary:{report.summary}")
     print("warnings_risks:")
+    if partial:
+        print('- incomplete_coverage: unreadable files or directories; pressure scores cover only observed files')
     if warnings:
         for metric in warnings[:5]:
             print(f"- {metric.name}:{metric.score:.4f} {metric.summary}")
-    else:
+    elif not partial:
         print("- none above warning threshold")
     print("recommendations:")
     if recommendations:
