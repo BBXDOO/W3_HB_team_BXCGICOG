@@ -6,7 +6,7 @@
   "updated_on": "2026-11-06",
   "timezone": "Asia/Bangkok",
   "source_revision": "aa48fb86b86a41d895e44d485c41a7856944b168",
-  "stage": "SURVEY_RECORDED",
+  "stage": "DESIGN_INTENT_RECORDED",
   "board_implemented": false,
   "new_tool_implemented": false,
   "runtime_modified": false,
@@ -15,10 +15,11 @@
     "74 existing unittest cases",
     "controlled local planning/selector probes",
     "read-only historical paired receipt audit",
-    "Thai survey, reading guide, source anchors and checkpoint"
+    "Thai survey, reading guide, source anchors and checkpoint",
+    "owner clarifications on code-first board, action spaces, contextual links and culture recorded"
   ],
   "next_slice": {
-    "proposal": "source locator + paired handoff/history reader for one recorded job",
+    "proposal": "establish evidence-backed code/action/relation model for one source region, then overlay one recorded event run",
     "tool_home": "w3_tool_store/agent_workbench/tools/",
     "project_home": "ChatGPT/flow-lab/agent_work_board/",
     "sample": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/delivery.json",
@@ -44,11 +45,27 @@
     "no forced universal chain or room order",
     "no document promoted to running code",
     "unknown correlation remains unknown",
-    "future xrea-derived tools preserve source/version/license"
+    "future xrea-derived tools preserve source/version/license",
+    "documents remain contextual links, not execution stages",
+    "Vertical Space blank cells represent action space",
+    "six Gradations locate folder groups, not temporal runtime stages",
+    "public repository is intentional; no unsolicited external-audience work"
   ],
   "reports": {
     "guide": "README.md",
     "survey": "SURVEY_TH.md",
-    "evidence": "survey_evidence.json"
+    "evidence": "survey_evidence.json",
+    "latest_checkpoint": "checkpoints/2026-11-06.md"
+  },
+  "automation": {
+    "title": "พัฒนาบอร์ด W3",
+    "id": "Automation_049014f382b48191b4f3004d030d3ece",
+    "enabled": true,
+    "timezone": "Asia/Bangkok",
+    "start_on": "2026-11-08",
+    "interval_days": 2,
+    "approximate_local_time": "19:00",
+    "timing_mode": "flexible_schedule",
+    "require_progress_record_each_run": true
   }
 }
