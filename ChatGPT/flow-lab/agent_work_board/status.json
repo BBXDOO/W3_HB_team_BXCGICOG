@@ -1,0 +1,54 @@
+{
+  "schema": "w3.board.survey_status/0.1-draft",
+  "project": "Agent Work Boarding — W3 Systems",
+  "owner": "BBX19",
+  "maintainer": "ChatGPT / Codex",
+  "updated_on": "2026-11-06",
+  "timezone": "Asia/Bangkok",
+  "source_revision": "aa48fb86b86a41d895e44d485c41a7856944b168",
+  "stage": "SURVEY_RECORDED",
+  "board_implemented": false,
+  "new_tool_implemented": false,
+  "runtime_modified": false,
+  "completed": [
+    "selected source/context survey of Cross-X, Cross-L, WX, CN-Fold, BOX, AMS, W3Lgu/MFC",
+    "74 existing unittest cases",
+    "controlled local planning/selector probes",
+    "read-only historical paired receipt audit",
+    "Thai survey, reading guide, source anchors and checkpoint"
+  ],
+  "next_slice": {
+    "proposal": "source locator + paired handoff/history reader for one recorded job",
+    "tool_home": "w3_tool_store/agent_workbench/tools/",
+    "project_home": "ChatGPT/flow-lab/agent_work_board/",
+    "sample": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/delivery.json",
+    "done_when": [
+      "every displayed edge has a declared relation kind and source evidence",
+      "same participant may appear at multiple occurrences without merging identities",
+      "source links identify commit/path/symbol/line",
+      "missing or changed evidence is visible rather than a passing health state",
+      "guide/status/evidence updated"
+    ]
+  },
+  "pending": [
+    "final board data shape and adapter boundaries",
+    "single-file HTML/mobile UI and JSON export",
+    "W3Lgu/6ROOM/MFC-specific readers",
+    "Cross-X/native E-CS/API/CROLL/WX-specific readers",
+    "MPCP/Paper/ENV and recipe/support readers",
+    "full module/host registration inventory",
+    "freshness and live snapshot integration with Pages"
+  ],
+  "constraints": [
+    "preserve owner contracts and raw states",
+    "no forced universal chain or room order",
+    "no document promoted to running code",
+    "unknown correlation remains unknown",
+    "future xrea-derived tools preserve source/version/license"
+  ],
+  "reports": {
+    "guide": "README.md",
+    "survey": "SURVEY_TH.md",
+    "evidence": "survey_evidence.json"
+  }
+}

@@ -1,0 +1,1128 @@
+{
+  "schema": "w3.board.survey_evidence/0.1-draft",
+  "source_revision": "aa48fb86b86a41d895e44d485c41a7856944b168",
+  "survey_date": "2026-11-06",
+  "timezone": "Asia/Bangkok",
+  "scope": "selected routing producers, references, code anchors and one historical paired handoff; not full runtime coverage",
+  "sources": [
+    {
+      "path": "BBX19/status/CN-Fold/README.md",
+      "sha256": "77520c5c711b0a7eda675c4e6ddd7e55222c44f03cbbadcc3ded3cf4f3d4e31e",
+      "bytes": 13914,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/BBX19/status/CN-Fold/README.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "config/cross_system.json",
+      "sha256": "3fc5b03651c82b40d1854e16b5e2938f1cefcf945cc01925b678b0e25273ef90",
+      "bytes": 1923,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/config/cross_system.json",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "core/runtime/agents/psp2.py",
+      "sha256": "f800ab877f242d5f21a1ac7a73619ad35ea26c6bb8483179555c4c57cfcc6b31",
+      "bytes": 4832,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/agents/psp2.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "PSP2Agent.execute",
+          "line": 69,
+          "end_line": 105,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/agents/psp2.py#L69"
+        }
+      ]
+    },
+    {
+      "path": "core/runtime/agents/redr.py",
+      "sha256": "59f8eeca07e31eb51754613e675d17cfa44ba4e8bfd923193755cbe2b9519f7d",
+      "bytes": 4467,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/agents/redr.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "REDRAgent.execute",
+          "line": 109,
+          "end_line": 131,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/agents/redr.py#L109"
+        }
+      ]
+    },
+    {
+      "path": "core/runtime/engine_v2.py",
+      "sha256": "2171f4e84d2b88c3222158950c596aa4f126ed683f5e0c76c7b8b01886a6f450",
+      "bytes": 9266,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/engine_v2.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "dispatch",
+          "line": 73,
+          "end_line": 80,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/engine_v2.py#L73"
+        },
+        {
+          "symbol": "run",
+          "line": 131,
+          "end_line": 224,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/engine_v2.py#L131"
+        }
+      ]
+    },
+    {
+      "path": "core/runtime/process_layer.py",
+      "sha256": "73fe04f4cc201127ff86b60f626bc65ec7bb44254a743e75f625f254c71e0e21",
+      "bytes": 16522,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/process_layer.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "run_w3_process_layer",
+          "line": 167,
+          "end_line": 276,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/process_layer.py#L167"
+        },
+        {
+          "symbol": "_stage_from_agent_result",
+          "line": 333,
+          "end_line": 399,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/process_layer.py#L333"
+        }
+      ]
+    },
+    {
+      "path": "core/runtime/w3lgu_mfc_logic/README.md",
+      "sha256": "55aaee5593d8ffc63f0d873e0183141d8e08cc6f5dd49ca3c305686155e0ecbf",
+      "bytes": 3446,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/w3lgu_mfc_logic/README.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "core/runtime/w3lgu_mfc_logic/dtml_mfc_logic.py",
+      "sha256": "3b6ec7cb58b346ceee28bd657b829cb68477ebeccceff4cfe2293ef3f9e3dace",
+      "bytes": 6254,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/w3lgu_mfc_logic/dtml_mfc_logic.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "trace_decision",
+          "line": 62,
+          "end_line": 166,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/w3lgu_mfc_logic/dtml_mfc_logic.py#L62"
+        }
+      ]
+    },
+    {
+      "path": "core/runtime/w3lgu_mfc_logic/event_field.py",
+      "sha256": "07345066f88ea2d647740cabed9c9af44547fe78a9262dd20726058e22d07eda",
+      "bytes": 3847,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/w3lgu_mfc_logic/event_field.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "EventField",
+          "line": 13,
+          "end_line": 64,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/w3lgu_mfc_logic/event_field.py#L13"
+        }
+      ]
+    },
+    {
+      "path": "core/runtime/w3lgu_mfc_logic/logic27_registry.py",
+      "sha256": "5794fc6f48997961c3eb7c2e14b53b54652ad8d4522bd852b46c16c1b2344bc0",
+      "bytes": 4839,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/w3lgu_mfc_logic/logic27_registry.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "get_logic_slot",
+          "line": 84,
+          "end_line": 88,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/w3lgu_mfc_logic/logic27_registry.py#L84"
+        }
+      ]
+    },
+    {
+      "path": "core/runtime/w3lgu_mfc_logic/logic27_selector.py",
+      "sha256": "f147947d2b2604d425039c7f948dce2f3a7cc1e529de80454cbd993a9e944b2b",
+      "bytes": 3359,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/w3lgu_mfc_logic/logic27_selector.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "select_logic27",
+          "line": 49,
+          "end_line": 97,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/w3lgu_mfc_logic/logic27_selector.py#L49"
+        }
+      ]
+    },
+    {
+      "path": "core/runtime/w3lgu_mfc_logic/lrc2_mfc_logic.py",
+      "sha256": "8c15e52e0b1b71f03c9aea6a386b86eb672e5e3bc64eb80bbfc1985b4f414fa1",
+      "bytes": 4616,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/w3lgu_mfc_logic/lrc2_mfc_logic.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "checkpoint_lifecycle",
+          "line": 77,
+          "end_line": 129,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/w3lgu_mfc_logic/lrc2_mfc_logic.py#L77"
+        }
+      ]
+    },
+    {
+      "path": "core/runtime/w3lgu_mfc_logic/psp2_mfc_logic.py",
+      "sha256": "ff405e6405e29461c8027fa241f9f5d37282a41695bb0a3f7023c96fe5067571",
+      "bytes": 9912,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/w3lgu_mfc_logic/psp2_mfc_logic.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "route_package",
+          "line": 226,
+          "end_line": 298,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/w3lgu_mfc_logic/psp2_mfc_logic.py#L226"
+        }
+      ]
+    },
+    {
+      "path": "core/runtime/w3lgu_mfc_logic/redr_mfc_logic.py",
+      "sha256": "78d583e64516b244be4d5885f5cb10c4753efc93c6f8e4920430e4312e9c68df",
+      "bytes": 9144,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/w3lgu_mfc_logic/redr_mfc_logic.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "classify_event",
+          "line": 147,
+          "end_line": 262,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/core/runtime/w3lgu_mfc_logic/redr_mfc_logic.py#L147"
+        }
+      ]
+    },
+    {
+      "path": "croll/README.md",
+      "sha256": "ccab02574b7ff62d573eef92eb98403eb8d1f3f769a1e8648622380f1da4d196",
+      "bytes": 16476,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/croll/README.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "croll/cross_l_dispatcher.py",
+      "sha256": "348e75ee695a7bcd938a4e4e119effc1e6626af92eb9615f8d5a8c4fa78763b7",
+      "bytes": 5001,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/croll/cross_l_dispatcher.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "dispatch_workset",
+          "line": 38,
+          "end_line": 111,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/croll/cross_l_dispatcher.py#L38"
+        },
+        {
+          "symbol": "dispatch_cross_code",
+          "line": 114,
+          "end_line": 153,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/croll/cross_l_dispatcher.py#L114"
+        }
+      ]
+    },
+    {
+      "path": "croll/table_x.py",
+      "sha256": "ba8cf171d9ed913cffe77c243c3f570893e6be5e2c9c5c6b60d2616f4e7b0d82",
+      "bytes": 8607,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/croll/table_x.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "get_workset_from_px",
+          "line": 192,
+          "end_line": 236,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/croll/table_x.py#L192"
+        }
+      ]
+    },
+    {
+      "path": "cross_x/README.md",
+      "sha256": "331635219e1eed559a678406ff55b98375dd3b2db9548fef797d890d3c8f8d49",
+      "bytes": 1101,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/cross_x/README.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "cross_x/core.py",
+      "sha256": "9ed6768d77c6b9d1a8345ac4b567b448862641ad4f1e1ea9ec7c25b427adb491",
+      "bytes": 9738,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/cross_x/core.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "build_cross_x_plan",
+          "line": 198,
+          "end_line": 273,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/cross_x/core.py#L198"
+        },
+        {
+          "symbol": "CrossXPlan",
+          "line": 150,
+          "end_line": 195,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/cross_x/core.py#L150"
+        },
+        {
+          "symbol": "audit_cross_systems",
+          "line": 86,
+          "end_line": 126,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/cross_x/core.py#L86"
+        }
+      ]
+    },
+    {
+      "path": "cross_x/event_chain.py",
+      "sha256": "655016c65822a45458cec6c7c4dca00fb722c63230de72af4b7ac307d1919dbc",
+      "bytes": 10678,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/cross_x/event_chain.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "EventChainRecord",
+          "line": 82,
+          "end_line": 123,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/cross_x/event_chain.py#L82"
+        },
+        {
+          "symbol": "build_event_chain",
+          "line": 156,
+          "end_line": 218,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/cross_x/event_chain.py#L156"
+        },
+        {
+          "symbol": "bind_event_return",
+          "line": 221,
+          "end_line": 283,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/cross_x/event_chain.py#L221"
+        }
+      ]
+    },
+    {
+      "path": "docs/box/AMS/AMS_README.txt",
+      "sha256": "cf63d01431d5211c2c8e2ed00abe0dd243fe653e635e3c0b2c3f6079cb2d6d72",
+      "bytes": 4667,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/docs/box/AMS/AMS_README.txt",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "docs/box/AMS/Group_4.md",
+      "sha256": "eb2adf578222cc1660d0467e220ba5492f22fd64ce24843365767fba2b7c7109",
+      "bytes": 17969,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/docs/box/AMS/Group_4.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "docs/box/BOUNDARY_TH.md",
+      "sha256": "27b93ba4e92deb6920916dbd08e8efb7fead3efd2044e2c00d2722c792889d15",
+      "bytes": 6975,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/docs/box/BOUNDARY_TH.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "docs/box/README_TH.md",
+      "sha256": "ed0755b4579754bc056173f37e33e711f8f072e3735425b37bd82762349d882f",
+      "bytes": 9230,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/docs/box/README_TH.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "docs/governance/AMS.md",
+      "sha256": "71956f70c4a120addcb46bc8266f83a0793df101e457292a416671403c263404",
+      "bytes": 4515,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/docs/governance/AMS.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "docs/index.html",
+      "sha256": "e3690ce71b2bc51f5e3eee6f67798e76f1e48ca1531b91dbb5eb4415659715a8",
+      "bytes": 28814,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/docs/index.html",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "docs/snapshot.json",
+      "sha256": "5feed59140b367ee1a2fbc0229fb6ed1562a9cba7baf2819d4773de968cc59c3",
+      "bytes": 378,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/docs/snapshot.json",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "docs/state.json",
+      "sha256": "f74cb7341ad68a545c24f4db2718abf569ee1d77d2145c294a3aff86cbb1ce7f",
+      "bytes": 320,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/docs/state.json",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "docs/system.json",
+      "sha256": "8eac328ecbcf815b277d0267fb3e9f8542b2da0d0509ac2a36d05fa0bd6f8637",
+      "bytes": 567,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/docs/system.json",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "ecs/event_chain_system.py",
+      "sha256": "861e2bf29419555772798dd78870d5882e9e986e5b508f34a9daaee8c08388c1",
+      "bytes": 3679,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/ecs/event_chain_system.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "EventFrame",
+          "line": 26,
+          "end_line": 70,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/ecs/event_chain_system.py#L26"
+        },
+        {
+          "symbol": "EventChainSystem.process_event",
+          "line": 80,
+          "end_line": 93,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/ecs/event_chain_system.py#L80"
+        }
+      ]
+    },
+    {
+      "path": "knowledge/philosophy/corevsstructure.md",
+      "sha256": "c3616e09a58bc14e335fc4633d87eb4de09f5d4325a7c32544e72f0afb20b1c7",
+      "bytes": 7441,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/knowledge/philosophy/corevsstructure.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "protocol/mpcp/adapter/w3_bridge.py",
+      "sha256": "ca2043720645920a6e1d936de8e7ea99b9b1656c6b2c7e16150c400d9263a6da",
+      "bytes": 999,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/protocol/mpcp/adapter/w3_bridge.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "execute_with_w3",
+          "line": 12,
+          "end_line": 31,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/protocol/mpcp/adapter/w3_bridge.py#L12"
+        }
+      ]
+    },
+    {
+      "path": "protocol/mpcp/runtime/executor.py",
+      "sha256": "9fa1e881088b285755ba8166cd633cfabafbd71ee7857c699334aee8eb7d5390",
+      "bytes": 5155,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/protocol/mpcp/runtime/executor.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "register",
+          "line": 25,
+          "end_line": 28,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/protocol/mpcp/runtime/executor.py#L25"
+        },
+        {
+          "symbol": "run_packet",
+          "line": 100,
+          "end_line": 168,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/protocol/mpcp/runtime/executor.py#L100"
+        }
+      ]
+    },
+    {
+      "path": "protocol/mpcp/runtime/paper.py",
+      "sha256": "b2b9f44df4586ce282bed5d8c833c7d914324f3f7d96d6bd1947d7502fbfef7e",
+      "bytes": 12861,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/protocol/mpcp/runtime/paper.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "PaperPackRuntime.run",
+          "line": 154,
+          "end_line": 229,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/protocol/mpcp/runtime/paper.py#L154"
+        },
+        {
+          "symbol": "PaperPackRuntime.reconcile",
+          "line": 231,
+          "end_line": 260,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/protocol/mpcp/runtime/paper.py#L231"
+        }
+      ]
+    },
+    {
+      "path": "protocol/w3lgu/README.md",
+      "sha256": "92c7d87a52cc8e57728f580acafeaac2b3287c684374d62cf0695c1b7bd044bb",
+      "bytes": 34957,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/protocol/w3lgu/README.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "protocol/w3lgu/operational.py",
+      "sha256": "ff87f1704a277bcce9d2e3178aad3ce4cfdb6079c3e2a83215575092eb1ab5ac",
+      "bytes": 21717,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/protocol/w3lgu/operational.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "W3LguOperationalRuntime.process_packet",
+          "line": 409,
+          "end_line": 504,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/protocol/w3lgu/operational.py#L409"
+        },
+        {
+          "symbol": "LRC2Ledger.append",
+          "line": 301,
+          "end_line": 344,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/protocol/w3lgu/operational.py#L301"
+        }
+      ]
+    },
+    {
+      "path": "protocol/w3lgu/sixroom_runtime.py",
+      "sha256": "d143caa4197002b2b5445fabe7173ff28972a58479d3cd15b8c4553faa3a4674",
+      "bytes": 16110,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/protocol/w3lgu/sixroom_runtime.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "EventForm.export_return_contract",
+          "line": 256,
+          "end_line": 292,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/protocol/w3lgu/sixroom_runtime.py#L256"
+        },
+        {
+          "symbol": "SixRoomRuntime.execute_chain",
+          "line": 314,
+          "end_line": 329,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/protocol/w3lgu/sixroom_runtime.py#L314"
+        },
+        {
+          "symbol": "SixRoomRuntime._select_logic_slot",
+          "line": 343,
+          "end_line": 365,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/protocol/w3lgu/sixroom_runtime.py#L343"
+        },
+        {
+          "symbol": "SixRoomRuntime.deploy_logic_lens",
+          "line": 306,
+          "end_line": 309,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/protocol/w3lgu/sixroom_runtime.py#L306"
+        }
+      ]
+    },
+    {
+      "path": "tools/orchestration_support.py",
+      "sha256": "1af07111dd4db66850e666753062b0fa5a4f09d2d87226ab1e77dd48cb9111d8",
+      "bytes": 9167,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/tools/orchestration_support.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "tools/runtime_circuit_intake.py",
+      "sha256": "9b950ad226c3648e2160ede0da87894fc1482bb585452d88df8a06fc3c9ac06f",
+      "bytes": 14607,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/tools/runtime_circuit_intake.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "w3_api/router.py",
+      "sha256": "3547046ad3cf9e5c74c640b04d597c57c56c64baaf04503947934228911b3721",
+      "bytes": 2726,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/w3_api/router.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "cross",
+          "line": 21,
+          "end_line": 66,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/w3_api/router.py#L21"
+        },
+        {
+          "symbol": "cross_plan",
+          "line": 74,
+          "end_line": 86,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/w3_api/router.py#L74"
+        }
+      ]
+    },
+    {
+      "path": "w3_tool_store/agent_workbench/README.md",
+      "sha256": "be3eae24861b62937d3f6c2743a83db0797b627fea8c8327cf7e75f20252c477",
+      "bytes": 11304,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/w3_tool_store/agent_workbench/README.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "w3_tool_store/agent_workbench/tools/README.md",
+      "sha256": "e209bf18ff32c59f2b2ba4f57d95e2d031a65e1454ec7ba17a0a54e3301b0abb",
+      "bytes": 4562,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/w3_tool_store/agent_workbench/tools/README.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "w3_tool_store/agent_workbench/tools/rea_mcp_probe/README.md",
+      "sha256": "6b0942c755b2c5c047fd2748a630d3b76220834b6c2a032e678f3cc71c38b469",
+      "bytes": 7978,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/w3_tool_store/agent_workbench/tools/rea_mcp_probe/README.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "w3_tool_store/xrea/AGENTS.md",
+      "sha256": "d51b5d5acb92371e06bedf14efda2a9638ebf9cd7219d5ac2f64651e26dace02",
+      "bytes": 11579,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/w3_tool_store/xrea/AGENTS.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "workflows/orchestration.py",
+      "sha256": "1bf073ab32c20ebbfbf3bda1c60f2089ab3d7dde1a8d11ed06957374492ea8a9",
+      "bytes": 13262,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/workflows/orchestration.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "route",
+          "line": 160,
+          "end_line": 175,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/workflows/orchestration.py#L160"
+        },
+        {
+          "symbol": "advance",
+          "line": 118,
+          "end_line": 157,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/workflows/orchestration.py#L118"
+        }
+      ]
+    },
+    {
+      "path": "workflows/paired_work.py",
+      "sha256": "1d2694b6437aa4e6ada658bf69976738544bc7a73e77c1c478601693337d0fb9",
+      "bytes": 10905,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/workflows/paired_work.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "PairedWork.transfer",
+          "line": 78,
+          "end_line": 104,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/workflows/paired_work.py#L78"
+        },
+        {
+          "symbol": "PairedWork.audit",
+          "line": 106,
+          "end_line": 151,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/workflows/paired_work.py#L106"
+        }
+      ]
+    },
+    {
+      "path": "workflows/runtime_circuit.py",
+      "sha256": "7e41c35d78fc88740f80f429e055909eb33eba2a4f6f1f2e26f139e9b3f27272",
+      "bytes": 26339,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/workflows/runtime_circuit.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "WorkflowRuntime.execute_stage",
+          "line": 154,
+          "end_line": 250,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/workflows/runtime_circuit.py#L154"
+        },
+        {
+          "symbol": "WorkflowRuntime.continue_work",
+          "line": 257,
+          "end_line": 291,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/workflows/runtime_circuit.py#L257"
+        },
+        {
+          "symbol": "WorkflowRuntime.run_flow",
+          "line": 293,
+          "end_line": 298,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/workflows/runtime_circuit.py#L293"
+        }
+      ]
+    },
+    {
+      "path": "workflows/support_catalog.py",
+      "sha256": "ae3627dfc25d7b6be71cb6358451a665ed5a0dd49efbb123671e0d7555f1204a",
+      "bytes": 8292,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/workflows/support_catalog.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "FlowCatalog.register",
+          "line": 115,
+          "end_line": 133,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/workflows/support_catalog.py#L115"
+        },
+        {
+          "symbol": "FlowCatalog.plan",
+          "line": 135,
+          "end_line": 141,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/workflows/support_catalog.py#L135"
+        },
+        {
+          "symbol": "SupportCatalog.select",
+          "line": 40,
+          "end_line": 65,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/workflows/support_catalog.py#L40"
+        }
+      ]
+    },
+    {
+      "path": "wx/README.md",
+      "sha256": "804aa4574f679d5d918a31c2c5d594dd07ecf1f666a9cc64ec3c35f4723a4d39",
+      "bytes": 1500,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/wx/README.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "wx/blueprints/system/wx_box_cn_fold_integration.md",
+      "sha256": "5e16e29c2e7c45ec31775d58417e31a13b7373631b4ad709c704e32174b238a2",
+      "bytes": 3988,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/wx/blueprints/system/wx_box_cn_fold_integration.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "wx/engine_index.py",
+      "sha256": "46e3d7bfbc58c5aecccc110f306bf8deb8845181417d0fd7ae077417632d034e",
+      "bytes": 9107,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/wx/engine_index.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "load_template_registry",
+          "line": 121,
+          "end_line": 172,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/wx/engine_index.py#L121"
+        },
+        {
+          "symbol": "search_by_px",
+          "line": 204,
+          "end_line": 206,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/wx/engine_index.py#L204"
+        }
+      ]
+    },
+    {
+      "path": "wx/indexor.py",
+      "sha256": "ab86107d8c9a21bdde73a4ead25649699e04cfc3fdc1e09e4c106da790861b92",
+      "bytes": 1304,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/wx/indexor.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "suggest_references",
+          "line": 11,
+          "end_line": 46,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/wx/indexor.py#L11"
+        }
+      ]
+    },
+    {
+      "path": "wx/portdc.py",
+      "sha256": "65948855eedc0daa792bd3d270c5db30e6cd48393343301de69b191b77a30aea",
+      "bytes": 1097,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/wx/portdc.py",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context",
+      "anchors": [
+        {
+          "symbol": "export_registered_template",
+          "line": 15,
+          "end_line": 31,
+          "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/wx/portdc.py#L15"
+        }
+      ]
+    },
+    {
+      "path": "wx/references/cn_fold_to_wx_box_mapping.md",
+      "sha256": "649fafb9653a199d4ef3b551aa3cc98ce4f5e8d3e7393cc85fd59b9f8ba3b3b6",
+      "bytes": 3415,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/wx/references/cn_fold_to_wx_box_mapping.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "wx/references/wx_box_cn_fold_recovery_anchor.md",
+      "sha256": "33bc596606eacde6007eaad16d95b9f47c39aa670242bea5d1f4bc56ee588fed",
+      "bytes": 4737,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/wx/references/wx_box_cn_fold_recovery_anchor.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "wx/registry/template_registry.json",
+      "sha256": "fa584282162d4466b867814cd4577f4f03f7ce9bf5d10a6e6e9a354c78fd45ca",
+      "bytes": 1820,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/wx/registry/template_registry.json",
+      "role": "code_or_config",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "wx/templates/box/README.md",
+      "sha256": "d93ca30252da0d49d630f6d3bbaed8dc8e2e24a6e6e178c143415ecd149c820b",
+      "bytes": 2805,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/wx/templates/box/README.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    },
+    {
+      "path": "wx/templates/box/wx_box_minimum.md",
+      "sha256": "bdb22141e9c18f40fea337399dd425bfab8fd622b6cb0f56b6009a3d384831b3",
+      "bytes": 3335,
+      "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/wx/templates/box/wx_box_minimum.md",
+      "role": "background",
+      "inspection": "selected_entrypoints_and_context"
+    }
+  ],
+  "local_probes": {
+    "kind": "controlled_local_calls_not_live_system_events",
+    "results": {
+      "cross_x": {
+        "cross_id": "SURVEY-20261106-A",
+        "event_chain_state": "planned",
+        "event_count": 12,
+        "planned_systems": [
+          "W3-API",
+          "W3Lgu",
+          "REDR",
+          "PSP2",
+          "DTML",
+          "PX",
+          "W3DB_APPEND",
+          "EP_SIGNAL",
+          "EP_SIGNAL_RYTM",
+          "LRC2",
+          "Hospitication",
+          "IGET"
+        ],
+        "local_process_stages": [
+          {
+            "stage": "REDR",
+            "status": "packaged"
+          },
+          {
+            "stage": "PSP2",
+            "status": "review_required"
+          },
+          {
+            "stage": "DTML",
+            "status": "review_required"
+          },
+          {
+            "stage": "LRC2",
+            "status": "ready_to_append"
+          }
+        ],
+        "execute_allowed": false
+      },
+      "cross_l": {
+        "chain_id": "SURVEY-20261106-B",
+        "event_id": "SURVEY-E1",
+        "state": "planned",
+        "handoff": {
+          "from": "Cross-L",
+          "to": "Modew",
+          "action": "call_modew_stub_only",
+          "boundary": "temp_patch",
+          "return_contract": [
+            "state",
+            "reason",
+            "trace",
+            "mutated",
+            "review",
+            "patch_candidate"
+          ]
+        },
+        "suggested_template": {
+          "template_id": "PAPER:FAST_PATCH_V1",
+          "name": "Fast Patch Paper",
+          "path": "wx/templates/paper/fast_patch.md",
+          "version": "1.0.0",
+          "boundary": "temp_patch",
+          "deny": [
+            "truth_mutation",
+            "direct_merge",
+            "repo_write_without_review"
+          ],
+          "reference_only": true
+        },
+        "execution_allowed": false
+      },
+      "clear": {
+        "sixroom": {
+          "logic_slot": "L1-C1",
+          "logic_purpose": "local_simple_observation",
+          "next": {
+            "event": "Event-2_local_result",
+            "handler": "local_handler"
+          },
+          "result_state": "READY",
+          "routing": {
+            "active_systems": [
+              "W3Lgu"
+            ],
+            "standby_systems": [
+              "REDR",
+              "PSP2",
+              "DTML",
+              "PX",
+              "LRC2",
+              "Cross-L",
+              "File.void",
+              "Git",
+              "Hospitication",
+              "IGET"
+            ]
+          }
+        },
+        "mfc": {
+          "slot": {
+            "slot_id": "L2-C1",
+            "layer": 2,
+            "coordinate": 1,
+            "name": "route_decision",
+            "purpose": "select route from event-field weight",
+            "default_status": "ACTIVE",
+            "next_modules": [
+              "PSP2",
+              "DTML"
+            ],
+            "standby_modules": [
+              "REDR",
+              "LRC2"
+            ],
+            "proposal_only": true
+          },
+          "next": [
+            "PSP2",
+            "DTML"
+          ],
+          "status": "ACTIVE",
+          "execution_allowed": false
+        }
+      },
+      "unclear": {
+        "sixroom": {
+          "logic_slot": "L2-C3",
+          "logic_purpose": "risk_and_ambiguity_review",
+          "next": {
+            "event": "WAIT_OR_REVIEW",
+            "handler": "review"
+          },
+          "result_state": "WAIT",
+          "routing": {
+            "active_systems": [
+              "W3Lgu",
+              "DTML",
+              "Hospitication",
+              "LRC2"
+            ],
+            "standby_systems": [
+              "REDR",
+              "PSP2",
+              "PX",
+              "Cross-L",
+              "File.void",
+              "Git",
+              "IGET"
+            ]
+          }
+        },
+        "mfc": {
+          "slot": {
+            "slot_id": "L3-C2",
+            "layer": 3,
+            "coordinate": 2,
+            "name": "shadow_copy",
+            "purpose": "result stays visible as shadow context",
+            "default_status": "WAIT",
+            "next_modules": [
+              "LRC2"
+            ],
+            "standby_modules": [
+              "REDR",
+              "PSP2",
+              "DTML"
+            ],
+            "proposal_only": true
+          },
+          "next": [
+            "LRC2"
+          ],
+          "status": "WAIT",
+          "execution_allowed": false
+        }
+      }
+    }
+  },
+  "existing_tests": {
+    "passed": 74,
+    "commands": [
+      {
+        "command": "python -m unittest discover -s croll -p \"test_*.py\" -v",
+        "passed": 39
+      },
+      {
+        "command": "python -m unittest discover -s wx -p \"test_*.py\" -v",
+        "passed": 8
+      },
+      {
+        "command": "python -m unittest discover -s tests -p test_w3lgu_event_field_logic27.py -v",
+        "passed": 6
+      },
+      {
+        "command": "python -m unittest discover -s tests -p test_w3lgu_mfc_logic.py -v",
+        "passed": 21
+      }
+    ],
+    "not_run": [
+      "FastAPI HTTP integration",
+      "pytest suites",
+      "xrea MCP",
+      "production jobs"
+    ]
+  },
+  "historical_handoff": {
+    "kind": "recorded_local_executor_evidence_not_live_external_AI",
+    "delivery_path": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/delivery.json",
+    "delivery_url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/delivery.json",
+    "delivery_sha256": "3d4e82c654d961cf1d5ad1b3772a149b3b9a1a62984817b27e8b89990fba27e8",
+    "task_path": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/tasks/W3-ORC-20261102-91541484676504136431259836707556116184.json",
+    "task_url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/tasks/W3-ORC-20261102-91541484676504136431259836707556116184.json",
+    "task_sha256": "f1b14df1358e45a89f7e642f4fd67df332e75a5d0b34a379b50cf3e54194d329",
+    "task_id": "W3-ORC-20261102-91541484676504136431259836707556116184",
+    "status_as_recorded": "WAITING_HUMAN",
+    "technical_result_as_recorded": "VERIFIED",
+    "history_entry_count": 13,
+    "receipt_audit_now": {
+      "trace_verified": true,
+      "all_handoffs_accepted": true,
+      "failures": [],
+      "scope": "reused read-only PairedWork.audit on saved receipts and evidence; no re-execution or current-source certification"
+    },
+    "receipts": [
+      {
+        "path": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/paired/0-5c9812aee054474e9a8e5a728ea197c3.json",
+        "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/paired/0-5c9812aee054474e9a8e5a728ea197c3.json",
+        "sha256": "06f2c9fe4d900b8c7cf100f6ffb87e018575fbb4efcc973bfafdbc152b115d1c",
+        "matches_delivery_hash": true,
+        "sequence": 0,
+        "sender": "Orchestration",
+        "reviewer": "host-artifact-verifier",
+        "recipient": "Cast",
+        "accepted_as_recorded": true
+      },
+      {
+        "path": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/paired/1-c104c9ba4b66487f9953fe4addb49686.json",
+        "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/paired/1-c104c9ba4b66487f9953fe4addb49686.json",
+        "sha256": "eb3d71312f3ed760e8935fa593a294eb5ec4b0fc2ed65d411b35da7da245584f",
+        "matches_delivery_hash": true,
+        "sequence": 1,
+        "sender": "Cast",
+        "reviewer": "host-artifact-verifier",
+        "recipient": "Gemini",
+        "accepted_as_recorded": true
+      },
+      {
+        "path": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/paired/2-c78695c472a348ce90cf6f09571803d1.json",
+        "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/paired/2-c78695c472a348ce90cf6f09571803d1.json",
+        "sha256": "ec25763880c79ea3e60ef2e6ef1ff346524590d6c4e0b394633121410eca34da",
+        "matches_delivery_hash": true,
+        "sequence": 2,
+        "sender": "Orchestration",
+        "reviewer": "host-artifact-verifier",
+        "recipient": "Gemini",
+        "accepted_as_recorded": true
+      },
+      {
+        "path": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/paired/3-715ee61948204260b93e64b06e9290af.json",
+        "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/paired/3-715ee61948204260b93e64b06e9290af.json",
+        "sha256": "b640d565808aafb855f1f3962d7146775858b9b5b5edae7a2f46ed150efd99f7",
+        "matches_delivery_hash": true,
+        "sequence": 3,
+        "sender": "Cast",
+        "reviewer": "Gemini",
+        "recipient": "Orchestration",
+        "accepted_as_recorded": true
+      },
+      {
+        "path": "modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/paired/4-59173e664571442cabae79bb10298549.json",
+        "url": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/aa48fb86b86a41d895e44d485c41a7856944b168/modules/ChatGPT/reports/handoffs/RQ-PAIRED-20261104-final/paired/4-59173e664571442cabae79bb10298549.json",
+        "sha256": "7f3452d57a6d56f03f76a8620c3d28f3cb55d1f59bc4bb58171ff313cde197b6",
+        "matches_delivery_hash": true,
+        "sequence": 4,
+        "sender": "Orchestration",
+        "reviewer": "Gemini",
+        "recipient": "BBX19",
+        "accepted_as_recorded": true
+      }
+    ]
+  },
+  "limitations": [
+    "No full call graph or dynamic resolution",
+    "No globally unique identifier assumed from a display name",
+    "No UI or renderer implemented",
+    "Source URLs identify reviewed commit, not deployed Pages",
+    "Draft data shape is local to this survey, not a new protocol"
+  ]
+}
