@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; form-action 'none'">
+<title>W3 System Console</title>
+<link rel="stylesheet" href="repo.css">
+<style>
+:root{color-scheme:dark;--shell:#292722;--panel:#151614;--screen:#0b1313;--line:#494841;--gold:#f5d67d;--cyan:#88dfd9;--text:#f5efd9;--muted:#b7b4a5;--violet:#e1c4f6;--orange:#ffad8b}
+*{box-sizing:border-box}body{margin:0;padding:12px;background:#0d0e0d;color:var(--text);font:15px/1.45 system-ui,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;color:inherit;min-height:40px;border:1px solid var(--line);border-radius:4px;background:#252622;padding:5px 9px}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}button:disabled{opacity:.55;cursor:default}small,.muted{color:var(--muted)}h1,h2,h3,p{margin:0}h1{font:700 clamp(20px,4vw,35px) ui-monospace,monospace;letter-spacing:.035em}h2{font-size:14px}h3{font-size:16px}p,dd{overflow-wrap:anywhere}.shell{max-width:1000px;margin:auto;padding:clamp(9px,2vw,20px);border:1px solid #696458;border-radius:10px;background:linear-gradient(140deg,#37342d,var(--shell) 40%);box-shadow:inset 0 0 0 4px #201f1a,0 16px 40px #0008}.header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 4px 15px}.brand{color:var(--gold);font:700 11px ui-monospace,monospace;letter-spacing:.17em}.lamp{border:1px solid #556966;border-radius:4px;color:var(--cyan);font:700 11px ui-monospace,monospace;padding:6px;white-space:nowrap}.lamp::before{content:'▪ ';color:#9adb96}.console{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:8px}.panel{padding:clamp(7px,1.7vw,14px);background:var(--panel);border:1px solid var(--line);border-radius:5px;min-width:0}.screen{background:var(--screen);box-shadow:inset 0 0 0 2px #202826}.label{display:flex;gap:6px;align-items:center;margin-bottom:8px}.label b{font:700 10px ui-monospace,monospace;color:var(--gold);border:1px solid currentColor;padding:3px}.board-title{color:var(--cyan);font-size:clamp(14px,3vw,20px);margin-bottom:7px}.grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border:solid #3e5958;border-width:1px 0 0 1px}.cell{min-height:0;aspect-ratio:1;padding:0;display:grid;place-items:center;border:solid #3e5958;border-width:0 1px 1px 0;border-radius:0;background:#101c1d;color:#9bc1bd;font:700 clamp(8px,2.3vw,15px) ui-monospace,monospace}.cell[data-filled]{background:#254847;color:#b9fff0}.cell[aria-pressed=true]{background:var(--gold);color:#222016;box-shadow:inset 0 0 0 2px #645322}.readout{max-height:230px;overflow:auto;white-space:pre-wrap;margin-top:8px;color:#d3e9e4}.facts{margin:7px 0 0;display:grid;gap:4px}.facts dt{font-size:11px;color:var(--muted)}.facts dd{margin:0;color:var(--cyan);font-size:13px}.menu,.keys{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.key{font-weight:650;box-shadow:inset 0 1px #ffffff32,0 2px #080807;overflow-wrap:anywhere}.key.gold{color:#231e12;background:linear-gradient(#ffe5a2,#d2ad58);border-color:#f6d784}.key.node{color:#e5fdf4;background:#244139;border-color:#4d6b5d}.key.node[aria-pressed=true]{background:#a6dbaf;color:#182a1d}.key.action{color:var(--violet);border-color:#65536d;background:#332a37}.result{border-color:#726140}.result .readout{color:var(--text);max-height:144px}.source{color:var(--gold);font-weight:700}.error{color:var(--orange)}.toolbar{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.status{margin:11px 3px 1px;color:var(--cyan);font-size:13px;min-height:1.45em}dialog{width:min(92vw,520px);max-height:85dvh;border:1px solid #777260;border-radius:7px;background:#21211d;color:var(--text);padding:16px;overflow:auto}dialog::backdrop{background:#000b}dialog form{display:grid;gap:10px;margin:10px 0 0}label{display:grid;gap:4px;font-size:14px}input,textarea,select{width:100%;padding:8px;border:1px solid #747167;border-radius:4px;background:#101411;color:var(--text);font-size:16px}textarea{min-height:85px;resize:vertical}.dialog-actions{display:flex;gap:7px;flex-wrap:wrap}.hint{font-size:13px;color:var(--muted);margin-top:7px}.system-row{display:flex;gap:6px;flex-wrap:wrap}.system-row button{flex:1 1 120px}.result pre{font:inherit}
+@media(max-width:420px){body{padding:6px}.console{gap:5px}.shell{padding:8px}.panel{padding:6px}.label{gap:3px}.label b{padding:2px}.menu,.keys{gap:4px}button{font-size:13px;padding:4px}.facts dd{font-size:12px}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header class="header"><div><div class="brand">W3 / SYSTEM INSTRUMENTS</div><h1>SYSTEM CONSOLE</h1></div><span class="lamp">LOCAL</span></header>
+<div class="console">
+<section class="panel screen"><div class="label"><b>01</b><h2>ตารางระบบ</h2></div><h3 id="area" class="board-title"></h3><div id="grid" class="grid" aria-label="ตารางระบบ 6 แถว 6 คอลัมน์"></div></section>
+<section class="panel screen"><div class="label"><b>02</b><h2>รายละเอียดจุดที่แตะ</h2></div><h3 id="detailTitle"></h3><dl class="facts"><div><dt>ตำแหน่ง / พื้นที่</dt><dd id="location"></dd></div><div><dt>ไฟล์หรือจุดอ้างอิง</dt><dd id="path"></dd></div></dl><p id="note" class="readout"></p><div class="toolbar"><button id="editNode"></button></div></section>
+<section class="panel"><div class="label"><b>03</b><h2>คำสั่งในแอป</h2></div><div class="menu"><button class="key gold" id="open">เปิด</button><button class="key gold" id="save">บันทึกล่าสุด</button><button class="key gold" id="import">นำเข้า</button><button class="key gold" id="export">ส่งออก</button></div></section>
+<section class="panel result"><div class="label"><b>04</b><h2>ผลลัพธ์ล่าสุด</h2></div><div id="source" class="source"></div><p id="result" class="readout"></p><div class="toolbar"><button id="history">ดูประวัติ</button></div></section>
+<section class="panel"><div class="label"><b>05</b><h2>โหนดในพื้นที่นี้</h2></div><div id="nodes" class="keys"></div></section>
+<section class="panel"><div class="label"><b>06</b><h2>แอคชั่นและกฎของโหนด</h2></div><div id="actions" class="keys"></div><div class="toolbar"><button class="key action" id="addAction">+ แอคชั่น</button><button class="key action" id="rules">กฎ</button></div></section>
+</div>
+<p id="status" class="status" role="status"></p>
+
+<section class="panel repo-panel" aria-labelledby="repo-title">
+  <div class="label"><b>07</b><h2 id="repo-title">โต๊ะอ่านและเขียนรีโป้</h2></div>
+  <p id="repo-status" class="hint" role="status">กำลังเปิด Git snapshot…</p>
+  <nav class="toolbar" aria-label="มุมมองรีโป้">
+    <button type="button" data-view="files" aria-pressed="true">ไฟล์และตัวเขียน</button>
+    <button type="button" data-view="flow" aria-pressed="false">ความสัมพันธ์ · CROLL</button>
+  </nav>
+  <div id="repo-files" class="repo-files">
+    <aside>
+      <label>ค้นหาพาธ<input id="repo-search" type="search" placeholder="เช่น croll/schema"></label>
+      <div id="repo-tree"></div>
+    </aside>
+    <section id="repo-document" hidden>
+      <h3 id="repo-path"></h3>
+      <p id="repo-location" class="hint"></p>
+      <div id="repo-tools" class="toolbar">
+        <button type="button" id="repo-copy">คัดลอก</button>
+        <button type="button" id="repo-paste">วาง</button>
+        <button type="button" id="repo-draft">บันทึกร่าง</button>
+        <button type="button" id="repo-download">ส่งออกไฟล์</button>
+        <button type="button" id="repo-preview-toggle" aria-pressed="false">ดู Markdown</button>
+      </div>
+      <div id="repo-markdown-tools" class="toolbar" aria-label="เครื่องเขียน Markdown">
+        <button type="button" data-mark="heading">หัวข้อ</button>
+        <button type="button" data-mark="bold">ตัวหนา</button>
+        <button type="button" data-mark="link">ลิงก์</button>
+        <button type="button" data-mark="table">ตาราง</button>
+        <button type="button" data-mark="code">บล็อกโค้ด</button>
+      </div>
+      <label id="repo-editor-label">เนื้อหาไฟล์<textarea id="repo-editor" spellcheck="false"></textarea></label>
+      <article id="repo-preview" hidden></article>
+    </section>
+  </div>
+  <section id="repo-flow" hidden></section>
+</section>
+
+</main>
+<input type="file" id="file" accept=".json,application/json" hidden>
+<dialog id="dialog" aria-labelledby="dialogTitle"><h2 id="dialogTitle"></h2><div id="dialogBody"></div><div class="toolbar"><button id="close">ปิด</button></div></dialog>
+<script>
+'use strict';
+const el = id => document.getElementById(id);
+const SIZE = 36;
+const STORAGE = 'org.w3.systemconsole.v1';
+const newId = () => globalThis.crypto?.randomUUID?.() ?? Date.now().toString(36) + Math.random().toString(36).slice(2);
+const emptySystem = name => ({id:newId(), name, cursor:0, savedAt:'', nodes:[], rules:[], events:[]});
+const sample = emptySystem('ระบบตัวอย่าง');
+sample.nodes = [
+  {cell:0,name:'รับงาน',path:'example/inbox.py',note:'รับคำขอแล้วส่งให้โหนดคัดงาน',actions:[{name:'ส่งคำขอ',target:7}]},
+  {cell:7,name:'คัดงาน',path:'example/router.py',note:'ตรวจข้อมูลก่อนเลือกปลายทาง',actions:[{name:'ส่งผล',target:14}]},
+  {cell:14,name:'บันทึกผล',path:'example/store.py',note:'เก็บผลลัพธ์ของงาน',actions:[]}
+];
+sample.rules = [{cell:0,action:'ส่งคำขอ',target:7,note:'คำขอต้องผ่านคัดงานก่อน'}];
+let data = {kind:'w3-console-backup',version:1,active:sample.id,systems:[sample]};
+const isCell = value => Number.isInteger(value) && value >= 0 && value < SIZE;
+const isText = (value,max) => typeof value === 'string' && value.length <= max;
+const named = (value,max=100) => isText(value,max) && !!value.trim();
+const unique = list => new Set(list).size === list.length;
+const dateOK = value => typeof value === 'string' && Number.isFinite(Date.parse(value));
+const sourceLabels = {simulation:'ทดลองตามที่กำหนด',trace:'เหตุการณ์จากไฟล์ที่นำเข้า'};
+function validSystem(system) {
+  if (!system || !named(system.id,100) || !named(system.name) || !isCell(system.cursor) ||
+      !(system.savedAt === '' || dateOK(system.savedAt)) || !Array.isArray(system.nodes) ||
+      !Array.isArray(system.rules) || !Array.isArray(system.events)) return false;
+  if (!system.nodes.every(node => node && isCell(node.cell) && named(node.name) && isText(node.path,300) &&
+      isText(node.note,4000) && Array.isArray(node.actions) &&
+      node.actions.every(action => action && named(action.name) && isCell(action.target)) &&
+      unique(node.actions.map(action => action.name))) || !unique(system.nodes.map(node => node.cell))) return false;
+  return system.rules.every(rule => rule && isCell(rule.cell) && named(rule.action) &&
+    isCell(rule.target) && isText(rule.note,4000)) &&
+    unique(system.rules.map(rule => rule.cell + ':' + rule.action)) &&
+    system.events.every(event => validEvent(event) && Object.hasOwn(sourceLabels,event.source));
+}
+function validEvent(event) {
+  return !!event && isCell(event.from) && isCell(event.to) && named(event.action) &&
+    dateOK(event.time) && isText(event.result,4000) && (event.ref === undefined || isText(event.ref,500));
+}
+function validBackup(backup) {
+  return backup?.kind === 'w3-console-backup' && backup.version === 1 &&
+    Array.isArray(backup.systems) && backup.systems.length > 0 &&
+    backup.systems.every(validSystem) && unique(backup.systems.map(system => system.id)) &&
+    backup.systems.some(system => system.id === backup.active);
+}
+let startupNote = 'เลือกช่องในตารางเพื่อดูรายละเอียด';
+try {
+  const saved = localStorage.getItem(STORAGE);
+  if (saved) {
+    const backup = JSON.parse(saved);
+    if (!validBackup(backup)) throw new Error();
+    data = backup;
+    startupNote = 'เปิดข้อมูลที่บันทึกล่าสุดแล้ว';
+  }
+} catch { startupNote = 'เปิดข้อมูลที่เก็บในเครื่องไม่ได้'; }
+const system = () => data.systems.find(item => item.id === data.active);
+const nodeAt = (cell, board=system()) => board.nodes.find(node => node.cell === cell);
+const coordinate = cell => 'R' + (1 + Math.floor(cell / 6)) + 'C' + (1 + cell % 6);
+const nodeName = cell => nodeAt(cell)?.name ?? 'ยังไม่มีชื่อ';
+const point = cell => coordinate(cell) + ' · ' + nodeName(cell);
+const selected = () => nodeAt(system().cursor);
+function message(text, error=false) {
+  el('status').textContent = text;
+  el('status').classList.toggle('error',error);
+}
+function makeButton(text, fn, cls='') {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.textContent = text;
+  button.className = cls;
+  button.onclick = fn;
+  return button;
+}
+function ruleCheck(event) {
+  const rule = system().rules.find(entry => entry.cell === event.from && entry.action === event.action);
+  if (!rule) return 'ยังไม่มีกฎสำหรับแอคชั่นนี้';
+  const verdict = rule.target === event.to ? 'ตรงกับกฎ' : 'ต่างจากกฎ · คาดว่าไป ' + point(rule.target);
+  return verdict + (rule.note ? ' · ' + rule.note : '');
+}
+function eventText(event) {
+  const lines = [
+    point(event.from) + ' → ' + point(event.to),
+    event.action + (event.result ? ' · ' + event.result : ''),
+    ruleCheck(event), new Date(event.time).toLocaleString('th-TH')
+  ];
+  if (event.ref) lines.push('อ้างอิง: ' + event.ref);
+  return lines.join('\n');
+}
+function choose(cell) {
+  system().cursor = cell;
+  render();
+  el('grid').children[cell].focus({preventScroll:true});
+}
+function render() {
+  const board = system();
+  const node = selected();
+  el('area').textContent = board.name;
+  el('grid').replaceChildren(...Array.from({length:SIZE}, (_,cell) => {
+    const item = nodeAt(cell);
+    const button = makeButton(item ? String(cell+1).padStart(2,'0') : '·', () => choose(cell),'cell');
+    button.setAttribute('aria-label',point(cell));
+    button.setAttribute('aria-pressed',String(board.cursor === cell));
+    if (item) button.dataset.filled = '';
+    return button;
+  }));
+  el('detailTitle').textContent = node?.name ?? 'ช่องว่าง';
+  el('location').textContent = coordinate(board.cursor) + ' · ' + board.name;
+  el('path').textContent = node?.path || '—';
+  el('note').textContent = node?.note || 'แตะปุ่มด้านล่างเพื่อใส่รายละเอียด';
+  el('editNode').textContent = node ? 'แก้รายละเอียด' : '+ สร้างโหนด';
+  el('nodes').replaceChildren(...board.nodes.map(item => {
+    const button = makeButton(item.name,() => choose(item.cell),'key node');
+    button.setAttribute('aria-pressed',String(item.cell === board.cursor));
+    return button;
+  }));
+  el('actions').replaceChildren(...(node?.actions ?? []).map(action =>
+    makeButton(action.name,() => actionEditor(action),'key action')));
+  el('addAction').disabled = !node;
+  el('rules').disabled = !node;
+  const latest = orderedEvents(board.events)[0];
+  el('source').textContent = latest ? sourceLabels[latest.source] : 'ยังไม่มีผลลัพธ์';
+  el('result').textContent = latest ? eventText(latest) : 'ผลการทดลองหรือเหตุการณ์ที่นำเข้าจะแสดงตรงนี้';
+  el('history').disabled = !latest;
+}
+function show(title,...content) {
+  el('dialogTitle').textContent = title;
+  el('dialogBody').replaceChildren(...content);
+  if (!el('dialog').open) el('dialog').showModal();
+}
+function paragraph(text,cls='hint') {
+  const p = document.createElement('p'); p.className = cls; p.textContent = text; return p;
+}
+function field(label,name,value='',options={}) {
+  const wrapper = document.createElement('label');
+  wrapper.append(label);
+  const control = document.createElement(options.choices ? 'select' : options.long ? 'textarea' : 'input');
+  control.name = name;
+  if (options.choices) {
+    for (const [id,display] of options.choices) {
+      const option = document.createElement('option');
+      option.value = id;
+      option.textContent = display;
+      control.append(option);
+    }
+  } else control.maxLength = options.max ?? 100;
+  control.value = value;
+  control.required = !!options.required;
+  wrapper.append(control);
+  return wrapper;
+}
+function editor(title,fields,apply,extras=[]) {
+  const form = document.createElement('form');
+  const controls = document.createElement('div');
+  controls.className = 'dialog-actions';
+  const submit = document.createElement('button');
+  submit.type = 'submit';
+  submit.textContent = 'ใช้ข้อมูล';
+  submit.className = 'key gold';
+  controls.append(submit,...extras);
+  form.append(...fields,controls);
+  const feedback = paragraph('','hint error');
+  feedback.setAttribute('role','alert');
+  form.append(feedback);
+  form.onsubmit = event => {
+    event.preventDefault();
+    try {
+      apply(Object.fromEntries(new FormData(form)));
+      el('dialog').close();
+      render();
+    } catch(error) { feedback.textContent = error.message; }
+  };
+  show(title,form);
+}
+const requireName = value => {
+  if (!value.trim()) throw new Error('กรุณาระบุชื่อ');
+  return value.trim();
+};
+const targets = () => system().nodes.map(node => [node.cell,point(node.cell)]);
+function nodeEditor() {
+  const node = selected();
+  editor(node ? 'แก้รายละเอียดโหนด' : 'สร้างโหนดที่ ' + coordinate(system().cursor),[
+    field('ชื่อโหนด','name',node?.name,{required:true}),
+    field('ไฟล์หรือจุดอ้างอิง','path',node?.path,{max:300}),
+    field('รายละเอียด','note',node?.note,{long:true,max:4000})
+  ], values => {
+    const update = {name:requireName(values.name),path:values.path,note:values.note};
+    if (node) Object.assign(node,update);
+    else system().nodes.push({cell:system().cursor,actions:[],...update});
+    message('แก้ข้อมูลแล้ว · กดบันทึกล่าสุดเพื่อเก็บลงเครื่อง');
+  });
+}
+function actionEditor(action) {
+  const node = selected();
+  const run = action ? [makeButton('ทดลองแอคชั่น',() => {
+    system().events.push({source:'simulation',from:node.cell,to:action.target,action:action.name,
+      time:new Date().toISOString(),result:'ผลทดลองจากเส้นทางที่ตั้งไว้'});
+    el('dialog').close();
+    render();
+    message('เพิ่มผลทดลองแล้ว · กดบันทึกล่าสุดเพื่อเก็บลงเครื่อง');
+  },'key action')] : [];
+  editor(action ? 'แอคชั่น · ' + action.name : 'สร้างแอคชั่น · ' + node.name,[
+    field('ชื่อแอคชั่น','name',action?.name,{required:true}),
+    field('โหนดปลายทาง','target',String(action?.target ?? targets()[0][0]),{choices:targets(),required:true})
+  ], values => {
+    const name = requireName(values.name);
+    if (node.actions.some(item => item !== action && item.name === name)) throw new Error('โหนดนี้มีชื่อแอคชั่นนี้แล้ว');
+    const target = Number(values.target);
+    if (action) Object.assign(action,{name,target});
+    else node.actions.push({name,target});
+    message('แก้แอคชั่นแล้ว · กดบันทึกล่าสุดเพื่อเก็บลงเครื่อง');
+  },run);
+}
+function rulesPanel() {
+  const node = selected();
+  const rules = system().rules.filter(rule => rule.cell === node.cell);
+  const choices = document.createElement('div');
+  choices.className = 'toolbar';
+  choices.append(makeButton('+ สร้างกฎ',() => ruleEditor()),...rules.map(rule =>
+    makeButton(rule.action,() => ruleEditor(rule))));
+  show('กฎ · ' + node.name,paragraph('กำหนดว่าเมื่อโหนดนี้ใช้แอคชั่นที่ระบุ ควรไปถึงโหนดใด'),choices);
+}
+function ruleEditor(rule) {
+  const node = selected();
+  const remove = rule ? [makeButton('ลบกฎ',() => {
+    if (!confirm('ลบกฎนี้หรือไม่')) return;
+    system().rules = system().rules.filter(item => item !== rule);
+    rulesPanel(); render(); message('ลบกฎแล้ว · กดบันทึกล่าสุดเพื่อเก็บลงเครื่อง');
+  })] : [];
+  editor('กฎของ ' + node.name,[
+    field('ชื่อแอคชั่นให้ตรงกับชื่อในเหตุการณ์','action',rule?.action ?? node.actions[0]?.name,{required:true}),
+    field('ปลายทางที่คาดไว้','target',String(rule?.target ?? targets()[0][0]),{choices:targets(),required:true}),
+    field('คำอธิบายกฎ','note',rule?.note,{long:true,max:4000})
+  ],values => {
+    const action = requireName(values.action);
+    if (system().rules.some(item => item !== rule && item.cell === node.cell && item.action === action))
+      throw new Error('มีกฎสำหรับแอคชั่นนี้อยู่แล้ว');
+    const update = {cell:node.cell,action,target:Number(values.target),note:values.note};
+    if (rule) Object.assign(rule,update);
+    else system().rules.push(update);
+    message('แก้กฎแล้ว · กดบันทึกล่าสุดเพื่อเก็บลงเครื่อง');
+  },remove);
+}
+function openSystems() {
+  const row = document.createElement('div'); row.className = 'system-row';
+  for (const item of data.systems) row.append(makeButton(item.name,() => {
+    data.active = item.id; el('dialog').close(); render(); message('เปิด ' + item.name);
+  }));
+  row.append(makeButton('+ สร้างระบบ',() => editor('สร้างพื้นที่ระบบ',[
+    field('ชื่อพื้นที่หรือระบบ','name','',{required:true})
+  ], values => {
+    const board = emptySystem(requireName(values.name));
+    data.systems.push(board); data.active = board.id;
+    message('สร้างระบบแล้ว · แตะช่องเพื่อใส่โหนด');
+  }),'key gold'));
+  show('เปิดพื้นที่ระบบ',row);
+}
+function save() {
+  const previous = system().savedAt;
+  try {
+    system().savedAt = new Date().toISOString();
+    localStorage.setItem(STORAGE,JSON.stringify(data));
+    message('บันทึกในเครื่องแล้ว · ' + new Date(system().savedAt).toLocaleString('th-TH'));
+  } catch {
+    system().savedAt = previous;
+    message('บันทึกในเครื่องไม่สำเร็จ · ส่งออก JSON เพื่อเก็บงาน',true);
+  }
+}
+function exportBackup() {
+  const content = JSON.stringify(data,null,2);
+  if (globalThis.W3Android) {
+    W3Android.exportBackup(content);
+    return;
+  }
+  const url = URL.createObjectURL(new Blob([content],{type:'application/json'}));
+  const link = document.createElement('a'); link.href=url; link.download='w3-system-console.json'; link.click();
+  setTimeout(() => URL.revokeObjectURL(url),1000);
+  message('ส่งไฟล์ JSON ให้เบราว์เซอร์ดาวน์โหลดแล้ว');
+}
+window.reportNativeExport = ok => message(ok ? 'ส่งออกไฟล์ JSON แล้ว' : 'เขียนไฟล์ส่งออกไม่สำเร็จ',!ok);
+function applyImport(input) {
+  if (validBackup(input)) {
+    const used = new Set(data.systems.map(item => item.id));
+    const copies = input.systems.map(item => {
+      const id = used.has(item.id) ? newId() : item.id;
+      used.add(id);
+      return {...item,id,savedAt:''};
+    });
+    const activeIndex = input.systems.findIndex(item => item.id === input.active);
+    data.systems.push(...copies); data.active = copies[activeIndex].id;
+    return 'นำเข้าพื้นที่เป็นสำเนา ' + copies.length + ' รายการ';
+  }
+  if (input?.kind !== 'w3-runtime-trace' || input.version !== 1 ||
+      input.system !== system().name || !Array.isArray(input.events) || !input.events.length ||
+      !input.events.every(validEvent))
+    throw new Error('รูปแบบไฟล์ไม่ถูกต้อง หรือชื่อระบบในไฟล์ต่างจากระบบที่เปิดอยู่');
+  const known = new Set(system().events.filter(event => event.source === 'trace').map(traceKey));
+  const events = [];
+  for (const event of input.events) {
+    const key = traceKey(event);
+    if (known.has(key)) continue;
+    known.add(key);
+    const {from,to,action,time,result,ref} = event;
+    events.push({source:'trace',from,to,action,time,result,ref});
+  }
+  system().events = system().events.concat(events);
+  return events.length ? 'นำเข้าเหตุการณ์ ' + events.length + ' รายการ' : 'เหตุการณ์ในไฟล์นี้อยู่ในระบบแล้ว';
+}
+function orderedEvents(events) {
+  return events.slice().reverse().sort((a,b) => Date.parse(b.time)-Date.parse(a.time));
+}
+function traceKey(event) {
+  return JSON.stringify([event.from,event.to,event.action,Date.parse(event.time),event.result,event.ref ?? '']);
+}
+el('file').onchange = async () => {
+  const file = el('file').files[0];
+  el('file').value = '';
+  if (!file) return;
+  try {
+    if (file.size > 20 * 1024 * 1024) throw new Error('ไฟล์ใหญ่เกิน 20 MB');
+    const result = applyImport(JSON.parse(await file.text()));
+    render(); message(result + ' · กดบันทึกล่าสุดเพื่อเก็บลงเครื่อง');
+  } catch(error) { message('นำเข้าไม่สำเร็จ · ' + error.message,true); }
+};
+el('history').onclick = () => {
+  const blocks = orderedEvents(system().events).map(event =>
+    paragraph(sourceLabels[event.source] + '\n' + eventText(event),'readout'));
+  show('ประวัติ · ประเมินเทียบกฎที่ใช้อยู่ตอนนี้',...blocks);
+};
+el('close').onclick = () => el('dialog').close();
+el('open').onclick = openSystems;
+el('save').onclick = save;
+el('editNode').onclick = nodeEditor;
+el('addAction').onclick = () => actionEditor();
+el('rules').onclick = rulesPanel;
+el('import').onclick = () => el('file').click();
+el('export').onclick = exportBackup;
+render();
+message(startupNote);
+</script>
+<script defer src="repo.js"></script>
+</body>
+</html>

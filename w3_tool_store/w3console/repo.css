@@ -1,0 +1,18 @@
+.repo-panel{margin-top:10px}
+.repo-panel [hidden]{display:none!important}
+.repo-files{display:grid;grid-template-columns:minmax(150px,1fr) minmax(0,2fr);gap:10px;margin-top:12px}
+.repo-files aside,.repo-files section{min-width:0}
+#repo-tree{max-height:370px;overflow:auto;padding:6px 0;overflow-wrap:anywhere}
+#repo-tree details{padding-left:10px}
+#repo-tree summary{cursor:pointer;padding:5px 0;color:var(--cyan)}
+.repo-file-button{display:block;text-align:left;width:100%;margin:2px 0;min-height:33px}
+#repo-path{color:var(--cyan);overflow-wrap:anywhere}
+#repo-editor-label{margin-top:8px}
+#repo-editor{min-height:260px;white-space:pre;overflow:auto;font:15px/1.55 ui-monospace,monospace}
+#repo-preview,#repo-flow{overflow-wrap:anywhere;margin-top:10px}
+#repo-preview pre,#repo-flow pre{white-space:pre-wrap;max-height:260px;overflow:auto;background:var(--screen);padding:8px}
+#repo-preview table{border-collapse:collapse;display:block;overflow:auto}
+#repo-preview td,#repo-preview th{border:1px solid var(--line);padding:5px}
+.repo-step{margin:5px 0;padding:6px;border-bottom:1px solid var(--line)}
+.repo-step button{color:var(--cyan);text-align:left}
+@media(max-width:620px){.repo-files{grid-template-columns:minmax(0,1fr)}#repo-tree{max-height:180px}}
