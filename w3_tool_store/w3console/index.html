@@ -17,7 +17,7 @@
 <header class="header"><div><div class="brand">W3 / SYSTEM INSTRUMENTS</div><h1>SYSTEM CONSOLE</h1></div><span class="lamp">LOCAL</span></header>
 <div class="console">
 <section class="panel screen"><div class="label"><b>01</b><h2>ตารางระบบ</h2></div><h3 id="area" class="board-title"></h3><div id="grid" class="grid" aria-label="ตารางระบบ 6 แถว 6 คอลัมน์"></div></section>
-<section class="panel screen"><div class="label"><b>02</b><h2>รายละเอียดจุดที่แตะ</h2></div><h3 id="detailTitle"></h3><dl class="facts"><div><dt>ตำแหน่ง / พื้นที่</dt><dd id="location"></dd></div><div><dt>ไฟล์หรือจุดอ้างอิง</dt><dd id="path"></dd></div></dl><p id="note" class="readout"></p><div class="toolbar"><button id="editNode"></button></div></section>
+<section class="panel screen"><div class="label"><b>02</b><h2>รายละเอียดจุดที่แตะ</h2></div><h3 id="detailTitle"></h3><dl class="facts"><div><dt>ตำแหน่ง / พื้นที่</dt><dd id="location"></dd></div><div><dt>ไฟล์หรือจุดอ้างอิง</dt><dd id="path"></dd></div></dl><p id="note" class="readout"></p><div class="toolbar"><button id="editNode"></button><button id="repo-node-file" type="button" hidden>เปิดไฟล์ในรีโป้</button></div></section>
 <section class="panel"><div class="label"><b>03</b><h2>คำสั่งในแอป</h2></div><div class="menu"><button class="key gold" id="open">เปิด</button><button class="key gold" id="save">บันทึกล่าสุด</button><button class="key gold" id="import">นำเข้า</button><button class="key gold" id="export">ส่งออก</button></div></section>
 <section class="panel result"><div class="label"><b>04</b><h2>ผลลัพธ์ล่าสุด</h2></div><div id="source" class="source"></div><p id="result" class="readout"></p><div class="toolbar"><button id="history">ดูประวัติ</button></div></section>
 <section class="panel"><div class="label"><b>05</b><h2>โหนดในพื้นที่นี้</h2></div><div id="nodes" class="keys"></div></section>
@@ -171,6 +171,7 @@ function render() {
   el('detailTitle').textContent = node?.name ?? 'ช่องว่าง';
   el('location').textContent = coordinate(board.cursor) + ' · ' + board.name;
   el('path').textContent = node?.path || '—';
+  el('repo-node-file').hidden = !node?.path;
   el('note').textContent = node?.note || 'แตะปุ่มด้านล่างเพื่อใส่รายละเอียด';
   el('editNode').textContent = node ? 'แก้รายละเอียด' : '+ สร้างโหนด';
   el('nodes').replaceChildren(...board.nodes.map(item => {

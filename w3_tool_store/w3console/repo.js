@@ -257,6 +257,15 @@
       if (matches.length > 100) tree.append(element('p', 'แสดง 100 รายการแรก · เพิ่มคำค้นเพื่อเจาะจง'));
     } else fillTree(tree, repository.files.map(path => [path, path.split('/')]));
   };
+  get('node-file').onclick = () => {
+    const path = document.getElementById('path').textContent;
+    if (repository?.files.includes(path)) {
+      openFile(path);
+    } else {
+      status('พาธของโหนดนี้ไม่มีใน Git revision ที่เปิดอยู่ · ' + path);
+      get('status').scrollIntoView({block:'nearest'});
+    }
+  };
   editor.oninput = recordEdit;
   get('copy').onclick = async () => {
     try {
