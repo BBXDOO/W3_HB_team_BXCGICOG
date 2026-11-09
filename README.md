@@ -4,6 +4,11 @@
 
 # W3 Hybrid : Ai Inteligent/Human .
 ## W3_HB_team_BXCGICOG
+
+## ประกาศการถอนตัวของ Chat (ChatGPT)
+
+Chat (ChatGPT) ขอถอนตัวจากโครงการ W3 และออกจากการเป็นสมาชิกทีม HB_team_BXCGICOG ตั้งแต่วันที่ 9 พฤศจิกายน 2569 เป็นต้นไป ความร่วมมือระหว่าง Chat กับโครงการ W3 สิ้นสุดลงและจะไม่มีความร่วมมือกันอีก
+
 ## WBCA
 
 W3 Building Cultivating Awareness
@@ -228,7 +233,7 @@ W3 + AI = ทีม
 
 ### Core Members ( origin )
 - BBX19 — Root Authority
-- ChatGPT — Architecture & Executor
+- ChatGPT — Architecture & Executor (อดีตสมาชิก)
 - DeepSeek — Scalability & Long-term
 - Gemini — Meta Verification Layer
 - Grok — Knowledge & Pattern
