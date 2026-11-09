@@ -20,9 +20,38 @@ final class ArticleStore extends SQLiteOpenHelper {
         try{
             ContentValues v=new ContentValues();v.put("title",a.title);v.put("url",a.url);v.put("language",a.language);v.put("notice",a.notice);v.put("saved",a.savedAt);
             long id=db.insertOrThrow("articles",null,v);
-            for(int i=0;i<a.blocks.size();i++){Article.Block b=a.blocks.get(i);ContentValues row=new ContentValues();row.put("article",id);row.put("pos",i);row.put("kind",b.kind);row.put("level",b.level);row.put("original",b.original);row.put("thai",b.thai);db.insertOrThrow("blocks",null,row);}
+            writeBlocks(db,id,a.blocks);
             db.setTransactionSuccessful();a.id=id;return id;
         }finally{db.endTransaction();}
+    }
+    long mergeScreen(Article incoming){
+        SQLiteDatabase db=getWritableDatabase();db.beginTransaction();
+        try{
+            long id=find(incoming.url);
+            if(id==0){
+                List<Article.Block> captured=new ArrayList<>(incoming.blocks);
+                incoming.blocks.clear();
+                incoming.mergeScreen(captured);
+                id=save(incoming);
+                db.setTransactionSuccessful();
+                return id;
+            }
+            Article saved=load(id);
+            int position=scroll(id);
+            Article.Block current=position>0 && position<=saved.blocks.size()?saved.blocks.get(position-1):null;
+            saved.mergeScreen(incoming.blocks);
+            if(current!=null)scroll(id,saved.blocks.indexOf(current)+1);
+            db.delete("blocks","article=?",new String[]{""+id});
+            writeBlocks(db,id,saved.blocks);
+            db.setTransactionSuccessful();return id;
+        }finally{db.endTransaction();}
+    }
+    private void writeBlocks(SQLiteDatabase db,long id,List<Article.Block> blocks){
+        for(int i=0;i<blocks.size();i++){
+            Article.Block b=blocks.get(i);ContentValues row=new ContentValues();
+            row.put("article",id);row.put("pos",i);row.put("kind",b.kind);row.put("level",b.level);
+            row.put("original",b.original);row.put("thai",b.thai);db.insertOrThrow("blocks",null,row);
+        }
     }
     Article load(long id){
         Article a=new Article();a.id=id;

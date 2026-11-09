@@ -14,6 +14,45 @@ final class Article {
         Block(String kind,int level,String original){this.kind=kind;this.level=level;this.original=original;}
         boolean translatable(){return !"code".equals(kind);}
     }
+    boolean fromScreen(){return url.startsWith("screen:");}
+    String category(){
+        if(!fromScreen())return "บทความจากลิงก์";
+        String path=java.net.URI.create(url).getRawSchemeSpecificPart();
+        return android.net.Uri.decode(path.substring(0,path.indexOf('/')));
+    }
+    String sourceLabel(){return fromScreen()?category()+" · แปลจากหน้าจอ":url;}
+    void mergeScreen(List<Block> incoming){
+        Map<String,Block> existing=new HashMap<>();
+        for(Block block:blocks)existing.putIfAbsent(key(block),block);
+        int cursor=-1;
+        boolean firstNew=true;
+        for(int i=0;i<incoming.size();i++){
+            Block block=incoming.get(i);
+            String text=key(block);
+            Block old=existing.get(text);
+            if(old!=null){
+                if(old.thai.isEmpty())old.thai=block.thai;
+                cursor=Math.max(cursor,blocks.indexOf(old)+1);
+                continue;
+            }
+            int position=cursor;
+            for(int j=i+1;j<incoming.size();j++){
+                Block next=existing.get(key(incoming.get(j)));
+                int nextPosition=blocks.indexOf(next);
+                if(nextPosition>=Math.max(0,cursor)){position=nextPosition;break;}
+            }
+            if(position<0)position=blocks.size();
+            Block added=new Block(firstNew?"section":"paragraph",0,block.original);
+            added.thai=block.thai;
+            blocks.add(position,added);
+            existing.put(text,added);
+            cursor=position+1;
+            firstNew=false;
+        }
+    }
+    private static String key(Block block){
+        return block.original.replaceAll("\\s+"," ").trim();
+    }
     int translated(){int n=0;for(Block b:blocks)if(b.translatable()&&!b.thai.isEmpty())n++;return n;}
     int translatable(){int n=0;for(Block b:blocks)if(b.translatable())n++;return n;}
     static List<String> chunks(String text,int max){
@@ -30,7 +69,7 @@ final class Article {
         return parts;
     }
     String markdown(int view){
-        StringBuilder s=new StringBuilder("# ").append(title).append("\n\n").append(url).append("\n\n");
+        StringBuilder s=new StringBuilder("# ").append(title).append("\n\n").append(sourceLabel()).append("\n\n");
         s.append("บันทึก: ").append(new java.util.Date(savedAt)).append("\n\n");
         if(!notice.isEmpty())s.append("> ").append(notice.replace("\n"," ")).append("\n\n");
         s.append("> คำแปลอัตโนมัติ ควรเทียบต้นฉบับ; บล็อกโค้ดคงต้นฉบับ\n\n");

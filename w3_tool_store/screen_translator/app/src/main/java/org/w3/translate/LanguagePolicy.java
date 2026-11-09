@@ -31,6 +31,51 @@ public final class LanguagePolicy {
         }
         return latinRun;
     }
+    private static final Pattern CHROME = Pattern.compile(
+        "(?i)^(?:git|search|menu|home|skip to (?:main )?content|(?:q\\s*)?type\\s*/\\s*to search.*|search (?:this site|entire site).*|[-–—]+distributed-is-the-new-centralized)$");
+    private static final Pattern TERMS = Pattern.compile(
+        "(?i)(?<![\\p{L}\\p{N}])(?:GitHub|GitLab|Git|Linux|Stack Overflow|GNU|GPL)(?![\\p{L}\\p{N}])");
+
+    static boolean screenContent(String text) {
+        return readable(text) && !CHROME.matcher(text.trim()).matches()
+            && !text.matches("^[\\p{N}\\p{P}\\p{S}\\s]+$");
+    }
+
+    static final class ProtectedText {
+        final String input;
+        private final List<String> originals = new ArrayList<>();
+        private final String marker;
+
+        ProtectedText(String original) {
+            String prefix = "W3TERM";
+            while (original.toUpperCase(Locale.ROOT).contains(prefix)) prefix += "Z";
+            marker = prefix;
+            Matcher terms = TERMS.matcher(original);
+            StringBuffer masked = new StringBuffer();
+            while (terms.find()) {
+                terms.appendReplacement(masked, marker + originals.size() + "END");
+                originals.add(terms.group());
+            }
+            input = terms.appendTail(masked).toString();
+        }
+
+        String restore(String translated) {
+            Matcher tokens = Pattern.compile(marker + "(\\d+)END", Pattern.CASE_INSENSITIVE).matcher(translated);
+            boolean[] seen = new boolean[originals.size()];
+            StringBuffer result = new StringBuffer();
+            while (tokens.find()) {
+                int index;
+                try { index = Integer.parseInt(tokens.group(1)); }
+                catch (NumberFormatException e) { return null; }
+                if (index >= seen.length || seen[index]) return null;
+                seen[index] = true;
+                tokens.appendReplacement(result, Matcher.quoteReplacement(originals.get(index)));
+            }
+            for (boolean found : seen) if (!found) return null;
+            return tokens.appendTail(result).toString();
+        }
+    }
+
     private static final Pattern NUMBER=Pattern.compile("(?:[+−-]\\s*)?(?:\\p{Nd}+(?:[.,:/]\\p{Nd}+)*|\\.\\p{Nd}+)%?");
     /** Do not display/cache a translation that dropped, changed, or invented values. */
     public static boolean preservesNumbers(String original,String translated){

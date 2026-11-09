@@ -62,22 +62,30 @@ public class ArticleActivity extends Activity {
     private void run(Runnable action){busy=true;cancel.set(false);worker.execute(()->{activeWorker=Thread.currentThread();try{if(!cancel.get())action.run();}catch(RuntimeException e){message("ดำเนินการไม่สำเร็จ ตรวจพื้นที่ว่างในเครื่องแล้วลองใหม่");}finally{activeWorker=null;busy=false;ui(()->{if(returnToList&&article!=null){returnToList=false;remember();home("");return;}if(fetch!=null)fetch.setEnabled(true);if(translate!=null)translate.setEnabled(true);if(source!=null)source.setEnabled(true);if(stop!=null)stop.setVisibility(View.GONE);});}});}
     private void home(String incoming){
         article=null;fetch=null;translate=null;source=null;stop=null;
-        screen("บทความของฉัน");
+        screen("สารบัญและประวัติการอ่าน");
         link=new EditText(this);link.setSingleLine(true);link.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_URI);link.setHint("วางลิงก์ HTTPS ของบทความ");link.setText(incoming);root.addView(link);
         fetch=Ui.button(this,"ดึงและบันทึกบทความลงเครื่อง");root.addView(fetch);fetch.setEnabled(!busy);fetch.setOnClickListener(v->importLink());
         root.addView(Ui.text(this,"เก็บข้อความจากหน้านี้พร้อมหัวข้อ ไม่ดึงลิงก์ต่อ ไม่รวมรูป/PDF; เว็บที่ต้องล็อกอินหรือโหลดด้วย JavaScript อาจดึงไม่ครบ",12));
         LinearLayout searchRow=new LinearLayout(this);root.addView(searchRow);
         EditText search=new EditText(this);search.setSingleLine(true);search.setHint("ค้นชื่อ ต้นฉบับ หรือคำแปล");searchRow.addView(search,new LinearLayout.LayoutParams(0,-2,1));
-        Button find=Ui.button(this,"ค้น");searchRow.addView(find);find.setOnClickListener(v->loadList(search.getText().toString()));
+        Button find=Ui.button(this,"ค้น");searchRow.addView(find);
+        Spinner category=new Spinner(this);
+        category.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,
+            new String[]{"ทุกหมวด","บทความจากลิงก์","คู่มือ","หนังสือ","เกม","อื่น ๆ"}));
+        root.addView(category);
         list=new ListView(this);list.setDividerHeight(Ui.dp(this,8));root.addView(list,new LinearLayout.LayoutParams(-1,0,1));
-        loadList("");
+        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            public void onNothingSelected(AdapterView<?> p){}
+            public void onItemSelected(AdapterView<?> p,View v,int pos,long id){loadList(search.getText().toString(),pos==0?"":p.getItemAtPosition(pos).toString());}
+        });
+        find.setOnClickListener(v->loadList(search.getText().toString(),category.getSelectedItemPosition()==0?"":category.getSelectedItem().toString()));
     }
-    private void loadList(String query){
-        if(busy)return;
-        run(()->{try{List<Article> rows=store.list(query);ui(()->{
+    private void loadList(String query,String category){
+        if(busy){list.postDelayed(()->{if(!closed && article==null)loadList(query,category);},100);return;}
+        run(()->{try{List<Article> rows=store.list(query);rows.removeIf(a->!category.isEmpty()&&!category.equals(a.category()));ui(()->{
             status.setText(rows.isEmpty()?"ยังไม่มีบทความที่ตรงกับการค้นหา · บันทึกแล้วเปิดอ่านออฟไลน์ได้":"บันทึกในเครื่อง "+rows.size()+" บทความ · แตะเพื่ออ่าน");
             list.setAdapter(new ArrayAdapter<Article>(this,android.R.layout.simple_list_item_2,android.R.id.text1,rows){
-                @Override public View getView(int pos,View old,ViewGroup parent){View v=super.getView(pos,old,parent);Article a=getItem(pos);((TextView)v.findViewById(android.R.id.text1)).setText(a.title);((TextView)v.findViewById(android.R.id.text2)).setText(a.url);return v;}
+                @Override public View getView(int pos,View old,ViewGroup parent){View v=super.getView(pos,old,parent);Article a=getItem(pos);((TextView)v.findViewById(android.R.id.text1)).setText(a.title);((TextView)v.findViewById(android.R.id.text2)).setText(a.sourceLabel());return v;}
             });
             list.setOnItemClickListener((p,v,pos,id)->{if(!busy)open(rows.get(pos).id);});
         });}catch(Exception e){message("อ่านรายการไม่ได้ กรุณาตรวจพื้นที่ว่างในเครื่องแล้วเปิดใหม่");}});
@@ -105,6 +113,7 @@ public class ArticleActivity extends Activity {
         display=new Spinner(this);display.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"ต้นฉบับ","ไทย","ต้นฉบับคู่ไทย"}));display.setSelection(viewMode);root.addView(display);
         display.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){public void onNothingSelected(AdapterView<?> p){}public void onItemSelected(AdapterView<?> p,View v,int pos,long id){viewMode=pos;if(blocks!=null)blocks.notifyDataSetChanged();}});
         LinearLayout languages=new LinearLayout(this);root.addView(languages);
+        if(article.fromScreen())languages.setVisibility(View.GONE);
         source=new Spinner(this);source.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"อังกฤษ → ไทย","จีน → ไทย","ญี่ปุ่น → ไทย","ต้นฉบับไทย"}));
         int selected=Arrays.asList(CODES).indexOf(article.language);source.setSelection(Math.max(0,selected));languages.addView(source,new LinearLayout.LayoutParams(0,-2,1));
         translate=Ui.button(this,"แปล / แปลต่อ");languages.addView(translate);translate.setOnClickListener(v->askTranslate());
@@ -151,14 +160,14 @@ public class ArticleActivity extends Activity {
     }
     private void contents(){
         List<String> labels=new ArrayList<>();List<Integer> positions=new ArrayList<>();
-        for(int i=0;i<article.blocks.size();i++){Article.Block b=article.blocks.get(i);if(b.kind.equals("heading")){String name=viewMode==0||b.thai.isEmpty()?b.original:b.thai;labels.add(String.join("",Collections.nCopies(Math.max(0,b.level-1),"  "))+name);positions.add(i+1);}}
+        for(int i=0;i<article.blocks.size();i++){Article.Block b=article.blocks.get(i);if(b.kind.equals("heading")){String name=viewMode==0||b.thai.isEmpty()?b.original:b.thai;labels.add(String.join("",Collections.nCopies(Math.max(0,b.level-1),"  "))+name);positions.add(i+1);}else if(article.fromScreen() && (i==0 || b.kind.equals("section"))){labels.add("ส่วนที่ "+(labels.size()+1)+" · "+b.original.substring(0,Math.min(70,b.original.length())).replace('\n',' '));positions.add(i+1);}}
         if(labels.isEmpty()){new AlertDialog.Builder(this).setMessage("หน้านี้ไม่มีหัวข้อที่เว็บระบุไว้ จัดข้อความตามลำดับเดิมแล้ว").setPositiveButton("ตกลง",null).show();return;}
         new AlertDialog.Builder(this).setTitle("สารบัญ").setItems(labels.toArray(new String[0]),(d,w)->list.setSelection(positions.get(w))).setNegativeButton("ปิด",null).show();
     }
     private void more(){
-        new AlertDialog.Builder(this).setTitle("บทความนี้").setItems(new String[]{"ส่งออกเป็น Markdown (แบบที่กำลังอ่าน)","เปิดเว็บต้นฉบับ","ลบบทความจากเครื่อง"},(d,w)->{
+        new AlertDialog.Builder(this).setTitle("บทความนี้").setItems(new String[]{"ส่งออกเป็น Markdown (แบบที่กำลังอ่าน)",article.fromScreen()?"แหล่งที่มา: แปลจากหน้าจอ":"เปิดเว็บต้นฉบับ","ลบบทความจากเครื่อง"},(d,w)->{
             if(w==0){exportId=article.id;exportView=viewMode;Intent i=new Intent(Intent.ACTION_CREATE_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType("text/markdown");i.putExtra(Intent.EXTRA_TITLE,article.title.replaceAll("[\\\\/:*?\"<>|]","_").substring(0,Math.min(70,article.title.length()))+".md");try{startActivityForResult(i,EXPORT);}catch(ActivityNotFoundException e){status.setText("ไม่พบแอปเลือกไฟล์สำหรับส่งออก");}}
-            if(w==1){try{startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(article.url)));}catch(ActivityNotFoundException e){status.setText("ไม่พบเบราว์เซอร์");}}
+            if(w==1){if(article.fromScreen()){status.setText("เรื่องนี้บันทึกจากหน้าจอ");return;}try{startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(article.url)));}catch(ActivityNotFoundException e){status.setText("ไม่พบเบราว์เซอร์");}}
             if(w==2){if(busy){status.setText("กรุณาพักการแปลให้เสร็จก่อนลบบทความ");return;}long id=article.id;new AlertDialog.Builder(this).setTitle("ลบบทความนี้?").setMessage("จะลบต้นฉบับและคำแปลที่บันทึกไว้ในเครื่อง").setNegativeButton("ยกเลิก",null).setPositiveButton("ลบ",(x,y)->run(()->{store.delete(id);ui(()->home(""));})).show();}
         }).show();
     }
@@ -185,8 +194,9 @@ public class ArticleActivity extends Activity {
         public long getItemId(int p){return p;}
         public View getView(int pos,View recycled,ViewGroup parent){
             LinearLayout card=Ui.column(ArticleActivity.this,12);card.setBackground(Ui.round(0xffffffff,Ui.dp(ArticleActivity.this,12)));
-            if(pos==0){TextView title=Ui.text(ArticleActivity.this,article.title,23);Ui.bold(title);card.addView(title);card.addView(Ui.text(ArticleActivity.this,article.url+"\nบันทึก "+android.text.format.DateFormat.format("dd/MM/yyyy HH:mm",article.savedAt),12));card.addView(Ui.text(ArticleActivity.this,article.notice+"\nคำแปลอัตโนมัติ · บล็อกโค้ดคงต้นฉบับ · ตารางจัดเป็นข้อความแยกแถว",12));if(article.language.equals("unknown"))card.addView(Ui.text(ArticleActivity.this,"ตรวจภาษา: เลือกอังกฤษ จีน หรือญี่ปุ่นก่อนแปล",15));return card;}
+            if(pos==0){TextView title=Ui.text(ArticleActivity.this,article.title,23);Ui.bold(title);card.addView(title);card.addView(Ui.text(ArticleActivity.this,article.sourceLabel()+"\nบันทึก "+android.text.format.DateFormat.format("dd/MM/yyyy HH:mm",article.savedAt),12));card.addView(Ui.text(ArticleActivity.this,article.notice+"\nคำแปลอัตโนมัติ · บล็อกโค้ดคงต้นฉบับ · ตารางจัดเป็นข้อความแยกแถว",12));if(article.language.equals("unknown"))card.addView(Ui.text(ArticleActivity.this,"ตรวจภาษา: เลือกอังกฤษ จีน หรือญี่ปุ่นก่อนแปล",15));return card;}
             Article.Block b=article.blocks.get(pos-1);boolean code=b.kind.equals("code");int size=b.kind.equals("heading")?Math.max(18,27-b.level*2):17;
+            if(article.fromScreen() && (pos==1 || b.kind.equals("section")))card.addView(Ui.text(ArticleActivity.this,"ส่วนที่บันทึก",13));
             String prefix=b.kind.equals("list")?"• ":"";
             if(viewMode!=1||code){TextView text=Ui.text(ArticleActivity.this,prefix+b.original,size);text.setTextIsSelectable(true);if(code)text.setTypeface(Typeface.MONOSPACE);if(b.kind.equals("heading"))Ui.bold(text);card.addView(text);}
             if(viewMode!=0&&!code){TextView thai=Ui.text(ArticleActivity.this,prefix+(b.thai.isEmpty()?"[ยังไม่แปล] "+(viewMode==1?b.original:""):b.thai),size);thai.setTextColor(Ui.GREEN);thai.setTextIsSelectable(true);if(b.kind.equals("heading"))Ui.bold(thai);card.addView(thai);}

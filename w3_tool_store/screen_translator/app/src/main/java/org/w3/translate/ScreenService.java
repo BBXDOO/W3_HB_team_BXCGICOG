@@ -49,6 +49,11 @@ public class ScreenService extends Service {
     private int captureAttempts;
     private long lastCapture;
     private final Runnable tick=()->capture(false);
+    private final Runnable watch=this::watchFrame;
+    private final int[] reference=new int[48*64];
+    private boolean watching, moved;
+    private AlertDialog saveDialog;
+    private final java.util.concurrent.ExecutorService storage=java.util.concurrent.Executors.newSingleThreadExecutor();
     private static final int LIMIT=40;
     private static class Piece {
         final String original,language;final Rect box;String translated;
@@ -84,7 +89,7 @@ public class ScreenService extends Service {
                     if(w>0 && h>0 && Math.abs((double)w/h-(double)screenW/screenH)>.05){toast("ขนาดหน้าจอเปลี่ยน กรุณาเปิด W3 แล้วเริ่มแปลใหม่");stopSelf();}
                 }
                 @Override public void onCapturedContentVisibilityChanged(boolean visible){
-                    if(!visible){paused=true;status("หน้าจอที่เลือกไม่แสดงอยู่ • พักแล้ว");}
+                    if(!visible){paused=true;if(subtitles!=null)invalidateFrame();status("หน้าจอที่เลือกไม่แสดงอยู่ • พักแล้ว");}
                 }
             },main);
             display=projection.createVirtualDisplay("W3Translate",captureW,captureH,metrics.densityDpi,DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,images.getSurface(),null,main);
@@ -148,7 +153,7 @@ public class ScreenService extends Service {
             control("แปลครั้งเดียว","once",false,false,()->{paused=true;readerMode=false;removeReading();rebuildControls();capture(true);});
             control("อ่านเต็มหน้า","book",false,false,()->{paused=true;readerMode=true;rebuildControls();capture(true);});
             control("เลือกพื้นที่","crop",false,false,this::chooseRegion);
-            control(hidden?"แสดงคำแปล":"ซ่อนคำแปล",hidden?"show":"hide",false,false,()->{hidden=!hidden;generation++;if(subtitles!=null)subtitles.setVisibility(hidden || reading!=null?View.INVISIBLE:View.VISIBLE);if(reading!=null)reading.setVisibility(hidden?View.INVISIBLE:View.VISIBLE);rebuildControls();if(!hidden)schedule();});
+            control(hidden?"แสดงคำแปล":"ซ่อนคำแปล",hidden?"show":"hide",false,false,()->{hidden=!hidden;generation++;if(subtitles!=null)subtitles.setVisibility(hidden || reading!=null?View.INVISIBLE:View.VISIBLE);if(reading!=null)reading.setVisibility(hidden?View.INVISIBLE:View.VISIBLE);rebuildControls();if(!hidden){if(!readerMode && watching){main.removeCallbacks(watch);main.post(watch);}schedule();}});
             control("ปิดตัวแปล","stop",false,true,this::stopSelf);
         }else state=null;
         int width=Ui.dp(this,expanded?220:48);
@@ -167,12 +172,12 @@ public class ScreenService extends Service {
     }
     private void status(String s){statusText=s;if(state!=null)state.setText(s);}
     private void toast(String s){Toast.makeText(this,s,Toast.LENGTH_LONG).show();}
-    private void schedule(){if(!dead && !paused && !hidden && !selecting){main.removeCallbacks(tick);main.postDelayed(tick,2200);}}
+    private void schedule(){if(!dead && !paused && !hidden && !selecting){main.removeCallbacks(tick);main.postDelayed(tick,moved?200:2200);}}
     private void capture(boolean once){
         if(dead || busy || selecting)return;
         if(hidden){status("ซ่อนอยู่ • กดแสดงก่อนแปล");return;}
         if(!once && paused)return;
-        busy=true;captureAttempts=0;int job=++generation;
+        busy=true;moved=false;stopWatching();captureAttempts=0;int job=++generation;
         latest.clear();subtitles.removeAllViews();removeReading();
         controls.setVisibility(View.INVISIBLE);subtitles.setVisibility(View.INVISIBLE);if(reading!=null)reading.setVisibility(View.INVISIBLE);
         // Drain old frames, then wait for composition with our windows hidden.
@@ -193,9 +198,13 @@ public class ScreenService extends Service {
             int padded=captureW+(row-stride*captureW)/stride;
             Bitmap full=Bitmap.createBitmap(padded,captureH,Bitmap.Config.ARGB_8888);ByteBuffer buffer=p.getBuffer();full.copyPixelsFromBuffer(buffer);
             bitmap=Bitmap.createBitmap(full,0,0,captureW,captureH);if(bitmap!=full)full.recycle();
+            for(int y=0;y<64;y++)for(int x=0;x<48;x++){
+                reference[y*48+x]=bitmap.getPixel(sample(x,48,captureW),sample(y,64,captureH));
+            }
         }catch(Exception e){status("จับภาพไม่สำเร็จ • ลองเริ่มใหม่");finishJob();return;}
         finally{if(frame!=null)frame.close();}
         restoreWindows();
+        if(!readerMode){watching=true;main.postDelayed(watch,120);}
         final Bitmap owned=bitmap;
         status("กำลังอ่านข้อความ…");
         recognizer.process(InputImage.fromBitmap(owned,0)).addOnSuccessListener(text->{
@@ -205,7 +214,7 @@ public class ScreenService extends Service {
                 StringBuilder raw=new StringBuilder();Rect box=null;
                 for(Text.Line line:block.getLines()){
                     Rect lineBox=line.getBoundingBox();String value=line.getText().trim();
-                    if(lineBox==null || !LanguagePolicy.readable(value) || !region.contains(lineBox.exactCenterX()/captureW,lineBox.exactCenterY()/captureH)){
+                    if(lineBox==null || !LanguagePolicy.screenContent(value) || !region.contains(lineBox.exactCenterX()/captureW,lineBox.exactCenterY()/captureH)){
                         addPiece(pieces,raw,box);box=null;continue;
                     }
                     if(raw.length()>0)raw.append('\n');raw.append(value);
@@ -215,6 +224,7 @@ public class ScreenService extends Service {
                 if(pieces.size()>=LIMIT)break;
             }
             if(pieces.isEmpty()){latest.clear();subtitles.removeAllViews();removeReading();status("ไม่พบข้อความ • อาจเล็กหรือป้องกันจับภาพ");toastIfReader("ไม่พบข้อความที่อ่านได้");finishJob();return;}
+            pieces.sort(Comparator.comparingInt((Piece p)->p.box.top).thenComparingInt(p->p.box.left));
             status("กำลังแปล "+pieces.size()+" ส่วน…");translate(pieces,job);
         }).addOnFailureListener(e->{status("อ่านข้อความไม่สำเร็จ • ลองใหม่");toastIfReader("อ่านข้อความไม่สำเร็จ");finishJob();}).addOnCompleteListener(t->owned.recycle());
     }
@@ -224,7 +234,13 @@ public class ScreenService extends Service {
     }
     private void translate(List<Piece> pieces,int job){
         List<Task<String>> tasks=new ArrayList<>();
-        for(Piece p:pieces){String key=p.language+":"+p.original;String hit=cache.get(key);tasks.add(hit!=null?Tasks.forResult(hit):translators.get(p.language).translate(p.original));}
+        List<LanguagePolicy.ProtectedText> inputs=new ArrayList<>();
+        for(Piece p:pieces){
+            String hit=cache.get(p.language+":"+p.original);
+            LanguagePolicy.ProtectedText input=hit==null?new LanguagePolicy.ProtectedText(p.original):null;
+            inputs.add(input);
+            tasks.add(input==null?Tasks.forResult(hit):translators.get(p.language).translate(input.input));
+        }
         Tasks.whenAllComplete(tasks).addOnCompleteListener(done->{
             if(dead || job!=generation){finishJob();return;}
             int failures=0,protectedValues=0;
@@ -232,27 +248,90 @@ public class ScreenService extends Service {
                 Piece p=pieces.get(i);Task<String> t=tasks.get(i);
                 if(t.isSuccessful()){
                     String value=t.getResult();
+                    if(value!=null && inputs.get(i)!=null)value=inputs.get(i).restore(value);
                     if(value!=null && LanguagePolicy.preservesNumbers(p.original,value)){p.translated=value;cache.put(p.language+":"+p.original,p.translated);}
                     else{p.translated=p.original;protectedValues++;}
                 }else{p.translated="[แปลไม่สำเร็จ — กลับไปเตรียมชุดภาษา]\n"+p.original;failures++;}
             }
             while(cache.size()>256)cache.remove(cache.keySet().iterator().next());
-            latest.clear();latest.addAll(pieces);drawSubtitles();if(readerMode)showReading();
+            if(!readerMode && changedFrame()){invalidateFrame();finishJob();return;}
+            latest.clear();latest.addAll(pieces);
+            if(readerMode)showReading();else drawSubtitles();
             status(failures>0?"บางส่วนแปลไม่ได้ • เตรียมชุดภาษาใหม่":"แปลแล้ว "+pieces.size()+" ส่วน"+(pieces.size()==LIMIT?" • ถึงขีดจำกัด ลองเลือกพื้นที่":""));
-            if(failures==0 && protectedValues>0)status("คงต้นฉบับ "+protectedValues+" ส่วน เพื่อรักษาตัวเลข");
+            if(failures==0 && protectedValues>0)status("คงต้นฉบับ "+protectedValues+" ส่วน เพื่อรักษาตัวเลขและชื่อเฉพาะ");
             if(failures>0){paused=true;toast("บางส่วนแปลไม่ได้ กลับไปกดดาวน์โหลด / ตรวจชุดภาษาใน W3");}
             finishJob();
         });
+    }
+    private static int sample(int index,int count,int size){
+        return (index*size+size/2)/count;
+    }
+    private void stopWatching(){
+        watching=false;
+        main.removeCallbacks(watch);
+    }
+    private void invalidateFrame(){
+        moved=true;
+        generation++;
+        stopWatching();
+        latest.clear();
+        subtitles.removeAllViews();
+        status(paused?"ภาพเปลี่ยน • กดแปลใหม่":"ภาพเปลี่ยน • กำลังจัดตำแหน่งใหม่");
+        if(!busy)schedule();
+    }
+    private void watchFrame(){
+        if(!watching || dead || hidden || selecting || readerMode)return;
+        if(changedFrame())invalidateFrame();
+        else main.postDelayed(watch,120);
+    }
+    private boolean changedFrame(){
+        try(Image image=images.acquireLatestImage()){
+            if(image==null)return false;
+            Image.Plane plane=image.getPlanes()[0];
+            ByteBuffer pixels=plane.getBuffer();
+            List<Rect> masked=new ArrayList<>();
+            addMask(masked,controls);
+            for(int i=0;i<subtitles.getChildCount();i++)addMask(masked,subtitles.getChildAt(i));
+            int tested=0,changed=0;
+            for(int row=4;row<62;row++)for(int col=0;col<48;col++){
+                int x=sample(col,48,captureW),y=sample(row,64,captureH);
+                int sx=sample(col,48,screenW),sy=sample(row,64,screenH);
+                boolean covered=false;
+                for(Rect r:masked)if(r.contains(sx,sy)){covered=true;break;}
+                if(covered)continue;
+                int offset=y*plane.getRowStride()+x*plane.getPixelStride();
+                int previous=reference[row*48+col];
+                int delta=Math.abs((pixels.get(offset)&255)-Color.red(previous))
+                    +Math.abs((pixels.get(offset+1)&255)-Color.green(previous))
+                    +Math.abs((pixels.get(offset+2)&255)-Color.blue(previous));
+                tested++;
+                if(delta>105)changed++;
+            }
+            return tested>0 && changed>=Math.max(16,tested/30);
+        }catch(RuntimeException e){return false;}
+    }
+    private static void addMask(List<Rect> masks,View view){
+        if(!view.isShown() || view.getWidth()==0 || view.getHeight()==0)return;
+        int[] location=new int[2];
+        view.getLocationOnScreen(location);
+        Rect rect=new Rect(location[0],location[1],location[0]+view.getWidth(),location[1]+view.getHeight());
+        rect.inset(-4,-4);
+        masks.add(rect);
     }
     private void toastIfReader(String s){if(readerMode)toast(s);}
     private void drawSubtitles(){
         subtitles.removeAllViews();
         for(Piece p:latest){
+            if(p.original.equals(p.translated) || p.translated.startsWith("[แปลไม่สำเร็จ"))continue;
             TextView label=Ui.text(this,p.translated,14);label.setTextColor(Color.WHITE);label.setBackground(Ui.round(0xff102d28,Ui.dp(this,5)));label.setPadding(Ui.dp(this,5),Ui.dp(this,3),Ui.dp(this,5),Ui.dp(this,3));
             int x=Math.round((float)p.box.left/captureW*screenW),y=Math.round((float)p.box.top/captureH*screenH);
-            int width=Math.max(Ui.dp(this,86),Math.round((float)p.box.width()/captureW*screenW));width=Math.min(width,screenW-x);
-            int maxHeight=Math.max(Ui.dp(this,32),Math.min(Ui.dp(this,150),screenH-y));label.setMaxHeight(maxHeight);
-            FrameLayout.LayoutParams lp=new FrameLayout.LayoutParams(width,-2);lp.leftMargin=x;lp.topMargin=y;subtitles.addView(label,lp);
+            int width=Math.min(screenW-x,Math.round((float)p.box.width()/captureW*screenW));
+            if(width<=0 || y>=screenH)continue;
+            int maxHeight=Math.min(screenH-y,Math.round((float)p.box.height()/captureH*screenH));
+            if(maxHeight<=0)continue;
+            label.setEllipsize(android.text.TextUtils.TruncateAt.END);
+            if(Build.VERSION.SDK_INT>=26)label.setAutoSizeTextTypeUniformWithConfiguration(9,14,1,android.util.TypedValue.COMPLEX_UNIT_SP);
+            FrameLayout.LayoutParams lp=new FrameLayout.LayoutParams(width,maxHeight);lp.leftMargin=x;lp.topMargin=y;subtitles.addView(label,lp);
         }
         subtitles.setVisibility(hidden?View.INVISIBLE:View.VISIBLE);
     }
@@ -260,20 +339,72 @@ public class ScreenService extends Service {
         removeReading();subtitles.setVisibility(View.INVISIBLE);
         LinearLayout page=Ui.column(this,18);page.setBackground(Ui.round(Ui.BG,Ui.dp(this,20)));
         LinearLayout buttons=new LinearLayout(this);
-        Button close=Ui.button(this,"ปิดหน้าอ่าน");buttons.addView(close,new LinearLayout.LayoutParams(0,-2,1));close.setOnClickListener(v->{removeReading();if(!hidden)subtitles.setVisibility(View.VISIBLE);});
+        Button close=Ui.button(this,"ปิดหน้าอ่าน");buttons.addView(close,new LinearLayout.LayoutParams(0,-2,1));close.setOnClickListener(v->{removeReading();});
         Button copy=Ui.button(this,"คัดลอกไทย");buttons.addView(copy,new LinearLayout.LayoutParams(0,-2,1));copy.setOnClickListener(v->{StringBuilder s=new StringBuilder();for(Piece p:latest)s.append(p.translated).append("\n\n");((android.content.ClipboardManager)getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("คำแปลไทย",s.toString()));toast("คัดลอกแล้ว");});page.addView(buttons);
+        Button save=Ui.button(this,"บันทึกเข้าเรื่อง · เปิดอ่านย้อนหลัง");page.addView(save);
+        save.setOnClickListener(v->saveReading());
         ScrollView scroll=new ScrollView(this);LinearLayout body=Ui.column(this,4);scroll.addView(body);page.addView(scroll,new LinearLayout.LayoutParams(-1,0,1));
         body.addView(Ui.text(this,"คำแปลไทย · เทียบต้นฉบับด้านล่าง",14));
         for(Piece p:latest){body.addView(Ui.text(this,p.translated,21));TextView original=Ui.text(this,p.original,14);original.setTextColor(0xff586b62);body.addView(original);}
         WindowManager.LayoutParams rp=params(-1,(int)(screenH*.7),true);rp.gravity=Gravity.BOTTOM|Gravity.LEFT;
         reading=page;wm.addView(page,rp);
     }
+    private void saveReading(){
+        if(saveDialog!=null || latest.isEmpty())return;
+        List<Piece> snapshot=new ArrayList<>(latest);
+        String[] categories={"คู่มือ","หนังสือ","เกม","อื่น ๆ"};
+        LinearLayout form=Ui.column(this,18);
+        EditText name=new EditText(new ContextThemeWrapper(this,android.R.style.Theme_Material_Light));
+        name.setSingleLine(true);
+        name.setHint("ชื่อเรื่องเดิม หรือชื่อเรื่องใหม่");
+        name.setFilters(new android.text.InputFilter[]{new android.text.InputFilter.LengthFilter(120)});
+        android.content.SharedPreferences recent=getSharedPreferences("screen-reading",MODE_PRIVATE);
+        name.setText(recent.getString("title",""));
+        form.addView(name);
+        Spinner category=new Spinner(this);
+        category.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,categories));
+        category.setSelection(Math.min(categories.length-1,recent.getInt("category",0)));
+        form.addView(category);
+        saveDialog=new AlertDialog.Builder(this,android.R.style.Theme_Material_Light_Dialog_Alert)
+            .setTitle("บันทึกคำแปลจากหน้าจอ")
+            .setMessage("ใช้ชื่อและหมวดเดิมเพื่อเติมส่วนใหม่ในเรื่องเดิม")
+            .setView(form).setNegativeButton("ยกเลิก",null).setPositiveButton("บันทึก",null).create();
+        saveDialog.setOnDismissListener(d->saveDialog=null);
+        saveDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+        saveDialog.show();
+        saveDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v->{
+            String title=name.getText().toString().trim().replaceAll("\\s+"," ");
+            if(title.isEmpty()){name.setError("กรอกชื่อเรื่อง");return;}
+            Article a=new Article();
+            a.title=title;a.language=snapshot.get(0).language;a.savedAt=System.currentTimeMillis();
+            int selected=category.getSelectedItemPosition();
+            a.url="screen:"+android.net.Uri.encode(categories[selected])+"/"+android.net.Uri.encode(title.toLowerCase(Locale.ROOT));
+            a.notice="เก็บข้อความที่อ่านได้จากหน้าจอ · เรียงตามส่วนที่บันทึก";
+            for(Piece piece:snapshot){
+                Article.Block block=new Article.Block(a.blocks.isEmpty()?"section":"paragraph",0,piece.original);
+                if(!piece.original.equals(piece.translated) && !piece.translated.startsWith("[แปลไม่สำเร็จ"))block.thai=piece.translated;
+                a.blocks.add(block);
+            }
+            AlertDialog submitting=saveDialog;
+            submitting.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+            storage.execute(()->{
+                ArticleStore store=new ArticleStore(this);
+                try{
+                    store.mergeScreen(a);
+                    recent.edit().putString("title",title).putInt("category",selected).apply();
+                    main.post(()->{if(!dead){if(saveDialog==submitting)submitting.dismiss();toast("บันทึกแล้ว · เปิดได้จากสารบัญในแอป");}});
+                }catch(RuntimeException e){
+                    main.post(()->{if(!dead){if(saveDialog==submitting)submitting.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);toast("บันทึกไม่สำเร็จ");}});
+                }finally{store.close();}
+            });
+        });
+    }
     private void removeReading(){if(reading!=null){try{wm.removeView(reading);}catch(Exception ignored){}reading=null;}}
     private void restoreWindows(){if(dead)return;controls.setVisibility(View.VISIBLE);subtitles.setVisibility(hidden || reading!=null?View.INVISIBLE:View.VISIBLE);if(reading!=null)reading.setVisibility(hidden?View.INVISIBLE:View.VISIBLE);}
     private void finishJob(){busy=false;restoreWindows();schedule();}
     private void chooseRegion(){
         if(busy){status("รอแปลรอบนี้เสร็จก่อน");return;}
-        paused=true;selecting=true;generation++;main.removeCallbacks(tick);controls.setVisibility(View.INVISIBLE);subtitles.setVisibility(View.INVISIBLE);removeReading();
+        paused=true;selecting=true;generation++;stopWatching();latest.clear();subtitles.removeAllViews();main.removeCallbacks(tick);controls.setVisibility(View.INVISIBLE);subtitles.setVisibility(View.INVISIBLE);removeReading();
         selection=new View(this){final Paint paint=new Paint(3);float x0,y0,x1,y1;boolean down;
             @Override protected void onDraw(Canvas c){
                 c.drawColor(0x55203028);paint.setColor(Color.WHITE);paint.setTextSize(Ui.dp(ScreenService.this,19));c.drawText("ลากกรอบพื้นที่แปล • แตะครั้งเดียว = ทั้งจอ",Ui.dp(ScreenService.this,16),Ui.dp(ScreenService.this,90),paint);
@@ -292,6 +423,7 @@ public class ScreenService extends Service {
     @Override public void onConfigurationChanged(Configuration c){super.onConfigurationChanged(c);toast("หน้าจอหมุนแล้ว เปิด W3 และเริ่มแปลใหม่");stopSelf();}
     @Override public void onDestroy(){
         dead=true;running=false;generation++;main.removeCallbacksAndMessages(null);
+        if(saveDialog!=null)saveDialog.dismiss();storage.shutdown();
         for(View v:new View[]{controls,subtitles,reading,selection})if(v!=null && wm!=null)try{wm.removeView(v);}catch(Exception ignored){}
         if(display!=null)display.release();if(images!=null)images.close();if(projection!=null)projection.stop();
         if(recognizer!=null)recognizer.close();for(Translator t:translators.values())t.close();cache.clear();latest.clear();
