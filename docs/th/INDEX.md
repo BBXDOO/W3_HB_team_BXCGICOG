@@ -13,11 +13,11 @@
 | `.gitkeep` | 84 |
 | รายงานว่างนอกนามสกุลข้างต้น | 1 |
 | **รายการทั้งหมด** | **1104** |
-| แปลแล้วและมีไฟล์ผลลัพธ์ | 29 |
+| แปลแล้วและมีไฟล์ผลลัพธ์ | 38 |
 | คัดลอกแล้ว | 2 |
 | ไม่มีข้อความให้แปลและคัดลอกแล้ว | 83 |
-| ยังค้าง (รวมไฟล์ฉบับเดิมที่ต้องทบทวน) | 990 |
-| ยังไม่มีไฟล์ผลลัพธ์ | 987 |
+| ยังค้าง (รวมไฟล์ฉบับเดิมที่ต้องทบทวน) | 981 |
+| ยังไม่มีไฟล์ผลลัพธ์ | 978 |
 
 ไฟล์แปลเดิม 3 ไฟล์ยังต้องตรวจเทียบต้นฉบับก่อนนับว่าเสร็จ งานยังไม่ครบและต้องคง PR เป็น Draft
 
@@ -558,21 +558,21 @@
 | [`modules/ChatGPT/scenarios/.gitkeep`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/ChatGPT/scenarios/.gitkeep) | [modules/ChatGPT/scenarios/.gitkeep](modules/ChatGPT/scenarios/.gitkeep) | ไม่มีข้อความให้แปล | ไฟล์ว่างหรือมีแต่ช่องว่าง ใช้เก็บโฟลเดอร์ใน Git |
 | [`modules/Codex/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Codex/README.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
 | [`modules/Codex/logs/.gitkeep`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Codex/logs/.gitkeep) | [modules/Codex/logs/.gitkeep](modules/Codex/logs/.gitkeep) | ไม่มีข้อความให้แปล | ไฟล์ว่างหรือมีแต่ช่องว่าง ใช้เก็บโฟลเดอร์ใน Git |
-| [`modules/Codex/logs/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Codex/logs/README.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
+| [`modules/Codex/logs/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Codex/logs/README.md) | [modules/Codex/logs/README.md](modules/Codex/logs/README.md) | แปลแล้ว | แปลจากต้นฉบับ |
 | [`modules/Codex/patches/.gitkeep`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Codex/patches/.gitkeep) | [modules/Codex/patches/.gitkeep](modules/Codex/patches/.gitkeep) | ไม่มีข้อความให้แปล | ไฟล์ว่างหรือมีแต่ช่องว่าง ใช้เก็บโฟลเดอร์ใน Git |
-| [`modules/Codex/patches/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Codex/patches/README.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
+| [`modules/Codex/patches/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Codex/patches/README.md) | [modules/Codex/patches/README.md](modules/Codex/patches/README.md) | แปลแล้ว | แปลจากต้นฉบับ |
 | [`modules/Codex/plans/.gitkeep`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Codex/plans/.gitkeep) | [modules/Codex/plans/.gitkeep](modules/Codex/plans/.gitkeep) | ไม่มีข้อความให้แปล | ไฟล์ว่างหรือมีแต่ช่องว่าง ใช้เก็บโฟลเดอร์ใน Git |
-| [`modules/Codex/plans/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Codex/plans/README.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
+| [`modules/Codex/plans/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Codex/plans/README.md) | [modules/Codex/plans/README.md](modules/Codex/plans/README.md) | แปลแล้ว | แปลจากต้นฉบับ |
 | [`modules/Codex/reports/.gitkeep`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Codex/reports/.gitkeep) | [modules/Codex/reports/.gitkeep](modules/Codex/reports/.gitkeep) | ไม่มีข้อความให้แปล | ไฟล์ว่างหรือมีแต่ช่องว่าง ใช้เก็บโฟลเดอร์ใน Git |
-| [`modules/Codex/reports/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Codex/reports/README.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
+| [`modules/Codex/reports/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Codex/reports/README.md) | [modules/Codex/reports/README.md](modules/Codex/reports/README.md) | แปลแล้ว | แปลจากต้นฉบับ |
 | [`modules/Codex/requests/.gitkeep`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Codex/requests/.gitkeep) | [modules/Codex/requests/.gitkeep](modules/Codex/requests/.gitkeep) | ไม่มีข้อความให้แปล | ไฟล์ว่างหรือมีแต่ช่องว่าง ใช้เก็บโฟลเดอร์ใน Git |
-| [`modules/Codex/requests/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Codex/requests/README.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
+| [`modules/Codex/requests/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Codex/requests/README.md) | [modules/Codex/requests/README.md](modules/Codex/requests/README.md) | แปลแล้ว | แปลจากต้นฉบับ |
 | [`modules/Copilot-Gm/governance/.gitkeep`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Copilot-Gm/governance/.gitkeep) | [modules/Copilot-Gm/governance/.gitkeep](modules/Copilot-Gm/governance/.gitkeep) | ไม่มีข้อความให้แปล | ไฟล์ว่างหรือมีแต่ช่องว่าง ใช้เก็บโฟลเดอร์ใน Git |
 | [`modules/Copilot-Gm/reports/copilot_gm_operational_report.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Copilot-Gm/reports/copilot_gm_operational_report.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
-| [`modules/DTML/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/DTML/README.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
-| [`modules/DTML/decisions/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/DTML/decisions/README.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
-| [`modules/DTML/reports/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/DTML/reports/README.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
-| [`modules/DTML/requests/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/DTML/requests/README.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
+| [`modules/DTML/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/DTML/README.md) | [modules/DTML/README.md](modules/DTML/README.md) | แปลแล้ว | แปลจากต้นฉบับ |
+| [`modules/DTML/decisions/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/DTML/decisions/README.md) | [modules/DTML/decisions/README.md](modules/DTML/decisions/README.md) | แปลแล้ว | แปลจากต้นฉบับ |
+| [`modules/DTML/reports/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/DTML/reports/README.md) | [modules/DTML/reports/README.md](modules/DTML/reports/README.md) | แปลแล้ว | แปลจากต้นฉบับ |
+| [`modules/DTML/requests/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/DTML/requests/README.md) | [modules/DTML/requests/README.md](modules/DTML/requests/README.md) | แปลแล้ว | แปลจากต้นฉบับ |
 | [`modules/DeepSeek/plans/.gitkeep`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/DeepSeek/plans/.gitkeep) | [modules/DeepSeek/plans/.gitkeep](modules/DeepSeek/plans/.gitkeep) | ไม่มีข้อความให้แปล | ไฟล์ว่างหรือมีแต่ช่องว่าง ใช้เก็บโฟลเดอร์ใน Git |
 | [`modules/DeepSeek/plans/deepseek_operational_report.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/DeepSeek/plans/deepseek_operational_report.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
 | [`modules/Gemini/reports/.gitkeep`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/modules/Gemini/reports/.gitkeep) | [modules/Gemini/reports/.gitkeep](modules/Gemini/reports/.gitkeep) | ไม่มีข้อความให้แปล | ไฟล์ว่างหรือมีแต่ช่องว่าง ใช้เก็บโฟลเดอร์ใน Git |
