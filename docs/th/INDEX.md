@@ -4,7 +4,6 @@
 - **commit ของเอกสารต้นฉบับ:** `f22e21a587f69d4da8dccf30e653e2b45ce72c55`
 - **ขอบเขต:** ไฟล์ `.md/.mdx/.rst/.txt` ใน Git tree (ไม่รวม `docs/th/`) พร้อม `.gitkeep` ทุกไฟล์และรายงานว่างที่พบ
 - **วิธีจัดสถานะ:** ตรวจเนื้อหาจริง ไม่ใช้สัดส่วนอักษรไทยตัดสิน และไม่ข้ามเอกสารจากภายนอกหรือเอกสารที่สร้างอัตโนมัติ
-- **ข้อจำกัด:** `.github/agents/my-agent.agent.md` อ่านไม่ได้ จึงยังค้าง ไม่ใช่ไฟล์ที่ไม่มีข้อความให้แปล
 
 ## สรุปยอด
 
@@ -15,8 +14,9 @@
 | รายงานว่างนอกนามสกุลข้างต้น | 1 |
 | **รายการทั้งหมด** | **1104** |
 | ไม่มีข้อความให้แปลและคัดลอกแล้ว | 83 |
-| ยังค้าง (รวมไฟล์ฉบับเดิมที่ต้องทบทวน) | 1021 |
-| ยังไม่มีไฟล์ผลลัพธ์ | 1017 |
+| แปลแล้วและมีไฟล์ผลลัพธ์ | 3 |
+| ยังค้าง (รวมไฟล์ฉบับเดิมที่ต้องทบทวน) | 1018 |
+| ยังไม่มีไฟล์ผลลัพธ์ | 1014 |
 
 ไฟล์แปลเดิมทั้ง 4 ไฟล์ยังต้องตรวจเทียบต้นฉบับก่อนนับว่าเสร็จ งานยังไม่ครบและต้องคง PR เป็น Draft
 
@@ -26,7 +26,7 @@
 |---|---|---|---|
 | [`.github/ISSUE_TEMPLATE/decision-request.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/.github/ISSUE_TEMPLATE/decision-request.md) | [.github/ISSUE_TEMPLATE/decision-request.md](.github/ISSUE_TEMPLATE/decision-request.md) | ยังค้าง | มีไฟล์ฉบับเดิม แต่ต้องทบทวนความครบถ้วนเทียบต้นฉบับ |
 | [`.github/PULL_REQUEST_TEMPLATE.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/.github/PULL_REQUEST_TEMPLATE.md) | [.github/PULL_REQUEST_TEMPLATE.md](.github/PULL_REQUEST_TEMPLATE.md) | ยังค้าง | มีไฟล์ฉบับเดิม แต่ต้องทบทวนความครบถ้วนเทียบต้นฉบับ |
-| [`.github/agents/my-agent.agent.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/.github/agents/my-agent.agent.md) | - | ยังค้าง | ไม่สามารถอ่านไฟล์ต้นฉบับใน .github/agents/ ได้ |
+| [`.github/agents/my-agent.agent.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/.github/agents/my-agent.agent.md) | [.github/agents/my-agent.agent.md](.github/agents/my-agent.agent.md) | แปลแล้ว | ตรวจจากไฟล์ต้นฉบับที่คอมมิตอ้างอิง |
 | [`BBEX-Core/PROTOCOL_HYBRID.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/BBEX-Core/PROTOCOL_HYBRID.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
 | [`BBEX-Core/private/BBEX_CORE_IDP.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/BBEX-Core/private/BBEX_CORE_IDP.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
 | [`BBEX-Core/private/ESSENCE.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/BBEX-Core/private/ESSENCE.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
@@ -319,7 +319,7 @@
 | [`core/identity/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/core/identity/README.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
 | [`core/logic_bridge.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/core/logic_bridge.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
 | [`core/logs/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/core/logs/README.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
-| [`core/logs/archive/.gitkeep`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/core/logs/archive/.gitkeep) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
+| [`core/logs/archive/.gitkeep`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/core/logs/archive/.gitkeep) | [core/logs/archive/.gitkeep](core/logs/archive/.gitkeep) | แปลแล้ว | เป็นไฟล์ยึดโฟลเดอร์ที่มีข้อความภาษาอังกฤษ แปลข้อความและคงชื่อไฟล์เดิม |
 | [`core/logs/guardrails.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/core/logs/guardrails.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
 | [`core/logs/rotations/archive/.gitkeep`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/core/logs/rotations/archive/.gitkeep) | [core/logs/rotations/archive/.gitkeep](core/logs/rotations/archive/.gitkeep) | ไม่มีข้อความให้แปล | ไฟล์ว่างหรือมีแต่ช่องว่าง ใช้เก็บโฟลเดอร์ใน Git |
 | [`core/logs/rotations/rotation_policy.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/core/logs/rotations/rotation_policy.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
@@ -604,7 +604,7 @@
 | [`notes/gstate/W3_ORGANIZATIONAL_CULTURE_LINK.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/notes/gstate/W3_ORGANIZATIONAL_CULTURE_LINK.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
 | [`outcomes/README.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/outcomes/README.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
 | [`outcomes/append_only_ledger/.gitkeep`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/outcomes/append_only_ledger/.gitkeep) | [outcomes/append_only_ledger/.gitkeep](outcomes/append_only_ledger/.gitkeep) | ไม่มีข้อความให้แปล | ไฟล์ว่างหรือมีแต่ช่องว่าง ใช้เก็บโฟลเดอร์ใน Git |
-| [`outcomes/artifacts/.gitkeep`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/outcomes/artifacts/.gitkeep) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
+| [`outcomes/artifacts/.gitkeep`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/outcomes/artifacts/.gitkeep) | [outcomes/artifacts/.gitkeep](outcomes/artifacts/.gitkeep) | แปลแล้ว | เป็นไฟล์ยึดโฟลเดอร์ที่มีข้อความภาษาอังกฤษ แปลข้อความและคงชื่อไฟล์เดิม |
 | [`outcomes/ledger/2026-02-25_outcomes-system-bootstrap.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/outcomes/ledger/2026-02-25_outcomes-system-bootstrap.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
 | [`outcomes/ledger/_TEMPLATE__outcome-record.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/outcomes/ledger/_TEMPLATE__outcome-record.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
 | [`protocol/EP_SIGNAL/CONTINUITY_MEMORY_MODEL.md`](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/blob/f22e21a587f69d4da8dccf30e653e2b45ce72c55/protocol/EP_SIGNAL/CONTINUITY_MEMORY_MODEL.md) | - | ยังค้าง | ต้องตรวจเนื้อหาและแปลหรือคัดลอกตามลักษณะไฟล์ |
