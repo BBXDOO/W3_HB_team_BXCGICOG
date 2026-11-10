@@ -1,0 +1,31 @@
+{
+  "accepted": true,
+  "checks": [
+    {
+      "name": "supported_origin_request",
+      "passed": true
+    }
+  ],
+  "evidence": [
+    {
+      "path": "repo_events/origin_agents/ChatGPT/intake/44b4cc9cdcf14dd1be4e1c0cb2e4655a.json",
+      "sha256": "91453e0596bb0bdee07bed44f4e7a531bdf51d4f0476ddfd56a65a10dd3b03fb"
+    }
+  ],
+  "explanations": [],
+  "notes": [],
+  "parent": null,
+  "recipient": "ChatGPT",
+  "reviewer": "host-origin-intake-verifier",
+  "schema": "w3.paired_handoff/1",
+  "sender": "Orchestration",
+  "sequence": 0,
+  "start": {
+    "evidence": [
+      {
+        "path": "repo_events/origin_agents/ChatGPT/intake/44b4cc9cdcf14dd1be4e1c0cb2e4655a.json",
+        "sha256": "91453e0596bb0bdee07bed44f4e7a531bdf51d4f0476ddfd56a65a10dd3b03fb"
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "module": "ChatGPT",
+  "task": "periodic role review",
+  "request_type": "origin_review",
+  "source_id": null,
+  "request_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+  "payload_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "operations": []
+}

@@ -1,0 +1,31 @@
+{
+  "accepted": true,
+  "checks": [
+    {
+      "name": "supported_origin_request",
+      "passed": true
+    }
+  ],
+  "evidence": [
+    {
+      "path": "repo_events/origin_agents/Gemini/intake/4d2aca74d5f642eb93dcf27099c5487b.json",
+      "sha256": "b015c32815dd3581d8f1b4a343a4d775c430b5b728004274fb7adc280c7f9952"
+    }
+  ],
+  "explanations": [],
+  "notes": [],
+  "parent": null,
+  "recipient": "Gemini",
+  "reviewer": "host-origin-intake-verifier",
+  "schema": "w3.paired_handoff/1",
+  "sender": "Orchestration",
+  "sequence": 0,
+  "start": {
+    "evidence": [
+      {
+        "path": "repo_events/origin_agents/Gemini/intake/4d2aca74d5f642eb93dcf27099c5487b.json",
+        "sha256": "b015c32815dd3581d8f1b4a343a4d775c430b5b728004274fb7adc280c7f9952"
+      }
+    ]
+  }
+}

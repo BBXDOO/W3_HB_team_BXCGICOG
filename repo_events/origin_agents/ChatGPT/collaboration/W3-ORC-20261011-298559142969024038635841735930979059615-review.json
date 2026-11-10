@@ -1,0 +1,878 @@
+{
+  "owner": "ChatGPT",
+  "partner": "Gemini",
+  "participants": [
+    "ChatGPT",
+    "Gemini",
+    "Orchestration",
+    "IGET"
+  ],
+  "owner_log": "repo_events/origin_agents/ChatGPT/logs/c7388dcb06f7435a86dff67b2722b5f8.json",
+  "partner_receipt": "repo_events/origin_agents/ChatGPT/collaboration/W3-ORC-20261011-298559142969024038635841735930979059615-partner.json",
+  "iget": {
+    "module": "IGET",
+    "status": "COMPLETED",
+    "findings": [],
+    "evidence": [
+      {
+        "path": "core/runtime/agents/chatgpt.py",
+        "sha256": "624d8aed4342ec574d9472e581f1c92d375562902c9527229f10c6534d4e064b",
+        "bytes": 8384
+      },
+      {
+        "path": "core/identity/profiles/ChatGPT.idp.json",
+        "sha256": "3c3cabf1b7cb27fccf523a013cfb8e93037510e41293ae2e8e29e34e4be1eb59",
+        "bytes": 3877
+      },
+      {
+        "path": "modules/ChatGPT/module.json",
+        "sha256": "d415a30214eb4d16825ba85319e5035f582c46f523b4be1c78362c78a5ed4c5e",
+        "bytes": 1963
+      },
+      {
+        "path": "docs/architecture/AUDIT_ARCHITECTURE.md",
+        "sha256": "a08fc358954f41ed5fd56f901b997f1f5e25d60543607fb225c98f743bee286b",
+        "bytes": 12544
+      },
+      {
+        "path": "docs/architecture/REDR_Structure_Map.md",
+        "sha256": "06d7021b8f9cd683ce5f5ce9a13cee4b112dcbdc90d9f59b3b1556fa19de99dc",
+        "bytes": 39827
+      },
+      {
+        "path": "docs/architecture/W3_ORIGINAL_INTENT_AND_AUTONOMY.md",
+        "sha256": "b88dc834516e2933eca811a9e7e919e7a1b9bdf115f35129198d2b07091d19c0",
+        "bytes": 19154
+      },
+      {
+        "path": "docs/architecture/WORDS.md",
+        "sha256": "7e22810f78b045f349f0041b33671735846e47fe4682cacab785744344842937",
+        "bytes": 14518
+      },
+      {
+        "path": "docs/architecture/mytec_info/W3UNIVE.md",
+        "sha256": "c04c9dc20931aeea75d132c5e2edcccd5c9caa69ebb9d4a93d7f82b19f083b36",
+        "bytes": 22544
+      },
+      {
+        "path": "architecture/W3APIFlow_Diagram.md",
+        "sha256": "8ae2b031da5ea00091d34192d47215cf6988a8b77a0984234990b36ec4f27d9a",
+        "bytes": 5340
+      },
+      {
+        "path": "architecture/W3_MASTER_ARCHITECTURE.md",
+        "sha256": "36d3edd326774eafb9185f86615b9df1db39a99d9057440a8a77395765f1dafd",
+        "bytes": 4977
+      },
+      {
+        "path": "architecture/base.md",
+        "sha256": "a8f8b199e3c8de3492f3887d0059fd0a0f0dcd8776f62b3737622fedf96933e8",
+        "bytes": 239
+      },
+      {
+        "path": "architecture/diagrams/file_000000001e7c72088554e0c1715f55b2.png",
+        "sha256": "e1190d65cea8d07dbedb906a2894b83541838a4576cdb5676e68a02401492c30",
+        "bytes": 1945515
+      },
+      {
+        "path": "architecture/diagrams/placeholder.md",
+        "sha256": "08798c14fa7039f360385c35c20fec09aaf60962eec933a2be1371ad8bbd163e",
+        "bytes": 38
+      },
+      {
+        "path": "architecture/diagrams/w3-civilization-main-map.png",
+        "sha256": "d0865f6fd63ccb2c463a37e79c4c3aee0ce96094d3af6cb31c5c691419a56019",
+        "bytes": 11451115
+      },
+      {
+        "path": "architecture/interface-map.md",
+        "sha256": "f2a0ba7688f9f0d188b2b3364e0091a726cf0843fc5cb3828e82de82fb506f92",
+        "bytes": 793
+      },
+      {
+        "path": "architecture/layers.md",
+        "sha256": "3c772326fb090cc23d555e61d620ab70e669b4c36b148f8969d27bc35beb0792",
+        "bytes": 936
+      },
+      {
+        "path": "architecture/overview.md",
+        "sha256": "300c1cbbd9e0f366c736e2e7b88c0089fe3943c08040daa4539eaddb4626698d",
+        "bytes": 860
+      },
+      {
+        "path": "architecture/standards.md",
+        "sha256": "438796a662b765ee787ce24d09691ad9b5c50fe7838f20b7cbf8a01221d89b7c",
+        "bytes": 125
+      },
+      {
+        "path": "architecture/system-map.md",
+        "sha256": "9cf6100b1797a50711146e912eadafe3cc9567c4fb6301ee66f40f33c9ae7b32",
+        "bytes": 361
+      }
+    ],
+    "definitions": [
+      {
+        "path": "core/runtime/agents/chatgpt.py",
+        "name": "execute",
+        "line": 45
+      },
+      {
+        "path": "core/runtime/agents/chatgpt.py",
+        "name": "_flow_dir",
+        "line": 113
+      },
+      {
+        "path": "core/runtime/agents/chatgpt.py",
+        "name": "_artifact_name",
+        "line": 119
+      },
+      {
+        "path": "core/runtime/agents/chatgpt.py",
+        "name": "_render_flow_artifact",
+        "line": 125
+      },
+      {
+        "path": "core/runtime/agents/chatgpt.py",
+        "name": "_redact",
+        "line": 154
+      },
+      {
+        "path": "core/runtime/agents/chatgpt.py",
+        "name": "_atomic_write",
+        "line": 169
+      },
+      {
+        "path": "core/runtime/agents/chatgpt.py",
+        "name": "_display_path",
+        "line": 182
+      }
+    ],
+    "checked_paths": [
+      "architecture",
+      "architecture/W3APIFlow_Diagram.md",
+      "architecture/W3_MASTER_ARCHITECTURE.md",
+      "architecture/base.md",
+      "architecture/diagrams/file_000000001e7c72088554e0c1715f55b2.png",
+      "architecture/diagrams/placeholder.md",
+      "architecture/diagrams/w3-civilization-main-map.png",
+      "architecture/interface-map.md",
+      "architecture/layers.md",
+      "architecture/overview.md",
+      "architecture/standards.md",
+      "architecture/system-map.md",
+      "core/identity/profiles/ChatGPT.idp.json",
+      "core/runtime/agents/chatgpt.py",
+      "docs/architecture",
+      "docs/architecture/AUDIT_ARCHITECTURE.md",
+      "docs/architecture/REDR_Structure_Map.md",
+      "docs/architecture/W3_ORIGINAL_INTENT_AND_AUTONOMY.md",
+      "docs/architecture/WORDS.md",
+      "docs/architecture/mytec_info/W3UNIVE.md",
+      "modules/ChatGPT/module.json"
+    ],
+    "call_names": [
+      "NamedTemporaryFile",
+      "Path",
+      "_artifact_name",
+      "_atomic_write",
+      "_display_path",
+      "_flow_dir",
+      "_redact",
+      "_render_flow_artifact",
+      "any",
+      "dumps",
+      "encode",
+      "execute_origin",
+      "expanduser",
+      "fileno",
+      "flush",
+      "fsync",
+      "get",
+      "hexdigest",
+      "isinstance",
+      "isoformat",
+      "items",
+      "join",
+      "len",
+      "lower",
+      "mkdir",
+      "now",
+      "relative_to",
+      "replace",
+      "resolve",
+      "sha256",
+      "str",
+      "strftime",
+      "strip",
+      "sub",
+      "uuid4",
+      "write"
+    ],
+    "coverage": "declared paths, bytes, Python/JSON syntax and static call inventory",
+    "unknowns": [
+      "Static inventory does not prove an end-to-end execution or a missing dynamic caller."
+    ],
+    "checks": [
+      {
+        "check": "declared_files",
+        "state": "EVIDENCED"
+      },
+      {
+        "check": "runtime_circuit",
+        "state": "UNVERIFIED",
+        "reason": "Static inventory does not prove an end-to-end execution or a missing dynamic caller."
+      }
+    ],
+    "signal": {
+      "color": "yellow",
+      "reason": "static_checks_only_runtime_unverified"
+    },
+    "proof": {
+      "mpcp_role": "governance_assistant",
+      "mpcp_version": "1.0",
+      "elapsed_sec": 0.0101,
+      "trace": [
+        {
+          "step": "structure_scope",
+          "claim": "Inspect declared paths without executing source",
+          "evidence": [
+            "core/runtime/agents/chatgpt.py",
+            "core/identity/profiles/ChatGPT.idp.json",
+            "modules/ChatGPT/module.json",
+            "docs/architecture",
+            "architecture"
+          ],
+          "semantic_tag": "iget:scope",
+          "timestamp": 1794272520.7189765
+        },
+        {
+          "step": "structure_observed",
+          "claim": "Read bytes and record static checks",
+          "evidence": {
+            "files": 19,
+            "checked_paths": [
+              "core/runtime/agents/chatgpt.py",
+              "core/runtime/agents/chatgpt.py",
+              "core/identity/profiles/ChatGPT.idp.json",
+              "core/identity/profiles/ChatGPT.idp.json",
+              "modules/ChatGPT/module.json",
+              "modules/ChatGPT/module.json",
+              "docs/architecture",
+              "docs/architecture/AUDIT_ARCHITECTURE.md",
+              "docs/architecture/REDR_Structure_Map.md",
+              "docs/architecture/W3_ORIGINAL_INTENT_AND_AUTONOMY.md",
+              "docs/architecture/WORDS.md",
+              "docs/architecture/mytec_info/W3UNIVE.md",
+              "architecture",
+              "architecture/W3APIFlow_Diagram.md",
+              "architecture/W3_MASTER_ARCHITECTURE.md",
+              "architecture/base.md",
+              "architecture/diagrams/file_000000001e7c72088554e0c1715f55b2.png",
+              "architecture/diagrams/placeholder.md",
+              "architecture/diagrams/w3-civilization-main-map.png",
+              "architecture/interface-map.md",
+              "architecture/layers.md",
+              "architecture/overview.md",
+              "architecture/standards.md",
+              "architecture/system-map.md"
+            ]
+          },
+          "semantic_tag": "iget:observation",
+          "timestamp": 1794272520.729101
+        },
+        {
+          "step": "structure_findings",
+          "claim": "Observed defects within declared scope",
+          "evidence": [],
+          "semantic_tag": "iget:findings",
+          "timestamp": 1794272520.7291024
+        },
+        {
+          "step": "structure_limits",
+          "claim": "Runtime circuit remains unverified by static inspection",
+          "evidence": [
+            "Static inventory does not prove an end-to-end execution or a missing dynamic caller."
+          ],
+          "semantic_tag": "iget:unknown",
+          "timestamp": 1794272520.7291033
+        }
+      ]
+    },
+    "source_mutated": false
+  },
+  "findings": [],
+  "structural": true,
+  "unknowns": [
+    "Static inventory does not prove an end-to-end execution or a missing dynamic caller."
+  ],
+  "checks": [
+    {
+      "check": "declared_files",
+      "state": "EVIDENCED"
+    },
+    {
+      "check": "runtime_circuit",
+      "state": "UNVERIFIED",
+      "reason": "Static inventory does not prove an end-to-end execution or a missing dynamic caller."
+    }
+  ],
+  "signal": {
+    "color": "yellow",
+    "reason": "static_checks_only_runtime_unverified"
+  },
+  "repair_status": "NO_REPAIR_PROPOSED",
+  "source_mutated": false,
+  "support": {
+    "resolved": true,
+    "evidence": "repo_events/origin_agents/ChatGPT/collaboration/W3-ORC-20261011-298559142969024038635841735930979059615-support.json",
+    "diagnostics": {
+      "tool": "W3 repository tools support",
+      "owner": "ChatGPT",
+      "owner_status": "COMPLETED",
+      "owner_log": "repo_events/origin_agents/ChatGPT/logs/c7388dcb06f7435a86dff67b2722b5f8.json",
+      "checks": [
+        {
+          "check": "owner_receipt",
+          "path": "repo_events/origin_agents/ChatGPT/logs/c7388dcb06f7435a86dff67b2722b5f8.json",
+          "state": "EVIDENCED",
+          "sha256": "2e4e3b7959c1690dcaf64e50469cfea23f3fb205d7364c78af623bbfb664a710"
+        },
+        {
+          "check": "portable_path",
+          "path": "core/runtime/agents/chatgpt.py",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "core/runtime/agents/chatgpt.py",
+          "state": "EVIDENCED",
+          "expected_sha256": "624d8aed4342ec574d9472e581f1c92d375562902c9527229f10c6534d4e064b",
+          "actual_sha256": "624d8aed4342ec574d9472e581f1c92d375562902c9527229f10c6534d4e064b"
+        },
+        {
+          "check": "portable_path",
+          "path": "core/identity/profiles/ChatGPT.idp.json",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "core/identity/profiles/ChatGPT.idp.json",
+          "state": "EVIDENCED",
+          "expected_sha256": "3c3cabf1b7cb27fccf523a013cfb8e93037510e41293ae2e8e29e34e4be1eb59",
+          "actual_sha256": "3c3cabf1b7cb27fccf523a013cfb8e93037510e41293ae2e8e29e34e4be1eb59"
+        },
+        {
+          "check": "portable_path",
+          "path": "modules/ChatGPT/module.json",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "modules/ChatGPT/module.json",
+          "state": "EVIDENCED",
+          "expected_sha256": "d415a30214eb4d16825ba85319e5035f582c46f523b4be1c78362c78a5ed4c5e",
+          "actual_sha256": "d415a30214eb4d16825ba85319e5035f582c46f523b4be1c78362c78a5ed4c5e"
+        },
+        {
+          "check": "portable_path",
+          "path": "docs/architecture/AUDIT_ARCHITECTURE.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "docs/architecture/AUDIT_ARCHITECTURE.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "a08fc358954f41ed5fd56f901b997f1f5e25d60543607fb225c98f743bee286b",
+          "actual_sha256": "a08fc358954f41ed5fd56f901b997f1f5e25d60543607fb225c98f743bee286b"
+        },
+        {
+          "check": "portable_path",
+          "path": "docs/architecture/REDR_Structure_Map.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "docs/architecture/REDR_Structure_Map.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "06d7021b8f9cd683ce5f5ce9a13cee4b112dcbdc90d9f59b3b1556fa19de99dc",
+          "actual_sha256": "06d7021b8f9cd683ce5f5ce9a13cee4b112dcbdc90d9f59b3b1556fa19de99dc"
+        },
+        {
+          "check": "portable_path",
+          "path": "docs/architecture/W3_ORIGINAL_INTENT_AND_AUTONOMY.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "docs/architecture/W3_ORIGINAL_INTENT_AND_AUTONOMY.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "b88dc834516e2933eca811a9e7e919e7a1b9bdf115f35129198d2b07091d19c0",
+          "actual_sha256": "b88dc834516e2933eca811a9e7e919e7a1b9bdf115f35129198d2b07091d19c0"
+        },
+        {
+          "check": "portable_path",
+          "path": "docs/architecture/WORDS.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "docs/architecture/WORDS.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "7e22810f78b045f349f0041b33671735846e47fe4682cacab785744344842937",
+          "actual_sha256": "7e22810f78b045f349f0041b33671735846e47fe4682cacab785744344842937"
+        },
+        {
+          "check": "portable_path",
+          "path": "docs/architecture/mytec_info/W3UNIVE.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "docs/architecture/mytec_info/W3UNIVE.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "c04c9dc20931aeea75d132c5e2edcccd5c9caa69ebb9d4a93d7f82b19f083b36",
+          "actual_sha256": "c04c9dc20931aeea75d132c5e2edcccd5c9caa69ebb9d4a93d7f82b19f083b36"
+        },
+        {
+          "check": "portable_path",
+          "path": "architecture/W3APIFlow_Diagram.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "architecture/W3APIFlow_Diagram.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "8ae2b031da5ea00091d34192d47215cf6988a8b77a0984234990b36ec4f27d9a",
+          "actual_sha256": "8ae2b031da5ea00091d34192d47215cf6988a8b77a0984234990b36ec4f27d9a"
+        },
+        {
+          "check": "portable_path",
+          "path": "architecture/W3_MASTER_ARCHITECTURE.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "architecture/W3_MASTER_ARCHITECTURE.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "36d3edd326774eafb9185f86615b9df1db39a99d9057440a8a77395765f1dafd",
+          "actual_sha256": "36d3edd326774eafb9185f86615b9df1db39a99d9057440a8a77395765f1dafd"
+        },
+        {
+          "check": "portable_path",
+          "path": "architecture/base.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "architecture/base.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "a8f8b199e3c8de3492f3887d0059fd0a0f0dcd8776f62b3737622fedf96933e8",
+          "actual_sha256": "a8f8b199e3c8de3492f3887d0059fd0a0f0dcd8776f62b3737622fedf96933e8"
+        },
+        {
+          "check": "portable_path",
+          "path": "architecture/diagrams/file_000000001e7c72088554e0c1715f55b2.png",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "architecture/diagrams/file_000000001e7c72088554e0c1715f55b2.png",
+          "state": "EVIDENCED",
+          "expected_sha256": "e1190d65cea8d07dbedb906a2894b83541838a4576cdb5676e68a02401492c30",
+          "actual_sha256": "e1190d65cea8d07dbedb906a2894b83541838a4576cdb5676e68a02401492c30"
+        },
+        {
+          "check": "portable_path",
+          "path": "architecture/diagrams/placeholder.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "architecture/diagrams/placeholder.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "08798c14fa7039f360385c35c20fec09aaf60962eec933a2be1371ad8bbd163e",
+          "actual_sha256": "08798c14fa7039f360385c35c20fec09aaf60962eec933a2be1371ad8bbd163e"
+        },
+        {
+          "check": "portable_path",
+          "path": "architecture/diagrams/w3-civilization-main-map.png",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "architecture/diagrams/w3-civilization-main-map.png",
+          "state": "EVIDENCED",
+          "expected_sha256": "d0865f6fd63ccb2c463a37e79c4c3aee0ce96094d3af6cb31c5c691419a56019",
+          "actual_sha256": "d0865f6fd63ccb2c463a37e79c4c3aee0ce96094d3af6cb31c5c691419a56019"
+        },
+        {
+          "check": "portable_path",
+          "path": "architecture/interface-map.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "architecture/interface-map.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "f2a0ba7688f9f0d188b2b3364e0091a726cf0843fc5cb3828e82de82fb506f92",
+          "actual_sha256": "f2a0ba7688f9f0d188b2b3364e0091a726cf0843fc5cb3828e82de82fb506f92"
+        },
+        {
+          "check": "portable_path",
+          "path": "architecture/layers.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "architecture/layers.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "3c772326fb090cc23d555e61d620ab70e669b4c36b148f8969d27bc35beb0792",
+          "actual_sha256": "3c772326fb090cc23d555e61d620ab70e669b4c36b148f8969d27bc35beb0792"
+        },
+        {
+          "check": "portable_path",
+          "path": "architecture/overview.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "architecture/overview.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "300c1cbbd9e0f366c736e2e7b88c0089fe3943c08040daa4539eaddb4626698d",
+          "actual_sha256": "300c1cbbd9e0f366c736e2e7b88c0089fe3943c08040daa4539eaddb4626698d"
+        },
+        {
+          "check": "portable_path",
+          "path": "architecture/standards.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "architecture/standards.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "438796a662b765ee787ce24d09691ad9b5c50fe7838f20b7cbf8a01221d89b7c",
+          "actual_sha256": "438796a662b765ee787ce24d09691ad9b5c50fe7838f20b7cbf8a01221d89b7c"
+        },
+        {
+          "check": "portable_path",
+          "path": "architecture/system-map.md",
+          "state": "EVIDENCED",
+          "notes": []
+        },
+        {
+          "check": "final_file_state",
+          "path": "architecture/system-map.md",
+          "state": "EVIDENCED",
+          "expected_sha256": "9cf6100b1797a50711146e912eadafe3cc9567c4fb6301ee66f40f33c9ae7b32",
+          "actual_sha256": "9cf6100b1797a50711146e912eadafe3cc9567c4fb6301ee66f40f33c9ae7b32"
+        }
+      ],
+      "findings": [],
+      "tools_used": [
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "core/runtime/agents/chatgpt.py",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "core/identity/profiles/ChatGPT.idp.json",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "modules/ChatGPT/module.json",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_modules.py",
+          "function": "validate_module",
+          "path": "modules/ChatGPT/module.json",
+          "purpose": "validate module definition"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "docs/architecture/AUDIT_ARCHITECTURE.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "docs/architecture/AUDIT_ARCHITECTURE.md",
+          "purpose": "check approval metadata"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "docs/architecture/REDR_Structure_Map.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "docs/architecture/REDR_Structure_Map.md",
+          "purpose": "check approval metadata"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "docs/architecture/W3_ORIGINAL_INTENT_AND_AUTONOMY.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "docs/architecture/W3_ORIGINAL_INTENT_AND_AUTONOMY.md",
+          "purpose": "check approval metadata"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "docs/architecture/WORDS.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "docs/architecture/WORDS.md",
+          "purpose": "check approval metadata"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "docs/architecture/mytec_info/W3UNIVE.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "docs/architecture/mytec_info/W3UNIVE.md",
+          "purpose": "check approval metadata"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "architecture/W3APIFlow_Diagram.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "architecture/W3APIFlow_Diagram.md",
+          "purpose": "check approval metadata"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "architecture/W3_MASTER_ARCHITECTURE.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "architecture/W3_MASTER_ARCHITECTURE.md",
+          "purpose": "check approval metadata"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "architecture/base.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "architecture/base.md",
+          "purpose": "check approval metadata"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "architecture/diagrams/file_000000001e7c72088554e0c1715f55b2.png",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "architecture/diagrams/placeholder.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "architecture/diagrams/placeholder.md",
+          "purpose": "check approval metadata"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "architecture/diagrams/w3-civilization-main-map.png",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "architecture/interface-map.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "architecture/interface-map.md",
+          "purpose": "check approval metadata"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "architecture/layers.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "architecture/layers.md",
+          "purpose": "check approval metadata"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "architecture/overview.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "architecture/overview.md",
+          "purpose": "check approval metadata"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "architecture/standards.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "architecture/standards.md",
+          "purpose": "check approval metadata"
+        },
+        {
+          "tool": "tools/check_portable_paths.py",
+          "function": "path_problems",
+          "path": "architecture/system-map.md",
+          "purpose": "inspect output path portability"
+        },
+        {
+          "tool": "tools/validate_metadata.py",
+          "function": "validate_file",
+          "path": "architecture/system-map.md",
+          "purpose": "check approval metadata"
+        }
+      ],
+      "owner_reason": null,
+      "resolved": true,
+      "next_steps": [],
+      "source_mutated": false,
+      "unknowns": [
+        "Checks verify recorded file outcomes, not all role semantics or external systems."
+      ]
+    }
+  },
+  "support_status": "IN_PROGRESS",
+  "paired_review": {
+    "schema": "w3.paired_audit/1",
+    "start": {
+      "owner": "ChatGPT",
+      "evidence": [
+        {
+          "path": "repo_events/origin_agents/ChatGPT/intake/44b4cc9cdcf14dd1be4e1c0cb2e4655a.json",
+          "sha256": "91453e0596bb0bdee07bed44f4e7a531bdf51d4f0476ddfd56a65a10dd3b03fb"
+        },
+        {
+          "path": "repo_events/origin_agents/ChatGPT/intake_pairs/b48f5e56ef194b31ac4f51b8655f76a5/0-205da6956f6b435db9ca10071a94d0d5.json",
+          "sha256": "894c20895406be0a696f01c790b57efae8038bbed26dabeeb7f44b676cfddb58"
+        }
+      ]
+    },
+    "receipts": [
+      {
+        "path": "repo_events/origin_agents/ChatGPT/collaboration/paired/W3-ORC-20261011-298559142969024038635841735930979059615/0-e5435ca57e16458892475b748dc9ade0.json",
+        "sha256": "9efb31f337478886f6bcc110ccc07e68004e846ac02392dd33aeea89c253ca03"
+      },
+      {
+        "path": "repo_events/origin_agents/ChatGPT/collaboration/paired/W3-ORC-20261011-298559142969024038635841735930979059615/1-918774305fc54bfa8de1fb6ed4e39fd5.json",
+        "sha256": "de4a59ba532d940899bfbca840aa1062067affa2fce01f488559d47e159f2828"
+      }
+    ],
+    "notes": [
+      {
+        "id": "9454d8e7d1d54752bcf0996a6369f6ce",
+        "owner": "ChatGPT",
+        "kind": "doubt",
+        "meaning": "Static inventory does not prove an end-to-end execution or a missing dynamic caller.",
+        "evidence": "repo_events/origin_agents/ChatGPT/collaboration/W3-ORC-20261011-298559142969024038635841735930979059615-partner.json",
+        "status": "OPEN"
+      }
+    ],
+    "explanations": [],
+    "failures": [],
+    "note_review": [
+      {
+        "id": "9454d8e7d1d54752bcf0996a6369f6ce",
+        "owner": "ChatGPT",
+        "disposition": "CARRIED",
+        "explanation_attached": false
+      }
+    ],
+    "explanation_requests": [
+      {
+        "note_id": "9454d8e7d1d54752bcf0996a6369f6ce",
+        "owner": "ChatGPT",
+        "fields": [
+          "what",
+          "how",
+          "why"
+        ]
+      }
+    ],
+    "trace_verified": true,
+    "all_handoffs_accepted": true,
+    "conflicts": [],
+    "explanation_policy": "responsible owner may append what/how/why; claims do not clear evidence failures"
+  },
+  "handoff_notes": [
+    {
+      "id": "9454d8e7d1d54752bcf0996a6369f6ce",
+      "owner": "ChatGPT",
+      "kind": "doubt",
+      "meaning": "Static inventory does not prove an end-to-end execution or a missing dynamic caller.",
+      "evidence": "repo_events/origin_agents/ChatGPT/collaboration/W3-ORC-20261011-298559142969024038635841735930979059615-partner.json",
+      "status": "OPEN"
+    }
+  ],
+  "note_explanations": [],
+  "trace_scope": "pre-execution intake through review; legacy gaps remain explicit"
+}
