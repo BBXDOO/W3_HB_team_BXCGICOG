@@ -33,6 +33,18 @@ public class ArticleActivity extends Activity {
     private Spinner source,display;
     private EditText link;
     private Article article;
+    private String website="",section="",query="",filter="";
+    private boolean sectionOpen;
+    private int listRequest;
+
+    private static final class IndexEntry {
+        final String title, detail;
+        final Runnable open;
+
+        IndexEntry(String title,String detail,Runnable open){
+            this.title=title;this.detail=detail;this.open=open;
+        }
+    }
     private volatile boolean closed,busy;
     private boolean returnToList;
     private volatile Thread activeWorker;
@@ -42,10 +54,13 @@ public class ArticleActivity extends Activity {
     private BlockAdapter blocks;
     @Override public void onCreate(Bundle state){
         super.onCreate(state);store=new ArticleStore(this);
-        if(state!=null){viewMode=state.getInt("view",2);exportId=state.getLong("exportId");exportView=state.getInt("exportView",2);long id=state.getLong("article");if(id>0){open(id);return;}}
+        if(state!=null){
+            website=state.getString("website","");section=state.getString("section","");
+            sectionOpen=state.getBoolean("sectionOpen");query=state.getString("query","");filter=state.getString("filter","");
+            viewMode=state.getInt("view",2);exportId=state.getLong("exportId");exportView=state.getInt("exportView",2);long id=state.getLong("article");if(id>0){open(id);return;}}
         home(state==null?sharedLink(getIntent()):state.getString("link",sharedLink(getIntent())));
     }
-    @Override protected void onNewIntent(Intent i){super.onNewIntent(i);setIntent(i);if(!busy)home(sharedLink(i));}
+    @Override protected void onNewIntent(Intent i){super.onNewIntent(i);setIntent(i);if(!busy){website="";sectionOpen=false;query="";filter="";home(sharedLink(i));}}
     private static String sharedLink(Intent i){
         String text=i.getStringExtra(Intent.EXTRA_TEXT);if(text==null)return "";
         Matcher m=Pattern.compile("https://[^\\s<>\"]+",Pattern.CASE_INSENSITIVE).matcher(text);
@@ -62,46 +77,134 @@ public class ArticleActivity extends Activity {
     private void run(Runnable action){busy=true;cancel.set(false);worker.execute(()->{activeWorker=Thread.currentThread();try{if(!cancel.get())action.run();}catch(RuntimeException e){message("ดำเนินการไม่สำเร็จ ตรวจพื้นที่ว่างในเครื่องแล้วลองใหม่");}finally{activeWorker=null;busy=false;ui(()->{if(returnToList&&article!=null){returnToList=false;remember();home("");return;}if(fetch!=null)fetch.setEnabled(true);if(translate!=null)translate.setEnabled(true);if(source!=null)source.setEnabled(true);if(stop!=null)stop.setVisibility(View.GONE);});}});}
     private void home(String incoming){
         article=null;fetch=null;translate=null;source=null;stop=null;
-        screen("สารบัญและประวัติการอ่าน");
-        link=new EditText(this);link.setSingleLine(true);link.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_URI);link.setHint("วางลิงก์ HTTPS ของบทความ");link.setText(incoming);root.addView(link);
-        fetch=Ui.button(this,"ดึงและบันทึกบทความลงเครื่อง");root.addView(fetch);fetch.setEnabled(!busy);fetch.setOnClickListener(v->importLink());
-        root.addView(Ui.text(this,"เก็บข้อความจากหน้านี้พร้อมหัวข้อ ไม่ดึงลิงก์ต่อ ไม่รวมรูป/PDF; เว็บที่ต้องล็อกอินหรือโหลดด้วย JavaScript อาจดึงไม่ครบ",12));
+        screen(website.isEmpty()?"สารบัญและประวัติการอ่าน":sectionOpen?sectionName(section):website);
+        if(website.isEmpty()){
+            link=new EditText(this);link.setSingleLine(true);link.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_URI);link.setHint("วางลิงก์ HTTPS ของบทความ");link.setText(incoming);root.addView(link);
+            LinearLayout actions=new LinearLayout(this);root.addView(actions);
+            fetch=Ui.button(this,"ดึงและบันทึก");actions.addView(fetch,new LinearLayout.LayoutParams(0,-2,1));
+            fetch.setOnClickListener(v->importLink(link.getText().toString()));
+            Button bookmark=Ui.button(this,"เก็บลิงก์ไว้อ่าน");actions.addView(bookmark,new LinearLayout.LayoutParams(0,-2,1));
+            bookmark.setOnClickListener(v->bookmark());
+        }else{
+            Button up=Ui.button(this,sectionOpen?"กลับไปยัง "+website:"เว็บไซต์ทั้งหมด");
+            root.addView(up);up.setOnClickListener(v->leaveIndex());
+        }
         LinearLayout searchRow=new LinearLayout(this);root.addView(searchRow);
-        EditText search=new EditText(this);search.setSingleLine(true);search.setHint("ค้นชื่อ ต้นฉบับ หรือคำแปล");searchRow.addView(search,new LinearLayout.LayoutParams(0,-2,1));
+        EditText search=new EditText(this);search.setSingleLine(true);search.setHint("ค้นชื่อ ลิงก์ หรือเนื้อหา");search.setText(query);
+        searchRow.addView(search,new LinearLayout.LayoutParams(0,-2,1));
         Button find=Ui.button(this,"ค้น");searchRow.addView(find);
-        Spinner category=new Spinner(this);
-        category.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,
-            new String[]{"ทุกหมวด","บทความจากลิงก์","คู่มือ","หนังสือ","เกม","อื่น ๆ"}));
-        root.addView(category);
-        list=new ListView(this);list.setDividerHeight(Ui.dp(this,8));root.addView(list,new LinearLayout.LayoutParams(-1,0,1));
-        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-            public void onNothingSelected(AdapterView<?> p){}
-            public void onItemSelected(AdapterView<?> p,View v,int pos,long id){loadList(search.getText().toString(),pos==0?"":p.getItemAtPosition(pos).toString());}
-        });
-        find.setOnClickListener(v->loadList(search.getText().toString(),category.getSelectedItemPosition()==0?"":category.getSelectedItem().toString()));
-    }
-    private void loadList(String query,String category){
-        if(busy){list.postDelayed(()->{if(!closed && article==null)loadList(query,category);},100);return;}
-        run(()->{try{List<Article> rows=store.list(query);rows.removeIf(a->!category.isEmpty()&&!category.equals(a.category()));ui(()->{
-            status.setText(rows.isEmpty()?"ยังไม่มีบทความที่ตรงกับการค้นหา · บันทึกแล้วเปิดอ่านออฟไลน์ได้":"บันทึกในเครื่อง "+rows.size()+" บทความ · แตะเพื่ออ่าน");
-            list.setAdapter(new ArrayAdapter<Article>(this,android.R.layout.simple_list_item_2,android.R.id.text1,rows){
-                @Override public View getView(int pos,View old,ViewGroup parent){View v=super.getView(pos,old,parent);Article a=getItem(pos);((TextView)v.findViewById(android.R.id.text1)).setText(a.title);((TextView)v.findViewById(android.R.id.text2)).setText(a.sourceLabel());return v;}
+        list=new ListView(this);list.setDividerHeight(Ui.dp(this,8));
+        if(website.isEmpty()){
+            Spinner category=new Spinner(this);
+            List<String> filters=Arrays.asList("ทุกหมวด","บทความจากลิงก์","คู่มือ","หนังสือ","เกม","อื่น ๆ");
+            category.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,filters));
+            category.setSelection(Math.max(0,filters.indexOf(filter)));
+            root.addView(category);
+            category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+                public void onNothingSelected(AdapterView<?> parent){}
+                public void onItemSelected(AdapterView<?> parent,View view,int pos,long id){
+                    String selected=pos==0?"":filters.get(pos);
+                    if(!selected.equals(filter)){filter=selected;query=search.getText().toString().trim();loadList();}
+                }
             });
-            list.setOnItemClickListener((p,v,pos,id)->{if(!busy)open(rows.get(pos).id);});
-        });}catch(Exception e){message("อ่านรายการไม่ได้ กรุณาตรวจพื้นที่ว่างในเครื่องแล้วเปิดใหม่");}});
+        }
+        root.addView(list,new LinearLayout.LayoutParams(-1,0,1));
+        find.setOnClickListener(v->{query=search.getText().toString().trim();loadList();});
+        loadList();
     }
-    private void importLink(){
-        if(busy)return;String input=link.getText().toString();fetch.setEnabled(false);status.setText("กำลังดึงและจัดหัวข้อ…");
+
+    private void leaveIndex(){
+        if(sectionOpen)sectionOpen=false;
+        else website="";
+        home("");
+    }
+
+    private static String sectionName(String name){return name.isEmpty()?"ยังไม่จัดหมวด":name;}
+
+    private void loadList(){
+        final ListView target=list;
+        final int request=++listRequest;
+        final String term=query,site=website,selectedSection=section,selectedFilter=filter;
+        final boolean inSection=sectionOpen;
+        worker.execute(()->{
+            try{
+                List<Article> rows=store.list(term);
+                List<IndexEntry> entries=new ArrayList<>();
+                Map<String,Integer> groups=new TreeMap<>();
+                for(Article row:rows){
+                    if(!selectedFilter.isEmpty()&&!selectedFilter.equals(row.category()))continue;
+                    if(site.isEmpty()&&!row.fromScreen()){
+                        groups.merge(row.website(),1,Integer::sum);
+                    }else if(site.isEmpty()){
+                        entries.add(articleEntry(row));
+                    }else if(site.equals(row.website())){
+                        if(!inSection)groups.merge(row.webSection,1,Integer::sum);
+                        else if(selectedSection.equals(row.webSection))entries.add(articleEntry(row));
+                    }
+                }
+                List<IndexEntry> index=new ArrayList<>();
+                groups.forEach((name,count)->index.add(new IndexEntry(site.isEmpty()?name:sectionName(name),
+                    count+" หน้า",()->{
+                        if(site.isEmpty()){website=name;sectionOpen=false;}
+                        else{section=name;sectionOpen=true;}
+                        home("");
+                    })));
+                index.addAll(entries);
+                ui(()->{
+                    if(list!=target||article!=null||request!=listRequest)return;
+                    if(!busy)status.setText(index.isEmpty()?"ไม่พบรายการ":site.isEmpty()?"เลือกเว็บไซต์หรือรายการจากหน้าจอ":inSection?site:"เลือกหมวดใน "+site);
+                    target.setAdapter(new ArrayAdapter<IndexEntry>(this,android.R.layout.simple_list_item_2,android.R.id.text1,index){
+                        @Override public View getView(int position,View recycled,ViewGroup parent){
+                            View view=super.getView(position,recycled,parent);
+                            IndexEntry item=getItem(position);
+                            ((TextView)view.findViewById(android.R.id.text1)).setText(item.title);
+                            ((TextView)view.findViewById(android.R.id.text2)).setText(item.detail);
+                            return view;
+                        }
+                    });
+                    target.setOnItemClickListener((p,v,pos,id)->{if(!busy)index.get(pos).open.run();});
+                });
+            }catch(RuntimeException e){
+                ui(()->{if(list==target&&request==listRequest)status.setText("อ่านสารบัญไม่ได้ กรุณาลองใหม่");});
+            }
+        });
+    }
+
+    private IndexEntry articleEntry(Article row){
+        return new IndexEntry(row.title,row.linkOnly()?"ลิงก์ที่บันทึกไว้ · "+row.url:row.sourceLabel(),()->open(row.id));
+    }
+
+    private void bookmark(){
+        if(busy)return;
+        String input=link.getText().toString();
         run(()->{try{
-            String url=ArticleFetcher.url(input);long existing=store.find(url);
-            if(existing>0){ui(()->open(existing));return;}
-            Article a=ArticleFetcher.fetch(url);long redirected=store.find(a.url);
-            long id=redirected>0?redirected:store.save(a);ui(()->open(id));
+            String url=ArticleFetcher.url(input);
+            long id=store.find(url);
+            if(id==0){
+                Article saved=new Article();
+                saved.url=url;saved.title=url;saved.language="pending";saved.savedAt=System.currentTimeMillis();
+                id=store.save(saved);
+            }
+            final long savedId=id;
+            ui(()->open(savedId));
+        }catch(IOException e){message(e.getMessage());}});
+    }
+
+    private void importLink(String input){
+        if(busy)return;
+        if(fetch!=null)fetch.setEnabled(false);
+        status.setText("กำลังดึงและจัดหัวข้อ…");
+        run(()->{try{
+            String url=ArticleFetcher.url(input);
+            Article existing=store.load(store.find(url));
+            long id=existing!=null&&!existing.linkOnly()?existing.id:store.saveFetched(url,ArticleFetcher.fetch(url));
+            ui(()->open(id));
         }catch(Exception e){message(e instanceof ArticleFetcher.ReadException&&e.getMessage()!=null?e.getMessage():"บันทึกไม่สำเร็จ ตรวจอินเทอร์เน็ตและพื้นที่ว่าง แล้วลองใหม่");}});
     }
     private void open(long id){
+        LinearLayout target=root;
         // Queued after any importing transaction; render only after the full document is loaded.
-        worker.execute(()->{try{Article a=store.load(id);int position=store.scroll(id);ui(()->{if(a==null){home("");return;}article=a;reader(position);});}catch(Exception e){message("เปิดบทความไม่ได้ กรุณาลองใหม่");}});
+        worker.execute(()->{try{Article a=store.load(id);int position=store.scroll(id);ui(()->{if(root!=target)return;if(a==null){home("");return;}article=a;reader(position);});}catch(Exception e){message("เปิดบทความไม่ได้ กรุณาลองใหม่");}});
     }
     private void reader(int position){
         fetch=null;translate=null;source=null;stop=null;
@@ -110,6 +213,18 @@ public class ArticleActivity extends Activity {
         Button back=Ui.button(this,"รายการ");actions.addView(back,new LinearLayout.LayoutParams(0,-2,1));back.setOnClickListener(v->leaveReader());
         Button toc=Ui.button(this,"สารบัญ");actions.addView(toc,new LinearLayout.LayoutParams(0,-2,1));toc.setOnClickListener(v->contents());
         Button more=Ui.button(this,"เพิ่มเติม");actions.addView(more,new LinearLayout.LayoutParams(0,-2,1));more.setOnClickListener(v->more());
+        if(!article.fromScreen()){
+            Button organize=Ui.button(this,"หมวดในเว็บไซต์"+(article.webSection.isEmpty()?"":" · "+article.webSection));
+            root.addView(organize);organize.setOnClickListener(v->chooseWebSection(organize));
+        }
+        if(article.linkOnly()){
+            toc.setVisibility(View.GONE);
+            root.addView(Ui.text(this,article.url,15));
+            fetch=Ui.button(this,"ดึงเนื้อหาเพื่ออ่านและแปล");root.addView(fetch);
+            fetch.setOnClickListener(v->importLink(article.url));
+            status.setText("บันทึกลิงก์แล้ว");
+            return;
+        }
         display=new Spinner(this);display.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"ต้นฉบับ","ไทย","ต้นฉบับคู่ไทย"}));display.setSelection(viewMode);root.addView(display);
         display.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){public void onNothingSelected(AdapterView<?> p){}public void onItemSelected(AdapterView<?> p,View v,int pos,long id){viewMode=pos;if(blocks!=null)blocks.notifyDataSetChanged();}});
         LinearLayout languages=new LinearLayout(this);root.addView(languages);
@@ -121,6 +236,25 @@ public class ArticleActivity extends Activity {
         list=new ListView(this);list.setDividerHeight(Ui.dp(this,8));root.addView(list,new LinearLayout.LayoutParams(-1,0,1));
         blocks=new BlockAdapter();list.setAdapter(blocks);list.setSelection(Math.min(position,article.blocks.size()));
         progress("บันทึกแล้ว · อ่านออฟไลน์ได้");
+    }
+    private void chooseWebSection(Button button){
+        if(busy)return;
+        Article current=article;
+        EditText name=new EditText(this);
+        name.setSingleLine(true);name.setHint("เช่น อาวุธ หรือแผนที่");
+        name.setFilters(new android.text.InputFilter[]{new android.text.InputFilter.LengthFilter(80)});
+        name.setText(current.webSection);
+        new AlertDialog.Builder(this).setTitle("หมวดใน "+current.website()).setView(name)
+            .setNegativeButton("ยกเลิก",null).setPositiveButton("บันทึก",(d,w)->{
+                String value=name.getText().toString().trim();
+                run(()->{
+                    store.webSection(current.id,value);
+                    ui(()->{
+                        current.webSection=value;
+                        if(article==current)button.setText("หมวดในเว็บไซต์"+(value.isEmpty()?"":" · "+value));
+                    });
+                });
+            }).show();
     }
     private void progress(String prefix){status.setText(prefix+" · แปล "+article.translated()+"/"+article.translatable()+" ส่วน");}
     private void askTranslate(){
@@ -177,16 +311,16 @@ public class ArticleActivity extends Activity {
         if(result!=RESULT_OK||data==null||data.getData()==null||id==0)return;Uri uri=data.getData();
         worker.execute(()->{try{Article saved=store.load(id);if(saved==null)throw new IOException();try(OutputStream out=getContentResolver().openOutputStream(uri,"wt")){if(out==null)throw new IOException();out.write(saved.markdown(mode).getBytes(StandardCharsets.UTF_8));}message("ส่งออกเอกสารแล้ว");}catch(Exception e){message("ส่งออกไม่ได้ ต้นฉบับในแอปยังอยู่ กรุณาเลือกตำแหน่งใหม่");}});
     }
-    private void remember(){if(article!=null&&list!=null){long id=article.id;int pos=list.getFirstVisiblePosition();worker.execute(()->store.scroll(id,pos));}}
+    private void remember(){if(article!=null&&!article.linkOnly()&&list!=null){long id=article.id;int pos=list.getFirstVisiblePosition();worker.execute(()->store.scroll(id,pos));}}
     private void pauseTranslation(){cancel.set(true);Thread t=activeWorker;if(t!=null)t.interrupt();status.setText("กำลังพัก เก็บคำแปลที่เสร็จแล้วไว้ในเครื่อง…");}
     private void leaveReader(){
         if(busy){returnToList=true;pauseTranslation();return;}
         remember();home("");
     }
-    @Override public void onBackPressed(){if(article!=null){leaveReader();return;}super.onBackPressed();}
+    @Override public void onBackPressed(){if(article!=null){leaveReader();return;}if(!website.isEmpty()){leaveIndex();return;}super.onBackPressed();}
     @Override protected void onPause(){remember();super.onPause();}
     @Override protected void onStop(){if(busy&&article!=null)pauseTranslation();super.onStop();}
-    @Override protected void onSaveInstanceState(Bundle out){super.onSaveInstanceState(out);out.putInt("view",viewMode);if(article!=null)out.putLong("article",article.id);if(link!=null)out.putString("link",link.getText().toString());out.putLong("exportId",exportId);out.putInt("exportView",exportView);}
+    @Override protected void onSaveInstanceState(Bundle out){super.onSaveInstanceState(out);out.putInt("view",viewMode);out.putString("website",website);out.putString("section",section);out.putBoolean("sectionOpen",sectionOpen);out.putString("query",query);out.putString("filter",filter);if(article!=null)out.putLong("article",article.id);if(link!=null)out.putString("link",link.getText().toString());out.putLong("exportId",exportId);out.putInt("exportView",exportView);}
     @Override protected void onDestroy(){closed=true;cancel.set(true);Thread t=activeWorker;if(t!=null)t.interrupt();worker.execute(()->store.close());worker.shutdown();super.onDestroy();}
     private final class BlockAdapter extends BaseAdapter {
         public int getCount(){return article.blocks.size()+1;}

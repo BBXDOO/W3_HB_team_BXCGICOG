@@ -5,6 +5,7 @@ import java.util.*;
 /** Text only. Original blocks are immutable; translations are separate values. */
 final class Article {
     long id, savedAt;
+    String webSection="";
     String title="", url="", language="en", notice="";
     final List<Block> blocks=new ArrayList<>();
     static final class Block {
@@ -13,6 +14,14 @@ final class Article {
         String thai="";
         Block(String kind,int level,String original){this.kind=kind;this.level=level;this.original=original;}
         boolean translatable(){return !"code".equals(kind);}
+    }
+    boolean linkOnly(){return "pending".equals(language);}
+    String website(){
+        String host=java.net.URI.create(url).getHost();
+        if(host==null)return "";
+        host=host.toLowerCase(Locale.ROOT);
+        if(host.endsWith("."))host=host.substring(0,host.length()-1);
+        return host.startsWith("www.")?host.substring(4):host;
     }
     boolean fromScreen(){return url.startsWith("screen:");}
     String category(){
