@@ -7,22 +7,60 @@ import java.util.*;
 
 /** Persistent app-private database under files/databases, never cacheDir. */
 final class ArticleStore extends SQLiteOpenHelper {
-    ArticleStore(Context c){super(c.getApplicationContext(),"reading.db",null,1);setWriteAheadLoggingEnabled(true);}
+    ArticleStore(Context c){super(c.getApplicationContext(),"reading.db",null,2);setWriteAheadLoggingEnabled(true);}
     @Override public void onConfigure(SQLiteDatabase db){db.setForeignKeyConstraintsEnabled(true);}
     @Override public void onCreate(SQLiteDatabase db){
-        db.execSQL("CREATE TABLE articles (id INTEGER PRIMARY KEY,title TEXT NOT NULL,url TEXT NOT NULL UNIQUE,language TEXT NOT NULL,notice TEXT NOT NULL,saved INTEGER NOT NULL,scroll INTEGER NOT NULL DEFAULT 0)");
+        db.execSQL("CREATE TABLE articles (id INTEGER PRIMARY KEY,title TEXT NOT NULL,url TEXT NOT NULL UNIQUE,language TEXT NOT NULL,notice TEXT NOT NULL,saved INTEGER NOT NULL,scroll INTEGER NOT NULL DEFAULT 0,web_section TEXT NOT NULL DEFAULT '')");
         db.execSQL("CREATE TABLE blocks (article INTEGER NOT NULL REFERENCES articles(id) ON DELETE CASCADE,pos INTEGER NOT NULL,kind TEXT NOT NULL,level INTEGER NOT NULL,original TEXT NOT NULL,thai TEXT NOT NULL DEFAULT '',PRIMARY KEY(article,pos))");
     }
-    @Override public void onUpgrade(SQLiteDatabase db,int old,int next){throw new IllegalStateException("Unsupported reading database version");}
+    @Override public void onUpgrade(SQLiteDatabase db,int old,int next){
+        if(old==1 && next==2){
+            db.execSQL("ALTER TABLE articles ADD COLUMN web_section TEXT NOT NULL DEFAULT ''");
+            return;
+        }
+        throw new IllegalStateException("Unsupported reading database version");
+    }
     long find(String url){try(Cursor c=getReadableDatabase().rawQuery("SELECT id FROM articles WHERE url=?",new String[]{url})){return c.moveToFirst()?c.getLong(0):0;}}
     long save(Article a){
         SQLiteDatabase db=getWritableDatabase();db.beginTransaction();
         try{
-            ContentValues v=new ContentValues();v.put("title",a.title);v.put("url",a.url);v.put("language",a.language);v.put("notice",a.notice);v.put("saved",a.savedAt);
+            ContentValues v=new ContentValues();v.put("title",a.title);v.put("url",a.url);v.put("language",a.language);v.put("notice",a.notice);v.put("saved",a.savedAt);v.put("web_section",a.webSection);
             long id=db.insertOrThrow("articles",null,v);
             writeBlocks(db,id,a.blocks);
             db.setTransactionSuccessful();a.id=id;return id;
         }finally{db.endTransaction();}
+    }
+    long saveFetched(String requestedUrl,Article fetched){
+        SQLiteDatabase db=getWritableDatabase();db.beginTransaction();
+        try{
+            Article requested=load(find(requestedUrl));
+            Article canonical=requestedUrl.equals(fetched.url)?requested:load(find(fetched.url));
+            long id;
+            if(canonical!=null && !canonical.linkOnly()){
+                id=canonical.id;
+                if(requested!=null && requested.linkOnly() && canonical.webSection.isEmpty()){
+                    webSection(id,requested.webSection);
+                }
+            }else if(canonical!=null || requested!=null){
+                Article pending=canonical!=null?canonical:requested;
+                id=pending.id;
+                ContentValues values=new ContentValues();
+                values.put("title",fetched.title);values.put("url",fetched.url);
+                values.put("language",fetched.language);values.put("notice",fetched.notice);
+                if(pending.webSection.isEmpty() && requested!=null)values.put("web_section",requested.webSection);
+                db.update("articles",values,"id=?",new String[]{Long.toString(id)});
+                writeBlocks(db,id,fetched.blocks);
+            }else{
+                id=save(fetched);
+            }
+            if(requested!=null && requested.linkOnly() && requested.id!=id)delete(requested.id);
+            db.setTransactionSuccessful();
+            return id;
+        }finally{db.endTransaction();}
+    }
+    void webSection(long id,String section){
+        ContentValues values=new ContentValues();values.put("web_section",section);
+        getWritableDatabase().update("articles",values,"id=?",new String[]{Long.toString(id)});
     }
     long mergeScreen(Article incoming){
         SQLiteDatabase db=getWritableDatabase();db.beginTransaction();
@@ -55,8 +93,8 @@ final class ArticleStore extends SQLiteOpenHelper {
     }
     Article load(long id){
         Article a=new Article();a.id=id;
-        try(Cursor c=getReadableDatabase().rawQuery("SELECT title,url,language,notice,saved FROM articles WHERE id=?",new String[]{""+id})){
-            if(!c.moveToFirst())return null;a.title=c.getString(0);a.url=c.getString(1);a.language=c.getString(2);a.notice=c.getString(3);a.savedAt=c.getLong(4);
+        try(Cursor c=getReadableDatabase().rawQuery("SELECT title,url,language,notice,saved,web_section FROM articles WHERE id=?",new String[]{""+id})){
+            if(!c.moveToFirst())return null;a.title=c.getString(0);a.url=c.getString(1);a.language=c.getString(2);a.notice=c.getString(3);a.savedAt=c.getLong(4);a.webSection=c.getString(5);
         }
         try(Cursor c=getReadableDatabase().rawQuery("SELECT kind,level,original,thai FROM blocks WHERE article=? ORDER BY pos",new String[]{""+id})){
             while(c.moveToNext()){Article.Block b=new Article.Block(c.getString(0),c.getInt(1),c.getString(2));b.thai=c.getString(3);a.blocks.add(b);}
@@ -66,9 +104,9 @@ final class ArticleStore extends SQLiteOpenHelper {
     List<Article> list(String search){
         String like="%"+search.replace("\\","\\\\").replace("%","\\%").replace("_","\\_")+"%";
         List<Article> rows=new ArrayList<>();
-        String sql="SELECT id,title,url,language,saved FROM articles a WHERE title LIKE ? ESCAPE '\\' OR url LIKE ? ESCAPE '\\' OR EXISTS(SELECT 1 FROM blocks b WHERE b.article=a.id AND (original LIKE ? ESCAPE '\\' OR thai LIKE ? ESCAPE '\\')) ORDER BY saved DESC";
-        try(Cursor c=getReadableDatabase().rawQuery(sql,new String[]{like,like,like,like})){
-            while(c.moveToNext()){Article a=new Article();a.id=c.getLong(0);a.title=c.getString(1);a.url=c.getString(2);a.language=c.getString(3);a.savedAt=c.getLong(4);rows.add(a);}
+        String sql="SELECT id,title,url,language,saved,web_section FROM articles a WHERE title LIKE ? ESCAPE '\\' OR url LIKE ? ESCAPE '\\' OR web_section LIKE ? ESCAPE '\\' OR EXISTS(SELECT 1 FROM blocks b WHERE b.article=a.id AND (original LIKE ? ESCAPE '\\' OR thai LIKE ? ESCAPE '\\')) ORDER BY saved DESC";
+        try(Cursor c=getReadableDatabase().rawQuery(sql,new String[]{like,like,like,like,like})){
+            while(c.moveToNext()){Article a=new Article();a.id=c.getLong(0);a.title=c.getString(1);a.url=c.getString(2);a.language=c.getString(3);a.savedAt=c.getLong(4);a.webSection=c.getString(5);rows.add(a);}
         }
         return rows;
     }
