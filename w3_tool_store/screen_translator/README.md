@@ -1,6 +1,9 @@
-# W3 แปลหน้าจอ
+Name : W3 แปลหน้าจอ\
+AM Ⅲ - BUILD : แอป Android สำหรับแปลและอ่านภาษาไทย\
+Log time : 2026-11-13 (Asia/Bangkok) ; ID : W3-SCREEN-TRANSLATOR-README-001\
+Gradation : Cd4ra - screen_translator
 
-AM Ⅲ - BUILD · OWNER: BBX19 · MAKER: ChatGPT/Codex
+OWNER : BBX19 · MAKER : ChatGPT/Codex
 
 แอป Android แยกสำหรับช่วยอ่านจีน ญี่ปุ่น และอังกฤษเป็นไทยในเกม คู่มือ และหนังสือ ใช้หน้าหลักภาษาไทย ปุ่มลอยลากย้ายได้ แปลทับบริเวณข้อความ หรือหยุดอ่านเป็นหน้าพร้อมต้นฉบับและปุ่มคัดลอก
 
