@@ -52,12 +52,20 @@ public class ArticleActivity extends Activity {
     private long exportId;
     private int exportView;
     private BlockAdapter blocks;
+    private boolean editingNote;
+    private EditText noteTitle,noteOriginal,noteThai;
+    private static final int NOTE_LIMIT=200_000;
+    private String[] retainedNote;
     @Override public void onCreate(Bundle state){
         super.onCreate(state);store=new ArticleStore(this);
+        retainedNote=(String[])getLastNonConfigurationInstance();
         if(state!=null){
             website=state.getString("website","");section=state.getString("section","");
             sectionOpen=state.getBoolean("sectionOpen");query=state.getString("query","");filter=state.getString("filter","");
             viewMode=state.getInt("view",2);exportId=state.getLong("exportId");exportView=state.getInt("exportView",2);long id=state.getLong("article");if(id>0){open(id);return;}}
+        if(state!=null?state.getBoolean("newNote"):getIntent().getBooleanExtra("newNote",false)){
+            editNote(null);return;
+        }
         home(state==null?sharedLink(getIntent()):state.getString("link",sharedLink(getIntent())));
     }
     @Override protected void onNewIntent(Intent i){super.onNewIntent(i);setIntent(i);if(!busy){website="";sectionOpen=false;query="";filter="";home(sharedLink(i));}}
@@ -76,7 +84,7 @@ public class ArticleActivity extends Activity {
     private void message(String text){ui(()->status.setText(text));}
     private void run(Runnable action){busy=true;cancel.set(false);worker.execute(()->{activeWorker=Thread.currentThread();try{if(!cancel.get())action.run();}catch(RuntimeException e){message("ดำเนินการไม่สำเร็จ ตรวจพื้นที่ว่างในเครื่องแล้วลองใหม่");}finally{activeWorker=null;busy=false;ui(()->{if(returnToList&&article!=null){returnToList=false;remember();home("");return;}if(fetch!=null)fetch.setEnabled(true);if(translate!=null)translate.setEnabled(true);if(source!=null)source.setEnabled(true);if(stop!=null)stop.setVisibility(View.GONE);});}});}
     private void home(String incoming){
-        article=null;fetch=null;translate=null;source=null;stop=null;
+        editingNote=false;article=null;fetch=null;translate=null;source=null;stop=null;
         screen(website.isEmpty()?"สารบัญและประวัติการอ่าน":sectionOpen?sectionName(section):website);
         if(website.isEmpty()){
             link=new EditText(this);link.setSingleLine(true);link.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_URI);link.setHint("วางลิงก์ HTTPS ของบทความ");link.setText(incoming);root.addView(link);
@@ -85,6 +93,8 @@ public class ArticleActivity extends Activity {
             fetch.setOnClickListener(v->importLink(link.getText().toString()));
             Button bookmark=Ui.button(this,"เก็บลิงก์ไว้อ่าน");actions.addView(bookmark,new LinearLayout.LayoutParams(0,-2,1));
             bookmark.setOnClickListener(v->bookmark());
+            Button note=Ui.button(this,"วางข้อความ / Markdown");root.addView(note);
+            note.setOnClickListener(v->{if(!busy)editNote(null);});
         }else{
             Button up=Ui.button(this,sectionOpen?"กลับไปยัง "+website:"เว็บไซต์ทั้งหมด");
             root.addView(up);up.setOnClickListener(v->leaveIndex());
@@ -96,7 +106,7 @@ public class ArticleActivity extends Activity {
         list=new ListView(this);list.setDividerHeight(Ui.dp(this,8));
         if(website.isEmpty()){
             Spinner category=new Spinner(this);
-            List<String> filters=Arrays.asList("ทุกหมวด","บทความจากลิงก์","คู่มือ","หนังสือ","เกม","อื่น ๆ");
+            List<String> filters=Arrays.asList("ทุกหมวด","บทความจากลิงก์","คู่มือ","หนังสือ","เกม","อื่น ๆ","บันทึกข้อความ");
             category.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,filters));
             category.setSelection(Math.max(0,filters.indexOf(filter)));
             root.addView(category);
@@ -133,7 +143,7 @@ public class ArticleActivity extends Activity {
                 Map<String,Integer> groups=new TreeMap<>();
                 for(Article row:rows){
                     if(!selectedFilter.isEmpty()&&!selectedFilter.equals(row.category()))continue;
-                    if(site.isEmpty()&&!row.fromScreen()){
+                    if(site.isEmpty()&&!row.fromScreen()&&!row.fromNote()){
                         groups.merge(row.website(),1,Integer::sum);
                     }else if(site.isEmpty()){
                         entries.add(articleEntry(row));
@@ -204,8 +214,155 @@ public class ArticleActivity extends Activity {
     private void open(long id){
         LinearLayout target=root;
         // Queued after any importing transaction; render only after the full document is loaded.
-        worker.execute(()->{try{Article a=store.load(id);int position=store.scroll(id);ui(()->{if(root!=target)return;if(a==null){home("");return;}article=a;reader(position);});}catch(Exception e){message("เปิดบทความไม่ได้ กรุณาลองใหม่");}});
+        worker.execute(()->{try{Article a=store.load(id);int position=store.scroll(id);ui(()->{if(root!=target)return;if(a==null){home("");return;}if(a.fromNote())editNote(a);else{article=a;reader(position);}});}catch(Exception e){message("เปิดบทความไม่ได้ กรุณาลองใหม่");}});
     }
+    private void editNote(Article saved){
+        article=saved;editingNote=true;fetch=null;stop=null;list=null;
+        screen("วางข้อความ / Markdown");
+        noteTitle=new EditText(this);
+        noteTitle.setHint("ชื่อบันทึก");noteTitle.setSingleLine(true);
+        noteTitle.setFilters(new android.text.InputFilter[]{new android.text.InputFilter.LengthFilter(120)});
+        root.addView(noteTitle);
+        source=new Spinner(this);
+        source.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,
+            new String[]{"อังกฤษ → ไทย","จีน → ไทย","ญี่ปุ่น → ไทย"}));
+        root.addView(source);
+        noteOriginal=noteEditor("วางหรือพิมพ์ต้นฉบับ");
+        noteThai=noteEditor("คำแปลภาษาไทย · แก้ไขได้");
+        Spinner tabs=new Spinner(this);
+        tabs.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,
+            new String[]{"ต้นฉบับ","คำแปล"}));
+        root.addView(tabs);
+        root.addView(noteOriginal,new LinearLayout.LayoutParams(-1,0,1));
+        root.addView(noteThai,new LinearLayout.LayoutParams(-1,0,1));
+        noteThai.setVisibility(View.GONE);
+        tabs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            public void onNothingSelected(AdapterView<?> parent){}
+            public void onItemSelected(AdapterView<?> parent,View view,int pos,long id){
+                noteOriginal.setVisibility(pos==0?View.VISIBLE:View.GONE);
+                noteThai.setVisibility(pos==1?View.VISIBLE:View.GONE);
+            }
+        });
+        if(saved!=null){
+            noteTitle.setText(saved.title);noteOriginal.setText(saved.blocks.get(0).original);
+            noteThai.setText(saved.blocks.get(0).thai);
+            source.setSelection(Math.max(0,Arrays.asList(CODES).indexOf(saved.language)));
+        }
+        LinearLayout actions=new LinearLayout(this);root.addView(actions);
+        translate=Ui.button(this,"แปลเป็นไทย");actions.addView(translate,new LinearLayout.LayoutParams(0,-2,1));
+        translate.setOnClickListener(v->{
+            if(busy)return;
+            if(noteThai.length()>0){
+                new AlertDialog.Builder(this).setMessage("แทนที่คำแปลที่กำลังแก้ไขด้วยผลแปลใหม่?")
+                    .setNegativeButton("ยกเลิก",null).setPositiveButton("แปลใหม่",(d,w)->translateNote(tabs)).show();
+            }else translateNote(tabs);
+        });
+        Button save=Ui.button(this,"บันทึก");actions.addView(save,new LinearLayout.LayoutParams(0,-2,1));
+        save.setOnClickListener(v->saveNote(-1));
+        LinearLayout fileActions=new LinearLayout(this);root.addView(fileActions);
+        Button code=Ui.button(this,"ครอบเป็นบล็อกโค้ด");
+        fileActions.addView(code,new LinearLayout.LayoutParams(0,-2,1));
+        code.setOnClickListener(v->{
+            if(busy)return;
+            EditText editor=tabs.getSelectedItemPosition()==0?noteOriginal:noteThai;
+            int start=Math.max(0,editor.getSelectionStart()),end=Math.max(0,editor.getSelectionEnd());
+            if(start==end){start=0;end=editor.length();}
+            String wrapped=NoteMarkdown.codeBlock(editor.getText().subSequence(Math.min(start,end),Math.max(start,end)).toString());
+            if(editor.length()-Math.abs(end-start)+wrapped.length()>NOTE_LIMIT){status.setText("ข้อความยาวเกิน 200,000 ตัวอักษร");return;}
+            editor.getText().replace(Math.min(start,end),Math.max(start,end),wrapped);
+        });
+        Button more=Ui.button(this,"ส่งออก / ลบ");
+        fileActions.addView(more,new LinearLayout.LayoutParams(0,-2,1));
+        more.setOnClickListener(v->{
+            if(busy)return;
+            String[] options=article==null?new String[]{"ส่งออกต้นฉบับ .md","ส่งออกคำแปล .md"}
+                :new String[]{"ส่งออกต้นฉบับ .md","ส่งออกคำแปล .md","ลบบันทึกจากเครื่อง"};
+            new AlertDialog.Builder(this).setItems(options,(d,w)->{
+                if(w<2){saveNote(w);return;}
+                long id=article.id;
+                new AlertDialog.Builder(this).setMessage("ลบบันทึกนี้จากเครื่อง?")
+                    .setNegativeButton("ยกเลิก",null).setPositiveButton("ลบ",(x,y)->run(()->{
+                        store.delete(id);ui(()->home(""));
+                    })).show();
+            }).show();
+        });
+        if(retainedNote!=null){
+            noteTitle.setText(retainedNote[0]);noteOriginal.setText(retainedNote[1]);noteThai.setText(retainedNote[2]);
+            source.setSelection(Integer.parseInt(retainedNote[3]));retainedNote=null;
+        }
+        status.setText("ต้นฉบับและคำแปลแก้ได้แยกกัน · ช่องละ 200,000 ตัวอักษร");
+        root.setFocusableInTouchMode(true);root.requestFocus();
+    }
+
+    private EditText noteEditor(String hint){
+        EditText editor=new EditText(this);
+        editor.setHint(hint);editor.setGravity(Gravity.TOP|Gravity.START);
+        editor.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_FLAG_MULTI_LINE|InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        editor.setTypeface(Typeface.MONOSPACE);editor.setTextSize(15);
+        editor.setFilters(new android.text.InputFilter[]{new android.text.InputFilter.LengthFilter(NOTE_LIMIT)});
+        return editor;
+    }
+
+    private void saveNote(int exportMode){
+        if(busy)return;
+        String original=noteOriginal.getText().toString(),thai=noteThai.getText().toString();
+        if(original.trim().isEmpty()){status.setText("วางต้นฉบับก่อนบันทึก");return;}
+        if(exportMode==1&&thai.trim().isEmpty()){status.setText("เพิ่มคำแปลก่อนส่งออก");return;}
+        Article note=new Article();
+        note.id=article==null?0:article.id;
+        note.url=article==null?"note:"+UUID.randomUUID():article.url;
+        note.savedAt=article==null?System.currentTimeMillis():article.savedAt;
+        note.title=noteTitle.getText().toString().trim();
+        if(note.title.isEmpty())note.title="บันทึกข้อความ";
+        note.language=CODES[source.getSelectedItemPosition()];
+        Article.Block block=new Article.Block("paragraph",0,original);block.thai=thai;note.blocks.add(block);
+        run(()->{
+            note.id=store.saveNote(note);
+            ui(()->{
+                if(!editingNote)return;
+                article=note;status.setText("บันทึกแล้ว · เปิดได้จากสารบัญ");
+                if(exportMode>=0)exportArticle(note,exportMode);
+            });
+        });
+    }
+
+    private void translateNote(Spinner tabs){
+        if(busy)return;
+        String input=noteOriginal.getText().toString();
+        if(input.trim().isEmpty()){status.setText("วางต้นฉบับก่อนแปล");return;}
+        String code=CODES[source.getSelectedItemPosition()];
+        EditText originalEditor=noteOriginal,thaiEditor=noteThai;
+        String previousThai=thaiEditor.getText().toString();
+        source.setEnabled(false);translate.setEnabled(false);
+        status.setText("กำลังเตรียมชุดภาษาและแปล…");
+        run(()->{
+            Translator model=Translation.getClient(new TranslatorOptions.Builder().setSourceLanguage(code).setTargetLanguage("th").build());
+            try{
+                Tasks.await(model.downloadModelIfNeeded(new DownloadConditions.Builder().build()),10,TimeUnit.MINUTES);
+                String translated=NoteMarkdown.translate(input,part->{
+                    if(cancel.get())throw new CancellationException();
+                    StringBuilder result=new StringBuilder();
+                    for(String chunk:Article.chunks(part,1500)){
+                        try{
+                            if(result.length()>0 && !Character.isWhitespace(result.charAt(result.length()-1)))result.append(' ');
+                            result.append(Tasks.await(model.translate(chunk),90,TimeUnit.SECONDS));
+                        }catch(Exception error){throw new IllegalStateException(error);}
+                    }
+                    return result.toString();
+                });
+                ui(()->{
+                    if(!editingNote||noteOriginal!=originalEditor||cancel.get())return;
+                    if(!input.contentEquals(originalEditor.getText())||!previousThai.contentEquals(thaiEditor.getText())){
+                        status.setText("ข้อความถูกแก้ไขระหว่างแปล · กดแปลใหม่");return;
+                    }
+                    if(translated.length()>NOTE_LIMIT){status.setText("คำแปลยาวเกิน 200,000 ตัวอักษร · แบ่งต้นฉบับก่อนแปล");return;}
+                    thaiEditor.setText(translated);tabs.setSelection(1);status.setText("แปลแล้ว · แก้คำแปลหรือกดบันทึก");
+                });
+            }catch(Exception error){if(!cancel.get())message("แปลไม่สำเร็จ · ตรวจชุดภาษาและลองอีกครั้ง");}
+            finally{model.close();}
+        });
+    }
+
     private void reader(int position){
         fetch=null;translate=null;source=null;stop=null;
         screen("อ่านบทความ");
@@ -300,10 +457,13 @@ public class ArticleActivity extends Activity {
     }
     private void more(){
         new AlertDialog.Builder(this).setTitle("บทความนี้").setItems(new String[]{"ส่งออกเป็น Markdown (แบบที่กำลังอ่าน)",article.fromScreen()?"แหล่งที่มา: แปลจากหน้าจอ":"เปิดเว็บต้นฉบับ","ลบบทความจากเครื่อง"},(d,w)->{
-            if(w==0){exportId=article.id;exportView=viewMode;Intent i=new Intent(Intent.ACTION_CREATE_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType("text/markdown");i.putExtra(Intent.EXTRA_TITLE,article.title.replaceAll("[\\\\/:*?\"<>|]","_").substring(0,Math.min(70,article.title.length()))+".md");try{startActivityForResult(i,EXPORT);}catch(ActivityNotFoundException e){status.setText("ไม่พบแอปเลือกไฟล์สำหรับส่งออก");}}
+            if(w==0)exportArticle(article,viewMode);
             if(w==1){if(article.fromScreen()){status.setText("เรื่องนี้บันทึกจากหน้าจอ");return;}try{startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(article.url)));}catch(ActivityNotFoundException e){status.setText("ไม่พบเบราว์เซอร์");}}
             if(w==2){if(busy){status.setText("กรุณาพักการแปลให้เสร็จก่อนลบบทความ");return;}long id=article.id;new AlertDialog.Builder(this).setTitle("ลบบทความนี้?").setMessage("จะลบต้นฉบับและคำแปลที่บันทึกไว้ในเครื่อง").setNegativeButton("ยกเลิก",null).setPositiveButton("ลบ",(x,y)->run(()->{store.delete(id);ui(()->home(""));})).show();}
         }).show();
+    }
+    private void exportArticle(Article document,int mode){
+        exportId=document.id;exportView=mode;Intent i=new Intent(Intent.ACTION_CREATE_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType("text/markdown");i.putExtra(Intent.EXTRA_TITLE,document.title.replaceAll("[\\\\/:*?\"<>|]","_").substring(0,Math.min(70,document.title.length()))+".md");try{startActivityForResult(i,EXPORT);}catch(ActivityNotFoundException e){status.setText("ไม่พบแอปเลือกไฟล์สำหรับส่งออก");}
     }
     @Override protected void onActivityResult(int request,int result,Intent data){
         super.onActivityResult(request,result,data);
@@ -317,10 +477,27 @@ public class ArticleActivity extends Activity {
         if(busy){returnToList=true;pauseTranslation();return;}
         remember();home("");
     }
-    @Override public void onBackPressed(){if(article!=null){leaveReader();return;}if(!website.isEmpty()){leaveIndex();return;}super.onBackPressed();}
+    @Override public void onBackPressed(){
+        if(editingNote){
+            if(busy)return;
+            String title=noteTitle.getText().toString().trim();
+            if(title.isEmpty())title="บันทึกข้อความ";
+            boolean changed=article==null?!noteTitle.getText().toString().trim().isEmpty()||noteOriginal.length()>0||noteThai.length()>0
+                :!title.equals(article.title)||!article.blocks.get(0).original.contentEquals(noteOriginal.getText())
+                    ||!article.blocks.get(0).thai.contentEquals(noteThai.getText());
+            if(changed)new AlertDialog.Builder(this).setMessage("ออกจากหน้าโดยไม่บันทึกการแก้ไข?")
+                .setNegativeButton("แก้ไขต่อ",null).setPositiveButton("ออก",(d,w)->home("")).show();
+            else home("");
+            return;
+        }
+        if(article!=null){leaveReader();return;}if(!website.isEmpty()){leaveIndex();return;}super.onBackPressed();}
     @Override protected void onPause(){remember();super.onPause();}
-    @Override protected void onStop(){if(busy&&article!=null)pauseTranslation();super.onStop();}
-    @Override protected void onSaveInstanceState(Bundle out){super.onSaveInstanceState(out);out.putInt("view",viewMode);out.putString("website",website);out.putString("section",section);out.putBoolean("sectionOpen",sectionOpen);out.putString("query",query);out.putString("filter",filter);if(article!=null)out.putLong("article",article.id);if(link!=null)out.putString("link",link.getText().toString());out.putLong("exportId",exportId);out.putInt("exportView",exportView);}
+    @Override protected void onStop(){if(busy&&article!=null&&!editingNote)pauseTranslation();super.onStop();}
+    @Override protected void onSaveInstanceState(Bundle out){super.onSaveInstanceState(out);out.putBoolean("newNote",editingNote&&article==null);out.putInt("view",viewMode);out.putString("website",website);out.putString("section",section);out.putBoolean("sectionOpen",sectionOpen);out.putString("query",query);out.putString("filter",filter);if(article!=null)out.putLong("article",article.id);if(link!=null)out.putString("link",link.getText().toString());out.putLong("exportId",exportId);out.putInt("exportView",exportView);}
+    @Override public Object onRetainNonConfigurationInstance(){
+        return editingNote?new String[]{noteTitle.getText().toString(),noteOriginal.getText().toString(),
+            noteThai.getText().toString(),Integer.toString(source.getSelectedItemPosition())}:null;
+    }
     @Override protected void onDestroy(){closed=true;cancel.set(true);Thread t=activeWorker;if(t!=null)t.interrupt();worker.execute(()->store.close());worker.shutdown();super.onDestroy();}
     private final class BlockAdapter extends BaseAdapter {
         public int getCount(){return article.blocks.size()+1;}
