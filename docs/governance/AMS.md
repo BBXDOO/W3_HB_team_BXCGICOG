@@ -178,6 +178,29 @@ Interpretation without layer identification is considered incomplete review.
 
 ---
 
+## รหัสตำแหน่ง Gradation ใน Head บรรทัดที่ 4
+
+ใช้รูป `Gradation : <ระดับ><ชนิด><ลำดับ><ชื่อย่อ> - <ระบบต้นทาง>` ในบรรทัดที่ 4 ของ Head สำหรับ README ที่ใช้รูปแบบนี้ ตัวอย่าง `Gradation : Cd4ra - screen_translator`
+
+อ่านจากซ้ายไปขวา 4 ขั้น
+
+1. **Gradation** — นับองค์ประกอบของพาธจากราก Git โดยให้ชื่อแรกใต้รากเป็น `A` แล้วเพิ่มหนึ่งระดับต่อองค์ประกอบจนถึงไฟล์ เช่น `w3_tool_store` = A, `screen_translator` = B, `README.md` = C
+2. **Type** — ใช้ตัวพิมพ์เล็ก `f` สำหรับโฟลเดอร์ `d` สำหรับเอกสาร และ `c` สำหรับโค้ด README ใช้ `d` ในตัวอย่างนี้
+3. **In folder** — นับจาก 1 ในกลุ่มชนิดเดียวกันของโฟลเดอร์แม่ สำหรับไฟล์ให้เทียบเฉพาะนามสกุลเดียวกัน เช่น `.md` หรือ `.py` แล้วต่อด้วยอักษรตัวแรกและตัวที่สามของชื่อก่อนนามสกุล ใช้ตัวพิมพ์เล็ก เช่น `README` → `ra` และ `loader` → `la`
+4. **Base system** — ต่อท้ายด้วยชื่อระบบต้นทาง เช่น `mpcp`, `core` หรือ `screen_translator`
+
+ตัวอย่างการอ้างอิงใช้รหัสคู่กับพาธ Git เมื่อส่งต่อข้ามพื้นที่ สำหรับตัวอย่างในเอกสารนี้ เรียงชื่อจากรายการไฟล์ที่ Git ติดตามตามลำดับอักขระแบบ `LC_ALL=C` ภายในกลุ่ม และนับ `__init__.py` เป็นไฟล์ `.py` ด้วย
+
+| รหัส | พาธใน Git |
+|---|---|
+| `Dc2la - mpcp` | `protocol/mpcp/config/loader.py` |
+| `Cc3eg - core` | `core/runtime/engine_v2.py` |
+| `Cd4ra - screen_translator` | [`w3_tool_store/screen_translator/README.md`](../../w3_tool_store/screen_translator/README.md) |
+
+เวลาอ่านรหัส ให้ใช้ระบบต้นทางจำกัดขอบเขต แล้วตรวจระดับ ชนิด ลำดับ และชื่อย่อกับรายการในโฟลเดอร์แม่ หากพบหลายพาธ ให้ใช้พาธเต็มประกอบ การเพิ่ม ลบ หรือเปลี่ยนชื่อไฟล์อาจเปลี่ยนลำดับในกลุ่ม จึงควรอ้าง commit ด้วยเมื่อต้องการย้อนตรวจรหัสของฉบับเดิม
+
+---
+
 Final Statement
 
 Structure exists to support activity.
