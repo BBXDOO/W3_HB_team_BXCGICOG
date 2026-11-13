@@ -39,7 +39,8 @@
     1. Name : ( ... )
     2. AM Ⅱ - BUILD : ( System )
     3. Log time ,ID : Log = date , time ; ID = รหัสประจำเอกสารนี้
-    4. * ยังไม่เปิดเผย *.
+    4. Gradation : <ระดับ><ชนิด><ลำดับ><ชื่อย่อ> - <ระบบต้นทาง>
+    ดูวิธีสร้างและอ้างอิงรหัสใน docs/governance/AMS.md หัวข้อรหัสตำแหน่ง Gradation
     
     Body //
     : info (all)
