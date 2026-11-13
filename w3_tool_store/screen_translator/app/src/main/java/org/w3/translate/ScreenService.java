@@ -55,6 +55,7 @@ public class ScreenService extends Service {
     private AlertDialog saveDialog;
     private final java.util.concurrent.ExecutorService storage=java.util.concurrent.Executors.newSingleThreadExecutor();
     private static final int LIMIT=40;
+    private static final int READER_LIMIT=200;
     private static class Piece {
         final String original,language;final Rect box;String translated;
         Piece(String t,String l,Rect r){original=t;language=l;box=r;}
@@ -96,7 +97,7 @@ public class ScreenService extends Service {
             recognizer="en".equals(source)?TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS):"zh".equals(source)?TextRecognition.getClient(new ChineseTextRecognizerOptions.Builder().build()):TextRecognition.getClient(new JapaneseTextRecognizerOptions.Builder().build());
             for(String lang:new String[]{"en","zh","ja"})translators.put(lang,Translation.getClient(new TranslatorOptions.Builder().setSourceLanguage(lang).setTargetLanguage("th").build()));
             setupOverlays();running=true;
-            status(readerMode?"พร้อม • กดแปลครั้งเดียว":"พร้อม • กำลังอ่านหน้าจอ");
+            status(readerMode?"พร้อม • กดอ่านส่วนที่เห็น":"พร้อม • กำลังอ่านหน้าจอ");
             if(!paused)main.postDelayed(tick,1500);
         }catch(Exception e){toast("เริ่มแปลไม่ได้ กรุณาตรวจสิทธิ์แล้วกดเริ่มใหม่");stopSelf();}
         return START_NOT_STICKY;
@@ -113,7 +114,10 @@ public class ScreenService extends Service {
         WindowManager.LayoutParams subs=params(-1,-1,false);
         // Android 12+ passes touches through untrusted overlays only below the
         // system obscuring-opacity threshold. Use a lower window-wide alpha.
-        subs.alpha=.75f;
+        subs.alpha=Build.VERSION.SDK_INT>=31
+            ?Math.min(.75f,getSystemService(android.hardware.input.InputManager.class).getMaximumObscuringOpacityForTouch())
+            :.75f;
+        subtitles.setVisibility(View.INVISIBLE);
         wm.addView(subtitles,subs);
         controls=Ui.column(this,0);controls.setClipChildren(false);controls.setClipToPadding(false);
         controlParams=params(Ui.dp(this,48),-2,true);controlParams.gravity=Gravity.TOP|Gravity.LEFT;controlParams.x=screenW-Ui.dp(this,56);controlParams.y=Ui.dp(this,140);
@@ -151,9 +155,13 @@ public class ScreenService extends Service {
             controls.addView(menu,new LinearLayout.LayoutParams(-1,menuHeight));
             control(paused?"อัตโนมัติ":"พักการแปล",paused?"play":"pause",!paused,false,()->{paused=!paused;generation++;main.removeCallbacks(tick);status(paused?"พักการแปล":"แปลอัตโนมัติ");if(!paused){readerMode=false;removeReading();main.postDelayed(tick,300);}rebuildControls();});
             control("แปลครั้งเดียว","once",false,false,()->{paused=true;readerMode=false;removeReading();rebuildControls();capture(true);});
-            control("อ่านเต็มหน้า","book",false,false,()->{paused=true;readerMode=true;rebuildControls();capture(true);});
+            control("อ่านส่วนที่เห็น","book",false,false,()->{
+                if(busy)return;
+                paused=true;readerMode=true;hidden=false;expanded=false;
+                rebuildControls();capture(true);
+            });
             control("เลือกพื้นที่","crop",false,false,this::chooseRegion);
-            control(hidden?"แสดงคำแปล":"ซ่อนคำแปล",hidden?"show":"hide",false,false,()->{hidden=!hidden;generation++;if(subtitles!=null)subtitles.setVisibility(hidden || reading!=null?View.INVISIBLE:View.VISIBLE);if(reading!=null)reading.setVisibility(hidden?View.INVISIBLE:View.VISIBLE);rebuildControls();if(!hidden){if(!readerMode && watching){main.removeCallbacks(watch);main.post(watch);}schedule();}});
+            control(hidden?"แสดงคำแปล":"ซ่อนคำแปล",hidden?"show":"hide",false,false,()->{hidden=!hidden;generation++;if(subtitles!=null)subtitles.setVisibility(hidden || reading!=null || subtitles.getChildCount()==0?View.INVISIBLE:View.VISIBLE);if(reading!=null)reading.setVisibility(hidden?View.INVISIBLE:View.VISIBLE);rebuildControls();if(!hidden){if(!readerMode && watching){main.removeCallbacks(watch);main.post(watch);}schedule();}});
             control("ปิดตัวแปล","stop",false,true,this::stopSelf);
         }else state=null;
         int width=Ui.dp(this,expanded?220:48);
@@ -221,15 +229,16 @@ public class ScreenService extends Service {
                     if(box==null)box=new Rect(lineBox);else box.union(lineBox);
                 }
                 addPiece(pieces,raw,box);
-                if(pieces.size()>=LIMIT)break;
+                if(pieces.size()>=pieceLimit())break;
             }
             if(pieces.isEmpty()){latest.clear();subtitles.removeAllViews();removeReading();status("ไม่พบข้อความ • อาจเล็กหรือป้องกันจับภาพ");toastIfReader("ไม่พบข้อความที่อ่านได้");finishJob();return;}
             pieces.sort(Comparator.comparingInt((Piece p)->p.box.top).thenComparingInt(p->p.box.left));
             status("กำลังแปล "+pieces.size()+" ส่วน…");translate(pieces,job);
         }).addOnFailureListener(e->{status("อ่านข้อความไม่สำเร็จ • ลองใหม่");toastIfReader("อ่านข้อความไม่สำเร็จ");finishJob();}).addOnCompleteListener(t->owned.recycle());
     }
+    private int pieceLimit(){return readerMode?READER_LIMIT:LIMIT;}
     private void addPiece(List<Piece> pieces,StringBuilder raw,Rect box){
-        if(box!=null && raw.length()>0 && pieces.size()<LIMIT){String value=raw.toString();pieces.add(new Piece(value,LanguagePolicy.source(value,source),new Rect(box)));}
+        if(box!=null && raw.length()>0 && pieces.size()<pieceLimit()){String value=raw.toString();pieces.add(new Piece(value,LanguagePolicy.source(value,source),new Rect(box)));}
         raw.setLength(0);
     }
     private void translate(List<Piece> pieces,int job){
@@ -257,7 +266,7 @@ public class ScreenService extends Service {
             if(!readerMode && changedFrame()){invalidateFrame();finishJob();return;}
             latest.clear();latest.addAll(pieces);
             if(readerMode)showReading();else drawSubtitles();
-            status(failures>0?"บางส่วนแปลไม่ได้ • เตรียมชุดภาษาใหม่":"แปลแล้ว "+pieces.size()+" ส่วน"+(pieces.size()==LIMIT?" • ถึงขีดจำกัด ลองเลือกพื้นที่":""));
+            status(failures>0?"บางส่วนแปลไม่ได้ • เตรียมชุดภาษาใหม่":"แปลแล้ว "+pieces.size()+" ส่วน"+(pieces.size()==pieceLimit()?" • ถึงขีดจำกัด ลองเลือกพื้นที่":""));
             if(failures==0 && protectedValues>0)status("คงต้นฉบับ "+protectedValues+" ส่วน เพื่อรักษาตัวเลขและชื่อเฉพาะ");
             if(failures>0){paused=true;toast("บางส่วนแปลไม่ได้ กลับไปกดดาวน์โหลด / ตรวจชุดภาษาใน W3");}
             finishJob();
@@ -329,22 +338,26 @@ public class ScreenService extends Service {
             if(width<=0 || y>=screenH)continue;
             int maxHeight=Math.min(screenH-y,Math.round((float)p.box.height()/captureH*screenH));
             if(maxHeight<=0)continue;
-            label.setEllipsize(android.text.TextUtils.TruncateAt.END);
-            if(Build.VERSION.SDK_INT>=26)label.setAutoSizeTextTypeUniformWithConfiguration(9,14,1,android.util.TypedValue.COMPLEX_UNIT_SP);
+            label.setTextSize(12);
+            label.measure(View.MeasureSpec.makeMeasureSpec(width,View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED));
+            if(label.getMeasuredHeight()>maxHeight)continue;
             FrameLayout.LayoutParams lp=new FrameLayout.LayoutParams(width,maxHeight);lp.leftMargin=x;lp.topMargin=y;subtitles.addView(label,lp);
         }
-        subtitles.setVisibility(hidden?View.INVISIBLE:View.VISIBLE);
+        subtitles.setVisibility(hidden || subtitles.getChildCount()==0?View.INVISIBLE:View.VISIBLE);
     }
     private void showReading(){
         removeReading();subtitles.setVisibility(View.INVISIBLE);
         LinearLayout page=Ui.column(this,18);page.setBackground(Ui.round(Ui.BG,Ui.dp(this,20)));
         LinearLayout buttons=new LinearLayout(this);
-        Button close=Ui.button(this,"ปิดหน้าอ่าน");buttons.addView(close,new LinearLayout.LayoutParams(0,-2,1));close.setOnClickListener(v->{removeReading();});
+        Button close=Ui.button(this,"กลับไปเลื่อนต้นทาง");
+        buttons.addView(close,new LinearLayout.LayoutParams(0,-2,1));
+        close.setOnClickListener(v->{removeReading();status("เลื่อนต้นทาง แล้วกดอ่านส่วนที่เห็นอีกครั้ง");});
         Button copy=Ui.button(this,"คัดลอกไทย");buttons.addView(copy,new LinearLayout.LayoutParams(0,-2,1));copy.setOnClickListener(v->{StringBuilder s=new StringBuilder();for(Piece p:latest)s.append(p.translated).append("\n\n");((android.content.ClipboardManager)getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("คำแปลไทย",s.toString()));toast("คัดลอกแล้ว");});page.addView(buttons);
         Button save=Ui.button(this,"บันทึกเข้าเรื่อง · เปิดอ่านย้อนหลัง");page.addView(save);
         save.setOnClickListener(v->saveReading());
         ScrollView scroll=new ScrollView(this);LinearLayout body=Ui.column(this,4);scroll.addView(body);page.addView(scroll,new LinearLayout.LayoutParams(-1,0,1));
-        body.addView(Ui.text(this,"คำแปลไทย · เทียบต้นฉบับด้านล่าง",14));
+        body.addView(Ui.text(this,"คำแปลของส่วนที่มองเห็น · เลื่อนในกรอบเพื่ออ่านผล",14));
         for(Piece p:latest){body.addView(Ui.text(this,p.translated,21));TextView original=Ui.text(this,p.original,14);original.setTextColor(0xff586b62);body.addView(original);}
         WindowManager.LayoutParams rp=params(-1,(int)(screenH*.7),true);rp.gravity=Gravity.BOTTOM|Gravity.LEFT;
         reading=page;wm.addView(page,rp);
@@ -400,7 +413,7 @@ public class ScreenService extends Service {
         });
     }
     private void removeReading(){if(reading!=null){try{wm.removeView(reading);}catch(Exception ignored){}reading=null;}}
-    private void restoreWindows(){if(dead)return;controls.setVisibility(View.VISIBLE);subtitles.setVisibility(hidden || reading!=null?View.INVISIBLE:View.VISIBLE);if(reading!=null)reading.setVisibility(hidden?View.INVISIBLE:View.VISIBLE);}
+    private void restoreWindows(){if(dead)return;controls.setVisibility(View.VISIBLE);subtitles.setVisibility(hidden || reading!=null || subtitles.getChildCount()==0?View.INVISIBLE:View.VISIBLE);if(reading!=null)reading.setVisibility(hidden?View.INVISIBLE:View.VISIBLE);}
     private void finishJob(){busy=false;restoreWindows();schedule();}
     private void chooseRegion(){
         if(busy){status("รอแปลรอบนี้เสร็จก่อน");return;}

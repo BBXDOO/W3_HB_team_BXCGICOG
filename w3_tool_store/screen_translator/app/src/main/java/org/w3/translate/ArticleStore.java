@@ -62,6 +62,20 @@ final class ArticleStore extends SQLiteOpenHelper {
         ContentValues values=new ContentValues();values.put("web_section",section);
         getWritableDatabase().update("articles",values,"id=?",new String[]{Long.toString(id)});
     }
+    long saveNote(Article note){
+        if(note.id==0)return save(note);
+        SQLiteDatabase db=getWritableDatabase();
+        db.beginTransaction();
+        try{
+            ContentValues title=new ContentValues();title.put("title",note.title);title.put("language",note.language);
+            db.update("articles",title,"id=?",new String[]{Long.toString(note.id)});
+            Article.Block block=note.blocks.get(0);
+            ContentValues body=new ContentValues();body.put("original",block.original);body.put("thai",block.thai);
+            db.update("blocks",body,"article=? AND pos=0",new String[]{Long.toString(note.id)});
+            db.setTransactionSuccessful();
+            return note.id;
+        }finally{db.endTransaction();}
+    }
     long mergeScreen(Article incoming){
         SQLiteDatabase db=getWritableDatabase();db.beginTransaction();
         try{

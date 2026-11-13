@@ -35,6 +35,8 @@ public class MainActivity extends Activity {
         updater=new UpdateController(this,update,updateStatus);
         Button articles=Ui.button(this,"สารบัญ · เปิดอ่านเรื่องที่บันทึก");root.addView(articles);
         articles.setOnClickListener(v->startActivity(new Intent(this,ArticleActivity.class)));
+        Button note=Ui.button(this,"วางข้อความ / Markdown");root.addView(note);
+        note.setOnClickListener(v->startActivity(new Intent(this,ArticleActivity.class).putExtra("newNote",true)));
         TextView title=Ui.text(this,"อ่านเข้าใจ\nไปต่อได้",36);Ui.bold(title);root.addView(title);
         root.addView(Ui.text(this,"แปลจีน · ญี่ปุ่น · อังกฤษ → ไทย\nบนหน้าจอเกม คู่มือ และหนังสือ",17));
         LinearLayout card=Ui.column(this,18);card.setBackground(Ui.round(0xffffffff,Ui.dp(this,20)));root.addView(card,new LinearLayout.LayoutParams(-1,-2));
@@ -42,14 +44,14 @@ public class MainActivity extends Activity {
         language=new Spinner(this);language.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"อัตโนมัติ (ทดลอง)","จีน","ญี่ปุ่น","อังกฤษ"}));card.addView(language);
         language.setSelection(getPreferences(0).getInt("lang",0));
         card.addView(Ui.text(this,"2   เลือกรูปแบบการอ่าน",17));
-        mode=new Spinner(this);mode.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"แปลบนจออัตโนมัติ","หยุดอ่านเป็นหน้า"}));card.addView(mode);mode.setSelection(getPreferences(0).getInt("mode",0));
+        mode=new Spinner(this);mode.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"แปลบนจออัตโนมัติ","อ่านส่วนที่เห็นเป็นหน้า"}));card.addView(mode);mode.setSelection(getPreferences(0).getInt("mode",0));
         card.addView(Ui.text(this,"3   เตรียมชุดภาษา (ใช้เน็ตครั้งแรก)",17));
         prepare=Ui.button(this,"ดาวน์โหลด / ตรวจชุดภาษา");card.addView(prepare);prepare.setOnClickListener(v->prepareModels());
         status=Ui.text(this,"ดาวน์โหลดสำเร็จแล้วจะแปลในเครื่องได้\nไม่ต้องตั้งค่าบริการแปลเอง",14);card.addView(status);
         start=Ui.button(this,"เริ่มแปลหน้าจอ");root.addView(start);start.setOnClickListener(v->startCapture());
         Button stop=Ui.button(this,"หยุดแปลและปิดปุ่มลอย");root.addView(stop);stop.setOnClickListener(v->{stopService(new Intent(this,ScreenService.class));status.setText("หยุดแปลแล้ว");});
         root.addView(Ui.text(this,"วิธีใช้",20));
-        root.addView(Ui.text(this,"เริ่มแปล → อนุญาตหน้าจอ → สลับไปแอปที่ต้องการ\n\nปุ่มลอย «ไทย» เปิดเมนู: พัก / แปลครั้งเดียว / อ่านเต็มหน้า / เลือกพื้นที่ / ซ่อน / ปิด\n\nคำแปลเป็นชั้นทับหน้าจอ กดซ่อนก่อนแตะเมนูที่อ่านแล้วได้ ปุ่มลอยลากย้ายได้\n\nโหมดอัตโนมัติจะเว้นช่วงอ่านจอ มีหน่วงและอาจเห็นคำแปลหายชั่วครู่ระหว่างจับภาพ",15));
+        root.addView(Ui.text(this,"เริ่มแปล → อนุญาตหน้าจอ → สลับไปแอปที่ต้องการ\n\nปุ่มลอย «ไทย» เปิดเมนู: พัก / แปลครั้งเดียว / อ่านส่วนที่เห็น / เลือกพื้นที่ / ซ่อน / ปิด\n\nคำแปลเป็นชั้นทับหน้าจอ กดซ่อนก่อนแตะเมนูที่อ่านแล้วได้ ปุ่มลอยลากย้ายได้\n\nโหมดอัตโนมัติจะเว้นช่วงอ่านจอ มีหน่วงและอาจเห็นคำแปลหายชั่วครู่ระหว่างจับภาพ",15));
         root.addView(Ui.text(this,"ก่อนเริ่ม",20));
         root.addView(Ui.text(this,"• Android ขอสิทธิ์แสดงทับแอปและจับภาพหน้าจอ\n• แอปที่ป้องกันการจับภาพจะอ่านไม่ได้\n• ตัวหนังสือเล็ก ฟอนต์เกม และภาษาญี่ปุ่นที่มีแต่คันจิอาจอ่านผิด เลือกภาษาตรง ๆ ช่วยได้\n• คำศัพท์วิชาการ สูตร และตารางควรเทียบต้นฉบับ\n• บันทึกเฉพาะข้อความเมื่อเลือกบันทึกเรื่องจากหน้าอ่านหรือบันทึกลิงก์\n• แปลในเครื่องหลังเตรียมภาษา; SDK อาจติดต่อ Google เพื่อดาวน์โหลดและส่งข้อมูลวินิจฉัย\n• รุ่นทดลอง — ยังต้องทดสอบบน OPPO จริง",14));
         root.addView(Ui.text(this,"ใช้ ML Kit ของ Google · คำแปลอัตโนมัติ",12));

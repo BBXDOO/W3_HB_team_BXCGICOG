@@ -23,13 +23,15 @@ final class Article {
         if(host.endsWith("."))host=host.substring(0,host.length()-1);
         return host.startsWith("www.")?host.substring(4):host;
     }
+    boolean fromNote(){return url.startsWith("note:");}
     boolean fromScreen(){return url.startsWith("screen:");}
     String category(){
+        if(fromNote())return "บันทึกข้อความ";
         if(!fromScreen())return "บทความจากลิงก์";
         String path=java.net.URI.create(url).getRawSchemeSpecificPart();
         return android.net.Uri.decode(path.substring(0,path.indexOf('/')));
     }
-    String sourceLabel(){return fromScreen()?category()+" · แปลจากหน้าจอ":url;}
+    String sourceLabel(){return fromNote()?category():fromScreen()?category()+" · แปลจากหน้าจอ":url;}
     void mergeScreen(List<Block> incoming){
         Map<String,Block> existing=new HashMap<>();
         for(Block block:blocks)existing.putIfAbsent(key(block),block);
@@ -78,6 +80,10 @@ final class Article {
         return parts;
     }
     String markdown(int view){
+        if(fromNote()){
+            Block note=blocks.get(0);
+            return view==1?note.thai:note.original;
+        }
         StringBuilder s=new StringBuilder("# ").append(title).append("\n\n").append(sourceLabel()).append("\n\n");
         s.append("บันทึก: ").append(new java.util.Date(savedAt)).append("\n\n");
         if(!notice.isEmpty())s.append("> ").append(notice.replace("\n"," ")).append("\n\n");
