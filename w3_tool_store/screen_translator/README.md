@@ -1,7 +1,7 @@
 Name : W3 แปลหน้าจอ\
 AM Ⅲ - BUILD : แอป Android สำหรับแปลและอ่านภาษาไทย\
 Log time : 2026-11-13 (Asia/Bangkok) ; ID : W3-SCREEN-TRANSLATOR-README-001\
-Gradation : Cd4ra - screen_translator
+≡ Cr4ra - RAMS
 
 OWNER : BBX19 · MAKER : ChatGPT/Codex
 
