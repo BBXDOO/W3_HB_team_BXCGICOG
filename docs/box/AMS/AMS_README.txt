@@ -39,7 +39,8 @@
     1. Name : ( ... )
     2. AM Ⅱ - BUILD : ( System )
     3. Log time ,ID : Log = date , time ; ID = รหัสประจำเอกสารนี้
-    4. Gradation : <ระดับ><ชนิด><ลำดับ><ชื่อย่อ> - <ระบบต้นทาง>
+    4. ≡ <ระดับ>r<ลำดับ><ชื่อย่อ> - RAMS
+    r ระบุชนิด README และ RAMS ระบุว่า README ใช้รูปแบบ AMS (R = README)
     ดูวิธีสร้างและอ้างอิงรหัสใน docs/governance/AMS.md หัวข้อรหัสตำแหน่ง Gradation
     
     Body //
