@@ -1,7 +1,7 @@
 Name : W3 Agent Workbench — โต๊ะช่างของเอเจนท์\
 AM Ⅱ - BUILD : การประยุกต์ต้นแบบเป็นพื้นที่เครื่องมือร่วมของ W3\
 Log time : 2026-10-24 (Asia/Bangkok; ไม่ระบุเวลา) ; ID : W3-AWB-README-001\
-Reserved : ยังไม่เปิดเผยตามต้นแบบ AMS
+≡ Cr1ra - RAMS
 
 ## Body — บทบาทของพื้นที่
 
@@ -64,6 +64,7 @@ Workbench เป็นชื่อของพื้นที่และชุ�
 |---|---|---|
 | docs.ams-readme | [AMS README](../../docs/box/AMS/AMS_README.txt) | ต้นแบบ Head / Body / Movement / OWNER / MAKER |
 | docs.ams-governance | [Architecture Mapping Standard](../../docs/governance/AMS.md) | การแยกชั้นและตามรอยความหมาย |
+| docs.ams-gradation | [รูปแบบการสร้างรหัส บรรทัดที่ 4](../../docs/governance/AMS.md#วิธีสร้างและอ่านรหัส) | วิธีสร้างรหัส Gradation สำหรับ Head ของ README |
 | docs.core | [Core vs Structure](../../knowledge/philosophy/corevsstructure.md) | แกนความหมายที่รักษาไว้ |
 | docs.prototype | [xrea README](../xrea/README.md) | prototype สำหรับเลือกชุดโค้ดไปพัฒนาแยก |
 | docs.license | [xrea LICENSE](../xrea/LICENSE) | เงื่อนไขของต้นแบบที่มีอยู่ในรีโป้ |
