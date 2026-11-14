@@ -3,35 +3,28 @@ package org.w3.translate;
 import android.content.Context;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 
-/** Crisp white rectangular controls, without blur, gradients, or software shadows. */
+/** Dark floating controls with individually colored action glyphs. */
 final class SoftControls {
-    static final int INK=0xff30383b, MUTED=0xff586269, GREEN=0xff17685c, RED=0xff923d3d;
+    static final int GREEN=Ui.GREEN;
     private SoftControls() {}
 
-    static void surface(View view){
-        StateListDrawable background=new StateListDrawable();
-        for(int color:new int[]{0xffeeeeee,Color.WHITE}){
-            GradientDrawable shape=new GradientDrawable();shape.setShape(GradientDrawable.RECTANGLE);
-            shape.setColor(color);shape.setCornerRadius(0);shape.setStroke(Math.max(1,Ui.dp(view.getContext(),1)),Color.BLACK);
-            background.addState(color==Color.WHITE?new int[]{}:new int[]{android.R.attr.state_pressed},shape);
-        }
-        view.setLayerType(View.LAYER_TYPE_NONE,null);view.setBackground(background);
-        view.setElevation(0);view.setTranslationZ(0);view.setStateListAnimator(null);
+    static void surface(View view,int radius,int fill,int edge){
+        view.setBackground(Ui.pressable(view.getContext(),fill,radius,edge));
+        view.setStateListAnimator(null);
     }
     static Button button(Context c,String label,String icon,boolean active,boolean destructive){
         Button b=new Button(c);
         b.setText(label);b.setAllCaps(false);b.setTextSize(13);b.setMaxLines(2);
         b.setMinWidth(0);b.setMinimumWidth(0);b.setMinHeight(0);b.setMinimumHeight(0);
         b.setGravity(Gravity.CENTER);b.setIncludeFontPadding(false);
-        b.setBackgroundTintList(null);surface(b);
+        b.setBackgroundTintList(null);surface(b,18,active?0xff283625:Ui.PANEL,active?Ui.GREEN:Ui.EDGE);
         b.setPadding(Ui.dp(c,9),Ui.dp(c,10),Ui.dp(c,9),Ui.dp(c,10));
-        int ink=destructive?RED:active?GREEN:INK;b.setTextColor(ink);
+        int ink=destructive?Ui.ROSE:active?GREEN:"book".equals(icon)?Ui.VIOLET:"crop".equals(icon)?Ui.AMBER:Ui.CYAN;
+        b.setTextColor(Ui.INK);
         Icon glyph=new Icon(icon,ink);glyph.setBounds(0,0,Ui.dp(c,23),Ui.dp(c,23));
         b.setCompoundDrawables(null,glyph,null,null);b.setCompoundDrawablePadding(Ui.dp(c,3));
         return b;
