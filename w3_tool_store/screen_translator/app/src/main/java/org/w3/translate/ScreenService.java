@@ -120,16 +120,16 @@ public class ScreenService extends Service {
         subtitles.setVisibility(View.INVISIBLE);
         wm.addView(subtitles,subs);
         controls=Ui.column(this,0);controls.setClipChildren(false);controls.setClipToPadding(false);
-        controlParams=params(Ui.dp(this,48),-2,true);controlParams.gravity=Gravity.TOP|Gravity.LEFT;controlParams.x=screenW-Ui.dp(this,56);controlParams.y=Ui.dp(this,140);
+        controlParams=params(Ui.dp(this,68),-2,true);controlParams.gravity=Gravity.TOP|Gravity.LEFT;controlParams.x=screenW-Ui.dp(this,76);controlParams.y=Ui.dp(this,140);
         wm.addView(controls,controlParams);rebuildControls();
     }
     private void rebuildControls(){
         controls.removeAllViews();actionCount=0;
         int padding=Ui.dp(this,expanded?14:0);controls.setPadding(padding,padding,padding,padding);
-        if(expanded)SoftControls.surface(controls);else{controls.setBackground(null);controls.setLayerType(View.LAYER_TYPE_NONE,null);}
+        if(expanded)SoftControls.surface(controls,25,Ui.BG,Ui.EDGE);else{controls.setBackground(null);controls.setLayerType(View.LAYER_TYPE_NONE,null);}
         TextView handle=Ui.text(this,expanded?"ไทย   ·   ลากย้าย    ⌃":"ไทย",14);
-        handle.setGravity(Gravity.CENTER);handle.setTextColor(Color.BLACK);handle.setIncludeFontPadding(false);handle.setPadding(0,0,0,0);Ui.bold(handle);
-        if(!expanded)SoftControls.surface(handle);
+        handle.setGravity(Gravity.CENTER);handle.setTextColor(Ui.INK);handle.setIncludeFontPadding(false);handle.setPadding(0,0,0,0);Ui.bold(handle);
+        SoftControls.surface(handle,26,expanded?Ui.PANEL:0xff27222c,expanded?Ui.EDGE:Ui.ROSE);
         controls.addView(handle,new LinearLayout.LayoutParams(-1,Ui.dp(this,expanded?38:48)));
         handle.setContentDescription("เมนูแปลภาษา แตะเพื่อเปิดหรือย่อ ลากเพื่อย้าย");
         handle.setOnClickListener(v->{expanded=!expanded;rebuildControls();});
@@ -146,7 +146,7 @@ public class ScreenService extends Service {
         int menuHeight=0;
         if(expanded){
             state=Ui.text(this,statusText.isEmpty()?(paused?"พักการแปล":"แปลอัตโนมัติ"):statusText,12);
-            state.setTextColor(paused?0xff776134:SoftControls.GREEN);state.setGravity(Gravity.CENTER);state.setMaxLines(2);
+            state.setTextColor(paused?Ui.AMBER:SoftControls.GREEN);state.setGravity(Gravity.CENTER);state.setMaxLines(2);
             controls.addView(state,new LinearLayout.LayoutParams(-1,Ui.dp(this,40)));
             ScrollView menu=new ScrollView(this);menu.setFillViewport(false);menu.setClipToPadding(false);
             actionHost=Ui.column(this,0);actionHost.setClipChildren(false);menu.addView(actionHost);
@@ -164,7 +164,7 @@ public class ScreenService extends Service {
             control(hidden?"แสดงคำแปล":"ซ่อนคำแปล",hidden?"show":"hide",false,false,()->{hidden=!hidden;generation++;if(subtitles!=null)subtitles.setVisibility(hidden || reading!=null || subtitles.getChildCount()==0?View.INVISIBLE:View.VISIBLE);if(reading!=null)reading.setVisibility(hidden?View.INVISIBLE:View.VISIBLE);rebuildControls();if(!hidden){if(!readerMode && watching){main.removeCallbacks(watch);main.post(watch);}schedule();}});
             control("ปิดตัวแปล","stop",false,true,this::stopSelf);
         }else state=null;
-        int width=Ui.dp(this,expanded?220:48);
+        int width=Ui.dp(this,expanded?244:68);
         controlParams.x+=controlParams.width-width;controlParams.width=width;
         controlParams.x=Math.max(0,Math.min(controlParams.x,screenW-width));
         int panelHeight=expanded?menuHeight+Ui.dp(this,106):Ui.dp(this,48);
@@ -358,7 +358,7 @@ public class ScreenService extends Service {
         save.setOnClickListener(v->saveReading());
         ScrollView scroll=new ScrollView(this);LinearLayout body=Ui.column(this,4);scroll.addView(body);page.addView(scroll,new LinearLayout.LayoutParams(-1,0,1));
         body.addView(Ui.text(this,"คำแปลของส่วนที่มองเห็น · เลื่อนในกรอบเพื่ออ่านผล",14));
-        for(Piece p:latest){body.addView(Ui.text(this,p.translated,21));TextView original=Ui.text(this,p.original,14);original.setTextColor(0xff586b62);body.addView(original);}
+        for(Piece p:latest){body.addView(Ui.text(this,p.translated,21));TextView original=Ui.text(this,p.original,14);original.setTextColor(Ui.MUTED);body.addView(original);}
         WindowManager.LayoutParams rp=params(-1,(int)(screenH*.7),true);rp.gravity=Gravity.BOTTOM|Gravity.LEFT;
         reading=page;wm.addView(page,rp);
     }
@@ -367,7 +367,7 @@ public class ScreenService extends Service {
         List<Piece> snapshot=new ArrayList<>(latest);
         String[] categories={"คู่มือ","หนังสือ","เกม","อื่น ๆ"};
         LinearLayout form=Ui.column(this,18);
-        EditText name=new EditText(new ContextThemeWrapper(this,android.R.style.Theme_Material_Light));
+        EditText name=new EditText(new ContextThemeWrapper(this,android.R.style.Theme_Material));
         name.setSingleLine(true);
         name.setHint("ชื่อเรื่องเดิม หรือชื่อเรื่องใหม่");
         name.setFilters(new android.text.InputFilter[]{new android.text.InputFilter.LengthFilter(120)});
@@ -378,7 +378,7 @@ public class ScreenService extends Service {
         category.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,categories));
         category.setSelection(Math.min(categories.length-1,recent.getInt("category",0)));
         form.addView(category);
-        saveDialog=new AlertDialog.Builder(this,android.R.style.Theme_Material_Light_Dialog_Alert)
+        saveDialog=new AlertDialog.Builder(this,android.R.style.Theme_Material_Dialog_Alert)
             .setTitle("บันทึกคำแปลจากหน้าจอ")
             .setMessage("ใช้ชื่อและหมวดเดิมเพื่อเติมส่วนใหม่ในเรื่องเดิม")
             .setView(form).setNegativeButton("ยกเลิก",null).setPositiveButton("บันทึก",null).create();

@@ -5,6 +5,7 @@ import java.util.*;
 /** Text only. Original blocks are immutable; translations are separate values. */
 final class Article {
     long id, savedAt;
+    int indexParts,indexTranslated;
     String webSection="";
     String title="", url="", language="en", notice="";
     final List<Block> blocks=new ArrayList<>();

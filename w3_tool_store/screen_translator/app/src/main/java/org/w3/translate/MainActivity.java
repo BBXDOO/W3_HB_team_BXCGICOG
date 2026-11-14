@@ -33,13 +33,13 @@ public class MainActivity extends Activity {
         Button update=Ui.button(this,"อัปเดตแอป · รุ่น "+versionLabel());root.addView(update);
         TextView updateStatus=Ui.text(this,"กดเพื่อตรวจรุ่นใหม่ผ่านอินเทอร์เน็ต",13);root.addView(updateStatus);
         updater=new UpdateController(this,update,updateStatus);
-        Button articles=Ui.button(this,"สารบัญ · เปิดอ่านเรื่องที่บันทึก");root.addView(articles);
+        Button articles=Ui.button(this,"สารบัญ · เปิดอ่านเรื่องที่บันทึก");root.addView(articles);articles.setTextColor(Ui.GREEN);
         articles.setOnClickListener(v->startActivity(new Intent(this,ArticleActivity.class)));
         Button note=Ui.button(this,"วางข้อความ / Markdown");root.addView(note);
         note.setOnClickListener(v->startActivity(new Intent(this,ArticleActivity.class).putExtra("newNote",true)));
         TextView title=Ui.text(this,"อ่านเข้าใจ\nไปต่อได้",36);Ui.bold(title);root.addView(title);
         root.addView(Ui.text(this,"แปลจีน · ญี่ปุ่น · อังกฤษ → ไทย\nบนหน้าจอเกม คู่มือ และหนังสือ",17));
-        LinearLayout card=Ui.column(this,18);card.setBackground(Ui.round(0xffffffff,Ui.dp(this,20)));root.addView(card,new LinearLayout.LayoutParams(-1,-2));
+        LinearLayout card=Ui.column(this,18);card.setBackground(Ui.surface(this,Ui.PANEL,24,Ui.EDGE));root.addView(card,new LinearLayout.LayoutParams(-1,-2));
         card.addView(Ui.text(this,"1   เลือกภาษาต้นฉบับ",17));
         language=new Spinner(this);language.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"อัตโนมัติ (ทดลอง)","จีน","ญี่ปุ่น","อังกฤษ"}));card.addView(language);
         language.setSelection(getPreferences(0).getInt("lang",0));

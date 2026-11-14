@@ -38,11 +38,12 @@ public class ArticleActivity extends Activity {
     private int listRequest;
 
     private static final class IndexEntry {
-        final String title, detail;
+        final String title, detail, kind, status;
+        final int accent;
         final Runnable open;
 
-        IndexEntry(String title,String detail,Runnable open){
-            this.title=title;this.detail=detail;this.open=open;
+        IndexEntry(String title,String detail,String kind,String status,int accent,Runnable open){
+            this.title=title;this.detail=detail;this.kind=kind;this.status=status;this.accent=accent;this.open=open;
         }
     }
     private volatile boolean closed,busy;
@@ -78,24 +79,36 @@ public class ArticleActivity extends Activity {
         root=Ui.column(this,16);root.setBackgroundColor(Ui.BG);setContentView(root);
         root.setOnApplyWindowInsetsListener((v,in)->{root.setPadding(Ui.dp(this,16),in.getSystemWindowInsetTop()+Ui.dp(this,8),Ui.dp(this,16),in.getSystemWindowInsetBottom()+Ui.dp(this,8));return in;});
         TextView heading=Ui.text(this,title,23);Ui.bold(heading);root.addView(heading);
-        status=Ui.text(this,"",13);root.addView(status);
+        status=Ui.text(this,"",13);status.setTextColor(Ui.MUTED);root.addView(status);
     }
     private void ui(Runnable r){runOnUiThread(()->{if(!closed&&!isDestroyed()&&!isFinishing())r.run();});}
     private void message(String text){ui(()->status.setText(text));}
     private void run(Runnable action){busy=true;cancel.set(false);worker.execute(()->{activeWorker=Thread.currentThread();try{if(!cancel.get())action.run();}catch(RuntimeException e){message("ดำเนินการไม่สำเร็จ ตรวจพื้นที่ว่างในเครื่องแล้วลองใหม่");}finally{activeWorker=null;busy=false;ui(()->{if(returnToList&&article!=null){returnToList=false;remember();home("");return;}if(fetch!=null)fetch.setEnabled(true);if(translate!=null)translate.setEnabled(true);if(source!=null)source.setEnabled(true);if(stop!=null)stop.setVisibility(View.GONE);});}});}
     private void home(String incoming){
         editingNote=false;article=null;fetch=null;translate=null;source=null;stop=null;
-        screen(website.isEmpty()?"สารบัญและประวัติการอ่าน":sectionOpen?sectionName(section):website);
+        screen(website.isEmpty()?"สารบัญ":sectionOpen?sectionName(section):website);
         if(website.isEmpty()){
-            link=new EditText(this);link.setSingleLine(true);link.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_URI);link.setHint("วางลิงก์ HTTPS ของบทความ");link.setText(incoming);root.addView(link);
-            LinearLayout actions=new LinearLayout(this);root.addView(actions);
+            LinearLayout importPanel=Ui.column(this,8);
+            importPanel.setBackground(Ui.surface(this,Ui.PANEL,18,Ui.EDGE));
+            link=new EditText(this);link.setSingleLine(true);link.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_URI);link.setHint("วางลิงก์ HTTPS ของบทความ");link.setText(incoming);importPanel.addView(link);
+            LinearLayout actions=new LinearLayout(this);importPanel.addView(actions);
             fetch=Ui.button(this,"ดึงและบันทึก");actions.addView(fetch,new LinearLayout.LayoutParams(0,-2,1));
             fetch.setOnClickListener(v->importLink(link.getText().toString()));
             Button bookmark=Ui.button(this,"เก็บลิงก์ไว้อ่าน");actions.addView(bookmark,new LinearLayout.LayoutParams(0,-2,1));
             bookmark.setOnClickListener(v->bookmark());
-            Button note=Ui.button(this,"วางข้อความ / Markdown");root.addView(note);
+            Button note=Ui.button(this,"วางข้อความ / Markdown");importPanel.addView(note);
             note.setOnClickListener(v->{if(!busy)editNote(null);});
+            Button add=Ui.button(this,"+ เพิ่มเข้าคลัง");root.addView(add);root.addView(importPanel);
+            importPanel.setVisibility(incoming.isEmpty()?View.GONE:View.VISIBLE);
+            if(!incoming.isEmpty())add.setText("ย่อส่วนเพิ่มเข้าคลัง");
+            add.setOnClickListener(v->{
+                boolean expand=importPanel.getVisibility()!=View.VISIBLE;
+                importPanel.setVisibility(expand?View.VISIBLE:View.GONE);
+                add.setText(expand?"ย่อส่วนเพิ่มเข้าคลัง":"+ เพิ่มเข้าคลัง");
+            });
         }else{
+            TextView path=Ui.text(this,sectionOpen?"สารบัญ / "+website:"สารบัญ / เว็บไซต์",13);
+            path.setTextColor(Ui.MUTED);root.addView(path);
             Button up=Ui.button(this,sectionOpen?"กลับไปยัง "+website:"เว็บไซต์ทั้งหมด");
             root.addView(up);up.setOnClickListener(v->leaveIndex());
         }
@@ -103,7 +116,7 @@ public class ArticleActivity extends Activity {
         EditText search=new EditText(this);search.setSingleLine(true);search.setHint("ค้นชื่อ ลิงก์ หรือเนื้อหา");search.setText(query);
         searchRow.addView(search,new LinearLayout.LayoutParams(0,-2,1));
         Button find=Ui.button(this,"ค้น");searchRow.addView(find);
-        list=new ListView(this);list.setDividerHeight(Ui.dp(this,8));
+        list=new ListView(this);list.setDivider(null);list.setDividerHeight(0);
         if(website.isEmpty()){
             Spinner category=new Spinner(this);
             List<String> filters=Arrays.asList("ทุกหมวด","บทความจากลิงก์","คู่มือ","หนังสือ","เกม","อื่น ๆ","บันทึกข้อความ");
@@ -154,7 +167,7 @@ public class ArticleActivity extends Activity {
                 }
                 List<IndexEntry> index=new ArrayList<>();
                 groups.forEach((name,count)->index.add(new IndexEntry(site.isEmpty()?name:sectionName(name),
-                    count+" หน้า",()->{
+                    count+" หน้า",site.isEmpty()?"เว็บไซต์":"หมวดในเว็บไซต์","",site.isEmpty()?Ui.CYAN:Ui.AMBER,()->{
                         if(site.isEmpty()){website=name;sectionOpen=false;}
                         else{section=name;sectionOpen=true;}
                         home("");
@@ -162,14 +175,12 @@ public class ArticleActivity extends Activity {
                 index.addAll(entries);
                 ui(()->{
                     if(list!=target||article!=null||request!=listRequest)return;
-                    if(!busy)status.setText(index.isEmpty()?"ไม่พบรายการ":site.isEmpty()?"เลือกเว็บไซต์หรือรายการจากหน้าจอ":inSection?site:"เลือกหมวดใน "+site);
+                    if(!busy)status.setText(index.isEmpty()?"ไม่พบรายการ":site.isEmpty()
+                        ?groups.size()+" เว็บไซต์  •  "+entries.size()+" รายการที่บันทึกแยก"
+                        :inSection?entries.size()+" หน้าในหมวด":groups.size()+" หมวดในเว็บไซต์");
                     target.setAdapter(new ArrayAdapter<IndexEntry>(this,android.R.layout.simple_list_item_2,android.R.id.text1,index){
                         @Override public View getView(int position,View recycled,ViewGroup parent){
-                            View view=super.getView(position,recycled,parent);
-                            IndexEntry item=getItem(position);
-                            ((TextView)view.findViewById(android.R.id.text1)).setText(item.title);
-                            ((TextView)view.findViewById(android.R.id.text2)).setText(item.detail);
-                            return view;
+                            return indexCard(getItem(position));
                         }
                     });
                     target.setOnItemClickListener((p,v,pos,id)->{if(!busy)index.get(pos).open.run();});
@@ -180,8 +191,30 @@ public class ArticleActivity extends Activity {
         });
     }
 
+    private View indexCard(IndexEntry item){
+        LinearLayout frame=Ui.column(this,0);
+        frame.setPadding(0,0,0,Ui.dp(this,8));
+        LinearLayout card=Ui.column(this,12);
+        card.setBackground(Ui.surface(this,Ui.PANEL,17,Ui.EDGE));
+        frame.addView(card);
+        TextView kind=Ui.text(this,item.kind,12);kind.setTextColor(item.accent);Ui.bold(kind);card.addView(kind);
+        TextView title=Ui.text(this,item.title,18);Ui.bold(title);card.addView(title);
+        TextView detail=Ui.text(this,item.detail,13);detail.setTextColor(Ui.MUTED);card.addView(detail);
+        if(!item.status.isEmpty())card.addView(Ui.text(this,item.status,13));
+        return frame;
+    }
+
     private IndexEntry articleEntry(Article row){
-        return new IndexEntry(row.title,row.linkOnly()?"ลิงก์ที่บันทึกไว้ · "+row.url:row.sourceLabel(),()->open(row.id));
+        String kind=row.fromNote()?"บันทึกข้อความ":row.fromScreen()?row.category():
+            row.linkOnly()?"ลิงก์ไว้อ่าน":"บทความจากเว็บ";
+        int accent=row.fromNote()?Ui.VIOLET:row.fromScreen()?Ui.AMBER:Ui.CYAN;
+        String date=android.text.format.DateFormat.format("dd/MM/yyyy",row.savedAt).toString();
+        String detail=row.fromNote()||row.fromScreen()?"บันทึก "+date:row.url+"\nบันทึก "+date;
+        String status=row.linkOnly()?"รอดึงเนื้อหา":"th".equals(row.language)?"ต้นฉบับภาษาไทย":
+            row.fromNote()?(row.indexTranslated==0?"เก็บต้นฉบับ":"มีคำแปล"):
+            row.indexParts==0?"เก็บต้นฉบับ":row.indexTranslated==0?"ยังไม่แปล":
+            row.indexTranslated==row.indexParts?"มีคำแปลครบ":"มีคำแปล "+row.indexTranslated+"/"+row.indexParts+" ส่วน";
+        return new IndexEntry(row.title,detail,kind,status,accent,()->open(row.id));
     }
 
     private void bookmark(){
@@ -504,7 +537,7 @@ public class ArticleActivity extends Activity {
         public Object getItem(int p){return p==0?article:article.blocks.get(p-1);}
         public long getItemId(int p){return p;}
         public View getView(int pos,View recycled,ViewGroup parent){
-            LinearLayout card=Ui.column(ArticleActivity.this,12);card.setBackground(Ui.round(0xffffffff,Ui.dp(ArticleActivity.this,12)));
+            LinearLayout card=Ui.column(ArticleActivity.this,12);card.setBackground(Ui.surface(ArticleActivity.this,Ui.PANEL,15,Ui.EDGE));
             if(pos==0){TextView title=Ui.text(ArticleActivity.this,article.title,23);Ui.bold(title);card.addView(title);card.addView(Ui.text(ArticleActivity.this,article.sourceLabel()+"\nบันทึก "+android.text.format.DateFormat.format("dd/MM/yyyy HH:mm",article.savedAt),12));card.addView(Ui.text(ArticleActivity.this,article.notice+"\nคำแปลอัตโนมัติ · บล็อกโค้ดคงต้นฉบับ · ตารางจัดเป็นข้อความแยกแถว",12));if(article.language.equals("unknown"))card.addView(Ui.text(ArticleActivity.this,"ตรวจภาษา: เลือกอังกฤษ จีน หรือญี่ปุ่นก่อนแปล",15));return card;}
             Article.Block b=article.blocks.get(pos-1);boolean code=b.kind.equals("code");int size=b.kind.equals("heading")?Math.max(18,27-b.level*2):17;
             if(article.fromScreen() && (pos==1 || b.kind.equals("section")))card.addView(Ui.text(ArticleActivity.this,"ส่วนที่บันทึก",13));
