@@ -118,9 +118,9 @@ final class ArticleStore extends SQLiteOpenHelper {
     List<Article> list(String search){
         String like="%"+search.replace("\\","\\\\").replace("%","\\%").replace("_","\\_")+"%";
         List<Article> rows=new ArrayList<>();
-        String sql="SELECT id,title,url,language,saved,web_section FROM articles a WHERE title LIKE ? ESCAPE '\\' OR url LIKE ? ESCAPE '\\' OR web_section LIKE ? ESCAPE '\\' OR EXISTS(SELECT 1 FROM blocks b WHERE b.article=a.id AND (original LIKE ? ESCAPE '\\' OR thai LIKE ? ESCAPE '\\')) ORDER BY saved DESC";
+        String sql="SELECT id,title,url,language,saved,web_section,(SELECT count(*) FROM blocks WHERE article=a.id AND kind<>'code'),(SELECT count(*) FROM blocks WHERE article=a.id AND kind<>'code' AND thai<>'') FROM articles a WHERE title LIKE ? ESCAPE '\\' OR url LIKE ? ESCAPE '\\' OR web_section LIKE ? ESCAPE '\\' OR EXISTS(SELECT 1 FROM blocks b WHERE b.article=a.id AND (original LIKE ? ESCAPE '\\' OR thai LIKE ? ESCAPE '\\')) ORDER BY saved DESC";
         try(Cursor c=getReadableDatabase().rawQuery(sql,new String[]{like,like,like,like,like})){
-            while(c.moveToNext()){Article a=new Article();a.id=c.getLong(0);a.title=c.getString(1);a.url=c.getString(2);a.language=c.getString(3);a.savedAt=c.getLong(4);a.webSection=c.getString(5);rows.add(a);}
+            while(c.moveToNext()){Article a=new Article();a.id=c.getLong(0);a.title=c.getString(1);a.url=c.getString(2);a.language=c.getString(3);a.savedAt=c.getLong(4);a.webSection=c.getString(5);a.indexParts=c.getInt(6);a.indexTranslated=c.getInt(7);rows.add(a);}
         }
         return rows;
     }
