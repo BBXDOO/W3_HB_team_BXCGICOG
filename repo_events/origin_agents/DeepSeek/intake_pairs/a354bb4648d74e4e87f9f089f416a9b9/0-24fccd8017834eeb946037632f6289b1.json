@@ -1,0 +1,31 @@
+{
+  "accepted": true,
+  "checks": [
+    {
+      "name": "supported_origin_request",
+      "passed": true
+    }
+  ],
+  "evidence": [
+    {
+      "path": "repo_events/origin_agents/DeepSeek/intake/3c9fb2799dbf4ebbb4a835719eb0455a.json",
+      "sha256": "62f736d2cd180f61dc34c6565211673d6bef7b80896d158b89ef408e94648cc7"
+    }
+  ],
+  "explanations": [],
+  "notes": [],
+  "parent": null,
+  "recipient": "DeepSeek",
+  "reviewer": "host-origin-intake-verifier",
+  "schema": "w3.paired_handoff/1",
+  "sender": "Orchestration",
+  "sequence": 0,
+  "start": {
+    "evidence": [
+      {
+        "path": "repo_events/origin_agents/DeepSeek/intake/3c9fb2799dbf4ebbb4a835719eb0455a.json",
+        "sha256": "62f736d2cd180f61dc34c6565211673d6bef7b80896d158b89ef408e94648cc7"
+      }
+    ]
+  }
+}

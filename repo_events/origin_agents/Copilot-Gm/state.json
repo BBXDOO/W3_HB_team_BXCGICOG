@@ -1,11 +1,11 @@
 {
   "interval_days": 15,
-  "next_due": "2026-11-16T01:01:49.859077Z",
+  "next_due": "2026-12-01T01:03:53.666757Z",
   "followups": [],
   "receipts": {},
-  "last_review": "2026-11-01T01:01:49.859077Z",
+  "last_review": "2026-11-16T01:03:53.666757Z",
   "findings": [],
-  "last_log": "repo_events/origin_agents/Copilot-Gm/logs/2722739b67cc463896017922b29af2cc.json",
-  "last_report": "repo_events/origin_agents/Copilot-Gm/reports/e503b9f00f354ecfb4c59d21fc92f446.md",
+  "last_log": "repo_events/origin_agents/Copilot-Gm/logs/c1e192f5c4874aebac5d7ff2570d9a69.json",
+  "last_report": "repo_events/origin_agents/Copilot-Gm/reports/29f68dec1d864157a7409ede340f1faa.md",
   "review_findings": []
 }

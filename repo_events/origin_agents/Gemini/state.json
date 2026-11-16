@@ -1,11 +1,11 @@
 {
   "interval_days": 15,
-  "next_due": "2026-11-16T01:01:49.606009Z",
+  "next_due": "2026-12-01T01:03:52.972003Z",
   "followups": [],
   "receipts": {},
-  "last_review": "2026-11-01T01:01:49.606009Z",
+  "last_review": "2026-11-16T01:03:52.972003Z",
   "findings": [],
-  "last_log": "repo_events/origin_agents/Gemini/logs/3a2003ff749e401baf26927082732ed5.json",
-  "last_report": "repo_events/origin_agents/Gemini/reports/55ccc03f41704cb880ecadd62bf3e7e4.md",
+  "last_log": "repo_events/origin_agents/Gemini/logs/537f5ceaed8a4ae7aa068e1d3d477c03.json",
+  "last_report": "repo_events/origin_agents/Gemini/reports/216ee4b142334beeb4d404e494d51ce6.md",
   "review_findings": []
 }

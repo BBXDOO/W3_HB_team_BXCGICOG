@@ -1,0 +1,48 @@
+{
+  "accepted": true,
+  "checks": [
+    {
+      "name": "owner_receipt_present",
+      "passed": true
+    }
+  ],
+  "evidence": [
+    {
+      "path": "repo_events/origin_agents/Copilot-Gm/collaboration/W3-ORC-20261011-42020262173440413925540082592713577947-partner.json",
+      "sha256": "3635df0f3fc3df2940ad3bf368f9fc237a6032900a16b5d63b86c5b069d948bc"
+    }
+  ],
+  "explanations": [],
+  "notes": [
+    {
+      "evidence": "repo_events/origin_agents/Copilot-Gm/collaboration/W3-ORC-20261011-42020262173440413925540082592713577947-partner.json",
+      "id": "f3b7192bf34e486f974c1c6a020aea1c",
+      "kind": "doubt",
+      "meaning": "Static inventory does not prove an end-to-end execution or a missing dynamic caller.",
+      "owner": "Copilot-Gm",
+      "status": "OPEN"
+    }
+  ],
+  "parent": {
+    "path": "repo_events/origin_agents/Copilot-Gm/collaboration/paired/W3-ORC-20261011-42020262173440413925540082592713577947/0-985226cd2e9a4e35a6dee95fb63e3ae4.json",
+    "sha256": "deafa8bcf67c65f63ad7cb92b285a2eed9c8f674bbce3ff1a56dfec025d4f871"
+  },
+  "recipient": "Copilot-Gm",
+  "reviewer": "Gemini",
+  "schema": "w3.paired_handoff/1",
+  "sender": "Orchestration",
+  "sequence": 1,
+  "start": {
+    "evidence": [
+      {
+        "path": "repo_events/origin_agents/Copilot-Gm/intake/2b284bedae85499faa25289b70894da5.json",
+        "sha256": "c39848e3e487dcebff0efc8fd53a8e5098d7315e5b323ffae91f576933eef2fd"
+      },
+      {
+        "path": "repo_events/origin_agents/Copilot-Gm/intake_pairs/2c3b8cade77a4c9e9f16b64dde76b1bd/0-21346ec0ff64496ba54b0e7d924712b3.json",
+        "sha256": "cb44565286aec7fa9771e6d60991f61b268496df4f94162e3beb7d5da6beef02"
+      }
+    ],
+    "owner": "Copilot-Gm"
+  }
+}

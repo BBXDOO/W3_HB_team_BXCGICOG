@@ -1,0 +1,40 @@
+{
+  "accepted": true,
+  "checks": [
+    {
+      "name": "partner_verified_owner_receipt",
+      "passed": true
+    }
+  ],
+  "evidence": [
+    {
+      "path": "repo_events/origin_agents/Grok/collaboration/W3-ORC-20261011-226902614966514533673271338472256342054-partner.json",
+      "sha256": "8ee64741d107ad3e4401cd5dbba70e0671d3a298ff162dc5c43467e7aa45458c"
+    },
+    {
+      "path": "repo_events/origin_agents/Grok/logs/3ec9ac106d0e491fb223c6a254a61bb2.json",
+      "sha256": "20e2e937c7365864ad3929653933f7e561c00063aa9ad297271172a8dc66e15f"
+    }
+  ],
+  "explanations": [],
+  "notes": [],
+  "parent": null,
+  "recipient": "Orchestration",
+  "reviewer": "Gemini",
+  "schema": "w3.paired_handoff/1",
+  "sender": "Grok",
+  "sequence": 0,
+  "start": {
+    "evidence": [
+      {
+        "path": "repo_events/origin_agents/Grok/intake/d532c6c121554cd1a794161ccb4e94b9.json",
+        "sha256": "b40dd1d17ea242707ea2f325c6d0b724a474ce80a6941f4815f971b02a936edb"
+      },
+      {
+        "path": "repo_events/origin_agents/Grok/intake_pairs/d79cc88c06374ecebc041248c58958e5/0-6907df38225a4cceab7293b4dda26e2d.json",
+        "sha256": "d813a1ec9aad90ee0d8f400225f426fe7974915d53e0e04b19895cf4ab5c7c4e"
+      }
+    ],
+    "owner": "Grok"
+  }
+}

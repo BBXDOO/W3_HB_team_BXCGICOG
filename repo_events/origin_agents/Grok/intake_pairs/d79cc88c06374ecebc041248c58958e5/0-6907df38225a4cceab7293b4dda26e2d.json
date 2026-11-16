@@ -1,0 +1,31 @@
+{
+  "accepted": true,
+  "checks": [
+    {
+      "name": "supported_origin_request",
+      "passed": true
+    }
+  ],
+  "evidence": [
+    {
+      "path": "repo_events/origin_agents/Grok/intake/d532c6c121554cd1a794161ccb4e94b9.json",
+      "sha256": "b40dd1d17ea242707ea2f325c6d0b724a474ce80a6941f4815f971b02a936edb"
+    }
+  ],
+  "explanations": [],
+  "notes": [],
+  "parent": null,
+  "recipient": "Grok",
+  "reviewer": "host-origin-intake-verifier",
+  "schema": "w3.paired_handoff/1",
+  "sender": "Orchestration",
+  "sequence": 0,
+  "start": {
+    "evidence": [
+      {
+        "path": "repo_events/origin_agents/Grok/intake/d532c6c121554cd1a794161ccb4e94b9.json",
+        "sha256": "b40dd1d17ea242707ea2f325c6d0b724a474ce80a6941f4815f971b02a936edb"
+      }
+    ]
+  }
+}

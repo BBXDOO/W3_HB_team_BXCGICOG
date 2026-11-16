@@ -1,0 +1,48 @@
+{
+  "accepted": true,
+  "checks": [
+    {
+      "name": "owner_receipt_present",
+      "passed": true
+    }
+  ],
+  "evidence": [
+    {
+      "path": "repo_events/origin_agents/Gemini/collaboration/W3-ORC-20261011-45627015545537564258758376583840030712-partner.json",
+      "sha256": "d9219d3c040b9024a988dc698f4ac55e9dde85d9d94a710ccd0db9dbd19510c9"
+    }
+  ],
+  "explanations": [],
+  "notes": [
+    {
+      "evidence": "repo_events/origin_agents/Gemini/collaboration/W3-ORC-20261011-45627015545537564258758376583840030712-partner.json",
+      "id": "6b92d3c048974772a19daad0a0395d39",
+      "kind": "doubt",
+      "meaning": "Static inventory does not prove an end-to-end execution or a missing dynamic caller.",
+      "owner": "Gemini",
+      "status": "OPEN"
+    }
+  ],
+  "parent": {
+    "path": "repo_events/origin_agents/Gemini/collaboration/paired/W3-ORC-20261011-45627015545537564258758376583840030712/0-24342448acbc436e95f780b648e843f9.json",
+    "sha256": "06b8e0fc519599b3921fed759500f9946c23349dfc9fd558ae2be2d44f352238"
+  },
+  "recipient": "Gemini",
+  "reviewer": "ChatGPT",
+  "schema": "w3.paired_handoff/1",
+  "sender": "Orchestration",
+  "sequence": 1,
+  "start": {
+    "evidence": [
+      {
+        "path": "repo_events/origin_agents/Gemini/intake/8f14b6cf8bb24407967f6d4c8e1a3e9a.json",
+        "sha256": "e90817eb38764ef5917516b5b8e96f155d2e3375d3c8aa3164d2c5c44b25513f"
+      },
+      {
+        "path": "repo_events/origin_agents/Gemini/intake_pairs/3eb8f4088ddd4744924aa2f8bb960827/0-97865813d53f4fd68a29b923590f5481.json",
+        "sha256": "1e539b6bf75c886a4bba0797034ba406d6c67ea3daa7af859760606cace32aa7"
+      }
+    ],
+    "owner": "Gemini"
+  }
+}

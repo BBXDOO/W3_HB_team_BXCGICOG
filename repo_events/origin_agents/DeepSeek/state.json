@@ -1,11 +1,11 @@
 {
   "interval_days": 15,
-  "next_due": "2026-11-16T01:01:49.842698Z",
+  "next_due": "2026-12-01T01:03:53.633973Z",
   "followups": [],
   "receipts": {},
-  "last_review": "2026-11-01T01:01:49.842698Z",
+  "last_review": "2026-11-16T01:03:53.633973Z",
   "findings": [],
-  "last_log": "repo_events/origin_agents/DeepSeek/logs/e90289c838154cd78bd299295771b567.json",
-  "last_report": "repo_events/origin_agents/DeepSeek/reports/949456e26da0412bb9ce0b82c031a464.md",
+  "last_log": "repo_events/origin_agents/DeepSeek/logs/d288556418a64bfcb6aef07aa45f2d75.json",
+  "last_report": "repo_events/origin_agents/DeepSeek/reports/983733137d3a4b149cac1aad2f1a6e41.md",
   "review_findings": []
 }

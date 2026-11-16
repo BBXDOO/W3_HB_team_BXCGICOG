@@ -1,0 +1,31 @@
+{
+  "accepted": true,
+  "checks": [
+    {
+      "name": "supported_origin_request",
+      "passed": true
+    }
+  ],
+  "evidence": [
+    {
+      "path": "repo_events/origin_agents/Copilot-Gm/intake/2b284bedae85499faa25289b70894da5.json",
+      "sha256": "c39848e3e487dcebff0efc8fd53a8e5098d7315e5b323ffae91f576933eef2fd"
+    }
+  ],
+  "explanations": [],
+  "notes": [],
+  "parent": null,
+  "recipient": "Copilot-Gm",
+  "reviewer": "host-origin-intake-verifier",
+  "schema": "w3.paired_handoff/1",
+  "sender": "Orchestration",
+  "sequence": 0,
+  "start": {
+    "evidence": [
+      {
+        "path": "repo_events/origin_agents/Copilot-Gm/intake/2b284bedae85499faa25289b70894da5.json",
+        "sha256": "c39848e3e487dcebff0efc8fd53a8e5098d7315e5b323ffae91f576933eef2fd"
+      }
+    ]
+  }
+}

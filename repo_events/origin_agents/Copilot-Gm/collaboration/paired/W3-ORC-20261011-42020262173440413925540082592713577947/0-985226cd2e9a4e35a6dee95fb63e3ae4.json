@@ -1,0 +1,40 @@
+{
+  "accepted": true,
+  "checks": [
+    {
+      "name": "partner_verified_owner_receipt",
+      "passed": true
+    }
+  ],
+  "evidence": [
+    {
+      "path": "repo_events/origin_agents/Copilot-Gm/collaboration/W3-ORC-20261011-42020262173440413925540082592713577947-partner.json",
+      "sha256": "3635df0f3fc3df2940ad3bf368f9fc237a6032900a16b5d63b86c5b069d948bc"
+    },
+    {
+      "path": "repo_events/origin_agents/Copilot-Gm/logs/c1e192f5c4874aebac5d7ff2570d9a69.json",
+      "sha256": "a9fa4a1fc53d67fc0dcf2db1e9351b0e5a0e7edb0fc4fe1afc2f5ffcede50305"
+    }
+  ],
+  "explanations": [],
+  "notes": [],
+  "parent": null,
+  "recipient": "Orchestration",
+  "reviewer": "Gemini",
+  "schema": "w3.paired_handoff/1",
+  "sender": "Copilot-Gm",
+  "sequence": 0,
+  "start": {
+    "evidence": [
+      {
+        "path": "repo_events/origin_agents/Copilot-Gm/intake/2b284bedae85499faa25289b70894da5.json",
+        "sha256": "c39848e3e487dcebff0efc8fd53a8e5098d7315e5b323ffae91f576933eef2fd"
+      },
+      {
+        "path": "repo_events/origin_agents/Copilot-Gm/intake_pairs/2c3b8cade77a4c9e9f16b64dde76b1bd/0-21346ec0ff64496ba54b0e7d924712b3.json",
+        "sha256": "cb44565286aec7fa9771e6d60991f61b268496df4f94162e3beb7d5da6beef02"
+      }
+    ],
+    "owner": "Copilot-Gm"
+  }
+}

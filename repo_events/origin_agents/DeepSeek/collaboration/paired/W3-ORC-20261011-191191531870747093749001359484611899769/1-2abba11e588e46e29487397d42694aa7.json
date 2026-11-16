@@ -1,0 +1,48 @@
+{
+  "accepted": true,
+  "checks": [
+    {
+      "name": "owner_receipt_present",
+      "passed": true
+    }
+  ],
+  "evidence": [
+    {
+      "path": "repo_events/origin_agents/DeepSeek/collaboration/W3-ORC-20261011-191191531870747093749001359484611899769-partner.json",
+      "sha256": "7e5cf971bd4f13ff03a4f10195b6c1a3362c007292572bcd2643d8e91b322420"
+    }
+  ],
+  "explanations": [],
+  "notes": [
+    {
+      "evidence": "repo_events/origin_agents/DeepSeek/collaboration/W3-ORC-20261011-191191531870747093749001359484611899769-partner.json",
+      "id": "6b9462a03a534e58a80130e3753e855d",
+      "kind": "doubt",
+      "meaning": "Static inventory does not prove an end-to-end execution or a missing dynamic caller.",
+      "owner": "DeepSeek",
+      "status": "OPEN"
+    }
+  ],
+  "parent": {
+    "path": "repo_events/origin_agents/DeepSeek/collaboration/paired/W3-ORC-20261011-191191531870747093749001359484611899769/0-9236b6afa3094ba082cfb6a022e51dc0.json",
+    "sha256": "f9e6650cdc27fd3c360802174232c14a96df744554d5067ccb8c1ec7284c4536"
+  },
+  "recipient": "DeepSeek",
+  "reviewer": "Gemini",
+  "schema": "w3.paired_handoff/1",
+  "sender": "Orchestration",
+  "sequence": 1,
+  "start": {
+    "evidence": [
+      {
+        "path": "repo_events/origin_agents/DeepSeek/intake/3c9fb2799dbf4ebbb4a835719eb0455a.json",
+        "sha256": "62f736d2cd180f61dc34c6565211673d6bef7b80896d158b89ef408e94648cc7"
+      },
+      {
+        "path": "repo_events/origin_agents/DeepSeek/intake_pairs/a354bb4648d74e4e87f9f089f416a9b9/0-24fccd8017834eeb946037632f6289b1.json",
+        "sha256": "d9bccfcddd118a23eda0cd7863f988d0726e9bbf6225214b8b9ef051de93d153"
+      }
+    ],
+    "owner": "DeepSeek"
+  }
+}

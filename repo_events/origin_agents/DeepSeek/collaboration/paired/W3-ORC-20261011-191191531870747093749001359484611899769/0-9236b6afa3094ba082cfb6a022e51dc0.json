@@ -1,0 +1,40 @@
+{
+  "accepted": true,
+  "checks": [
+    {
+      "name": "partner_verified_owner_receipt",
+      "passed": true
+    }
+  ],
+  "evidence": [
+    {
+      "path": "repo_events/origin_agents/DeepSeek/collaboration/W3-ORC-20261011-191191531870747093749001359484611899769-partner.json",
+      "sha256": "7e5cf971bd4f13ff03a4f10195b6c1a3362c007292572bcd2643d8e91b322420"
+    },
+    {
+      "path": "repo_events/origin_agents/DeepSeek/logs/d288556418a64bfcb6aef07aa45f2d75.json",
+      "sha256": "de1b0ba5c035554087052c2b4dd1961dcfaad7c4f2d9b2ae7e7aedbe463289b8"
+    }
+  ],
+  "explanations": [],
+  "notes": [],
+  "parent": null,
+  "recipient": "Orchestration",
+  "reviewer": "Gemini",
+  "schema": "w3.paired_handoff/1",
+  "sender": "DeepSeek",
+  "sequence": 0,
+  "start": {
+    "evidence": [
+      {
+        "path": "repo_events/origin_agents/DeepSeek/intake/3c9fb2799dbf4ebbb4a835719eb0455a.json",
+        "sha256": "62f736d2cd180f61dc34c6565211673d6bef7b80896d158b89ef408e94648cc7"
+      },
+      {
+        "path": "repo_events/origin_agents/DeepSeek/intake_pairs/a354bb4648d74e4e87f9f089f416a9b9/0-24fccd8017834eeb946037632f6289b1.json",
+        "sha256": "d9bccfcddd118a23eda0cd7863f988d0726e9bbf6225214b8b9ef051de93d153"
+      }
+    ],
+    "owner": "DeepSeek"
+  }
+}

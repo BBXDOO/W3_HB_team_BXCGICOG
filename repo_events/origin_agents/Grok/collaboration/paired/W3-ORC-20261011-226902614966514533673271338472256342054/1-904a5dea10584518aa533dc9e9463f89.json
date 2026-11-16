@@ -1,0 +1,48 @@
+{
+  "accepted": true,
+  "checks": [
+    {
+      "name": "owner_receipt_present",
+      "passed": true
+    }
+  ],
+  "evidence": [
+    {
+      "path": "repo_events/origin_agents/Grok/collaboration/W3-ORC-20261011-226902614966514533673271338472256342054-partner.json",
+      "sha256": "8ee64741d107ad3e4401cd5dbba70e0671d3a298ff162dc5c43467e7aa45458c"
+    }
+  ],
+  "explanations": [],
+  "notes": [
+    {
+      "evidence": "repo_events/origin_agents/Grok/collaboration/W3-ORC-20261011-226902614966514533673271338472256342054-partner.json",
+      "id": "577342799e1e4209b187c481977fe365",
+      "kind": "doubt",
+      "meaning": "Static inventory does not prove an end-to-end execution or a missing dynamic caller.",
+      "owner": "Grok",
+      "status": "OPEN"
+    }
+  ],
+  "parent": {
+    "path": "repo_events/origin_agents/Grok/collaboration/paired/W3-ORC-20261011-226902614966514533673271338472256342054/0-f162b1a0cd47485498f91d41baa49b69.json",
+    "sha256": "73581b55f83bb7dbd2fc5a3ad39af1fe37bb1f52292c58e38006c4e59bfdf56e"
+  },
+  "recipient": "Grok",
+  "reviewer": "Gemini",
+  "schema": "w3.paired_handoff/1",
+  "sender": "Orchestration",
+  "sequence": 1,
+  "start": {
+    "evidence": [
+      {
+        "path": "repo_events/origin_agents/Grok/intake/d532c6c121554cd1a794161ccb4e94b9.json",
+        "sha256": "b40dd1d17ea242707ea2f325c6d0b724a474ce80a6941f4815f971b02a936edb"
+      },
+      {
+        "path": "repo_events/origin_agents/Grok/intake_pairs/d79cc88c06374ecebc041248c58958e5/0-6907df38225a4cceab7293b4dda26e2d.json",
+        "sha256": "d813a1ec9aad90ee0d8f400225f426fe7974915d53e0e04b19895cf4ab5c7c4e"
+      }
+    ],
+    "owner": "Grok"
+  }
+}
