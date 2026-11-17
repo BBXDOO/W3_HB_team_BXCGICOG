@@ -292,6 +292,19 @@ input::placeholder, textarea::placeholder { color: var(--text-dim); opacity: .65
 .story-writer-modes button[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
 .story-writing-tools { display: flex; gap: 5px; padding: 5px 7px; overflow-x: auto; touch-action: pan-x; flex-shrink: 0; border-bottom: 1px solid var(--border); }
 .story-writing-tools button { min-width: 30px; min-height: 28px; font-family: var(--font-mono); }
+.story-writer-header > button { flex: 0 0 auto; }
+.story-writer-actions { justify-content: space-between; flex-wrap: wrap; overflow-x: visible; touch-action: auto; }
+.story-writer-modes { flex: 1 1 auto; }
+.story-writer-modes > button { flex: 1 1 auto; }
+.story-writer :is(.story-writer-header,.story-writer-actions,.story-writing-tools,.story-writer-menu) :is(button,select) { min-height: 40px; line-height: 1.35; font-size: 12px; }
+.story-writing-tools { flex-wrap: wrap; overflow-x: visible; touch-action: auto; }
+.story-writing-tools > button { flex: 1 0 auto; }
+.story-writer-menu { position: absolute; z-index: 3; inset: 96px 8px auto; max-height: calc(100% - 104px); overflow: auto; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 6px; padding: 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-2); box-shadow: var(--shadow-raised); }
+.story-writer-menu select,.story-writer-menu .story-writer-delete { grid-column: 1 / -1; }
+.story-writer button.story-writer-delete { color: #b93e40; }
+.story-writer-confirm { position: absolute; z-index: 4; inset: 0; display: grid; place-items: center; padding: 12px; background: #0008; }
+.story-writer-confirm section { width: min(100%, 420px); max-height: 100%; overflow: auto; padding: 16px; border-radius: 12px; background: var(--surface); overflow-wrap: anywhere; }
+.story-writer-confirm section > div { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
 .story-writer-find { padding: 6px 7px; display: flex; flex-wrap: wrap; gap: 5px; flex-shrink: 0; border-bottom: 1px solid var(--border); }
 .story-writer-find input { min-width: 0; flex: 1 1 120px; padding: 6px; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 5px; font-size: 12px; }
 .story-writer-panes { flex: 1; min-height: 0; min-width: 0; display: grid; overflow: hidden; }

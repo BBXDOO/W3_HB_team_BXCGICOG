@@ -18,10 +18,11 @@ interface StoryTabProps {
   toolActions?: any;
   navigationTarget?: string | null;
   onCommit?: () => boolean;
+  onCommitChange: (next: StoryTabProps["story"]) => boolean;
   saveState?: 'pending' | 'saved' | 'error';
 }
 
-export const StoryTab: React.FC<StoryTabProps> = ({ story, onChange, toolActions, navigationTarget, onCommit = () => true, saveState = 'saved' }) => {
+export const StoryTab: React.FC<StoryTabProps> = ({ story, onChange, toolActions, navigationTarget, onCommit = () => true, onCommitChange, saveState = 'saved' }) => {
   const [selectedId, setSelectedId] = useState<string | null>(story.storyNodes[0]?.nodeId || null);
   const [search, setSearch] = useState('');
   const [writerOpen, setWriterOpen] = useState(false);
@@ -40,6 +41,19 @@ export const StoryTab: React.FC<StoryTabProps> = ({ story, onChange, toolActions
     onChange({ ...story, storyNodes: [...story.storyNodes, n] });
     setSelectedId(id);
     setWriterOpen(true);
+  };
+
+  const deleteSelected = () => {
+    if (!selectedNode) return false;
+    const removedId = selectedNode.nodeId;
+    const storyNodes = story.storyNodes.filter(node => node.nodeId !== removedId).map(node => {
+      if (!node.choices?.some(choice => choice.toNodeId === removedId)) return node;
+      return { ...node, choices: node.choices.filter(choice => choice.toNodeId !== removedId) };
+    });
+    if (!onCommitChange({ ...story, storyNodes })) return false;
+    setWriterOpen(false);
+    setSelectedId(storyNodes[0]?.nodeId ?? null);
+    return true;
   };
 
   const updateNode = (updated: StoryNode) => {
@@ -184,7 +198,7 @@ export const StoryTab: React.FC<StoryTabProps> = ({ story, onChange, toolActions
       }
     />
     {writerOpen && selectedNode && <StoryWriter key={selectedNode.nodeId} node={selectedNode} onChange={updateNode} onCommit={onCommit} saveState={saveState}
-      onNew={addNode} onImport={() => importInput.current?.click()} onClose={() => { if (importDoc) setImportDoc(null); else setWriterOpen(false); }} />}
+      onNew={addNode} onDelete={deleteSelected} onImport={() => importInput.current?.click()} onClose={() => { if (importDoc) setImportDoc(null); else setWriterOpen(false); }} />}
     {importDoc && createPortal(<div className="story-import-overlay"><section role="dialog" aria-modal="true" aria-label="นำเข้าเอกสาร Story" className="story-import-dialog">
       <header><h2>นำเข้าเอกสาร</h2><button type="button" aria-label="ปิดหน้าต่างนำเข้า" onClick={() => setImportDoc(null)}>✕</button></header>
       <p>{importDoc.filename} · {importDoc.body.length.toLocaleString()} อักขระ</p><pre>{importDoc.body.slice(0, 500)}{importDoc.body.length > 500 ? '\n…' : ''}</pre>

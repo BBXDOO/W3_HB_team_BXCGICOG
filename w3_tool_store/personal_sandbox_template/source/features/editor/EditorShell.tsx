@@ -151,6 +151,14 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
     return true;
   };
 
+  const commitStoryChange = (next: typeof story): boolean => {
+    if (!onSave(next)) { setSaveError(true); return false; }
+    setStory(next);
+    setIsDirty(false);
+    setSaveError(false);
+    return true;
+  };
+
   const handleExit = () => {
     if (!onSave(story)) { setSaveError(true); return; }
     onExit();
@@ -239,7 +247,7 @@ export const EditorShell: React.FC<EditorShellProps> = ({ story: initialStory, o
 
     switch (activeTab) {
       case 'home': return <DashboardTab {...commonProps} />;
-      case 'story': return <StoryTab {...commonProps} navigationTarget={navigationTarget} onCommit={handleSave} saveState={saveError ? 'error' : isDirty ? 'pending' : 'saved'} />;
+      case 'story': return <StoryTab {...commonProps} navigationTarget={navigationTarget} onCommit={handleSave} onCommitChange={commitStoryChange} saveState={saveError ? 'error' : isDirty ? 'pending' : 'saved'} />;
       case 'character': return <CharactersTab {...commonProps} />;
       case 'board': return <BoardTab {...commonProps} navigationTarget={navigationTarget} />;
       case 'rule': return <RulesTab {...commonProps} navigationTarget={navigationTarget} />;

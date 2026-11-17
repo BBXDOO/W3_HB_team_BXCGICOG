@@ -8,12 +8,14 @@ import { MarkdownContent } from './MarkdownContent';
 type Snapshot = { body: string; bodyFormat?: StoryNode['bodyFormat'] };
 type Props = {
   node: StoryNode; onChange: (node: StoryNode) => void; onClose: () => void;
-  onCommit: () => boolean; onImport: () => void; onNew: () => void;
+  onCommit: () => boolean; onImport: () => void; onNew: () => void; onDelete: () => boolean;
   saveState: 'pending' | 'saved' | 'error';
 };
-export const StoryWriter: React.FC<Props> = ({ node, onChange, onClose, onCommit, onImport, onNew, saveState }) => {
+export const StoryWriter: React.FC<Props> = ({ node, onChange, onClose, onCommit, onImport, onNew, onDelete, saveState }) => {
   const editor = useRef<HTMLTextAreaElement>(null);
   const [view, setView] = useState<'write' | 'split' | 'preview'>('write');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [findOpen, setFindOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [replacement, setReplacement] = useState('');
@@ -57,7 +59,7 @@ export const StoryWriter: React.FC<Props> = ({ node, onChange, onClose, onCommit
     remember(body); history.current.lastEdit = 0; internalNext.current = next; onChange({ ...node, body: next.body, bodyFormat: next.bodyFormat });
   };
   const save = () => { const ok = onCommit(); setNotice(ok ? 'บันทึกลงเครื่องแล้ว' : 'บันทึกไม่สำเร็จ โปรดส่งออกสำเนาก่อนปิด'); return ok; };
-  const close = () => { if (onCommit()) onClose(); else setNotice('บันทึกไม่สำเร็จ ยังเปิดต้นฉบับไว้ให้ส่งออกได้'); };
+  const close = () => { if (confirmDelete) { setConfirmDelete(false); return; } if (menuOpen) { setMenuOpen(false); return; } if (onCommit()) onClose(); else setNotice('บันทึกไม่สำเร็จ ยังเปิดต้นฉบับไว้ให้ส่งออกได้'); };
   const closeRef = useRef(close); closeRef.current = close;
   useEffect(() => {
     documentBridge()?.setWriterOpen?.(true);
@@ -105,12 +107,33 @@ export const StoryWriter: React.FC<Props> = ({ node, onChange, onClose, onCommit
     <header className="story-writer-header"><button type="button" onClick={close} aria-label="กลับรายการ Story">← Story</button><input aria-label="ชื่อเอกสาร Story" value={node.title || ''} onChange={e => onChange({ ...node, title: e.target.value })} placeholder="ชื่อเรื่อง / เอกสาร" /><button type="button" onClick={save}>บันทึก</button></header>
     <div className="story-writer-actions">
       <div className="story-writer-modes">{([['write','เขียน'],['split','เขียน + พรีวิว'],['preview','พรีวิว']] as const).map(([mode, label]) => <button type="button" key={mode} aria-pressed={view === mode} onClick={() => setView(mode)}>{label}</button>)}</div>
-      <select aria-label="รูปแบบเอกสาร" value={format} onChange={e => onChange({ ...node, bodyFormat: e.target.value as StoryNode['bodyFormat'] })}><option value="markdown">Markdown / GitHub</option><option value="legacy">ข้อความเดิม</option></select>
-      <button type="button" onClick={() => { if (onCommit()) onNew(); else setNotice('บันทึกตอนปัจจุบันไม่สำเร็จ โปรดส่งออกสำเนาก่อนสร้างตอนใหม่'); }}>+ ตอนใหม่</button><button type="button" onClick={onImport}>นำเข้าไฟล์</button><button type="button" onClick={() => exportFile('md')}>ส่งออก .md</button><button type="button" onClick={() => exportFile('txt')}>ส่งออก .txt</button>
-      <button type="button" onClick={() => setFindOpen(!findOpen)} aria-expanded={findOpen}>ค้นหา / แทนที่</button>
-      <button type="button" onClick={undo} disabled={!history.current.past.length} aria-label="เลิกทำ">↶</button><button type="button" onClick={redo} disabled={!history.current.future.length} aria-label="ทำซ้ำ">↷</button>
-      <button type="button" onClick={() => resizeFont(-1)} aria-label="ลดขนาดตัวหนังสือเขียน">A−</button><button type="button" onClick={() => resizeFont(1)} aria-label="เพิ่มขนาดตัวหนังสือเขียน">A+</button>
+      <button type="button" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen}>เพิ่มเติม</button>
     </div>
+    {menuOpen && !confirmDelete && <div className="story-writer-menu" aria-label="คำสั่งเพิ่มเติม">
+      <select aria-label="รูปแบบเอกสาร" value={format} onChange={e => onChange({ ...node, bodyFormat: e.target.value as StoryNode['bodyFormat'] })}><option value="markdown">Markdown / GitHub</option><option value="legacy">ข้อความเดิม</option></select>
+      <button type="button" onClick={() => { if (onCommit()) onNew(); else setNotice('บันทึกตอนปัจจุบันไม่สำเร็จ โปรดส่งออกสำเนาก่อนสร้างตอนใหม่'); }}>+ ตอนใหม่</button>
+      <button type="button" onClick={() => { setMenuOpen(false); onImport(); }}>นำเข้าไฟล์</button>
+      <button type="button" onClick={() => exportFile('md')}>ส่งออก .md</button>
+      <button type="button" onClick={() => exportFile('txt')}>ส่งออก .txt</button>
+      <button type="button" onClick={() => { setMenuOpen(false); setFindOpen(!findOpen); }}>ค้นหา / แทนที่</button>
+      <button type="button" onClick={undo} disabled={!history.current.past.length}>เลิกทำ</button>
+      <button type="button" onClick={redo} disabled={!history.current.future.length}>ทำซ้ำ</button>
+      <button type="button" onClick={() => resizeFont(-1)} aria-label="ลดขนาดตัวหนังสือเขียน">A−</button>
+      <button type="button" onClick={() => resizeFont(1)} aria-label="เพิ่มขนาดตัวหนังสือเขียน">A+</button>
+      <button className="story-writer-delete" type="button" onClick={() => setConfirmDelete(true)}>ลบตอนนี้</button>
+    </div>}
+    {confirmDelete && <div className="story-writer-confirm" role="alertdialog" aria-modal="true" aria-labelledby="story-delete-title">
+      <section>
+        <h2 id="story-delete-title">ลบตอน «{node.title || 'ไม่มีชื่อ'}»?</h2>
+        <p>ตอนนี้และตัวเลือกจากตอนอื่นที่เชื่อมมาหาตอนนี้จะถูกลบ</p>
+        <div>
+          <button type="button" autoFocus onClick={() => setConfirmDelete(false)}>ยกเลิก</button>
+          <button type="button" className="story-writer-delete" onClick={() => {
+            if (!onDelete()) { setConfirmDelete(false); setMenuOpen(false); setNotice('ลบไม่สำเร็จ ยังเก็บตอนเดิมไว้'); }
+          }}>ยืนยันลบตอน</button>
+        </div>
+      </section>
+    </div>}
     {format === 'markdown' && <div className="story-writing-tools" aria-label="เครื่องมือเขียน Markdown">{toolbar.map(([title, label, action]) => <button type="button" key={title} title={title} aria-label={title} onMouseDown={e => e.preventDefault()} onClick={action}>{label}</button>)}</div>}
     {findOpen && <div className="story-writer-find"><input aria-label="ค้นหาในเอกสาร" placeholder="ค้นหา (ตรงตัวพิมพ์)" value={query} onChange={e => setQuery(e.target.value)} /><input aria-label="ข้อความแทนที่" placeholder="แทนที่ด้วย" value={replacement} onChange={e => setReplacement(e.target.value)} /><button type="button" onClick={findNext} disabled={!query}>ถัดไป</button><button type="button" onClick={() => replace(false)} disabled={!query}>แทนที่</button><button type="button" onClick={() => replace(true)} disabled={!query}>ทั้งหมด</button></div>}
     <main className={`story-writer-panes story-writer-${view}`}>
