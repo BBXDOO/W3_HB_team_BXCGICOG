@@ -35,13 +35,13 @@ const action = 'rounded-lg border border-[var(--accent)]/40 px-3 py-2 text-xs te
 const cellName = (entry: RecordCell) => entry.cell.name?.trim() || `พิกัด ${entry.cell.x}, ${entry.cell.y}`;
 
 export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZoom, onAppearance, onSelect, onMode, onAdd, onUpdate, onDelete, tileLibrary, tileImages = {} }) => {
+  const mode = board.viewMode || 'grid';
   const [query, setQuery] = useState('');
   const [mobilePanel, setMobilePanel] = useState<'board' | 'tools' | 'theme' | 'tiles' | 'details'>('board');
   const [boardExpanded, setBoardExpanded] = useState(false);
   const mobilePanels = mode === 'grid' ? ([['board', 'ตาราง'], ['tools', 'เครื่องมือ'], ['theme', 'ธีม'], ['tiles', 'คลังภาพ'], ['details', 'รายละเอียด']] as const) : ([['board', 'พื้นที่'], ['details', 'รายละเอียด']] as const);
   const activeMobilePanel = mobilePanels.some(([id]) => id === mobilePanel) ? mobilePanel : 'board';
   const [sortBy, setSortBy] = useState<'coordinate' | 'name'>('coordinate');
-  const mode = board.viewMode || 'grid';
   const tableTheme = boardTableTheme(board);
   const gridViewport = useRef<HTMLDivElement>(null);
   const { gap, radius } = gridGeometry(board.gridStyle);
