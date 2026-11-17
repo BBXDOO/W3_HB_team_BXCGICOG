@@ -1,0 +1,45 @@
+{
+  "status": "COMPLETED",
+  "task": "design",
+  "module": "ChatGPT",
+  "output": "Inspected 7 systems; listed_checks=PASS; 0 separate follow-ups. Not a production chain certification.",
+  "agent_result": {
+    "contract_version": "1.0",
+    "module": "ChatGPT",
+    "task": "design",
+    "status": "COMPLETED",
+    "capability": "system_inspection",
+    "review": false,
+    "traceable": true,
+    "mutated": true,
+    "summary": "Inspected 7 systems; listed_checks=PASS; 0 separate follow-ups. Not a production chain certification.",
+    "artifacts": [
+      {
+        "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/report.json",
+        "sha256": "bd13d0efbd52d3290c565abc09e1739eb881806be43cf004a268bb9151e78478",
+        "kind": "w3.system_inspection.json"
+      }
+    ]
+  },
+  "result_validation": {
+    "status": "valid",
+    "module": "ChatGPT",
+    "missing_fields": [],
+    "invalid_fields": [],
+    "identity_missing_fields": [],
+    "blocking_status": null,
+    "mutated": true,
+    "traceable": true,
+    "review": false
+  },
+  "artifacts": [
+    {
+      "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/report.json",
+      "sha256": "bd13d0efbd52d3290c565abc09e1739eb881806be43cf004a268bb9151e78478",
+      "kind": "w3.system_inspection.json"
+    }
+  ],
+  "latency_ms": 8297,
+  "time": "2026-11-17T13:03:27Z",
+  "trace_id": "97892b9aef9a4ec494641451f22fbbea"
+}

@@ -1,0 +1,368 @@
+{
+  "schema": "w3.system_inspection/1",
+  "run_id": "7ed5667b83d84d1e949f4667733bee29",
+  "task_id": "W3-ORC-1-11525363814276006513859375059",
+  "source_id": "RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a",
+  "started_at": "2026-11-17T13:03:19.438388Z",
+  "finished_at": "2026-11-17T13:03:27.471799Z",
+  "inspection_state": "FINISHED",
+  "coverage": "listed regression and native contract checks; isolated test execution",
+  "limitations": [
+    "Executes the listed repository regression/contract tests on isolated copies with test inputs.",
+    "Does not prove one production request traverses all seven systems or authorize deployment.",
+    "A failed, skipped or unavailable suite does not certify the health of that system.",
+    "Inspection completion and system health are separate; unresolved findings remain open."
+  ],
+  "systems": [
+    {
+      "system": "MPCP",
+      "entry_point": "protocol/mpcp/runtime/README.md",
+      "tests": [
+        "tests/test_mpcp_agent_sandbox.py",
+        "tests/test_mpcp_paper_runtime.py",
+        "tests/test_mpcp_condien_equipment.py"
+      ],
+      "status": "PASS",
+      "started_at": "2026-11-17T13:03:19.439701Z",
+      "exit_code": 0,
+      "counts": {
+        "tests": 45,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed",
+      "elapsed_seconds": 3.941,
+      "input_hashes": {
+        "protocol/mpcp/runtime/README.md": "4559bb1708537302037982516e4c4ab6e4de05d0bd4847b1ab9e4c8848dfada7",
+        "tests/test_mpcp_agent_sandbox.py": "b653fd03555e1f789bd852347d8afcc82406bf11bbcf8beacf06a8ddf5725b87",
+        "tests/test_mpcp_paper_runtime.py": "20a3e27cbaf69438c1c0c079c498dd2775138d3028f108a6f98a9652d3b672c2",
+        "tests/test_mpcp_condien_equipment.py": "48f71a762117336a4f1ef3f159fca9944bafbb4de9268c6d663a027c6d7cc2ea"
+      },
+      "input_kind": "repository test inputs on isolated source copy",
+      "git_context": "temporary local protocol/src snapshot; not the source commit",
+      "recipient": "pytest subprocess in isolated workspace",
+      "command": [
+        "/data/data/com.termux/files/usr/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_mpcp_agent_sandbox.py",
+        "tests/test_mpcp_paper_runtime.py",
+        "tests/test_mpcp_condien_equipment.py",
+        "-q",
+        "-o",
+        "addopts=",
+        "--junitxml=/data/data/com.termux/files/home/W3_HB_team_BXCGICOG/repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/MPCP/junit.xml"
+      ],
+      "source_unchanged": true,
+      "finished_at": "2026-11-17T13:03:23.381019Z",
+      "evidence": [
+        {
+          "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/MPCP/pytest.log",
+          "sha256": "cca37fa545c987ef30ba06574421ae161fd8552d770fa5ae8b6a0a6e35ea2099"
+        },
+        {
+          "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/MPCP/junit.xml",
+          "sha256": "5de82b5d0e532a0e407ef6e5955d95911928030675bb269b6d1dd6156096cae5"
+        }
+      ]
+    },
+    {
+      "system": "E-CS",
+      "entry_point": "ecs/event_chain_system.py",
+      "tests": [
+        "tests/test_ecs_native_inspection.py",
+        "tests/test_event_chain.py"
+      ],
+      "status": "PASS",
+      "started_at": "2026-11-17T13:03:23.429178Z",
+      "exit_code": 0,
+      "counts": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed",
+      "elapsed_seconds": 0.582,
+      "input_hashes": {
+        "ecs/event_chain_system.py": "861e2bf29419555772798dd78870d5882e9e986e5b508f34a9daaee8c08388c1",
+        "tests/test_ecs_native_inspection.py": "4f173c50416823e7f0c98ee6b613bd2667058a91d9efc01442ee3a1a8f00c828",
+        "tests/test_event_chain.py": "15f2619bf43abed5a8521c2e7c58ec87f232d85859690d6a291b816f884dac63"
+      },
+      "input_kind": "repository test inputs on isolated source copy",
+      "git_context": "temporary local protocol/src snapshot; not the source commit",
+      "recipient": "pytest subprocess in isolated workspace",
+      "command": [
+        "/data/data/com.termux/files/usr/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_ecs_native_inspection.py",
+        "tests/test_event_chain.py",
+        "-q",
+        "-o",
+        "addopts=",
+        "--junitxml=/data/data/com.termux/files/home/W3_HB_team_BXCGICOG/repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/E-CS/junit.xml"
+      ],
+      "source_unchanged": true,
+      "finished_at": "2026-11-17T13:03:24.011643Z",
+      "evidence": [
+        {
+          "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/E-CS/pytest.log",
+          "sha256": "d8aab4e9c770fc3b694f7af257b62f7120cb113620e1ad7a5678d2c183620c8a"
+        },
+        {
+          "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/E-CS/junit.xml",
+          "sha256": "4888542b5cac33bf22093d160e1ff71bacda2fa1638e5c9033618471f31b24bc"
+        }
+      ]
+    },
+    {
+      "system": "W3Lgu",
+      "entry_point": "core/runtime/w3lgu_mfc_logic/psp2_mfc_logic.py",
+      "tests": [
+        "tests/test_w3lgu_mfc_logic.py",
+        "tests/test_w3lgu_operational.py"
+      ],
+      "status": "PASS",
+      "started_at": "2026-11-17T13:03:24.059006Z",
+      "exit_code": 0,
+      "counts": {
+        "tests": 35,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed",
+      "elapsed_seconds": 0.59,
+      "input_hashes": {
+        "core/runtime/w3lgu_mfc_logic/psp2_mfc_logic.py": "ff405e6405e29461c8027fa241f9f5d37282a41695bb0a3f7023c96fe5067571",
+        "tests/test_w3lgu_mfc_logic.py": "4eabc1abc3ac7f38bda8b1b0b3e1ffb6cea162ed87e2cf45c903ddf31247214f",
+        "tests/test_w3lgu_operational.py": "73f7c040d5df2270e52b5ae88f4f884c28d3c47263a4be4c09034214b0b6f80c"
+      },
+      "input_kind": "repository test inputs on isolated source copy",
+      "git_context": "temporary local protocol/src snapshot; not the source commit",
+      "recipient": "pytest subprocess in isolated workspace",
+      "command": [
+        "/data/data/com.termux/files/usr/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_w3lgu_mfc_logic.py",
+        "tests/test_w3lgu_operational.py",
+        "-q",
+        "-o",
+        "addopts=",
+        "--junitxml=/data/data/com.termux/files/home/W3_HB_team_BXCGICOG/repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/W3Lgu/junit.xml"
+      ],
+      "source_unchanged": true,
+      "finished_at": "2026-11-17T13:03:24.648944Z",
+      "evidence": [
+        {
+          "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/W3Lgu/pytest.log",
+          "sha256": "e9c3a93cbcde08b4fead9b6c0e39837ea45aeb162088d6629d0762e4b5bcf560"
+        },
+        {
+          "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/W3Lgu/junit.xml",
+          "sha256": "deb7ef461b48a9b022bcd81ff1f3018c3eacb9284d78a41684a068e8c39f63f9"
+        }
+      ]
+    },
+    {
+      "system": "Cross-X",
+      "entry_point": "cross_x/core.py",
+      "tests": [
+        "tests/test_cross_x_config.py"
+      ],
+      "status": "PASS",
+      "started_at": "2026-11-17T13:03:24.714914Z",
+      "exit_code": 0,
+      "counts": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed",
+      "elapsed_seconds": 0.732,
+      "input_hashes": {
+        "cross_x/core.py": "9ed6768d77c6b9d1a8345ac4b567b448862641ad4f1e1ea9ec7c25b427adb491",
+        "tests/test_cross_x_config.py": "2e843d6afcfa0db0fb14c81694d8f4938c70ba080033c76ce7c9924025eea19a"
+      },
+      "input_kind": "repository test inputs on isolated source copy",
+      "git_context": "temporary local protocol/src snapshot; not the source commit",
+      "recipient": "pytest subprocess in isolated workspace",
+      "command": [
+        "/data/data/com.termux/files/usr/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_cross_x_config.py",
+        "-q",
+        "-o",
+        "addopts=",
+        "--junitxml=/data/data/com.termux/files/home/W3_HB_team_BXCGICOG/repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/Cross-X/junit.xml"
+      ],
+      "source_unchanged": true,
+      "finished_at": "2026-11-17T13:03:25.447176Z",
+      "evidence": [
+        {
+          "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/Cross-X/pytest.log",
+          "sha256": "989d3248a152b5ba9c3b1077ea0d43e0c4cdb75a3ad86f09d6b704253d00ca81"
+        },
+        {
+          "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/Cross-X/junit.xml",
+          "sha256": "2da0b68ea0e3b06af05b073c295f450810f33cc7512bf08d64a9ec14de73a4e8"
+        }
+      ]
+    },
+    {
+      "system": "CROLL",
+      "entry_point": "croll/contracts.py",
+      "tests": [
+        "croll/test_contracts.py",
+        "croll/test_cross_l_dispatcher.py"
+      ],
+      "status": "PASS",
+      "started_at": "2026-11-17T13:03:25.511774Z",
+      "exit_code": 0,
+      "counts": {
+        "tests": 17,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed",
+      "elapsed_seconds": 0.603,
+      "input_hashes": {
+        "croll/contracts.py": "01ae99de296e8723183154a072eadc86265b8dffef60a52ddc60805c28e06eda",
+        "croll/test_contracts.py": "f41b717287bec92bc0f4f0fe39be39d99d2f2cd3457e947c5c40a92b96f1d182",
+        "croll/test_cross_l_dispatcher.py": "2ad23780d1e6809e0a6b231aaf06062fc2e94ecc91cbf8eb3af801828455f7e5"
+      },
+      "input_kind": "repository test inputs on isolated source copy",
+      "git_context": "temporary local protocol/src snapshot; not the source commit",
+      "recipient": "pytest subprocess in isolated workspace",
+      "command": [
+        "/data/data/com.termux/files/usr/bin/python",
+        "-m",
+        "pytest",
+        "croll/test_contracts.py",
+        "croll/test_cross_l_dispatcher.py",
+        "-q",
+        "-o",
+        "addopts=",
+        "--junitxml=/data/data/com.termux/files/home/W3_HB_team_BXCGICOG/repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/CROLL/junit.xml"
+      ],
+      "source_unchanged": true,
+      "finished_at": "2026-11-17T13:03:26.114987Z",
+      "evidence": [
+        {
+          "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/CROLL/pytest.log",
+          "sha256": "eae2fbf9da2b8c3133efda23ca1278df991c0e63a60980de303ac568cb8708f5"
+        },
+        {
+          "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/CROLL/junit.xml",
+          "sha256": "1082bd516e1f3f6f2090a27bc71094a8ee917b519457f1169e7da2b77d43289f"
+        }
+      ]
+    },
+    {
+      "system": "Table-X",
+      "entry_point": "croll/table_x.py",
+      "tests": [
+        "croll/test_table_x.py"
+      ],
+      "status": "PASS",
+      "started_at": "2026-11-17T13:03:26.171636Z",
+      "exit_code": 0,
+      "counts": {
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed",
+      "elapsed_seconds": 0.559,
+      "input_hashes": {
+        "croll/table_x.py": "ba8cf171d9ed913cffe77c243c3f570893e6be5e2c9c5c6b60d2616f4e7b0d82",
+        "croll/test_table_x.py": "291d94362b0afc360f3abe4b6a4427b203217e8fd92a1ea293b6a9e838d11b9e"
+      },
+      "input_kind": "repository test inputs on isolated source copy",
+      "git_context": "temporary local protocol/src snapshot; not the source commit",
+      "recipient": "pytest subprocess in isolated workspace",
+      "command": [
+        "/data/data/com.termux/files/usr/bin/python",
+        "-m",
+        "pytest",
+        "croll/test_table_x.py",
+        "-q",
+        "-o",
+        "addopts=",
+        "--junitxml=/data/data/com.termux/files/home/W3_HB_team_BXCGICOG/repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/Table-X/junit.xml"
+      ],
+      "source_unchanged": true,
+      "finished_at": "2026-11-17T13:03:26.730879Z",
+      "evidence": [
+        {
+          "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/Table-X/pytest.log",
+          "sha256": "0f22edf9925c57f2d427eeb3f8bd8b9f36836a15711d4fb0eb93ad720d5f6547"
+        },
+        {
+          "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/Table-X/junit.xml",
+          "sha256": "ecb509147440050f8d9cbd5f5f1e3db167224fab257ca59562052ee487c0d352"
+        }
+      ]
+    },
+    {
+      "system": "PX",
+      "entry_point": "protocol/w3lgu/px.py",
+      "tests": [
+        "tests/test_px_w3db_append_flow.py"
+      ],
+      "status": "PASS",
+      "started_at": "2026-11-17T13:03:26.795268Z",
+      "exit_code": 0,
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reason": "listed checks passed",
+      "elapsed_seconds": 0.612,
+      "input_hashes": {
+        "protocol/w3lgu/px.py": "34de47f636cce6be7995f1b3b6cf57e7c82dd02d1c76dc62b82c9a8a515a17cb",
+        "tests/test_px_w3db_append_flow.py": "edfb09c3c790bcd634eaed294f75aaa4ebf1ef968d05ec15338c8d77770d74d2"
+      },
+      "input_kind": "repository test inputs on isolated source copy",
+      "git_context": "temporary local protocol/src snapshot; not the source commit",
+      "recipient": "pytest subprocess in isolated workspace",
+      "command": [
+        "/data/data/com.termux/files/usr/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_px_w3db_append_flow.py",
+        "-q",
+        "-o",
+        "addopts=",
+        "--junitxml=/data/data/com.termux/files/home/W3_HB_team_BXCGICOG/repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/PX/junit.xml"
+      ],
+      "source_unchanged": true,
+      "finished_at": "2026-11-17T13:03:27.407469Z",
+      "evidence": [
+        {
+          "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/PX/pytest.log",
+          "sha256": "8fedfe9bbd86f39cafca0c2e14dcdd607718efa1cda16f420f3081750b8d2d23"
+        },
+        {
+          "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/PX/junit.xml",
+          "sha256": "8ec8bf64b16e0cbf6a0e2817d6f943608761476b21ca835e58124f3b8bad7708"
+        }
+      ]
+    }
+  ],
+  "overall": "PASS",
+  "blockers": [],
+  "source_manifest": {
+    "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/source-manifest.json",
+    "sha256": "41605a5a3c282aac00b91cfa876d2ec1fc19b72d9e7511f44b8e2244fcbdc5a8"
+  }
+}

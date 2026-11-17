@@ -1,0 +1,92 @@
+{
+  "task_id": "W3-ORC-1-11525363814276006513859375059",
+  "source_id": "RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a",
+  "destination": {
+    "module": "Gemini",
+    "task": "verify"
+  },
+  "payload": {
+    "request_id": "RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a",
+    "source_request": "requests/RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a.md",
+    "request_sha256": "5f792aa2af224853a0eabec458966cbf8f001193c4230c66c7801fd536398835",
+    "human_cycle": {
+      "version": 1,
+      "intent": {
+        "contract_version": "1.1",
+        "record_type": "w3.intent_record",
+        "record_profile": "perception_memory_alignment",
+        "intent_id": "BBEX-e084c9ccf3e8",
+        "record_id": "BBEX-e084c9ccf3e8-Rf2e60b37",
+        "module": "BBEX-Core",
+        "role": "perceptive_intent_anchor",
+        "state": "READY_FOR_ACTION",
+        "source": "BBX19",
+        "target": "W3",
+        "task": "RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a",
+        "intent": "---\nrequest_id: RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a\ntask_keyword: design\ntarget_module: ChatGPT\nrequester: BBX19\nrequest_type: runtime_circuit\npriority: NORMAL\nfinal_signoff_required: true\n---\n# Read-only API E-CS inspection\nAPI correlation: 3f383d8e-38ce-44e6-8360-889159d3721a\n```w3-circuit\n{\"input\": {\"payload\": {\"inspection\": \"w3_systems_v1\"}}, \"workflow\": \"system_inspection\"}\n```",
+        "desired_outcome": "ผลตามคำร้องต้นทาง ผ่านการตรวจผลของแต่ละขั้น และเงื่อนไขตรวจรับที่ระบุ",
+        "constraints": [],
+        "non_goals": [],
+        "evidence": [
+          "requests/RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a.md"
+        ],
+        "memory": {
+          "observations": [
+            "Outcome basis: source request and declared stage verification contract"
+          ],
+          "support_signals": [],
+          "drift_signals": [],
+          "append_only_intent": true
+        },
+        "alignment": {
+          "state": "OBSERVE",
+          "basis": "declared_signals_only",
+          "decision": false
+        },
+        "communication": {
+          "mode": "CONSULTATION",
+          "counterpart": "BBX19",
+          "structural_options": [],
+          "direct_operational_answer": false,
+          "feedback_question": "What outcome would show that this intent was preserved?"
+        },
+        "missing": [],
+        "reflection_question": "What outcome would show that this intent was preserved?",
+        "created_at": "2026-11-17T13:03:19.169394Z",
+        "execution": {
+          "allowed": false,
+          "performed": false,
+          "reason": "BBEX perceives and preserves intent; BBX19 owns contextual decision and action."
+        }
+      },
+      "callbacks": {}
+    }
+  },
+  "stage": {
+    "task": "verify",
+    "module": "Gemini",
+    "request": {
+      "request_text": "---\nrequest_id: RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a\ntask_keyword: design\ntarget_module: ChatGPT\nrequester: BBX19\nrequest_type: runtime_circuit\npriority: NORMAL\nfinal_signoff_required: true\n---\n# Read-only API E-CS inspection\nAPI correlation: 3f383d8e-38ce-44e6-8360-889159d3721a\n```w3-circuit\n{\"input\": {\"payload\": {\"inspection\": \"w3_systems_v1\"}}, \"workflow\": \"system_inspection\"}\n```\n",
+      "_request_file": "requests/RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a.md",
+      "intent": "RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a",
+      "payload": {
+        "contract_version": "1.0",
+        "module": "ChatGPT",
+        "task": "design",
+        "status": "COMPLETED",
+        "capability": "system_inspection",
+        "review": false,
+        "traceable": true,
+        "mutated": true,
+        "summary": "Inspected 7 systems; listed_checks=PASS; 0 separate follow-ups. Not a production chain certification.",
+        "artifacts": [
+          {
+            "path": "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/report.json",
+            "sha256": "bd13d0efbd52d3290c565abc09e1739eb881806be43cf004a268bb9151e78478",
+            "kind": "w3.system_inspection.json"
+          }
+        ]
+      }
+    }
+  }
+}

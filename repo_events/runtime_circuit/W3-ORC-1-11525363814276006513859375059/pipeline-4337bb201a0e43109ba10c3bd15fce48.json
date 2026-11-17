@@ -1,0 +1,25 @@
+{
+  "stages": [
+    {
+      "task": "design",
+      "module": "ChatGPT",
+      "request": {
+        "payload": {
+          "inspection": "w3_systems_v1"
+        },
+        "request_text": "---\nrequest_id: RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a\ntask_keyword: design\ntarget_module: ChatGPT\nrequester: BBX19\nrequest_type: runtime_circuit\npriority: NORMAL\nfinal_signoff_required: true\n---\n# Read-only API E-CS inspection\nAPI correlation: 3f383d8e-38ce-44e6-8360-889159d3721a\n```w3-circuit\n{\"input\": {\"payload\": {\"inspection\": \"w3_systems_v1\"}}, \"workflow\": \"system_inspection\"}\n```\n",
+        "_request_file": "requests/RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a.md",
+        "intent": "RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a"
+      }
+    },
+    {
+      "task": "verify",
+      "module": "Gemini",
+      "request": {
+        "request_text": "---\nrequest_id: RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a\ntask_keyword: design\ntarget_module: ChatGPT\nrequester: BBX19\nrequest_type: runtime_circuit\npriority: NORMAL\nfinal_signoff_required: true\n---\n# Read-only API E-CS inspection\nAPI correlation: 3f383d8e-38ce-44e6-8360-889159d3721a\n```w3-circuit\n{\"input\": {\"payload\": {\"inspection\": \"w3_systems_v1\"}}, \"workflow\": \"system_inspection\"}\n```\n",
+        "_request_file": "requests/RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a.md",
+        "intent": "RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a"
+      }
+    }
+  ]
+}

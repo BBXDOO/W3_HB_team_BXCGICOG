@@ -1,0 +1,100 @@
+{
+  "schema": "w3.callback_receipt/1",
+  "callback_id": "9ccc03a653269fb9d6e4ede7c69af12c70574b6ed9ada71d3cedce5f29db9923",
+  "callback": {
+    "schema": "w3.human_callback/1",
+    "request_id": "RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a",
+    "binding": {
+      "task_id": "W3-ORC-1-11525363814276006513859375059",
+      "request_sha256": "5f792aa2af224853a0eabec458966cbf8f001193c4230c66c7801fd536398835",
+      "stage_index": 1,
+      "stage_sha256": "27349d6c86ce956591deb8939bb3bee7d55ac4174e2e557f5be52977efcfbfc1",
+      "result_sha256": "de1fb0ffea835849eaab894428d3f9b2249e8a7c9b7acbd5647728956c6a0582",
+      "intent_id": "BBEX-e084c9ccf3e8"
+    },
+    "kind": "DECISION",
+    "decision": "APPROVE",
+    "reason": "ตรวจรับผลการทดสอบ W3-API ผ่าน Trusted Adapter ไปยัง Orchestration และ E-CS: ตรวจระบบ 7/7 ผ่าน 134 tests, Verification 35/35 ผ่าน อนุมัติเฉพาะผลการทดสอบในเครื่อง ไม่ใช่การรับรอง Production",
+    "annotations": [
+      "ยังต้องตรวจการจัดเก็บ E-CS แบบถาวร และทดสอบการใช้งาน Production ก่อนรับรองระบบจริง"
+    ],
+    "evidence": [
+      "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/report.json"
+    ]
+  },
+  "authority": {
+    "authority": "BBX19",
+    "authority_class": "CREATOR_ORIGIN",
+    "verified": true,
+    "verified_by": "BBX19",
+    "delegation_evidence": null
+  },
+  "host_evidence": "BBX19 ตรวจรับผลทดสอบในเครื่องเท่านั้น ไม่ใช่การอนุมัติ Production",
+  "intent_id": "BBEX-e084c9ccf3e8",
+  "response": {
+    "contract_version": "1.0",
+    "status": "COMPLETED",
+    "module": "BBX19",
+    "task": "RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a",
+    "action": "human_decision_recorded",
+    "decision": "APPROVE",
+    "decision_state": "FINAL_DECISION_RECORDED",
+    "summary": "BBX19 recorded APPROVE for 'RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a'. No downstream action was executed.",
+    "reason": "ตรวจรับผลการทดสอบ W3-API ผ่าน Trusted Adapter ไปยัง Orchestration และ E-CS: ตรวจระบบ 7/7 ผ่าน 134 tests, Verification 35/35 ผ่าน อนุมัติเฉพาะผลการทดสอบในเครื่อง ไม่ใช่การรับรอง Production",
+    "decision_record": {
+      "record_type": "w3.human_decision",
+      "decision_id": "BBX19-fb2c78b3e0c0",
+      "decision": "APPROVE",
+      "decided_by": "BBX19",
+      "task": "RQ-API-ECS-3f383d8e-38ce-44e6-8360-889159d3721a",
+      "target": "W3-ORC-1-11525363814276006513859375059:stage:1",
+      "reason": "ตรวจรับผลการทดสอบ W3-API ผ่าน Trusted Adapter ไปยัง Orchestration และ E-CS: ตรวจระบบ 7/7 ผ่าน 134 tests, Verification 35/35 ผ่าน อนุมัติเฉพาะผลการทดสอบในเครื่อง ไม่ใช่การรับรอง Production",
+      "evidence": [
+        "repo_events/system_inspections/runs/7ed5667b83d84d1e949f4667733bee29/report.json",
+        "BBX19 ตรวจรับผลทดสอบในเครื่องเท่านั้น ไม่ใช่การอนุมัติ Production"
+      ],
+      "annotations": [
+        "ยังต้องตรวจการจัดเก็บ E-CS แบบถาวร และทดสอบการใช้งาน Production ก่อนรับรองระบบจริง"
+      ],
+      "trace_id": "",
+      "intent_link": {
+        "intent_id": "BBEX-e084c9ccf3e8",
+        "record_type": "w3.intent_record",
+        "state": "READY_FOR_ACTION",
+        "alignment_state": "OBSERVE",
+        "source_module": "BBEX-Core",
+        "override_applied": false
+      },
+      "authority_context": {
+        "authority_class": "CREATOR_ORIGIN",
+        "authority": "BBX19",
+        "verified_by": "BBX19"
+      },
+      "recorded_at": "2026-11-17T13:19:59.761731Z"
+    },
+    "intent_link": {
+      "intent_id": "BBEX-e084c9ccf3e8",
+      "record_type": "w3.intent_record",
+      "state": "READY_FOR_ACTION",
+      "alignment_state": "OBSERVE",
+      "source_module": "BBEX-Core",
+      "override_applied": false
+    },
+    "artifacts": [
+      {
+        "kind": "w3.human_decision.inline",
+        "id": "BBX19-fb2c78b3e0c0"
+      }
+    ],
+    "mutated": false,
+    "traceable": true,
+    "review": false,
+    "execution": {
+      "allowed": true,
+      "performed": false,
+      "reason": "This adapter records authority; the authorized runtime performs the action."
+    }
+  },
+  "before_status": "WAITING_HUMAN",
+  "recorded_at": "2026-11-17T13:19:59.761757Z"
+}
