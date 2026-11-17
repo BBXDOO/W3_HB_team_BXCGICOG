@@ -61,7 +61,7 @@ const noChange = () => {};
 const props = { story, onChange: noChange };
 const pages: [string, React.ReactElement, string][] = [
   ['Home', <DashboardTab {...props} />, 'เมืองทดสอบ'],
-  ['Story', <StoryTab {...props} />, 'MEP-1'],
+  ['Story', <StoryTab {...props} onCommitChange={() => true} />, 'MEP-1'],
   ['Characters', <CharactersTab {...props} />, 'นักสำรวจ'],
   ['Cards', <CardsTab {...props} />, 'อ่านคู่มือ'],
   ['Board', <BoardTab {...props} />, 'ประเทศไทย'],
