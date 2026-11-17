@@ -1,8 +1,8 @@
 {
-  "report": "repo_events/system_inspections/runs/5c5942db8bc7427ba5af51e048266382/report.json",
+  "report": "repo_events/system_inspections/runs/1a8da5928a034c6482c5685619435bee/report.json",
   "overall": "PASS",
   "inspection_state": "FINISHED",
-  "updated_at": "2026-11-02T12:56:59.452835Z",
-  "finished_at": "2026-11-02T12:56:59.451391Z",
+  "updated_at": "2026-11-17T12:47:28.247665Z",
+  "finished_at": "2026-11-17T12:47:28.246114Z",
   "blockers": []
 }

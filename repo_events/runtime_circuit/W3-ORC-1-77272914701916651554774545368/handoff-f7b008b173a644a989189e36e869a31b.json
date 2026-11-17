@@ -1,0 +1,77 @@
+{
+  "task_id": "W3-ORC-1-77272914701916651554774545368",
+  "source_id": "RQ-ECS-ORCHESTRATION-SMOKE-20261117-001",
+  "destination": {
+    "module": "ChatGPT",
+    "task": "design"
+  },
+  "payload": {
+    "request_id": "RQ-ECS-ORCHESTRATION-SMOKE-20261117-001",
+    "source_request": "requests/RQ-ECS-ORCHESTRATION-SMOKE-20261117-001.md",
+    "request_sha256": "3f642be3bd62ac6312df2db13fc9b2396f62a69dbaac619ef5c8e85f3579c260",
+    "human_cycle": {
+      "version": 1,
+      "intent": {
+        "contract_version": "1.1",
+        "record_type": "w3.intent_record",
+        "record_profile": "perception_memory_alignment",
+        "intent_id": "BBEX-117cf455a4f9",
+        "record_id": "BBEX-117cf455a4f9-Rd72af184",
+        "module": "BBEX-Core",
+        "role": "perceptive_intent_anchor",
+        "state": "READY_FOR_ACTION",
+        "source": "BBX19",
+        "target": "W3",
+        "task": "RQ-ECS-ORCHESTRATION-SMOKE-20261117-001",
+        "intent": "---\nrequest_id: RQ-ECS-ORCHESTRATION-SMOKE-20261117-001\ntask_keyword: design\ntarget_module: ChatGPT\nrequester: BBX19\nrequest_type: runtime_circuit\nlanguage: th\npriority: NORMAL\nfinal_signoff_required: true\n---\n\n# ตรวจการกระตุ้น Orchestration และ E-CS ผ่าน Root Request จริง\n\nงานทดสอบหนึ่งใบ เพื่อพิสูจน์ว่า GitHub push ที่เพิ่ม requests/*.md กระตุ้น W3 Request Cycle, pending intake อ่านใบงานนี้, Orchestration ส่งต่อให้ host executor, และบันทึกหลักฐาน E-CS native กับ Cross-X ตามชุดตรวจที่ลงทะเบียนแล้ว\n\nใช้ workflow system_inspection เดิมเท่านั้น: ChatGPT host executor เรียก fixed inspection profile และ Gemini ตรวจหลักฐานอีกชั้นหนึ่ง ห้ามขยายสิทธิ์หรืออ้างว่าเป็น production end-to-end chain\n\n```w3-circuit\n{\n  \"workflow\": \"system_inspection\",\n  \"input\": {\"payload\": {\"inspection\": \"w3_systems_v1\"}}\n}\n```\n\n## เกณฑ์รับผล\n\n1. พบ GitHub Actions run ของ W3 Request Cycle ที่เกิดจาก commit เพิ่มใบงานนี้ (ถ้า workflow ไม่ถูกกระตุ้น ต้องรายงานว่า NOT_TRIGGERED)\n2. พบ requests/results/RQ-ECS-ORCHESTRATION-SMOKE-20261117-001_RESULT.json และ runtime_circuit task/evidence ที่อ้าง request_id เดียวกัน\n3. รายงาน system_inspections run ใหม่แสดง E-CS suite tests/test_ecs_native_inspection.py และ tests/test_event_chain.py พร้อมผล JUnit และ input hashes\n4. Gemini verifier ตรวจ evidence; final state อาจ WAITING_HUMAN ไม่ถือว่า APPROVED\n5. แยกผลว่า native E-CS/Cross-X contract tests ผ่านออกจากการส่งงานจริง W3-API -> E-CS -> downstream; ไม่กล่าวอ้างว่าเส้นทาง production ครบหากไม่มี handoff evidence\n\nห้ามแก้ source implementation, deploy, หรืออนุมัติ human gate โดยอัตโนมัติ",
+        "desired_outcome": "ผลตามคำร้องต้นทาง ผ่านการตรวจผลของแต่ละขั้น และเงื่อนไขตรวจรับที่ระบุ",
+        "constraints": [],
+        "non_goals": [],
+        "evidence": [
+          "requests/RQ-ECS-ORCHESTRATION-SMOKE-20261117-001.md"
+        ],
+        "memory": {
+          "observations": [
+            "Outcome basis: source request and declared stage verification contract"
+          ],
+          "support_signals": [],
+          "drift_signals": [],
+          "append_only_intent": true
+        },
+        "alignment": {
+          "state": "OBSERVE",
+          "basis": "declared_signals_only",
+          "decision": false
+        },
+        "communication": {
+          "mode": "CONSULTATION",
+          "counterpart": "BBX19",
+          "structural_options": [],
+          "direct_operational_answer": false,
+          "feedback_question": "What outcome would show that this intent was preserved?"
+        },
+        "missing": [],
+        "reflection_question": "What outcome would show that this intent was preserved?",
+        "created_at": "2026-11-17T12:47:18.802976Z",
+        "execution": {
+          "allowed": false,
+          "performed": false,
+          "reason": "BBEX perceives and preserves intent; BBX19 owns contextual decision and action."
+        }
+      },
+      "callbacks": {}
+    }
+  },
+  "stage": {
+    "task": "design",
+    "module": "ChatGPT",
+    "request": {
+      "payload": {
+        "inspection": "w3_systems_v1"
+      },
+      "request_text": "---\nrequest_id: RQ-ECS-ORCHESTRATION-SMOKE-20261117-001\ntask_keyword: design\ntarget_module: ChatGPT\nrequester: BBX19\nrequest_type: runtime_circuit\nlanguage: th\npriority: NORMAL\nfinal_signoff_required: true\n---\n\n# ตรวจการกระตุ้น Orchestration และ E-CS ผ่าน Root Request จริง\n\nงานทดสอบหนึ่งใบ เพื่อพิสูจน์ว่า GitHub push ที่เพิ่ม requests/*.md กระตุ้น W3 Request Cycle, pending intake อ่านใบงานนี้, Orchestration ส่งต่อให้ host executor, และบันทึกหลักฐาน E-CS native กับ Cross-X ตามชุดตรวจที่ลงทะเบียนแล้ว\n\nใช้ workflow system_inspection เดิมเท่านั้น: ChatGPT host executor เรียก fixed inspection profile และ Gemini ตรวจหลักฐานอีกชั้นหนึ่ง ห้ามขยายสิทธิ์หรืออ้างว่าเป็น production end-to-end chain\n\n```w3-circuit\n{\n  \"workflow\": \"system_inspection\",\n  \"input\": {\"payload\": {\"inspection\": \"w3_systems_v1\"}}\n}\n```\n\n## เกณฑ์รับผล\n\n1. พบ GitHub Actions run ของ W3 Request Cycle ที่เกิดจาก commit เพิ่มใบงานนี้ (ถ้า workflow ไม่ถูกกระตุ้น ต้องรายงานว่า NOT_TRIGGERED)\n2. พบ requests/results/RQ-ECS-ORCHESTRATION-SMOKE-20261117-001_RESULT.json และ runtime_circuit task/evidence ที่อ้าง request_id เดียวกัน\n3. รายงาน system_inspections run ใหม่แสดง E-CS suite tests/test_ecs_native_inspection.py และ tests/test_event_chain.py พร้อมผล JUnit และ input hashes\n4. Gemini verifier ตรวจ evidence; final state อาจ WAITING_HUMAN ไม่ถือว่า APPROVED\n5. แยกผลว่า native E-CS/Cross-X contract tests ผ่านออกจากการส่งงานจริง W3-API -> E-CS -> downstream; ไม่กล่าวอ้างว่าเส้นทาง production ครบหากไม่มี handoff evidence\n\nห้ามแก้ source implementation, deploy, หรืออนุมัติ human gate โดยอัตโนมัติ\n",
+      "_request_file": "requests/RQ-ECS-ORCHESTRATION-SMOKE-20261117-001.md",
+      "intent": "RQ-ECS-ORCHESTRATION-SMOKE-20261117-001"
+    }
+  }
+}

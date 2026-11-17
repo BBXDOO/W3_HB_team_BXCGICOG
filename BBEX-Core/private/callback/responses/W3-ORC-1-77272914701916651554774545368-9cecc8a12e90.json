@@ -1,0 +1,17 @@
+{
+  "schema": "w3.human_callback/1",
+  "request_id": "RQ-ECS-ORCHESTRATION-SMOKE-20261117-001",
+  "binding": {
+    "task_id": "W3-ORC-1-77272914701916651554774545368",
+    "request_sha256": "3f642be3bd62ac6312df2db13fc9b2396f62a69dbaac619ef5c8e85f3579c260",
+    "stage_index": 1,
+    "stage_sha256": "15b0a70e0b5e608f47f0a9da655805eb03915871adb2fcc11bbe3393073eb5e8",
+    "result_sha256": "e94c340a9a6fda516bf41fb9ad90a1e6e6c2a9055310daa4cec5d3953d9238f7",
+    "intent_id": "BBEX-117cf455a4f9"
+  },
+  "kind": "DECISION",
+  "decision": "",
+  "reason": "",
+  "annotations": [],
+  "evidence": []
+}

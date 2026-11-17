@@ -1,0 +1,5 @@
+{
+  "module": "ChatGPT",
+  "task": "design",
+  "accepted_by": "local runtime bridge"
+}
