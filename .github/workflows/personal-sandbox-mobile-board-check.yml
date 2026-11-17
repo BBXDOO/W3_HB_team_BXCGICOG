@@ -39,22 +39,17 @@ jobs:
           git diff --cached --quiet || git commit -m "Record v55 board manual source fingerprint"
           git push origin HEAD:feature/mobile-board-v055-source
       - name: Verify reviewed manifest
-        if: github.event_name == 'push'
         run: npm run check:manual
       - name: Build production web assets
-        if: github.event_name == 'push'
         run: npm run build
       - name: Test board tile and theme behavior
-        if: github.event_name == 'push'
         run: |
           npm exec --yes --package=tsx -- tsx tests/boardTiles.tsx
           npm exec --yes --package=tsx -- tsx tests/boardTheme.tsx
           npm exec --yes --package=tsx -- tsx tests/authoringSmoke.tsx
       - name: Sync and validate Android web assets
-        if: github.event_name == 'push'
         run: sh android-app/sync-web-assets.sh
       - uses: actions/upload-artifact@v4
-        if: github.event_name == 'push'
         with:
           name: W3-v55-Android-web-assets
           path: w3_tool_store/personal_sandbox_template/source/android-app/app/src/main/assets/www/
