@@ -44,3 +44,18 @@ jobs:
       - name: Build production web assets
         if: github.event_name == 'push'
         run: npm run build
+      - name: Test board tile and theme behavior
+        if: github.event_name == 'push'
+        run: |
+          npm exec --yes --package=tsx -- tsx tests/boardTiles.tsx
+          npm exec --yes --package=tsx -- tsx tests/boardTheme.tsx
+          npm exec --yes --package=tsx -- tsx tests/authoringSmoke.tsx
+      - name: Sync and validate Android web assets
+        if: github.event_name == 'push'
+        run: sh android-app/sync-web-assets.sh
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'push'
+        with:
+          name: W3-v55-Android-web-assets
+          path: w3_tool_store/personal_sandbox_template/source/android-app/app/src/main/assets/www/
+          if-no-files-found: error
