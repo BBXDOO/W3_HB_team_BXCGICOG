@@ -10,8 +10,12 @@
     "intent_id": "BBEX-117cf455a4f9"
   },
   "kind": "DECISION",
-  "decision": "",
-  "reason": "",
-  "annotations": [],
-  "evidence": []
+"decision": "APPROVE",
+"reason": "ตรวจรับผล smoke test ของ Orchestration และ E-CS: E-CS ผ่าน 10/10, Gemini ตรวจ 34 รายการผ่านทั้งหมด อนุมัติเฉพาะผลการทดสอบ ไม่ใช่การรับรอง production end-to-end",
+"annotations": [
+  "ยังต้องทดสอบ W3-API -> E-CS -> downstream แบบ end-to-end ก่อนรับรองใช้งานจริง"
+],
+"evidence": [
+  "repo_events/system_inspections/runs/1a8da5928a034c6482c5685619435bee/report.json"
+]
 }
