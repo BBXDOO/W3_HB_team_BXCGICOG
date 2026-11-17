@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import type { BoardPack, CellPack } from '../../types';
 import { BOARD_TABLE_THEMES, boardTableTheme } from '../../core/boardTheme';
 import { gridGeometry } from '../../core/boardTiles';
@@ -39,6 +40,19 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
   const [query, setQuery] = useState('');
   const [mobilePanel, setMobilePanel] = useState<'board' | 'tools' | 'theme' | 'tiles' | 'details'>('board');
   const [boardExpanded, setBoardExpanded] = useState(false);
+  useEffect(() => {
+    if (!boardExpanded) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setBoardExpanded(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [boardExpanded]);
   const mobilePanels: ReadonlyArray<readonly ['board' | 'tools' | 'theme' | 'tiles' | 'details', string]> = mode === 'grid' ? ([['board', 'ตาราง'], ['tools', 'เครื่องมือ'], ['theme', 'ธีม'], ['tiles', 'คลังภาพ'], ['details', 'รายละเอียด']] as const) : ([['board', 'พื้นที่'], ['details', 'รายละเอียด']] as const);
   const activeMobilePanel = mobilePanels.some(([id]) => id === mobilePanel) ? mobilePanel : 'board';
   const [sortBy, setSortBy] = useState<'coordinate' | 'name'>('coordinate');
@@ -84,7 +98,7 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
     </div>;
   };
 
-  return <div className={`board-workspace ${boardExpanded ? 'board-workspace-expanded' : ''}`} data-mobile-panel={activeMobilePanel} aria-label="พื้นที่ข้อมูลบอร์ด">
+  const workspace = <div className={`board-workspace ${boardExpanded ? 'board-workspace-expanded' : ''}`} data-mobile-panel={activeMobilePanel} aria-label="พื้นที่ข้อมูลบอร์ด">
     <div className="flex items-center gap-1 overflow-x-auto shrink-0 pb-1" aria-label="รูปแบบการแสดงข้อมูล">
       {modes.map(option => <button key={option.id} type="button" onClick={() => onMode(option.id)} aria-pressed={mode === option.id}
         className={`shrink-0 rounded-lg px-3 py-2 text-xs ${mode === option.id ? 'bg-[var(--accent)] text-[#0b0912] font-bold' : 'bg-white/5 text-slate-300'}`}>{option.label}</button>)}
@@ -175,5 +189,6 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
       </aside></details>
     </div>
   </div>;
+  return boardExpanded ? createPortal(workspace, document.body) : workspace;
 };
 
