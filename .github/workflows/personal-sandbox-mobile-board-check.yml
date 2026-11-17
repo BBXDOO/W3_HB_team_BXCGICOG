@@ -6,7 +6,7 @@ on:
       - '.github/workflows/personal-sandbox-mobile-board-check.yml'
   push:
     branches:
-      - fix/mobile-board-v056-overflow
+      - fix/board-fullscreen-portal-v057
   workflow_dispatch:
 permissions:
   contents: write
@@ -37,7 +37,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add public/release-info.json public/user-guide.md
           git diff --cached --quiet || git commit -m "Record v55 board manual source fingerprint"
-          git push origin HEAD:fix/mobile-board-v056-overflow
+          git push origin HEAD:fix/board-fullscreen-portal-v057
       - name: Verify reviewed manifest
         run: npm run check:manual
       - name: Build production web assets
@@ -51,7 +51,7 @@ jobs:
         run: sh android-app/sync-web-assets.sh
       - uses: actions/upload-artifact@v4
         with:
-          name: W3-v56-Android-web-assets
+          name: W3-v57-Android-web-assets
           path: w3_tool_store/personal_sandbox_template/source/android-app/app/src/main/assets/www/
           if-no-files-found: error
       - uses: actions/setup-java@v4
@@ -70,6 +70,6 @@ jobs:
         run: unzip -t android-app/app/build/outputs/apk/debug/app-debug.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: W3-v56-debug-APK-test-only
+          name: W3-v57-debug-APK-test-only
           path: w3_tool_store/personal_sandbox_template/source/android-app/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
