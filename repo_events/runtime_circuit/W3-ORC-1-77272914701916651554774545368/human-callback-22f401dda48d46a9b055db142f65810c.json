@@ -1,0 +1,100 @@
+{
+  "schema": "w3.callback_receipt/1",
+  "callback_id": "83e02511969a4552320873d5f4407c391bec54649ba48d8ab8aae3fa761f38a2",
+  "callback": {
+    "schema": "w3.human_callback/1",
+    "request_id": "RQ-ECS-ORCHESTRATION-SMOKE-20261117-001",
+    "binding": {
+      "task_id": "W3-ORC-1-77272914701916651554774545368",
+      "request_sha256": "3f642be3bd62ac6312df2db13fc9b2396f62a69dbaac619ef5c8e85f3579c260",
+      "stage_index": 1,
+      "stage_sha256": "15b0a70e0b5e608f47f0a9da655805eb03915871adb2fcc11bbe3393073eb5e8",
+      "result_sha256": "e94c340a9a6fda516bf41fb9ad90a1e6e6c2a9055310daa4cec5d3953d9238f7",
+      "intent_id": "BBEX-117cf455a4f9"
+    },
+    "kind": "DECISION",
+    "decision": "APPROVE",
+    "reason": "ตรวจรับผล smoke test ของ Orchestration และ E-CS: E-CS ผ่าน 10/10, Gemini ตรวจ 34 รายการผ่านทั้งหมด อนุมัติเฉพาะผลการทดสอบ ไม่ใช่การรับรอง production end-to-end",
+    "annotations": [
+      "ยังต้องทดสอบ W3-API -> E-CS -> downstream แบบ end-to-end ก่อนรับรองใช้งานจริง"
+    ],
+    "evidence": [
+      "repo_events/system_inspections/runs/1a8da5928a034c6482c5685619435bee/report.json"
+    ]
+  },
+  "authority": {
+    "authority": "BBX19",
+    "authority_class": "CREATOR_ORIGIN",
+    "verified": true,
+    "verified_by": "BBX19",
+    "delegation_evidence": null
+  },
+  "host_evidence": "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/actions/runs/44086999206",
+  "intent_id": "BBEX-117cf455a4f9",
+  "response": {
+    "contract_version": "1.0",
+    "status": "COMPLETED",
+    "module": "BBX19",
+    "task": "RQ-ECS-ORCHESTRATION-SMOKE-20261117-001",
+    "action": "human_decision_recorded",
+    "decision": "APPROVE",
+    "decision_state": "FINAL_DECISION_RECORDED",
+    "summary": "BBX19 recorded APPROVE for 'RQ-ECS-ORCHESTRATION-SMOKE-20261117-001'. No downstream action was executed.",
+    "reason": "ตรวจรับผล smoke test ของ Orchestration และ E-CS: E-CS ผ่าน 10/10, Gemini ตรวจ 34 รายการผ่านทั้งหมด อนุมัติเฉพาะผลการทดสอบ ไม่ใช่การรับรอง production end-to-end",
+    "decision_record": {
+      "record_type": "w3.human_decision",
+      "decision_id": "BBX19-0937a22bcc72",
+      "decision": "APPROVE",
+      "decided_by": "BBX19",
+      "task": "RQ-ECS-ORCHESTRATION-SMOKE-20261117-001",
+      "target": "W3-ORC-1-77272914701916651554774545368:stage:1",
+      "reason": "ตรวจรับผล smoke test ของ Orchestration และ E-CS: E-CS ผ่าน 10/10, Gemini ตรวจ 34 รายการผ่านทั้งหมด อนุมัติเฉพาะผลการทดสอบ ไม่ใช่การรับรอง production end-to-end",
+      "evidence": [
+        "repo_events/system_inspections/runs/1a8da5928a034c6482c5685619435bee/report.json",
+        "https://github.com/BBXDOO/W3_HB_team_BXCGICOG/actions/runs/44086999206"
+      ],
+      "annotations": [
+        "ยังต้องทดสอบ W3-API -> E-CS -> downstream แบบ end-to-end ก่อนรับรองใช้งานจริง"
+      ],
+      "trace_id": "",
+      "intent_link": {
+        "intent_id": "BBEX-117cf455a4f9",
+        "record_type": "w3.intent_record",
+        "state": "READY_FOR_ACTION",
+        "alignment_state": "OBSERVE",
+        "source_module": "BBEX-Core",
+        "override_applied": false
+      },
+      "authority_context": {
+        "authority_class": "CREATOR_ORIGIN",
+        "authority": "BBX19",
+        "verified_by": "BBX19"
+      },
+      "recorded_at": "2026-11-17T12:51:05.875740Z"
+    },
+    "intent_link": {
+      "intent_id": "BBEX-117cf455a4f9",
+      "record_type": "w3.intent_record",
+      "state": "READY_FOR_ACTION",
+      "alignment_state": "OBSERVE",
+      "source_module": "BBEX-Core",
+      "override_applied": false
+    },
+    "artifacts": [
+      {
+        "kind": "w3.human_decision.inline",
+        "id": "BBX19-0937a22bcc72"
+      }
+    ],
+    "mutated": false,
+    "traceable": true,
+    "review": false,
+    "execution": {
+      "allowed": true,
+      "performed": false,
+      "reason": "This adapter records authority; the authorized runtime performs the action."
+    }
+  },
+  "before_status": "WAITING_HUMAN",
+  "recorded_at": "2026-11-17T12:51:05.875776Z"
+}
