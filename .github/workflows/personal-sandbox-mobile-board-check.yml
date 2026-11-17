@@ -1,0 +1,75 @@
+name: Personal Sandbox mobile board source check
+on:
+  pull_request:
+    paths:
+      - 'w3_tool_store/personal_sandbox_template/source/**'
+      - '.github/workflows/personal-sandbox-mobile-board-check.yml'
+  push:
+    branches:
+      - feature/mobile-board-v055-source
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  source-typecheck:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: w3_tool_store/personal_sandbox_template/source
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: w3_tool_store/personal_sandbox_template/source/package-lock.json
+      - name: Install locked dependencies
+        run: npm ci
+      - name: TypeScript validation
+        run: npm run lint
+      - name: Regenerate reviewed manual on isolated branch
+        if: github.event_name == 'push'
+        run: npm run review:manual
+      - name: Commit reviewed manifest
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/release-info.json public/user-guide.md
+          git diff --cached --quiet || git commit -m "Record v55 board manual source fingerprint"
+          git push origin HEAD:feature/mobile-board-v055-source
+      - name: Verify reviewed manifest
+        run: npm run check:manual
+      - name: Build production web assets
+        run: npm run build
+      - name: Test board tile and theme behavior
+        run: |
+          npm exec --yes --package=tsx -- tsx tests/boardTiles.tsx
+          npm exec --yes --package=tsx -- tsx tests/boardTheme.tsx
+          npm exec --yes --package=tsx -- tsx tests/authoringSmoke.tsx
+      - name: Sync and validate Android web assets
+        run: sh android-app/sync-web-assets.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: W3-v55-Android-web-assets
+          path: w3_tool_store/personal_sandbox_template/source/android-app/app/src/main/assets/www/
+          if-no-files-found: error
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Build Android debug APK for testing
+        run: gradle --no-daemon -p android-app :app:assembleDebug
+      - name: Validate debug APK archive
+        run: unzip -t android-app/app/build/outputs/apk/debug/app-debug.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: W3-v55-debug-APK-test-only
+          path: w3_tool_store/personal_sandbox_template/source/android-app/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error

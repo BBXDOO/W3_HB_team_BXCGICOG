@@ -1,0 +1,36 @@
+name: Review v55 manual manifest on feature branch
+on:
+  push:
+    branches:
+      - feature/mobile-board-v055-source
+    paths:
+      - 'w3_tool_store/personal_sandbox_template/source/docs/คู่มือใช้งานภาษาไทย.md'
+      - '.github/workflows/personal-sandbox-v55-review.yml'
+permissions:
+  contents: write
+jobs:
+  review-manual:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: w3_tool_store/personal_sandbox_template/source
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/mobile-board-v055-source
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: w3_tool_store/personal_sandbox_template/source/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run review:manual
+      - name: Commit generated reviewed manifest and guide
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/release-info.json public/user-guide.md
+          git diff --cached --quiet || git commit -m "Record v55 mobile board manual review"
+          git push origin HEAD:feature/mobile-board-v055-source

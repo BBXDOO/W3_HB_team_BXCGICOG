@@ -35,9 +35,13 @@ const action = 'rounded-lg border border-[var(--accent)]/40 px-3 py-2 text-xs te
 const cellName = (entry: RecordCell) => entry.cell.name?.trim() || `พิกัด ${entry.cell.x}, ${entry.cell.y}`;
 
 export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZoom, onAppearance, onSelect, onMode, onAdd, onUpdate, onDelete, tileLibrary, tileImages = {} }) => {
-  const [query, setQuery] = useState('');
-  const [sortBy, setSortBy] = useState<'coordinate' | 'name'>('coordinate');
   const mode = board.viewMode || 'grid';
+  const [query, setQuery] = useState('');
+  const [mobilePanel, setMobilePanel] = useState<'board' | 'tools' | 'theme' | 'tiles' | 'details'>('board');
+  const [boardExpanded, setBoardExpanded] = useState(false);
+  const mobilePanels: ReadonlyArray<readonly ['board' | 'tools' | 'theme' | 'tiles' | 'details', string]> = mode === 'grid' ? ([['board', 'ตาราง'], ['tools', 'เครื่องมือ'], ['theme', 'ธีม'], ['tiles', 'คลังภาพ'], ['details', 'รายละเอียด']] as const) : ([['board', 'พื้นที่'], ['details', 'รายละเอียด']] as const);
+  const activeMobilePanel = mobilePanels.some(([id]) => id === mobilePanel) ? mobilePanel : 'board';
+  const [sortBy, setSortBy] = useState<'coordinate' | 'name'>('coordinate');
   const tableTheme = boardTableTheme(board);
   const gridViewport = useRef<HTMLDivElement>(null);
   const { gap, radius } = gridGeometry(board.gridStyle);
@@ -80,10 +84,16 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
     </div>;
   };
 
-  return <div className="board-workspace" aria-label="พื้นที่ข้อมูลบอร์ด">
+  return <div className={`board-workspace ${boardExpanded ? 'board-workspace-expanded' : ''}`} data-mobile-panel={activeMobilePanel} aria-label="พื้นที่ข้อมูลบอร์ด">
     <div className="flex items-center gap-1 overflow-x-auto shrink-0 pb-1" aria-label="รูปแบบการแสดงข้อมูล">
       {modes.map(option => <button key={option.id} type="button" onClick={() => onMode(option.id)} aria-pressed={mode === option.id}
         className={`shrink-0 rounded-lg px-3 py-2 text-xs ${mode === option.id ? 'bg-[var(--accent)] text-[#0b0912] font-bold' : 'bg-white/5 text-slate-300'}`}>{option.label}</button>)}
+    </div>
+    <div className="board-mobile-toolbar" aria-label="เครื่องมือบอร์ดบนมือถือ">
+      <div className="board-mobile-tabs" role="group" aria-label="แผงบอร์ด">
+        {mobilePanels.map(([id, label]) => <button key={id} type="button" aria-pressed={activeMobilePanel === id} onClick={() => setMobilePanel(id)}>{label}</button>)}
+      </div>
+      <button className="board-mobile-expand" type="button" aria-pressed={boardExpanded} onClick={() => setBoardExpanded(value => !value)}>{boardExpanded ? 'ย่อ' : '⛶ ขยาย'}</button>
     </div>
     <div className="board-workspace-columns">
       <section className={`${panel} min-w-0 min-h-0 flex flex-col overflow-hidden`} aria-label="ภาพรวมข้อมูล">
@@ -126,7 +136,7 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
           <label><input type="checkbox" checked={!!board.showCoordinates} onChange={e => onAppearance({ showCoordinates: e.target.checked })} /> พิกัด</label>
           <label className="board-size">ขนาด <input aria-label="ขนาดช่องบอร์ด" type="range" min="8" max="64" value={zoom} onChange={e => onZoom(Number(e.target.value))} /> <span>{zoom}px</span></label>
         </div>}
-        {mode === 'grid' && <details className="board-table-theme">
+        {mode === 'grid' && <details className="board-table-theme" open={activeMobilePanel === 'theme' ? true : undefined}>
           <summary>🎨 ธีมเฉพาะตาราง</summary>
           <div className="board-table-theme-options">
             <div className="flex flex-wrap gap-2">{Object.entries(BOARD_TABLE_THEMES).map(([id, preset]) => <button key={id} type="button"
@@ -144,7 +154,7 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
 
         {mode === 'grid' && tileLibrary}
       </section>
-      <details className="board-inspector"><summary>รายละเอียด / เครื่องมือ {selectedKey ? `· ${selectedKey.replace('_', ', ')}` : ''}</summary><aside className="board-inspector-content scroll-container space-y-3 text-xs" aria-label="รายละเอียดและเครื่องมือ">
+      <details className="board-inspector" open={activeMobilePanel === 'details' ? true : undefined}><summary>รายละเอียด / เครื่องมือ {selectedKey ? `· ${selectedKey.replace('_', ', ')}` : ''}</summary><aside className="board-inspector-content scroll-container space-y-3 text-xs" aria-label="รายละเอียดและเครื่องมือ">
         <div><strong className="text-emerald-200">{selected ? cellName(selected) : selectedKey ? `พิกัด ${selectedKey.replace('_', ', ')}` : 'เครื่องมือ'}</strong><p className="text-slate-400 mt-1">{mode === 'mindmap' ? 'จัดหัวข้อและความเชื่อมโยง' : mode === 'database' ? 'ค้นหาและแก้ข้อมูล' : 'เลือกช่องหรือรายการเพื่อดูรายละเอียด'}</p></div>
         <button className={`${action} w-full`} onClick={() => onAdd(mode === 'mindmap' ? selectedKey || undefined : undefined)}>+ {mode === 'mindmap' && selectedKey ? 'เพิ่มหัวข้อย่อย' : 'เพิ่มรายการ'}</button>
         {mode === 'overview' && <div className="grid grid-cols-2 gap-1" aria-label="สรุปข้อมูล"><div className="rounded-lg bg-emerald-950/60 p-2"><span className="text-slate-400">รายการ</span><strong className="block text-lg">{records.length}</strong></div><div className="rounded-lg bg-emerald-950/60 p-2"><span className="text-slate-400">ช่องทั้งหมด</span><strong className="block text-lg">{board.width * board.height}</strong></div></div>}
