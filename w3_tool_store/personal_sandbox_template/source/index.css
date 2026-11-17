@@ -383,3 +383,55 @@ input::placeholder, textarea::placeholder { color: var(--text-dim); opacity: .65
   .board-workspace[data-mobile-panel="tiles"] .board-tile-library { max-height: none; min-height: 0; flex: 1; overflow-y: auto; }
   .board-workspace-expanded { position: fixed; inset: 0; z-index: 1000; width: 100%; height: 100dvh; padding: max(8px, env(safe-area-inset-top)) 8px max(8px, env(safe-area-inset-bottom)); background: var(--background, #101018); }
 }
+
+/* v56: Keep mobile Board tools inside their own viewport, never under the app navigation. */
+@media (max-width: 700px) {
+  .editor-upper, .editor-upper > main, .workspace-stage, .workspace-layout,
+  .workspace-region, .workspace-panels, .workspace-detail, .workspace-preview-shell,
+  .workspace-output, .workspace-output-content, .ps-monitor, .ps-monitor-viewport,
+  .board-workspace, .board-workspace-columns, .board-workspace-columns > section {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .editor-upper > main { flex: 1 1 0%; width: 0; }
+  .board-workspace { width: 100%; overflow: hidden; }
+  .board-mobile-toolbar { width: 100%; min-width: 0; }
+  .board-mobile-tabs { width: 0; flex: 1 1 0%; overscroll-behavior-x: contain; }
+  .board-workspace-columns { width: 100%; flex: 1 1 0%; }
+  .board-workspace-columns > section { width: 100%; }
+  .board-workspace[data-mobile-panel="tools"] .board-grid-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-start;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 8px 0;
+  }
+  .board-workspace[data-mobile-panel="tools"] .board-grid-controls > * {
+    flex: 0 1 auto;
+    max-width: 100%;
+  }
+  .board-workspace[data-mobile-panel="tools"] .board-grid-controls .board-size {
+    flex: 1 1 100%;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    gap: 8px;
+  }
+  .board-workspace[data-mobile-panel="tools"] .board-grid-controls .board-size input[type="range"] {
+    min-width: 0;
+    flex: 1 1 0%;
+    width: 100%;
+  }
+  .board-workspace[data-mobile-panel="board"] .board-grid-viewport {
+    min-width: 0;
+    width: 100%;
+    overflow: auto;
+  }
+  .board-workspace-expanded { max-width: 100vw; }
+}
