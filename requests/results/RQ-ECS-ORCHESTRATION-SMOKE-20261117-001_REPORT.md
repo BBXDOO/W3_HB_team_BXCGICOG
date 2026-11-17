@@ -1,12 +1,12 @@
 # รายงาน RQ-ECS-ORCHESTRATION-SMOKE-20261117-001
 
-- สถานะ: `WAITING_HUMAN`
+- สถานะ: `COMPLETED`
 - [ใบงานต้นทาง](../RQ-ECS-ORCHESTRATION-SMOKE-20261117-001.md)
 - [ผลแบบ JSON](RQ-ECS-ORCHESTRATION-SMOKE-20261117-001_RESULT.json)
 
 ## ผลที่บันทึกไว้
 
-Request RQ-ECS-ORCHESTRATION-SMOKE-20261117-001: WAITING_HUMAN; 2 executor result(s), 1 file artifact(s).
+Request RQ-ECS-ORCHESTRATION-SMOKE-20261117-001: COMPLETED; 2 executor result(s), 1 file artifact(s).
 
 ## ผลงานและหลักฐาน
 
@@ -19,7 +19,6 @@ Request RQ-ECS-ORCHESTRATION-SMOKE-20261117-001: WAITING_HUMAN; 2 executor resul
 
 ### ตอบกลับรายงาน
 
-สถานะ `WAITING_HUMAN` — ตอบโดยอ้างอิงใบงาน `RQ-ECS-ORCHESTRATION-SMOKE-20261117-001`
+วงจรนี้จบที่ `COMPLETED` แล้ว ไม่ต้องตรวจรับซ้ำ
 
-- [📝 เปิดฟอร์มตอบรายงานนี้](../../BBEX-Core/private/callback/responses/W3-ORC-1-77272914701916651554774545368-9cecc8a12e90.json)
 - [📑 วิธีตอบและความหมายของคำตอบ](../../BBEX-Core/private/callback/README.md)
