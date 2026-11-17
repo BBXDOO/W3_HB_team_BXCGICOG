@@ -5,6 +5,7 @@ on:
       - feature/mobile-board-v055-source
     paths:
       - 'w3_tool_store/personal_sandbox_template/source/docs/คู่มือใช้งานภาษาไทย.md'
+      - '.github/workflows/personal-sandbox-v55-review.yml'
 permissions:
   contents: write
 jobs:
