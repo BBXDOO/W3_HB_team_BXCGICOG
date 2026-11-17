@@ -39,7 +39,7 @@ export const BoardWorkspace: React.FC<Props> = ({ board, selectedKey, zoom, onZo
   const [query, setQuery] = useState('');
   const [mobilePanel, setMobilePanel] = useState<'board' | 'tools' | 'theme' | 'tiles' | 'details'>('board');
   const [boardExpanded, setBoardExpanded] = useState(false);
-  const mobilePanels = mode === 'grid' ? ([['board', 'ตาราง'], ['tools', 'เครื่องมือ'], ['theme', 'ธีม'], ['tiles', 'คลังภาพ'], ['details', 'รายละเอียด']] as const) : ([['board', 'พื้นที่'], ['details', 'รายละเอียด']] as const);
+  const mobilePanels: ReadonlyArray<readonly ['board' | 'tools' | 'theme' | 'tiles' | 'details', string]> = mode === 'grid' ? ([['board', 'ตาราง'], ['tools', 'เครื่องมือ'], ['theme', 'ธีม'], ['tiles', 'คลังภาพ'], ['details', 'รายละเอียด']] as const) : ([['board', 'พื้นที่'], ['details', 'รายละเอียด']] as const);
   const activeMobilePanel = mobilePanels.some(([id]) => id === mobilePanel) ? mobilePanel : 'board';
   const [sortBy, setSortBy] = useState<'coordinate' | 'name'>('coordinate');
   const tableTheme = boardTableTheme(board);
