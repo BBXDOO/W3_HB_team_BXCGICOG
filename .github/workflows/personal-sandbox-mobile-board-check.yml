@@ -4,9 +4,12 @@ on:
     paths:
       - 'w3_tool_store/personal_sandbox_template/source/**'
       - '.github/workflows/personal-sandbox-mobile-board-check.yml'
+  push:
+    branches:
+      - feature/mobile-board-v055-source
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   source-typecheck:
     runs-on: ubuntu-latest
@@ -24,3 +27,20 @@ jobs:
         run: npm ci
       - name: TypeScript validation
         run: npm run lint
+      - name: Regenerate reviewed manual on isolated branch
+        if: github.event_name == 'push'
+        run: npm run review:manual
+      - name: Commit reviewed manifest
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/release-info.json public/user-guide.md
+          git diff --cached --quiet || git commit -m "Record v55 board manual source fingerprint"
+          git push origin HEAD:feature/mobile-board-v055-source
+      - name: Verify reviewed manifest
+        if: github.event_name == 'push'
+        run: npm run check:manual
+      - name: Build production web assets
+        if: github.event_name == 'push'
+        run: npm run build
