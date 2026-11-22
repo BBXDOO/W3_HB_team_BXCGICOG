@@ -13,7 +13,7 @@ from pathlib import Path
 from urllib.parse import quote
 
 SKIP = {".git", ".venv", "venv", "__pycache__", "node_modules"}
-EXCLUDED = {".gitkeep", "README.md"}
+EXCLUDED = {"README.md"}
 
 def safe_scope(root: Path, raw: str) -> Path:
     path = Path(raw)
