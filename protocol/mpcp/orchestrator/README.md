@@ -1,7 +1,7 @@
 Name : MPCP Orchestrator  
 AM Ⅲ - BUILD : ตัวจัดการลำดับ flow และ step ผ่าน runtime executor; state SUCCESS/done ไปต่อ, WAIT พัก, STOP/fail/block หยุด และ lifecycle state ที่ไม่ใช่ผลปลายทางต้องไม่ถูกนับว่าสำเร็จ  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-ORCHESTRATOR-README-001  
-≡ Dr1ra - RAMS
+≡ Cr1ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
