@@ -1,4 +1,22 @@
-# Tools
+Name : W3 Repository Tools — เครื่องมือปฏิบัติการและตรวจสอบ\
+AM Ⅲ - BUILD : เครื่องมือ CLI สำหรับตรวจสอบ ทดสอบ และสนับสนุนเวิร์กโฟลว์ของ W3\
+Log time : 2026-11-22 (Asia/Bangkok; ไม่ระบุเวลา) ; ID : W3-TOOLS-README-001\
+≡ Br1ra - RAMS
+
+## Body — บทบาทและวิธีใช้งานของพื้นที่
+
+`tools/` เป็นพื้นที่รวมสคริปต์ปฏิบัติการของ repository `W3_HB_team_BXCGICOG` สำหรับการตรวจความสมบูรณ์ของไฟล์ การตรวจ schema/metadata การทดลอง smoke test และตัวเชื่อมเวิร์กโฟลว์ เครื่องมือแต่ละตัวทำงานตามสิทธิ์และข้อจำกัดของตัวเอง; การอยู่ร่วมโฟลเดอร์ไม่ได้หมายความว่ามีสิทธิ์แก้ส่วนอื่นของระบบ
+
+```yaml
+AM_TYPE: III
+ROLE: OPERATIONAL
+DERIVED_FROM:
+  - docs/governance/AMS.md
+  - docs/box/AMS/AMS_README.txt
+  - knowledge/philosophy/corevsstructure.md
+```
+
+รายละเอียดการเรียกใช้งานและผลลัพธ์ที่บันทึกไว้เดิม:
 
 This directory contains utility scripts for the W3_HB_team_BXCGICOG repository: file integrity checks, schema validation, and engine smoke tests.
 
@@ -194,9 +212,9 @@ Files that are empty (excluding .gitkeep files which are intentionally empty).
 ### 🔗 Broken Symbolic Links
 Symbolic links that point to non-existent targets.
 
-## Current Status
+## Historical status — 2025-12-12
 
-As of the last W3 Full Sanity Sweep (2025-12-12):
+The following results are historical evidence from the last documented W3 Full Sanity Sweep (2025-12-12), not a new verification:
 
 ✅ **All checks passed:**
 - Missing Directories: 0
@@ -261,3 +279,36 @@ The repository includes a GitHub Actions workflow at `.github/workflows/validate
 `origin_support.py` เป็น adapter ให้ Orchestration เรียกเครื่องมือเดิมใน tools/
 เพื่อช่วยตรวจผลงาน Origin ตามขอบเขต ไม่ใช่การให้สิทธิแก้ไฟล์ทุกพาธ
 ดู [คู่มือภาษาไทย](../docs/guides/ORIGIN_TOOLS_SUPPORT_TH.md) สำหรับเครื่องมือที่เชื่อมแล้ว หลักฐาน และสถานะงานค้าง
+
+
+## Movement — การนำทางในพื้นที่
+
+### M1 — รายการในโฟลเดอร์ `tools/`
+
+| รายการ | บทบาท |
+|---|---|
+| [README.md](README.md) | ขอบเขตและคู่มือเครื่องมือในพื้นที่นี้ |
+| [agent_sandbox/](agent_sandbox/README.md) | เอกสารและหลักฐานการตั้งค่า MPCP sandbox |
+| [w3_document_allocator.py](w3_document_allocator.py) | จัดสรรและสร้างเอกสารตาม AMS พร้อมการตรวจเงื่อนไข |
+| [smoke_test.py](smoke_test.py), [smoke_api_ecs_orchestration.py](smoke_api_ecs_orchestration.py) | เครื่องมือ smoke test สำหรับ engine และ API/orchestration |
+| [file_integrity_check.py](file_integrity_check.py), [file_integrity_report.txt](file_integrity_report.txt), [send_integrity_report.py](send_integrity_report.py) | ตรวจสอบไฟล์ เก็บรายงาน และส่งรายงาน |
+| [validate_json_schemas.py](validate_json_schemas.py), [validate_modules.py](validate_modules.py), [validate_metadata.py](validate_metadata.py), [validate_runtime_log.py](validate_runtime_log.py) | ตรวจ schema, module, metadata และ runtime log |
+| [origin_support.py](origin_support.py), [origin_collaboration.py](origin_collaboration.py), [origin_cycle.py](origin_cycle.py), [orchestration_support.py](orchestration_support.py) | ตัวเชื่อมและวงจรสนับสนุน Origin/Orchestration |
+| [w3_toolbox.py](w3_toolbox.py), [w3run.py](w3run.py), [w3api.py](w3api.py), [w3_agent_ci.py](w3_agent_ci.py) | จุดเรียกและสนับสนุนงานเครื่องมือ/CI ของ W3 |
+| [สคริปต์อื่นใน tools/](https://github.com/BBXDOO/W3_HB_team_BXCGICOG/tree/refactor/v0.2/tools) | เครื่องมือเฉพาะด้านอื่นในพื้นที่เดียวกัน; ตรวจหน้าที่จากโค้ดก่อนใช้งาน |
+
+### M2 — เอกสารที่สัมพันธ์กันนอกพื้นที่
+
+| docs.* | Text link | ความสัมพันธ์ |
+|---|---|---|
+| docs.ams-readme | [AMS README template](../docs/box/AMS/AMS_README.txt) | โครง Head / Body / Movement และ OWNER / MAKER |
+| docs.ams-governance | [Architecture Mapping Standard](../docs/governance/AMS.md) | กฎ AM Type, lineage และรหัส Gradation |
+| docs.core | [Core vs Structure](../knowledge/philosophy/corevsstructure.md) | ความหมายต้นทางที่ต้องตามรอยได้ |
+| docs.allocator | [คู่มือ W3 Document Allocator](../docs/guides/W3_DOCUMENT_ALLOCATOR_TH.md) | วิธีใช้ตัวจัดสรรเอกสาร |
+| docs.origin | [คู่มือ Origin tools support](../docs/guides/ORIGIN_TOOLS_SUPPORT_TH.md) | ขอบเขตและหลักฐานของตัวเชื่อม Origin |
+| docs.workbench | [Agent Workbench](../w3_tool_store/agent_workbench/README.md) | พื้นที่สร้างเครื่องมือแยกจาก prototype; ไม่ใช่โฟลเดอร์เดียวกับ tools/ นี้ |
+
+---
+
+OWNER : BBX19\
+MAKER : ChatGPT / Codex — ปรับรูปแบบ README ตาม AMS โดยรักษาคู่มือเดิม
