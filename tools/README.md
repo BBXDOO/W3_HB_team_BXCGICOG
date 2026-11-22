@@ -1,7 +1,7 @@
 Name : W3 Repository Tools — เครื่องมือปฏิบัติการและตรวจสอบ\
 AM Ⅲ - BUILD : เครื่องมือ CLI สำหรับตรวจสอบ ทดสอบ และสนับสนุนเวิร์กโฟลว์ของ W3\
 Log time : 2026-11-22 (Asia/Bangkok; ไม่ระบุเวลา) ; ID : W3-TOOLS-README-001\
-≡ Br1ra - RAMS
+≡ Ar1ra - RAMS
 
 ## Body — บทบาทและวิธีใช้งานของพื้นที่
 
