@@ -1,7 +1,7 @@
 Name : W3Lgu–MPCP Integration Profiles  
 AM Ⅱ - BUILD : ชุดเอกสาร profile เชื่อม W3Lgu กับ MPCP, Blueprint, Runtime และ Condien โดยรักษา grammar core เดียวแต่แยก purpose/authority ของแต่ละ profile; profile ไม่ใช่ใบอนุมัติ execute  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-W3LGU-INTEGRATION-PAPER-README-001  
-≡ Dr1ra - RAMS
+≡ Cr1ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
