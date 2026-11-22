@@ -1,7 +1,7 @@
 Name : MPCP Configuration  
 AM Ⅲ - BUILD : ตัวโหลด config แบบตรวจโครงสร้างและ immutable view จาก default.json; ชื่อ library ใน config เป็นการประกาศ ไม่ใช่หลักฐานว่ามี implementation หรือถูกติดตั้งแล้ว  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-CONFIG-README-001  
-≡ Dr1ra - RAMS
+≡ Cr1ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
