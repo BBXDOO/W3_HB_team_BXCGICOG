@@ -1,7 +1,7 @@
 Name : MPCP — Modular Protocol Control Platform  
 AM Ⅱ - BUILD : MPCP system architecture, operational model and boundaries  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-README-001  
-≡ Cr8ra - RAMS
+≡ Br8ra - RAMS
 
 ## Body — MPCP system definition
 
