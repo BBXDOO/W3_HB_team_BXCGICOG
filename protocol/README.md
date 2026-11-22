@@ -1,7 +1,7 @@
 Name : W3 Protocol — พื้นที่รวมระบบย่อยและต้นแบบเฉพาะของ W3  
 AM Ⅱ - BUILD : การจัดโครงสร้างและเชื่อมโยงระบบย่อยตามแนวคิดต้นทาง  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : RT100A9  
-≡ Br1ra - RAMS
+≡ Ar1ra - RAMS
 
 ## Body — ความหมายและขอบเขตของ protocol/
 
