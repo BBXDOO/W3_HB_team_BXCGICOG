@@ -1,7 +1,7 @@
 Name : MPCP Unified Language Paper  
 AM Ⅱ - BUILD : ข้อกำหนดภาษากลางสำหรับ input/output และการสื่อสารระหว่างชั้นของ MPCP; เอกสารภาษาเป็นข้อกำหนด ไม่ใช่การยืนยันว่า parser หรือ adapter ทุกช่องทางรองรับครบ  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-MPCP-UNIFIED-LGU-README-001  
-≡ Dr1ra - RAMS
+≡ Cr1ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
