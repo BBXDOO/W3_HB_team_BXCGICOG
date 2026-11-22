@@ -1,4 +1,26 @@
-README.md — /protocol/mpcp/mpcp_blueprint_paper/
+Name : MPCP Blueprint Paper — แบบแผนโครงสร้างระบบ MPCP  
+AM Ⅱ - BUILD : ข้อกำหนด Blueprint เชิงประกาศสำหรับการสร้างระบบซ้ำ  
+Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-BLUEPRINT-README-001  
+≡ Br1ra - RAMS
+
+## Body — ขอบเขตและแนวคิด Blueprint
+
+README นี้อธิบายเฉพาะพื้นที่ `protocol/mpcp/mpcp_blueprint_paper/` และเชื่อมไปยังเอกสารต้นทาง โดยไม่ขยายสิทธิ์ไปยัง Runtime หรือระบบอื่น
+
+```yaml
+AM_TYPE: II
+ROLE: ADAPTATION
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
+  - protocol/mpcp/MPCP_ORIGIN.md
+  - protocol/mpcp/mpcp_blueprint_paper/mpcp_blueprint_paper.md
+DOCUMENT_ID: MPCP-BLUEPRINT-README-001
+DOCUMENT_PATH: protocol/mpcp/mpcp_blueprint_paper/README.md
+```
+
+**หลักที่รักษาไว้:** Blueprint เป็นแผนโครงสร้างที่อ่านได้ สร้างซ้ำได้ และไม่ใช่คำสั่งรันงาน; Runtime เป็นผู้ปฏิบัติจริง การกำหนด TARGET, LIB หรือ PARTITION ในเอกสารไม่ได้เป็นการอนุมัติให้ติดตั้งหรือเข้าถึงสภาพแวดล้อม
+
+### เนื้อหาต้นฉบับของ Blueprint (คงรายละเอียดเดิม)
 
 # MPCP Blueprint Paper
 W3_HB_team_BXCGICOG | refactor/v0.2
@@ -25,6 +47,7 @@ A Blueprint is a reproducible system description.
 ```text
 Blueprint = plan
 Runtime   = action
+```
 
 MPCP separates these intentionally.
 
@@ -370,9 +393,27 @@ MPCP Blueprint Standard v1
 
 ACTIVE — refactor/v0.2
 
+## Movement — เส้นทางเอกสาร
+
+### M1 — รายการภายในโฟลเดอร์นี้
+
+| รายการ | บทบาท |
+|---|---|
+| [README.md](README.md) | คำอธิบายและแผนที่เอกสาร Blueprint ตาม AMS |
+| [mpcp_blueprint_paper.md](mpcp_blueprint_paper.md) | เอกสารมาตรฐาน Blueprint ต้นทางภาษาไทย รูปแบบ KEY:VALUE ตัวอย่างและข้อห้าม |
+
+### M2 — เอกสารอ้างอิงนอกพื้นที่
+
+| docs.* | Text link | ความสัมพันธ์ |
+|---|---|---|
+| docs.parent | [MPCP](../README.md) | บริบทและขอบเขตของระบบ MPCP |
+| docs.origin | [MPCP Origin](../MPCP_ORIGIN.md) | ต้นกำเนิดและความแตกต่างระหว่างโครงสร้างกับความหมาย |
+| docs.core | [Core vs Structure](../../../knowledge/philosophy/corevsstructure.md) | หลักการรักษาความหมายต้นทาง |
+| docs.ams | [Architecture Mapping Standard](../../../docs/governance/AMS.md) | กฎชั้น AM และ Gradation |
+| docs.template | [AMS README template](../../../docs/box/AMS/AMS_README.txt) | รูปแบบ Head / Body / Movement |
+| docs.workbench | [Agent Workbench — โต๊ะช่างของเอเจนท์](../../../w3_tool_store/agent_workbench/README.md) | พื้นที่เครื่องมือที่เกี่ยวข้อง แต่ไม่ใช่ Runtime ของ Blueprint |
 
 ---
 
-Owner
-
-BBX19 W3_HB_team_BXCGICOG
+OWNER : BBX19 — เจ้าของมาตรฐาน MPCP Blueprint  
+MAKER : ChatGPT / Codex — ปรับ README ตาม AMS โดยรักษาเนื้อหาต้นฉบับ
