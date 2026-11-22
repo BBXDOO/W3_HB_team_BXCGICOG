@@ -1,7 +1,7 @@
 Name : MPCP Runtime — event-bound Paper execution  
 AM Ⅲ - BUILD : การทำงานและขอบเขตของส่วนประกอบ MPCP  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-RUNTIME-README-001  
-≡ Cr1ra - RAMS
+≡ Dr1ra - RAMS
 
 ## Body — บทบาท
 
