@@ -1,7 +1,7 @@
 Name : E-CS — Event Chain System  
 AM Ⅲ - BUILD : ชุดโค้ด event, template, cooperative contract, chain pointer และ integration สำหรับสร้างแผน Cross-X โดยไม่ถือว่าการสร้าง plan คือการ execute หรืออนุมัติงาน  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : ECS-README-001  
-≡ Br1ra - RAMS
+≡ Cr1ra - RAMS
 
 ## Body — บทบาทและขอบเขต
 
