@@ -1,7 +1,7 @@
 Name : Modew Dynamic Capability Paper  
 AM Ⅰ - BUILD : เอกสารแนวคิดเรื่อง Modew ซึ่งเป็นหน่วยทำงานที่คงโครงสร้างแต่ปรับ property, argument และบทบาทตามบริบทได้; ความสามารถที่ระบุใน Paper เป็นข้อกำหนดเชิงแนวคิด ไม่ใช่หลักฐานว่ามี implementation ครบทุกข้อ  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-MODEW-DYNAMIC-CAPABILITY-PAPER-README-001  
-≡ Cr2ra - RAMS
+≡ Dr2ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
