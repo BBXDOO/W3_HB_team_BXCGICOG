@@ -1,7 +1,7 @@
 Name : MPCP Modew Implementations  
 AM Ⅲ - BUILD : หน่วยทำงาน Modew ที่ลงโค้ดแล้ว รวม BaseModew, Condien read-only view และ File.void text artifact equipment; ห้ามอนุมานว่า Modew ทุกประเภทใน Paper มี implementation หรือสิทธิ์เรียกใช้โดยอัตโนมัติ  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-MODEW-README-001  
-≡ Cr1ra - RAMS
+≡ Dr1ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
