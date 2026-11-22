@@ -54,26 +54,6 @@ CLI Paper ลงทะเบียนอุปกรณ์จริงสอง�
 - docs.context : [Condien scoped view Modew](../modew/condien_view.py)
 - docs.tests : [Equipment/storage tests](../../../tests/test_mpcp_condien_equipment.py)
 
-## Movement — ตรวจสอบรายการในพื้นที่ตาม Git
-
-### M1 — รายการไฟล์ใน `lib/`
-
-| รายการ | หน้าที่ |
-|---|---|
-| [README.md](README.md) | README และ AMS map |
-| [__init__.py](__init__.py) | Python module |
-| [pillar.py](pillar.py) | Python module |
-| [registry.py](registry.py) | จุดตรวจสอบหลัก |
-
-### M2 — ต้นทางและระบบที่เกี่ยวข้อง
-
-| docs.* | Text link | ความสัมพันธ์ |
-|---|---|---|
-| docs.parent | [MPCP](../README.md) | ระบบแม่ |
-| docs.origin | [MPCP Origin](../MPCP_ORIGIN.md) | ความหมายต้นทาง |
-| docs.rot | [ROT Baseline](../ROT_BASELINE.md) | ขอบเขตการควบคุมและการตรวจสอบ |
-| docs.ams | [AMS](../../../docs/governance/AMS.md) | กฎ AMS |
-
 ---
 
 OWNER : BBX19 — เจ้าของ MPCP ตามเอกสารเดิม  
