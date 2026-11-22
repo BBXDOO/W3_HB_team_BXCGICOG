@@ -1,7 +1,7 @@
 Name : W3DB — World 3 Database (protocol interface and tests)  
 AM Ⅲ - BUILD : โค้ดและการทดสอบ W3DB ในพื้นที่ protocol  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : W3DB-README-001  
-≡ Cr1ra - RAMS
+≡ Br1ra - RAMS
 
 ## Body — บทบาทและขอบเขต
 
