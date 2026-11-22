@@ -1,7 +1,7 @@
 Name : W3Lgu — W3 Language Unit  
 AM Ⅱ - BUILD : ภาษาและกติกาการสื่อสาร/การทำงานภายใน W3; ไวยากรณ์ สัญลักษณ์ และขอบเขตของ operational contract ต้องอ้างอิงเอกสารและโค้ดในพื้นที่นี้ ไม่อนุมานว่าทุกแผนหรือทุกโมดูลพร้อมใช้งาน  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : W3LGU-README-001  
-≡ Cr3ra - RAMS
+≡ Br3ra - RAMS
 
 ## Body — บทบาทและขอบเขต
 
