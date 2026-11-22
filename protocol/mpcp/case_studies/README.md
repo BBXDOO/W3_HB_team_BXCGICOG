@@ -1,7 +1,7 @@
 Name : MPCP Case Studies — evidence and retrospective  
 AM Ⅱ - BUILD : กรณีศึกษาและบทเรียนที่ต้องแยกจากผลทดสอบปัจจุบัน  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-CASE_STUDIES-README-001  
-≡ Dr2ra - RAMS
+≡ Cr2ra - RAMS
 
 # MPCP Case Studies
 
