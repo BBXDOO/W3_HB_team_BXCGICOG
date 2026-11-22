@@ -1,7 +1,7 @@
 Name : MPCP Pillar Schema  
 AM Ⅲ - BUILD : ตัวอย่าง JSON และ JSON Schema ของ Pillar A–F; construction_order เป็นลำดับสร้างโครง ไม่ใช่ข้อบังคับให้ operational execution ไหลตาม A–F เสมอ  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-SCHEMA-README-001  
-≡ Cr1ra - RAMS
+≡ Dr1ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
