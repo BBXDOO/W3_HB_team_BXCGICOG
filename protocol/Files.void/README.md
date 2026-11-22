@@ -1,3 +1,46 @@
+Name : File.void — unresolved transmissive concept  
+AM Ⅰ - BUILD : แนวคิด File.void ว่าด้วย unresolved transmissive state และการ manifest ชั่วคราวโดยไม่เปลี่ยน source truth; ไม่ใช่ที่เก็บ artifact และไม่อนุญาต final write โดยตัวมันเอง  
+Log time : 2026-11-22 (date only; time not recorded) ; ID : FILES-VOID-README-001  
+≡ Br2ra - RAMS
+
+## Body — บทบาทและขอบเขต
+
+แนวคิด File.void ว่าด้วย unresolved transmissive state และการ manifest ชั่วคราวโดยไม่เปลี่ยน source truth; ไม่ใช่ที่เก็บ artifact และไม่อนุญาต final write โดยตัวมันเอง
+
+```yaml
+AM_TYPE: I
+ROLE: CORE_CONCEPT
+DERIVED_FROM:
+  - protocol/Files.void/File_void.md
+DOCUMENT_PATH: protocol/Files.void/README.md
+```
+
+**ขอบเขต:** README นี้อธิบายเฉพาะ `protocol/Files.void/` ไม่ขยายสิทธิ์ของระบบอื่นและไม่ยืนยันผลทดสอบที่ไม่ได้มีหลักฐาน
+
+## Movement — การนำทาง
+
+### M1 — รายการในโฟลเดอร์นี้
+
+| รายการ | ประเภท |
+|---|---|
+| [File_void.md](File_void.md) | เอกสาร |
+| [README.md](README.md) | README / AMS |
+| [void.runtime.spec.md](void.runtime.spec.md) | เอกสาร |
+
+### M2 — เอกสารอ้างอิงนอกพื้นที่
+
+| docs.* | Text link | ความสัมพันธ์ |
+|---|---|---|
+| docs.parent | [พื้นที่ protocol](../README.md) | พื้นที่ protocol |
+| docs.core | [หลักความต่อเนื่องของความหมาย](../../knowledge/philosophy/corevsstructure.md) | หลักความต่อเนื่องของความหมาย |
+| docs.runtime | [Python implementation แยกพื้นที่](../files_void/README.md) | Python implementation แยกพื้นที่ |
+| docs.mpcp | [ระบบ MPCP](../mpcp/README.md) | ระบบ MPCP |
+| docs.ams | [กฎ AMS](../../docs/governance/AMS.md) | กฎ AMS |
+
+---
+
+### บันทึกเนื้อหา README เดิม (รักษาข้อมูลต้นทาง)
+
 # File.void
 
 ```txt
@@ -67,3 +110,8 @@ from protocol.mpcp.adapter.file_void_tool import call_file_void_tool, build_file
 - `:/ SAVE` means `persist_handoff`, not direct write.
 - `[/] != artifact` remains an invariant.
 - Source truth must remain unchanged.
+
+---
+
+OWNER : BBX19 — เจ้าของแนวคิด/ระบบตามข้อมูลต้นทาง  
+MAKER : ChatGPT / Codex — ปรับ README ให้สอดคล้อง AMS โดยรักษาเนื้อหาเดิม
