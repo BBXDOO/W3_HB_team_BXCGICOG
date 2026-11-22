@@ -1,7 +1,7 @@
 Name : W3 Agent Workbench — โต๊ะช่างของเอเจนท์  
 AM Ⅱ - BUILD : การประยุกต์ต้นแบบเป็นพื้นที่เครื่องมือร่วมของ W3  
 Log time : 2026-10-24 (Asia/Bangkok; ไม่ระบุเวลา) ; ID : W3-AWB-README-001  
-≡ Cr1ra - RAMS
+≡ Br1ra - RAMS
 
 ## Body — บทบาทของพื้นที่
 
