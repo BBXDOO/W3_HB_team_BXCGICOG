@@ -1,7 +1,7 @@
 Name : MPCP Kernel  
 AM Ⅲ - BUILD : กฎ contract, ROT, system identity, registry, event template, module bridge และ validator; Contract ตรวจรูปขั้นต่ำ ส่วน ROT ตรวจ relation/boundary ของข้อมูลที่ normalize แล้ว ไม่ใช่ตัวแปลภาษา  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-KERNEL-README-001  
-≡ Dr1ra - RAMS
+≡ Cr1ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
