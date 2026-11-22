@@ -1,7 +1,7 @@
 Name : protocol.files_void — Python staging package  
 AM Ⅲ - BUILD : Python package สำหรับ create, resolve, manifest, copy, persist_handoff และ release ของ File.void; ไม่เขียน artifact ขั้นสุดท้าย ไม่แก้ source truth และไม่อนุมัติ persistence  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : FILES_VOID-README-001  
-≡ Cr1ra - RAMS
+≡ Br1ra - RAMS
 
 ## Body — บทบาทและขอบเขต
 
