@@ -1,7 +1,7 @@
-Name : MPCP Library — รายการและอุปกรณ์ที่เรียกใช้ได้\
-AM Ⅲ - BUILD : ตัวเชื่อม runtime และอุปกรณ์ภายใต้กรอบ MPCP\
-Log time : 2026-10-24 (Asia/Bangkok; ไม่ระบุเวลา) ; ID : MPCP-LIB-README-001\
-Reserved : ยังไม่เปิดเผยตามต้นแบบ AMS
+Name : MPCP Library — registry and host equipment  
+AM Ⅲ - BUILD : การทำงานและขอบเขตของส่วนประกอบ MPCP  
+Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-LIB-README-001  
+≡ Cr1ra - RAMS
 
 ## Body — บทบาทและขอบเขต
 
@@ -54,7 +54,27 @@ CLI Paper ลงทะเบียนอุปกรณ์จริงสอง�
 - docs.context : [Condien scoped view Modew](../modew/condien_view.py)
 - docs.tests : [Equipment/storage tests](../../../tests/test_mpcp_condien_equipment.py)
 
+## Movement — ตรวจสอบรายการในพื้นที่ตาม Git
+
+### M1 — รายการไฟล์ใน `lib/`
+
+| รายการ | หน้าที่ |
+|---|---|
+| [README.md](README.md) | README และ AMS map |
+| [__init__.py](__init__.py) | Python module |
+| [pillar.py](pillar.py) | Python module |
+| [registry.py](registry.py) | จุดตรวจสอบหลัก |
+
+### M2 — ต้นทางและระบบที่เกี่ยวข้อง
+
+| docs.* | Text link | ความสัมพันธ์ |
+|---|---|---|
+| docs.parent | [MPCP](../README.md) | ระบบแม่ |
+| docs.origin | [MPCP Origin](../MPCP_ORIGIN.md) | ความหมายต้นทาง |
+| docs.rot | [ROT Baseline](../ROT_BASELINE.md) | ขอบเขตการควบคุมและการตรวจสอบ |
+| docs.ams | [AMS](../../../docs/governance/AMS.md) | กฎ AMS |
+
 ---
 
-OWNER : BBX19\
-MAKER : ChatGPT / Codex
+OWNER : BBX19 — เจ้าของ MPCP ตามเอกสารเดิม  
+MAKER : ChatGPT / Codex — ปรับ README ตาม AMS และรักษาคำอธิบายเดิม
