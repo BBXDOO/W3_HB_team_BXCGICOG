@@ -92,28 +92,6 @@ CLI ใช้ host equipment registry สำหรับ `file-void-text` แล
 - docs.example : [ตัวอย่างสอง Paper](../../../tools/agent_sandbox/paper_pack.json)
 - docs.tests : [Paper runtime tests](../../../tests/test_mpcp_paper_runtime.py)
 
-## Movement — ตรวจสอบรายการในพื้นที่ตาม Git
-
-### M1 — รายการไฟล์ใน `runtime/`
-
-| รายการ | หน้าที่ |
-|---|---|
-| [README.md](README.md) | README และ AMS map |
-| [__init__.py](__init__.py) | Python module |
-| [entry.py](entry.py) | Python module |
-| [executor.py](executor.py) | Python module |
-| [paper.py](paper.py) | จุดตรวจสอบหลัก |
-| [trace.py](trace.py) | Python module |
-
-### M2 — ต้นทางและระบบที่เกี่ยวข้อง
-
-| docs.* | Text link | ความสัมพันธ์ |
-|---|---|---|
-| docs.parent | [MPCP](../README.md) | ระบบแม่ |
-| docs.origin | [MPCP Origin](../MPCP_ORIGIN.md) | ความหมายต้นทาง |
-| docs.rot | [ROT Baseline](../ROT_BASELINE.md) | ขอบเขตการควบคุมและการตรวจสอบ |
-| docs.ams | [AMS](../../../docs/governance/AMS.md) | กฎ AMS |
-
 ---
 
 OWNER : BBX19 — เจ้าของ MPCP ตามเอกสารเดิม  
