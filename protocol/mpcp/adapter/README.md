@@ -1,7 +1,7 @@
 Name : MPCP Adapters  
 AM Ⅲ - BUILD : ตัวเชื่อม MPCP กับ File.void, W3 executor และ W3DB; แต่ละ bridge มีขอบเขตต่างกัน: File.void ไม่เขียนไฟล์ขั้นสุดท้าย, W3 bridge ต้องรับ executor จาก host และ W3DB bridge สร้าง append candidate โดยไม่เขียนจริง  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-ADAPTER-README-001  
-≡ Dr1ra - RAMS
+≡ Cr1ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
