@@ -65,28 +65,6 @@ Inbound MPCP packets declare `W3LGU_PROFILE:W3Lgu-MPCP-Runtime` and outbound
 returns declare `w3lgu_profile:W3Lgu-Result`. The package does not duplicate the
 W3Lgu parser or freeze its future library structure.
 
-## Movement — ตรวจสอบรายการในพื้นที่ตาม Git
-
-### M1 — รายการไฟล์ใน `env/`
-
-| รายการ | หน้าที่ |
-|---|---|
-| [README.md](README.md) | README และ AMS map |
-| [__init__.py](__init__.py) | Python module |
-| [boundary.py](boundary.py) | จุดตรวจสอบหลัก |
-| [gateway.py](gateway.py) | Python module |
-| [models.py](models.py) | Python module |
-| [probe.py](probe.py) | Python module |
-
-### M2 — ต้นทางและระบบที่เกี่ยวข้อง
-
-| docs.* | Text link | ความสัมพันธ์ |
-|---|---|---|
-| docs.parent | [MPCP](../README.md) | ระบบแม่ |
-| docs.origin | [MPCP Origin](../MPCP_ORIGIN.md) | ความหมายต้นทาง |
-| docs.rot | [ROT Baseline](../ROT_BASELINE.md) | ขอบเขตการควบคุมและการตรวจสอบ |
-| docs.ams | [AMS](../../../docs/governance/AMS.md) | กฎ AMS |
-
 ---
 
 OWNER : BBX19 — เจ้าของ MPCP ตามเอกสารเดิม  
