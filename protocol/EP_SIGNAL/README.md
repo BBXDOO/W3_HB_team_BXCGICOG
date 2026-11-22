@@ -1,7 +1,7 @@
 Name : EP Signal Encoding — experimental pulse rhythm notation  
 AM Ⅱ - BUILD : รูปแบบเข้ารหัสสัญญาณทดลองที่ใช้ start bit, alternating run-length และ check value; Rytm เป็นมุมมอง preview แยกจาก payload และไม่ถือเป็น transport ที่ผ่านการรับรอง  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : EP_SIGNAL-README-001  
-≡ Cr4ra - RAMS
+≡ Br4ra - RAMS
 
 ## Body — บทบาทและขอบเขต
 
