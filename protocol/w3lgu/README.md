@@ -1,3 +1,67 @@
+Name : W3Lgu — W3 Language Unit  
+AM Ⅱ - BUILD : ภาษาและกติกาการสื่อสาร/การทำงานภายใน W3; ไวยากรณ์ สัญลักษณ์ และขอบเขตของ operational contract ต้องอ้างอิงเอกสารและโค้ดในพื้นที่นี้ ไม่อนุมานว่าทุกแผนหรือทุกโมดูลพร้อมใช้งาน  
+Log time : 2026-11-22 (date only; time not recorded) ; ID : W3LGU-README-001  
+≡ Br3ra - RAMS
+
+## Body — บทบาทและขอบเขต
+
+ภาษาและกติกาการสื่อสาร/การทำงานภายใน W3; ไวยากรณ์ สัญลักษณ์ และขอบเขตของ operational contract ต้องอ้างอิงเอกสารและโค้ดในพื้นที่นี้ ไม่อนุมานว่าทุกแผนหรือทุกโมดูลพร้อมใช้งาน
+
+```yaml
+AM_TYPE: II
+ROLE: ADAPTATION
+DERIVED_FROM:
+  - protocol/w3lgu/RML01.md
+  - protocol/w3lgu/operational.py
+DOCUMENT_PATH: protocol/w3lgu/README.md
+```
+
+**ขอบเขต:** README นี้อธิบายเฉพาะ `protocol/w3lgu/` ไม่ขยายสิทธิ์ของระบบอื่นและไม่ยืนยันผลทดสอบที่ไม่ได้มีหลักฐาน
+
+## Movement — การนำทาง
+
+### M1 — รายการในโฟลเดอร์นี้
+
+| รายการ | ประเภท |
+|---|---|
+| [6room_event_logic_plan.md](6room_event_logic_plan.md) | เอกสาร |
+| [ECS_event_chain_system_plan.md](ECS_event_chain_system_plan.md) | เอกสาร |
+| [README.md](README.md) | README / AMS |
+| [RML01.md](RML01.md) | เอกสาร |
+| [__init__.py](__init__.py) | Python source / test |
+| [adapters.py](adapters.py) | Python source / test |
+| [adapters/](adapters/README.md) | โฟลเดอร์ย่อย |
+| [bin/](bin/README.md) | โฟลเดอร์ย่อย |
+| [core.py](core.py) | Python source / test |
+| [docs/](docs/README.md) | โฟลเดอร์ย่อย |
+| [encoding.py](encoding.py) | Python source / test |
+| [layers/](layers/README.md) | โฟลเดอร์ย่อย |
+| [memory/](memory/README.md) | โฟลเดอร์ย่อย |
+| [operational.py](operational.py) | Python source / test |
+| [papers/](papers/README.md) | โฟลเดอร์ย่อย |
+| [parser.py](parser.py) | Python source / test |
+| [parser/](parser/README.md) | โฟลเดอร์ย่อย |
+| [px.py](px.py) | Python source / test |
+| [runtime.py](runtime.py) | Python source / test |
+| [runtime/](runtime/README.md) | โฟลเดอร์ย่อย |
+| [signals.py](signals.py) | Python source / test |
+| [signals/](signals/README.md) | โฟลเดอร์ย่อย |
+| [sixroom_runtime.py](sixroom_runtime.py) | Python source / test |
+| [validator.py](validator.py) | Python source / test |
+
+### M2 — เอกสารอ้างอิงนอกพื้นที่
+
+| docs.* | Text link | ความสัมพันธ์ |
+|---|---|---|
+| docs.parent | [พื้นที่ protocol](../README.md) | พื้นที่ protocol |
+| docs.core | [หลักความหมายต้นทาง](../../knowledge/philosophy/corevsstructure.md) | หลักความหมายต้นทาง |
+| docs.ecs | [Event Chain System](../ecs/README.md) | Event Chain System |
+| docs.ams | [กฎ AMS](../../docs/governance/AMS.md) | กฎ AMS |
+
+---
+
+### บันทึกเนื้อหา README เดิม (รักษาข้อมูลต้นทาง)
+
 # W3Lgu — W3 Language Unit
 
 W3Lgu คือภาษาการทำงานภายในของระบบ W3  
@@ -360,8 +424,7 @@ P เป็นประธาน
 ยิง
 
 จบการกระทำ
-
-
+```
 
 ---
 
@@ -488,3 +551,8 @@ reference?" without becoming an execution or diagnosis layer.
 
 PX may be appended to W3DB as an observation through the append flow. Existing
 records are not overwritten; repeated appends can be handled idempotently.
+
+---
+
+OWNER : BBX19 — เจ้าของแนวคิด/ระบบตามข้อมูลต้นทาง  
+MAKER : ChatGPT / Codex — ปรับ README ให้สอดคล้อง AMS โดยรักษาเนื้อหาเดิม
