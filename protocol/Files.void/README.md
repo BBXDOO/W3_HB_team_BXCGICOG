@@ -1,7 +1,7 @@
 Name : File.void — unresolved transmissive concept  
 AM Ⅰ - BUILD : แนวคิด File.void ว่าด้วย unresolved transmissive state และการ manifest ชั่วคราวโดยไม่เปลี่ยน source truth; ไม่ใช่ที่เก็บ artifact และไม่อนุญาต final write โดยตัวมันเอง  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : FILES-VOID-README-001  
-≡ Br2ra - RAMS
+≡ Cr2ra - RAMS
 
 ## Body — บทบาทและขอบเขต
 
