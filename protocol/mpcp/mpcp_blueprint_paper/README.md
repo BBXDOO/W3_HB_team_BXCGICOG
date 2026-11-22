@@ -1,7 +1,7 @@
 Name : MPCP Blueprint Paper — แบบแผนโครงสร้างระบบ MPCP  
 AM Ⅱ - BUILD : ข้อกำหนด Blueprint เชิงประกาศสำหรับการสร้างระบบซ้ำ  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-BLUEPRINT-README-001  
-≡ Br1ra - RAMS
+≡ Dr1ra - RAMS
 
 ## Body — ขอบเขตและแนวคิด Blueprint
 
