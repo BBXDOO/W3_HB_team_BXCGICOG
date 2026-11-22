@@ -1,3 +1,8 @@
+Name : MPCP Case Studies — evidence and retrospective  
+AM Ⅱ - BUILD : กรณีศึกษาและบทเรียนที่ต้องแยกจากผลทดสอบปัจจุบัน  
+Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-CASE_STUDIES-README-001  
+≡ Cr2ra - RAMS
+
 # MPCP Case Studies
 
 เอกสารในโฟลเดอร์นี้ใช้บันทึก กรณีศึกษา (case study) วิเคราะห์ผลการทดลองจริง การเปลี่ยนแปลงที่สำคัญ และบทเรียนจากการทำระบบทดสอบ alignment และ operational semantics ของโมดูลต่างๆ ใน ecosystem ของ W3/MPCP
@@ -30,3 +35,26 @@
 - `protocol/mpcp/w3lgu_integration_paper/`
 
 ส่วนที่นี่สำหรับ retrospective analysis, practical report, และ knowledge aggregation เท่านั้น
+
+## Movement — ตรวจสอบรายการในพื้นที่ตาม Git
+
+### M1 — รายการไฟล์ใน `case_studies/`
+
+| รายการ | หน้าที่ |
+|---|---|
+| [AGENT_MPCP_ALIGNMENT_TESTS_V1.md](AGENT_MPCP_ALIGNMENT_TESTS_V1.md) | จุดตรวจสอบหลัก |
+| [README.md](README.md) | README และ AMS map |
+
+### M2 — ต้นทางและระบบที่เกี่ยวข้อง
+
+| docs.* | Text link | ความสัมพันธ์ |
+|---|---|---|
+| docs.parent | [MPCP](../README.md) | ระบบแม่ |
+| docs.origin | [MPCP Origin](../MPCP_ORIGIN.md) | ความหมายต้นทาง |
+| docs.rot | [ROT Baseline](../ROT_BASELINE.md) | ขอบเขตการควบคุมและการตรวจสอบ |
+| docs.ams | [AMS](../../../docs/governance/AMS.md) | กฎ AMS |
+
+---
+
+OWNER : BBX19 — เจ้าของ MPCP ตามเอกสารเดิม  
+MAKER : ChatGPT / Codex — ปรับ README ตาม AMS และรักษาคำอธิบายเดิม
