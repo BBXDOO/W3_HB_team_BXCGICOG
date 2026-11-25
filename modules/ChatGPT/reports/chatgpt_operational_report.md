@@ -1,9 +1,21 @@
 ---
 AM_TYPE: III
-ROLE: MODULE_OPERATIONAL_REPORT
+ROLE: OPERATIONAL
+GROUP: LEARN
 DERIVED_FROM:
   - knowledge/philosophy/corevsstructure.md
+OWNER: "ChatGPT"
+MAKER: null
 ---
+
+## Head line
+
+1. Name: รายงานสถานะการปฏิบัติงานของโมดูล `ChatGPT`
+2. AM III - LEARN: OPERATIONAL
+3. ID: ไม่พบ ID เอกสารเดิม
+4. Note: AMS migration; original content retained
+
+## Body line
 
 # รายงานสถานะการปฏิบัติงานของโมดูล `ChatGPT`
 
