@@ -1,3 +1,11 @@
+<!-- AMS classification metadata; original document content below is preserved. -->
+```yaml
+AM_TYPE: II
+ROLE: DESIGN_SPECIFICATION
+DERIVED_FROM:
+  - protocol/mpcp/MPCP_ORIGIN.md
+```
+
 MODEW_PAPER.md
 
 mpcp Modew Standard
