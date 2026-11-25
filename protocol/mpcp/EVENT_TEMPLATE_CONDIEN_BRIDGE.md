@@ -1,11 +1,14 @@
-# EVENT_TEMPLATE_CONDIEN_BRIDGE.md
-<!-- AMS classification metadata; original document content below is preserved. -->
-```yaml
+---
 AM_TYPE: II
-ROLE: DESIGN_SPECIFICATION
+ROLE: ADAPTATION
+GROUP: CONTINUE
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
-```
+OWNER: BBX19
+MAKER: null
+---
+
+# EVENT_TEMPLATE_CONDIEN_BRIDGE.md
 
 MPCP Event Template / Condien Bridge
 
