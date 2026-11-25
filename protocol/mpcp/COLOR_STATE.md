@@ -1,3 +1,11 @@
+<!-- AMS classification metadata; original document content below is preserved. -->
+```yaml
+AM_TYPE: II
+ROLE: DESIGN_SPECIFICATION
+DERIVED_FROM:
+  - protocol/mpcp/MPCP_ORIGIN.md
+```
+
 MPCP COLOR & STATE SYSTEM SPECIFICATION
 
 Version: v1.0
