@@ -1,3 +1,11 @@
+<!-- AMS classification metadata; original document content below is preserved. -->
+```yaml
+AM_TYPE: II
+ROLE: DESIGN_SPECIFICATION
+DERIVED_FROM:
+  - protocol/mpcp/MPCP_ORIGIN.md
+```
+
 mpcp_LIB_PAPER.md
 
 มาตรฐาน Library ของระบบ mpcp
