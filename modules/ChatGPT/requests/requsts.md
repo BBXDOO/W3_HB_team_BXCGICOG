@@ -1,9 +1,21 @@
 ---
 AM_TYPE: III
-ROLE: OPERATIONAL_REQUEST_TEMPLATE
+ROLE: OPERATIONAL
+GROUP: CONTINUE
 DERIVED_FROM:
   - knowledge/philosophy/corevsstructure.md
+OWNER: null
+MAKER: null
 ---
+
+## Head line
+
+1. Name: Pull Request การตรวจสอบสถานะการทำงานในทุกภาคส่วน
+2. AM III - CONTINUE: OPERATIONAL
+3. ID: ไม่พบ ID เอกสารเดิม
+4. Note: AMS migration; original content retained
+
+## Body line
 
 ## 📋 รายละเอียด Pull Request
 
