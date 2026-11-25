@@ -1,9 +1,21 @@
 ---
 AM_TYPE: III
-ROLE: STEWARDSHIP_HANDOFF_REPORT
+ROLE: OPERATIONAL
+GROUP: OBSERVE
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
+OWNER: "BBX19"
+MAKER: "ChatGPT"
 ---
+
+## Head line
+
+1. Name: MPCP / G-State / Hospitication — บันทึกรับช่วงดูแล
+2. AM III - OBSERVE: OPERATIONAL
+3. ID: ไม่พบ ID เอกสารเดิม
+4. Note: AMS migration; original content retained
+
+## Body line
 
 # MPCP / G-State / Hospitication — บันทึกรับช่วงดูแล
 
