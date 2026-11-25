@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: HANDOFF_EVIDENCE_REPORT
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
+---
+
 # งานหนึ่งชิ้น — สร้าง ส่งตรวจ ส่งคืน และหยุดตามบริบท
 
 OWNER: BBX19 · MAKER: ChatGPT / Codex · 2 พฤศจิกายน 2026
