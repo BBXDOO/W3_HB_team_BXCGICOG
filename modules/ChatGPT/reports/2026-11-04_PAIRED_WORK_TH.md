@@ -1,9 +1,21 @@
 ---
 AM_TYPE: III
-ROLE: PAIRED_WORK_EVIDENCE_REPORT
+ROLE: OPERATIONAL
+GROUP: OBSERVE
 DERIVED_FROM:
   - knowledge/philosophy/corevsstructure.md
+OWNER: null
+MAKER: null
 ---
+
+## Head line
+
+1. Name: คู่งาน Origin และ Cast — ผลดำเนินการ 4 พฤศจิกายน 2569
+2. AM III - OBSERVE: OPERATIONAL
+3. ID: RQ-PAIRED-20261104-final (related request)
+4. Note: AMS migration; original content retained
+
+## Body line
 
 # คู่งาน Origin และ Cast — ผลดำเนินการ 4 พฤศจิกายน 2569
 
