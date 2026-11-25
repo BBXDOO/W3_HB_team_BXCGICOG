@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: TEST_EVIDENCE_REPORT
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
+---
+
 # REA MCP — ทดลองกับชิ้นงาน W3 ครั้งแรก
 
 วันที่ตามบริบทผู้ใช้: 2026-10-25 (Asia/Bangkok)
