@@ -1,4 +1,11 @@
 # ROT_PAPER.md
+<!-- AMS classification metadata; original document content below is preserved. -->
+```yaml
+AM_TYPE: I
+ROLE: CORE_LAW
+DERIVED_FROM:
+  - protocol/mpcp/MPCP_ORIGIN.md
+```
 
 MPCP Core Rotation Paper — System Control Framework
 
