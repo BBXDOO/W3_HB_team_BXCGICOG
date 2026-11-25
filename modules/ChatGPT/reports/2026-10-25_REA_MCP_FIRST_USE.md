@@ -1,9 +1,21 @@
 ---
 AM_TYPE: III
-ROLE: TEST_EVIDENCE_REPORT
+ROLE: OPERATIONAL
+GROUP: OBSERVE
 DERIVED_FROM:
   - knowledge/philosophy/corevsstructure.md
+OWNER: null
+MAKER: null
 ---
+
+## Head line
+
+1. Name: REA MCP — ทดลองกับชิ้นงาน W3 ครั้งแรก
+2. AM III - OBSERVE: OPERATIONAL
+3. ID: ไม่พบ ID เอกสารเดิม
+4. Note: AMS migration; original content retained
+
+## Body line
 
 # REA MCP — ทดลองกับชิ้นงาน W3 ครั้งแรก
 
