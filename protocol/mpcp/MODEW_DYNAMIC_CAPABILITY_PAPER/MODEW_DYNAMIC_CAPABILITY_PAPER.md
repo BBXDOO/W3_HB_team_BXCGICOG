@@ -1,3 +1,12 @@
+<!-- AMS classification metadata; original document content below is preserved. -->
+```yaml
+AM_TYPE: II
+ROLE: DESIGN_SPECIFICATION
+DERIVED_FROM:
+  - protocol/mpcp/MODEW_PAPER.md
+  - protocol/mpcp/MPCP_ORIGIN.md
+```
+
 MODEW_DYNAMIC_CAPABILITY_PAPER.md
 
 ความสามารถแท้จริงของ Modew
