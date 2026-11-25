@@ -1,4 +1,10 @@
 # W3 Unified Master Glossary v2
+<!-- AMS classification metadata; original document content below is preserved. -->
+```yaml
+AM_TYPE: I
+ROLE: CORE_TERMINOLOGY
+DERIVED_FROM: []
+```
 
 Current Stable Reference
 
