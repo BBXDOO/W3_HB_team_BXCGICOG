@@ -1,11 +1,15 @@
-# W3Lgu-MPCP Runtime Profile
-<!-- AMS classification metadata; original document content below is preserved. -->
-```yaml
+---
 AM_TYPE: II
-ROLE: PROFILE_DESIGN
+ROLE: ADAPTATION
+GROUP: CONTINUE
 DERIVED_FROM:
   - protocol/mpcp/ROT_BASELINE.md
-```
+  - protocol/mpcp/ROT_PAPER.md
+OWNER: null
+MAKER: null
+---
+
+# W3Lgu-MPCP Runtime Profile
 
 ## 1. Purpose
 เอกสารนี้กำหนด W3Lgu profile สำหรับ runtime ของ MPCP เพื่อใช้กับ:
