@@ -1,10 +1,13 @@
-<!-- AMS classification metadata; original document content below is preserved. -->
-```yaml
+---
 AM_TYPE: I
-ROLE: CORE_CONCEPT
+ROLE: CORE_MEANING
+GROUP: BUILD
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
-```
+OWNER: null
+MAKER: null
+---
+
 
 mpcp_CONCEPT_PAPER.md
 
