@@ -1,10 +1,13 @@
-<!-- AMS classification metadata; original document content below is preserved. -->
-```yaml
+---
 AM_TYPE: III
-ROLE: IMPLEMENTATION_REVIEW
+ROLE: OPERATIONAL
+GROUP: OBSERVE
 DERIVED_FROM:
   - protocol/mpcp/ROT_BASELINE.md
-```
+OWNER: null
+MAKER: null
+---
+
 
 **ตอนนี้ mpcp ยังไม่อยู่ในสภาพ “production baseline”** และจุดที่ต้องปรับไม่ใช่แค่ test แต่คือ **runtime contract, orchestration, return-value model, environment preservation, และการ align กับ W3Lgu/E-CS ทั้งชั้น**  
 
