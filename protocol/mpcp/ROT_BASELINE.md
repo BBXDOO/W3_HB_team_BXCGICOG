@@ -1,4 +1,12 @@
 # ROT Baseline for MPCP
+<!-- AMS classification metadata; original document content below is preserved. -->
+```yaml
+AM_TYPE: II
+ROLE: GOVERNANCE_ADAPTATION
+DERIVED_FROM:
+  - protocol/mpcp/ROT_PAPER.md
+  - protocol/mpcp/MPCP_ORIGIN.md
+```
 
 Status: ACTIVE DRAFT  
 Owner: BBX19  
