@@ -1,4 +1,11 @@
 # CROSS-X / W3Lgu / Condien Relation Anchor
+<!-- AMS classification metadata; original document content below is preserved. -->
+```yaml
+AM_TYPE: II
+ROLE: RELATION_MAPPING
+DERIVED_FROM:
+  - protocol/mpcp/MPCP_ORIGIN.md
+```
 
 Status: active reference  
 Scope: MPCP relation guide  
