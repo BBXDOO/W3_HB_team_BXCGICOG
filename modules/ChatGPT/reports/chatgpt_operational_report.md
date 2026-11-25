@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: MODULE_OPERATIONAL_REPORT
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
+---
+
 # รายงานสถานะการปฏิบัติงานของโมดูล `ChatGPT`
 
 - วันที่จัดทำ: 2026-05-09
