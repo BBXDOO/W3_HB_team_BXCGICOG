@@ -1,11 +1,14 @@
-# Case Study: Agent MPCP Alignment Tests v1
-<!-- AMS classification metadata; original document content below is preserved. -->
-```yaml
+---
 AM_TYPE: III
-ROLE: TEST_CASE_STUDY
+ROLE: OPERATIONAL
+GROUP: OBSERVE
 DERIVED_FROM:
   - protocol/mpcp/ROT_BASELINE.md
-```
+OWNER: null
+MAKER: null
+---
+
+# Case Study: Agent MPCP Alignment Tests v1
 
 ## Status
 draft
