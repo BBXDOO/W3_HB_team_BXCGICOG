@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: CLOSEOUT_EVIDENCE_REPORT
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
+---
+
 # Cast IDP v2 และการสะสาง #306 / #309
 
 OWNER: BBX19 · MAKER: ChatGPT / Codex · วันที่ตรวจ: 2 พฤศจิกายน 2026
