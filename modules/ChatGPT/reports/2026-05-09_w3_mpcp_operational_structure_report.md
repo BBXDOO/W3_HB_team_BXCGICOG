@@ -1,9 +1,21 @@
 ---
 AM_TYPE: III
-ROLE: OPERATIONAL_STRUCTURE_REPORT
+ROLE: OPERATIONAL
+GROUP: LEARN
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
+OWNER: null
+MAKER: null
 ---
+
+## Head line
+
+1. Name: W3 / MPCP Operational Structure Report
+2. AM III - LEARN: OPERATIONAL
+3. ID: ไม่พบ ID เอกสารเดิม
+4. Note: AMS migration; original content retained
+
+## Body line
 
 # W3 / MPCP Operational Structure Report
 
