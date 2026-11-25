@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: OPERATIONAL_REQUEST_TEMPLATE
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
+---
+
 ## 📋 รายละเอียด Pull Request
 
 ### Pull Request การตรวจสอบสถานะการทำงานในทุกภาคส่วน
