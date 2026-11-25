@@ -1,10 +1,13 @@
-# MPCP — Origin & Conceptual Foundation
-<!-- AMS classification metadata; original document content below is preserved. -->
-```yaml
+---
 AM_TYPE: I
 ROLE: CORE_MEANING
+GROUP: BUILD
 DERIVED_FROM: []
-```
+OWNER: BBX19
+MAKER: Cast
+---
+
+# MPCP — Origin & Conceptual Foundation
 **ต้นกำเนิดและรากฐานแนวคิด**
 เขียนโดย Cast | อ้างอิงจากภาพร่างต้นฉบับของ BBX19
 W3_HB_team_BXCGICOG | refactor/v0.2
