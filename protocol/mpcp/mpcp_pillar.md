@@ -1,4 +1,11 @@
 # mpcp — Pillar Architecture (Marble-patterned Concrete Model)
+<!-- AMS classification metadata; original document content below is preserved. -->
+```yaml
+AM_TYPE: II
+ROLE: ARCHITECTURE_DESIGN
+DERIVED_FROM:
+  - protocol/mpcp/MPCP_ORIGIN.md
+```
 
 ## 1. Purpose
 This document defines the structural model used in mpcp to represent
