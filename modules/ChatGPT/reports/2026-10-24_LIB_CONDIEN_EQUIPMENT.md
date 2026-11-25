@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: IMPLEMENTATION_REPORT
+DERIVED_FROM:
+  - protocol/mpcp/MPCP_ORIGIN.md
+---
+
 # MPCP — Lib และ Condien equipment รอบแรก
 
 วันที่: 2026-10-24 (Asia/Bangkok) | ผู้ดูแล: ChatGPT / Codex ตามคำมอบหมาย BBX19
