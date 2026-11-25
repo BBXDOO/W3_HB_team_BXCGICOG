@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: STEWARDSHIP_HANDOFF_REPORT
+DERIVED_FROM:
+  - protocol/mpcp/MPCP_ORIGIN.md
+---
+
 # MPCP / G-State / Hospitication — บันทึกรับช่วงดูแล
 
 วันที่: 2026-10-24 (Asia/Bangkok)
