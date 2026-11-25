@@ -1,4 +1,11 @@
 # /protocol/mpcp/W3_DISTRIBUTED_FAMILY_ARCHITECTURE.md
+<!-- AMS classification metadata; original document content below is preserved. -->
+```yaml
+AM_TYPE: II
+ROLE: ARCHITECTURE_DESIGN
+DERIVED_FROM:
+  - protocol/mpcp/MPCP_ORIGIN.md
+```
 
 STATUS: ACTIVE_DRAFT
 TYPE: 1BOX_RMB
