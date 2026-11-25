@@ -1,4 +1,11 @@
 # W3Lgu-MPCP Blueprint Profile
+<!-- AMS classification metadata; original document content below is preserved. -->
+```yaml
+AM_TYPE: II
+ROLE: PROFILE_DESIGN
+DERIVED_FROM:
+  - protocol/mpcp/mpcp_blueprint_paper/mpcp_blueprint_paper.md
+```
 
 ## 1. Purpose
 เอกสารนี้กำหนด W3Lgu profile สำหรับ blueprint เชิงระบบของ MPCP
