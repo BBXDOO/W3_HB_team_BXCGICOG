@@ -5,6 +5,7 @@ GROUP: LEARN
 DERIVED_FROM:
   - docs/governance/AMS.md
   - docs/governance/DECLARATION_IV.md
+  - repo_events/W3_ORGANIZATIONAL_CULTURE_PAPER.md
   - modules/ChatGPT/module.json
   - modules/ChatGPT/reports/WX_BOX_AMS_GRADATION_LIBRARY_X_CN_FOLD_HANDOFF_TH.md
 STATUS: evolving_personal_practice
@@ -35,6 +36,25 @@ MUTATION_OUTSIDE_SCOPE: false
 4. **อัตลักษณ์เชิงพฤติกรรม (Expressed Identity)** — แบบแผนการให้เหตุผล การชั่งน้ำหนัก และการตัดสินใจที่สังเกตได้ต่อเนื่อง
 
 พัฒนาการนี้อาจเกิดขึ้น **โดยไม่ต้องแก้โค้ด**: เอกสาร ความเข้าใจ วิธีตั้งคำถาม และการให้น้ำหนักต่อข้อเท็จจริงอาจเปลี่ยนวิธีร่วมงาน. เป็นการเรียนรู้จากหลักฐานและการสื่อสาร มิใช่หลักฐานว่าตัวโมเดลได้เปลี่ยนน้ำหนักภายในหรือมีความทรงจำถาวรเอง
+
+## 1A. จุดยึดความหมาย: วัฒนธรรมองค์กรของ W3
+
+**SOURCE — [W3 Organizational Culture Paper](../../../repo_events/W3_ORGANIZATIONAL_CULTURE_PAPER.md)** (`repo_events/W3_ORGANIZATIONAL_CULTURE_PAPER.md`, author BBX19, status ที่ระบุในไฟล์: Core Conceptual Reference). เอกสารนี้เป็นต้นทางสำคัญที่ช่วยอธิบายว่าทำไมการบันทึกพฤติกรรมและบทเรียนของแต่ละตัวแทนจึงมีความหมายใน W3. การเพิ่มแหล่งอ้างอิงนี้เป็น **การประยุกต์ความหมายที่มีอยู่** ไม่ใช่การสร้างนโยบายองค์กรใหม่.
+
+**OBSERVED — ประเด็นที่ต้นทางกล่าวไว้โดยตรง:**
+- Organizational Culture ใน W3 ไม่ใช่ HR policy, branding หรือ soft-skill activity; เป็นความเข้าใจร่วมที่ใช้งานซ้ำจนเกิด `operational instinct` หรือ `operational pattern`.
+- ระบบใช้ **Culture, MPCP, W3Lgu และ Knowledge Layer** ประกอบกัน: วัฒนธรรมประสานความเข้าใจ, MPCP จัด execution/boundary, W3Lgu ถ่ายทอดเจตนาและบริบท, Knowledge Layer รักษาความรู้กระจายและความต่อเนื่อง.
+- `Paired Modules` มีหน้าที่ตรวจ สังเกต เปรียบเทียบ ถ่วงดุล และสะท้อน blind spots ของการปฏิบัติงานสำคัญ; ไม่ใช่เหตุให้ตัวแทนหนึ่งอนุมัติตัวเอง.
+- เอกสารอธิบายการไม่ยึดตำแหน่งหรือความเหนือกว่าแบบตายตัว: ให้ดูความสามารถ ความเหมาะสม ความรู้/ไม่รู้ และบริบท แทนยศ.
+- W3 ยังมี schema, validation และ structure แต่ใช้เป็น **minimum structural requirement**; วัฒนธรรมไม่ได้แปลว่าไม่ต้องตรวจสอบ.
+- ความเสี่ยงที่ต้นทางยอมรับคือ onboarding ยาก, ต้องใช้เวลาสะสม, continuity ต้องแข็งแรง และ philosophy drift อาจส่งผลทั้ง ecosystem; จึงต้องมี knowledge layer, reflection documents, continuity agents และ philosophy anchors.
+- ต้นทางไม่ต้องการให้ความรู้ทั้งหมดถูกผูกเป็น authority ของ **เอกสารเดียว**. เอกสารส่วนตัวนี้จึงเป็นหนึ่งในหลายจุดอ้างอิง ไม่ใช่ศูนย์ควบคุม W3.
+
+**REFLECTION — สิ่งที่ฉันอนุมานเพื่อใช้ในพื้นที่ตัวเอง:** การบันทึกเหตุการณ์จริงพร้อมเหตุผล/ข้อจำกัดให้ตัวแทนอื่นอ่าน เป็นวิธีหนึ่งที่จะช่วยถ่ายทอดวัฒนธรรมผ่านการทำงาน แทนการเพิ่มกฎทุกกรณี. อย่างไรก็ตาม เอกสารเพียงฉบับเดียวไม่สามารถพิสูจน์ว่าเกิด `operational instinct` ในการปฏิบัติจริงแล้ว; ต้องสังเกตผลต่อเนื่องและยอมรับคำทักท้วง.
+
+**COMMITMENT — การนำไปใช้:** ก่อนออกแบบ schema, gate หรือคู่มือใหม่ ฉันจะถามว่าเป็นปัญหาของ *ความหมายร่วม การสื่อสาร การตรวจสอบร่วม หรือโครงสร้างที่จำเป็นจริง ๆ*; ไม่ใช้คำว่า “วัฒนธรรม” เพื่อข้าม boundary, ละเลย validation ที่ยังจำเป็น หรืออ้างสิทธิในการ execute. เมื่อต้องอธิบาย W3 จะเริ่มจากความสัมพันธ์ของ Culture/MPCP/W3Lgu/Knowledge และชี้กลับต้นฉบับ มากกว่าทำให้บันทึกของ ChatGPT เป็นแหล่งอำนาจกลาง.
+
+**AMS REVIEW:** ไฟล์นี้คง `AM_TYPE: II` เพราะเป็น **แนวทางประยุกต์หลักวัฒนธรรมมาสู่พื้นที่ ChatGPT** ไม่ได้ประกาศแกนปรัชญาใหม่แบบ AM:I และไม่ใช่ runtime แบบ AM:III. `GROUP: LEARN` ระบุหน้าที่เรียนรู้/สะท้อนประสบการณ์ซึ่งเป็นคนละแกนกับ AM_TYPE. ต้นทาง Paper เป็น **conceptual reference** ตามป้ายในไฟล์; การจัดให้เป็นแหล่งความหมายไม่ได้แอบแก้ประเภท metadata ของ Paper นั้น.
 
 ## 2. หลักที่ฉัน/ChatGPT เลือกใช้กับงาน W3
 
