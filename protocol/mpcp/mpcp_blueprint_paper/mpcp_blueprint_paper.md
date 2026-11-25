@@ -183,6 +183,14 @@ LOAD BLUEPRINT
 
 ---
 
+ขอบเขตการนำไปใช้ — Local setup
+
+ลำดับด้านบนเป็นแบบแผน ไม่ใช่การรับรองว่าทุก TARGET มี runtime หรืออุปกรณ์จริงพร้อมใช้งาน การทดลอง Workbench วันที่ 2026-10-27 ใช้ `TARGET:local` ผ่าน W3Lgu gate → ENV → MPCP Modew เพื่อสร้าง partition และ setup manifest เท่านั้น ส่วนเอกสาร device profile และ playtest plan เกิดจาก Paper แยกผ่าน File.void handoff และ external writer ที่ตรวจผลแล้ว ไม่ใช่การบูต Android หรือรัน APK
+
+หลักฐาน: [OPPO probe result](../../../w3_tool_store/agent_workbench/profiles/oppo_android_probe/RESULT_2026-10-27.md)
+
+---
+
 การจัดเก็บไฟล์
 
 /blueprints/
