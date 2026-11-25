@@ -1,11 +1,14 @@
-# W3Lgu ↔ MPCP Role Mapping
-<!-- AMS classification metadata; original document content below is preserved. -->
-```yaml
+---
 AM_TYPE: II
-ROLE: RELATION_MAPPING
+ROLE: ADAPTATION
+GROUP: BUILD
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
-```
+OWNER: null
+MAKER: null
+---
+
+# W3Lgu ↔ MPCP Role Mapping
 
 ## 1. Purpose
 เอกสารนี้กำหนดความสัมพันธ์ระหว่าง `W3Lgu` และ `MPCP` ภายใ��ระบบ W3 เพื่อให้ทั้งสองส่วนทำงานร่วมกันได้อย่างชัดเจน โดยไม่ปะปนบทบาทกัน
