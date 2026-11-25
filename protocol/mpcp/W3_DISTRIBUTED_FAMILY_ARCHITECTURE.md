@@ -1,11 +1,14 @@
-# /protocol/mpcp/W3_DISTRIBUTED_FAMILY_ARCHITECTURE.md
-<!-- AMS classification metadata; original document content below is preserved. -->
-```yaml
+---
 AM_TYPE: II
-ROLE: ARCHITECTURE_DESIGN
+ROLE: ADAPTATION
+GROUP: BUILD
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
-```
+OWNER: BBX19 + ChatGPT
+MAKER: null
+---
+
+# /protocol/mpcp/W3_DISTRIBUTED_FAMILY_ARCHITECTURE.md
 
 STATUS: ACTIVE_DRAFT
 TYPE: 1BOX_RMB
