@@ -1,11 +1,14 @@
-<!-- AMS classification metadata; original document content below is preserved. -->
-```yaml
+---
 AM_TYPE: II
-ROLE: DESIGN_SPECIFICATION
+ROLE: ADAPTATION
+GROUP: BUILD
 DERIVED_FROM:
   - protocol/mpcp/MODEW_PAPER.md
   - protocol/mpcp/MPCP_ORIGIN.md
-```
+OWNER: null
+MAKER: null
+---
+
 
 MODEW_DYNAMIC_CAPABILITY_PAPER.md
 
