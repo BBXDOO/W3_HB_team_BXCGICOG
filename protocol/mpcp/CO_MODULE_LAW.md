@@ -1,4 +1,11 @@
 # CO_MODULE_LAW.md
+<!-- AMS classification metadata; original document content below is preserved. -->
+```yaml
+AM_TYPE: II
+ROLE: GOVERNANCE_ADAPTATION
+DERIVED_FROM:
+  - protocol/mpcp/MPCP_ORIGIN.md
+```
 
 MPCP Cooperative Module Paper — Request / Assist / Cross Field Culture
 
