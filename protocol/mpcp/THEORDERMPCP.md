@@ -9,6 +9,18 @@ MAKER: null
 ---
 
 
+## Historical review and subsequent evidence
+
+เนื้อหาการประเมินด้านล่างอ้างอิง snapshot `05bd53058b20d202edf6ff25da5f5b02e64c1afd` ตามลิงก์โค้ดเดิม ไม่ใช่สถานะปัจจุบันทั้งหมด
+
+- 2026-10-27: Workbench ทดลอง W3Lgu gate → ENV → MPCP Modew ด้วย Blueprint `TARGET:local` สำเร็จ ตรวจ artifact/ledger และการไม่แก้ source เดิมผ่าน; Paper สองใบผ่าน File.void handoff → external writer → verifier. Sandbox regression 11/11 และ runtime sanity 81/81 ผ่าน แต่ Paper pytest suite ยังไม่ได้รันใน host นั้น
+- 2026-10-28: System Inspection พบ MPCP fail 8 tests ในสำเนาที่ไม่มี Git context; หลังแก้ตัวเชื่อมให้สร้าง Git snapshot ชั่วคราว MPCP ผ่าน 45 tests และรวมเจ็ดระบบผ่าน 134 tests โดยไม่แก้ MPCP ต้นทาง
+- ผลดังกล่าวยืนยัน local setup และขอบเขตการทดสอบที่ระบุเท่านั้น ไม่รับรอง production baseline, Android/APK execution, full restoration หรือ semantic routing ทั้งระบบ และไม่ถือว่าการ merge คือ hosted run ผ่าน
+
+Evidence: [OPPO probe result](../../w3_tool_store/agent_workbench/profiles/oppo_android_probe/RESULT_2026-10-27.md) · [System inspection validation](../../w3_tool_store/agent_workbench/tools/system_inspection/VALIDATION_2026-10-28.md)
+
+---
+
 **ตอนนี้ mpcp ยังไม่อยู่ในสภาพ “production baseline”** และจุดที่ต้องปรับไม่ใช่แค่ test แต่คือ **runtime contract, orchestration, return-value model, environment preservation, และการ align กับ W3Lgu/E-CS ทั้งชั้น**  
 
 จากโค้ดที่มีอยู่สรุปตรง ๆ ว่า:
