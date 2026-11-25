@@ -1,11 +1,14 @@
-# W3Lgu Profile Architecture
-<!-- AMS classification metadata; original document content below is preserved. -->
-```yaml
+---
 AM_TYPE: II
-ROLE: PROFILE_DESIGN
+ROLE: ADAPTATION
+GROUP: BUILD
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
-```
+OWNER: null
+MAKER: null
+---
+
+# W3Lgu Profile Architecture
 
 ## 1. Purpose
 เอกสารนี้กำหนด architecture ของ profile สำหรับ `W3Lgu` เพื่อให้ W3Lgu สามารถทำหน้าที่เป็นภาษากลางของ ecosystem ได้ โดยไม่ทำให้ทุก artifact, message, และ paper ถูกยัดอยู่ในรูปแบบเดียวจนสับสน
