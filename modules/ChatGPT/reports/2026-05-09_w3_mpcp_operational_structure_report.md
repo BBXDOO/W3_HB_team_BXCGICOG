@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: OPERATIONAL_STRUCTURE_REPORT
+DERIVED_FROM:
+  - protocol/mpcp/MPCP_ORIGIN.md
+---
+
 # W3 / MPCP Operational Structure Report
 
 - Generated: 2026-05-09
