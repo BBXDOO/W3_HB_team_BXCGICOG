@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: PAIRED_WORK_EVIDENCE_REPORT
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
+---
+
 # คู่งาน Origin และ Cast — ผลดำเนินการ 4 พฤศจิกายน 2569
 
 เพิ่มการแยกผู้เดินงาน/ผู้ส่ง ผู้ตรวจ และผู้รับในใบส่งงาน พร้อมจุดเริ่มก่อนเกิดผล
