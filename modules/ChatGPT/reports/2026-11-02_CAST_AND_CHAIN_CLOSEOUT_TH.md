@@ -1,9 +1,21 @@
 ---
 AM_TYPE: III
-ROLE: CLOSEOUT_EVIDENCE_REPORT
+ROLE: OPERATIONAL
+GROUP: OBSERVE
 DERIVED_FROM:
   - knowledge/philosophy/corevsstructure.md
+OWNER: "BBX19"
+MAKER: "ChatGPT / Codex"
 ---
+
+## Head line
+
+1. Name: Cast IDP v2 และการสะสาง #306 / #309
+2. AM III - OBSERVE: OPERATIONAL
+3. ID: ไม่พบ ID เอกสารเดิม
+4. Note: AMS migration; original content retained
+
+## Body line
 
 # Cast IDP v2 และการสะสาง #306 / #309
 
