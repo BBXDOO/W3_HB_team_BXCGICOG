@@ -1,7 +1,7 @@
 ---
 AM_TYPE: III
-ROLE: OPERATIONAL
-GROUP: BUILD
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
 DERIVED_FROM:
   - docs/governance/AMS.md
   - docs/box/README_TH.md

@@ -1,7 +1,7 @@
 ---
 AM_TYPE: III
-ROLE: USAGE_GUIDE
-GROUP: CONTINUE
+ROLE: TECHNICAL_GUIDE
+GROUP: LEARN
 DERIVED_FROM:
   - docs/cross_x_ecosystem.md
 ---

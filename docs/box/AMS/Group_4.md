@@ -1,9 +1,8 @@
 ---
-AM_TYPE: II
-ROLE: ARCHITECTURE_GUIDANCE
-GROUP: BUILD
-DERIVED_FROM:
-  - docs/governance/AMS.md
+AM_TYPE: I
+ROLE: DOCUMENT_GROUP_DEFINITION
+GROUP: CONTINUE
+DERIVED_FROM: []
 ---
 
     Build. Observe. Learn. Continue. 
