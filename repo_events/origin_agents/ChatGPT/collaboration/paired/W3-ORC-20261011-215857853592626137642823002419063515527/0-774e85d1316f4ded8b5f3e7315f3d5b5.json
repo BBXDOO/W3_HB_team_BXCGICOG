@@ -1,0 +1,40 @@
+{
+  "accepted": true,
+  "checks": [
+    {
+      "name": "partner_verified_owner_receipt",
+      "passed": true
+    }
+  ],
+  "evidence": [
+    {
+      "path": "repo_events/origin_agents/ChatGPT/collaboration/W3-ORC-20261011-215857853592626137642823002419063515527-partner.json",
+      "sha256": "5e57b41e37b281533640c8335c5041d424e64bc77d0b5795c3f7c231d3980a8d"
+    },
+    {
+      "path": "repo_events/origin_agents/ChatGPT/logs/446d44c864cb4066b3da49205a99f086.json",
+      "sha256": "a8ceaed089b2f2511ced4566ad86ee64b4531ec006be55eae168909455711085"
+    }
+  ],
+  "explanations": [],
+  "notes": [],
+  "parent": null,
+  "recipient": "Orchestration",
+  "reviewer": "Gemini",
+  "schema": "w3.paired_handoff/1",
+  "sender": "ChatGPT",
+  "sequence": 0,
+  "start": {
+    "evidence": [
+      {
+        "path": "repo_events/origin_agents/ChatGPT/intake/0c640fa27f0c4adb8dbacd5895e4483d.json",
+        "sha256": "91453e0596bb0bdee07bed44f4e7a531bdf51d4f0476ddfd56a65a10dd3b03fb"
+      },
+      {
+        "path": "repo_events/origin_agents/ChatGPT/intake_pairs/66a3420e1bf64b59923ad092abd7668b/0-3af3ef3050014655b167e54aa40fa479.json",
+        "sha256": "34c41a90778e03261c42a11bff18d7d785eacf7020fb8b6aa93015a63a9632fb"
+      }
+    ],
+    "owner": "ChatGPT"
+  }
+}

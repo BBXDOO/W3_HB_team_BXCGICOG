@@ -1,6 +1,6 @@
 {
   "interval_days": 15,
-  "next_due": "2026-11-25T01:02:00.633642Z",
+  "next_due": "2026-12-11T01:01:35.044924Z",
   "followups": [
     {
       "request_id": "GH-issues-306-6027051219",
@@ -89,9 +89,9 @@
       "log": "repo_events/origin_agents/ChatGPT/logs/06d4ee30eeea475e97673a9b854cb462.json"
     }
   },
-  "last_review": "2026-11-10T01:02:00.633642Z",
+  "last_review": "2026-11-26T01:01:35.044924Z",
   "findings": [],
-  "last_log": "repo_events/origin_agents/ChatGPT/logs/c7388dcb06f7435a86dff67b2722b5f8.json",
-  "last_report": "repo_events/origin_agents/ChatGPT/reports/bba81aa0a2454479a23ccd448cf4c5f5.md",
+  "last_log": "repo_events/origin_agents/ChatGPT/logs/446d44c864cb4066b3da49205a99f086.json",
+  "last_report": "repo_events/origin_agents/ChatGPT/reports/a26db1f3544342619fe60766d9f86c24.md",
   "review_findings": []
 }
