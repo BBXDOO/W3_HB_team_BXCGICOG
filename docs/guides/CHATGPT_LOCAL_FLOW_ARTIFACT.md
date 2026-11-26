@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 # ChatGPT Local Flow Artifact
 
 ## What this capability does

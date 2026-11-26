@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 # คู่มือ W3.IDP Studio (w3openland)
 
 ## 1. ตำแหน่ง

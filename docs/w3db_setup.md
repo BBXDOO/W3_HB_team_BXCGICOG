@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 # W3DB — Setup & Usage Guide
 
 ## Overview

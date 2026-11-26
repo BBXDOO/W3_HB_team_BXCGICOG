@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM: []
+---
+
 # W3 Full Sanity Sweep - Execution Summary
 
 **Date:** 2025-12-12  

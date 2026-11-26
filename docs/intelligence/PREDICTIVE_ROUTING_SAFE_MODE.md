@@ -1,3 +1,10 @@
+---
+AM_TYPE: II
+ROLE: ARCHITECTURE_GUIDANCE
+GROUP: BUILD
+DERIVED_FROM: []
+---
+
 # Predictive Routing — Safe Mode
 
 ## Objective

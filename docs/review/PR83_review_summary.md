@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM: []
+---
+
 # PR #83 Review Summary
 ## Governance Control Gate — Hold Merge Review
 

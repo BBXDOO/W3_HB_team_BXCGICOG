@@ -1,10 +1,8 @@
 ---
 AM_TYPE: I
-ROLE: CORE_MEANING
+ROLE: CORE_TERMINOLOGY
 GROUP: CONTINUE
 DERIVED_FROM: []
-OWNER: null
-MAKER: null
 ---
 
 # W3 Unified Master Glossary v2

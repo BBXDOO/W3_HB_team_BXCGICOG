@@ -1,3 +1,10 @@
+---
+AM_TYPE: I
+ROLE: CORE_MEANING
+GROUP: LEARN
+DERIVED_FROM: []
+---
+
 # G-State Paper — Foundation Standard
 
 ## Status

@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 # คู่มือภาษาไทย: งาน Origin พาธเนอร์ และรอบตรวจโครงสร้าง
 
 Owner: BBX19 · Maker: ChatGPT · Updated: 2026-10-11

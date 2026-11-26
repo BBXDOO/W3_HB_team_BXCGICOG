@@ -1,3 +1,10 @@
+---
+AM_TYPE: II
+ROLE: GOVERNANCE_ANNOUNCEMENT
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 # ประกาศฉบับที่ 3 : ระเบียบปฏิบัติใหม่ของ W3
 
 ## 1. บริบทการทำงาน / เหตุผล / การปรับใช้

@@ -1,3 +1,10 @@
+---
+AM_TYPE: II
+ROLE: METRIC_DEFINITIONS
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 # Metric Definitions (Baseline)
 
 ## PR volume

@@ -1,3 +1,10 @@
+---
+AM_TYPE: II
+ROLE: PLANNING
+GROUP: OBSERVE
+DERIVED_FROM: []
+---
+
 # P1–P3 Execution Plan (Repository Action Plan)
 
 อ้างอิงจากสถาปัตยกรรมหลักหัวข้อ Immediate Priorities

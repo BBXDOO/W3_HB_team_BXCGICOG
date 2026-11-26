@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 ครับ BBX19 🌕  
 นี่คือคู่มือสั้น ๆ สำหรับ การเปิด/ปิดระบบ W3‑API ที่คุณสามารถใช้ได้ทันทีใน Termux หรือ Ubuntu environment ครับ  
 

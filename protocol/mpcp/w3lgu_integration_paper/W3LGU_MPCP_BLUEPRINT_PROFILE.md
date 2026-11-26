@@ -1,12 +1,10 @@
 ---
 AM_TYPE: II
-ROLE: ADAPTATION
+ROLE: PROFILE_DESIGN
 GROUP: CONTINUE
 DERIVED_FROM:
   - protocol/mpcp/mpcp_blueprint_paper/mpcp_blueprint_paper.md
   - protocol/mpcp/MPCP_ORIGIN.md
-OWNER: null
-MAKER: null
 ---
 
 # W3Lgu-MPCP Blueprint Profile

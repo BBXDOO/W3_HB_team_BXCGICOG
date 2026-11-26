@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM: []
+---
+
 # Agent Alignment Analysis between W3Lgu & MPCP
 
 ## เป้าหมาย (Objective)

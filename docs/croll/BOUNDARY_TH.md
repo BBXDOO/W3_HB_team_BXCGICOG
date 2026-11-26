@@ -1,3 +1,10 @@
+---
+AM_TYPE: II
+ROLE: ARCHITECTURE_GUIDANCE
+GROUP: BUILD
+DERIVED_FROM: []
+---
+
 # CROLL Boundary — ขอบเขตการใช้และการสงวนระบบ
 
 เอกสารนี้เป็น **governance reference** ไม่ใช่ใบอนุญาตทางกฎหมาย และไม่ใช่ระบบ authentication

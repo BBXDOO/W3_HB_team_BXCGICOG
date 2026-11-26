@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM: []
+---
+
 # PR #83 — Manual Update Steps Required
 
 ## Overview

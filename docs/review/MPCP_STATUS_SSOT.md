@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - protocol/mpcp/mpcp_blueprint_paper/mpcp_blueprint_paper.md
+  - protocol/mpcp/mpcp_pillar.md
+---
+
 # MPCP Status — Single Source of Truth (SSOT)
 
 ไฟล์นี้คือแหล่งอ้างอิงเดียวสำหรับสถานะ MPCP เพื่อให้ AI ตอบแบบอิงหลักฐานและไม่คาดเดา

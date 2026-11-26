@@ -1,3 +1,10 @@
+---
+AM_TYPE: II
+ROLE: ARCHITECTURE_GUIDANCE
+GROUP: BUILD
+DERIVED_FROM: []
+---
+
 # W3 Security & Structural Audit — System Architecture
 
 ```

@@ -1,11 +1,9 @@
 ---
 AM_TYPE: II
-ROLE: ADAPTATION
+ROLE: RELATION_MAPPING
 GROUP: BUILD
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
-OWNER: null
-MAKER: null
 ---
 
 # CROSS-X / W3Lgu / Condien Relation Anchor

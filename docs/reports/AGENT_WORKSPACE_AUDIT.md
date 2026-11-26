@@ -1,3 +1,11 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
+---
+
 # 📊 รายงานสำรวจพื้นที่ทำงาน Agent (Agent Workspace Audit)
 
 **วันที่สำรวจ:** 2026-05-08  

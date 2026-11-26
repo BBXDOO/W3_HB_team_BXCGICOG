@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: RUNTIME_FLOW
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 # วงจรรับใบงานจริงและผลลัพธ์ตามบริบท
 
 - AM type: III Process

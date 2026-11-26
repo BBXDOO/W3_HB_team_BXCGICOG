@@ -1,3 +1,10 @@
+---
+AM_TYPE: II
+ROLE: ARCHITECTURE_GUIDANCE
+GROUP: BUILD
+DERIVED_FROM: []
+---
+
 # BOX / Library-WX — ขอบเขต ความปลอดภัย และการสงวนระบบ
 
 เอกสารนี้กำหนดสิ่งที่ BOX อนุญาตและไม่อนุญาต เพื่อไม่ให้ reference layer กลายเป็น

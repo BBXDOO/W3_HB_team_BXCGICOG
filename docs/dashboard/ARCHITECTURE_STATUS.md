@@ -1,3 +1,11 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - docs/roadmaps/P1_P3_EXECUTION_PLAN.md
+---
+
 # Architecture Status Dashboard
 
 Last updated: 2026-05-11

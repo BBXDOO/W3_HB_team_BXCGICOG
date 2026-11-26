@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: AGENT_WORKFLOW
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 # GitHub Actions Agent Workflow
 
 ## Overview

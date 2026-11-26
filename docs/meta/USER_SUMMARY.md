@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM: []
+---
+
 # การตรวจสอบไฟล์ที่เสียหาย/หายไป - สรุปสำหรับผู้ใช้
 # File Integrity Check - User Summary
 

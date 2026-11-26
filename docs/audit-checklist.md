@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: AUDIT_CHECKLIST
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 # Audit Checklist - W3 Hybrid
 
 ## 1. Module Pairing

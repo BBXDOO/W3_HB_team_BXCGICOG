@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: API_USAGE
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 W3 Cross API
 
 Overview

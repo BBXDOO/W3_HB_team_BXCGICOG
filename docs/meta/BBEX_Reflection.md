@@ -1,3 +1,10 @@
+---
+AM_TYPE: I
+ROLE: CORE_MEANING
+GROUP: LEARN
+DERIVED_FROM: []
+---
+
 # BBEX CORE — Philosophical Reflection
 
 **Generated:** 2025-12-24 20:11:36

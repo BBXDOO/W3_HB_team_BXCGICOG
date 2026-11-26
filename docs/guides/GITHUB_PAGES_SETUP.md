@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 # 🚀 คำแนะนำการตั้งค่า GitHub Pages สำหรับ W3 PWA
 
 ## 📋 ภาพรวม

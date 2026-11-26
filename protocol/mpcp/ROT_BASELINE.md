@@ -1,12 +1,11 @@
 ---
 AM_TYPE: II
-ROLE: ADAPTATION
+ROLE: GOVERNANCE_ADAPTATION
 GROUP: CONTINUE
 DERIVED_FROM:
   - protocol/mpcp/ROT_PAPER.md
   - protocol/mpcp/MPCP_ORIGIN.md
 OWNER: BBX19
-MAKER: null
 ---
 
 # ROT Baseline for MPCP

@@ -15,15 +15,6 @@ REQUEST_ID: W3-DOCUMENT-ALLOCATOR-MFC
 
 # W3 Document Allocator — คู่มือขั้นต่ำ
 
-## Head line
-
-1. Name: W3 Document Allocator
-2. AM III - BUILD: Operational Tool
-3. ID: W3-DOCUMENT-ALLOCATOR-MFC
-4. Note: เครื่องมือสร้างเอกสาร AMS โดยรักษาขอบเขต BOX
-
-## Body line
-
 เครื่องมือนี้ตรวจ AM Type, lineage, พาธ, เอกสารชื่อซ้ำ และ BOX reference ก่อนสร้าง Markdown จากนั้นคืน artifact receipt ที่มีพาธ digest และหลักฐานผู้อนุญาต
 
 BOX ยังคงเป็น `planner-only`: การพบ template หรือ reference ไม่ได้ให้สิทธิเขียนไฟล์ การเขียนจริงต้องใช้ `--mode create|update` พร้อม `--authorized-by`

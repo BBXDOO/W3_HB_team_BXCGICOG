@@ -1,11 +1,9 @@
 ---
 AM_TYPE: I
-ROLE: CORE_MEANING
+ROLE: CORE_LAW
 GROUP: CONTINUE
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
-OWNER: null
-MAKER: null
 ---
 
 

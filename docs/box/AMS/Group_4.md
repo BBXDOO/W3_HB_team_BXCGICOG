@@ -1,3 +1,11 @@
+---
+AM_TYPE: II
+ROLE: ARCHITECTURE_GUIDANCE
+GROUP: BUILD
+DERIVED_FROM:
+  - docs/governance/AMS.md
+---
+
     Build. Observe. Learn. Continue. 
     4 Group signature of w3
     ---

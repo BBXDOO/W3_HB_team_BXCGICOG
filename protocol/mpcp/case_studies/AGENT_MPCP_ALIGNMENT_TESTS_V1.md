@@ -1,11 +1,9 @@
 ---
 AM_TYPE: III
-ROLE: OPERATIONAL
+ROLE: TEST_CASE_STUDY
 GROUP: OBSERVE
 DERIVED_FROM:
   - protocol/mpcp/ROT_BASELINE.md
-OWNER: null
-MAKER: null
 ---
 
 # Case Study: Agent MPCP Alignment Tests v1

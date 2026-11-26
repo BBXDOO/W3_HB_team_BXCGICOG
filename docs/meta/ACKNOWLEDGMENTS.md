@@ -1,3 +1,10 @@
+---
+AM_TYPE: II
+ROLE: KNOWLEDGE_REFERENCE
+GROUP: LEARN
+DERIVED_FROM: []
+---
+
 # 🙏 Acknowledgments - ขอบคุณ
 
 ## W3: Hybrid Intelligent Origin System

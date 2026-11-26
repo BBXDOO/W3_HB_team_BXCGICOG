@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: AGENT_WORK_RULES
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 # Agent Rules and Memory
 
 ## Overview

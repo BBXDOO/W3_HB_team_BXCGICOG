@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: DOCUMENT_TEMPLATE
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 # Audit Report - W3 Hybrid (Template)
 
 [REPORT] Audit Result - W3 Repo  

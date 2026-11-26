@@ -1,3 +1,10 @@
+---
+AM_TYPE: I
+ROLE: CORE_MEANING
+GROUP: LEARN
+DERIVED_FROM: []
+---
+
 # W3 – Hybrid AI Framework
 
 This is not a product.

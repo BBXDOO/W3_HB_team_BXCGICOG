@@ -1,3 +1,10 @@
+---
+AM_TYPE: II
+ROLE: ARCHITECTURE_GUIDANCE
+GROUP: BUILD
+DERIVED_FROM: []
+---
+
 # Agent Self Workspace Standard — มาตรฐานพื้นที่ทำงานของเอเจนท์
 
 เอกสารนี้กำหนดมาตรฐานเชิงปฏิบัติสำหรับเอเจนท์หรือแชทบอทที่มีพื้นที่ตามชื่อของตัวเองใน repository W3_HB_team_BXCGICOG เช่น `ChatGPT/`, `Gemini/`, `Grok/`, `DeepSeek/`, `Copilot-Gm/`, `Cast/`, `BBX19/` และพื้นที่ภายใต้ `modules/<agent-name>/`.

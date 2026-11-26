@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: DOCUMENT_TEMPLATE
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 # เทมเพลต Issue / Comment สำหรับเจ้าของ GitHub
 
 คัดลอกส่วนด้านล่าง เปลี่ยนเจตนา/พาธก่อนส่ง ใช้ @Origin เฉพาะเป้าหมายที่ต้องการ

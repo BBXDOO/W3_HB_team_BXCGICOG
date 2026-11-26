@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 # 🚀 Quick Start: ใช้งานโมดูล W3 + เชื่อม GPT/Gemini API
 
 > **คู่มือนี้ตอบ 3 คำถาม:**  

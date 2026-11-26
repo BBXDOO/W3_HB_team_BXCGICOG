@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: RECOVERY_PLAYBOOK
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 # Self-Healing Workflows Playbook (Guarded)
 
 ## Scope

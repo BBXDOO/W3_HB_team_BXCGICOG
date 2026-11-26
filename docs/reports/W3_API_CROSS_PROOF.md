@@ -1,3 +1,11 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - docs/standards/referencing_standard.md
+---
+
 # W3-API Cross Proof Before v0.3
 
 ## Proof statement

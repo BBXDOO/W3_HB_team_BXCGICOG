@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM: []
+---
+
 # 📋 รายงาน W3 Runtime — ผลการแก้ไขระบบ
 
 **วันที่:** 2026-05-02  

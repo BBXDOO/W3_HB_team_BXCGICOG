@@ -1,3 +1,10 @@
+---
+AM_TYPE: II
+ROLE: ARCHITECTURE_GUIDANCE
+GROUP: BUILD
+DERIVED_FROM: []
+---
+
 # Cross-X Ecosystem Coordination
 
 Cross-X is the W3 cross-system coordination layer. It exists to bring related

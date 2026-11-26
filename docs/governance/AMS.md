@@ -1,3 +1,11 @@
+---
+AM_TYPE: II
+ROLE: ARCHITECTURE_GUIDANCE
+GROUP: BUILD
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
+---
+
 # Architecture Mapping Standard (AMS)
 Architecture Mapping Standard
 Status: Active Draft

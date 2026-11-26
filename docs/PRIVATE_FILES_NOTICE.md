@@ -1,3 +1,10 @@
+---
+AM_TYPE: III
+ROLE: PUBLICATION_NOTICE
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 > ⚠️ **[PRIVATE REQUIRED]** — The following files in this `docs/` directory are designated **private** per `mirror.policy.json` and must NOT be mirrored to the public GitHub Pages site or shared externally:
 
 | File | Reason |

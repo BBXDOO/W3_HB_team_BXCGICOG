@@ -1,6 +1,7 @@
 ---
 AM_TYPE: III
 ROLE: OPERATIONAL
+GROUP: CONTINUE
 DERIVED_FROM:
   - workflows/orchestration/README.md
   - tools/README.md

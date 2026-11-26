@@ -1,11 +1,9 @@
 ---
 AM_TYPE: II
-ROLE: ADAPTATION
+ROLE: PROFILE_DESIGN
 GROUP: CONTINUE
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
-OWNER: null
-MAKER: null
 ---
 
 # W3Lgu-Condien Profile

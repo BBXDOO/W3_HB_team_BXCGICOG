@@ -1,3 +1,10 @@
+---
+AM_TYPE: II
+ROLE: BRANCH_POLICY
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 # W3 Branch Strategy
 
 This document defines how W3 keeps active development safe while the public surface remains calm. It is an orientation guide for humans and agents; it does not replace registry, protocol, or source-code truth.

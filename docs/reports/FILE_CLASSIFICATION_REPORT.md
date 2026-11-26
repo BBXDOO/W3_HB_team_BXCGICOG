@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - docs/announcement/announcement-3.md
+  - docs/protocol.md
+---
+
 # W3 File Classification Report
 
 **Purpose:** Analyze the repository from an outsider perspective and classify every significant file.

@@ -1,12 +1,10 @@
 ---
 AM_TYPE: II
-ROLE: ADAPTATION
+ROLE: DESIGN_SPECIFICATION
 GROUP: BUILD
 DERIVED_FROM:
   - protocol/mpcp/MODEW_PAPER.md
   - protocol/mpcp/MPCP_ORIGIN.md
-OWNER: null
-MAKER: null
 ---
 
 

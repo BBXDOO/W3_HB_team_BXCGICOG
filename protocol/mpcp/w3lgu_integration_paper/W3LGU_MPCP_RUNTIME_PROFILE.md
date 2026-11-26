@@ -1,12 +1,10 @@
 ---
 AM_TYPE: II
-ROLE: ADAPTATION
+ROLE: PROFILE_DESIGN
 GROUP: CONTINUE
 DERIVED_FROM:
   - protocol/mpcp/ROT_BASELINE.md
   - protocol/mpcp/ROT_PAPER.md
-OWNER: null
-MAKER: null
 ---
 
 # W3Lgu-MPCP Runtime Profile

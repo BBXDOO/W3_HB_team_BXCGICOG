@@ -1,3 +1,10 @@
+---
+AM_TYPE: II
+ROLE: ARCHITECTURE_GUIDANCE
+GROUP: BUILD
+DERIVED_FROM: []
+---
+
 # W3 Referencing Standard
 
 This standard keeps W3 integration artifacts traceable without mutating source
