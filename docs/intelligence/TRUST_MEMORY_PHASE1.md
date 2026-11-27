@@ -2,7 +2,8 @@
 AM_TYPE: II
 ROLE: DRAFT_DESIGN
 GROUP: OBSERVE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - knowledge/philosophy/Selective_Input.md
 OWNER: BBX19
 ---
 

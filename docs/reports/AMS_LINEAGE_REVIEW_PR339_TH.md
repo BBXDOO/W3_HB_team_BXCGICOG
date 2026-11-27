@@ -13,8 +13,8 @@ OWNER: BBX19
 
 | ผลตรวจ | จำนวน |
 |---|---:|
-| ระบุสายอ้างอิง | 31 |
-| รอหลักฐานต้นทาง | 47 |
+| ระบุสายอ้างอิง | 34 |
+| รอหลักฐานต้นทาง | 44 |
 
 ## สายที่ระบุ
 
@@ -51,6 +51,9 @@ OWNER: BBX19
 | [docs/guides/ORCHESTRATION_CAPABILITY_SUPPORT_TH.md](../guides/ORCHESTRATION_CAPABILITY_SUPPORT_TH.md) | [workflows/orchestration/README.md](../../workflows/orchestration/README.md) |
 | [docs/protocol.md](../protocol.md) | [docs/index.md](../index.md) |
 | [docs/w3db_setup.md](../w3db_setup.md) | [protocol/w3db/README.md](../../protocol/w3db/README.md) |
+| [docs/standards/CONFIG_SSOT.md](../standards/CONFIG_SSOT.md) | [knowledge/philosophy/corevsstructure.md](../../knowledge/philosophy/corevsstructure.md) |
+| [docs/intelligence/TRUST_MEMORY_PHASE1.md](../intelligence/TRUST_MEMORY_PHASE1.md) | [knowledge/philosophy/Selective_Input.md](../../knowledge/philosophy/Selective_Input.md) |
+| [docs/operations/SELF_HEALING_WORKFLOWS_PLAYBOOK.md](../operations/SELF_HEALING_WORKFLOWS_PLAYBOOK.md) | [knowledge/philosophy/error_meaning.md](../../knowledge/philosophy/error_meaning.md) |
 
 ## เอกสารที่รอหลักฐานต้นทาง
 
@@ -78,13 +81,11 @@ OWNER: BBX19
 - [docs/guides/ORIGIN_COLLABORATION_TH.md](../guides/ORIGIN_COLLABORATION_TH.md)
 - [docs/guides/QUICK_START.md](../guides/QUICK_START.md)
 - [docs/intelligence/PREDICTIVE_ROUTING_SAFE_MODE.md](../intelligence/PREDICTIVE_ROUTING_SAFE_MODE.md)
-- [docs/intelligence/TRUST_MEMORY_PHASE1.md](../intelligence/TRUST_MEMORY_PHASE1.md)
 - [docs/log/review/report_2026-03-03_changes-only.md](../log/review/report_2026-03-03_changes-only.md)
 - [docs/meta/ACKNOWLEDGMENTS.md](../meta/ACKNOWLEDGMENTS.md)
 - [docs/meta/CHANGELOG.md](../meta/CHANGELOG.md)
 - [docs/meta/USER_SUMMARY.md](../meta/USER_SUMMARY.md)
 - [docs/metrics/METRIC_DEFINITIONS.md](../metrics/METRIC_DEFINITIONS.md)
-- [docs/operations/SELF_HEALING_WORKFLOWS_PLAYBOOK.md](../operations/SELF_HEALING_WORKFLOWS_PLAYBOOK.md)
 - [docs/public_boundary.md](../public_boundary.md)
 - [docs/reports/1.md](1.md)
 - [docs/reports/AGENT_MODULE_CAPABILITY_REPORT.md](AGENT_MODULE_CAPABILITY_REPORT.md)
@@ -100,7 +101,6 @@ OWNER: BBX19
 - [docs/roadmaps/P1_P3_EXECUTION_PLAN.md](../roadmaps/P1_P3_EXECUTION_PLAN.md)
 - [docs/sample-report.md](../sample-report.md)
 - [docs/standards/AGENT_SELF_WORKSPACE_STANDARD.md](../standards/AGENT_SELF_WORKSPACE_STANDARD.md)
-- [docs/standards/CONFIG_SSOT.md](../standards/CONFIG_SSOT.md)
 - [docs/standards/NAMING_CONVENTION.md](../standards/NAMING_CONVENTION.md)
 - [docs/templates/origin/ISSUE_TEMPLATE_TH.md](../templates/origin/ISSUE_TEMPLATE_TH.md)
 
@@ -128,3 +128,13 @@ OWNER: BBX19
 | [docs/guides/ORCHESTRATION_CAPABILITY_SUPPORT_TH.md](../guides/ORCHESTRATION_CAPABILITY_SUPPORT_TH.md) | support catalog, routing และการคืนงานให้เจ้าของ |
 | [docs/protocol.md](../protocol.md) | แยกบริบทออกจากแชทและรักษาอำนาจตัดสินใจของเจ้าของ |
 | [docs/w3db_setup.md](../w3db_setup.md) | ขอบเขตการตั้งค่าและใช้งานระบบ W3DB |
+
+## การประยุกต์หลักจาก knowledge/philosophy
+
+ลิงก์ชุดนี้ระบุหลักที่เอกสารปลายทางนำมาใช้เพื่อให้อ่านย้อนความหมายได้
+
+| เอกสาร | หลักที่นำมาใช้ |
+|---|---|
+| [docs/standards/CONFIG_SSOT.md](../standards/CONFIG_SSOT.md) | แยกไฟล์กำหนดค่าต้นทางจากเอกสารและเทสต์ที่ปรับตามค่าต้นทาง |
+| [docs/intelligence/TRUST_MEMORY_PHASE1.md](../intelligence/TRUST_MEMORY_PHASE1.md) | เก็บเฉพาะสัญญาณที่มีหลักฐานเพื่อใช้สังเกต และคงการตัดสินใจไว้ที่ผู้ตรวจ |
+| [docs/operations/SELF_HEALING_WORKFLOWS_PLAYBOOK.md](../operations/SELF_HEALING_WORKFLOWS_PLAYBOOK.md) | ใช้ข้อผิดพลาดเป็นข้อมูลป้อนกลับเพื่อเลือกการแก้ ตรวจซ้ำ และเก็บผล |

@@ -2,7 +2,8 @@
 AM_TYPE: II
 ROLE: CONFIGURATION_STANDARD
 GROUP: CONTINUE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
 OWNER: BBX19
 ---
 
