@@ -141,6 +141,8 @@ ChatGPT/
 🛑 ห้าม publish master-flow โดยไม่มี evidence (กราฟ, simulation log)
 
 ---
+[บันทึกเจตนา AMS และวงจรเรียนรู้ W3](notes/2026-11-27_w3_intent_ams_and_learning_cycle_TH.md) — จุดเริ่มอ่านเมื่อกลับมาทำงาน PR #339 หรือเมื่อต้องตามต้นทางของหลักและผลการทดลอง
+
 **End of Module Entrance – ChatGPT**
 
 ## MPCP-CI-GIT-CONTEXT
