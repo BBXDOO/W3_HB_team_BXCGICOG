@@ -2,7 +2,10 @@
 AM_TYPE: II
 ROLE: GOVERNANCE_ANNOUNCEMENT
 GROUP: LEARN
-DERIVED_FROM: []
+DERIVED_FROM:
+  - docs/governance/manifesto-2.md
+  - docs/manifesto-3.md
+  - repo_events/W3_ORGANIZATIONAL_CULTURE_PAPER.md
 OWNER: BBX19
 ---
 

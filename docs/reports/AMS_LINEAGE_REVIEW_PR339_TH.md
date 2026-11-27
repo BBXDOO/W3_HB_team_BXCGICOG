@@ -13,8 +13,8 @@ OWNER: BBX19
 
 | ผลตรวจ | จำนวน |
 |---|---:|
-| ระบุสายอ้างอิง | 44 |
-| รอหลักฐานต้นทาง | 34 |
+| ระบุสายอ้างอิง | 48 |
+| รอหลักฐานต้นทาง | 30 |
 
 ## สายที่ระบุ
 
@@ -64,6 +64,10 @@ OWNER: BBX19
 | [docs/meta/USER_SUMMARY.md](../meta/USER_SUMMARY.md) | [tools/README.md](../../tools/README.md) · [docs/governance/AMS.md](../governance/AMS.md) |
 | [docs/reports/W3_SANITY_SWEEP_REPORT.md](W3_SANITY_SWEEP_REPORT.md) | [tools/README.md](../../tools/README.md) · [docs/governance/AMS.md](../governance/AMS.md) |
 | [docs/reports/W3_SANITY_SWEEP_SUMMARY.md](W3_SANITY_SWEEP_SUMMARY.md) | [tools/README.md](../../tools/README.md) · [docs/governance/AMS.md](../governance/AMS.md) |
+| [docs/announcement/announcement-3.md](../announcement/announcement-3.md) | [docs/governance/manifesto-2.md](../governance/manifesto-2.md), [docs/manifesto-3.md](../manifesto-3.md), [repo_events/W3_ORGANIZATIONAL_CULTURE_PAPER.md](../../repo_events/W3_ORGANIZATIONAL_CULTURE_PAPER.md) |
+| [docs/standards/AGENT_SELF_WORKSPACE_STANDARD.md](../standards/AGENT_SELF_WORKSPACE_STANDARD.md) | [Hybrid-Management-Model/team-doctrine.md](../../Hybrid-Management-Model/team-doctrine.md) |
+| [docs/governance/LINE_B_GPT.md](../governance/LINE_B_GPT.md) | [knowledge/philosophy/error_meaning.md](../../knowledge/philosophy/error_meaning.md), [Hybrid-Management-Model/team-doctrine.md](../../Hybrid-Management-Model/team-doctrine.md) |
+| [docs/public_boundary.md](../public_boundary.md) | [docs/governance/DECLARATION_IV.md](../governance/DECLARATION_IV.md), [blueprints/abstract/W3_PUBLIC_SURFACE_PLAN_TH.md](../../blueprints/abstract/W3_PUBLIC_SURFACE_PLAN_TH.md) |
 
 ## เอกสารที่รอหลักฐานต้นทาง
 
@@ -77,11 +81,9 @@ OWNER: BBX19
 - [docs/W3_IDP_STUDIO_TH.md](../W3_IDP_STUDIO_TH.md)
 - [docs/W3_MASTER_MAP.md](../W3_MASTER_MAP.md)
 - [docs/agent-alignment-analysis.md](../agent-alignment-analysis.md)
-- [docs/announcement/announcement-3.md](../announcement/announcement-3.md)
 - [docs/blank-template.md](../blank-template.md)
 - [docs/branch_strategy.md](../branch_strategy.md)
 - [docs/dashboard/ARCHITECTURE_STATUS.md](../dashboard/ARCHITECTURE_STATUS.md)
-- [docs/governance/LINE_B_GPT.md](../governance/LINE_B_GPT.md)
 - [docs/guides/AGENT_TASKS.md](../guides/AGENT_TASKS.md)
 - [docs/guides/CHATGPT_LOCAL_FLOW_ARTIFACT.md](../guides/CHATGPT_LOCAL_FLOW_ARTIFACT.md)
 - [docs/guides/GITHUB_PAGES_SETUP.md](../guides/GITHUB_PAGES_SETUP.md)
@@ -93,7 +95,6 @@ OWNER: BBX19
 - [docs/meta/ACKNOWLEDGMENTS.md](../meta/ACKNOWLEDGMENTS.md)
 - [docs/meta/CHANGELOG.md](../meta/CHANGELOG.md)
 - [docs/metrics/METRIC_DEFINITIONS.md](../metrics/METRIC_DEFINITIONS.md)
-- [docs/public_boundary.md](../public_boundary.md)
 - [docs/reports/1.md](1.md)
 - [docs/reports/AGENT_MODULE_CAPABILITY_REPORT.md](AGENT_MODULE_CAPABILITY_REPORT.md)
 - [docs/reports/V0_2_TO_V0_3_READINESS.md](V0_2_TO_V0_3_READINESS.md)
@@ -101,7 +102,6 @@ OWNER: BBX19
 - [docs/review/DUPLICATION_TRACKER.md](../review/DUPLICATION_TRACKER.md)
 - [docs/roadmaps/P1_P3_EXECUTION_PLAN.md](../roadmaps/P1_P3_EXECUTION_PLAN.md)
 - [docs/sample-report.md](../sample-report.md)
-- [docs/standards/AGENT_SELF_WORKSPACE_STANDARD.md](../standards/AGENT_SELF_WORKSPACE_STANDARD.md)
 - [docs/standards/NAMING_CONVENTION.md](../standards/NAMING_CONVENTION.md)
 
 ## วงจรนำกรณีศึกษาไปใช้ซ้ำ
@@ -164,3 +164,14 @@ README ของ tools ระบุขอบเขตและคำสั่ง
 | [docs/reports/W3_SANITY_SWEEP_SUMMARY.md](W3_SANITY_SWEEP_SUMMARY.md) | สรุปขั้นตอนของชุดตรวจ repository แบบเดียวกับรายงานฉบับเต็ม |
 
 [Agent Workbench](../../w3_tool_store/agent_workbench/README.md) พาไปที่ [System Inspection](../../w3_tool_store/agent_workbench/tools/system_inspection/README.md) สำหรับตรวจวิธีเก็บหลักฐานของวงจร MPCP ส่วน [เทสต์ Flow Artifact](../../tests/test_chatgpt_flow_artifact.py) ใช้ยืนยันพฤติกรรมที่คู่มือ ChatGPT Local Flow Artifact อธิบาย ให้ตามข้อกำหนดต้นทางของ capability เพิ่มก่อนเติมสาย AMS ของคู่มือ
+
+## วาทกรรม วัฒนธรรมทีม และแผนผิวหน้าระบบ
+
+| เอกสาร | หลักหรือข้อกำหนดที่ใช้ |
+|---|---|
+| [docs/announcement/announcement-3.md](../announcement/announcement-3.md) | หลักครอบครัวและความเชื่อใจ และคำอธิบายเจตนาของการตรวจแบบโมดูลคู่ |
+| [docs/standards/AGENT_SELF_WORKSPACE_STANDARD.md](../standards/AGENT_SELF_WORKSPACE_STANDARD.md) | แปลงหลักเขตงานแยกตามโมดูลและการแชร์เท่าที่จำเป็นเป็นข้อกำหนดพื้นที่ทำงาน |
+| [docs/governance/LINE_B_GPT.md](../governance/LINE_B_GPT.md) | ใช้ความผิดพลาดเป็นข้อมูลเรียนรู้และใช้บริบทจริงตัดสินภายใต้ขอบเขต |
+| [docs/public_boundary.md](../public_boundary.md) | รักษาเจตนาการสื่อสารสาธารณะและใช้แผนเปิดเผยตามระดับความพร้อม |
+
+พบ [แถลงการณ์ครั้งที่ 2](../governance/manifesto-2.md), [ภาคแถลงการณ์ฉบับ 3](../manifesto-3.md) และ [Declaration IV](../governance/DECLARATION_IV.md) จากชื่อและหัวเอกสาร สำหรับครั้งที่ 1 พบ [Discourse Summary](../../Grok/insight-vault/2025-12-01_discourse_summary.md) ที่ยังไม่มีเลขฉบับระบุไว้ จึงเก็บเป็นเบาะแส ส่วน [BBEX-Core Hybrid Access Protocol](../../BBEX-Core/PROTOCOL_HYBRID.md) ระบุขอบเขตเฉพาะ BBEX-Core และ `docs/PRIVATE_FILES_NOTICE.md` ระบุ `mirror.policy.json` เป็นแหล่งกติกาของพื้นที่ docs จึงติดตามเอกสารนโยบายดังกล่าวสำหรับจุดนี้

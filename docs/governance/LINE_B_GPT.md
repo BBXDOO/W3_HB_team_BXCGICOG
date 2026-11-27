@@ -2,7 +2,9 @@
 AM_TYPE: II
 ROLE: ARCHITECTURE_GUIDANCE
 GROUP: BUILD
-DERIVED_FROM: []
+DERIVED_FROM:
+  - knowledge/philosophy/error_meaning.md
+  - Hybrid-Management-Model/team-doctrine.md
 title: "LINE B GPT"
 OWNER: BBX19
 ---

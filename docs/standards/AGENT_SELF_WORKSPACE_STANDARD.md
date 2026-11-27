@@ -2,7 +2,8 @@
 AM_TYPE: II
 ROLE: WORKSPACE_STANDARD
 GROUP: CONTINUE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - Hybrid-Management-Model/team-doctrine.md
 OWNER: BBX19
 ---
 
