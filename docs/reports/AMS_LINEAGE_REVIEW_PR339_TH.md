@@ -13,8 +13,8 @@ OWNER: BBX19
 
 | ผลตรวจ | จำนวน |
 |---|---:|
-| ระบุสายอ้างอิง | 39 |
-| รอหลักฐานต้นทาง | 39 |
+| ระบุสายอ้างอิง | 44 |
+| รอหลักฐานต้นทาง | 34 |
 
 ## สายที่ระบุ
 
@@ -59,6 +59,11 @@ OWNER: BBX19
 | [docs/review/MODULE_REPORT_INDEX.md](../review/MODULE_REPORT_INDEX.md) | [SYSTEM/README.md](../../SYSTEM/README.md) |
 | [docs/guides/ORIGIN_COLLABORATION_TH.md](../guides/ORIGIN_COLLABORATION_TH.md) | [workflows/orchestration/assignments/REQUEST_COLLABORATION.md](../../workflows/orchestration/assignments/REQUEST_COLLABORATION.md) |
 | [docs/templates/origin/ISSUE_TEMPLATE_TH.md](../templates/origin/ISSUE_TEMPLATE_TH.md) | [workflows/orchestration/assignments/REQUEST_COLLABORATION.md](../../workflows/orchestration/assignments/REQUEST_COLLABORATION.md) |
+| [docs/guides/QUICK_START.md](../guides/QUICK_START.md) | [tools/README.md](../../tools/README.md) · [docs/governance/AMS.md](../governance/AMS.md) |
+| [docs/reports/INTEGRITY_REPORT_TH.md](INTEGRITY_REPORT_TH.md) | [tools/README.md](../../tools/README.md) · [docs/governance/AMS.md](../governance/AMS.md) |
+| [docs/meta/USER_SUMMARY.md](../meta/USER_SUMMARY.md) | [tools/README.md](../../tools/README.md) · [docs/governance/AMS.md](../governance/AMS.md) |
+| [docs/reports/W3_SANITY_SWEEP_REPORT.md](W3_SANITY_SWEEP_REPORT.md) | [tools/README.md](../../tools/README.md) · [docs/governance/AMS.md](../governance/AMS.md) |
+| [docs/reports/W3_SANITY_SWEEP_SUMMARY.md](W3_SANITY_SWEEP_SUMMARY.md) | [tools/README.md](../../tools/README.md) · [docs/governance/AMS.md](../governance/AMS.md) |
 
 ## เอกสารที่รอหลักฐานต้นทาง
 
@@ -83,21 +88,16 @@ OWNER: BBX19
 - [docs/guides/JSON_GUIDE.md](../guides/JSON_GUIDE.md)
 - [docs/guides/MODULE_USAGE_GUIDE.md](../guides/MODULE_USAGE_GUIDE.md)
 - [docs/guides/ORIGIN_AGENT_OPERATIONS_TH.md](../guides/ORIGIN_AGENT_OPERATIONS_TH.md)
-- [docs/guides/QUICK_START.md](../guides/QUICK_START.md)
 - [docs/intelligence/PREDICTIVE_ROUTING_SAFE_MODE.md](../intelligence/PREDICTIVE_ROUTING_SAFE_MODE.md)
 - [docs/log/review/report_2026-03-03_changes-only.md](../log/review/report_2026-03-03_changes-only.md)
 - [docs/meta/ACKNOWLEDGMENTS.md](../meta/ACKNOWLEDGMENTS.md)
 - [docs/meta/CHANGELOG.md](../meta/CHANGELOG.md)
-- [docs/meta/USER_SUMMARY.md](../meta/USER_SUMMARY.md)
 - [docs/metrics/METRIC_DEFINITIONS.md](../metrics/METRIC_DEFINITIONS.md)
 - [docs/public_boundary.md](../public_boundary.md)
 - [docs/reports/1.md](1.md)
 - [docs/reports/AGENT_MODULE_CAPABILITY_REPORT.md](AGENT_MODULE_CAPABILITY_REPORT.md)
-- [docs/reports/INTEGRITY_REPORT_TH.md](INTEGRITY_REPORT_TH.md)
 - [docs/reports/V0_2_TO_V0_3_READINESS.md](V0_2_TO_V0_3_READINESS.md)
 - [docs/reports/W3_RUNTIME_FIX_REPORT.md](W3_RUNTIME_FIX_REPORT.md)
-- [docs/reports/W3_SANITY_SWEEP_REPORT.md](W3_SANITY_SWEEP_REPORT.md)
-- [docs/reports/W3_SANITY_SWEEP_SUMMARY.md](W3_SANITY_SWEEP_SUMMARY.md)
 - [docs/review/DUPLICATION_TRACKER.md](../review/DUPLICATION_TRACKER.md)
 - [docs/roadmaps/P1_P3_EXECUTION_PLAN.md](../roadmaps/P1_P3_EXECUTION_PLAN.md)
 - [docs/sample-report.md](../sample-report.md)
@@ -150,3 +150,17 @@ OWNER: BBX19
 | [docs/templates/origin/ISSUE_TEMPLATE_TH.md](../templates/origin/ISSUE_TEMPLATE_TH.md) | แยกผู้รับงานและพาร์ตเนอร์ในตัวอย่างใบงาน |
 
 [Protocol](../../protocol/README.md) ใช้เป็นดัชนีระบบย่อย และ [CROLL / Cross-L](../../croll/README.md) ระบุขอบเขตการกำกับตรรกะข้ามภาษา ยังไม่ผูกสองไฟล์นี้เข้ากับรายการค้างจนกว่าจะพบกฎหรือส่วนของเอกสารที่นำไปใช้ตรงกัน สถานะในดัชนี SYSTEM ใช้ประกอบการตามหาเอกสารของแต่ละระบบ ให้ตรวจสถานะปัจจุบันจากหลักฐานล่าสุดของโมดูล
+
+## เครื่องมือและผลตรวจ
+
+README ของ tools ระบุขอบเขตและคำสั่งของชุดตรวจ ส่วนรายงานแต่ละฉบับบันทึกผลของรอบที่ระบุไว้
+
+| เอกสาร | ส่วนของชุดตรวจที่นำมาใช้ |
+|---|---|
+| [docs/guides/QUICK_START.md](../guides/QUICK_START.md) | คำสั่ง file_integrity_check และวิธีอ่านผล |
+| [docs/reports/INTEGRITY_REPORT_TH.md](INTEGRITY_REPORT_TH.md) | การตรวจรายการพาธและไฟล์ตามขอบเขต file_integrity_check |
+| [docs/meta/USER_SUMMARY.md](../meta/USER_SUMMARY.md) | สรุปผลการตรวจไฟล์จากชุดตรวจ integrity |
+| [docs/reports/W3_SANITY_SWEEP_REPORT.md](W3_SANITY_SWEEP_REPORT.md) | ชุดตรวจ integrity, JSON Schema, module และ metadata |
+| [docs/reports/W3_SANITY_SWEEP_SUMMARY.md](W3_SANITY_SWEEP_SUMMARY.md) | สรุปขั้นตอนของชุดตรวจ repository แบบเดียวกับรายงานฉบับเต็ม |
+
+[Agent Workbench](../../w3_tool_store/agent_workbench/README.md) พาไปที่ [System Inspection](../../w3_tool_store/agent_workbench/tools/system_inspection/README.md) สำหรับตรวจวิธีเก็บหลักฐานของวงจร MPCP ส่วน [เทสต์ Flow Artifact](../../tests/test_chatgpt_flow_artifact.py) ใช้ยืนยันพฤติกรรมที่คู่มือ ChatGPT Local Flow Artifact อธิบาย ให้ตามข้อกำหนดต้นทางของ capability เพิ่มก่อนเติมสาย AMS ของคู่มือ

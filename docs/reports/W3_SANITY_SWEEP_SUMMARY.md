@@ -2,7 +2,9 @@
 AM_TYPE: III
 ROLE: EVIDENCE_REPORT
 GROUP: OBSERVE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - docs/governance/AMS.md
+  - tools/README.md
 OWNER: BBX19
 ---
 
