@@ -13,8 +13,8 @@ OWNER: BBX19
 
 | ผลตรวจ | จำนวน |
 |---|---:|
-| ระบุสายอ้างอิง | 48 |
-| รอหลักฐานต้นทาง | 30 |
+| ระบุสายอ้างอิง | 50 |
+| รอหลักฐานต้นทาง | 28 |
 
 ## สายที่ระบุ
 
@@ -68,6 +68,8 @@ OWNER: BBX19
 | [docs/standards/AGENT_SELF_WORKSPACE_STANDARD.md](../standards/AGENT_SELF_WORKSPACE_STANDARD.md) | [Hybrid-Management-Model/team-doctrine.md](../../Hybrid-Management-Model/team-doctrine.md) |
 | [docs/governance/LINE_B_GPT.md](../governance/LINE_B_GPT.md) | [knowledge/philosophy/error_meaning.md](../../knowledge/philosophy/error_meaning.md), [Hybrid-Management-Model/team-doctrine.md](../../Hybrid-Management-Model/team-doctrine.md) |
 | [docs/public_boundary.md](../public_boundary.md) | [docs/governance/DECLARATION_IV.md](../governance/DECLARATION_IV.md), [blueprints/abstract/W3_PUBLIC_SURFACE_PLAN_TH.md](../../blueprints/abstract/W3_PUBLIC_SURFACE_PLAN_TH.md) |
+| [docs/W3_IDP_STUDIO_TH.md](../W3_IDP_STUDIO_TH.md) | [blueprints/GGinventory/w3openland/README.md](../../blueprints/GGinventory/w3openland/README.md) |
+| [docs/guides/ORIGIN_AGENT_OPERATIONS_TH.md](../guides/ORIGIN_AGENT_OPERATIONS_TH.md) | [core/runtime/runtime.md](../../core/runtime/runtime.md) |
 
 ## เอกสารที่รอหลักฐานต้นทาง
 
@@ -78,7 +80,6 @@ OWNER: BBX19
 - [docs/PRIVATE_FILES_NOTICE.md](../PRIVATE_FILES_NOTICE.md)
 - [docs/QUICK_START.md](../QUICK_START.md)
 - [docs/QUICK_START_MODULES.md](../QUICK_START_MODULES.md)
-- [docs/W3_IDP_STUDIO_TH.md](../W3_IDP_STUDIO_TH.md)
 - [docs/W3_MASTER_MAP.md](../W3_MASTER_MAP.md)
 - [docs/agent-alignment-analysis.md](../agent-alignment-analysis.md)
 - [docs/blank-template.md](../blank-template.md)
@@ -89,7 +90,6 @@ OWNER: BBX19
 - [docs/guides/GITHUB_PAGES_SETUP.md](../guides/GITHUB_PAGES_SETUP.md)
 - [docs/guides/JSON_GUIDE.md](../guides/JSON_GUIDE.md)
 - [docs/guides/MODULE_USAGE_GUIDE.md](../guides/MODULE_USAGE_GUIDE.md)
-- [docs/guides/ORIGIN_AGENT_OPERATIONS_TH.md](../guides/ORIGIN_AGENT_OPERATIONS_TH.md)
 - [docs/intelligence/PREDICTIVE_ROUTING_SAFE_MODE.md](../intelligence/PREDICTIVE_ROUTING_SAFE_MODE.md)
 - [docs/log/review/report_2026-03-03_changes-only.md](../log/review/report_2026-03-03_changes-only.md)
 - [docs/meta/ACKNOWLEDGMENTS.md](../meta/ACKNOWLEDGMENTS.md)
@@ -175,3 +175,8 @@ README ของ tools ระบุขอบเขตและคำสั่ง
 | [docs/public_boundary.md](../public_boundary.md) | รักษาเจตนาการสื่อสารสาธารณะและใช้แผนเปิดเผยตามระดับความพร้อม |
 
 พบ [แถลงการณ์ครั้งที่ 2](../governance/manifesto-2.md), [ภาคแถลงการณ์ฉบับ 3](../manifesto-3.md) และ [Declaration IV](../governance/DECLARATION_IV.md) จากชื่อและหัวเอกสาร สำหรับครั้งที่ 1 พบ [Discourse Summary](../../Grok/insight-vault/2025-12-01_discourse_summary.md) ที่ยังไม่มีเลขฉบับระบุไว้ จึงเก็บเป็นเบาะแส ส่วน [BBEX-Core Hybrid Access Protocol](../../BBEX-Core/PROTOCOL_HYBRID.md) ระบุขอบเขตเฉพาะ BBEX-Core และ `docs/PRIVATE_FILES_NOTICE.md` ระบุ `mirror.policy.json` เป็นแหล่งกติกาของพื้นที่ docs จึงติดตามเอกสารนโยบายดังกล่าวสำหรับจุดนี้
+
+## IDP ของเอเจนท์และ W3.IDP Studio
+
+- สายเอเจนท์เริ่มที่ [ดัชนี IDP ต้นฉบับ](../../BBX19/modules/BBX19/idp/INDEX.md) ฉายข้อมูลสำหรับรันไทม์ไว้ที่ `core/identity/profiles/` ตาม [W3 Runtime](../../core/runtime/runtime.md) ส่วน [Origin Operations](../../core/runtime/agents/origin_operations.py) อ่านโปรไฟล์เพื่อตรวจขอบเขตงานไฟล์
+- สาย Studio ใช้ [README ของ W3 Openland](../../blueprints/GGinventory/w3openland/README.md) เป็นแหล่งอ้างอิงของคู่มือ เพราะระบุ source export โครงสร้างแอป และคำสั่ง build ตรงกัน

@@ -2,7 +2,8 @@
 AM_TYPE: III
 ROLE: USAGE_GUIDE
 GROUP: CONTINUE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - core/runtime/runtime.md
 OWNER: BBX19
 ---
 

@@ -2,7 +2,8 @@
 AM_TYPE: III
 ROLE: TECHNICAL_GUIDE
 GROUP: LEARN
-DERIVED_FROM: []
+DERIVED_FROM:
+  - blueprints/GGinventory/w3openland/README.md
 OWNER: BBX19
 ---
 
