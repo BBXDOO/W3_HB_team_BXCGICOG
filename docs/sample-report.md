@@ -2,7 +2,8 @@
 AM_TYPE: III
 ROLE: EVIDENCE_REPORT
 GROUP: OBSERVE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - docs/announcement/announcement-3.md
 OWNER: BBX19
 ---
 

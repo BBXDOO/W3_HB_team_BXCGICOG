@@ -9,12 +9,12 @@ OWNER: BBX19
 
 # ผลตรวจสายอ้างอิง AMS ใน PR #339
 
-ขอบเขตคือเอกสาร AM:II และ AM:III ที่ยังมี `DERIVED_FROM: []` ในงานรอบก่อน เอกสาร AM:I สามารถเป็นต้นทางของสายได้
+ขอบเขตคือเอกสาร AM:II และ AM:III ที่ยังมี `DERIVED_FROM: []` ในงานรอบก่อน เอกสาร AM:I สามารถเป็นต้นทางของสายได้ เอกสารเก่าที่ไม่มี OWNER หรือหัว AMS ใช้เป็นต้นทางได้เมื่อเนื้อหาระบุหลักหรือแนวปฏิบัติที่สัมพันธ์กันชัดเจน
 
 | ผลตรวจ | จำนวน |
 |---|---:|
-| ระบุสายอ้างอิง | 56 |
-| รอหลักฐานต้นทาง | 22 |
+| ระบุสายอ้างอิง | 57 |
+| รอหลักฐานต้นทาง | 21 |
 
 ## สายที่ระบุ
 
@@ -76,6 +76,7 @@ OWNER: BBX19
 | [docs/intelligence/PREDICTIVE_ROUTING_SAFE_MODE.md](../intelligence/PREDICTIVE_ROUTING_SAFE_MODE.md) | [docs/roadmaps/P1_P3_EXECUTION_PLAN.md](../roadmaps/P1_P3_EXECUTION_PLAN.md) |
 | [docs/review/DUPLICATION_TRACKER.md](../review/DUPLICATION_TRACKER.md) | [docs/roadmaps/P1_P3_EXECUTION_PLAN.md](../roadmaps/P1_P3_EXECUTION_PLAN.md) |
 | [docs/standards/NAMING_CONVENTION.md](../standards/NAMING_CONVENTION.md) | [docs/roadmaps/P1_P3_EXECUTION_PLAN.md](../roadmaps/P1_P3_EXECUTION_PLAN.md) |
+| [docs/sample-report.md](../sample-report.md) | [ประกาศฉบับที่ 3](../announcement/announcement-3.md) |
 
 ## เอกสารที่รอหลักฐานต้นทาง
 
@@ -102,7 +103,6 @@ OWNER: BBX19
 - [docs/reports/AGENT_MODULE_CAPABILITY_REPORT.md](AGENT_MODULE_CAPABILITY_REPORT.md)
 - [docs/reports/V0_2_TO_V0_3_READINESS.md](V0_2_TO_V0_3_READINESS.md)
 - [docs/reports/W3_RUNTIME_FIX_REPORT.md](W3_RUNTIME_FIX_REPORT.md)
-- [docs/sample-report.md](../sample-report.md)
 
 ## วงจรนำกรณีศึกษาไปใช้ซ้ำ
 
@@ -193,3 +193,5 @@ README ของ tools ระบุขอบเขตและคำสั่ง
 | [docs/standards/NAMING_CONVENTION.md](../standards/NAMING_CONVENTION.md) | นำงาน Unify naming conventions ใน P1 มาเขียนเป็นข้อกำหนด |
 
 W3 Master Map ยังรอตรวจพาธต้นฉบับที่ระบุในหัวเอกสาร คือ `/SYSTEM/ROOT/W3_MASTER_MAP_v1.md`
+
+[ตัวอย่างรายงาน](../sample-report.md) นำหลักโมดูลคู่ การโหวต และการสุ่มจับคู่จาก [ประกาศฉบับที่ 3](../announcement/announcement-3.md) มาทำเป็นหัวข้อทบทวน เอกสาร [ภาคแถลงการณ์ฉบับที่ 3](../manifesto-3.md) และ [W3 Organizational Culture Paper](../../repo_events/W3_ORGANIZATIONAL_CULTURE_PAPER.md) ให้บริบทเรื่องครอบครัว ความเชื่อใจ และการตรวจทานร่วมกัน การตามรอยชุดนี้ยืนยันที่มาของแนวปฏิบัติในเอกสาร ตัวอย่างรายงานใช้สาธิตวิธีบันทึกผล
