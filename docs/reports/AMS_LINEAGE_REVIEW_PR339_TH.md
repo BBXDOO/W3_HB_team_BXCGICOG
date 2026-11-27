@@ -13,8 +13,8 @@ OWNER: BBX19
 
 | ผลตรวจ | จำนวน |
 |---|---:|
-| ระบุสายอ้างอิง | 50 |
-| รอหลักฐานต้นทาง | 28 |
+| ระบุสายอ้างอิง | 56 |
+| รอหลักฐานต้นทาง | 22 |
 
 ## สายที่ระบุ
 
@@ -70,6 +70,12 @@ OWNER: BBX19
 | [docs/public_boundary.md](../public_boundary.md) | [docs/governance/DECLARATION_IV.md](../governance/DECLARATION_IV.md), [blueprints/abstract/W3_PUBLIC_SURFACE_PLAN_TH.md](../../blueprints/abstract/W3_PUBLIC_SURFACE_PLAN_TH.md) |
 | [docs/W3_IDP_STUDIO_TH.md](../W3_IDP_STUDIO_TH.md) | [blueprints/GGinventory/w3openland/README.md](../../blueprints/GGinventory/w3openland/README.md) |
 | [docs/guides/ORIGIN_AGENT_OPERATIONS_TH.md](../guides/ORIGIN_AGENT_OPERATIONS_TH.md) | [core/runtime/runtime.md](../../core/runtime/runtime.md) |
+| [docs/roadmaps/P1_P3_EXECUTION_PLAN.md](../roadmaps/P1_P3_EXECUTION_PLAN.md) | [architecture/W3_MASTER_ARCHITECTURE.md](../../architecture/W3_MASTER_ARCHITECTURE.md) |
+| [docs/dashboard/ARCHITECTURE_STATUS.md](../dashboard/ARCHITECTURE_STATUS.md) | [architecture/W3_MASTER_ARCHITECTURE.md](../../architecture/W3_MASTER_ARCHITECTURE.md) |
+| [docs/metrics/METRIC_DEFINITIONS.md](../metrics/METRIC_DEFINITIONS.md) | [docs/roadmaps/P1_P3_EXECUTION_PLAN.md](../roadmaps/P1_P3_EXECUTION_PLAN.md) |
+| [docs/intelligence/PREDICTIVE_ROUTING_SAFE_MODE.md](../intelligence/PREDICTIVE_ROUTING_SAFE_MODE.md) | [docs/roadmaps/P1_P3_EXECUTION_PLAN.md](../roadmaps/P1_P3_EXECUTION_PLAN.md) |
+| [docs/review/DUPLICATION_TRACKER.md](../review/DUPLICATION_TRACKER.md) | [docs/roadmaps/P1_P3_EXECUTION_PLAN.md](../roadmaps/P1_P3_EXECUTION_PLAN.md) |
+| [docs/standards/NAMING_CONVENTION.md](../standards/NAMING_CONVENTION.md) | [docs/roadmaps/P1_P3_EXECUTION_PLAN.md](../roadmaps/P1_P3_EXECUTION_PLAN.md) |
 
 ## เอกสารที่รอหลักฐานต้นทาง
 
@@ -84,25 +90,19 @@ OWNER: BBX19
 - [docs/agent-alignment-analysis.md](../agent-alignment-analysis.md)
 - [docs/blank-template.md](../blank-template.md)
 - [docs/branch_strategy.md](../branch_strategy.md)
-- [docs/dashboard/ARCHITECTURE_STATUS.md](../dashboard/ARCHITECTURE_STATUS.md)
 - [docs/guides/AGENT_TASKS.md](../guides/AGENT_TASKS.md)
 - [docs/guides/CHATGPT_LOCAL_FLOW_ARTIFACT.md](../guides/CHATGPT_LOCAL_FLOW_ARTIFACT.md)
 - [docs/guides/GITHUB_PAGES_SETUP.md](../guides/GITHUB_PAGES_SETUP.md)
 - [docs/guides/JSON_GUIDE.md](../guides/JSON_GUIDE.md)
 - [docs/guides/MODULE_USAGE_GUIDE.md](../guides/MODULE_USAGE_GUIDE.md)
-- [docs/intelligence/PREDICTIVE_ROUTING_SAFE_MODE.md](../intelligence/PREDICTIVE_ROUTING_SAFE_MODE.md)
 - [docs/log/review/report_2026-03-03_changes-only.md](../log/review/report_2026-03-03_changes-only.md)
 - [docs/meta/ACKNOWLEDGMENTS.md](../meta/ACKNOWLEDGMENTS.md)
 - [docs/meta/CHANGELOG.md](../meta/CHANGELOG.md)
-- [docs/metrics/METRIC_DEFINITIONS.md](../metrics/METRIC_DEFINITIONS.md)
 - [docs/reports/1.md](1.md)
 - [docs/reports/AGENT_MODULE_CAPABILITY_REPORT.md](AGENT_MODULE_CAPABILITY_REPORT.md)
 - [docs/reports/V0_2_TO_V0_3_READINESS.md](V0_2_TO_V0_3_READINESS.md)
 - [docs/reports/W3_RUNTIME_FIX_REPORT.md](W3_RUNTIME_FIX_REPORT.md)
-- [docs/review/DUPLICATION_TRACKER.md](../review/DUPLICATION_TRACKER.md)
-- [docs/roadmaps/P1_P3_EXECUTION_PLAN.md](../roadmaps/P1_P3_EXECUTION_PLAN.md)
 - [docs/sample-report.md](../sample-report.md)
-- [docs/standards/NAMING_CONVENTION.md](../standards/NAMING_CONVENTION.md)
 
 ## วงจรนำกรณีศึกษาไปใช้ซ้ำ
 
@@ -180,3 +180,16 @@ README ของ tools ระบุขอบเขตและคำสั่ง
 
 - สายเอเจนท์เริ่มที่ [ดัชนี IDP ต้นฉบับ](../../BBX19/modules/BBX19/idp/INDEX.md) ฉายข้อมูลสำหรับรันไทม์ไว้ที่ `core/identity/profiles/` ตาม [W3 Runtime](../../core/runtime/runtime.md) ส่วน [Origin Operations](../../core/runtime/agents/origin_operations.py) อ่านโปรไฟล์เพื่อตรวจขอบเขตงานไฟล์
 - สาย Studio ใช้ [README ของ W3 Openland](../../blueprints/GGinventory/w3openland/README.md) เป็นแหล่งอ้างอิงของคู่มือ เพราะระบุ source export โครงสร้างแอป และคำสั่ง build ตรงกัน
+
+## สาย Architecture และแผน P1–P3
+
+| เอกสาร | ความสัมพันธ์ที่ตรวจ |
+|---|---|
+| [docs/roadmaps/P1_P3_EXECUTION_PLAN.md](../roadmaps/P1_P3_EXECUTION_PLAN.md) | ขยาย Immediate Priorities เป็นงานส่งมอบ |
+| [docs/dashboard/ARCHITECTURE_STATUS.md](../dashboard/ARCHITECTURE_STATUS.md) | ตารางสถานะอ้างสถาปัตยกรรมหลักโดยตรง |
+| [docs/metrics/METRIC_DEFINITIONS.md](../metrics/METRIC_DEFINITIONS.md) | นิยามตัวชี้วัดสำหรับ P2 Visibility |
+| [docs/intelligence/PREDICTIVE_ROUTING_SAFE_MODE.md](../intelligence/PREDICTIVE_ROUTING_SAFE_MODE.md) | ออกแบบ routing ตาม P3 Intelligence Upgrade |
+| [docs/review/DUPLICATION_TRACKER.md](../review/DUPLICATION_TRACKER.md) | บันทึกผลตามงาน Remove duplicated systems ของ P1 |
+| [docs/standards/NAMING_CONVENTION.md](../standards/NAMING_CONVENTION.md) | นำงาน Unify naming conventions ใน P1 มาเขียนเป็นข้อกำหนด |
+
+W3 Master Map ยังรอตรวจพาธต้นฉบับที่ระบุในหัวเอกสาร คือ `/SYSTEM/ROOT/W3_MASTER_MAP_v1.md`
