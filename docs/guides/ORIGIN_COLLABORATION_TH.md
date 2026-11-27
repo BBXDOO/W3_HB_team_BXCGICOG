@@ -2,7 +2,8 @@
 AM_TYPE: III
 ROLE: USAGE_GUIDE
 GROUP: CONTINUE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - workflows/orchestration/assignments/REQUEST_COLLABORATION.md
 OWNER: BBX19
 ---
 

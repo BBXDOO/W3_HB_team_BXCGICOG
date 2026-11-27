@@ -13,8 +13,8 @@ OWNER: BBX19
 
 | ผลตรวจ | จำนวน |
 |---|---:|
-| ระบุสายอ้างอิง | 34 |
-| รอหลักฐานต้นทาง | 44 |
+| ระบุสายอ้างอิง | 39 |
+| รอหลักฐานต้นทาง | 39 |
 
 ## สายที่ระบุ
 
@@ -54,6 +54,11 @@ OWNER: BBX19
 | [docs/standards/CONFIG_SSOT.md](../standards/CONFIG_SSOT.md) | [knowledge/philosophy/corevsstructure.md](../../knowledge/philosophy/corevsstructure.md) |
 | [docs/intelligence/TRUST_MEMORY_PHASE1.md](../intelligence/TRUST_MEMORY_PHASE1.md) | [knowledge/philosophy/Selective_Input.md](../../knowledge/philosophy/Selective_Input.md) |
 | [docs/operations/SELF_HEALING_WORKFLOWS_PLAYBOOK.md](../operations/SELF_HEALING_WORKFLOWS_PLAYBOOK.md) | [knowledge/philosophy/error_meaning.md](../../knowledge/philosophy/error_meaning.md) |
+| [docs/review/AGENT_OPERATIONAL_STATUS_SSOT.md](../review/AGENT_OPERATIONAL_STATUS_SSOT.md) | [SYSTEM/README.md](../../SYSTEM/README.md), [BBX19/README.md](../../BBX19/README.md) |
+| [docs/review/AGENT_OPERATIONAL_STATUS_SSOT.th.md](../review/AGENT_OPERATIONAL_STATUS_SSOT.th.md) | [SYSTEM/README.md](../../SYSTEM/README.md), [BBX19/README.md](../../BBX19/README.md) |
+| [docs/review/MODULE_REPORT_INDEX.md](../review/MODULE_REPORT_INDEX.md) | [SYSTEM/README.md](../../SYSTEM/README.md) |
+| [docs/guides/ORIGIN_COLLABORATION_TH.md](../guides/ORIGIN_COLLABORATION_TH.md) | [workflows/orchestration/assignments/REQUEST_COLLABORATION.md](../../workflows/orchestration/assignments/REQUEST_COLLABORATION.md) |
+| [docs/templates/origin/ISSUE_TEMPLATE_TH.md](../templates/origin/ISSUE_TEMPLATE_TH.md) | [workflows/orchestration/assignments/REQUEST_COLLABORATION.md](../../workflows/orchestration/assignments/REQUEST_COLLABORATION.md) |
 
 ## เอกสารที่รอหลักฐานต้นทาง
 
@@ -78,7 +83,6 @@ OWNER: BBX19
 - [docs/guides/JSON_GUIDE.md](../guides/JSON_GUIDE.md)
 - [docs/guides/MODULE_USAGE_GUIDE.md](../guides/MODULE_USAGE_GUIDE.md)
 - [docs/guides/ORIGIN_AGENT_OPERATIONS_TH.md](../guides/ORIGIN_AGENT_OPERATIONS_TH.md)
-- [docs/guides/ORIGIN_COLLABORATION_TH.md](../guides/ORIGIN_COLLABORATION_TH.md)
 - [docs/guides/QUICK_START.md](../guides/QUICK_START.md)
 - [docs/intelligence/PREDICTIVE_ROUTING_SAFE_MODE.md](../intelligence/PREDICTIVE_ROUTING_SAFE_MODE.md)
 - [docs/log/review/report_2026-03-03_changes-only.md](../log/review/report_2026-03-03_changes-only.md)
@@ -94,15 +98,11 @@ OWNER: BBX19
 - [docs/reports/W3_RUNTIME_FIX_REPORT.md](W3_RUNTIME_FIX_REPORT.md)
 - [docs/reports/W3_SANITY_SWEEP_REPORT.md](W3_SANITY_SWEEP_REPORT.md)
 - [docs/reports/W3_SANITY_SWEEP_SUMMARY.md](W3_SANITY_SWEEP_SUMMARY.md)
-- [docs/review/AGENT_OPERATIONAL_STATUS_SSOT.md](../review/AGENT_OPERATIONAL_STATUS_SSOT.md)
-- [docs/review/AGENT_OPERATIONAL_STATUS_SSOT.th.md](../review/AGENT_OPERATIONAL_STATUS_SSOT.th.md)
 - [docs/review/DUPLICATION_TRACKER.md](../review/DUPLICATION_TRACKER.md)
-- [docs/review/MODULE_REPORT_INDEX.md](../review/MODULE_REPORT_INDEX.md)
 - [docs/roadmaps/P1_P3_EXECUTION_PLAN.md](../roadmaps/P1_P3_EXECUTION_PLAN.md)
 - [docs/sample-report.md](../sample-report.md)
 - [docs/standards/AGENT_SELF_WORKSPACE_STANDARD.md](../standards/AGENT_SELF_WORKSPACE_STANDARD.md)
 - [docs/standards/NAMING_CONVENTION.md](../standards/NAMING_CONVENTION.md)
-- [docs/templates/origin/ISSUE_TEMPLATE_TH.md](../templates/origin/ISSUE_TEMPLATE_TH.md)
 
 ## วงจรนำกรณีศึกษาไปใช้ซ้ำ
 
@@ -138,3 +138,15 @@ OWNER: BBX19
 | [docs/standards/CONFIG_SSOT.md](../standards/CONFIG_SSOT.md) | แยกไฟล์กำหนดค่าต้นทางจากเอกสารและเทสต์ที่ปรับตามค่าต้นทาง |
 | [docs/intelligence/TRUST_MEMORY_PHASE1.md](../intelligence/TRUST_MEMORY_PHASE1.md) | เก็บเฉพาะสัญญาณที่มีหลักฐานเพื่อใช้สังเกต และคงการตัดสินใจไว้ที่ผู้ตรวจ |
 | [docs/operations/SELF_HEALING_WORKFLOWS_PLAYBOOK.md](../operations/SELF_HEALING_WORKFLOWS_PLAYBOOK.md) | ใช้ข้อผิดพลาดเป็นข้อมูลป้อนกลับเพื่อเลือกการแก้ ตรวจซ้ำ และเก็บผล |
+
+## แหล่งจากรากระบบ
+
+| เอกสาร | ความสัมพันธ์ที่ตรวจ |
+|---|---|
+| [docs/review/AGENT_OPERATIONAL_STATUS_SSOT.md](../review/AGENT_OPERATIONAL_STATUS_SSOT.md) | รายการระบบหลักและบทบาท BBX19 ในการตัดสินใจขั้นสุดท้าย |
+| [docs/review/AGENT_OPERATIONAL_STATUS_SSOT.th.md](../review/AGENT_OPERATIONAL_STATUS_SSOT.th.md) | อ้างโครงสร้างและบทบาทเดียวกับฉบับภาษาอังกฤษ |
+| [docs/review/MODULE_REPORT_INDEX.md](../review/MODULE_REPORT_INDEX.md) | โครงดัชนีระบบหลัก ไฟล์ และรายงานประจำโมดูล |
+| [docs/guides/ORIGIN_COLLABORATION_TH.md](../guides/ORIGIN_COLLABORATION_TH.md) | บทบาทเจ้าของงานและพาร์ตเนอร์ การส่งงานและรับหลักฐาน |
+| [docs/templates/origin/ISSUE_TEMPLATE_TH.md](../templates/origin/ISSUE_TEMPLATE_TH.md) | แยกผู้รับงานและพาร์ตเนอร์ในตัวอย่างใบงาน |
+
+[Protocol](../../protocol/README.md) ใช้เป็นดัชนีระบบย่อย และ [CROLL / Cross-L](../../croll/README.md) ระบุขอบเขตการกำกับตรรกะข้ามภาษา ยังไม่ผูกสองไฟล์นี้เข้ากับรายการค้างจนกว่าจะพบกฎหรือส่วนของเอกสารที่นำไปใช้ตรงกัน สถานะในดัชนี SYSTEM ใช้ประกอบการตามหาเอกสารของแต่ละระบบ ให้ตรวจสถานะปัจจุบันจากหลักฐานล่าสุดของโมดูล
