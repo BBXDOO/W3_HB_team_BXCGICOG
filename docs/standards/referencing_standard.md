@@ -2,7 +2,8 @@
 AM_TYPE: II
 ROLE: REFERENCE_STANDARD
 GROUP: CONTINUE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
 ---
 
 # W3 Referencing Standard

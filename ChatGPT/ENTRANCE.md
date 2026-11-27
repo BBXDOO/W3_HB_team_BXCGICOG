@@ -142,3 +142,7 @@ ChatGPT/
 
 ---
 **End of Module Entrance – ChatGPT**
+
+## MPCP-CI-GIT-CONTEXT
+
+ก่อนตีความผลทดสอบ MPCP ให้บันทึกว่า host ใช้สำเนาที่มี Git context หรือไม่ กรณี System Inspection เคยพบผลต่างระหว่างสองสภาพแวดล้อม ใช้ [กรณีศึกษาและหลักฐาน](../protocol/mpcp/case_studies/AGENT_MPCP_ALIGNMENT_TESTS_V1.md#mpcp-ci-git-context) เมื่อต้องตรวจซ้ำหรือส่งต่องาน

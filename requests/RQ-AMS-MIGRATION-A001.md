@@ -209,3 +209,7 @@ Interpretation drift is reduced.
 - **Request** = สั่งงาน MPCP / Registry / Schema / BOX / WX ให้รองรับ AMS โดยไม่แตะ Core Meaning โดยตรง
 
 ซึ่งสอดคล้องกับหลัก `Core vs Structure` ที่คุณเขียนไว้เดิมค่อนข้างตรงครับ.
+
+## MPCP-CI-GIT-CONTEXT
+
+กรณีอ้างอิงสำหรับตรวจหลักฐาน MPCP ในรอบถัดไป ให้บันทึก Git context ของ workspace พร้อม commit และผลทดสอบ หากมีการแก้ตัวเชื่อมให้แนบผลรันชุดเดิมก่อนและหลัง แล้วลิงก์กลับ [กรณีศึกษา MPCP](../protocol/mpcp/case_studies/AGENT_MPCP_ALIGNMENT_TESTS_V1.md#mpcp-ci-git-context) เพื่อให้ผู้ตรวจตามเหตุผลของการเปลี่ยนแปลงและนำผลไปใช้ต่อได้ สถานะของรอบใหม่ให้ยึดตามผลที่รันจริง

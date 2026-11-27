@@ -12,8 +12,8 @@ DERIVED_FROM:
 
 | ผลตรวจ | จำนวน |
 |---|---:|
-| ระบุสายอ้างอิง | 23 |
-| รอหลักฐานต้นทาง | 55 |
+| ระบุสายอ้างอิง | 25 |
+| รอหลักฐานต้นทาง | 53 |
 
 ## สายที่ระบุ
 
@@ -42,6 +42,8 @@ DERIVED_FROM:
 | [docs/review/PR83_review_summary.md](../review/PR83_review_summary.md) | [docs/IGET_OPERATION_MODEL.md](../IGET_OPERATION_MODEL.md) |
 | [docs/runtime/REAL_REQUEST_CIRCUIT.md](../runtime/REAL_REQUEST_CIRCUIT.md) | [docs/cross_x_ecosystem.md](../cross_x_ecosystem.md) |
 | [docs/standards/REPO_STRUCTURE.md](../standards/REPO_STRUCTURE.md) | [knowledge/philosophy/corevsstructure.md](../../knowledge/philosophy/corevsstructure.md) |
+| [docs/px_w3db_append_flow.md](../px_w3db_append_flow.md) | [knowledge/philosophy/corevsstructure.md](../../knowledge/philosophy/corevsstructure.md) |
+| [docs/standards/referencing_standard.md](../standards/referencing_standard.md) | [knowledge/philosophy/corevsstructure.md](../../knowledge/philosophy/corevsstructure.md) |
 
 ## เอกสารที่รอหลักฐานต้นทาง
 
@@ -82,7 +84,6 @@ DERIVED_FROM:
 - [docs/operations/SELF_HEALING_WORKFLOWS_PLAYBOOK.md](../operations/SELF_HEALING_WORKFLOWS_PLAYBOOK.md)
 - [docs/protocol.md](../protocol.md)
 - [docs/public_boundary.md](../public_boundary.md)
-- [docs/px_w3db_append_flow.md](../px_w3db_append_flow.md)
 - [docs/reports/1.md](1.md)
 - [docs/reports/AGENT_MODULE_CAPABILITY_REPORT.md](AGENT_MODULE_CAPABILITY_REPORT.md)
 - [docs/reports/INTEGRITY_REPORT_TH.md](INTEGRITY_REPORT_TH.md)
@@ -99,6 +100,16 @@ DERIVED_FROM:
 - [docs/standards/AGENT_SELF_WORKSPACE_STANDARD.md](../standards/AGENT_SELF_WORKSPACE_STANDARD.md)
 - [docs/standards/CONFIG_SSOT.md](../standards/CONFIG_SSOT.md)
 - [docs/standards/NAMING_CONVENTION.md](../standards/NAMING_CONVENTION.md)
-- [docs/standards/referencing_standard.md](../standards/referencing_standard.md)
 - [docs/templates/origin/ISSUE_TEMPLATE_TH.md](../templates/origin/ISSUE_TEMPLATE_TH.md)
 - [docs/w3db_setup.md](../w3db_setup.md)
+
+## วงจรนำกรณีศึกษาไปใช้ซ้ำ
+
+ใช้รหัสเคสเดิมในแต่ละพื้นที่ แล้วลิงก์กลับถึงข้อสังเกตและหลักฐานเดิม เมื่อพบกรณีใหม่ให้เพิ่มผลรอบใหม่ใต้รหัสเดียวกัน และระบุเวอร์ชันที่ทดสอบ
+
+| ขั้น | พื้นที่ | สิ่งที่ส่งต่อ |
+|---|---|---|
+| จดจำ | [ChatGPT](../../ChatGPT/ENTRANCE.md#mpcp-ci-git-context) | เงื่อนไขที่ควรนึกถึงก่อนอ่านผล |
+| นำไปใช้ | [MPCP case study](../../protocol/mpcp/case_studies/AGENT_MPCP_ALIGNMENT_TESTS_V1.md#mpcp-ci-git-context) | วิธีเทียบ environment และอ่านผล |
+| ข้อผิดพลาดและการปรับปรุง | [หลักฐาน System Inspection](../../w3_tool_store/agent_workbench/tools/system_inspection/VALIDATION_2026-10-28.md) | เงื่อนไขที่ทำให้ล้มเหลว วิธีแก้ และผลรันซ้ำ |
+| พัฒนารอบถัดไป | [AMS migration request](../../requests/RQ-AMS-MIGRATION-A001.md#mpcp-ci-git-context) | เกณฑ์ตรวจหลักฐานรับเข้ารอบถัดไป |
