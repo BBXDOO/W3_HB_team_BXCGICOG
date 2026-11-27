@@ -3,6 +3,7 @@ AM_TYPE: III
 ROLE: DOCUMENT_TEMPLATE
 GROUP: CONTINUE
 DERIVED_FROM: []
+OWNER: BBX19
 ---
 
 # เทมเพลต Issue / Comment สำหรับเจ้าของ GitHub

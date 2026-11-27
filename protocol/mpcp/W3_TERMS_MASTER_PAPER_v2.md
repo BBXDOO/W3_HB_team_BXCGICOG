@@ -3,6 +3,7 @@ AM_TYPE: I
 ROLE: CORE_TERMINOLOGY
 GROUP: CONTINUE
 DERIVED_FROM: []
+OWNER: BBX19
 ---
 
 **Gradation** `≡ Cd13w_ - mpcp` · [แผนที่โฟลเดอร์](README.md)

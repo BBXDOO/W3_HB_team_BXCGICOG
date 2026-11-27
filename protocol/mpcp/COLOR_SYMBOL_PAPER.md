@@ -4,6 +4,7 @@ ROLE: DESIGN_SPECIFICATION
 GROUP: CONTINUE
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
+OWNER: BBX19
 ---
 
 **Gradation** `≡ Cd2cl - mpcp` · [แผนที่โฟลเดอร์](README.md)

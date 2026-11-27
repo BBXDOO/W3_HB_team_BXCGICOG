@@ -4,6 +4,7 @@ ROLE: PROFILE_DESIGN
 GROUP: CONTINUE
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
+OWNER: BBX19
 ---
 
 **Gradation** `≡ Dd2wl - mpcp` · [แผนที่โฟลเดอร์](README.md)

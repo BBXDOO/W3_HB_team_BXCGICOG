@@ -4,6 +4,7 @@ ROLE: RELATION_MAPPING
 GROUP: BUILD
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
+OWNER: BBX19
 ---
 
 **Gradation** `≡ Dd4wl - mpcp` · [แผนที่โฟลเดอร์](README.md)

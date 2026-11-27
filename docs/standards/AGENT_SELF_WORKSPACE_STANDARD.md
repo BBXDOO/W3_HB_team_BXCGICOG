@@ -3,6 +3,7 @@ AM_TYPE: II
 ROLE: WORKSPACE_STANDARD
 GROUP: CONTINUE
 DERIVED_FROM: []
+OWNER: BBX19
 ---
 
 # Agent Self Workspace Standard — มาตรฐานพื้นที่ทำงานของเอเจนท์

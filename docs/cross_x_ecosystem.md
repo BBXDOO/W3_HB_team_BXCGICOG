@@ -4,6 +4,7 @@ ROLE: ARCHITECTURE_GUIDANCE
 GROUP: BUILD
 DERIVED_FROM:
   - knowledge/philosophy/Cross-X.md
+OWNER: BBX19
 ---
 
 # Cross-X Ecosystem Coordination

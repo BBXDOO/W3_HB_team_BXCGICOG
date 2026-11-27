@@ -4,6 +4,7 @@ ROLE: EVIDENCE_REPORT
 GROUP: OBSERVE
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
+OWNER: BBX19
 ---
 
 # รายงานโครงสร้างระบบ W3 + MPCP (ภาษาไทย)

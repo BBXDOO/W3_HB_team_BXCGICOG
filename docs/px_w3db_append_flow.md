@@ -4,6 +4,7 @@ ROLE: ARCHITECTURE_GUIDANCE
 GROUP: BUILD
 DERIVED_FROM:
   - knowledge/philosophy/corevsstructure.md
+OWNER: BBX19
 ---
 
 # PX / W3DB Append Flow

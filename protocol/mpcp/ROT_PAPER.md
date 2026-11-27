@@ -4,6 +4,7 @@ ROLE: CORE_LAW
 GROUP: CONTINUE
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
+OWNER: BBX19
 ---
 
 **Gradation** `≡ Cd10rt - mpcp` · [แผนที่โฟลเดอร์](README.md)

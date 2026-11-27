@@ -3,6 +3,7 @@ AM_TYPE: III
 ROLE: USAGE_GUIDE
 GROUP: CONTINUE
 DERIVED_FROM: []
+OWNER: BBX19
 ---
 
 # 🚀 คำแนะนำการตั้งค่า GitHub Pages สำหรับ W3 PWA

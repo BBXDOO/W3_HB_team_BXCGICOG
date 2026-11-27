@@ -4,6 +4,7 @@ ROLE: KNOWLEDGE_REFERENCE
 GROUP: LEARN
 DERIVED_FROM:
   - knowledge/philosophy/corevsstructure.md
+OWNER: BBX19
 ---
 
 # คำศัพท์เฉพาะของ W3

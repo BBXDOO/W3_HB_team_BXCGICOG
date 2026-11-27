@@ -3,6 +3,7 @@ AM_TYPE: III
 ROLE: TECHNICAL_GUIDE
 GROUP: LEARN
 DERIVED_FROM: []
+OWNER: BBX19
 ---
 
 # คู่มือ W3.IDP Studio (w3openland)

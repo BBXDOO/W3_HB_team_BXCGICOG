@@ -3,6 +3,7 @@ AM_TYPE: II
 ROLE: PLANNING
 GROUP: OBSERVE
 DERIVED_FROM: []
+OWNER: BBX19
 ---
 
 # P1–P3 Execution Plan (Repository Action Plan)

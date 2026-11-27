@@ -4,6 +4,7 @@ ROLE: CORE_CONCEPT
 GROUP: BUILD
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
+OWNER: BBX19
 ---
 
 **Gradation** `≡ Dd3mc - mpcp` · [แผนที่โฟลเดอร์](README.md)

@@ -3,6 +3,7 @@ AM_TYPE: III
 ROLE: USAGE_GUIDE
 GROUP: CONTINUE
 DERIVED_FROM: []
+OWNER: BBX19
 ---
 
 # คู่มือภาษาไทย: งาน Origin พาธเนอร์ และรอบตรวจโครงสร้าง

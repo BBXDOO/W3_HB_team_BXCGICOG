@@ -4,6 +4,7 @@ ROLE: ARCHITECTURE_GUIDANCE
 GROUP: BUILD
 DERIVED_FROM: []
 title: "LINE B GPT"
+OWNER: BBX19
 ---
 
 # W3_PROTOCOL.md (B-Line Operating System)

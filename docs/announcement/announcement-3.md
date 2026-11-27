@@ -3,6 +3,7 @@ AM_TYPE: II
 ROLE: GOVERNANCE_ANNOUNCEMENT
 GROUP: LEARN
 DERIVED_FROM: []
+OWNER: BBX19
 ---
 
 # ประกาศฉบับที่ 3 : ระเบียบปฏิบัติใหม่ของ W3

@@ -4,6 +4,7 @@ ROLE: AUDIT_CHECKLIST
 GROUP: CONTINUE
 DERIVED_FROM:
   - docs/architecture/AUDIT_ARCHITECTURE.md
+OWNER: BBX19
 ---
 
 # Audit Checklist - W3 Hybrid

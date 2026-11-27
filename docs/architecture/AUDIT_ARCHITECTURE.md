@@ -4,6 +4,7 @@ ROLE: ARCHITECTURE_GUIDANCE
 GROUP: BUILD
 DERIVED_FROM:
   - knowledge/philosophy/corevsstructure.md
+OWNER: BBX19
 ---
 
 # W3 Security & Structural Audit — System Architecture

@@ -3,6 +3,7 @@ AM_TYPE: II
 ROLE: METRIC_DEFINITIONS
 GROUP: CONTINUE
 DERIVED_FROM: []
+OWNER: BBX19
 ---
 
 # Metric Definitions (Baseline)

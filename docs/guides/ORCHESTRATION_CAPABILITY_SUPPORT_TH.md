@@ -2,7 +2,9 @@
 AM_TYPE: III
 ROLE: USAGE_GUIDE
 GROUP: CONTINUE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - workflows/orchestration/README.md
+OWNER: BBX19
 ---
 
 # คู่มือ Orchestration: โฟลว เครื่องมือช่วย และคู่ทดแทน

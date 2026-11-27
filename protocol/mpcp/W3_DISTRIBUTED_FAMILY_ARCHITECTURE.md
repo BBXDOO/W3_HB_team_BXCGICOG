@@ -4,7 +4,7 @@ ROLE: ARCHITECTURE_DESIGN
 GROUP: BUILD
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
-OWNER: BBX19 + ChatGPT
+OWNER: BBX19
 ---
 
 **Gradation** `≡ Cd12w_ - mpcp` · [แผนที่โฟลเดอร์](README.md)

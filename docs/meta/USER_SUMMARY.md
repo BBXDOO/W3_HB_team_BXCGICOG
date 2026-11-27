@@ -3,6 +3,7 @@ AM_TYPE: III
 ROLE: EVIDENCE_REPORT
 GROUP: OBSERVE
 DERIVED_FROM: []
+OWNER: BBX19
 ---
 
 # การตรวจสอบไฟล์ที่เสียหาย/หายไป - สรุปสำหรับผู้ใช้

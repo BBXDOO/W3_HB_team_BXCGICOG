@@ -4,6 +4,7 @@ ROLE: BOUNDARY_RULES
 GROUP: CONTINUE
 DERIVED_FROM:
   - knowledge/philosophy/corevsstructure.md
+OWNER: BBX19
 ---
 
 # CROLL Boundary — ขอบเขตการใช้และการสงวนระบบ

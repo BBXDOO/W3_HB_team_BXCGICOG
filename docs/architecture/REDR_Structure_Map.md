@@ -4,6 +4,7 @@ ROLE: EVIDENCE_REPORT
 GROUP: OBSERVE
 DERIVED_FROM:
   - docs/standards/REPO_STRUCTURE.md
+OWNER: BBX19
 ---
 
 # REDR Structure Map Report

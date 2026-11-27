@@ -5,6 +5,7 @@ GROUP: BUILD
 DERIVED_FROM:
   - protocol/mpcp/MODEW_PAPER.md
   - protocol/mpcp/MPCP_ORIGIN.md
+OWNER: BBX19
 ---
 
 **Gradation** `≡ Dd1md - mpcp` · [แผนที่โฟลเดอร์](README.md)

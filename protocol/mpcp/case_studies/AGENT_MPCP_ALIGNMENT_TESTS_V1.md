@@ -4,6 +4,7 @@ ROLE: TEST_CASE_STUDY
 GROUP: OBSERVE
 DERIVED_FROM:
   - protocol/mpcp/ROT_BASELINE.md
+OWNER: BBX19
 ---
 
 **Gradation** `≡ Dd1ae - mpcp` · [แผนที่โฟลเดอร์](README.md)

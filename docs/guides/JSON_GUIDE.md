@@ -3,6 +3,7 @@ AM_TYPE: II
 ROLE: KNOWLEDGE_REFERENCE
 GROUP: LEARN
 DERIVED_FROM: []
+OWNER: BBX19
 ---
 
 # คู่มือ .json ฉบับเข้าใจง่าย (ภาษาไทย) — สำหรับทีมที่ไม่ถนัดโค้ด

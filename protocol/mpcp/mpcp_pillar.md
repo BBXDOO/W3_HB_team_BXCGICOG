@@ -4,6 +4,7 @@ ROLE: ARCHITECTURE_DESIGN
 GROUP: BUILD
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
+OWNER: BBX19
 ---
 
 **Gradation** `≡ Cd14mc - mpcp` · [แผนที่โฟลเดอร์](README.md)

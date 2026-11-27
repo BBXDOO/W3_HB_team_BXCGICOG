@@ -4,6 +4,7 @@ ROLE: REFERENCE_STANDARD
 GROUP: CONTINUE
 DERIVED_FROM:
   - knowledge/philosophy/corevsstructure.md
+OWNER: BBX19
 ---
 
 # W3 Referencing Standard

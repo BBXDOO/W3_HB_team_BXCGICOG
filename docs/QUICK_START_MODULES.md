@@ -3,6 +3,7 @@ AM_TYPE: III
 ROLE: USAGE_GUIDE
 GROUP: CONTINUE
 DERIVED_FROM: []
+OWNER: BBX19
 ---
 
 # 🚀 Quick Start: ใช้งานโมดูล W3 + เชื่อม GPT/Gemini API

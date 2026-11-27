@@ -4,6 +4,7 @@ ROLE: RUNTIME_FLOW
 GROUP: CONTINUE
 DERIVED_FROM:
   - docs/cross_x_ecosystem.md
+OWNER: BBX19
 ---
 
 # วงจรรับใบงานจริงและผลลัพธ์ตามบริบท

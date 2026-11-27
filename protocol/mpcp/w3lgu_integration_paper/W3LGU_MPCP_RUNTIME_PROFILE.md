@@ -5,6 +5,7 @@ GROUP: CONTINUE
 DERIVED_FROM:
   - protocol/mpcp/ROT_BASELINE.md
   - protocol/mpcp/ROT_PAPER.md
+OWNER: BBX19
 ---
 
 **Gradation** `≡ Dd5wl - mpcp` · [แผนที่โฟลเดอร์](README.md)
