@@ -6,6 +6,7 @@ DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
 ---
 
+**Gradation** `≡ Dd2mc - mpcp` · [แผนที่โฟลเดอร์](README.md)
 
 mpcp_BLUEPRINT_PAPER.md
 

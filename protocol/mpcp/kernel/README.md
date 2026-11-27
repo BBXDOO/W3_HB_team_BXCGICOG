@@ -1,7 +1,7 @@
 Name : MPCP Kernel  
 AM Ⅲ - BUILD : กฎ contract, ROT, system identity, registry, event template, module bridge และ validator; Contract ตรวจรูปขั้นต่ำ ส่วน ROT ตรวจ relation/boundary ของข้อมูลที่ normalize แล้ว ไม่ใช่ตัวแปลภาษา  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-KERNEL-README-001  
-≡ Cr1ra - RAMS
+≡ Dr1ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
@@ -29,17 +29,17 @@ DOCUMENT_PATH: protocol/mpcp/kernel/README.md
 
 | รายการ | บทบาท |
 |---|---|
-| [README.md](README.md) | AMS README ของพื้นที่ |
-| [__init__.py](__init__.py) | Python module / implementation |
-| [co_module.py](co_module.py) | Python module / implementation |
-| [contract.py](contract.py) | เอกสาร/โค้ดต้นทางหลัก |
-| [event_template.py](event_template.py) | Python module / implementation |
-| [module_bridge.py](module_bridge.py) | Python module / implementation |
-| [module_registry.py](module_registry.py) | Python module / implementation |
-| [module_validator.py](module_validator.py) | Python module / implementation |
-| [rot.py](rot.py) | Python module / implementation |
-| [system.py](system.py) | Python module / implementation |
-| [validator.py](validator.py) | Python module / implementation |
+| [README.md](README.md) · `≡ Dd1ra - mpcp` | AMS README ของพื้นที่ |
+| [__init__.py](__init__.py) · `≡ Dc1_i - mpcp` | Python module / implementation |
+| [co_module.py](co_module.py) · `≡ Dc2c_ - mpcp` | Python module / implementation |
+| [contract.py](contract.py) · `≡ Dc3cn - mpcp` | เอกสาร/โค้ดต้นทางหลัก |
+| [event_template.py](event_template.py) · `≡ Dc4ee - mpcp` | Python module / implementation |
+| [module_bridge.py](module_bridge.py) · `≡ Dc5md - mpcp` | Python module / implementation |
+| [module_registry.py](module_registry.py) · `≡ Dc6md - mpcp` | Python module / implementation |
+| [module_validator.py](module_validator.py) · `≡ Dc7md - mpcp` | Python module / implementation |
+| [rot.py](rot.py) · `≡ Dc8rt - mpcp` | Python module / implementation |
+| [system.py](system.py) · `≡ Dc9ss - mpcp` | Python module / implementation |
+| [validator.py](validator.py) · `≡ Dc10vl - mpcp` | Python module / implementation |
 
 ### M2 — เอกสารภายนอกพื้นที่
 

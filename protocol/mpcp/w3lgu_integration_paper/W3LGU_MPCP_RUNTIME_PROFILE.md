@@ -7,6 +7,8 @@ DERIVED_FROM:
   - protocol/mpcp/ROT_PAPER.md
 ---
 
+**Gradation** `≡ Dd5wl - mpcp` · [แผนที่โฟลเดอร์](README.md)
+
 # W3Lgu-MPCP Runtime Profile
 
 ## 1. Purpose

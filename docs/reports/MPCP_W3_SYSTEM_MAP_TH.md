@@ -2,7 +2,8 @@
 AM_TYPE: III
 ROLE: EVIDENCE_REPORT
 GROUP: OBSERVE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - protocol/mpcp/MPCP_ORIGIN.md
 ---
 
 # รายงานโครงสร้างระบบ W3 + MPCP (ภาษาไทย)

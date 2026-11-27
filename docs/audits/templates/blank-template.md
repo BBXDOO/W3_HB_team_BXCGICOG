@@ -2,7 +2,8 @@
 AM_TYPE: III
 ROLE: DOCUMENT_TEMPLATE
 GROUP: CONTINUE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - docs/architecture/AUDIT_ARCHITECTURE.md
 ---
 
 # Audit Report - W3 Hybrid (Template)

@@ -2,7 +2,8 @@
 AM_TYPE: III
 ROLE: EVIDENCE_REPORT
 GROUP: OBSERVE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - docs/process_layer.md
 ---
 
 # DTML Security Scan Report

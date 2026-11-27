@@ -1,7 +1,7 @@
 Name : MPCP Library — registry and host equipment  
 AM Ⅲ - BUILD : การทำงานและขอบเขตของส่วนประกอบ MPCP  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-LIB-README-001  
-≡ Cr1ra - RAMS
+≡ Dr1ra - RAMS
 
 ## Body — บทบาทและขอบเขต
 
@@ -40,10 +40,10 @@ CLI Paper ลงทะเบียนอุปกรณ์จริงสอง�
 
 | รายการ | หน้าที่ |
 |---|---|
-| [README.md](README.md) | ขอบเขตและทางใช้งาน Library |
-| [registry.py](registry.py) | กลุ่ม lib, runtime binding และ host equipment registration |
-| [pillar.py](pillar.py) | โครง Pillar และ named operations |
-| [__init__.py](__init__.py) | exports เดิม |
+| [README.md](README.md) · `≡ Dd1ra - mpcp` | ขอบเขตและทางใช้งาน Library |
+| [registry.py](registry.py) · `≡ Dc3rg - mpcp` | กลุ่ม lib, runtime binding และ host equipment registration |
+| [pillar.py](pillar.py) · `≡ Dc2pl - mpcp` | โครง Pillar และ named operations |
+| [__init__.py](__init__.py) · `≡ Dc1_i - mpcp` | exports เดิม |
 
 ### M2 — เอกสารและอุปกรณ์ที่สัมพันธ์กัน
 

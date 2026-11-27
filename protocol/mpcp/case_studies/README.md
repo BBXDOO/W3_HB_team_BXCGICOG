@@ -1,7 +1,15 @@
 Name : MPCP Case Studies — evidence and retrospective  
 AM Ⅱ - BUILD : กรณีศึกษาและบทเรียนที่ต้องแยกจากผลทดสอบปัจจุบัน  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-CASE_STUDIES-README-001  
-≡ Cr2ra - RAMS
+≡ Dr2ra - RAMS
+
+```yaml
+AM_TYPE: III
+ROLE: VALIDATION_EVIDENCE
+DERIVED_FROM:
+  - protocol/mpcp/ROT_BASELINE.md
+DOCUMENT_PATH: protocol/mpcp/case_studies/README.md
+```
 
 # MPCP Case Studies
 
@@ -42,8 +50,8 @@ Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-CASE_STUDIES-RE
 
 | รายการ | หน้าที่ |
 |---|---|
-| [AGENT_MPCP_ALIGNMENT_TESTS_V1.md](AGENT_MPCP_ALIGNMENT_TESTS_V1.md) | จุดตรวจสอบหลัก |
-| [README.md](README.md) | README และ AMS map |
+| [AGENT_MPCP_ALIGNMENT_TESTS_V1.md](AGENT_MPCP_ALIGNMENT_TESTS_V1.md) · `≡ Dd1ae - mpcp` | จุดตรวจสอบหลัก |
+| [README.md](README.md) · `≡ Dd2ra - mpcp` | README และ AMS map |
 
 ### M2 — ต้นทางและระบบที่เกี่ยวข้อง
 

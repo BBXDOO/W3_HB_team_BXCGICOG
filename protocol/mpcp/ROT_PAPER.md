@@ -6,6 +6,8 @@ DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
 ---
 
+**Gradation** `≡ Cd10rt - mpcp` · [แผนที่โฟลเดอร์](README.md)
+
 # ROT_PAPER.md
 
 MPCP Core Rotation Paper — System Control Framework

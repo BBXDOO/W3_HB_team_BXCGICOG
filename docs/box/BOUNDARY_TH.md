@@ -2,7 +2,8 @@
 AM_TYPE: II
 ROLE: BOUNDARY_RULES
 GROUP: CONTINUE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
 ---
 
 # BOX / Library-WX — ขอบเขต ความปลอดภัย และการสงวนระบบ

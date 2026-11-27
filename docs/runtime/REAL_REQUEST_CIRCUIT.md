@@ -2,7 +2,8 @@
 AM_TYPE: III
 ROLE: RUNTIME_FLOW
 GROUP: CONTINUE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - docs/cross_x_ecosystem.md
 ---
 
 # วงจรรับใบงานจริงและผลลัพธ์ตามบริบท

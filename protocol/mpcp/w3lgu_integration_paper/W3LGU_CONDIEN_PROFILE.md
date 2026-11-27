@@ -6,6 +6,8 @@ DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
 ---
 
+**Gradation** `≡ Dd2wl - mpcp` · [แผนที่โฟลเดอร์](README.md)
+
 # W3Lgu-Condien Profile
 
 ## 1. Purpose

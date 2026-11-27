@@ -2,7 +2,8 @@
 AM_TYPE: III
 ROLE: EVIDENCE_REPORT
 GROUP: OBSERVE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - docs/IGET_OPERATION_MODEL.md
 ---
 
 # PR #83 — Manual Update Steps Required

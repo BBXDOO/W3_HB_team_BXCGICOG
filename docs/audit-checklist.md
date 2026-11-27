@@ -2,7 +2,8 @@
 AM_TYPE: III
 ROLE: AUDIT_CHECKLIST
 GROUP: CONTINUE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - docs/architecture/AUDIT_ARCHITECTURE.md
 ---
 
 # Audit Checklist - W3 Hybrid

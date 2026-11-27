@@ -6,6 +6,8 @@ DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
 ---
 
+**Gradation** `≡ Dd6wl - mpcp` · [แผนที่โฟลเดอร์](README.md)
+
 # W3Lgu Profile Architecture
 
 ## 1. Purpose

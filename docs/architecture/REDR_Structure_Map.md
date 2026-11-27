@@ -2,7 +2,8 @@
 AM_TYPE: III
 ROLE: EVIDENCE_REPORT
 GROUP: OBSERVE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - docs/standards/REPO_STRUCTURE.md
 ---
 
 # REDR Structure Map Report

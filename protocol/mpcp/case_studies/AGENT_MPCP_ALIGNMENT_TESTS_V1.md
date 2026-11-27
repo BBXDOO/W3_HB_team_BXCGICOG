@@ -6,6 +6,8 @@ DERIVED_FROM:
   - protocol/mpcp/ROT_BASELINE.md
 ---
 
+**Gradation** `≡ Dd1ae - mpcp` · [แผนที่โฟลเดอร์](README.md)
+
 # Case Study: Agent MPCP Alignment Tests v1
 
 ## Status

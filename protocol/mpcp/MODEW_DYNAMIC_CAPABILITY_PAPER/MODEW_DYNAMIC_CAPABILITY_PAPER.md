@@ -7,6 +7,7 @@ DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
 ---
 
+**Gradation** `≡ Dd1md - mpcp` · [แผนที่โฟลเดอร์](README.md)
 
 MODEW_DYNAMIC_CAPABILITY_PAPER.md
 

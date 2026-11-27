@@ -1,7 +1,7 @@
 Name : MPCP Pillar Schema  
 AM Ⅲ - BUILD : ตัวอย่าง JSON และ JSON Schema ของ Pillar A–F; construction_order เป็นลำดับสร้างโครง ไม่ใช่ข้อบังคับให้ operational execution ไหลตาม A–F เสมอ  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-SCHEMA-README-001  
-≡ Cr1ra - RAMS
+≡ Dr1ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
@@ -29,10 +29,10 @@ DOCUMENT_PATH: protocol/mpcp/schema/README.md
 
 | รายการ | บทบาท |
 |---|---|
-| [README.md](README.md) | AMS README ของพื้นที่ |
-| [__init__.py](__init__.py) | Python module / implementation |
-| [pillar.json](pillar.json) | JSON config / schema |
-| [pillar.schema.json](pillar.schema.json) | เอกสาร/โค้ดต้นทางหลัก |
+| [README.md](README.md) · `≡ Dd1ra - mpcp` | AMS README ของพื้นที่ |
+| [__init__.py](__init__.py) · `≡ Dc1_i - mpcp` | Python module / implementation |
+| [pillar.json](pillar.json) · `≡ Dd1pl - mpcp` | JSON config / schema |
+| [pillar.schema.json](pillar.schema.json) · `≡ Dd2pl - mpcp` | เอกสาร/โค้ดต้นทางหลัก |
 
 ### M2 — เอกสารภายนอกพื้นที่
 

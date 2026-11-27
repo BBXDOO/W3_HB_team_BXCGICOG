@@ -6,6 +6,7 @@ DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
 ---
 
+**Gradation** `≡ Cd6md - mpcp` · [แผนที่โฟลเดอร์](README.md)
 
 MODEW_PAPER.md
 

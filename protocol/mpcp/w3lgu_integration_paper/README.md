@@ -1,7 +1,7 @@
 Name : W3Lgu–MPCP Integration Profiles  
 AM Ⅱ - BUILD : ชุดเอกสาร profile เชื่อม W3Lgu กับ MPCP, Blueprint, Runtime และ Condien โดยรักษา grammar core เดียวแต่แยก purpose/authority ของแต่ละ profile; profile ไม่ใช่ใบอนุมัติ execute  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-W3LGU-INTEGRATION-PAPER-README-001  
-≡ Cr1ra - RAMS
+≡ Dr1ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
@@ -29,12 +29,12 @@ DOCUMENT_PATH: protocol/mpcp/w3lgu_integration_paper/README.md
 
 | รายการ | บทบาท |
 |---|---|
-| [README.md](README.md) | AMS README ของพื้นที่ |
-| [W3LGU_CONDIEN_PROFILE.md](W3LGU_CONDIEN_PROFILE.md) | เอกสารประกอบ |
-| [W3LGU_MPCP_BLUEPRINT_PROFILE.md](W3LGU_MPCP_BLUEPRINT_PROFILE.md) | เอกสารประกอบ |
-| [W3LGU_MPCP_ROLE_MAPPING.md](W3LGU_MPCP_ROLE_MAPPING.md) | เอกสารประกอบ |
-| [W3LGU_MPCP_RUNTIME_PROFILE.md](W3LGU_MPCP_RUNTIME_PROFILE.md) | เอกสารประกอบ |
-| [W3LGU_PROFILE_ARCHITECTURE.md](W3LGU_PROFILE_ARCHITECTURE.md) | เอกสาร/โค้ดต้นทางหลัก |
+| [README.md](README.md) · `≡ Dd1ra - mpcp` | AMS README ของพื้นที่ |
+| [W3LGU_CONDIEN_PROFILE.md](W3LGU_CONDIEN_PROFILE.md) · `≡ Dd2wl - mpcp` | เอกสารประกอบ |
+| [W3LGU_MPCP_BLUEPRINT_PROFILE.md](W3LGU_MPCP_BLUEPRINT_PROFILE.md) · `≡ Dd3wl - mpcp` | เอกสารประกอบ |
+| [W3LGU_MPCP_ROLE_MAPPING.md](W3LGU_MPCP_ROLE_MAPPING.md) · `≡ Dd4wl - mpcp` | เอกสารประกอบ |
+| [W3LGU_MPCP_RUNTIME_PROFILE.md](W3LGU_MPCP_RUNTIME_PROFILE.md) · `≡ Dd5wl - mpcp` | เอกสารประกอบ |
+| [W3LGU_PROFILE_ARCHITECTURE.md](W3LGU_PROFILE_ARCHITECTURE.md) · `≡ Dd6wl - mpcp` | เอกสาร/โค้ดต้นทางหลัก |
 
 ### M2 — เอกสารภายนอกพื้นที่
 

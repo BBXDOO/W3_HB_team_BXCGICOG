@@ -1,7 +1,7 @@
 Name : MPCP Runtime — event-bound Paper execution  
 AM Ⅲ - BUILD : การทำงานและขอบเขตของส่วนประกอบ MPCP  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-RUNTIME-README-001  
-≡ Cr1ra - RAMS
+≡ Dr1ra - RAMS
 
 ## Body — บทบาท
 
@@ -75,12 +75,12 @@ CLI ใช้ host equipment registry สำหรับ `file-void-text` แล
 
 | รายการ | หน้าที่ |
 |---|---|
-| [README.md](README.md) | ขอบเขตและวิธีใช้ runtime |
-| [entry.py](entry.py) | จุดนำเข้า API เดิมและ Paper API |
-| [executor.py](executor.py) | รับงานเดี่ยว เรียก Modew และตรวจผล |
-| [paper.py](paper.py) | เตรียม กระจาย ผูกผล และกู้สถานะ Paper Pack |
-| [trace.py](trace.py) | บันทึก operation trace |
-| [__init__.py](__init__.py) | exports ของ runtime เดิม |
+| [README.md](README.md) · `≡ Dd1ra - mpcp` | ขอบเขตและวิธีใช้ runtime |
+| [entry.py](entry.py) · `≡ Dc2et - mpcp` | จุดนำเข้า API เดิมและ Paper API |
+| [executor.py](executor.py) · `≡ Dc3ee - mpcp` | รับงานเดี่ยว เรียก Modew และตรวจผล |
+| [paper.py](paper.py) · `≡ Dc4pp - mpcp` | เตรียม กระจาย ผูกผล และกู้สถานะ Paper Pack |
+| [trace.py](trace.py) · `≡ Dc5ta - mpcp` | บันทึก operation trace |
+| [__init__.py](__init__.py) · `≡ Dc1_i - mpcp` | exports ของ runtime เดิม |
 
 ### M2 — เอกสารและอุปกรณ์ที่สัมพันธ์กัน
 

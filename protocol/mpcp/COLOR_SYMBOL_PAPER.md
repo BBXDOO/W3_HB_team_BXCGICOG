@@ -6,6 +6,7 @@ DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
 ---
 
+**Gradation** `≡ Cd2cl - mpcp` · [แผนที่โฟลเดอร์](README.md)
 
 COLOR_SYMBOL_PAPER.md
 

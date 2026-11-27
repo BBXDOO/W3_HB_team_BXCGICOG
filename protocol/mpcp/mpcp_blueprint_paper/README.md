@@ -1,7 +1,7 @@
 Name : MPCP Blueprint Paper — แบบแผนโครงสร้างระบบ MPCP  
 AM Ⅱ - BUILD : ข้อกำหนด Blueprint เชิงประกาศสำหรับการสร้างระบบซ้ำ  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-BLUEPRINT-README-001  
-≡ Cr1ra - RAMS
+≡ Dr1ra - RAMS
 
 ## Body — ขอบเขตและแนวคิด Blueprint
 
@@ -399,8 +399,8 @@ ACTIVE — refactor/v0.2
 
 | รายการ | บทบาท |
 |---|---|
-| [README.md](README.md) | คำอธิบายและแผนที่เอกสาร Blueprint ตาม AMS |
-| [mpcp_blueprint_paper.md](mpcp_blueprint_paper.md) | เอกสารมาตรฐาน Blueprint ต้นทางภาษาไทย รูปแบบ KEY:VALUE ตัวอย่างและข้อห้าม |
+| [README.md](README.md) · `≡ Dd1ra - mpcp` | คำอธิบายและแผนที่เอกสาร Blueprint ตาม AMS |
+| [mpcp_blueprint_paper.md](mpcp_blueprint_paper.md) · `≡ Dd2mc - mpcp` | เอกสารมาตรฐาน Blueprint ต้นทางภาษาไทย รูปแบบ KEY:VALUE ตัวอย่างและข้อห้าม |
 
 ### M2 — เอกสารอ้างอิงนอกพื้นที่
 

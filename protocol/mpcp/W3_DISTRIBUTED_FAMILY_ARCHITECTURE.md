@@ -7,6 +7,8 @@ DERIVED_FROM:
 OWNER: BBX19 + ChatGPT
 ---
 
+**Gradation** `≡ Cd12w_ - mpcp` · [แผนที่โฟลเดอร์](README.md)
+
 # /protocol/mpcp/W3_DISTRIBUTED_FAMILY_ARCHITECTURE.md
 
 STATUS: ACTIVE_DRAFT

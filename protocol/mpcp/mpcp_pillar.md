@@ -6,6 +6,8 @@ DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
 ---
 
+**Gradation** `≡ Cd14mc - mpcp` · [แผนที่โฟลเดอร์](README.md)
+
 # mpcp — Pillar Architecture (Marble-patterned Concrete Model)
 
 ## 1. Purpose

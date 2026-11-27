@@ -2,7 +2,8 @@
 AM_TYPE: II
 ROLE: KNOWLEDGE_REFERENCE
 GROUP: LEARN
-DERIVED_FROM: []
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
 ---
 
 # คำศัพท์เฉพาะของ W3

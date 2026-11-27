@@ -8,6 +8,8 @@ DERIVED_FROM:
 OWNER: BBX19
 ---
 
+**Gradation** `≡ Cd9rt - mpcp` · [แผนที่โฟลเดอร์](README.md)
+
 # ROT Baseline for MPCP
 
 Status: ACTIVE DRAFT  

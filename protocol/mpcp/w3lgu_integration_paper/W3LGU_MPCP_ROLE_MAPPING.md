@@ -6,6 +6,8 @@ DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
 ---
 
+**Gradation** `≡ Dd4wl - mpcp` · [แผนที่โฟลเดอร์](README.md)
+
 # W3Lgu ↔ MPCP Role Mapping
 
 ## 1. Purpose

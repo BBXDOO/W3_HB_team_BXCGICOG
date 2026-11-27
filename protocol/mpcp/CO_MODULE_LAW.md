@@ -7,6 +7,8 @@ DERIVED_FROM:
 OWNER: BBX19
 ---
 
+**Gradation** `≡ Cd3c_ - mpcp` · [แผนที่โฟลเดอร์](README.md)
+
 # CO_MODULE_LAW.md
 
 MPCP Cooperative Module Paper — Request / Assist / Cross Field Culture

@@ -4,8 +4,11 @@ ROLE: IMPLEMENTATION_REVIEW
 GROUP: OBSERVE
 DERIVED_FROM:
   - protocol/mpcp/ROT_BASELINE.md
+OWNER: BBX19
+MAKER: W3HBT
 ---
 
+**Gradation** `≡ Cd11te - mpcp` · [แผนที่โฟลเดอร์](README.md)
 
 ## Historical review and subsequent evidence
 

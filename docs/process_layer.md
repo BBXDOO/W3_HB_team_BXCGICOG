@@ -2,7 +2,8 @@
 AM_TYPE: II
 ROLE: ARCHITECTURE_GUIDANCE
 GROUP: BUILD
-DERIVED_FROM: []
+DERIVED_FROM:
+  - knowledge/philosophy/Cross-X.md
 ---
 
 # W3 Process Layer — REDR / PSP2 / DTML / LRC2

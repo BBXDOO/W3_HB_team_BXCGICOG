@@ -7,6 +7,8 @@ DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
 ---
 
+**Gradation** `≡ Dd3wl - mpcp` · [แผนที่โฟลเดอร์](README.md)
+
 # W3Lgu-MPCP Blueprint Profile
 
 ## 1. Purpose

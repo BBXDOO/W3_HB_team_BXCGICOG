@@ -6,6 +6,7 @@ DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
 ---
 
+**Gradation** `≡ Cd1cl - mpcp` · [แผนที่โฟลเดอร์](README.md)
 
 MPCP COLOR & STATE SYSTEM SPECIFICATION
 

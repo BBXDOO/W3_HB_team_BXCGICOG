@@ -2,7 +2,8 @@
 AM_TYPE: II
 ROLE: ARCHITECTURE_GUIDANCE
 GROUP: BUILD
-DERIVED_FROM: []
+DERIVED_FROM:
+  - knowledge/philosophy/Cross-X.md
 ---
 
 # Cross-X Ecosystem Coordination

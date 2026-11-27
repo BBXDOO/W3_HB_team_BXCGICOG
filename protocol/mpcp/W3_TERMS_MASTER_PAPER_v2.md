@@ -5,6 +5,8 @@ GROUP: CONTINUE
 DERIVED_FROM: []
 ---
 
+**Gradation** `≡ Cd13w_ - mpcp` · [แผนที่โฟลเดอร์](README.md)
+
 # W3 Unified Master Glossary v2
 
 Current Stable Reference

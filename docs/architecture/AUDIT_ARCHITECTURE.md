@@ -2,7 +2,8 @@
 AM_TYPE: II
 ROLE: ARCHITECTURE_GUIDANCE
 GROUP: BUILD
-DERIVED_FROM: []
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
 ---
 
 # W3 Security & Structural Audit — System Architecture

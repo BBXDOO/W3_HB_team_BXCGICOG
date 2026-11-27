@@ -6,6 +6,7 @@ DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
 ---
 
+**Gradation** `≡ Dd2rt - mpcp` · [แผนที่โฟลเดอร์](README.md)
 
 📘 ROT_PAPER.md
 

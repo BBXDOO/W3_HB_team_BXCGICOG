@@ -7,6 +7,8 @@ DERIVED_FROM:
 OWNER: BBX19
 ---
 
+**Gradation** `≡ Cd5ee - mpcp` · [แผนที่โฟลเดอร์](README.md)
+
 # EVENT_TEMPLATE_CONDIEN_BRIDGE.md
 
 MPCP Event Template / Condien Bridge

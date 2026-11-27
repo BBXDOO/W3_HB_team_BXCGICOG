@@ -1,7 +1,7 @@
 Name : MPCP Configuration  
 AM Ⅲ - BUILD : ตัวโหลด config แบบตรวจโครงสร้างและ immutable view จาก default.json; ชื่อ library ใน config เป็นการประกาศ ไม่ใช่หลักฐานว่ามี implementation หรือถูกติดตั้งแล้ว  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-CONFIG-README-001  
-≡ Cr1ra - RAMS
+≡ Dr1ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
@@ -29,10 +29,10 @@ DOCUMENT_PATH: protocol/mpcp/config/README.md
 
 | รายการ | บทบาท |
 |---|---|
-| [README.md](README.md) | AMS README ของพื้นที่ |
-| [__init__.py](__init__.py) | Python module / implementation |
-| [default.json](default.json) | JSON config / schema |
-| [loader.py](loader.py) | เอกสาร/โค้ดต้นทางหลัก |
+| [README.md](README.md) · `≡ Dd1ra - mpcp` | AMS README ของพื้นที่ |
+| [__init__.py](__init__.py) · `≡ Dc1_i - mpcp` | Python module / implementation |
+| [default.json](default.json) · `≡ Dd1df - mpcp` | JSON config / schema |
+| [loader.py](loader.py) · `≡ Dc2la - mpcp` | เอกสาร/โค้ดต้นทางหลัก |
 
 ### M2 — เอกสารภายนอกพื้นที่
 

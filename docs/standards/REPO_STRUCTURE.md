@@ -2,7 +2,8 @@
 AM_TYPE: II
 ROLE: STRUCTURE_STANDARD
 GROUP: CONTINUE
-DERIVED_FROM: []
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
 ---
 
 # Repository Structure Standard

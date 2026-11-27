@@ -1,7 +1,7 @@
 Name : Modew Dynamic Capability Paper  
 AM Ⅰ - BUILD : เอกสารแนวคิดเรื่อง Modew ซึ่งเป็นหน่วยทำงานที่คงโครงสร้างแต่ปรับ property, argument และบทบาทตามบริบทได้; ความสามารถที่ระบุใน Paper เป็นข้อกำหนดเชิงแนวคิด ไม่ใช่หลักฐานว่ามี implementation ครบทุกข้อ  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-MODEW-DYNAMIC-CAPABILITY-PAPER-README-001  
-≡ Cr2ra - RAMS
+≡ Dr2ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
@@ -29,8 +29,8 @@ DOCUMENT_PATH: protocol/mpcp/MODEW_DYNAMIC_CAPABILITY_PAPER/README.md
 
 | รายการ | บทบาท |
 |---|---|
-| [MODEW_DYNAMIC_CAPABILITY_PAPER.md](MODEW_DYNAMIC_CAPABILITY_PAPER.md) | เอกสาร/โค้ดต้นทางหลัก |
-| [README.md](README.md) | AMS README ของพื้นที่ |
+| [MODEW_DYNAMIC_CAPABILITY_PAPER.md](MODEW_DYNAMIC_CAPABILITY_PAPER.md) · `≡ Dd1md - mpcp` | เอกสาร/โค้ดต้นทางหลัก |
+| [README.md](README.md) · `≡ Dd2ra - mpcp` | AMS README ของพื้นที่ |
 
 ### M2 — เอกสารภายนอกพื้นที่
 

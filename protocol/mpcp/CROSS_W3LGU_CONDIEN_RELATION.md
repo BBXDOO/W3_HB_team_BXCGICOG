@@ -6,6 +6,8 @@ DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
 ---
 
+**Gradation** `≡ Cd4co - mpcp` · [แผนที่โฟลเดอร์](README.md)
+
 # CROSS-X / W3Lgu / Condien Relation Anchor
 
 Status: active reference  
