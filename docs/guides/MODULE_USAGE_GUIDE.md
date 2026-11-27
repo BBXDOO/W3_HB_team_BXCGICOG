@@ -1,3 +1,11 @@
+---
+AM_TYPE: III
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
+DERIVED_FROM: []
+OWNER: BBX19
+---
+
 # 📦 คู่มือการใช้งานโมดูล W3
 ## Module Usage Guide — W3 Hybrid Runtime
 

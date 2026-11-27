@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - docs/process_layer.md
+OWNER: BBX19
+---
+
 # LRC2 Decision Trace
 
 **Generated:** 2025-12-24 20:11:36

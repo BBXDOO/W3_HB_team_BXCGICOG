@@ -1,3 +1,10 @@
+---
+AM_TYPE: I
+ROLE: CORE_MEANING
+GROUP: LEARN
+DERIVED_FROM: []
+---
+
 # W3 Declaration IV  
 ### Full Moon Edition · Identity, Balance, and Structural Awakening
 

@@ -1,3 +1,13 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - SYSTEM/README.md
+  - BBX19/README.md
+OWNER: BBX19
+---
+
 # Agent Operational Status SSOT
 
 - Generated: 2026-05-09

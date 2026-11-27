@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - docs/architecture/AUDIT_ARCHITECTURE.md
+OWNER: BBX19
+---
+
 # W3 Security & Structural Audit System
 
 **Status:** ACTIVE  

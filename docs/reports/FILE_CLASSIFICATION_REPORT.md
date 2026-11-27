@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - docs/standards/REPO_STRUCTURE.md
+OWNER: BBX19
+---
+
 # W3 File Classification Report
 
 **Purpose:** Analyze the repository from an outsider perspective and classify every significant file.

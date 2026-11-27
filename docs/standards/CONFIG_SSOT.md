@@ -1,3 +1,12 @@
+---
+AM_TYPE: II
+ROLE: CONFIGURATION_STANDARD
+GROUP: CONTINUE
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
+OWNER: BBX19
+---
+
 # Config SSOT Mapping
 
 ## Single Source of Truth Map

@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: DOCUMENT_TEMPLATE
+GROUP: CONTINUE
+DERIVED_FROM:
+  - docs/architecture/AUDIT_ARCHITECTURE.md
+OWNER: BBX19
+---
+
 # Audit Report - W3 Hybrid (Template)
 
 [REPORT] Audit Result - W3 Repo  

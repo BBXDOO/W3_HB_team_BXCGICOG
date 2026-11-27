@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - docs/standards/REPO_STRUCTURE.md
+OWNER: BBX19
+---
+
 # REDR Structure Map Report
 
 **Generated:** 2025-12-24 20:11:36

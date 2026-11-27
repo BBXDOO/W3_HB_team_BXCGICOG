@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: RECOVERY_PLAYBOOK
+GROUP: CONTINUE
+DERIVED_FROM:
+  - knowledge/philosophy/error_meaning.md
+OWNER: BBX19
+---
+
 # Self-Healing Workflows Playbook (Guarded)
 
 ## Scope

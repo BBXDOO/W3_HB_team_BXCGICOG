@@ -1,3 +1,12 @@
+---
+AM_TYPE: II
+ROLE: ROUTING_DESIGN
+GROUP: BUILD
+DERIVED_FROM:
+  - docs/roadmaps/P1_P3_EXECUTION_PLAN.md
+OWNER: BBX19
+---
+
 # Predictive Routing — Safe Mode
 
 ## Objective

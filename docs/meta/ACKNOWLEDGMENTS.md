@@ -1,3 +1,11 @@
+---
+AM_TYPE: II
+ROLE: KNOWLEDGE_REFERENCE
+GROUP: LEARN
+DERIVED_FROM: []
+OWNER: BBX19
+---
+
 # 🙏 Acknowledgments - ขอบคุณ
 
 ## W3: Hybrid Intelligent Origin System

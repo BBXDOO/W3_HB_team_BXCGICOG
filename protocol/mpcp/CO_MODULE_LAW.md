@@ -1,12 +1,13 @@
 ---
 AM_TYPE: II
-ROLE: ADAPTATION
-GROUP: CONTINUE
+ROLE: COOPERATION_LAW
+GROUP: OBSERVE
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
 OWNER: BBX19
-MAKER: null
 ---
+
+**Gradation** `≡ Cd3c_ - mpcp` · [แผนที่โฟลเดอร์](README.md)
 
 # CO_MODULE_LAW.md
 

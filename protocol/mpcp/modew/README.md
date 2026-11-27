@@ -1,7 +1,7 @@
 Name : MPCP Modew Implementations  
 AM Ⅲ - BUILD : หน่วยทำงาน Modew ที่ลงโค้ดแล้ว รวม BaseModew, Condien read-only view และ File.void text artifact equipment; ห้ามอนุมานว่า Modew ทุกประเภทใน Paper มี implementation หรือสิทธิ์เรียกใช้โดยอัตโนมัติ  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-MODEW-README-001  
-≡ Cr1ra - RAMS
+≡ Dr1ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
@@ -29,11 +29,11 @@ DOCUMENT_PATH: protocol/mpcp/modew/README.md
 
 | รายการ | บทบาท |
 |---|---|
-| [README.md](README.md) | AMS README ของพื้นที่ |
-| [__init__.py](__init__.py) | Python module / implementation |
-| [base_modew.py](base_modew.py) | เอกสาร/โค้ดต้นทางหลัก |
-| [condien_view.py](condien_view.py) | Python module / implementation |
-| [file_artifact.py](file_artifact.py) | Python module / implementation |
+| [README.md](README.md) · `≡ Dd1ra - mpcp` | AMS README ของพื้นที่ |
+| [__init__.py](__init__.py) · `≡ Dc1_i - mpcp` | Python module / implementation |
+| [base_modew.py](base_modew.py) · `≡ Dc2bs - mpcp` | เอกสาร/โค้ดต้นทางหลัก |
+| [condien_view.py](condien_view.py) · `≡ Dc3cn - mpcp` | Python module / implementation |
+| [file_artifact.py](file_artifact.py) · `≡ Dc4fl - mpcp` | Python module / implementation |
 
 ### M2 — เอกสารภายนอกพื้นที่
 

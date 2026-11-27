@@ -1,3 +1,11 @@
+---
+AM_TYPE: II
+ROLE: ARCHITECTURE_MAPPING_STANDARD
+GROUP: CONTINUE
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
+---
+
 # Architecture Mapping Standard (AMS)
 Architecture Mapping Standard
 Status: Active Draft
@@ -128,8 +136,11 @@ Every document should declare:
 AM_TYPE:
 ROLE:
 DERIVED_FROM:
+```
 
 Example:
+
+```yaml
 
 AM_TYPE: II
 
@@ -137,7 +148,7 @@ ROLE: ADAPTATION
 
 DERIVED_FROM:
   - knowledge/philosophy/corevsstructure.md
-
+```
 
 ---
 
@@ -285,6 +296,7 @@ Support metadata:
 AM_TYPE:
 ROLE:
 DERIVED_FROM:
+```
 
 for:
 

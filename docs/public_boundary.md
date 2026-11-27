@@ -1,3 +1,13 @@
+---
+AM_TYPE: II
+ROLE: PUBLICATION_BOUNDARY
+GROUP: CONTINUE
+DERIVED_FROM:
+  - docs/governance/DECLARATION_IV.md
+  - blueprints/abstract/W3_PUBLIC_SURFACE_PLAN_TH.md
+OWNER: BBX19
+---
+
 # W3 Public Boundary
 
 This document defines what may safely face the public and what should remain inside active W3HBT development. It is an orientation guide, not a replacement for source-code, registry, or protocol truth.

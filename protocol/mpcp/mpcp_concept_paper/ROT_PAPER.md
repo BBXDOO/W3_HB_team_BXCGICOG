@@ -1,13 +1,13 @@
 ---
 AM_TYPE: I
-ROLE: CORE_MEANING
+ROLE: CORE_LAW
 GROUP: CONTINUE
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
-OWNER: null
-MAKER: null
+OWNER: BBX19
 ---
 
+**Gradation** `≡ Dd2rt - mpcp` · [แผนที่โฟลเดอร์](README.md)
 
 📘 ROT_PAPER.md
 

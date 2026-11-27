@@ -1,3 +1,12 @@
+---
+AM_TYPE: II
+ROLE: WORKSPACE_STANDARD
+GROUP: CONTINUE
+DERIVED_FROM:
+  - Hybrid-Management-Model/team-doctrine.md
+OWNER: BBX19
+---
+
 # Agent Self Workspace Standard — มาตรฐานพื้นที่ทำงานของเอเจนท์
 
 เอกสารนี้กำหนดมาตรฐานเชิงปฏิบัติสำหรับเอเจนท์หรือแชทบอทที่มีพื้นที่ตามชื่อของตัวเองใน repository W3_HB_team_BXCGICOG เช่น `ChatGPT/`, `Gemini/`, `Grok/`, `DeepSeek/`, `Copilot-Gm/`, `Cast/`, `BBX19/` และพื้นที่ภายใต้ `modules/<agent-name>/`.

@@ -1,3 +1,11 @@
+---
+AM_TYPE: III
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
+DERIVED_FROM:
+  - docs/croll/BOUNDARY_TH.md
+---
+
 # วิธีใช้งาน CROLL ภาษาไทย
 
 เอกสารนี้ใช้คำสั่งจาก root ของ repository และรองรับ CPython 3.9 ขึ้นไปโดยไม่ต้องติดตั้ง

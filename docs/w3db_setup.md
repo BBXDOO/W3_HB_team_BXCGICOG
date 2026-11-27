@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
+DERIVED_FROM:
+  - protocol/w3db/README.md
+OWNER: BBX19
+---
+
 # W3DB — Setup & Usage Guide
 
 ## Overview

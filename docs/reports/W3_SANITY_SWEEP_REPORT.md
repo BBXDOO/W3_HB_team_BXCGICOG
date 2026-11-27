@@ -1,3 +1,13 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - docs/governance/AMS.md
+  - tools/README.md
+OWNER: BBX19
+---
+
 # W3 Full Sanity Sweep Report
 **Date:** 2025-12-12  
 **Repository:** W3_HB_team_BXCGICOG  

@@ -1,3 +1,12 @@
+---
+AM_TYPE: II
+ROLE: STRUCTURE_STANDARD
+GROUP: CONTINUE
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
+OWNER: BBX19
+---
+
 # Repository Structure Standard
 
 ## Canonical folders

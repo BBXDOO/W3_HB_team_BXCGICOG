@@ -1,3 +1,13 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - docs/governance/AMS.md
+  - tools/README.md
+OWNER: BBX19
+---
+
 # การตรวจสอบไฟล์ที่เสียหาย/หายไป - สรุปสำหรับผู้ใช้
 # File Integrity Check - User Summary
 

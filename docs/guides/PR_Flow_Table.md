@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - docs/IGET_OPERATION_MODEL.md
+OWNER: BBX19
+---
+
 # PSP2 PR Flow Analysis Report
 
 **Generated:** 2025-12-24 20:11:36

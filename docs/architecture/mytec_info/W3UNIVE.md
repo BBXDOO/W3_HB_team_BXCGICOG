@@ -1,3 +1,11 @@
+---
+AM_TYPE: III
+ROLE: TECHNICAL_GUIDE
+GROUP: LEARN
+DERIVED_FROM:
+  - docs/cross_x_ecosystem.md
+---
+
 # W3UNIVE — คู่มือเทคนิคภาษาไทยสำหรับ W3
 
 เอกสารนี้เป็นคู่มือทางเทคนิคสำหรับการอ่าน ใช้งาน ตรวจสอบ และทดสอบระบบหลักใน repository `W3_HB_team_BXCGICOG` บน branch `refactor/v0.2`

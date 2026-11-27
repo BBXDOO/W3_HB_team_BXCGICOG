@@ -1,7 +1,7 @@
 Name : MPCP — Modular Protocol Control Platform  
 AM Ⅱ - BUILD : MPCP system architecture, operational model and boundaries  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-README-001  
-≡ Br8ra - RAMS
+≡ Cr8ra - RAMS
 
 ## Body — MPCP system definition
 
@@ -22,6 +22,15 @@ STATUS: Active Runtime Foundation
 **Preserved meaning:** Simple, bounded operational units; clear responsibility; traceable decisions; and separation of system meaning from implementation.
 
 **Authority boundary:** Cross-L classifies language roles but cannot authorize execution. MPCP ENV prepares and scopes context; Modew execution remains subject to external authority and ROT validation. This README documents the model; it does not grant runtime, write, deployment, or approval permissions.
+
+### เส้นทางอ่าน AMS / RAMS
+
+1. **AM:I** เริ่มที่ [MPCP Origin](MPCP_ORIGIN.md) เพื่ออ่านเจตนาของระบบ
+2. **AM:II** อ่าน [ROT Baseline](ROT_BASELINE.md) และ [Blueprint](mpcp_blueprint_paper/README.md) เพื่อดูการแปลงเจตนาเป็นกฎและแบบงาน
+3. **AM:III** เปิด [Runtime](runtime/README.md) เพื่อดูจุดรัน และ [กรณีทดสอบ](case_studies/README.md) เพื่อดูหลักฐานตามขอบเขตที่ทดสอบ
+4. ใช้ **M1** เดินลงไปที่ไฟล์หรือ README ลูก ใช้ **M2** กลับไปยังเอกสารแม่และต้นทาง แล้วตาม `DERIVED_FROM` จนถึง AM:I รหัสในแผนผังใช้ลำดับชื่อไฟล์จาก Git แบบไบต์ และนับเฉพาะไฟล์นามสกุลเดียวกันหรือโฟลเดอร์ระดับเดียวกัน
+
+ใช้ [4 Groups](../../docs/box/AMS/Group_4.md) อ่านจุดประสงค์ของเอกสารตาม BUILD, OBSERVE, LEARN หรือ CONTINUE แล้วใช้ AM Type อ่านระดับความหมาย
 
 ### Original MPCP reference — preserved operational description
 
@@ -232,21 +241,21 @@ Active Runtime Foundation
 
 | Item | Responsibility |
 |---|---|
-| [README.md](README.md) | This system-level AMS directory map |
-| [MPCP_ORIGIN.md](MPCP_ORIGIN.md) | MPCP origin reference and lineage |
-| [ROT_PAPER.md](ROT_PAPER.md), [ROT_BASELINE.md](ROT_BASELINE.md) | ROT rules and baseline references |
-| [MODEW_PAPER.md](MODEW_PAPER.md), [MODEW_DYNAMIC_CAPABILITY_PAPER/](MODEW_DYNAMIC_CAPABILITY_PAPER/) | Modew concepts and capability documentation |
-| [COLOR_STATE.md](COLOR_STATE.md), [COLOR_SYMBOL_PAPER.md](COLOR_SYMBOL_PAPER.md) | Color state and symbol papers |
-| [CO_MODULE_LAW.md](CO_MODULE_LAW.md), [CROSS_W3LGU_CONDIEN_RELATION.md](CROSS_W3LGU_CONDIEN_RELATION.md), [EVENT_TEMPLATE_CONDIEN_BRIDGE.md](EVENT_TEMPLATE_CONDIEN_BRIDGE.md) | Module, language, and Condien relation documents |
-| [THEORDERMPCP.md](THEORDERMPCP.md), [W3_DISTRIBUTED_FAMILY_ARCHITECTURE.md](W3_DISTRIBUTED_FAMILY_ARCHITECTURE.md), [W3_TERMS_MASTER_PAPER_v2.md](W3_TERMS_MASTER_PAPER_v2.md) | Ordering, architecture, and terminology references |
-| [mpcp_pillar.md](mpcp_pillar.md) | MPCP pillar document |
-| [config/](config/), [env/](env/), [lib/](lib/) | Runtime policy, ENV boundary, and library registry |
-| [modew/](modew/), [kernel/](kernel/), [runtime/](runtime/) | Execution units, validation kernel, and runtime traces |
-| [orchestrator/](orchestrator/), [adapter/](adapter/), [schema/](schema/) | Flow composition, external bridges, and schema definitions |
-| [case_studies/](case_studies/), [mpcp_blueprint_paper/](mpcp_blueprint_paper/), [mpcp_concept_paper/](mpcp_concept_paper/), [mpcp_lib_paper/](mpcp_lib_paper/) | Local case studies and design papers |
-| [mpcp_unified_lgu/](mpcp_unified_lgu/), [w3lgu_integration_paper/](w3lgu_integration_paper/) | Local language integration references |
-| [__init__.py](__init__.py), [cooperative_contract.py](cooperative_contract.py), [runtime_sanity_sweep.py](runtime_sanity_sweep.py), [sandbox.py](sandbox.py) | Python entry/contract/validation/sandbox modules |
-| [test_agent_mpcp_alignment.py](test_agent_mpcp_alignment.py), [test_condien_blueprint.py](test_condien_blueprint.py) | Local tests |
+| [README.md](README.md) · `≡ Cd8ra - mpcp` | This system-level AMS directory map |
+| [MPCP_ORIGIN.md](MPCP_ORIGIN.md) · `≡ Cd7mc - mpcp` | MPCP origin reference and lineage |
+| [ROT_PAPER.md](ROT_PAPER.md) · `≡ Cd10rt - mpcp`, [ROT_BASELINE.md](ROT_BASELINE.md) · `≡ Cd9rt - mpcp` | ROT rules and baseline references |
+| [MODEW_PAPER.md](MODEW_PAPER.md) · `≡ Cd6md - mpcp`, [MODEW_DYNAMIC_CAPABILITY_PAPER/](MODEW_DYNAMIC_CAPABILITY_PAPER/README.md) · `≡ Cf1md - mpcp` | Modew concepts and capability documentation |
+| [COLOR_STATE.md](COLOR_STATE.md) · `≡ Cd1cl - mpcp`, [COLOR_SYMBOL_PAPER.md](COLOR_SYMBOL_PAPER.md) · `≡ Cd2cl - mpcp` | Color state and symbol papers |
+| [CO_MODULE_LAW.md](CO_MODULE_LAW.md) · `≡ Cd3c_ - mpcp`, [CROSS_W3LGU_CONDIEN_RELATION.md](CROSS_W3LGU_CONDIEN_RELATION.md) · `≡ Cd4co - mpcp`, [EVENT_TEMPLATE_CONDIEN_BRIDGE.md](EVENT_TEMPLATE_CONDIEN_BRIDGE.md) · `≡ Cd5ee - mpcp` | Module, language, and Condien relation documents |
+| [THEORDERMPCP.md](THEORDERMPCP.md) · `≡ Cd11te - mpcp`, [W3_DISTRIBUTED_FAMILY_ARCHITECTURE.md](W3_DISTRIBUTED_FAMILY_ARCHITECTURE.md) · `≡ Cd12w_ - mpcp`, [W3_TERMS_MASTER_PAPER_v2.md](W3_TERMS_MASTER_PAPER_v2.md) · `≡ Cd13w_ - mpcp` | Ordering, architecture, and terminology references |
+| [mpcp_pillar.md](mpcp_pillar.md) · `≡ Cd14mc - mpcp` | MPCP pillar document |
+| [config/](config/README.md) · `≡ Cf4cn - mpcp`, [env/](env/README.md) · `≡ Cf5ev - mpcp`, [lib/](lib/README.md) · `≡ Cf7lb - mpcp` | Runtime policy, ENV boundary, and library registry |
+| [modew/](modew/README.md) · `≡ Cf8md - mpcp`, [kernel/](kernel/README.md) · `≡ Cf6kr - mpcp`, [runtime/](runtime/README.md) · `≡ Cf14rn - mpcp` | Execution units, validation kernel, and runtime traces |
+| [orchestrator/](orchestrator/README.md) · `≡ Cf13oc - mpcp`, [adapter/](adapter/README.md) · `≡ Cf2aa - mpcp`, [schema/](schema/README.md) · `≡ Cf15sh - mpcp` | Flow composition, external bridges, and schema definitions |
+| [case_studies/](case_studies/README.md) · `≡ Cf3cs - mpcp`, [mpcp_blueprint_paper/](mpcp_blueprint_paper/README.md) · `≡ Cf9mc - mpcp`, [mpcp_concept_paper/](mpcp_concept_paper/README.md) · `≡ Cf10mc - mpcp`, [mpcp_lib_paper/](mpcp_lib_paper/README.md) · `≡ Cf11mc - mpcp` | Local case studies and design papers |
+| [mpcp_unified_lgu/](mpcp_unified_lgu/README.md) · `≡ Cf12mc - mpcp`, [w3lgu_integration_paper/](w3lgu_integration_paper/README.md) · `≡ Cf16wl - mpcp` | Local language integration references |
+| [__init__.py](__init__.py) · `≡ Cc1_i - mpcp`, [cooperative_contract.py](cooperative_contract.py) · `≡ Cc2co - mpcp`, [runtime_sanity_sweep.py](runtime_sanity_sweep.py) · `≡ Cc3rn - mpcp`, [sandbox.py](sandbox.py) · `≡ Cc4sn - mpcp` | Python entry/contract/validation/sandbox modules |
+| [test_agent_mpcp_alignment.py](test_agent_mpcp_alignment.py) · `≡ Cc5ts - mpcp`, [test_condien_blueprint.py](test_condien_blueprint.py) · `≡ Cc6ts - mpcp` | Local tests |
 
 The entries above are an inventory, not a grant of authority. Read each component's contract before execution.
 
@@ -258,6 +267,10 @@ The entries above are an inventory, not a grant of authority. Read each componen
 | docs.ams-template | [AMS README template](../../docs/box/AMS/AMS_README.txt) | Head / Body / Movement / OWNER / MAKER format |
 | docs.core | [Core vs Structure](../../knowledge/philosophy/corevsstructure.md) | Origin meaning and separation of structure |
 | docs.tools | [Repository tools](../../tools/README.md) | Related tooling; separate authority boundary |
+| docs.wx-box | [wx / BOX / CN-Fold](../../wx/references/cn_fold_to_wx_box_mapping.md) | ตัวอย่างส่งต่องานข้ามพื้นที่ |
+| docs.handoff | [ChatGPT context handoff](../../modules/ChatGPT/reports/WX_BOX_AMS_GRADATION_LIBRARY_X_CN_FOLD_HANDOFF_TH.md) | หลักฐานที่ใช้ค้น wx, BOX, CN-Fold และข้อจำกัดข้อมูล Library-X |
+| docs.migration | [AMS migration request](../../requests/RQ-AMS-MIGRATION-A001.md) | ขอบเขตงานนำ AMS ไปใช้ |
+| docs.lineage-review | [ผลตรวจสายอ้างอิง PR #339](../../docs/reports/AMS_LINEAGE_REVIEW_PR339_TH.md) | จุดที่ยืนยันสายแล้วและจุดรอหลักฐาน |
 
 ---
 

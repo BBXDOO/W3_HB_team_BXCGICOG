@@ -1,3 +1,13 @@
+---
+AM_TYPE: III
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
+DERIVED_FROM:
+  - docs/governance/AMS.md
+  - tools/README.md
+OWNER: BBX19
+---
+
 # Quick Start Guide - File Integrity Check
 # คู่มือเริ่มต้นอย่างรวดเร็ว - การตรวจสอบไฟล์
 

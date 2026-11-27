@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
+DERIVED_FROM:
+  - w3_api/README.md
+OWNER: BBX19
+---
+
 # คู่มือใช้งาน W3-API ผ่าน Termux
 
 **Path:** `docs/guides/W3API_TERMUX_GUIDE_TH.md`  

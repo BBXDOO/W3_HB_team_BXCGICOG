@@ -1,3 +1,10 @@
+---
+AM_TYPE: I
+ROLE: FOUNDATION_STANDARD
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
 # G-State Paper — Foundation Standard
 
 ## Status

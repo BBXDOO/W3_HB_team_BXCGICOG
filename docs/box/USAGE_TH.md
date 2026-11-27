@@ -1,3 +1,11 @@
+---
+AM_TYPE: III
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
+DERIVED_FROM:
+  - docs/box/BOUNDARY_TH.md
+---
+
 # BOX / Library-WX — วิธีใช้งานภาษาไทย
 
 คู่มือนี้อธิบายการค้นหา อ้างอิง คัดลอก และลงทะเบียน template โดยรักษาหลัก

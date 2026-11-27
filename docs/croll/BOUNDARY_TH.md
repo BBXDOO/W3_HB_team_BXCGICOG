@@ -1,3 +1,12 @@
+---
+AM_TYPE: II
+ROLE: BOUNDARY_RULES
+GROUP: CONTINUE
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
+OWNER: BBX19
+---
+
 # CROLL Boundary — ขอบเขตการใช้และการสงวนระบบ
 
 เอกสารนี้เป็น **governance reference** ไม่ใช่ใบอนุญาตทางกฎหมาย และไม่ใช่ระบบ authentication

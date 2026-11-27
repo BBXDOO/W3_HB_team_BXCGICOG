@@ -1,12 +1,13 @@
 ---
 AM_TYPE: III
-ROLE: OPERATIONAL
+ROLE: TEST_CASE_STUDY
 GROUP: OBSERVE
 DERIVED_FROM:
   - protocol/mpcp/ROT_BASELINE.md
-OWNER: null
-MAKER: null
+OWNER: BBX19
 ---
+
+**Gradation** `≡ Dd1ae - mpcp` · [แผนที่โฟลเดอร์](README.md)
 
 # Case Study: Agent MPCP Alignment Tests v1
 
@@ -435,3 +436,9 @@ v1 ไม่ได้ทำ semantic runtime ให้เสร็จ
 และทำให้เอกสาร MPCP/W3 เริ่มเชื่อมเข้ากับ execution layer อย่างจับต้องได้
 
 นี่คือคุณค่าที่แท้จริงของ phase นี้
+
+## MPCP-CI-GIT-CONTEXT
+
+System Inspection วันที่ 28 ต.ค. 2026 พบ MPCP ล้มเหลว 8 tests ในสำเนาที่ไม่มี Git context หลังตัวเชื่อมจัด Git snapshot ชั่วคราว MPCP ผ่าน 45 tests และรวมเจ็ดระบบผ่าน 134 tests ตาม [หลักฐานรัน](../../../w3_tool_store/agent_workbench/tools/system_inspection/VALIDATION_2026-10-28.md) และ [บันทึกทบทวน MPCP](../THEORDERMPCP.md#historical-review-and-subsequent-evidence)
+
+เมื่อนำกรณีนี้ไปใช้ ให้จด commit, วิธีเตรียม workspace, คำสั่งตรวจ และผลแยกตาม environment ถ้าต้องปรับตัวเชื่อม ให้รันชุดเดิมซ้ำและแนบหลักฐานก่อน–หลัง ส่งความต่างที่ยังอธิบายไม่ได้กลับเป็นงานตรวจใน [AMS migration request](../../../requests/RQ-AMS-MIGRATION-A001.md#mpcp-ci-git-context)

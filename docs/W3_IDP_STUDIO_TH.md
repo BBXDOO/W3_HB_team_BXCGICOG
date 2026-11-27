@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: TECHNICAL_GUIDE
+GROUP: LEARN
+DERIVED_FROM:
+  - blueprints/GGinventory/w3openland/README.md
+OWNER: BBX19
+---
+
 # คู่มือ W3.IDP Studio (w3openland)
 
 ## 1. ตำแหน่ง

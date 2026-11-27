@@ -1,3 +1,12 @@
+---
+AM_TYPE: II
+ROLE: NAMING_STANDARD
+GROUP: CONTINUE
+DERIVED_FROM:
+  - docs/roadmaps/P1_P3_EXECUTION_PLAN.md
+OWNER: BBX19
+---
+
 # Naming Convention (Repo-wide)
 
 ## Rules

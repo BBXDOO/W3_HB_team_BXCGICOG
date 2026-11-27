@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - docs/roadmaps/P1_P3_EXECUTION_PLAN.md
+OWNER: BBX19
+---
+
 # Duplication Tracker
 
 ## Active duplication findings

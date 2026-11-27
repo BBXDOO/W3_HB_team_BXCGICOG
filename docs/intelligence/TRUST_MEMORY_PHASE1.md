@@ -1,3 +1,12 @@
+---
+AM_TYPE: II
+ROLE: DRAFT_DESIGN
+GROUP: OBSERVE
+DERIVED_FROM:
+  - knowledge/philosophy/Selective_Input.md
+OWNER: BBX19
+---
+
 # Trust Memory — Phase 1 (Design)
 
 ## Objective

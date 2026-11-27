@@ -1,3 +1,10 @@
+---
+AM_TYPE: I
+ROLE: CORE_MEANING
+GROUP: LEARN
+DERIVED_FROM: []
+---
+
 # W3 Original Intent and Autonomy
 
 > **Document role:** Design-intent / historical context / interpretation anchor  

@@ -1,7 +1,7 @@
 Name : MPCP Orchestrator  
 AM Ⅲ - BUILD : ตัวจัดการลำดับ flow และ step ผ่าน runtime executor; state SUCCESS/done ไปต่อ, WAIT พัก, STOP/fail/block หยุด และ lifecycle state ที่ไม่ใช่ผลปลายทางต้องไม่ถูกนับว่าสำเร็จ  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-ORCHESTRATOR-README-001  
-≡ Cr1ra - RAMS
+≡ Dr1ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
@@ -29,10 +29,10 @@ DOCUMENT_PATH: protocol/mpcp/orchestrator/README.md
 
 | รายการ | บทบาท |
 |---|---|
-| [README.md](README.md) | AMS README ของพื้นที่ |
-| [__init__.py](__init__.py) | Python module / implementation |
-| [flow.py](flow.py) | Python module / implementation |
-| [manager.py](manager.py) | เอกสาร/โค้ดต้นทางหลัก |
+| [README.md](README.md) · `≡ Dd1ra - mpcp` | AMS README ของพื้นที่ |
+| [__init__.py](__init__.py) · `≡ Dc1_i - mpcp` | Python module / implementation |
+| [flow.py](flow.py) · `≡ Dc2fo - mpcp` | Python module / implementation |
+| [manager.py](manager.py) · `≡ Dc3mn - mpcp` | เอกสาร/โค้ดต้นทางหลัก |
 
 ### M2 — เอกสารภายนอกพื้นที่
 

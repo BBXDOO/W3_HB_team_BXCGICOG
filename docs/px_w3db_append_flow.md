@@ -1,3 +1,12 @@
+---
+AM_TYPE: II
+ROLE: ARCHITECTURE_GUIDANCE
+GROUP: BUILD
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
+OWNER: BBX19
+---
+
 # PX / W3DB Append Flow
 
 PX is a small position-exchange layer for W3 cross-system work. It gives W3Lgu,

@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - protocol/mpcp/MPCP_ORIGIN.md
+OWNER: BBX19
+---
+
 # รายงานโครงสร้างระบบ W3 + MPCP (ภาษาไทย)
 
 > เอกสารนี้จัดทำเพื่ออธิบายภาพรวมโครงสร้างรีโป ความเชื่อมโยงของโฟลเดอร์/ไฟล์ และลำดับการส่งงานเมื่อเกิดเหตุการณ์ เช่น เปิด Issue หรือ Pull Request

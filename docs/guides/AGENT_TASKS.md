@@ -1,3 +1,11 @@
+---
+AM_TYPE: III
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
+DERIVED_FROM: []
+OWNER: BBX19
+---
+
 # AGENT_TASKS.md
 ## Merge Review Requirements for W3 Hybrid System
 

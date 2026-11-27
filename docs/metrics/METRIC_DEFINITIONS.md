@@ -1,3 +1,12 @@
+---
+AM_TYPE: II
+ROLE: METRIC_DEFINITIONS
+GROUP: CONTINUE
+DERIVED_FROM:
+  - docs/roadmaps/P1_P3_EXECUTION_PLAN.md
+OWNER: BBX19
+---
+
 # Metric Definitions (Baseline)
 
 ## PR volume

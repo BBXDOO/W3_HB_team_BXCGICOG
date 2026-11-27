@@ -1,12 +1,13 @@
 ---
 AM_TYPE: II
-ROLE: ADAPTATION
+ROLE: RELATION_MAPPING
 GROUP: BUILD
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
-OWNER: null
-MAKER: null
+OWNER: BBX19
 ---
+
+**Gradation** `≡ Cd4co - mpcp` · [แผนที่โฟลเดอร์](README.md)
 
 # CROSS-X / W3Lgu / Condien Relation Anchor
 

@@ -1,7 +1,15 @@
 Name : MPCP ENV — Cross-L execution boundary  
 AM Ⅲ - BUILD : การทำงานและขอบเขตของส่วนประกอบ MPCP  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-ENV-README-001  
-≡ Cr1ra - RAMS
+≡ Dr1ra - RAMS
+
+```yaml
+AM_TYPE: III
+ROLE: OPERATIONAL
+DERIVED_FROM:
+  - protocol/mpcp/CROSS_W3LGU_CONDIEN_RELATION.md
+DOCUMENT_PATH: protocol/mpcp/env/README.md
+```
 
 # MPCP ENV Boundary
 
@@ -64,6 +72,25 @@ Cross-L dispatch envelope
 Inbound MPCP packets declare `W3LGU_PROFILE:W3Lgu-MPCP-Runtime` and outbound
 returns declare `w3lgu_profile:W3Lgu-Result`. The package does not duplicate the
 W3Lgu parser or freeze its future library structure.
+
+## Movement — แผนที่และเส้นทางอ้างอิง
+
+### M1 — รายการภายใน `env/`
+
+| รายการ |
+|---|
+| [README.md](README.md) · `≡ Dd1ra - mpcp` |
+| [__init__.py](__init__.py) · `≡ Dc1_i - mpcp` |
+| [boundary.py](boundary.py) · `≡ Dc2bu - mpcp` |
+| [gateway.py](gateway.py) · `≡ Dc3gt - mpcp` |
+| [models.py](models.py) · `≡ Dc4md - mpcp` |
+| [probe.py](probe.py) · `≡ Dc5po - mpcp` |
+
+### M2 — เอกสารภายนอกพื้นที่
+
+- [MPCP README](../README.md)
+- [Cross/W3Lgu–Condien](../CROSS_W3LGU_CONDIEN_RELATION.md)
+- [MPCP Origin](../MPCP_ORIGIN.md)
 
 ---
 

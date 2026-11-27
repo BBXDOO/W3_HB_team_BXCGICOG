@@ -1,3 +1,12 @@
+---
+AM_TYPE: II
+ROLE: REFERENCE_STANDARD
+GROUP: CONTINUE
+DERIVED_FROM:
+  - knowledge/philosophy/corevsstructure.md
+OWNER: BBX19
+---
+
 # W3 Referencing Standard
 
 This standard keeps W3 integration artifacts traceable without mutating source

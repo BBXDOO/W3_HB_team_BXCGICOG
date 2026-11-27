@@ -1,13 +1,13 @@
 ---
 AM_TYPE: II
-ROLE: ADAPTATION
+ROLE: DESIGN_SPECIFICATION
 GROUP: CONTINUE
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
-OWNER: null
-MAKER: null
+OWNER: BBX19
 ---
 
+**Gradation** `≡ Dd2mc - mpcp` · [แผนที่โฟลเดอร์](README.md)
 
 mpcp_UNIFIED_LANGUAGE_PAPER.md
 

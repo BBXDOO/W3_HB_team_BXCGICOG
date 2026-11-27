@@ -1,7 +1,7 @@
 Name : MPCP Concept Paper  
 AM Ⅰ - BUILD : แนวคิดตั้งต้นของ MPCP: โครงสร้างพื้นฐานคงอยู่ได้ในขณะที่รูปแบบหรือผลลัพธ์เปลี่ยนตามบริบท; เอกสารนี้ไม่ใช่คำสั่ง Runtime และไม่ควรถูกแทนด้วยข้อสรุปจากโค้ดชั้นล่าง  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-MPCP-CONCEPT-PAPER-README-001  
-≡ Cr1ra - RAMS
+≡ Dr1ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
@@ -29,9 +29,9 @@ DOCUMENT_PATH: protocol/mpcp/mpcp_concept_paper/README.md
 
 | รายการ | บทบาท |
 |---|---|
-| [README.md](README.md) | AMS README ของพื้นที่ |
-| [ROT_PAPER.md](ROT_PAPER.md) | เอกสารประกอบ |
-| [mpcp_concept_paper.md](mpcp_concept_paper.md) | เอกสาร/โค้ดต้นทางหลัก |
+| [README.md](README.md) · `≡ Dd1ra - mpcp` | AMS README ของพื้นที่ |
+| [ROT_PAPER.md](ROT_PAPER.md) · `≡ Dd2rt - mpcp` | เอกสารประกอบ |
+| [mpcp_concept_paper.md](mpcp_concept_paper.md) · `≡ Dd3mc - mpcp` | เอกสาร/โค้ดต้นทางหลัก |
 
 ### M2 — เอกสารภายนอกพื้นที่
 

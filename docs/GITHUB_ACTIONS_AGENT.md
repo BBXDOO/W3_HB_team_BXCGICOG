@@ -1,3 +1,11 @@
+---
+AM_TYPE: III
+ROLE: AGENT_WORKFLOW
+GROUP: CONTINUE
+DERIVED_FROM: []
+OWNER: BBX19
+---
+
 # GitHub Actions Agent Workflow
 
 ## Overview

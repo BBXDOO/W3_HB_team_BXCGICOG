@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: API_USAGE
+GROUP: CONTINUE
+DERIVED_FROM:
+  - w3_api/README.md
+OWNER: BBX19
+---
+
 W3 Cross API
 
 Overview

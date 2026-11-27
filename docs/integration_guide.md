@@ -1,3 +1,11 @@
+---
+AM_TYPE: III
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
+DERIVED_FROM:
+  - docs/standards/referencing_standard.md
+---
+
 # W3 Integration Guide v0.3
 
 This guide describes the integration-grade flow connecting EP_SIGNAL, W3DB,

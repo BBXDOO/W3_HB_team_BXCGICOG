@@ -1,13 +1,14 @@
 ---
 AM_TYPE: II
-ROLE: ADAPTATION
+ROLE: PROFILE_DESIGN
 GROUP: CONTINUE
 DERIVED_FROM:
   - protocol/mpcp/mpcp_blueprint_paper/mpcp_blueprint_paper.md
   - protocol/mpcp/MPCP_ORIGIN.md
-OWNER: null
-MAKER: null
+OWNER: BBX19
 ---
+
+**Gradation** `≡ Dd3wl - mpcp` · [แผนที่โฟลเดอร์](README.md)
 
 # W3Lgu-MPCP Blueprint Profile
 

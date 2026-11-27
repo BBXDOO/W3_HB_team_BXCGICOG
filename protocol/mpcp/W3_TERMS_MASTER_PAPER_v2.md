@@ -1,11 +1,12 @@
 ---
 AM_TYPE: I
-ROLE: CORE_MEANING
+ROLE: CORE_TERMINOLOGY
 GROUP: CONTINUE
 DERIVED_FROM: []
-OWNER: null
-MAKER: null
+OWNER: BBX19
 ---
+
+**Gradation** `≡ Cd13w_ - mpcp` · [แผนที่โฟลเดอร์](README.md)
 
 # W3 Unified Master Glossary v2
 

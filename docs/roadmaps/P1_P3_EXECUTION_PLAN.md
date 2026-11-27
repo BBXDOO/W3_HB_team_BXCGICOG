@@ -1,3 +1,12 @@
+---
+AM_TYPE: II
+ROLE: PLANNING
+GROUP: OBSERVE
+DERIVED_FROM:
+  - architecture/W3_MASTER_ARCHITECTURE.md
+OWNER: BBX19
+---
+
 # P1–P3 Execution Plan (Repository Action Plan)
 
 อ้างอิงจากสถาปัตยกรรมหลักหัวข้อ Immediate Priorities

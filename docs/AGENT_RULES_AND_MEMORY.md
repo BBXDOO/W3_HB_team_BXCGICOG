@@ -1,3 +1,11 @@
+---
+AM_TYPE: III
+ROLE: AGENT_WORK_RULES
+GROUP: CONTINUE
+DERIVED_FROM: []
+OWNER: BBX19
+---
+
 # Agent Rules and Memory
 
 ## Overview

@@ -1,3 +1,11 @@
+---
+AM_TYPE: III
+ROLE: CHANGE_HISTORY
+GROUP: LEARN
+DERIVED_FROM: []
+OWNER: BBX19
+---
+
 # CHANGELOG
 
 All notable changes to this repository will be documented in this file.

@@ -1,3 +1,12 @@
+---
+AM_TYPE: II
+ROLE: ARCHITECTURE_GUIDANCE
+GROUP: BUILD
+DERIVED_FROM:
+  - knowledge/philosophy/Cross-X.md
+OWNER: BBX19
+---
+
 # W3 Process Layer — REDR / PSP2 / DTML / LRC2
 
 This layer completes the W3 process chain around Cross-X. It is intentionally

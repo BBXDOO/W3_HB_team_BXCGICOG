@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - docs/announcement/announcement-3.md
+OWNER: BBX19
+---
+
 [REPORT] Audit Result - W3 Repo (วันที่: 2025-12-10)
 
 ## 1. Module Pairing

@@ -1,3 +1,10 @@
+---
+AM_TYPE: I
+ROLE: DOCUMENT_GROUP_DEFINITION
+GROUP: CONTINUE
+DERIVED_FROM: []
+---
+
     Build. Observe. Learn. Continue. 
     4 Group signature of w3
     ---

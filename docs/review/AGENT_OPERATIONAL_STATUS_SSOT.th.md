@@ -1,3 +1,13 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - SYSTEM/README.md
+  - BBX19/README.md
+OWNER: BBX19
+---
+
 # รายงานสถานะกลางของเอเจนท์ (Operational Status SSOT)
 
 - วันที่จัดทำ: 2026-05-09

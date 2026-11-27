@@ -1,7 +1,7 @@
 ---
 AM_TYPE: III
-ROLE: OPERATIONAL
-GROUP: BUILD
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
 DERIVED_FROM:
   - docs/governance/AMS.md
   - docs/box/README_TH.md
@@ -14,15 +14,6 @@ REQUEST_ID: W3-DOCUMENT-ALLOCATOR-MFC
 ---
 
 # W3 Document Allocator — คู่มือขั้นต่ำ
-
-## Head line
-
-1. Name: W3 Document Allocator
-2. AM III - BUILD: Operational Tool
-3. ID: W3-DOCUMENT-ALLOCATOR-MFC
-4. Note: เครื่องมือสร้างเอกสาร AMS โดยรักษาขอบเขต BOX
-
-## Body line
 
 เครื่องมือนี้ตรวจ AM Type, lineage, พาธ, เอกสารชื่อซ้ำ และ BOX reference ก่อนสร้าง Markdown จากนั้นคืน artifact receipt ที่มีพาธ digest และหลักฐานผู้อนุญาต
 

@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - architecture/W3_MASTER_ARCHITECTURE.md
+OWNER: BBX19
+---
+
 # Architecture Status Dashboard
 
 Last updated: 2026-05-11

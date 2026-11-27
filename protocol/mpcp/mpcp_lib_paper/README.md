@@ -1,7 +1,7 @@
 Name : MPCP Library Paper  
 AM Ⅱ - BUILD : ข้อกำหนดการประยุกต์ Library ให้รับใช้ MPCP และลดการผูกแพลตฟอร์ม แบ่ง Core, Bridge และ Optional; ไม่เท่ากับการรับรองว่ามี library ทุกตัวให้เรียกใช้งานจริง  
 Log time : 2026-11-22 (date only; time not recorded) ; ID : MPCP-MPCP-LIB-PAPER-README-001  
-≡ Cr1ra - RAMS
+≡ Dr1ra - RAMS
 
 ## Body — ตัวตนของพื้นที่และขอบเขต
 
@@ -29,8 +29,8 @@ DOCUMENT_PATH: protocol/mpcp/mpcp_lib_paper/README.md
 
 | รายการ | บทบาท |
 |---|---|
-| [README.md](README.md) | AMS README ของพื้นที่ |
-| [mpcp_lib_paper.md](mpcp_lib_paper.md) | เอกสาร/โค้ดต้นทางหลัก |
+| [README.md](README.md) · `≡ Dd1ra - mpcp` | AMS README ของพื้นที่ |
+| [mpcp_lib_paper.md](mpcp_lib_paper.md) · `≡ Dd2mc - mpcp` | เอกสาร/โค้ดต้นทางหลัก |
 
 ### M2 — เอกสารภายนอกพื้นที่
 

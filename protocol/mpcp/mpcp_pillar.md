@@ -1,12 +1,13 @@
 ---
 AM_TYPE: II
-ROLE: ADAPTATION
+ROLE: ARCHITECTURE_DESIGN
 GROUP: BUILD
 DERIVED_FROM:
   - protocol/mpcp/MPCP_ORIGIN.md
-OWNER: null
-MAKER: null
+OWNER: BBX19
 ---
+
+**Gradation** `≡ Cd14mc - mpcp` · [แผนที่โฟลเดอร์](README.md)
 
 # mpcp — Pillar Architecture (Marble-patterned Concrete Model)
 

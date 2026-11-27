@@ -1,3 +1,11 @@
+---
+AM_TYPE: III
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
+DERIVED_FROM: []
+OWNER: BBX19
+---
+
 # 🎯 Quick Start: ตั้งค่า GitHub Pages (3 ขั้นตอน)
 
 ## ขั้นตอนที่ 1: เปิด Settings

@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM:
+  - docs/IGET_OPERATION_MODEL.md
+OWNER: BBX19
+---
+
 # PR #83 — Manual Update Steps Required
 
 ## Overview

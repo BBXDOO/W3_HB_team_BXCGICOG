@@ -141,4 +141,10 @@ ChatGPT/
 🛑 ห้าม publish master-flow โดยไม่มี evidence (กราฟ, simulation log)
 
 ---
+[บันทึกเจตนา AMS และวงจรเรียนรู้ W3](notes/2026-11-27_w3_intent_ams_and_learning_cycle_TH.md) — จุดเริ่มอ่านเมื่อกลับมาทำงาน PR #339 หรือเมื่อต้องตามต้นทางของหลักและผลการทดลอง
+
 **End of Module Entrance – ChatGPT**
+
+## MPCP-CI-GIT-CONTEXT
+
+ก่อนตีความผลทดสอบ MPCP ให้บันทึกว่า host ใช้สำเนาที่มี Git context หรือไม่ กรณี System Inspection เคยพบผลต่างระหว่างสองสภาพแวดล้อม ใช้ [กรณีศึกษาและหลักฐาน](../protocol/mpcp/case_studies/AGENT_MPCP_ALIGNMENT_TESTS_V1.md#mpcp-ci-git-context) เมื่อต้องตรวจซ้ำหรือส่งต่องาน

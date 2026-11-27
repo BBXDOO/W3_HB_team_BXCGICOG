@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: USAGE_GUIDE
+GROUP: CONTINUE
+DERIVED_FROM:
+  - core/runtime/runtime.md
+OWNER: BBX19
+---
+
 # กลไกงานจริงของ Origin agents
 
 เอเจนท์ 5 ระบบ ได้แก่ ChatGPT, Gemini, Grok, DeepSeek และ Copilot-Gm ใช้

@@ -1,3 +1,10 @@
+---
+AM_TYPE: I
+ROLE: CORE_MEANING
+GROUP: LEARN
+DERIVED_FROM: []
+---
+
 # ประกาศฉบับที่ 3 : ภาคแถลงการณ์  
 **หัวข้อแยกสำเนา:** มหาวิทยาลัยชีวิต W3-Multiverse (Project)  
 **Log:** 111225T15:13:00Z  

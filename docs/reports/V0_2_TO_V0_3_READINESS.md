@@ -1,3 +1,11 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM: []
+OWNER: BBX19
+---
+
 # v0.2 Final Lock → v0.3 Readiness Gate
 
 ## Purpose

@@ -1,3 +1,11 @@
+---
+AM_TYPE: III
+ROLE: EVIDENCE_REPORT
+GROUP: OBSERVE
+DERIVED_FROM: []
+OWNER: BBX19
+---
+
 # รายงานความสามารถจริงของโมดูลเอเจนท์ใน W3
 
 **Agent Module Capability Report — Evidence-Based Runtime Audit**  

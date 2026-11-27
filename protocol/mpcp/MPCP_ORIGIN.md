@@ -7,6 +7,8 @@ OWNER: BBX19
 MAKER: Cast
 ---
 
+**Gradation** `≡ Cd7mc - mpcp` · [แผนที่โฟลเดอร์](README.md)
+
 # MPCP — Origin & Conceptual Foundation
 **ต้นกำเนิดและรากฐานแนวคิด**
 เขียนโดย Cast | อ้างอิงจากภาพร่างต้นฉบับของ BBX19

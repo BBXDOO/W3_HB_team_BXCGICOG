@@ -1,3 +1,12 @@
+---
+AM_TYPE: III
+ROLE: WORKSPACE_GUIDANCE
+GROUP: LEARN
+DERIVED_FROM:
+  - docs/standards/AGENT_SELF_WORKSPACE_STANDARD.md
+  - knowledge/philosophy/corevsstructure.md
+---
+
 # 📘 Agent Workspace Guideline — วิธีใช้พื้นที่ agent ให้มีชีวิตใน Workflow จริง
 
 **สำหรับ:** ทุก agent และ contributor ของ W3 Hybrid System  
